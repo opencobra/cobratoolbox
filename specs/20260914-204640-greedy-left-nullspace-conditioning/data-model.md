@@ -54,6 +54,8 @@ console verbosity (FR-017).
 | `nonNegative` | logical | asserted on the returned object, not assumed |
 | `impliedNullity` | double | `size(Zpos,1)` |
 | `independentRank` | double | rank computed independently of the basis |
+| `scalingValue` | double | smallest non-zero singular value of the operative matrix |
+| `scalingBoundary` | double | the regime boundary it is compared against |
 | `elapsedTime` | double | seconds for this call only |
 
 `residualAbsolute` and `residualScaled` are both required. The seed's evidence shows why:
@@ -80,9 +82,11 @@ ground truth, and the field forbids a consumer from treating it as such.
 | Field | Type | Meaning |
 |---|---|---|
 | `scalingQuantity` | char | *which* quantity is badly scaled |
-| `scalingValue` | double | its measured value — "by how much" |
-| `scalingBoundary` | double | the R4 boundary it violated |
 | `scalingBoundaryBasis` | char | what the boundary is grounded in, so a reader can re-derive it |
+
+`scalingValue` and `scalingBoundary` moved to §2.2 during implementation: they are
+measurements, they are already computed on every call, and reporting the margin in
+Regime A is more useful than reporting it only once it has been breached.
 | `recommendedRepair` | char | the indicated repair to `model.S` |
 
 These four are what make the diagnosis actionable rather than merely negative: what is

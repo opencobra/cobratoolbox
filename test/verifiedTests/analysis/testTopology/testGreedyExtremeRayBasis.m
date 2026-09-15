@@ -226,6 +226,83 @@ for k = 1:length(solvers.LP)
         assert(statusStrict.timedOut, ...
             'a run that rejects every candidate must report that it timed out');
 
+        % ---- User Story 2: Regime-B diagnosis on badly scaled input ----
+        %
+        % The badly scaled fixture pairs a conserved pool (rows 1-2, which give it a
+        % left nullspace to find) with two nearly-parallel rows (3-4), whose near
+        % dependence drives the smallest non-zero singular value of the operative
+        % matrix below the measured regime boundary. Scaling a row does NOT achieve
+        % this: it leaves the rank-2 subspace, and hence sigmaMinPlus, untouched.
+        badlyScaledOf = @(g) sparse([-1, 0, 0;
+                                      1, 0, 0;
+                                      0, 1, 0;
+                                      0, 1, g]);
+
+        % T028 / SC-004: no basis of EITHER kind, no error raised, diagnosis populated
+        illModel = struct('S', badlyScaledOf(1e-12), ...
+            'SConsistentRxnBool', true(3, 1));
+        warnState = warning('off', 'greedyExtremeRayBasis:badlyScaled');
+        [ZposBad, ZBad, statusBad] = greedyExtremeRayBasis(illModel, param);
+        warning(warnState);
+
+        assert(strcmp(statusBad.outcome, 'badlyScaled'), ...
+            sprintf('badly scaled input gave outcome ''%s''', statusBad.outcome));
+        assert(isempty(ZposBad), 'FR-007: the non-negative basis must be withheld');
+        assert(isempty(ZBad), 'FR-007: the sign-unrestricted basis must be withheld too');
+
+        % FR-008: what is badly scaled, by how much, against what, and what to do
+        assert(~isempty(statusBad.scalingQuantity), 'the diagnosis must name what is badly scaled');
+        assert(isfinite(statusBad.scalingValue), 'the diagnosis must give the measured value');
+        assert(isfinite(statusBad.scalingBoundary), 'the diagnosis must give the boundary violated');
+        assert(statusBad.scalingValue < statusBad.scalingBoundary, ...
+            'the reported value must actually violate the reported boundary');
+        assert(~isempty(statusBad.scalingBoundaryBasis), ...
+            'the boundary must say what it is derived from, so it can be re-derived');
+        assert(~isempty(statusBad.recommendedRepair), 'the diagnosis must state the repair');
+
+        % T029 / FR-017: a caller that suppresses ALL output is entitled to the same
+        % information. Nothing above was read from the console.
+        warnState = warning('off', 'all');
+        quietParam = param;
+        quietParam.printLevel = 0;
+        [~, ~, statusQuiet] = greedyExtremeRayBasis(illModel, quietParam);
+        warning(warnState);
+        assert(strcmp(statusQuiet.outcome, 'badlyScaled') && ...
+            ~isempty(statusQuiet.recommendedRepair) && isfinite(statusQuiet.scalingValue), ...
+            'the diagnosis must be complete from the status alone, with output suppressed');
+
+        % T030 / FR-019: the guard exercised on BOTH sides of the boundary, so it is
+        % tested against a false positive as well as against the failure it guards
+        wellModel = struct('S', badlyScaledOf(1), 'SConsistentRxnBool', true(3, 1));
+        [ZposWell, ~, statusWell] = greedyExtremeRayBasis(wellModel, param);
+        assert(strcmp(statusWell.regime, 'wellScaled'), ...
+            'a well-conditioned matrix must not be classified as badly scaled');
+        assert(~isempty(ZposWell), 'a well-scaled input must still yield a basis');
+        assert(statusBad.scalingValue < statusWell.scalingValue, ...
+            'the badly scaled fixture must actually be worse conditioned than the good one');
+
+        % T031 / FR-009: the terminal outcomes are distinguishable from the status
+        % alone. Four of the five are reachable today; 'missingField' is specified and
+        % documented but is not yet produced -- that is US4 / FR-013, unimplemented.
+        outcomesSeen = {statusEcoli.outcome, statusBad.outcome, statusStrict.outcome};
+        for iF = 1:numel(fixtures)
+            testModel = struct('S', fixtures{iF}.S, ...
+                'SConsistentRxnBool', fixtures{iF}.SConsistentRxnBool);
+            [~, ~, st] = greedyExtremeRayBasis(testModel, param);
+            outcomesSeen{end+1} = st.outcome; %#ok<SAGROW>
+        end
+        assert(any(strcmp(outcomesSeen, 'complete')), 'the complete outcome must be reachable');
+        assert(any(strcmp(outcomesSeen, 'emptyNullspace')), 'the emptyNullspace outcome must be reachable');
+        assert(any(strcmp(outcomesSeen, 'badlyScaled')), 'the badlyScaled outcome must be reachable');
+        assert(any(strcmp(outcomesSeen, 'incomplete')), 'the incomplete outcome must be reachable');
+        assert(numel(unique(outcomesSeen)) >= 4, ...
+            'the terminal outcomes must be distinguishable from one another');
+
+        % every call carries a populated status, not only the failing ones
+        assert(~isempty(statusEcoli.outcome) && ~isempty(statusEcoli.message) && ...
+            islogical(statusEcoli.raysExpectedIsEstimate) && statusEcoli.raysExpectedIsEstimate, ...
+            'status must be populated on every call, with raysExpected flagged an estimate');
+
         % FR-015 / SC-010: the historical two-output call still works unmodified
         [ZposTwo, ZTwo] = greedyExtremeRayBasis(ecoliModel, param);
         assert(full(all(ZposTwo(:) >= 0)), 'two-output call must still return a valid basis');

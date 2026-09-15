@@ -81,17 +81,20 @@ Result slots in `research.md`.
 **Goal**: badly scaled input yields no basis and a machine-readable diagnosis.
 **Independent test**: F5 and the F6 boundary pair; all console output suppressed; caller reads only the returned status.
 
-- [ ] T022 [US2] Implement the `status` struct of data-model.md §2 in `GERB`, populated on EVERY call with all five terminal outcomes (FR-009)
-- [ ] T023 [US2] Populate the accuracy/verification block: `residualAbsolute` AND `residualScaled` together, `nonNegative`, `impliedNullity`, `independentRank`, `elapsedTime` (FR-016)
-- [ ] T024 [US2] Implement regime classification against T010's boundary, applied to the OPERATIVE matrix — after consistency restriction and after transposition — and record which matrix was classified (FR-005)
-- [ ] T025 [US2] Implement Regime-B withholding: BOTH `Zpos` and `Z` returned empty, graceful return, no error raised (FR-007)
-- [ ] T026 [US2] Populate the Regime-B diagnosis block — `scalingQuantity`, `scalingValue`, `scalingBoundary`, `scalingBoundaryBasis`, `recommendedRepair` (FR-008)
-- [ ] T027 [US2] Add the third output to the signature, keeping the two-output call syntax working unchanged (FR-015); emit a visible warning alongside the status in Regime B, never a suppressed one (Principle VII-B)
-- [ ] T028 [P] [US2] Test: F5 badly scaled — both outputs empty, no error, diagnosis fields populated, in `TEST` (SC-004)
-- [ ] T029 [P] [US2] Test: same call with ALL console output suppressed — the diagnosis is still fully available from the status alone, in `TEST` (FR-017)
-- [ ] T030 [P] [US2] Test: F6 boundary pair — correct behaviour on BOTH sides, so the guard is exercised against the failure it guards and against a false positive, in `TEST` (FR-019, SC-007)
-- [ ] T031 [P] [US2] Test: all five terminal outcomes distinguishable from the status alone, in `TEST` (FR-009)
-- [ ] T031a [P] [US2] Test: BOTH call arities — an existing `[Zpos, Z] = ...` call runs unmodified and without error, and a `[Zpos, Z, status] = ...` call receives a populated status on every terminal outcome, in `TEST` (FR-015, **SC-010**)
+- [X] T022 [US2] Implement the `status` struct of data-model.md §2 in `GERB`, populated on EVERY call with all five terminal outcomes (FR-009)
+- [X] T023 [US2] Populate the accuracy/verification block: `residualAbsolute` AND `residualScaled` together, `nonNegative`, `impliedNullity`, `independentRank`, `elapsedTime` (FR-016)
+- [X] T024 [US2] Implement regime classification against T010's boundary, applied to the OPERATIVE matrix — after consistency restriction and after transposition — and record which matrix was classified (FR-005)
+- [X] T025 [US2] Implement Regime-B withholding: BOTH `Zpos` and `Z` returned empty, graceful return, no error raised (FR-007)
+- [X] T026 [US2] Populate the Regime-B diagnosis block — `scalingQuantity`, `scalingValue`, `scalingBoundary`, `scalingBoundaryBasis`, `recommendedRepair` (FR-008)
+- [X] T027 [US2] Add the third output to the signature, keeping the two-output call syntax working unchanged (FR-015); emit a visible warning alongside the status in Regime B, never a suppressed one (Principle VII-B)
+- [X] T028 [P] [US2] Test: F5 badly scaled — both outputs empty, no error, diagnosis fields populated, in `TEST` (SC-004)
+- [X] T029 [P] [US2] Test: same call with ALL console output suppressed — the diagnosis is still fully available from the status alone, in `TEST` (FR-017)
+- [X] T030 [P] [US2] Test: F6 boundary pair — correct behaviour on BOTH sides, so the guard is exercised against the failure it guards and against a false positive, in `TEST` (FR-019, SC-007)
+- [X] T031 [P] [US2] Test: all five terminal outcomes distinguishable from the status alone, in `TEST` (FR-009)
+- [X] T031a [P] [US2] Test: BOTH call arities — an existing `[Zpos, Z] = ...` call runs unmodified and without error, and a `[Zpos, Z, status] = ...` call receives a populated status on every terminal outcome, in `TEST` (FR-015, **SC-010**)
+
+- [X] T022a [US2] **CORRECTION made during US2**: the exact spectrum-derived accuracy target became the DEFAULT, and `param.exactAccuracyTarget` was removed. During US1 it had been made opt-in because a full `svd` appeared to cost minutes; that timing was an artefact of a wedged MATLAB session. Re-measured headless: **0.15 s** for the 1244 x 1710 iDopaNeuroC operative matrix and 0.35 s for 1668 x 2382 iAF1260. Making it the default also removes the US1 limitation that the conservative surrogate was too loose for a badly scaled matrix, and it is what makes regime classification possible on every call
+- [X] T022b [US2] `status.scalingValue` and `status.scalingBoundary` reported on EVERY call, not only in Regime B, so a caller can see its margin rather than only that it had one. `data-model.md` updated to match (they moved from section 2.4 to 2.2)
 
 **Checkpoint**: US1 + US2 = both regimes complete.
 

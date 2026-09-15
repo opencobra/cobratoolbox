@@ -93,7 +93,30 @@ The restart mechanism is retained: it costs nothing when the search is progressi
 triggers only on exhausting the per-basis budget), it is reported via `status.nRestarts`,
 and it may still help on models whose stall IS stochastic. None was found here.
 
-## 7. Cost note
+## 7. SC-005 regression on iDopaNeuroC, after both slices
+
+gurobi, seed 20260914, `maxNewBasisTime = 30`, `maxTime = 180`, 1 replicate:
+
+| Quantity | Measured |
+|---|---|
+| regime | **wellScaled** (sigma_min+ 2.8382e-02 vs boundary 5.2837e-06, margin 5372x) |
+| accuracy target | 1.1928e-12 |
+| residual achieved, absolute / scaled | **1.1852e-16** / 1.6949e-19 |
+| outcome / reason | `incomplete` / `timeBudget` |
+| rays | 101 of 105, 0 rejected for accuracy, 5 restarts |
+| non-negative | yes |
+
+**SC-005 is discharged**: iDopaNeuroC yields a basis that clears the derived accuracy
+target by four orders of magnitude, and its incompleteness is reported rather than
+concealed. It is NOT diagnosed as badly scaled, confirming R4's Regime-A prediction
+independently of R4's own graded family.
+
+Caveat recorded rather than hidden: because FR-010 (US3) is not implemented, `Zpos` is
+still padded to 105 rows of which 4 are all-zero. `status.raysFound` correctly reports
+101, and the help header now warns explicitly that `size(Zpos, 1)` must not be used to
+judge completeness.
+
+## 8. Cost note
 
 The exact target needs `sigma_min+` of the operative matrix. A full `svd` costs minutes
 at genome scale and `svds(...,'smallestnz')` is no faster (>7 minutes on iDopaNeuroC,
@@ -104,7 +127,7 @@ surrogate for a well-scaled matrix; for a badly scaled one it becomes too loose,
 is the Regime-B condition this slice does not yet detect. That limitation is stated in
 the function's own comments rather than hidden.
 
-## 8. Reporting discipline
+## 9. Reporting discipline
 
 No attainable residual, runtime, or regime membership is promised for any model not
 measured here. Every figure above is a measurement with its replicate count stated.

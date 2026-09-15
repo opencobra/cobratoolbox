@@ -1,7 +1,7 @@
 # Implementation Receipt
 
 **Feature**: `specs/20260914-204640-greedy-left-nullspace-conditioning`
-**Run**: US1 slice (Regime-A accuracy), tasks T001-T021
+**Run**: US1 slice (Regime-A accuracy, T001-T021) and, after Gate 3 approved continuation, US2 (Regime-B diagnosis, T022-T031a)
 **Date (UTC)**: 2026-09-14T23:54Z
 **Path**: `/speckit-implement` (core implementer, inline) — the path approved at Gate 2
 **Branch**: `20260914-204640-greedy-left-nullspace-conditioning`
@@ -17,6 +17,9 @@
 - implementation path `/speckit-implement`.
 - commit the planning artifacts first (done, `78d4eade5`).
 
+At Gate 3 the user chose **"Continue with US2"**, approving T022-T031a as further scope
+within the same run.
+
 One further instruction arrived mid-run, from the user, in their own words:
 
 > Generation of greedy left nullspace vectors is stochastic. If it times out an
@@ -26,8 +29,8 @@ One further instruction arrived mid-run, from the user, in their own words:
 
 | File | Change | Lines |
 |---|---|---|
-| `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m` | modified | +220 / -19 |
-| `test/verifiedTests/analysis/testTopology/testGreedyExtremeRayBasis.m` | **created** | +231 |
+| `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m` | modified | US1 +220/-19, then US2 on top |
+| `test/verifiedTests/analysis/testTopology/testGreedyExtremeRayBasis.m` | **created** | US1 +239, then US2 tests added |
 | `specs/.../research.md` | Phase-0 results filled in | +276 / -60 |
 | `specs/.../tasks.md` | task states + 3 added tasks | +46 / -18 |
 | `specs/.../measurements/` | **created** — environment.md, results.md, 6 probe/driver scripts, 3 .mat result files | new |
@@ -53,6 +56,26 @@ was touched. The three modified submodule pointers (`external/...`,
 7. **`maxTime`/`maxNewBasisTime` guard fixed** — required by (5).
 8. **Help header** rewritten: corrected USAGE, documents the third output, and carries
    the Principle II migration statement for the approved breaking change.
+
+### US2, added after Gate 3
+
+9. **Five terminal outcomes** (`complete`, `incomplete`, `emptyNullspace`,
+   `badlyScaled`, `missingField`), mutually exclusive, on every return path.
+   `missingField` is documented but NOT yet produced — that is US4/FR-013.
+10. **Regime classification** against the R4 boundary, applied to the OPERATIVE matrix
+    (post consistency-restriction, post transposition), with the size recorded.
+11. **Regime-B withholding**: both bases returned empty, a graceful return with a
+    warning raised *as well as*, never instead of, the status.
+12. **Regime-B diagnosis**: what is badly scaled, its value, the boundary, what the
+    boundary is derived from, and the indicated repair.
+13. **Correction to a US1 decision.** The exact spectrum-derived target is now the
+    DEFAULT and `param.exactAccuracyTarget` was removed. It had been made opt-in during
+    US1 because a full `svd` appeared to cost minutes; that timing was an artefact of a
+    wedged MATLAB session. Re-measured headless: **0.15 s** (iDopaNeuroC operative
+    matrix) and 0.35 s (iAF1260). This also removes US1's stated limitation that the
+    conservative surrogate was too loose for a badly scaled matrix.
+14. **`scalingValue` / `scalingBoundary` on every call**, not only in Regime B, so a
+    caller sees its margin. `data-model.md` updated to match.
 
 ## Tests
 
@@ -80,6 +103,18 @@ Measured acceptance (gurobi, seed 20260914, 1 replicate per fixture):
 | ecoli_core | 3.010e-14 | 0 | 5/5 | yes | 0.15 s |
 
 Full campaign figures with replicate counts: `measurements/results.md`.
+
+**US2 measured** (gurobi, `g` = the near-dependence parameter of the badly scaled fixture):
+
+| g | sigma_min+ | boundary | outcome | Zpos | Z |
+|---|---|---|---|---|---|
+| 1 | 6.180e-01 | 8.829e-02 | `complete` | returned | returned |
+| 1e-4 | 7.071e-05 | 1.010e-01 | `badlyScaled` | **empty** | **empty** |
+| 1e-12 | 7.071e-13 | 1.010e-01 | `badlyScaled` | **empty** | **empty** |
+
+**SC-005 regression, iDopaNeuroC**: regime `wellScaled` (margin 5372x), residual
+**1.185e-16** against a 1.193e-12 target, outcome `incomplete`/`timeBudget` at 101 of
+105 rays. An accurate basis, with its incompleteness reported rather than concealed.
 
 **Not run**: `test/testAll.m` in full (not required by this slice, and the interactive
 MATLAB session was unavailable); the `iDopaNeuroC` reproducibility check as a committed
@@ -117,10 +152,16 @@ artifact (T043, outside the approved slice).
    have nowhere to report without a third output. A US1-scoped `status` was implemented;
    the five terminal outcomes, the Regime-B diagnosis block and `raysExpectedIsEstimate`
    remain US2 work.
-4. **Defects demonstrated but NOT fixed** (their tasks are unapproved): the zero-padded
-   incomplete basis (FR-010/US3) — observed under gurobi on iDopaNeuroC, which returns
-   105 rows of which 4 are all-zero padding; the unconditional `SConsistentRxnBool` read
-   (FR-013/US2), which the in-repo caller `optimalExtremePoolDriver.m:121` still hits.
+4. **Defects demonstrated but NOT fixed** (their tasks remain unapproved):
+   - **FR-010 / US3, the zero-padded incomplete basis.** Confirmed live on iDopaNeuroC:
+     `status.raysFound` is 101 while `size(Zpos, 1)` is still 105, four of them all-zero.
+     A caller reading the row count is still misled. Because US3 is unapproved, the fix
+     is not made; instead the help header now carries an explicit warning that
+     `.raysFound` and not `size(Zpos, 1)` must be used to judge completeness. That is
+     mitigation, not a fix, and it is the single most valuable remaining slice.
+   - **FR-013 / US4, the unconditional `SConsistentRxnBool` read**, which the in-repo
+     caller `optimalExtremePoolDriver.m:121` still hits. `'missingField'` exists in the
+     status vocabulary but is never produced.
 5. **The interactive MATLAB session is wedged** and needs a manual interrupt. Caused by
    an earlier probe of mine that ran the tightened acceptance before the T016b timeout
    fix existed, and so span forever. All verification was completed headless instead.

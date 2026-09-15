@@ -9,6 +9,10 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 % returned basis has a well-defined numerical rank. A ray that cannot meet the
 % target is dropped and the search continues.
 %
+% Where `model.S` is too badly scaled for that accuracy to be obtainable at all, no
+% basis is returned and `status` carries a diagnosis naming what is badly scaled, by
+% how much, and what repair is indicated.
+%
 % USAGE:
 %
 %    [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
@@ -50,31 +54,55 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .maxTime - TOTAL time budget in seconds across restarts (default = `param.maxNewBasisTime`, which reproduces the historical behaviour)
 %                  * .maxNewBasisTime - seconds to persist without finding a new basis vector before declaring a dead end and restarting from fresh randomness (default = 10000)
 %                  * .feasTol - may TIGHTEN ray acceptance below the derived accuracy target; it can no longer loosen it above that target (default = 1e-6, which no longer loosens)
-%                  * .exactAccuracyTarget - if true, derive the acceptance target from a full singular value decomposition of the operative matrix instead of the conservative machine-precision default; costs a dense svd, so it is off by default (default = 0)
 %
 % OUTPUTS:
 %    Zpos:       non-negative linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
 %    Z:          linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
-%    status:     structure recording the terminal outcome and the accuracy actually achieved:
+%    status:     structure a caller can branch on without parsing console text. Populated
+%                on EVERY call, and complete whether or not printing is enabled:
 %
+%                  * .outcome - one of `'complete'`, `'incomplete'`, `'emptyNullspace'`, `'badlyScaled'`, `'missingField'`; mutually exclusive and exhaustive. `'missingField'` is specified but NOT yet produced: diagnosing an absent `.SConsistentRxnBool` gracefully is not yet implemented, so that case still raises
+%                  * .terminationReason - `'basisComplete'`, `'timeBudget'`, `'accuracyRejection'` or `'notAttempted'`
+%                  * .regime - `'wellScaled'`, `'badlyScaled'` or `'notAssessed'`
+%                  * .nullspaceSide - which nullspace was requested
+%                  * .operativeMatrixSize - size of the matrix actually classified and operated on, after any consistency restriction and transposition
+%                  * .message - one human-readable sentence; the console text says the same thing
 %                  * .accuracyTarget - the derived residual target each accepted ray had to meet
-%                  * .accuracyTargetDerived - true if the target was derived from the operative matrix, false if the conservative fallback was used
+%                  * .accuracyTargetDerived - true if derived from the spectrum, false if the fallback was used
+%                  * .acceptanceTarget - the target actually applied, after any tightening by `param.feasTol`
 %                  * .residualAbsolute - `norm(Zpos*Sop, inf)` measured on the RETURNED basis
-%                  * .residualScaled - the same, divided by `norm(Zpos)*norm(Sop)`
+%                  * .residualScaled - the same, divided by `norm(Zpos)*norm(Sop)`; reported ALONGSIDE the absolute form, never instead of it
 %                  * .nonNegative - non-negativity of `Zpos`, asserted on the returned basis
-%                  * .raysFound - rays actually accepted
+%                  * .impliedNullity - nullity implied by the returned basis
+%                  * .independentRank - rank of the operative matrix, computed independently of the basis
+%                  * .scalingValue - smallest non-zero singular value of the operative matrix, reported on every call
+%                  * .scalingBoundary - the regime boundary it is compared against, reported on every call
+%                  * .raysFound - rays actually ACCEPTED. WARNING: this is NOT always `size(Zpos, 1)`. `Zpos` is still preallocated to the expected height and padded with all-zero rows when the search ends early, so `size(Zpos, 1)` can overstate the basis. Use `.raysFound`, never the row count, to judge completeness. Removing the padding is spec.md FR-010, not yet implemented
 %                  * .raysExpected - rays sought
+%                  * .raysExpectedIsEstimate - ALWAYS true: `raysExpected` comes from a rank computation, so it is a target, not ground truth
 %                  * .raysRejectedForAccuracy - candidates dropped for failing the accuracy target
 %                  * .raysRejectedForDependence - candidates dropped as linearly dependent
-%                  * .timedOut - true if the search stopped on its total time budget rather than completing
+%                  * .timedOut - true if the search stopped on its total time budget
 %                  * .nRestarts - times the search hit a dead end and restarted from fresh randomness
 %                  * .elapsedTime - seconds for this call
+%
+%                In the `'badlyScaled'` outcome it additionally carries the diagnosis:
+%
+%                  * .scalingQuantity - which quantity is badly scaled
+%                  * .scalingBoundaryBasis - what that boundary is derived from
+%                  * .recommendedRepair - the repair to `model.S` that is indicated
 %
 % EXAMPLE:
 %
 %    param.printLevel = 0;
 %    [Zpos, Z, status] = greedyExtremeRayBasis(model, param);
-%    assert(status.nonNegative)
+%    switch status.outcome
+%        case 'complete'        % safe to augment; status.residualScaled certifies it
+%        case 'incomplete'      % valid but spans less than the full nullspace
+%        case 'emptyNullspace'  % correct: there is no left nullspace
+%        case 'badlyScaled'     % no basis obtainable; see status.recommendedRepair
+%        case 'missingField'    % see status.missingFieldName
+%    end
 
 if ~exist('param','var')
     param = struct();
@@ -122,11 +150,18 @@ if ~any(model.SConsistentRxnBool) %check if positive vector in left nullspace
     Z=[]; % Returning empty vector for left nullspace so if it is expected matlab will keep running
     % status must be assigned on every return path, or a three-output caller gets
     % an "output argument not assigned" error instead of an answer.
-    status = struct('accuracyTarget', NaN, 'accuracyTargetDerived', false, ...
-        'acceptanceTarget', NaN, 'residualAbsolute', NaN, 'residualScaled', NaN, ...
-        'nonNegative', true, 'raysFound', 0, 'raysExpected', 0, ...
+    status = struct('outcome', 'emptyNullspace', 'terminationReason', 'notAttempted', ...
+        'regime', 'notAssessed', 'nullspaceSide', param.leftRight, ...
+        'operativeMatrixSize', size(model.S), 'accuracyTarget', NaN, ...
+        'accuracyTargetDerived', false, 'acceptanceTarget', NaN, ...
+        'residualAbsolute', NaN, 'residualScaled', NaN, 'nonNegative', true, ...
+        'impliedNullity', 0, 'independentRank', NaN, 'scalingValue', NaN, ...
+        'scalingBoundary', NaN, 'raysFound', 0, ...
+        'raysExpected', 0, 'raysExpectedIsEstimate', true, ...
         'raysRejectedForAccuracy', 0, 'raysRejectedForDependence', 0, ...
-        'timedOut', false, 'nRestarts', 0, 'elapsedTime', 0);
+        'timedOut', false, 'nRestarts', 0, 'elapsedTime', 0, ...
+        'message', ['No stoichiometrically consistent reaction, so there is no ' ...
+        'positive vector in the left nullspace to find.']);
     return;
 end
 
@@ -159,39 +194,111 @@ end
 % specs/20260914-204640-greedy-left-nullspace-conditioning/research.md R3, which
 % records the derivation, its validation against two known outcomes, and the
 % controlled-perturbation measurement of how conservative it is.
-% Computing sigmaMinPlus exactly requires a full svd (minutes on a genome-scale S)
-% and svds(...,'smallestnz') is no faster on these matrices, so the exact form is
-% opt-in. The DEFAULT target is the machine-precision residual scale of the operative
-% matrix, eps*norm(Sop): the residual at which a row is indistinguishable from an
-% exact nullspace vector in floating point at this matrix's scale.
 %
-% The default is the CONSERVATIVE choice for a well-scaled matrix. Measured on
-% iDopaNeuroC it is 84x stricter than the exact derived target (1.42e-14 against
-% 1.19e-12), so a row that passes it would also have passed the exact target.
+% The spectrum is computed directly. Measured cost: 0.15 s for the 1244 x 1710
+% iDopaNeuroC operative matrix and 0.35 s for the 1668 x 2382 iAF1260 matrix, against
+% a greedy search that takes seconds to minutes, so this is affordable on every model
+% the toolbox handles. Only a matrix too large to hold densely falls back.
 %
-% LIMITATION, stated rather than hidden: for a BADLY SCALED matrix, where
-% sigmaMinPlus is very small, the exact target falls below eps*norm(Sop) and this
-% default becomes too loose. That is the Regime-B condition, which this slice does
-% not yet detect (spec.md FR-005 to FR-008). Until it does, pass
-% param.exactAccuracyTarget = true on a badly scaled matrix.
+% The same spectrum decides the scaling regime, so it is computed once for both.
+maxElementsForSpectrum = 5e7;
 tauMin = eps*max(nVar + nRxn, nVar);
 accuracyTargetDerived = false;
-if isfield(param, 'exactAccuracyTarget') && param.exactAccuracyTarget
+regime = 'notAssessed';
+sigmaMinPlus = NaN;
+regimeBoundary = NaN;
+if numel(model.S) <= maxElementsForSpectrum
     singularValues = svd(full(model.S));
     sigmaOne = singularValues(1);
     nAboveRankTol = sum(singularValues > eps*max(size(model.S))*sigmaOne);
-    if nAboveRankTol > 0
-        accuracyTarget = tauMin*sigmaOne*singularValues(nAboveRankTol);
+    if nAboveRankTol > 0 && sigmaOne > 0
+        sigmaMinPlus = singularValues(nAboveRankTol);
+        accuracyTarget = tauMin*sigmaOne*sigmaMinPlus;
         accuracyTargetDerived = true;
+
+        % Scaling regime. The question a regime asks is whether a usable basis is
+        % OBTAINABLE at all, so the boundary is the point at which the accuracy target
+        % above falls below the residual an LP can actually deliver:
+        %
+        %     Regime B  <=>  accuracyTarget < residualFloor
+        %               <=>  sigmaMinPlus   < residualFloor / (tauMin * sigma_1)
+        %
+        % residualFloor is machine epsilon, which research.md R2 measured as the
+        % attainable absolute residual: gurobi returned exactly 0 and glpk at most
+        % 1.110e-16 on raw untruncated solutions. A solver with a worse floor (mosek
+        % measured ~1e-12 per ray) does not mis-classify the regime; it simply fails
+        % the accuracy target and reports accuracy rejections instead.
+        residualFloor = eps;
+        regimeBoundary = residualFloor/(tauMin*sigmaOne);
+        if sigmaMinPlus < regimeBoundary
+            regime = 'badlyScaled';
+        else
+            regime = 'wellScaled';
+        end
     end
 end
 if ~accuracyTargetDerived
-    accuracyTarget = eps*normest(model.S);
+    % Too large to factor densely. Do not guess: fall back to a machine-precision
+    % scaled requirement and leave the regime recorded as 'notAssessed' rather than
+    % claiming a classification that was never made.
+    sigmaOne = normest(model.S);
+    accuracyTarget = eps*sigmaOne;
 end
 
 % param.feasTol may TIGHTEN acceptance but must never loosen it above the derived
 % target (see the NOTE in the help header).
 acceptanceTarget = min(accuracyTarget, param.feasTol);
+
+if strcmp(regime, 'badlyScaled')
+    % Regime B. No basis of either kind is returned: the accuracy a rank
+    % determination needs is not obtainable from this matrix, so any basis returned
+    % here would silently destroy the rank gap of whatever it is spliced into. The
+    % sign-unrestricted basis is withheld too, because it comes from a rank
+    % computation on the same matrix whose conditioning is the problem.
+    %
+    % This is a GRACEFUL return, not an error: the caller gets an answer it can
+    % branch on. The warning is raised as well as, never instead of, the status.
+    Zpos = [];
+    Z = [];
+    status = struct();
+    status.outcome = 'badlyScaled';
+    status.terminationReason = 'notAttempted';
+    status.regime = regime;
+    status.nullspaceSide = param.leftRight;
+    status.operativeMatrixSize = [nVar, nRxn];
+    status.accuracyTarget = accuracyTarget;
+    status.accuracyTargetDerived = accuracyTargetDerived;
+    status.acceptanceTarget = acceptanceTarget;
+    status.residualAbsolute = NaN;
+    status.residualScaled = NaN;
+    status.nonNegative = true;
+    status.impliedNullity = NaN;
+    status.independentRank = NaN;
+    status.raysFound = 0;
+    status.raysExpected = NaN;
+    status.raysExpectedIsEstimate = true;
+    status.raysRejectedForAccuracy = 0;
+    status.raysRejectedForDependence = 0;
+    status.timedOut = false;
+    status.nRestarts = 0;
+    status.elapsedTime = 0;
+    % what is badly scaled, by how much, against what, and what to do about it
+    status.scalingQuantity = 'smallest non-zero singular value of the operative matrix';
+    status.scalingValue = sigmaMinPlus;
+    status.scalingBoundary = regimeBoundary;
+    status.scalingBoundaryBasis = ['machine-precision residual floor divided by ' ...
+        '(eps*max(size(M)) * largest singular value); see research.md R2 and R4'];
+    status.recommendedRepair = ['Rescale model.S so that its smallest non-zero ' ...
+        'singular value rises above the boundary, for example by equilibrating rows ' ...
+        'and columns, or by removing the near-dependent rows that depress it. No ' ...
+        'basis routine can give this matrix a well-defined augmented rank as it stands.'];
+    status.message = sprintf(['model.S is too badly scaled for a usable ' ...
+        'left-nullspace basis: smallest non-zero singular value %g is below the %g ' ...
+        'needed for the accuracy a rank determination requires. No basis returned.'], ...
+        sigmaMinPlus, regimeBoundary);
+    warning('greedyExtremeRayBasis:badlyScaled', '%s', status.message);
+    return
+end
 
 %compute linear basis for left nullspace
 printLevelL=0;
@@ -361,20 +468,70 @@ if ~nonNegative
         full(min(Zpos(:))));
 end
 
+raysExpected = nVar - rankS;
+
 status = struct();
+% Terminal outcome. Exactly one of five, mutually exclusive and exhaustive, so a
+% caller can branch on the status alone without inspecting the matrices.
+if raysExpected == 0
+    status.outcome = 'emptyNullspace';
+    status.terminationReason = 'basisComplete';
+elseif nBases == raysExpected
+    status.outcome = 'complete';
+    status.terminationReason = 'basisComplete';
+else
+    status.outcome = 'incomplete';
+    if nRejectedForAccuracy > 0 && nBases == 0
+        % nothing could meet the accuracy target: the evidence that the attainable
+        % residual floor sits above what a rank determination needs
+        status.terminationReason = 'accuracyRejection';
+    elseif timedOut
+        status.terminationReason = 'timeBudget';
+    else
+        status.terminationReason = 'accuracyRejection';
+    end
+end
+status.regime = regime;
+status.nullspaceSide = param.leftRight;
+status.operativeMatrixSize = [nVar, nRxn];
+% The scaling measurement is reported on EVERY call, not only when it fails, so a
+% caller can see how much margin it has rather than only that it had some.
+status.scalingValue = sigmaMinPlus;
+status.scalingBoundary = regimeBoundary;
 status.accuracyTarget = accuracyTarget;
 status.accuracyTargetDerived = accuracyTargetDerived;
 status.acceptanceTarget = acceptanceTarget;
 status.residualAbsolute = residualAbsolute;
 status.residualScaled = residualScaled;
 status.nonNegative = nonNegative;
+status.impliedNullity = nBases;
+status.independentRank = rankS;
 status.raysFound = nBases;
-status.raysExpected = nVar - rankS;
+status.raysExpected = raysExpected;
+% ALWAYS true: raysExpected comes from a rank computation on the operative matrix,
+% the same class of computation whose reliability under poor conditioning this
+% routine exists to question. It is a target, not ground truth.
+status.raysExpectedIsEstimate = true;
 status.raysRejectedForAccuracy = nRejectedForAccuracy;
 status.raysRejectedForDependence = nRejectedForDependence;
 status.timedOut = timedOut;
 status.nRestarts = nRestarts;
 status.elapsedTime = toc(t1);
+switch status.outcome
+    case 'complete'
+        status.message = sprintf('Complete basis: %d of %d rays, scaled residual %g.', ...
+            nBases, raysExpected, residualScaled);
+    case 'emptyNullspace'
+        status.message = ['The operative matrix has full row rank: its left nullspace ' ...
+            'is empty. An empty basis is the correct answer, not a failure.'];
+    otherwise
+        status.message = sprintf(['Incomplete basis: %d of %d rays (%s). Do not treat ' ...
+            'the row count as evidence of completeness.'], nBases, raysExpected, ...
+            status.terminationReason);
+end
+if ~strcmp(status.outcome, 'complete') && ~strcmp(status.outcome, 'emptyNullspace')
+    warning('greedyExtremeRayBasis:incompleteBasis', '%s', status.message);
+end
 
 if param.printLevel>0
     fprintf('%s%g\n','|| S''*Zpos||_inf ',residualAbsolute);
