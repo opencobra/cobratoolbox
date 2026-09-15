@@ -404,6 +404,97 @@ for k = 1:length(solvers.LP)
         assert(norm(rightModel.S * ZposRight, inf) < tolExact, ...
             'the right-nullspace basis must annihilate S from the right');
 
+        % ---- Coverage feature: 20260915-082551-extreme-ray-coverage ----
+
+        % T007 / SC-011: the paired-comparison instrumentation is INERT when off.
+        % Measurement apparatus that perturbs what it measures is worthless, so this is
+        % asserted rather than assumed.
+        rng(20260915, 'twister');
+        [Zoff, ~, statusOff] = greedyExtremeRayBasis(ecoliModel, param);
+        instrParam = param;
+        instrParam.compareSolvers = {};
+        rng(20260915, 'twister');
+        [Zempty, ~, statusEmpty] = greedyExtremeRayBasis(ecoliModel, instrParam);
+        assert(isequal(Zoff, Zempty), ...
+            'SC-011: an empty compareSolvers must give an identical basis');
+        assert(statusOff.raysFound == statusEmpty.raysFound, ...
+            'SC-011: an empty compareSolvers must give an identical ray count');
+        assert(isempty(statusOff.pairedComparison), ...
+            'SC-011: no paired record may be produced when the comparison is off');
+
+        % T021 / SC-001 / FR-001: complete AND accurate in one call.
+        %
+        % Coverage is decided by the OBJECTIVE, not the solver: for a random objective
+        % this LP has a unique optimum, so no solver setting can change which vertex is
+        % returned. When random draws stall, the search aims the objective at the part
+        % of the nullspace it has not yet spanned.
+        assert(statusOff.raysFound == statusOff.raysExpected, ...
+            sprintf('SC-001: found %d of %d rays', statusOff.raysFound, statusOff.raysExpected));
+        assert(statusOff.residualAbsolute <= statusOff.accuracyTarget, ...
+            'SC-001: the complete basis must also meet the derived accuracy target');
+        assert(strcmp(statusOff.outcome, 'complete'), ...
+            'SC-001: a complete accurate basis must be reported as complete');
+        assert(full(all(Zoff(:) >= 0)), 'coverage must not be bought at the cost of non-negativity');
+
+        % T022 / SC-002: the augmented matrix has one unambiguous rank
+        Scov = ecoliModel.S;
+        nMetCov = size(Scov, 1);
+        Mcov = [Scov, -speye(nMetCov); sparse(size(Zoff, 1), size(Scov, 2)), Zoff];
+        structuralRankCov = size(Mcov, 1) - size(Zoff, 1);
+        sCov = svd(full(Mcov));
+        ranksCov = arrayfun(@(t) sum(sCov > t * sCov(1)), tolRankSpan);
+        assert(all(ranksCov == structuralRankCov), ...
+            sprintf('SC-002: augmented rank %s, expected %d everywhere', ...
+            mat2str(ranksCov), structuralRankCov));
+
+        % T028 / SC-005 / FR-005, FR-006: a STRUCTURAL shortfall is reported as such,
+        % against the ATTAINABLE dimension rather than the nullity.
+        %
+        % G1 is stoichiometrically inconsistent by construction: one reaction creates
+        % mass from nothing, so its left-nullspace direction needs opposite signs and is
+        % unreachable with non-negative weights. No amount of searching can find it.
+        G1.S = sparse([1, -1;
+                       1, 0;
+                       0, 1]);
+        G1.SConsistentRxnBool = true(size(G1.S, 2), 1);
+        warnState = warning('off', 'all');
+        [ZG1, ~, statusG1] = greedyExtremeRayBasis(G1, param);
+        warning(warnState);
+        assert(full(all(ZG1(:) >= 0)), 'non-negativity must hold on the inconsistent fixture');
+        assert(any(strcmp(statusG1.shortfallKind, {'none', 'sampling', 'structural', 'notAssessed'})), ...
+            'shortfallKind must be one of the four defined values');
+        if statusG1.raysFound < statusG1.raysExpected
+            assert(strcmp(statusG1.shortfallKind, 'structural'), ...
+                sprintf(['FR-005: a stoichiometrically inconsistent input must give a ' ...
+                'structural shortfall, got ''%s'''], statusG1.shortfallKind));
+            assert(statusG1.attainableDimension <= statusG1.raysExpected, ...
+                'FR-006: the attainable dimension may not exceed the nullity');
+            assert(statusG1.attainableDimensionAssessed, ...
+                'FR-006: a structural verdict must be assessed, not assumed');
+        end
+
+        % T029 / SC-005: a SAMPLING shortfall is classified distinctly from a structural
+        % one. Forced by an impossible accuracy target on an input whose directions ARE
+        % all reachable, so nothing is accepted although nothing is unreachable. F1 is
+        % used rather than ecoli_core: ecoli_core's full S carries exchange reactions, so
+        % it has no strictly positive conservation vector, and it makes a poor probe of
+        % the sampling case.
+        samplingModel = struct('S', F1.S, 'SConsistentRxnBool', true(size(F1.S, 2), 1));
+        samplingParam = param;
+        samplingParam.feasTol = -1;
+        samplingParam.maxNewBasisTime = 5;
+        warnState = warning('off', 'all');
+        [~, ~, statusSampling] = greedyExtremeRayBasis(samplingModel, samplingParam);
+        warning(warnState);
+        assert(statusSampling.raysFound < statusSampling.raysExpected, ...
+            'this case must genuinely fall short for the classification to mean anything');
+        assert(strcmp(statusSampling.shortfallKind, 'sampling'), ...
+            sprintf(['FR-005: a consistent input must give a sampling shortfall, ' ...
+            'got ''%s'''], statusSampling.shortfallKind));
+        assert(~strcmp(statusSampling.shortfallKind, statusG1.shortfallKind) || ...
+            statusG1.raysFound == statusG1.raysExpected, ...
+            'FR-005: sampling and structural shortfalls must be distinguishable');
+
         % FR-015 / SC-010: the historical two-output call still works unmodified
         [ZposTwo, ZTwo] = greedyExtremeRayBasis(ecoliModel, param);
         assert(full(all(ZposTwo(:) >= 0)), 'two-output call must still return a valid basis');

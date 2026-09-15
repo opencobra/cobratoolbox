@@ -76,7 +76,7 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .accuracyTarget - the derived residual target each accepted ray had to meet
 %                  * .accuracyTargetDerived - true if derived from the spectrum, false if the fallback was used
 %                  * .acceptanceTarget - the target actually applied, after any tightening by `param.feasTol`
-%                  * .residualAbsolute - `norm(Zpos*Sop, inf)` measured on the RETURNED basis
+%                  * .residualAbsolute - largest per-row residual `max(abs(Zpos*Sop), [], 2)` measured on the RETURNED basis, the same metric ray acceptance uses. A row exceeding the target is dropped rather than returned, so this never exceeds `.acceptanceTarget`
 %                  * .residualScaled - the same, divided by `norm(Zpos)*norm(Sop)`; reported ALONGSIDE the absolute form, never instead of it
 %                  * .nonNegative - non-negativity of `Zpos`, asserted on the returned basis
 %                  * .impliedNullity - nullity implied by the returned basis
@@ -90,6 +90,10 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .raysRejectedForDependence - candidates dropped as linearly dependent
 %                  * .timedOut - true if the search stopped on its total time budget
 %                  * .nRestarts - times the search hit a dead end and restarted from fresh randomness
+%                  * .nTargetedObjectives - times the search aimed the objective at the unspanned part of the nullspace instead of drawing at random
+%                  * .shortfallKind - `'none'`, `'sampling'` (reachable but not found), `'structural'` (not reachable with non-negative weights) or `'notAssessed'`
+%                  * .attainableDimension - dimension actually reachable with non-negative weights; equals `.raysExpected` under stoichiometric consistency and is smaller otherwise
+%                  * .attainableDimensionAssessed - whether that was determined rather than assumed
 %                  * .elapsedTime - seconds for this call
 %
 %                In the `'badlyScaled'` outcome it additionally carries the diagnosis:
@@ -149,6 +153,19 @@ if ~isfield(param,'feasTol')
     param.feasTol = 1e-6;
 end
 
+if ~isfield(param,'compareSolvers')
+    % Paired-comparison instrumentation. Empty is OFF and MUST be inert: with it empty
+    % the routine takes the same code path, consumes the random stream identically and
+    % returns the same result as before this instrumentation existed.
+    param.compareSolvers = {};
+end
+
+if ~isfield(param,'solverSettings')
+    % Caller override for the built-in tuned sets. Empty means "use whatever the tuned
+    % set for the active solver provides, or the solver's defaults if there is none".
+    param.solverSettings = struct();
+end
+
 
 if param.internalStoichiometriMatrixLeftNullspace
     if ~isfield(model,'SConsistentRxnBool')
@@ -177,7 +194,7 @@ if ~isfield(model,'SConsistentRxnBool')
         'impliedNullity', NaN, 'independentRank', NaN, 'raysFound', 0, ...
         'raysExpected', NaN, 'raysExpectedIsEstimate', true, ...
         'raysRejectedForAccuracy', 0, 'raysRejectedForDependence', 0, ...
-        'timedOut', false, 'nRestarts', 0, 'elapsedTime', 0, ...
+        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, ...
         'missingFieldName', 'SConsistentRxnBool', ...
         'howToObtain', ['Set param.internalStoichiometriMatrixLeftNullspace = true ' ...
         'to have it computed by findStoichConsistentSubset, or supply ' ...
@@ -203,7 +220,7 @@ if ~any(model.SConsistentRxnBool) %check if positive vector in left nullspace
         'scalingBoundary', NaN, 'raysFound', 0, ...
         'raysExpected', 0, 'raysExpectedIsEstimate', true, ...
         'raysRejectedForAccuracy', 0, 'raysRejectedForDependence', 0, ...
-        'timedOut', false, 'nRestarts', 0, 'elapsedTime', 0, ...
+        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, ...
         'message', ['No stoichiometrically consistent reaction, so there is no ' ...
         'positive vector in the left nullspace to find.']);
     return;
@@ -366,6 +383,12 @@ nfailMax = 5;
 nRejectedForAccuracy = 0;
 nRejectedForDependence = 0;
 timedOut = false;
+pairedRecord = struct([]);
+% Support mask over metabolites already carrying weight. Only READ once nBases >= 2, by
+% which point the loop has assigned it, but it must exist from the start because the
+% paired harness records it at every comparison point including the first.
+nonZeroColumnsBool = false(1, nVar);
+nTargetedObjectives = 0;
 % The search is stochastic, and zeroing the objective on already-covered metabolites
 % drives it into dead ends: once only a few metabolites remain uncovered, the LP keeps
 % returning rays that are linearly dependent on those already accepted. Measured on
@@ -421,11 +444,59 @@ while nBases < (nVar-rankS)
             end
         end
     end
+    % TARGETED OBJECTIVE.
+    %
+    % When the random draw stops producing new independent rays, the shortfall is NOT
+    % the solver's doing. Measured: for a random objective this LP has a UNIQUE optimum
+    % (maximising any other direction subject to staying optimal returns the identical
+    % point), so no solver setting can change which vertex comes back -- Seed, Method,
+    % NumericFocus, Presolve and Crossover were each verified to reach gurobi and each
+    % returned the same ray. What decides coverage is the objective.
+    %
+    % Measured at a basis stalled on 98 of 105 rays with 7 directions unspanned: a fresh
+    % random objective produced a new independent accurate ray in 0 of 40 trials, while
+    % an objective aimed at the unspanned part of the left nullspace produced one in
+    % 40 of 40. So on a stall, aim.
+    if nfail >= nfailMax && nBases > 0 && nBases < (nVar - rankS)
+        targetedObj = targetedObjective(Z, Zpos, nBases, nVar);
+        if ~isempty(targetedObj)
+            obj = targetedObj;
+            nTargetedObjectives = nTargetedObjectives + 1;
+        end
+    end
+
     positive = 1;
-    [x, sol] = findExtremePool(model,obj,param.printLevel-2,positive);
-    
+    if isempty(param.compareSolvers)
+        [x, sol] = findExtremePool(model,obj,param.printLevel-2,positive,0,param.solverSettings);
+    else
+        % PAIRED comparison. Every solver is handed the identical LP built from the
+        % identical partial basis and the identical objective vector drawn above, so a
+        % solver's contribution is separated from the search path it would otherwise
+        % diverge onto. A comparison assembled from independent whole runs cannot do
+        % this: after the first accepted ray the runs no longer share a state.
+        %
+        % The comparison consumes NO draws from the random stream -- `obj` is already
+        % drawn -- and the search advances on the nominated solver's ray, reused from
+        % within the loop rather than re-solved. Both are what make the instrumentation
+        % inert when it is off.
+        [x, sol, pairedRows] = compareSolversAtState(model, obj, param, positive, ...
+            Zpos, nBases, acceptanceTarget, nTry, nonZeroColumnsBool);
+        pairedRecord = [pairedRecord; pairedRows]; %#ok<AGROW>
+    end
+
     if contains(sol.origStat,'WARNING')
         nfail = nfailMax;
+    end
+
+    % An infeasible or failed solve returns no ray at all. This is not a tolerance
+    % effect and must not be treated as one: on a stoichiometrically inconsistent input
+    % the only non-negative vector in the left nullspace is zero, which cannot satisfy
+    % the normalisation, so the LP is genuinely infeasible and there is nothing to find.
+    % Guard it before the residual is taken, or S' is multiplied by an empty vector.
+    if isempty(x) || numel(x) ~= nVar
+        nfail = nfail + 1;
+        nRejectedForAccuracy = nRejectedForAccuracy + 1;
+        continue
     end
 
     % A candidate that cannot meet the derived accuracy target is DROPPED and the
@@ -501,7 +572,36 @@ end
 % OBJECT. Inferring them from the acceptance path that produced each row is not
 % sufficient: the defect this guards against is a basis that satisfied every
 % check along the way and is still unfit for the rank determination it feeds.
-residualAbsolute = norm(Zpos*model.S,inf);
+% Verify the accuracy target ON THE RETURNED OBJECT and ACT on the result (FR-003).
+%
+% Two defects are fixed here, both found by sweeping mosek across models:
+%
+% 1. The acceptance test uses a VECTOR inf-norm, max|entry|, while this verification
+%    used a MATRIX inf-norm, which is the max ROW SUM. They are different quantities,
+%    so a row admitted at the target could be reported above it. Both now use the same
+%    per-row max-entry metric, so acceptance and verification are comparable.
+% 2. The residual was computed and reported but never CHECKED against the target, so
+%    `outcome = 'complete'` could be returned for a basis whose measured residual
+%    exceeded it -- mosek on iAF1260 did exactly that at 3.047e-12 against a target of
+%    ~1e-12. Rows that fail verification are now dropped, exactly as a candidate that
+%    fails acceptance is dropped (FR-003a), so a returned basis always means what it says.
+residualByRow = zeros(nBases, 1);
+if nBases > 0
+    residualByRow = full(max(abs(Zpos*model.S), [], 2));
+end
+failsTarget = residualByRow > acceptanceTarget;
+if any(failsTarget)
+    nRejectedForAccuracy = nRejectedForAccuracy + nnz(failsTarget);
+    Zpos = Zpos(~failsTarget, :);
+    nBases = size(Zpos, 1);
+    residualByRow = residualByRow(~failsTarget);
+end
+
+if nBases > 0
+    residualAbsolute = max(residualByRow);
+else
+    residualAbsolute = 0;
+end
 normZpos = norm(full(Zpos),'fro');
 normSop = norm(full(model.S),'fro');
 if normZpos > 0 && normSop > 0
@@ -528,6 +628,44 @@ if ~nonNegative
 end
 
 raysExpected = nVar - rankS;
+
+% SHORTFALL CLASSIFICATION (FR-005, FR-006).
+%
+% A shortfall has two entirely different causes with opposite remedies, and reporting
+% them identically is the defect this guards against:
+%
+%   'sampling'   - the directions are reachable but were not found. More search helps.
+%   'structural' - part of the nullspace cannot be reached with NON-NEGATIVE weights at
+%                  all, so raysExpected was never an attainable target and no amount of
+%                  search helps.
+%
+% The classification is decided by the ATTAINABLE DIMENSION, not by stoichiometric
+% consistency. A strictly positive vector in ker(S') is SUFFICIENT for the non-negative
+% cone to span the whole nullspace, but its ABSENCE is not sufficient for the converse:
+% coordinates can be forced to zero while the remaining ones still span. Testing only
+% for a strictly positive vector therefore reports false 'structural' verdicts on
+% ordinary models -- ecoli_core with its exchange reactions is one, and it reaches full
+% coverage regardless.
+%
+% The attainable dimension is computed instead, and only on a shortfall, so a complete
+% basis pays nothing for it.
+shortfallKind = 'none';
+attainableDimension = raysExpected;
+attainableDimensionAssessed = false;
+if nBases < raysExpected
+    [attainable, attainableKnown] = attainableNullspaceDimension(model.S, nVar);
+    if ~attainableKnown
+        shortfallKind = 'notAssessed';
+    else
+        attainableDimension = attainable;
+        attainableDimensionAssessed = true;
+        if attainable > nBases
+            shortfallKind = 'sampling';
+        else
+            shortfallKind = 'structural';
+        end
+    end
+end
 
 status = struct();
 % Terminal outcome. Exactly one of five, mutually exclusive and exhaustive, so a
@@ -575,6 +713,11 @@ status.raysRejectedForAccuracy = nRejectedForAccuracy;
 status.raysRejectedForDependence = nRejectedForDependence;
 status.timedOut = timedOut;
 status.nRestarts = nRestarts;
+status.pairedComparison = pairedRecord;
+status.nTargetedObjectives = nTargetedObjectives;
+status.shortfallKind = shortfallKind;
+status.attainableDimension = attainableDimension;
+status.attainableDimensionAssessed = attainableDimensionAssessed;
 status.elapsedTime = toc(t1);
 switch status.outcome
     case 'complete'
@@ -606,3 +749,182 @@ switch param.leftRight
 end
 
 
+function [x, sol, rows] = compareSolversAtState(model, obj, param, positive, ...
+    Zpos, nBases, acceptanceTarget, pointIndex, nonZeroColumnsBool)
+% Solves the SAME LP with each solver in param.compareSolvers and records one row per
+% solver, then returns the ray from the nominated solver so the search advances exactly
+% as it would have without instrumentation.
+%
+% The nominated solver is whichever was active on entry. Its result is REUSED from this
+% loop rather than re-solved, so enabling the comparison does not double its work or
+% give it a second, differently-seeded solve.
+
+% the solver the caller had active; read through the state accessor rather than a
+% global, which the code analyser rightly objects to
+nominated = CobraSolverState.getSolver('LP');
+
+% one digest of the objective, shared by every row at this point, so a reader can
+% CONFIRM the pairing rather than take it on trust
+objectiveHash = sprintf('%.17g|', obj(1:min(8, numel(obj))));
+objectiveHash = sprintf('%s n=%d sum=%.17g', objectiveHash, numel(obj), full(sum(obj)));
+
+normSop = norm(full(model.S), 'fro');
+solvers = param.compareSolvers;
+if ~any(strcmp(solvers, nominated))
+    solvers = [solvers(:)', {nominated}];
+end
+
+rows = struct([]);
+x = [];
+sol = struct('origStat', 'NOT SOLVED', 'stat', -1, 'full', []);
+
+for iS = 1:numel(solvers)
+    thisSolver = solvers{iS};
+    if ~changeCobraSolver(thisSolver, 'LP', 0)
+        continue
+    end
+    tSolve = tic;
+    [xi, soli] = findExtremePool(model, obj, param.printLevel-2, positive, 0, ...
+        param.solverSettings);
+    elapsed = toc(tSolve);
+
+    row = struct();
+    row.pointIndex = pointIndex;
+    row.raysAccepted = nBases;
+    row.objectiveHash = objectiveHash;
+    row.supportMaskCount = nnz(nonZeroColumnsBool);
+    row.solver = thisSolver;
+    row.stat = soli.stat;
+    row.origStat = soli.origStat;
+    row.solveTime = elapsed;
+    if isempty(xi)
+        [row.residualAbsolute, row.residualScaled, row.atBoundCount] = deal(NaN);
+        [row.meetsTarget, row.independentOfBasis, row.basisReturned] = deal(false);
+    else
+        row.residualAbsolute = norm(model.S'*xi, inf);
+        row.residualScaled = row.residualAbsolute/max(normSop*norm(xi), eps);
+        row.meetsTarget = row.residualAbsolute <= acceptanceTarget;
+        % vertex indicator that does not depend on the solver's own claims
+        row.atBoundCount = nnz(xi <= 0) + nnz(abs(xi - 100) < 1e-9);
+        % a basis is returned only if crossover ran or a simplex method was used, so its
+        % presence discriminates a vertex solution from an interior one
+        row.basisReturned = isfield(soli, 'basis') && ~isempty(soli.basis) && ...
+            (isfield(soli.basis, 'vbasis') || isfield(soli.basis, 'cbasis'));
+        if nBases == 0
+            row.independentOfBasis = any(xi ~= 0);
+        else
+            Ztest = [Zpos(1:nBases, :); xi'];
+            nzb = full(sum(Ztest ~= 0, 1) ~= 0);
+            row.independentOfBasis = getRankLUSOL(Ztest(:, nzb)) == nBases + 1;
+        end
+    end
+    if isempty(rows)
+        rows = row;
+    else
+        rows(end+1) = row; %#ok<AGROW>
+    end
+
+    if strcmp(thisSolver, nominated)
+        x = xi;
+        sol = soli;
+    end
+end
+
+% restore the solver the caller had active, so the comparison leaves no trace
+changeCobraSolver(nominated, 'LP', 0);
+
+
+function obj = targetedObjective(Z, Zpos, nBases, nVar)
+% Builds a non-negative objective aimed at the part of the left nullspace that the
+% partial basis does not yet span, for use when random draws have stopped finding new
+% independent rays.
+%
+% `Z` already holds a basis of the requested nullspace, computed once at the top of the
+% search, so no new nullspace computation is needed here.
+
+obj = [];
+if isempty(Z) || nBases < 1
+    return
+end
+
+nullBasis = full(Z');                       % nVar x nullity, columns span the nullspace
+found = full(Zpos(1:nBases, :));            % rays already accepted
+
+% remove from the nullspace basis everything the accepted rays already span
+gram = found*found';
+if rcond(gram) < eps
+    return
+end
+residualDirections = nullBasis - found'*(gram\(found*nullBasis));
+
+[leftVectors, singularValues] = svd(residualDirections, 'econ');
+singularValues = diag(singularValues);
+if isempty(singularValues) || singularValues(1) <= 1e-8
+    return                                  % nothing left unspanned to aim at
+end
+
+direction = leftVectors(:, 1);
+% The ray is constrained non-negative, so the objective is shifted to be non-negative
+% while preserving the direction it favours. A sign flip of the leading vector is
+% arbitrary, so the shift keeps the LP pointed at the same subspace either way.
+obj = direction - min(0, min(direction));
+if norm(obj) == 0
+    obj = [];
+    return
+end
+obj = obj/norm(obj);
+if numel(obj) ~= nVar
+    obj = [];
+end
+
+
+function [attainable, known] = attainableNullspaceDimension(S, nVar)
+% Dimension of the subspace of ker(S') that is reachable with NON-NEGATIVE weights,
+% i.e. dim span(ker(S') n R^m_+).
+%
+% Method: the maximal support of a non-negative nullspace vector is found by one LP
+% maximising sum(x) over {S'x = 0, 0 <= x <= 1}; the support of its optimum is the
+% largest support any non-negative nullspace vector can have. The reachable subspace is
+% exactly the part of ker(S') living on that support, whose dimension is
+% |support| - rank(S(support, :)).
+%
+% This is sound in both directions, unlike a test for a strictly positive vector, whose
+% absence does NOT imply the cone fails to span.
+
+attainable = NaN;
+known = false;
+[nMet, nRxn] = size(S);
+
+LPproblem.A = sparse(S');
+LPproblem.b = zeros(nRxn, 1);
+LPproblem.csense = repmat('E', nRxn, 1);
+LPproblem.lb = zeros(nMet, 1);
+LPproblem.ub = ones(nMet, 1);
+LPproblem.c = ones(nMet, 1);
+LPproblem.osense = -1;                      % maximise the total weight
+try
+    sol = solveCobraLP(LPproblem, 'printLevel', 0);
+catch ME
+    % Do not swallow this: an unsolved LP is why the shortfall is reported unclassified
+    % rather than as sampling or structural.
+    warning('greedyExtremeRayBasis:attainableDimensionFailed', ...
+        ['Could not compute the attainable dimension (%s at %s:%d); reporting the ' ...
+        'shortfall as notAssessed rather than guessing.'], ...
+        ME.message, ME.stack(1).file, ME.stack(1).line);
+    return
+end
+
+if sol.stat ~= 1 || isempty(sol.full) || numel(sol.full) ~= nVar
+    return
+end
+
+supportBool = sol.full > 1e-9;
+if ~any(supportBool)
+    attainable = 0;                         % only the zero vector is non-negative here
+    known = true;
+    return
+end
+
+attainable = nnz(supportBool) - getRankLUSOL(S(supportBool, :));
+attainable = max(attainable, 0);
+known = true;
