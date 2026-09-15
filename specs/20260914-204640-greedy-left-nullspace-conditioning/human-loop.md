@@ -1,10 +1,10 @@
 # Human Loop State
 
 ## Current State
-- Status: **Gate 2 passed** — scope approved, awaiting the explicit `/speckit-implement` invocation required by Principle VI
+- Status: Bundle 3 complete — **at Gate 3** (closeout). Approved slice T001-T021 implemented and verified.
 - Active feature directory: `specs/20260914-204640-greedy-left-nullspace-conditioning`
-- Last completed bundle: Bundle 2 (implementation preparation)
-- Source code modified by this workflow: **no**
+- Last completed bundle: Bundle 3 (approved implementation)
+- Source code modified by this workflow: **yes** — `greedyExtremeRayBasis.m` (+220/-19) and a new `testGreedyExtremeRayBasis.m`. `findExtremePool.m` deliberately NOT modified.
 
 ## Core Command Ledger
 - constitution:   checked (v1.5.0 read in full; not invoked — no principle change requested)
@@ -14,7 +14,7 @@
 - plan:           invoked — plan.md, research.md, data-model.md, quickstart.md, contracts/
 - tasks:          invoked — tasks.md, 47 tasks across 7 phases
 - analyze:        invoked — 5 findings (1 HIGH, 2 MEDIUM, 2 LOW), 0 CRITICAL; 4 applied, 1 accepted; coverage 39/39
-- implement:      not started (gated — Principle VI)
+- implement:      invoked — `/speckit-implement`, tasks T001-T021 plus three recorded additions (T016a/b/c). Test passes headless: PASSED=1 FAILED=0.
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -51,8 +51,7 @@
   feature's plan (`specs/024-fix-empty-selection-bugs/plan.md`) and is stale.
 
 ## Approved Implementation Scope
-- Approved: **yes (Gate 2, 2026-09-14)** — but **not yet authorised to edit**: Principle
-  VI requires the explicit `/speckit-implement` invocation, which has not been given.
+- Approved: **yes (Gate 2, 2026-09-14)**; implemented 2026-09-14/15 via `/speckit-implement`.
 - Scope: **slice — Phase 1 + Phase 2 + Phase 3 (User Story 1)**
 - Tasks approved: **T001-T021**
 - Tasks deferred: **T022-T046 and T031a** (User Stories 2, 3, 4 and cross-cutting) —
@@ -74,8 +73,8 @@
 - Feature seed: `feature-request.md` (this directory)
 - Specification: `spec.md`
 - Spec quality checklist: `checklists/requirements.md`
-- Implementation receipt(s): none yet — will be written under
-  `specs/20260914-204640-greedy-left-nullspace-conditioning/agent-runs/<UTC-timestamp>-<short-name>/implementation-receipt.md`
+- Implementation receipt: `20260914-204640-greedy-left-nullspace-conditioning/agent-runs/20260914T235411Z-us1-regime-a-accuracy/implementation-receipt.md`
+- Measurement record: `measurements/results.md`; environment: `measurements/environment.md`
 - Implementation review: `implementation-review.md` (the Gate 2 packet)
 - Plan / tasks / analysis: `plan.md`, `research.md`, `data-model.md`, `quickstart.md`, `contracts/`, `tasks.md`
 
@@ -116,3 +115,19 @@
   incomplete basis; unconditional read of an optionally-computed field; unusable
   documented usage form) are in scope as User Story 4 / FR-010 to FR-014, and must be
   taken or deferred explicitly rather than fixed silently.
+
+## Bundle 3 outcome
+
+- **The Gate-2 `findExtremePool.m` scope extension was approved but NOT used.** R1
+  refuted the hypothesis that motivated it, so the diff is narrower than authorised
+  (research.md D1).
+- **Three additions beyond the approved task list**, each recorded in `tasks.md` rather
+  than folded in silently: T016a (restart on a dead end, on the user's explicit mid-run
+  instruction), T016b (timeout defect that made a reject-everything run spin
+  indefinitely — not optional, the change would otherwise have shipped a hang), T016c
+  (the `maxTime` guard, pulled forward from T035 because T016a requires it).
+- **Headline finding**: accuracy is dominated by which LP solver is installed
+  (gurobi 1.185e-16 vs mosek 9.342e-09 on the same model), not by the acceptance
+  tolerance or the truncation. Both prior diagnoses were refuted by measurement.
+- **Known state**: the interactive MATLAB session is wedged and needs a manual
+  interrupt; all verification was completed headless via `matlab -batch`, the CI path.
