@@ -6,7 +6,40 @@ slice | **Date**: 2026-09-14/15 | **Environment**: [environment.md](./environmen
 Distinct from the per-call `status` (FR-016): a single invocation cannot know a
 replicate count, so campaign-level figures live here (FR-016a).
 
-## 1. The headline finding
+## 1. Does the augmented system end up better behaved? YES - measured directly
+
+The question the feature exists to answer, measured on the augmented matrix a caller
+actually forms, `M = [N, -I; 0, L]`, on iDopaNeuroC. Old = a basis accepted at the
+pre-change tolerance (mosek-class). New = the current code under gurobi. 1 replicate,
+seed 20260914.
+
+| | Old (soft basis) | New (current code) |
+|---|---|---|
+| `L` | 105 x 1244 | 101 x 1244 |
+| `norm(L*N, inf)` | 9.3424e-09 | **1.1852e-16** |
+| augmented `M` | 1349 x 2954 | 1345 x 2954 |
+| structural rank | 1244 | 1244 |
+| SVD rank at tau = 1e-9, 1e-10, 1e-11, 1e-12, eps*max | `[1244 1244 1245 1248 1248]` | **`[1244 1244 1244 1244 1244]`** |
+| `getRankLUSOL` | 1249 | **1244** |
+| `getNullSpace` implied rank | 1259 | **1244** |
+| **all three agree at the structural rank?** | **NO** | **YES** |
+| `norm(M*ker(M), inf)` | **4.7752** | **2.1796e-13** |
+
+**The rank gap is restored.** Three independent rank routines that previously returned
+1248/1249/1259 now all return 1244, and the answer no longer moves across four orders of
+magnitude of tolerance. The nullspace of the augmented matrix goes from **useless**
+- residual 4.78, order 1, the failure mode the seed reported as 14.1 on its own instance
+- to machine-precision scale at 2.18e-13.
+
+**The honest caveat.** The new basis has 101 rows, not 105: it spans 101 of the 105
+left-nullspace directions, so four conservation relations are absent from the augmented
+matrix. Its rank is well defined and every routine agrees on it, but a caller wanting
+every conserved moiety gets 101 of them. The difference from before is that the status
+now SAYS so (`outcome = 'incomplete'`, `raysFound = 101`, `raysExpected = 105`) instead
+of padding to 105 rows with four all-zero rows that read as complete. Whether 105 was
+ever reachable by non-negative rays is the open question in section 6.
+
+## 2. The headline finding about cause
 
 **The accuracy of the returned basis is dominated by which LP solver is installed.**
 Same model, same code path, same tolerances, on `iDopaNeuroC` (internal, 1244 x 1710):
@@ -20,7 +53,7 @@ Seven orders of magnitude apart. The seed's reported 1.418e-07 / 2.218e-09 is co
 with a mosek-class solve. Neither the `1e-6` acceptance test (the seed's diagnosis) nor
 the `epsilon` truncation (this feature's hypothesis) is the operative cause.
 
-## 2. Per-ray residual floor, raw (untruncated)
+## 3. Per-ray residual floor, raw (untruncated)
 
 iDopaNeuroC, 20 rays per solver:
 
@@ -30,7 +63,7 @@ iDopaNeuroC, 20 rays per solver:
 | glpk | 4.467e-27 | 1.110e-16 | 0 of 20 |
 | mosek | 1.695e-12 | 3.064e-10 | 0 of 20 |
 
-## 3. Truncation effect (R1), 200 rays plus two full bases
+## 4. Truncation effect (R1), 200 rays plus two full bases
 
 | Model / solver | entries zeroed per ray | largest zeroed | residual raw -> truncated |
 |---|---|---|---|
@@ -43,7 +76,7 @@ iDopaNeuroC, 20 rays per solver:
 
 Truncation worsened the residual in **0 of 200** sampled rays.
 
-## 4. US1 acceptance, after the change (1 replicate per fixture, seed 20260914)
+## 5. US1 acceptance, after the change (1 replicate per fixture, seed 20260914)
 
 Solver gurobi, `param.maxNewBasisTime = 20`:
 
@@ -57,7 +90,7 @@ Solver gurobi, `param.maxNewBasisTime = 20`:
 
 No fixture timed out; no candidate was rejected for accuracy on any of them.
 
-## 5. Accuracy target and regime boundary
+## 6. Accuracy target and regime boundary
 
 | Quantity | Value | Source |
 |---|---|---|
@@ -70,7 +103,7 @@ No fixture timed out; no candidate was rejected for accuracy on any of them.
 Validation of the target against the two known outcomes: the seed's basis (scaled
 2.218e-09) **fails**, an exact basis (~1e-16) **passes** — both as required.
 
-## 6. Restart on a dead end (T016a) — measured, and it does NOT help here
+## 7. Restart on a dead end (T016a) — measured, and it does NOT help here
 
 iDopaNeuroC internal, gurobi, seed 20260914, total budget 240 s, 1 replicate per arm:
 
@@ -93,7 +126,7 @@ The restart mechanism is retained: it costs nothing when the search is progressi
 triggers only on exhausting the per-basis budget), it is reported via `status.nRestarts`,
 and it may still help on models whose stall IS stochastic. None was found here.
 
-## 7. SC-005 regression on iDopaNeuroC, after both slices
+## 8. SC-005 regression on iDopaNeuroC, after both slices
 
 gurobi, seed 20260914, `maxNewBasisTime = 30`, `maxTime = 180`, 1 replicate:
 
@@ -116,7 +149,7 @@ still padded to 105 rows of which 4 are all-zero. `status.raysFound` correctly r
 101, and the help header now warns explicitly that `size(Zpos, 1)` must not be used to
 judge completeness.
 
-## 8. US2, US3 and US4 acceptance (1 replicate each, seed 20260914, gurobi)
+## 9. US2, US3 and US4 acceptance (1 replicate each, seed 20260914, gurobi)
 
 **Regime B, on a fixture pairing a conserved pool with two nearly-parallel rows.**
 Scaling a row does NOT produce this condition: it leaves the rank-2 subspace, and hence
@@ -149,7 +182,7 @@ purpose):
 field name and how to obtain it, instead of raising an undefined-field error. Both
 nullspace modes carry the same accuracy target, regime classification and status.
 
-## 9. Cost note
+## 10. Cost note
 
 The exact target needs `sigma_min+` of the operative matrix. A full `svd` costs minutes
 at genome scale and `svds(...,'smallestnz')` is no faster (>7 minutes on iDopaNeuroC,
@@ -160,7 +193,7 @@ surrogate for a well-scaled matrix; for a badly scaled one it becomes too loose,
 is the Regime-B condition this slice does not yet detect. That limitation is stated in
 the function's own comments rather than hidden.
 
-## 10. Reporting discipline
+## 11. Reporting discipline
 
 No attainable residual, runtime, or regime membership is promised for any model not
 measured here. Every figure above is a measurement with its replicate count stated.
