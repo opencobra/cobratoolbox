@@ -76,7 +76,7 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .accuracyTarget - the derived residual target each accepted ray had to meet
 %                  * .accuracyTargetDerived - true if derived from the spectrum, false if the fallback was used
 %                  * .acceptanceTarget - the target actually applied, after any tightening by `param.feasTol`
-%                  * .residualAbsolute - `norm(Zpos*Sop, inf)` measured on the RETURNED basis
+%                  * .residualAbsolute - largest per-row residual `max(abs(Zpos*Sop), [], 2)` measured on the RETURNED basis, the same metric ray acceptance uses. A row exceeding the target is dropped rather than returned, so this never exceeds `.acceptanceTarget`
 %                  * .residualScaled - the same, divided by `norm(Zpos)*norm(Sop)`; reported ALONGSIDE the absolute form, never instead of it
 %                  * .nonNegative - non-negativity of `Zpos`, asserted on the returned basis
 %                  * .impliedNullity - nullity implied by the returned basis
@@ -572,7 +572,36 @@ end
 % OBJECT. Inferring them from the acceptance path that produced each row is not
 % sufficient: the defect this guards against is a basis that satisfied every
 % check along the way and is still unfit for the rank determination it feeds.
-residualAbsolute = norm(Zpos*model.S,inf);
+% Verify the accuracy target ON THE RETURNED OBJECT and ACT on the result (FR-003).
+%
+% Two defects are fixed here, both found by sweeping mosek across models:
+%
+% 1. The acceptance test uses a VECTOR inf-norm, max|entry|, while this verification
+%    used a MATRIX inf-norm, which is the max ROW SUM. They are different quantities,
+%    so a row admitted at the target could be reported above it. Both now use the same
+%    per-row max-entry metric, so acceptance and verification are comparable.
+% 2. The residual was computed and reported but never CHECKED against the target, so
+%    `outcome = 'complete'` could be returned for a basis whose measured residual
+%    exceeded it -- mosek on iAF1260 did exactly that at 3.047e-12 against a target of
+%    ~1e-12. Rows that fail verification are now dropped, exactly as a candidate that
+%    fails acceptance is dropped (FR-003a), so a returned basis always means what it says.
+residualByRow = zeros(nBases, 1);
+if nBases > 0
+    residualByRow = full(max(abs(Zpos*model.S), [], 2));
+end
+failsTarget = residualByRow > acceptanceTarget;
+if any(failsTarget)
+    nRejectedForAccuracy = nRejectedForAccuracy + nnz(failsTarget);
+    Zpos = Zpos(~failsTarget, :);
+    nBases = size(Zpos, 1);
+    residualByRow = residualByRow(~failsTarget);
+end
+
+if nBases > 0
+    residualAbsolute = max(residualByRow);
+else
+    residualAbsolute = 0;
+end
 normZpos = norm(full(Zpos),'fro');
 normSop = norm(full(model.S),'fro');
 if normZpos > 0 && normSop > 0

@@ -64,7 +64,51 @@ plumbing failure — which is precisely the distinction FR-022 exists to force.
 | random (what the search did) | **0 of 40 (0%)** |
 | targeted at the unspanned subspace | **40 of 40 (100%)** |
 
-## 5. Reporting discipline
+## 5. Full verification sweep, and a defect it exposed
+
+Every model x both solvers, seed 20260915, 1 replicate, 120 s budget.
+
+**The sweep found a real defect before the fix**: mosek on iAF1260 reported
+`outcome = 'complete'` with an assembled residual of **3.047e-12 against a target of
+~1e-12** — success reported while the number said otherwise, which is the exact class of
+defect this work exists to eliminate. Two causes, both introduced by me:
+
+1. **Mismatched norms.** Ray acceptance used a VECTOR inf-norm (max |entry|) while the
+   verification used a MATRIX inf-norm (max row sum). Different quantities, so a row
+   admitted at the target could be reported above it.
+2. **The verification was computed but never acted on.** FR-003 requires verifying on the
+   returned object; the residual was measured, reported, and then ignored.
+
+Fixed by using the per-row max-entry metric for both, and by DROPPING rows that fail
+verification exactly as a candidate failing acceptance is dropped (FR-003a).
+
+### After the fix — all 16 within target
+
+| Model | gurobi | mosek |
+|---|---|---|
+| F1 cycle 3x3 | complete 1/1, 5.551e-17 | complete 1/1, 5.551e-17 |
+| F2 chain 3x2 | complete 1/1, 5.551e-17 | complete 1/1, 5.551e-17 |
+| F2b two pools | complete 2/2, 0 | complete 2/2, 0 |
+| F3 empty nullspace | emptyNullspace 0/0 | emptyNullspace 0/0 |
+| G1 inconsistent | incomplete 0/1 (correct) | incomplete 0/1 (correct) |
+| ecoli_core | complete 5/5, 0 | complete 5/5, 0 |
+| iAF1260 | complete 38/38, 0 | complete 38/38, **6.092e-13** |
+| iDopaNeuroC (internal) | **complete 105/105, 2.220e-16** | incomplete 99/105, 1.052e-12 |
+
+**16 of 16 report a residual within target, non-negative, with no all-zero rows.**
+
+### Two limitations this sweep makes visible
+
+- **Full coverage on iDopaNeuroC is achieved under gurobi, not under mosek** (99 of 105).
+  The targeted objective supplies the aim, but mosek's rays still sometimes miss the
+  tighter accuracy target and are dropped. A mosek user gets an honest `'incomplete'`
+  with a `'sampling'` shortfall rather than a complete basis.
+- **The structural case burns its whole budget.** G1 is decided correctly but takes the
+  full 120 s to conclude that nothing is findable, because the attainable dimension is
+  only computed after the search gives up. Correct, but wasteful; computing it on first
+  stall would end the search immediately.
+
+## 6. Reporting discipline
 
 No attainable residual, runtime or coverage level is promised for any model not measured
 here. Every figure is a measurement with its replicate count stated; where one replicate

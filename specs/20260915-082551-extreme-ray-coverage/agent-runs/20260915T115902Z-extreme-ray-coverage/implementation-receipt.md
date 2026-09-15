@@ -60,6 +60,24 @@ out at 180 s before. SC-002: augmented rank **1244** from SVD across 1e-9..1e-12
 5. **One replicate per arm** for the headline figures. The effect sizes are large (0/40
    against 40/40; 180 s timeout against 4.7 s), but they are single runs.
 6. **The parent feature is still unmerged**, so this branch needs a rebase.
+7. **Full coverage is solver-dependent.** iDopaNeuroC reaches 105/105 under gurobi but
+   99/105 under mosek: the targeted objective supplies the aim, but mosek's rays still
+   sometimes miss the tighter accuracy target and are dropped. A mosek user gets an
+   honest `'incomplete'` with a `'sampling'` shortfall, not a complete basis.
+8. **The structural case burns its whole time budget.** G1 is classified correctly but
+   takes the full 120 s, because the attainable dimension is computed only after the
+   search gives up. Computing it on first stall would end the search immediately.
+
+## Defect found AFTER the main implementation, by a full verification sweep
+
+A sweep across every model and both solvers found `outcome = 'complete'` being reported
+for mosek on iAF1260 with a residual of **3.047e-12 against a ~1e-12 target** — success
+reported while the number said otherwise. Two causes, both mine: ray acceptance used a
+vector inf-norm (max entry) while verification used a matrix inf-norm (max row sum), so
+the two were not comparable; and the verification result was computed, reported, and then
+never checked. Fixed by using one metric for both and dropping rows that fail
+verification, as FR-003a already requires of candidates that fail acceptance. After the
+fix all 16 model/solver combinations report a residual within target.
 
 ## Other information
 
