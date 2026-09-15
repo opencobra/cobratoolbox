@@ -22,10 +22,6 @@ One further instruction arrived mid-run, from the user, in their own words:
 > Generation of greedy left nullspace vectors is stochastic. If it times out an
 > alternative is to randomly start again rather than persist in a dead end.
 
-## Final response
-
-*(see the Final response section at the end of this receipt)*
-
 ## Diff summary
 
 | File | Change | Lines |
@@ -140,3 +136,75 @@ which LP solver is installed, and the seed's 1.418e-07 is consistent with a mose
 solve. This is why FR-003 (verify on the returned object) is the load-bearing
 requirement: it is the only one that catches a defect whose cause lives outside the
 function entirely.
+
+## Final response
+
+**US1 implemented and verified — but the measurement phase refuted both standing
+diagnoses, including my own.**
+
+### What Phase 0 found
+
+The seed named the absolute `1e-6` acceptance test as the operative cause. My plan
+hypothesised the post-solve truncation at `findExtremePool.m:66`, and I told you its
+fingerprint was "not a coincidence". **Both are wrong.** On the same model, same code
+path, same tolerances:
+
+| iDopaNeuroC (1244 x 1710) | gurobi | mosek |
+|---|---|---|
+| entries destroyed by the truncation | **0** | 1186/ray, all dust |
+| assembled residual, absolute | **1.185e-16** | 9.342e-09 |
+| ...scaled | 1.707e-19 | 1.302e-11 |
+
+Seven orders of magnitude apart. **Accuracy is dominated by which LP solver is
+installed.** The seed's 1.418e-07 is consistent with a mosek-class solve. The smallest
+basis entries do sit at ~1.6e-05, matching the seed's 1.252e-05 — but gurobi truncates
+nothing while producing entries of that size, so the proximity to `epsilon = 1e-5` is
+coincidence of scale. This is why FR-003 — verify on the *returned object*, never infer
+accuracy from the path that produced it — is the load-bearing requirement: it is the
+only one that catches a defect whose cause lives outside this function entirely.
+
+The accuracy target is derived, not chosen: `tauMin * sigma_1(M) * sigma_min+(Sop)` from
+Weyl's inequality, validated against both known outcomes (the seed's basis fails, an
+exact basis passes) and by controlled perturbation. The regime boundary is measured at
+`sigma_min+ < 2.379e-06`; iDopaNeuroC sits 11,929x above it.
+
+### Your restart suggestion: implemented, measured, and it does not help here
+
+| | rays | restarts | time |
+|---|---|---|---|
+| no restart | 101/105 | 0 | 240 s |
+| with restart | **101/105** | 9 | 240 s |
+
+Nine restarts from fresh randomness reach exactly the same 101. The stall is
+**structural, not a stochastic dead end**. One candidate explanation — that the
+non-negative extreme rays span fewer than `nVar - rankS` dimensions, so 105 was never
+reachable — is recorded as the next thing to measure, not as a finding. I kept the
+mechanism: it costs nothing when the search progresses and is reported via
+`status.nRestarts`.
+
+### Two things I did beyond the approved scope
+
+- **A hang I had to fix.** The `continue` on a rejected candidate skipped the timeout
+  checks entirely. Latent before (rejection was rare at 1e-6), but tightening acceptance
+  made it reachable — a reject-everything run spun forever. It wedged your interactive
+  MATLAB session, which still needs a manual Ctrl+C; all verification ran headless via
+  `matlab -batch`, the CI path.
+- **The `maxTime` guard**, pulled forward from T035 because restart needs a real total
+  budget. Defaults preserve historical behaviour.
+
+Both are recorded in `tasks.md` as T016b/T016c rather than folded in silently.
+
+### Scope
+
+`findExtremePool.m` is **unchanged** — you approved the extension, R1 made it
+unnecessary. Not done, because unapproved: Regime-B detection (US2), the zero-padded
+incomplete basis (US3 — demonstrated: gurobi returns 4 all-zero rows), the
+`SConsistentRxnBool` crash that `optimalExtremePoolDriver.m:121` still hits (US2).
+
+The default accuracy target is a conservative surrogate, not the derivation: the exact
+form needs `sigma_min+`, and both a full `svd` and `svds(...,'smallestnz')` cost minutes
+at genome scale. `eps*normest(Sop)` is 84x stricter on iDopaNeuroC, so it is safe for a
+well-scaled matrix — but too loose for a badly scaled one, which is precisely the
+Regime-B case US2 handles. That limitation is in the function's comments, not hidden.
+
+Test passes on two consecutive runs; test file has zero code issues.
