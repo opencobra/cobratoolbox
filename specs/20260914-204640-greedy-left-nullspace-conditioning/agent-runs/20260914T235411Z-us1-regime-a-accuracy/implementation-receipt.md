@@ -1,7 +1,7 @@
 # Implementation Receipt
 
 **Feature**: `specs/20260914-204640-greedy-left-nullspace-conditioning`
-**Run**: US1 slice (Regime-A accuracy, T001-T021) and, after Gate 3 approved continuation twice, US2 (Regime-B diagnosis, T022-T031a) and US3 (truthful completeness, T032-T034)
+**Run**: US1 slice (Regime-A accuracy, T001-T021) and, after Gate 3 approved continuation twice, US2 (Regime-B diagnosis, T022-T031a) US3 (truthful completeness, T032-T034), US4 (T035-T041) and closeout (T042-T046) - the COMPLETE task list
 **Date (UTC)**: 2026-09-14T23:54Z
 **Path**: `/speckit-implement` (core implementer, inline) — the path approved at Gate 2
 **Branch**: `20260914-204640-greedy-left-nullspace-conditioning`
@@ -17,9 +17,10 @@
 - implementation path `/speckit-implement`.
 - commit the planning artifacts first (done, `78d4eade5`).
 
-At Gate 3 the user chose **"Continue with US2"** (T022-T031a), and at the following
-Gate 3 **"US3 - stop the zero padding"** (T032-T034), each approving further scope
-within the same run.
+At Gate 3 the user chose **"Continue with US2"** (T022-T031a), then **"US3 - stop the
+zero padding"** (T032-T034), and finally instructed: *"Kill the matlab session then go
+on to complete the remaining tasks"* - approving US4 and closeout. All 53 tasks in
+`tasks.md` are now resolved: 52 done, 1 (`T014`) deliberately not done.
 
 One further instruction arrived mid-run, from the user, in their own words:
 
@@ -88,6 +89,19 @@ was touched. The three modified submodule pointers (`external/...`,
 17. **The US2-era header warning was reverted**: with the basis trimmed, `.raysFound`
     equals `size(Zpos, 1)` again, and the header says so.
 
+### US4 and closeout
+
+18. **`'missingField'` is now produced.** A model lacking `SConsistentRxnBool` returns
+    gracefully with the field name and how to obtain it, instead of raising an
+    undefined-field error. The in-repo caller `optimalExtremePoolDriver.m:121` no longer
+    crashes. All five terminal outcomes are now reachable.
+19. **Mode symmetry stated and tested** (FR-020): the header records that every
+    guarantee holds identically in both nullspace modes, and the test exercises right
+    mode for non-negativity, the derived target, regime classification and the residual.
+20. **Time budgets tested** against what their documentation claims (FR-011, FR-012).
+21. **`iDopaNeuroCReproducibilityCheck.m`** plus its expected output, recorded as a
+    documented check rather than a CI test, with the submodule reason stated (SC-005).
+
 ## Tests
 
 `test/verifiedTests/analysis/testTopology/testGreedyExtremeRayBasis.m`, run headless
@@ -127,7 +141,21 @@ Full campaign figures with replicate counts: `measurements/results.md`.
 **1.185e-16** against a 1.193e-12 target, outcome `incomplete`/`timeBudget` at 101 of
 105 rays. An accurate basis, with its incompleteness reported rather than concealed.
 
-**Not run**: `test/testAll.m` in full (not required by this slice, and the interactive
+**T044 discharged**: the test was run through the real `test/testAll.m` harness using
+its own `COBRA_TESTS` filter, under gurobi (the desktop session default was mosek, so
+both solvers are covered):
+
+```text
+ > Selective testing enabled. Test filter: testGreedyExtremeRayBasis
+testGreedyExtremeRayBasis passed!
+ > 0 tests failed. 0 tests were skipped due to missing requirements.
+```
+
+**SC-005 reproducibility check, actual run**: `VERDICT: PASS (basis meets the derived
+accuracy target)` - residual 1.1852e-16 against a 1.1928e-12 target, 101 of 105 rays,
+**0 zero rows**, row count equals rays found.
+
+**Not run**: `test/testAll.m` across the FULL suite (not required by this slice, and the interactive
 MATLAB session was unavailable); the `iDopaNeuroC` reproducibility check as a committed
 artifact (T043, outside the approved slice).
 
@@ -172,9 +200,20 @@ artifact (T043, outside the approved slice).
      in-repo caller `optimalExtremePoolDriver.m:121` still hits. `'missingField'` exists
      in the status vocabulary but is never produced. This is the last known defect from
      the original set, and the only user story left unimplemented.
-5. **The interactive MATLAB session is wedged** and needs a manual interrupt. Caused by
-   an earlier probe of mine that ran the tightened acceptance before the T016b timeout
-   fix existed, and so span forever. All verification was completed headless instead.
+5. **The interactive MATLAB session was wedged and has been killed** at the user's
+   instruction (PIDs 209586, 209684, SIGTERM). It was caused by an earlier probe of mine
+   that ran the tightened acceptance before the T016b timeout fix existed, and so span
+   forever. All verification in this run was completed headless via `matlab -batch`,
+   which is the CI path.
+6. **The 101-vs-105 question is open.** Under gurobi, iDopaNeuroC yields 101 of an
+   expected 105 rays, and restarting from fresh randomness nine times reaches the same
+   101, so the shortfall is structural rather than stochastic. The hypothesis that the
+   NON-NEGATIVE extreme rays span fewer than `nVar - rankS` dimensions - which would mean
+   105 was never reachable and `raysExpected` is systematically wrong - is recorded as
+   the next thing to measure, not as a finding. `status.raysExpectedIsEstimate` is
+   always true for exactly this reason.
+7. **`varkin` is untouched, as required.** What it needs to assert once this routine
+   ships is stated in `plan.md` for separate specification in that repository.
 
 ## Other information
 

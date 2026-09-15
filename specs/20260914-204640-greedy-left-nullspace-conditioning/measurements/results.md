@@ -116,7 +116,40 @@ still padded to 105 rows of which 4 are all-zero. `status.raysFound` correctly r
 101, and the help header now warns explicitly that `size(Zpos, 1)` must not be used to
 judge completeness.
 
-## 8. Cost note
+## 8. US2, US3 and US4 acceptance (1 replicate each, seed 20260914, gurobi)
+
+**Regime B, on a fixture pairing a conserved pool with two nearly-parallel rows.**
+Scaling a row does NOT produce this condition: it leaves the rank-2 subspace, and hence
+sigmaMinPlus, untouched. The near-dependence parameter `g` controls it directly.
+
+| g | sigmaMinPlus | boundary | outcome | Zpos | Z |
+|---|---|---|---|---|---|
+| 1 | 6.180e-01 | 8.829e-02 | `complete` | returned | returned |
+| 1e-4 | 7.071e-05 | 1.010e-01 | `badlyScaled` | **empty** | **empty** |
+| 1e-8 | 7.071e-09 | 1.010e-01 | `badlyScaled` | **empty** | **empty** |
+| 1e-12 | 7.071e-13 | 1.010e-01 | `badlyScaled` | **empty** | **empty** |
+
+The diagnosis is complete from the returned status alone, with all console output
+suppressed: quantity, measured value, boundary, what the boundary is derived from, and
+the indicated repair.
+
+**US3, truthful completeness, on iDopaNeuroC** (25 s budget, so it terminates early on
+purpose):
+
+| Quantity | Before US3 | After US3 |
+|---|---|---|
+| `size(Zpos, 1)` | 105 (4 all-zero) | **101** |
+| `status.raysFound` | 101 | 101 |
+| all-zero rows returned | 4 | **0** |
+| row count agrees with rays found | no | **yes** |
+| outcome | `incomplete` | `incomplete` |
+
+**US4**: a no-parameter call on a model without `SConsistentRxnBool` — the call
+`optimalExtremePoolDriver.m:121` makes — now returns `outcome = 'missingField'` with the
+field name and how to obtain it, instead of raising an undefined-field error. Both
+nullspace modes carry the same accuracy target, regime classification and status.
+
+## 9. Cost note
 
 The exact target needs `sigma_min+` of the operative matrix. A full `svd` costs minutes
 at genome scale and `svds(...,'smallestnz')` is no faster (>7 minutes on iDopaNeuroC,
@@ -127,7 +160,7 @@ surrogate for a well-scaled matrix; for a badly scaled one it becomes too loose,
 is the Regime-B condition this slice does not yet detect. That limitation is stated in
 the function's own comments rather than hidden.
 
-## 9. Reporting discipline
+## 10. Reporting discipline
 
 No attainable residual, runtime, or regime membership is promised for any model not
 measured here. Every figure above is a measurement with its replicate count stated.

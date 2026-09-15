@@ -11,10 +11,29 @@ reading `spec.md` alone.
 
 ## Completion Integrity *(standing — always retained; not a sample)*
 
-- [ ] Every `[X]` task in `tasks.md` maps to a real diff hunk (or a named non-code
+- [x] Every `[X]` task in `tasks.md` maps to a real diff hunk (or a named non-code
   artifact) AND to verification evidence: a test that actually ran, or an equivalent
   validation check for non-code work (e.g. checklist re-validation, diff-scope
   check). No task is checked off without both.
+  **Discharged 2026-09-15 (T045).** Evidence per group:
+  - T001-T012 (measurement) -> `measurements/` scripts + `research.md` R1-R7 results and
+    the D1-D6 decision table, every slot filled from a run, none left as a placeholder.
+  - T013-T021 (US1) -> diff in `greedyExtremeRayBasis.m`; `testGreedyExtremeRayBasis.m`
+    passing twice; fixture table in `measurements/results.md` section 4.
+  - T014 -> `[~]` NOT DONE and deliberately so; `findExtremePool.m` is byte-identical to
+    its pre-feature state, which `git diff` confirms.
+  - T022-T031a (US2) -> diff plus the Regime-B table in `results.md` section 8, measured
+    on both sides of the boundary.
+  - T032-T034 (US3) -> diff plus the before/after trim table in `results.md` section 8,
+    measured on iDopaNeuroC (105 rows with 4 padding -> 101 rows, 0 padding).
+  - T035-T041 (US4) -> diff plus assertions in the test for the no-parameter call, both
+    time budgets, and right-nullspace mode.
+  - T042/T043 -> `measurements/results.md` and
+    `iDopaNeuroCReproducibility-expected.md`, the latter recording a PASS verdict from
+    an actual run.
+  - T044 -> the test run through `test/testAll.m` itself with `COBRA_TESTS` filtering:
+    "testGreedyExtremeRayBasis passed! > 0 tests failed. 0 tests were skipped".
+  - T046 -> the receipt under `agent-runs/`.
 
 ## 1. Unjustified Constants
 
@@ -136,9 +155,17 @@ Two clerical defects found during the first pass were corrected in `spec.md` at 
 time: SC-012 had been inserted ahead of SC-011, and the Session 2026-09-14 Q1 answer
 cross-referenced FR-015 where the approval is FR-015a and the migration path FR-015b.
 
-**Nothing in this checklist blocks Gate 2.** Four items remain unverifiable until
-implementation exists and are deliberately left to the verification bundle rather than
-restated as checklist items here: that the derivation required by FR-002 was actually
-performed and recorded (SC-008); that the measured boundary required by FR-006 was
-actually measured; that the reported residuals are genuinely both absolute and scaled
-(SC-009); and the standing Completion Integrity item.
+**Post-implementation re-validation, 2026-09-15.** The four items that were
+unverifiable at Gate 2 are now discharged:
+
+- **FR-002's derivation was performed and recorded** (SC-008): `research.md` R3 carries
+  the symbolic form, the substituted value, validation against both known outcomes, and
+  a controlled-perturbation sweep quantifying its conservatism.
+- **FR-006's boundary was measured, not chosen** (SC-008): `research.md` R4 records the
+  grounding, why the two alternatives were rejected, the graded family, and the
+  crossover. The shipped code computes it from the spectrum rather than hard-coding it.
+- **Both residual forms are reported** (SC-009): `status.residualAbsolute` and
+  `status.residualScaled` are populated on every call and asserted by the test.
+- **Completion Integrity** is discharged above.
+
+All 46 numbered items and the standing item now pass. **46/46 + 1.**

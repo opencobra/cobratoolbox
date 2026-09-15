@@ -347,6 +347,63 @@ for k = 1:length(solvers.LP)
             islogical(statusEcoli.raysExpectedIsEstimate) && statusEcoli.raysExpectedIsEstimate, ...
             'status must be populated on every call, with raysExpected flagged an estimate');
 
+        % ---- User Story 4: parameters and documentation that mean what they say ----
+
+        % T038 / SC-015 / FR-013: the no-argument call that optimalExtremePoolDriver.m:121
+        % makes must be DIAGNOSED, not crash on an undefined field.
+        bareModel = struct('S', ecoliModel.S);        % deliberately no SConsistentRxnBool
+        warnState = warning('off', 'greedyExtremeRayBasis:missingField');
+        [ZposBare, ZBare, statusBare] = greedyExtremeRayBasis(bareModel);
+        warning(warnState);
+        assert(strcmp(statusBare.outcome, 'missingField'), ...
+            sprintf('a model without SConsistentRxnBool gave outcome ''%s''', statusBare.outcome));
+        assert(isempty(ZposBare) && isempty(ZBare), ...
+            'no basis may be returned when a required field is missing');
+        assert(strcmp(statusBare.missingFieldName, 'SConsistentRxnBool'), ...
+            'the diagnosis must name the missing field');
+        assert(~isempty(statusBare.howToObtain), ...
+            'the diagnosis must say how to obtain the missing field');
+
+        % T039 / FR-011, FR-012: each time budget governs what its documentation says,
+        % and a caller supplying only the per-basis budget is not left with an
+        % undefined total budget.
+        budgetParam.printLevel = 0;
+        budgetParam.maxNewBasisTime = 3;              % deliberately NOT setting maxTime
+        warnState = warning('off', 'all');
+        [~, ~, statusBudget] = greedyExtremeRayBasis(ecoliModel, budgetParam);
+        warning(warnState);
+        assert(isfinite(statusBudget.elapsedTime), ...
+            'supplying only maxNewBasisTime must not leave the total budget undefined');
+        assert(statusBudget.elapsedTime < 60, ...
+            'the total budget must bound the run when only maxNewBasisTime was supplied');
+
+        % a total budget shorter than the per-basis budget must be the binding one
+        totalParam = param;
+        totalParam.maxNewBasisTime = 600;
+        totalParam.maxTime = 2;
+        warnState = warning('off', 'all');
+        [~, ~, statusTotal] = greedyExtremeRayBasis(illModel, totalParam);
+        warning(warnState);
+        assert(statusTotal.elapsedTime < 60, 'param.maxTime must bound the total run');
+
+        % T041 / SC-013 / FR-020: the same contract in the RIGHT nullspace mode.
+        % F2 is 3 x 2, so its right nullspace is empty while its left nullspace is not;
+        % F2 transposed exercises the mirror case with a non-empty right nullspace.
+        rightParam = param;
+        rightParam.leftRight = 'right';
+        rightModel = struct('S', F2.S', 'SConsistentRxnBool', true(size(F2.S', 2), 1));
+        [ZposRight, ~, statusRight] = greedyExtremeRayBasis(rightModel, rightParam);
+        assert(strcmp(statusRight.nullspaceSide, 'right'), ...
+            'the status must record which nullspace was requested');
+        assert(full(all(ZposRight(:) >= 0)), 'non-negativity must hold in right mode too');
+        assert(isfield(statusRight, 'accuracyTarget') && isfinite(statusRight.accuracyTarget), ...
+            'the accuracy target must be derived in right mode too');
+        assert(~strcmp(statusRight.regime, 'notAssessed'), ...
+            'the regime must be classified in right mode too');
+        % right mode returns the transpose, so the basis multiplies on the other side
+        assert(norm(rightModel.S * ZposRight, inf) < tolExact, ...
+            'the right-nullspace basis must annihilate S from the right');
+
         % FR-015 / SC-010: the historical two-output call still works unmodified
         [ZposTwo, ZTwo] = greedyExtremeRayBasis(ecoliModel, param);
         assert(full(all(ZposTwo(:) >= 0)), 'two-output call must still return a valid basis');

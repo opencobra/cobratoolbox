@@ -23,6 +23,12 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %    Gives N*Zpos = 0 or S*Zpos = 0
 %    Gives N*Z = 0 or S*Z = 0
 %
+%    Every guarantee below holds IDENTICALLY in both modes. The right nullspace is
+%    computed by transposing the operative matrix, which is incidental to the
+%    mathematics, so the accuracy target, the regime classification, the status and
+%    the completeness rule all carry over unchanged. Read "left nullspace" throughout
+%    as "the requested nullspace".
+%
 % NOTE:
 %
 %    CHANGE OF DEFAULT NUMERICAL BEHAVIOUR, September 2026, feature
@@ -61,7 +67,7 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %    status:     structure a caller can branch on without parsing console text. Populated
 %                on EVERY call, and complete whether or not printing is enabled:
 %
-%                  * .outcome - one of `'complete'`, `'incomplete'`, `'emptyNullspace'`, `'badlyScaled'`, `'missingField'`; mutually exclusive and exhaustive. `'missingField'` is specified but NOT yet produced: diagnosing an absent `.SConsistentRxnBool` gracefully is not yet implemented, so that case still raises
+%                  * .outcome - one of `'complete'`, `'incomplete'`, `'emptyNullspace'`, `'badlyScaled'`, `'missingField'`; mutually exclusive and exhaustive
 %                  * .terminationReason - `'basisComplete'`, `'timeBudget'`, `'accuracyRejection'` or `'notAttempted'`
 %                  * .regime - `'wellScaled'`, `'badlyScaled'` or `'notAssessed'`
 %                  * .nullspaceSide - which nullspace was requested
@@ -91,6 +97,11 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .scalingQuantity - which quantity is badly scaled
 %                  * .scalingBoundaryBasis - what that boundary is derived from
 %                  * .recommendedRepair - the repair to `model.S` that is indicated
+%
+%                In the `'missingField'` outcome it instead carries:
+%
+%                  * .missingFieldName - the absent field
+%                  * .howToObtain - how to supply or compute it
 %
 % EXAMPLE:
 %
@@ -143,6 +154,39 @@ if param.internalStoichiometriMatrixLeftNullspace
     if ~isfield(model,'SConsistentRxnBool')
         [~, ~, ~, ~, ~, ~, model, ~] = findStoichConsistentSubset(model, 1, 0);
     end
+end
+
+if ~isfield(model,'SConsistentRxnBool')
+    % The guard below reads this field on EVERY path, but it is only computed above
+    % when param.internalStoichiometriMatrixLeftNullspace is set, whose default is 0.
+    % A caller using default parameters therefore used to reach an undefined-field
+    % error raised from inside this routine. Diagnose it instead, and return
+    % gracefully, so the caller learns the field name and how to obtain it.
+    %
+    % This path is live rather than hypothetical: the in-repo caller
+    % src/analysis/topology/extremeRays/optimalRays/optimalExtremePoolDriver.m:121
+    % invokes this routine with no param argument at all.
+    Zpos = [];
+    Z = [];
+    status = struct('outcome', 'missingField', 'terminationReason', 'notAttempted', ...
+        'regime', 'notAssessed', 'nullspaceSide', param.leftRight, ...
+        'operativeMatrixSize', size(model.S), 'scalingValue', NaN, ...
+        'scalingBoundary', NaN, 'accuracyTarget', NaN, ...
+        'accuracyTargetDerived', false, 'acceptanceTarget', NaN, ...
+        'residualAbsolute', NaN, 'residualScaled', NaN, 'nonNegative', true, ...
+        'impliedNullity', NaN, 'independentRank', NaN, 'raysFound', 0, ...
+        'raysExpected', NaN, 'raysExpectedIsEstimate', true, ...
+        'raysRejectedForAccuracy', 0, 'raysRejectedForDependence', 0, ...
+        'timedOut', false, 'nRestarts', 0, 'elapsedTime', 0, ...
+        'missingFieldName', 'SConsistentRxnBool', ...
+        'howToObtain', ['Set param.internalStoichiometriMatrixLeftNullspace = true ' ...
+        'to have it computed by findStoichConsistentSubset, or supply ' ...
+        'model.SConsistentRxnBool directly as an n x 1 logical over the reactions.'], ...
+        'message', ['model.SConsistentRxnBool is required but absent, and was not ' ...
+        'computed because param.internalStoichiometriMatrixLeftNullspace is false. ' ...
+        'No basis returned.']);
+    warning('greedyExtremeRayBasis:missingField', '%s %s', status.message, status.howToObtain);
+    return;
 end
 
 if ~any(model.SConsistentRxnBool) %check if positive vector in left nullspace

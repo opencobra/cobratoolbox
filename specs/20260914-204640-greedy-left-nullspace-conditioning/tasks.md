@@ -120,23 +120,23 @@ Result slots in `research.md`.
 
 **Goal**: each documented parameter governs what it documents; the documented usage runs.
 
-- [ ] T035 [US4] Fix the guard at `GERB:54-59` that tests `maxNewBasisTime` but assigns `maxTime`, and make each budget govern the period its documentation describes — `GERB:157` and `:161` currently both test `maxNewBasisTime`, so there is no total-time budget. **If deferred instead, record the reason explicitly in this task and in the receipt; it may not be left silent** (FR-011, FR-012)
-- [ ] T036 [US4] Make a default-parameter call on a model lacking `SConsistentRxnBool` return the `'missingField'` outcome gracefully with `missingFieldName` and `howToObtain`, instead of the undefined-field error `GERB:72` raises today (FR-013)
-- [ ] T037 [US4] Rewrite the `GERB` help header: correct the USAGE block, which documents a string second argument (`:9`, `:13`) the code cannot accept; document the third output and the five outcomes; document the clamped meaning of `param.feasTol`; and carry the FR-015b migration statement — what changed, when, under which feature, and that reproducing pre-change results requires a prior release (FR-014, FR-015b, SC-012, Principle VII-E)
-- [ ] T038 [P] [US4] Test: no-argument call mirroring `optimalExtremePoolDriver.m:121` returns the diagnosis rather than crashing, in `TEST` (SC-015)
-- [ ] T039 [P] [US4] Test: each time-budget parameter governs its documented period; header usage form executes, in `TEST` (FR-011, FR-014)
+- [X] T035 [US4] **Already discharged as T016c during US1**, because the restart mechanism required a genuine total budget. Fix the guard at `GERB:54-59` that tests `maxNewBasisTime` but assigns `maxTime`, and make each budget govern the period its documentation describes — `GERB:157` and `:161` currently both test `maxNewBasisTime`, so there is no total-time budget. **If deferred instead, record the reason explicitly in this task and in the receipt; it may not be left silent** (FR-011, FR-012)
+- [X] T036 [US4] Make a default-parameter call on a model lacking `SConsistentRxnBool` return the `'missingField'` outcome gracefully with `missingFieldName` and `howToObtain`, instead of the undefined-field error `GERB:72` raises today (FR-013)
+- [X] T037 [US4] Rewrite the `GERB` help header: correct the USAGE block, which documents a string second argument (`:9`, `:13`) the code cannot accept; document the third output and the five outcomes; document the clamped meaning of `param.feasTol`; and carry the FR-015b migration statement — what changed, when, under which feature, and that reproducing pre-change results requires a prior release (FR-014, FR-015b, SC-012, Principle VII-E)
+- [X] T038 [P] [US4] Test: no-argument call mirroring `optimalExtremePoolDriver.m:121` returns the diagnosis rather than crashing, in `TEST` (SC-015)
+- [X] T039 [P] [US4] Test: each time-budget parameter governs its documented period; header usage form executes, in `TEST` (FR-011, FR-014)
 
 ---
 
 ## Phase 7: Cross-cutting — mode symmetry, reporting, regression
 
-- [ ] T040 Verify every guarantee holds identically in right-nullspace mode; neither mode may retain the pre-change acceptance behaviour (FR-020) in `GERB`
-- [ ] T041 [P] Test: F9 right-nullspace mode carries the same accuracy target and status semantics, in `TEST` (SC-013)
-- [ ] T042 [P] Write the feature measurement record `specs/.../measurements/results.md`: per case, residual absolute AND scaled, implied nullity vs independent rank, non-negativity, runtime, **with the replicate count behind each figure** — distinct from the per-call status, since a single invocation cannot know a replicate count (FR-016a, SC-009)
-- [ ] T043 Write the `iDopaNeuroC` reproducibility check `specs/.../measurements/iDopaNeuroCReproducibility.m` plus its expected output and trace, recording that it is NOT a CI test and why — `papers/` is a git submodule (SC-005, Principle III)
-- [ ] T044 Confirm `TEST` depends on no git-submodule content and skips gracefully without an LP solver; run it through `test/testAll.m` (SC-011, FR-018)
-- [ ] T045 Re-validate `checklists/numerical-integrity.md`, discharging the standing Completion Integrity item: every checked task maps to a real diff hunk AND to verification evidence (FR-019, SC-007)
-- [ ] T046 Write the implementation receipt at `specs/20260914-204640-greedy-left-nullspace-conditioning/agent-runs/<UTC-timestamp>-<short-name>/implementation-receipt.md` with the five mandatory sections — Prompt, Final response, Diff summary, Tests, Unresolved issues — the Final response being the actual final user-facing text, not a paraphrase (constitution Implementation Receipt Ledger). **Implementation is not complete until this exists**
+- [X] T040 Verify every guarantee holds identically in right-nullspace mode; neither mode may retain the pre-change acceptance behaviour (FR-020) in `GERB`
+- [X] T041 [P] Test: F9 right-nullspace mode carries the same accuracy target and status semantics, in `TEST` (SC-013)
+- [X] T042 [P] Write the feature measurement record `specs/.../measurements/results.md`: per case, residual absolute AND scaled, implied nullity vs independent rank, non-negativity, runtime, **with the replicate count behind each figure** — distinct from the per-call status, since a single invocation cannot know a replicate count (FR-016a, SC-009)
+- [X] T043 Write the `iDopaNeuroC` reproducibility check `specs/.../measurements/iDopaNeuroCReproducibility.m` plus its expected output and trace, recording that it is NOT a CI test and why — `papers/` is a git submodule (SC-005, Principle III)
+- [X] T044 Confirm `TEST` depends on no git-submodule content and skips gracefully without an LP solver; run it through `test/testAll.m` (SC-011, FR-018)
+- [X] T045 Re-validate `checklists/numerical-integrity.md`, discharging the standing Completion Integrity item: every checked task maps to a real diff hunk AND to verification evidence (FR-019, SC-007)
+- [X] T046 Write the implementation receipt at `specs/20260914-204640-greedy-left-nullspace-conditioning/agent-runs/<UTC-timestamp>-<short-name>/implementation-receipt.md` with the five mandatory sections — Prompt, Final response, Diff summary, Tests, Unresolved issues — the Final response being the actual final user-facing text, not a paraphrase (constitution Implementation Receipt Ledger). **Implementation is not complete until this exists**
 
 ---
 
