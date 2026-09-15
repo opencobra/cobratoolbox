@@ -208,10 +208,41 @@ account of the limit, not a quiet compromise.
   measurement.
 - **FR-015**: Any per-solver setting adopted MUST be recorded with the reason it was
   chosen and the measurement that justifies it, and MUST be reached through the toolbox's
-  solver abstraction (Principle IV). The generic `NUMERICALEMPHASIS` parameter is not
-  plumbed to mosek or gurobi today; if this feature relies on that concept it MUST say
-  how it is actually expressed for each solver rather than assuming the generic name
-  takes effect.
+  solver abstraction (Principle IV).
+
+**Paired comparison**
+
+- **FR-016**: The solver comparison MUST be **paired**: every solver compared MUST be
+  given the identical partially complete basis and the identical drawn objective vector,
+  at the same point in the greedy search, and their returned rays compared against one
+  another. Comparisons assembled from independent whole runs do NOT satisfy this, because
+  they confound the solver's contribution with the divergent search path.
+- **FR-017**: Because that state exists only inside the search, the comparison MUST be
+  instrumented within `greedyExtremeRayBasis` rather than driven from outside it. The
+  instrumentation MUST be off by default and MUST NOT alter the result of an ordinary
+  call when it is off.
+- **FR-018**: For each compared solver at each paired point, the record MUST capture the
+  residual of the returned ray, whether it is linearly independent of the current basis,
+  and whether it was accepted — so that a solver's advantage is attributable to accuracy,
+  to vertex diversity, or to both.
+
+**Numerical emphasis across solvers**
+
+- **FR-019**: The generic numerical-emphasis concept MUST have an analogue for **every
+  supported solver**, not only CPLEX. Today `NUMERICALEMPHASIS` defaults to 1 but is read
+  only by the CPLEX interface, which sets it to 0; mosek, gurobi, glpk and the remaining
+  interfaces ignore it entirely. A caller asking for numerical emphasis MUST get the
+  nearest equivalent behaviour from whichever solver is installed, expressed in that
+  solver's own terms and reached through the solver abstraction.
+- **FR-020**: FR-019 changes a shared solver-interface parameter used by every
+  `solveCobraLP` caller in the toolbox. Enabling it MUST default to the **historical
+  behaviour** of each solver, so that existing results are unchanged unless a caller opts
+  in (Constitution Principle II). Any deviation is a breaking change requiring explicit
+  approval in this specification.
+- **FR-021**: For each solver, the mapping from the generic parameter to that solver's
+  concrete settings MUST be documented and justified, and MUST be verified to take effect
+  rather than assumed — a parameter silently ignored by a solver is precisely the defect
+  FR-019 exists to remove.
 - **FR-012**: Coverage behaviour MUST be exercised by tests that run in CI without
   git-submodule content, extending the existing `testGreedyExtremeRayBasis.m` per
   Constitution Principle III-Naming.
@@ -253,6 +284,23 @@ A2 and A3 are the strong outcomes: either removes the two-solver dependency enti
 is the fallback that is known in advance to be capable of both, at the cost of that
 dependency. **None is assumed to work**; the choice follows the measurement.
 
+### How the comparison must be run: PAIRED, at identical greedy state
+
+The comparison MUST be a matched one. At a given point in the greedy search the state is
+the partially complete basis `Zpos`, the derived support mask, and one drawn objective
+vector. Every solver under comparison MUST be handed **that same partial `Zpos` and that
+same objective vector**, and their returned rays compared against each other.
+
+This is not a refinement of convenience. The parent feature's per-solver figures came
+from independent whole runs with independent random streams, which diverge into different
+accumulated bases after the first accepted ray — so they measure solver effect and search
+path *confounded together*. A matched design isolates the solver's contribution: given
+identical state and identical objective, which vertex does each solver return, how
+accurate is it, and does it add a new independent direction?
+
+Because the state exists only inside the search, **the comparison must be instrumented
+within `greedyExtremeRayBasis` itself**, not assembled from separate outer runs.
+
 **A grounding note carried from reading the solver interfaces.** The generic
 `NUMERICALEMPHASIS` parameter defaults to 1 but is consumed only by the CPLEX interface
 (which sets it to 0); it is not plumbed to mosek or gurobi. "Numerical emphasis on"
@@ -285,6 +333,16 @@ research question, not a decision taken here.
   approach was rejected on measurement rather than assumption.
 - **SC-009**: If a single-solver approach (A2 or A3) meets SC-001, the two-solver
   approach A1 is NOT adopted, and the reason is recorded.
+- **SC-010**: The comparison record shows, for at least one full greedy search, each
+  compared solver's ray at the SAME paired state — identical partial basis, identical
+  objective vector — with residual, independence and acceptance per solver per point.
+- **SC-011**: With the comparison instrumentation off, results are identical to the same
+  call before this feature, demonstrating the instrumentation is inert by default.
+- **SC-012**: Requesting numerical emphasis produces a demonstrable change in behaviour
+  for every installed solver, verified per solver rather than assumed from the parameter
+  being set.
+- **SC-013**: With numerical emphasis left at its default, a representative set of
+  existing toolbox LP results is unchanged, demonstrating FR-020's backward compatibility.
 - **SC-007**: Any solver parameter set by the feature is recorded with its rationale and
   reached through the solver abstraction.
 - **SC-008**: The coverage tests run within `test/testAll.m`, pass in CI, skip gracefully
@@ -323,11 +381,33 @@ research question, not a decision taken here.
   `optimalExtremePoolDriver.m:119` and `testFindExtremePathway.m:75` — and routed to the
   implementation-approval gate rather than assumed here.
 
+## Blast radius of the numerical-emphasis requirement
+
+FR-019 is much wider than the rest of this feature and is called out separately so it is
+approved deliberately rather than by inheritance. It changes files under
+`src/base/solvers/`, which every LP, QP, MILP and EP solve in the toolbox passes through:
+the shared parameter layer, and the per-solver interfaces for mosek, gurobi, glpk and any
+other installed solver.
+
+The risk is concrete. `NUMERICALEMPHASIS` already defaults to **1**. If interfaces begin
+honouring a value that was previously ignored, **every LP solve in the toolbox changes
+behaviour at once** — which FR-020 forbids. The requirement is therefore that the plumbed
+analogues default to each solver's historical behaviour, with emphasis opt-in.
+
+Whether this ships as part of this feature or as its own is an implementation-approval
+decision, not one taken here. It is separable: the coverage work (FR-001 to FR-018) can
+proceed with per-solver settings applied locally, and the generic parameter plumbed
+afterwards.
+
 ## Traceability
 
 | Acceptance criterion | Discharging test | src/<domain>/ function under test |
 |----------------------|------------------|-----------------------------------|
 | US1 / FR-001, SC-001 (complete AND accurate in one call) | `testGreedyExtremeRayBasis.m` — coverage case | `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m` |
+| FR-016, FR-018, SC-010 (paired comparison at identical greedy state) | comparison record under this feature directory | same |
+| FR-017, SC-011 (instrumentation inert when off) | `testGreedyExtremeRayBasis.m` — instrumentation-off equivalence case | same |
+| FR-019, FR-021, SC-012 (numerical-emphasis analogue per solver, verified to take effect) | `testSolveCobraLP.m` — per-solver emphasis case | `src/base/solvers/` parameter layer and per-solver interfaces |
+| FR-020, SC-013 (default preserves historical behaviour) | `testSolveCobraLP.m` — default-unchanged case | same |
 | US1 / SC-002 (augmented rank unambiguous) | `testGreedyExtremeRayBasis.m` — augmented-rank case | same |
 | US1 / FR-003, SC-004 (non-negativity, fixtures unregressed) | `testGreedyExtremeRayBasis.m` — exact fixtures | same |
 | US2 / FR-007, SC-003 (coverage and accuracy reported together; no accuracy regression) | `testGreedyExtremeRayBasis.m` — status assertions | same |

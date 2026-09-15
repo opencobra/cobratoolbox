@@ -52,6 +52,14 @@
   reach full coverage. Whether the gap is closable at all is stated as a finding of the
   work.
 
+- **Two requirements added after the initial draft, on user instruction**: the solver
+  comparison must be PAIRED at identical greedy state and instrumented inside the routine
+  (FR-016 to FR-018), and the numerical-emphasis concept must have an analogue for every
+  solver rather than CPLEX alone (FR-019 to FR-021). The second carries a much wider blast
+  radius than the rest of the feature — it touches the shared solver parameter layer that
+  every toolbox solve passes through — so the spec gives it its own section and routes the
+  decision to implementation approval rather than letting it be approved by inheritance.
+
 - **The distinction the spec is built around**: a *sampling* shortfall (reachable but not
   found) versus a *structural* one (not reachable with non-negative weights). Conflating
   them is how the parent feature's first hypothesis went wrong, and FR-005/FR-006 exist to
