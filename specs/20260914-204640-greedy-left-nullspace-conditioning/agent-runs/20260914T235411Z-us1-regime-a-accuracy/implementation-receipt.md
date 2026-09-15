@@ -205,13 +205,16 @@ artifact (T043, outside the approved slice).
    that ran the tightened acceptance before the T016b timeout fix existed, and so span
    forever. All verification in this run was completed headless via `matlab -batch`,
    which is the CI path.
-6. **The 101-vs-105 question is open.** Under gurobi, iDopaNeuroC yields 101 of an
-   expected 105 rays, and restarting from fresh randomness nine times reaches the same
-   101, so the shortfall is structural rather than stochastic. The hypothesis that the
-   NON-NEGATIVE extreme rays span fewer than `nVar - rankS` dimensions - which would mean
-   105 was never reachable and `raysExpected` is systematically wrong - is recorded as
-   the next thing to measure, not as a finding. `status.raysExpectedIsEstimate` is
-   always true for exactly this reason.
+6. **The 101-vs-105 shortfall is a SOLVER COVERAGE limit**, superseding an earlier note
+   in this receipt that called it structural. Measured afterwards: `ker(N')` contains a
+   strictly positive vector (`min 1`, `max 93.75`, residual 7.105e-15), i.e. the network
+   is stoichiometrically consistent, which implies the non-negative cone spans the
+   ENTIRE 105-dimensional left nullspace - nothing is geometrically missing. mosek
+   separately reached 105 of 105 at the pre-change tolerance. gurobi stalls at 101
+   because the normalised polytope is degenerate and its pivoting returns a restricted
+   set of optimal vertices; restarts do not help because the limitation lies in
+   deterministic vertex selection, not in the random objective. Neither solver currently
+   delivers coverage AND accuracy together, which is the follow-up.
 7. **`varkin` is untouched, as required.** What it needs to assert once this routine
    ships is stated in `plan.md` for separate specification in that repository.
 
