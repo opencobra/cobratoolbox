@@ -194,12 +194,11 @@ account of the limit, not a quiet compromise.
 - **FR-010**: Any solver parameter this feature sets MUST be recorded with the reason,
   and MUST be reached through the toolbox's solver abstraction rather than by calling a
   solver directly (Constitution Principle IV).
-- **FR-011**: A two-solver call is **approved** as approach A1 (Session 2026-09-15), but
-  only as a fallback: it MAY be adopted only if neither single-solver approach meets
-  SC-001. If adopted, the two-solver requirement MUST be a documented limitation, the
-  routine MUST detect at run time that both solvers are available, and it MUST degrade to
-  a clearly reported single-solver outcome where they are not.
-- **FR-014**: The three approaches A1, A2 and A3 named in Clarifications MUST each be
+- **FR-011**: A single call MUST NOT require two solvers. The two-phase approach is out
+  of scope by decision (Clarifications, 2026-09-15). Where no single-solver configuration
+  meets SC-001, the routine MUST report the limit honestly under User Story 3 rather than
+  reaching for a second solver.
+- **FR-014**: The approaches A2 and A3 named in Clarifications MUST each be
   measured on the same model with the same seed, and compared on coverage, accuracy,
   runtime and replicate count. **The comparison MUST also include the current default
   behaviour of each solver as a control**, so an apparent gain is shown to be a gain over
@@ -269,9 +268,13 @@ account of the limit, not a quiet compromise.
 ### Session 2026-09-15
 
 - Q: May one call use two different solvers, given that a two-phase approach would make
-  it depend on two specific installs? -> A: **Yes — pursue it, as one of three approaches
-  to be compared.** It is approach A1 below. It is not adopted by default; it must earn
-  its place against the two single-solver approaches.
+  it depend on two specific installs? -> A: **Initially yes as a fallback; then WITHDRAWN.**
+  On review (2026-09-15) the two-phase approach A1 is **dropped from scope entirely** — not
+  deferred, not conditional. The feature pursues the two single-solver approaches only.
+  **Consequence, stated rather than left implicit**: if neither A2 nor A3 meets SC-001
+  there is no remaining approach that closes the gap, and the deliverable becomes User
+  Story 3 — an honest account of the limit, with coverage reported truthfully against the
+  attainable dimension. That is an acceptable landing point, not a failure.
 - Q: If the gap cannot be closed, what is the deliverable? -> A: **Settled by the same
   comparison.** Three named approaches are measured against SC-001; whichever meets it is
   the remedy. If none does, User Story 3 (an honest account of the limit) becomes the
@@ -281,14 +284,13 @@ account of the limit, not a quiet compromise.
 
 | # | Approach | Rationale |
 |---|---|---|
-| **A1** | **Two-phase**: the solver with better coverage locates the ray supports, the solver with better accuracy produces each ray | Directly combines the two measured strengths. Costs a dependency on two solvers being installed. |
 | **A2** | **mosek, parameters tailored to the problem** — numerical emphasis raised, via the interior-point tolerances and optimizer selection the toolbox already exposes | mosek already achieves full coverage (105 of 105); the open question is whether its accuracy can be lifted to the target without losing that. |
 | **A3** | **gurobi, parameters tailored to the problem** — the same intent expressed with gurobi's own knobs | gurobi already achieves the accuracy (1.185e-16); the open question is whether its vertex coverage can be widened without losing that. |
 | **A0** | **Control: both solvers at current defaults** | Not an approach but the baseline the other three are judged against, so a gain is demonstrably a gain over the status quo. |
 
-A2 and A3 are the strong outcomes: either removes the two-solver dependency entirely. A1
-is the fallback that is known in advance to be capable of both, at the cost of that
-dependency. **None is assumed to work**; the choice follows the measurement.
+A2 and A3 are the only approaches pursued. The two-phase approach A1 is **out of scope by
+decision**, so neither is a fallback for the other: if both fail, the feature delivers
+User Story 3. **Neither is assumed to work**; the choice follows the measurement.
 
 ### How the comparison must be run: PAIRED, at identical greedy state
 
@@ -345,8 +347,9 @@ measured before it is relied on.
   coverage, accuracy, runtime and replicate counts reported per approach in one
   comparable table, so the selected remedy is traceable to evidence and any rejected
   approach was rejected on measurement rather than assumption.
-- **SC-009**: If a single-solver approach (A2 or A3) meets SC-001, the two-solver
-  approach A1 is NOT adopted, and the reason is recorded.
+- **SC-009**: If neither A2 nor A3 meets SC-001, the feature delivers User Story 3 and
+  records plainly that the gap was not closed by either tuned single-solver configuration,
+  with the measured shortfall of each.
 - **SC-010**: The comparison record shows, for at least one full greedy search, each
   compared solver's ray at the SAME paired state — identical partial basis, identical
   objective vector — with residual, independence and acceptance per solver per point.
