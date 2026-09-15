@@ -226,23 +226,29 @@ account of the limit, not a quiet compromise.
   and whether it was accepted — so that a solver's advantage is attributable to accuracy,
   to vertex diversity, or to both.
 
-**Numerical emphasis across solvers**
+**Solver settings tuned to this problem, encoded in the routine**
 
-- **FR-019**: The generic numerical-emphasis concept MUST have an analogue for **every
-  supported solver**, not only CPLEX. Today `NUMERICALEMPHASIS` defaults to 1 but is read
-  only by the CPLEX interface, which sets it to 0; mosek, gurobi, glpk and the remaining
-  interfaces ignore it entirely. A caller asking for numerical emphasis MUST get the
-  nearest equivalent behaviour from whichever solver is installed, expressed in that
-  solver's own terms and reached through the solver abstraction.
-- **FR-020**: FR-019 changes a shared solver-interface parameter used by every
-  `solveCobraLP` caller in the toolbox. Enabling it MUST default to the **historical
-  behaviour** of each solver, so that existing results are unchanged unless a caller opts
-  in (Constitution Principle II). Any deviation is a breaking change requiring explicit
-  approval in this specification.
-- **FR-021**: For each solver, the mapping from the generic parameter to that solver's
-  concrete settings MUST be documented and justified, and MUST be verified to take effect
-  rather than assumed — a parameter silently ignored by a solver is precisely the defect
-  FR-019 exists to remove.
+- **FR-019**: `greedyExtremeRayBasis` MUST carry its own **per-solver parameter sets,
+  tuned to this problem**, for at least mosek and gurobi. The generic
+  `setCobraSolverParams` layer covers only a basic set of parameters and is NOT the
+  vehicle for this: the settings that matter here are solver-specific and problem-specific
+  (degeneracy handling, vertex identification, interior-point tolerances), and they belong
+  with the routine that knows the problem, not in a shared layer every toolbox solve
+  passes through.
+- **FR-020**: Those settings MUST be applied through the `solveCobraLP` parameter
+  pass-through rather than by calling a solver's own API directly, so the solver
+  abstraction is preserved (Constitution Principle IV).
+- **FR-021**: The chosen settings MUST be **derived by measurement**, and each MUST be
+  recorded with the mismatch it corrects between the solver's default and this problem's
+  structural profile — sparse, all-equality, simplex-normalised, massively degenerate.
+  Principle IV requires exactly this audit and requires mismatched defaults to be
+  identified and overridden with the rationale recorded.
+- **FR-022**: Each setting MUST be **verified to take effect** rather than assumed. A
+  parameter a solver silently ignores, or rejects, is worse than none, because it creates
+  the appearance of tuning where there is none.
+- **FR-023**: A solver for which no tuned set exists MUST still work, using the solver's
+  defaults, and the status MUST record whether a tuned set was applied — so a user on
+  glpk or pdco is never left believing they received tuned behaviour they did not get.
 - **FR-012**: Coverage behaviour MUST be exercised by tests that run in CI without
   git-submodule content, extending the existing `testGreedyExtremeRayBasis.m` per
   Constitution Principle III-Naming.
@@ -302,13 +308,21 @@ Because the state exists only inside the search, **the comparison must be instru
 within `greedyExtremeRayBasis` itself**, not assembled from separate outer runs.
 
 **A grounding note carried from reading the solver interfaces.** The generic
-`NUMERICALEMPHASIS` parameter defaults to 1 but is consumed only by the CPLEX interface
-(which sets it to 0); it is not plumbed to mosek or gurobi. "Numerical emphasis on"
-therefore has to be expressed in each solver's own terms, both of which are reachable
-through the toolbox abstraction rather than by calling a solver directly (FR-010):
-mosek through `param.lpmethod` -> `MSK_IPAR_OPTIMIZER` and the `MSK_DPAR_INTPNT_*`
-tolerances, gurobi through `param.Method`. Which specific settings to use is a Phase-0
-research question, not a decision taken here.
+`NUMERICALEMPHASIS` parameter defaults to 1 but is consumed only by the CPLEX interface,
+which sets it to 0; mosek and gurobi ignore it. The tuned settings for A2 and A3 are
+therefore expressed in each solver's own terms and **encoded in the routine** (FR-019),
+passed through `solveCobraLP` rather than set on a solver directly (FR-020). Both are
+reachable that way: mosek through `param.lpmethod` -> `MSK_IPAR_OPTIMIZER` and the
+`MSK_DPAR_INTPNT_*` tolerances, gurobi through `param.Method`. Which specific settings to
+use is a Phase-0 research question, decided by measurement, not here.
+
+**A hypothesis for Phase 0 to test, not an assumption.** The coverage/accuracy split has
+the signature of interior-point versus simplex. An interior-point solution without full
+basis identification is not an exact vertex, which would explain both mosek's vertex
+diversity and its ~1e-12 residuals; simplex returns exact vertices, explaining gurobi's
+exactness and its narrow, degeneracy-limited vertex set. If that holds, A2 is
+substantially "enable basis identification" and A3 is "vary the tie-break". It must be
+measured before it is relied on.
 
 ## Success Criteria *(mandatory)*
 
@@ -338,11 +352,12 @@ research question, not a decision taken here.
   objective vector — with residual, independence and acceptance per solver per point.
 - **SC-011**: With the comparison instrumentation off, results are identical to the same
   call before this feature, demonstrating the instrumentation is inert by default.
-- **SC-012**: Requesting numerical emphasis produces a demonstrable change in behaviour
-  for every installed solver, verified per solver rather than assumed from the parameter
-  being set.
-- **SC-013**: With numerical emphasis left at its default, a representative set of
-  existing toolbox LP results is unchanged, demonstrating FR-020's backward compatibility.
+- **SC-012**: Every tuned setting the routine applies is demonstrated to take effect for
+  the solver it targets — verified, not inferred from having set it.
+- **SC-013**: A solver with no tuned set still produces a working result, and the status
+  reports that no tuned set was applied.
+- **SC-014**: Each tuned setting is recorded against the specific default/profile mismatch
+  it corrects, so a reviewer can judge the choice without rerunning the search.
 - **SC-007**: Any solver parameter set by the feature is recorded with its rationale and
   reached through the solver abstraction.
 - **SC-008**: The coverage tests run within `test/testAll.m`, pass in CI, skip gracefully
@@ -381,23 +396,30 @@ research question, not a decision taken here.
   `optimalExtremePoolDriver.m:119` and `testFindExtremePathway.m:75` — and routed to the
   implementation-approval gate rather than assumed here.
 
-## Blast radius of the numerical-emphasis requirement
+## Why the tuned settings are NOT plumbed through the generic parameter layer
 
-FR-019 is much wider than the rest of this feature and is called out separately so it is
-approved deliberately rather than by inheritance. It changes files under
-`src/base/solvers/`, which every LP, QP, MILP and EP solve in the toolbox passes through:
-the shared parameter layer, and the per-solver interfaces for mosek, gurobi, glpk and any
-other installed solver.
+An earlier draft of this specification required the numerical-emphasis concept to be
+given an analogue for every solver in the shared `src/base/solvers/` parameter layer.
+**That approach is withdrawn**, on two grounds:
 
-The risk is concrete. `NUMERICALEMPHASIS` already defaults to **1**. If interfaces begin
-honouring a value that was previously ignored, **every LP solve in the toolbox changes
-behaviour at once** — which FR-020 forbids. The requirement is therefore that the plumbed
-analogues default to each solver's historical behaviour, with emphasis opt-in.
+1. **`setCobraSolverParams` covers only a basic set of parameters.** What this problem
+   needs is neither basic nor general: it is degeneracy handling and vertex identification
+   chosen for a massively degenerate, simplex-normalised, all-equality LP. Those settings
+   have no meaning for most toolbox solves and do not belong in a shared layer.
+2. **The blast radius was unacceptable for the gain.** `NUMERICALEMPHASIS` already
+   defaults to 1 while the only interface that reads it, CPLEX, sets it to 0. Making the
+   other interfaces honour a previously-ignored default would change every LP, QP, MILP
+   and EP solve in the toolbox at once, and would have needed regression evidence across
+   every solver to ship safely.
 
-Whether this ships as part of this feature or as its own is an implementation-approval
-decision, not one taken here. It is separable: the coverage work (FR-001 to FR-018) can
-proceed with per-solver settings applied locally, and the generic parameter plumbed
-afterwards.
+The settings therefore live in `greedyExtremeRayBasis`, applied through `solveCobraLP`'s
+parameter pass-through. This keeps the solver abstraction intact (FR-020) while putting
+problem-specific knowledge with the routine that holds the problem.
+
+**Recorded for a future feature, not fixed here**: the generic `NUMERICALEMPHASIS`
+parameter is in an inconsistent state — defaulted to 1 in `getCobraSolverParams`, set to 0
+by `CPLEXParamSet`, and ignored by every other interface. That is a real defect in the
+shared layer, but it is not this feature's to fix.
 
 ## Traceability
 
@@ -406,8 +428,9 @@ afterwards.
 | US1 / FR-001, SC-001 (complete AND accurate in one call) | `testGreedyExtremeRayBasis.m` — coverage case | `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m` |
 | FR-016, FR-018, SC-010 (paired comparison at identical greedy state) | comparison record under this feature directory | same |
 | FR-017, SC-011 (instrumentation inert when off) | `testGreedyExtremeRayBasis.m` — instrumentation-off equivalence case | same |
-| FR-019, FR-021, SC-012 (numerical-emphasis analogue per solver, verified to take effect) | `testSolveCobraLP.m` — per-solver emphasis case | `src/base/solvers/` parameter layer and per-solver interfaces |
-| FR-020, SC-013 (default preserves historical behaviour) | `testSolveCobraLP.m` — default-unchanged case | same |
+| FR-019, FR-021, FR-022, SC-012, SC-014 (tuned per-solver settings, measured and verified to take effect) | `testGreedyExtremeRayBasis.m` — tuned-settings cases + research record | `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m` |
+| FR-020 (applied through the solver abstraction, not a direct solver API) | code review against Principle IV + `testGreedyExtremeRayBasis.m` | same |
+| FR-023, SC-013 (untuned solver still works and says so) | `testGreedyExtremeRayBasis.m` — untuned-solver case | same |
 | US1 / SC-002 (augmented rank unambiguous) | `testGreedyExtremeRayBasis.m` — augmented-rank case | same |
 | US1 / FR-003, SC-004 (non-negativity, fixtures unregressed) | `testGreedyExtremeRayBasis.m` — exact fixtures | same |
 | US2 / FR-007, SC-003 (coverage and accuracy reported together; no accuracy regression) | `testGreedyExtremeRayBasis.m` — status assertions | same |
