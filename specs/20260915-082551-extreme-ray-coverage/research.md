@@ -2,8 +2,7 @@
 
 **Feature**: [spec.md](./spec.md) | **Plan**: [plan.md](./plan.md) | **Date**: 2026-09-15
 
-**Status: PROCEDURES DEFINED, MEASUREMENTS NOT YET TAKEN.** Every Result slot is
-deliberately empty and is filled from runs, not from reasoning.
+**Status: MEASURED 2026-09-15.** Drivers under `measurements/`.
 
 Inherited without re-derivation, from the parent feature's `measurements/results.md`:
 gurobi assembled residual **1.185e-16** with **101 of 105** rays; mosek **9.342e-09** with
@@ -47,11 +46,16 @@ call.
 
 ### Result
 
-*Not yet measured.*
-
-- Mechanism chosen for holding state identical: —
-- Evidence that instrumentation-off is inert (SC-011): —
-- Number of paired points collected, and the `k` range covered: —
+- **Mechanism**: the objective is drawn ONCE by the search; the harness reuses it for
+  every solver and the search advances on the nominated solver's ray, **reused from the
+  comparison loop rather than re-solved**. The comparison consumes no draws from the
+  random stream, so the state sequence is identical instrumented or not.
+- **Inertness (SC-011)**: with `compareSolvers` unset and with it `{}`, the basis is
+  bit-identical, `raysFound` identical, residual identical, and no paired record is
+  produced. Asserted in the test, not argued.
+- **Collected**: **570 rows over 285 paired points**, `k` from 0 to 98.
+- **Pairing audit**: every solver at a point received the same objective — verified from
+  `objectiveHash`, so the pairing is checkable rather than claimed.
 
 ---
 
@@ -95,14 +99,26 @@ vertices, explaining gurobi's exactness and its narrow, degeneracy-limited verte
   this prior. The parent feature's lesson is that a plausible mechanism recorded as
   established is the trap.
 
-### Result
+### Result — **CONFIRMED**, but it does not explain coverage
 
-*Not yet measured.*
+| iDopaNeuroC, 285 paired points | gurobi | mosek |
+|---|---|---|
+| **basis returned** (`vbasis`/`cbasis`) | **285/285** | **0/285** |
+| residual median / max | **0** / 2.220e-16 | 9.326e-15 / 7.007e-10 |
+| meets the accuracy target | **285/285** | 232/285 |
+| **independent of the current basis** | **195/285 (68.4%)** | **205/285 (71.9%)** |
+| solve time median | 0.024 s | 0.043 s |
 
-- Basis returned, per solver: —
-- Solver-reported algorithm, per solver: —
-- Vertex-like vs interior-like classification of returned rays: —
-- **Verdict (confirmed / refuted)**: —
+**The algorithm-class hypothesis is confirmed for ACCURACY**: gurobi returns a basis on
+every solve and mosek on none, which is the simplex-versus-interior-point discriminator,
+and the residuals follow exactly.
+
+**It is REFUTED for COVERAGE.** Under matched conditions the two solvers find new
+independent directions at nearly the same rate — 68.4% against 71.9%. The dramatic
+unpaired gap (gurobi 0.46% hit rate against mosek 9.6%) was largely an artefact of
+**path divergence** between independent runs, not a per-solve property. This is exactly
+what the paired design was introduced to expose, and it could not have been seen any
+other way.
 
 ---
 
@@ -136,14 +152,31 @@ assess — **a list to evaluate, not a prescription**:
 Settings MUST be applied through `solveCobraLP`'s pass-through, never by calling a solver
 directly (FR-020).
 
-### Result
+### Result — **no tuned set is adopted, because the premise is false**
 
-*Not yet measured.*
+The audit reached a negative conclusion that makes A2 and A3 moot, and it is the central
+finding of this feature.
 
-- gurobi configuration surface, defaults, mismatches identified: —
-- mosek configuration surface, defaults, mismatches identified: —
-- Proposed tuned set A3 (gurobi), with the mismatch each setting corrects: —
-- Proposed tuned set A2 (mosek), with the mismatch each setting corrects: —
+**The LP has a UNIQUE optimum for a random objective.** Maximising a different random
+direction *subject to remaining optimal for the original objective* returns the identical
+point (difference 0.000e+00 in the infinity norm). Where the optimum is unique there is
+no choice of vertex to make, so pivoting and tie-breaking cannot influence which ray is
+returned.
+
+Measured directly, one objective, each setting against the default:
+
+| Setting | Returned ray differs? | residual | basis | t(s) |
+|---|---|---|---|---|
+| (defaults) | baseline | 0.000e+00 | yes | 0.031 |
+| `Seed=1` / `Seed=2` / `Seed=12345` | **no** | 0.000e+00 | yes | 0.016-0.032 |
+| `Method=0` / `1` / `2` | **no** | 0.000e+00 | yes | 0.029-0.066 |
+| `NumericFocus=3` | **no** | 0.000e+00 | yes | 0.014 |
+| `Presolve=0` | **no** | 0.000e+00 | yes | 0.014 |
+| `Crossover=0` | **no** | 0.000e+00 | yes | 0.014 |
+
+**The spec's stated mechanism — "the solver's pivoting and tie-breaking decide which
+optimal vertex a given objective returns" — is therefore measured FALSE.** The objective
+decides; the solver has no latitude.
 
 ---
 
@@ -161,13 +194,20 @@ of the returned point, or the solver's own log. Record the observable and its be
 values. A setting whose effect cannot be observed MUST be reported as unverified rather
 than quietly retained.
 
-### Result
+### Result — settings DO reach the solver; the verification handle works
 
-*Not yet measured.*
+This had to be separated from R3's negative result, or "nothing changed" would have been
+ambiguous between "the parameter did nothing" and "the parameter never arrived".
 
-- Per-setting observable and before/after values: —
-- Settings adopted: —
-- Settings found to be ignored or rejected: —
+| Setting | Observable | Outcome |
+|---|---|---|
+| `IterationLimit = 1` | solver status | `stat = -1`, `origStat = ITERATION_LIMIT` |
+| `TimeLimit = 1e-4` | solver status | `stat = -1`, `origStat = TIME_LIMIT` |
+| `NodeLimit = 0` | solver status | `stat = 1`, `OPTIMAL` — a MIP parameter correctly ignored for an LP |
+
+**Settings reach gurobi and take effect.** So R3's finding is a genuine property of the
+problem, not a plumbing failure. **Settings adopted: none** — none changes the returned
+ray, so adopting any would be decoration.
 
 ---
 
@@ -186,14 +226,17 @@ deliverable becomes User Story 3.
 
 ### Result
 
-*Not yet measured.*
+A2 and A3 were not run as tuned configurations: R3 showed no setting changes the returned
+ray, so a "tuned" arm would have been identical to its control by construction. What was
+measured instead is the remedy the evidence actually pointed to.
 
-| Approach | Rays found / expected | Residual abs / scaled | Meets SC-001? | Runtime | Replicates |
+| Approach | Rays found / expected | Residual abs | Meets SC-001? | Runtime | Replicates |
 |---|---|---|---|---|---|
-| A0 gurobi default | — | — | — | — | — |
-| A0 mosek default | — | — | — | — | — |
-| A2 mosek tuned | — | — | — | — | — |
-| A3 gurobi tuned | — | — | — | — | — |
+| A0 gurobi default | 101 / 105 | 1.185e-16 | **no** (incomplete) | 180 s, timed out | 1 |
+| A0 mosek default | 105 / 105 | 9.342e-09 | **no** (misses target) | 44.6 s | 1 |
+| A2 mosek tuned | *not run* — R3 makes it identical to its control | — | — | — | — |
+| A3 gurobi tuned | *not run* — same reason | — | — | — | — |
+| **Targeted objective (adopted)** | **105 / 105** | **6.828e-15** | **YES** | **4.7 s** | 1 |
 
 ---
 
@@ -211,13 +254,24 @@ Assess: the cost of that LP at genome scale; whether to run it always, or only w
 search falls short; and how the attainable dimension is obtained when the answer is
 "structural".
 
-### Result
+### Result — and a correction to the test this question proposed
 
-*Not yet measured.*
+The procedure above proposed testing for a strictly positive vector in `ker(N')`. **That
+test is unsound in one direction and was replaced.** A strictly positive vector is
+SUFFICIENT for the non-negative cone to span the nullspace, but its absence does NOT
+imply the converse: coordinates can be forced to zero while the rest still span. Using it
+produced a false `'structural'` verdict on `ecoli_core`, whose full S carries exchange
+reactions and so has no strictly positive conservation vector — yet which reaches full
+coverage. The feature's own test caught it.
 
-- Cost of the consistency LP at genome scale: —
-- Where it belongs in the flow (always / on shortfall only): —
-- How the attainable dimension is determined in the structural case: —
+**Replaced by computing the attainable dimension**, which is sound both ways: one LP
+maximising `sum(x)` over `{S'x = 0, 0 <= x <= 1}` gives the maximal support any
+non-negative nullspace vector can have, and the reachable subspace is the part of
+`ker(S')` living on that support, of dimension `|support| - rank(S(support,:))`.
+
+- **Where in the flow**: on a shortfall only, so a complete basis pays nothing.
+- **Structural case**: the attainable dimension is reported in place of the nullity, so a
+  shortfall is never reported against a target that was never reachable (FR-006).
 
 ---
 
@@ -237,10 +291,16 @@ search falls short; and how the attainable dimension is obtained when the answer
 
 ### Result
 
-*Not yet determined.*
-
-- CI-available stalling case, or the decision that none exists: —
-- Structurally deficient fixture and its known attainable dimension: —
+- **CI-available stalling case: none was needed.** The targeted objective removes the
+  stall, so `ecoli_core` reaches full coverage in CI and serves as the SC-001 case.
+  `iDopaNeuroC` remains the documented check for the genome-scale case.
+- **G1, structurally deficient**: `S = [1 -1; 1 0; 0 1]`. One reaction creates mass from
+  nothing, so the single left-nullspace direction is `(1,-1,1)` and needs opposite signs:
+  no non-negative vector but zero lies in `ker(S')`, and the extreme-pool LP is genuinely
+  infeasible. Attainable dimension 0 against a nullity of 1, known by construction.
+- **A latent defect G1 exposed**: an infeasible solve returns an empty ray, and the
+  acceptance check then multiplied `S'` by an empty vector and crashed. Pre-existing, and
+  reachable by exactly the structural case US3 exists to handle. Now guarded.
 
 ---
 
@@ -251,9 +311,19 @@ each citing the measurement that supports it.*
 
 | # | Decision | Rationale | Alternatives considered |
 |---|---|---|---|
-| D1 | *(pending R1)* | — | — |
-| D2 | *(pending R2)* | — | — |
-| D3 | *(pending R3, R4)* | — | — |
-| D4 | *(pending R5)* | — | — |
-| D5 | *(pending R6)* | — | — |
-| D6 | *(pending R7)* | — | — |
+| **D1** | **Ship the paired harness, off by default** | It produced the finding that redirected the feature: under matched conditions the solvers' coverage rates are near-equal, refuting the unpaired story. Inertness when off is asserted by test. | Removing it after the campaign — rejected, it would leave the evidence unreproducible when a solver version changes. |
+| **D2** | **Algorithm class explains ACCURACY, not coverage** | R2: basis returned 285/285 under gurobi, 0/285 under mosek; independence 68.4% against 71.9%. | The unpaired hit-rate gap, which R1's design showed to be path divergence. |
+| **D3** | **Adopt NO tuned solver settings** | R3: the LP has a unique optimum for a random objective, so no setting changes the returned ray; R4 confirms settings do reach the solver, so this is a property of the problem and not of the plumbing. | A2 and A3 as specified — both would have been identical to their controls. |
+| **D4** | **Adopt the TARGETED OBJECTIVE** | At a basis stalled on 98 of 105 with 7 directions unspanned, a random objective produced a new independent accurate ray in **0 of 40** trials and a targeted one in **40 of 40**. End to end: 105/105 at residual 6.828e-15 in 4.7 s, against 101/105 timing out at 180 s. | Solver tuning (D3); restarts (measured useless in the parent feature); accepting partial coverage. |
+| **D5** | **Classify shortfalls by attainable dimension, not by stoichiometric consistency** | The consistency test is sound only one way and gave a false `'structural'` verdict on `ecoli_core`. | The strictly-positive test proposed in R6, withdrawn as unsound. |
+| **D6** | **G1 as the structural fixture; no new CI stalling case needed** | The targeted objective removes the stall, so `ecoli_core` serves SC-001 in CI. | Hunting for a CI-available model that still stalls — unnecessary. |
+
+## Headline finding
+
+**The coverage shortfall was never the solver's doing.** For a random objective the
+extreme-pool LP has a unique optimum, so `Seed`, `Method`, `NumericFocus`, `Presolve` and
+`Crossover` — each verified to reach gurobi — all return the identical ray. What decides
+coverage is the **objective**. Aiming it at the unspanned part of the nullspace when
+random draws stall takes iDopaNeuroC from 101 of 105 rays, timed out at 180 s, to
+**105 of 105 in 4.7 s** at a residual four orders inside the accuracy target — and the
+augmented matrix's rank becomes unanimous at 1244 across the whole tolerance span.
