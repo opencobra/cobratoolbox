@@ -112,15 +112,41 @@ iDopaNeuroC internal, gurobi, seed 20260914, total budget 240 s, 1 replicate per
 | no restart (`maxNewBasisTime = maxTime = 240`) | 101 / 105 | 0 | yes | 240.0 s | 1.185e-16 |
 | **with restart** (`maxNewBasisTime = 20`, `maxTime = 240`) | **101 / 105** | **9** | yes | 240.4 s | 1.185e-16 |
 
-Nine restarts from fresh randomness reached exactly the same 101 rays. **The stall is
-therefore structural, not a stochastic dead end**: fresh randomness does not escape it.
+Nine restarts from fresh randomness reached exactly the same 101 rays, so fresh
+randomness alone does not escape it.
 
-A candidate explanation, offered as a hypothesis and NOT as a finding: the target count
-`nVar - rankS = 105` is the dimension of the left nullspace, but the routine only admits
-**non-negative** rays, and the non-negative extreme rays may span a strictly smaller
-subspace. If so, 101 is the correct answer and 105 was never reachable. This is exactly
-the concern FR-010 encodes as `raysExpectedIsEstimate`, and it needs its own measurement
-before anything is concluded. It is recorded here as the next question, not as an answer.
+**CORRECTION (2026-09-15).** This was first written up as "the stall is structural, not a
+stochastic dead end", with the hypothesis that the non-negative extreme rays span fewer
+than `nVar - rankS = 105` dimensions. **Two measurements refute that**, and the
+hypothesis is withdrawn:
+
+1. **The cone spans the whole left nullspace.** A feasibility LP (`N'x = 0, x >= 1`)
+   returns a STRICTLY POSITIVE conservation vector: `min(x) = 1`, `max(x) = 93.75`,
+   `norm(x'N, inf) = 7.105e-15`. Whenever `ker(N')` contains a strictly positive vector
+   `x*`, every `y` in `ker(N')` satisfies `x* + y/t >= 0` for large enough `t`, so
+   `y = t((x* + y/t) - x*)` lies in the span of the non-negative cone. Hence
+   `span(K) = ker(N')` and **all 105 directions are reachable with non-negative
+   weights**. That strictly positive vector is exactly stoichiometric consistency, which
+   is what restricting to `SConsistentRxnBool` guarantees.
+2. **mosek actually found all 105** (section 4: "accepted 105 of 105 in 1096 tries,
+   44.6 s"), at the pre-change tolerance. So 105 independent non-negative rays are not
+   merely reachable in principle, they were found in practice.
+
+**The real cause is vertex sampling, not geometry.** Each ray is a vertex of
+`{x >= 0, x'N = 0, sum(x) = 1}` selected by maximising a random linear objective. The
+cone is pointed, so its extreme rays do generate it -- but the polytope is massively
+degenerate, and a solver's pivoting and tie-breaking decide WHICH optimal vertex a given
+objective returns. Different algorithms therefore reach different subsets: gurobi's hit
+rate is 0.46% and it stalls at 101, mosek's is 9.6% and it reaches 105. Restarting does
+not help because the deficiency is in the solver's deterministic vertex selection, not
+in the randomness of the objective it is handed.
+
+The bind is that neither solver gives both properties at once: gurobi supplies the
+accuracy (1.185e-16) but not the coverage; mosek supplies the coverage but not the
+accuracy (9.342e-09, four orders above the derived target). Closing the gap is a
+follow-up, and the promising directions are solver-side rather than algorithmic --
+perturbing the objective to break ties, forcing a different pivot rule, or seeding the
+search with the strictly positive vector above -- not accepting 101 as the answer.
 
 The restart mechanism is retained: it costs nothing when the search is progressing (it
 triggers only on exhausting the per-basis budget), it is reported via `status.nRestarts`,

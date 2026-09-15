@@ -56,11 +56,14 @@ What is and is not promised by this record:
   rays actually accepted, with zero all-zero padding rows, so the row count cannot be
   mistaken for a complete basis. Before this feature the same run returned 105 rows of
   which 4 were padding.
-- **The 101 is not a defect of this check.** Restarting from fresh randomness nine times
-  reaches the same 101 (see `measurements/results.md` section 6), so the shortfall is
-  structural rather than a stochastic dead end. Whether `raysExpected = 105` was ever
-  reachable by NON-NEGATIVE rays is an open question, recorded as the next thing to
-  measure. `status.raysExpectedIsEstimate` is always true for exactly this reason.
+- **The 101 is a solver coverage limit, not a geometric one.** All 105 directions ARE
+  reachable with non-negative weights: `ker(N')` contains a strictly positive vector
+  (`min 1`, `max 93.75`), which is stoichiometric consistency, and that implies the
+  non-negative cone spans the whole left nullspace. mosek reached 105 of 105 at the
+  pre-change tolerance. gurobi stalls at 101 because the normalised polytope is
+  degenerate and its pivoting returns a restricted set of optimal vertices; restarting
+  does not help, because the limitation is in deterministic vertex selection rather than
+  in the random objective. See `measurements/results.md` section 7.
 - **Runtime is reported, not promised.** 180.0 s is the total budget the check sets, not
   a performance claim; the run uses all of it because it is still searching when the
   budget expires.
