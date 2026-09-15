@@ -105,9 +105,12 @@ Result slots in `research.md`.
 **Goal**: no zero-padded rows; row count equals rays accepted.
 **Independent test**: F7 short time budget forces early termination.
 
-- [ ] T032 [US3] Remove the full-height preallocation path so the returned `Zpos` has exactly `raysFound` rows and never an all-zero placeholder row (FR-010) in `GERB`
-- [ ] T033 [US3] Populate `raysFound`, `raysExpected`, `raysRejectedForDependence` and `raysExpectedIsEstimate` — the last always true, because the expected count comes from a rank computation and is a target, not ground truth (FR-010) in `GERB`
-- [ ] T034 [P] [US3] Test: F7 forced early termination — no all-zero rows, row count equals rays accepted, status records incompleteness, and a caller inspecting only `size(Zpos,1)` cannot be misled, in `TEST` (SC-006)
+- [X] T032 [US3] Remove the full-height preallocation path so the returned `Zpos` has exactly `raysFound` rows and never an all-zero placeholder row (FR-010) in `GERB`
+- [X] T033 [US3] Populate `raysFound`, `raysExpected`, `raysRejectedForDependence` and `raysExpectedIsEstimate` — the last always true, because the expected count comes from a rank computation and is a target, not ground truth (FR-010) in `GERB`
+- [X] T034 [P] [US3] Test: F7 forced early termination — no all-zero rows, row count equals rays accepted, status records incompleteness, and a caller inspecting only `size(Zpos,1)` cannot be misled, in `TEST` (SC-006)
+
+- [X] T032a [US3] Assert the FR-010 property on the returned object: an all-zero row now raises `greedyExtremeRayBasis:zeroBasisRow` rather than being returned, so the guard fails loudly instead of silently
+- [X] T032b [US3] Reverted the US2-era header warning that `.raysFound` may differ from `size(Zpos, 1)`. With the basis trimmed the two are equal again, and the header says so
 
 **Checkpoint**: the second silent-wrongness mechanism is closed.
 

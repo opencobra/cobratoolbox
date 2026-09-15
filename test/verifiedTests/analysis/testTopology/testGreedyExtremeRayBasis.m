@@ -226,6 +226,50 @@ for k = 1:length(solvers.LP)
         assert(statusStrict.timedOut, ...
             'a run that rejects every candidate must report that it timed out');
 
+        % ---- User Story 3: an incomplete basis that admits it is incomplete ----
+        %
+        % T034 / SC-006 / FR-010. A basis preallocated to its expected height and
+        % padded with all-zero rows reads as COMPLETE to any caller that tests only
+        % size(Zpos, 1) -- which is exactly what the known downstream guards do. Zero
+        % rows are also rank-deficient by construction, so they destroy the rank gap of
+        % whatever the basis is spliced into.
+        %
+        % The impossible-target run above accepted nothing at all, so it is the
+        % sharpest case: the expected height is non-zero while the rays found is zero.
+        assert(size(ZposStrict, 1) == statusStrict.raysFound, ...
+            sprintf(['FR-010: returned %d rows for %d rays actually accepted; the row ' ...
+            'count must not overstate the basis'], size(ZposStrict, 1), statusStrict.raysFound));
+        assert(statusStrict.raysExpected > statusStrict.raysFound, ...
+            'this case must genuinely be incomplete for the assertion above to mean anything');
+        assert(isempty(ZposStrict) || all(any(ZposStrict ~= 0, 2)), ...
+            'FR-010: no all-zero placeholder row may be returned');
+        assert(strcmp(statusStrict.outcome, 'incomplete'), ...
+            'an incomplete basis must be reported as incomplete');
+
+        % a caller that inspects ONLY the row count must not be able to mistake this
+        % for a complete basis
+        assert(size(ZposStrict, 1) ~= statusStrict.raysExpected, ...
+            'the row count of an incomplete basis must differ from the expected count');
+
+        % and the same property on a partially-complete run: force early termination
+        % with a budget too short to finish, rather than one that finds nothing
+        shortParam = param;
+        shortParam.maxNewBasisTime = 0.05;
+        shortParam.maxTime = 0.05;
+        warnState = warning('off', 'greedyExtremeRayBasis:incompleteBasis');
+        [ZposShort, ~, statusShort] = greedyExtremeRayBasis(ecoliModel, shortParam);
+        warning(warnState);
+        assert(size(ZposShort, 1) == statusShort.raysFound, ...
+            'FR-010: row count must equal rays found on a time-terminated run too');
+        assert(isempty(ZposShort) || all(any(ZposShort ~= 0, 2)), ...
+            'FR-010: no all-zero row after early termination');
+        if statusShort.raysFound < statusShort.raysExpected
+            assert(strcmp(statusShort.outcome, 'incomplete'), ...
+                'a time-terminated partial basis must report itself incomplete');
+            assert(statusShort.raysExpectedIsEstimate, ...
+                'raysExpected must be flagged an estimate, not ground truth');
+        end
+
         % ---- User Story 2: Regime-B diagnosis on badly scaled input ----
         %
         % The badly scaled fixture pairs a conserved pool (rows 1-2, which give it a

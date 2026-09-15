@@ -77,7 +77,7 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .independentRank - rank of the operative matrix, computed independently of the basis
 %                  * .scalingValue - smallest non-zero singular value of the operative matrix, reported on every call
 %                  * .scalingBoundary - the regime boundary it is compared against, reported on every call
-%                  * .raysFound - rays actually ACCEPTED. WARNING: this is NOT always `size(Zpos, 1)`. `Zpos` is still preallocated to the expected height and padded with all-zero rows when the search ends early, so `size(Zpos, 1)` can overstate the basis. Use `.raysFound`, never the row count, to judge completeness. Removing the padding is spec.md FR-010, not yet implemented
+%                  * .raysFound - rays actually ACCEPTED; always equals `size(Zpos, 1)`, because the basis is trimmed to the rays found and never padded with all-zero rows. Judge completeness by comparing it with `.raysExpected`, or by reading `.outcome`
 %                  * .raysExpected - rays sought
 %                  * .raysExpectedIsEstimate - ALWAYS true: `raysExpected` comes from a rank computation, so it is a target, not ground truth
 %                  * .raysRejectedForAccuracy - candidates dropped for failing the accuracy target
@@ -432,6 +432,14 @@ if bestNBases > nBases
     nBases = bestNBases;
 end
 
+% Zpos is preallocated to the expected height so that accepted rays can be written
+% without growing it. When the search ends early the unfilled trailing rows are all
+% ZERO, and returning them would let a caller that tests only size(Zpos, 1) read an
+% incomplete basis as a complete one -- which is exactly what the known downstream
+% guards do. Trim to the rays actually accepted, so the shape of the returned basis
+% cannot overstate what was found.
+Zpos = Zpos(1:nBases, :);
+
 if param.printLevel>0
     if nBases == (nVar-rankS)
         fprintf('%u%s\n',nVar-rankS, ' extreme rays. Basis complete.');
@@ -461,6 +469,13 @@ end
 % Non-negativity of Zpos is a hard requirement, not a preference. The selected
 % remedy is subtractive -- rows are kept exactly as computed or dropped whole --
 % so this can only fail if something upstream changed, and it must be loud.
+% FR-010 asserted on the returned object: no all-zero placeholder row survives
+if nBases > 0 && ~full(all(any(Zpos ~= 0, 2)))
+    error('greedyExtremeRayBasis:zeroBasisRow', ...
+        ['Zpos contains an all-zero row, which would let a caller reading only ' ...
+        'size(Zpos, 1) mistake an incomplete basis for a complete one.']);
+end
+
 nonNegative = full(all(Zpos(:) >= 0));
 if ~nonNegative
     error('greedyExtremeRayBasis:negativeBasisEntry', ...

@@ -1,7 +1,7 @@
 # Implementation Receipt
 
 **Feature**: `specs/20260914-204640-greedy-left-nullspace-conditioning`
-**Run**: US1 slice (Regime-A accuracy, T001-T021) and, after Gate 3 approved continuation, US2 (Regime-B diagnosis, T022-T031a)
+**Run**: US1 slice (Regime-A accuracy, T001-T021) and, after Gate 3 approved continuation twice, US2 (Regime-B diagnosis, T022-T031a) and US3 (truthful completeness, T032-T034)
 **Date (UTC)**: 2026-09-14T23:54Z
 **Path**: `/speckit-implement` (core implementer, inline) — the path approved at Gate 2
 **Branch**: `20260914-204640-greedy-left-nullspace-conditioning`
@@ -17,7 +17,8 @@
 - implementation path `/speckit-implement`.
 - commit the planning artifacts first (done, `78d4eade5`).
 
-At Gate 3 the user chose **"Continue with US2"**, approving T022-T031a as further scope
+At Gate 3 the user chose **"Continue with US2"** (T022-T031a), and at the following
+Gate 3 **"US3 - stop the zero padding"** (T032-T034), each approving further scope
 within the same run.
 
 One further instruction arrived mid-run, from the user, in their own words:
@@ -76,6 +77,16 @@ was touched. The three modified submodule pointers (`external/...`,
     conservative surrogate was too loose for a badly scaled matrix.
 14. **`scalingValue` / `scalingBoundary` on every call**, not only in Regime B, so a
     caller sees its margin. `data-model.md` updated to match.
+
+### US3, added after the second Gate 3
+
+15. **The basis is trimmed to the rays actually accepted.** It is still preallocated to
+    the expected height for speed, but the unfilled trailing rows are removed before
+    return, so `size(Zpos, 1)` can no longer overstate what was found.
+16. **An all-zero row now raises** `greedyExtremeRayBasis:zeroBasisRow` instead of being
+    returned, so the property is asserted on the returned object rather than assumed.
+17. **The US2-era header warning was reverted**: with the basis trimmed, `.raysFound`
+    equals `size(Zpos, 1)` again, and the header says so.
 
 ## Tests
 
@@ -153,15 +164,14 @@ artifact (T043, outside the approved slice).
    the five terminal outcomes, the Regime-B diagnosis block and `raysExpectedIsEstimate`
    remain US2 work.
 4. **Defects demonstrated but NOT fixed** (their tasks remain unapproved):
-   - **FR-010 / US3, the zero-padded incomplete basis.** Confirmed live on iDopaNeuroC:
-     `status.raysFound` is 101 while `size(Zpos, 1)` is still 105, four of them all-zero.
-     A caller reading the row count is still misled. Because US3 is unapproved, the fix
-     is not made; instead the help header now carries an explicit warning that
-     `.raysFound` and not `size(Zpos, 1)` must be used to judge completeness. That is
-     mitigation, not a fix, and it is the single most valuable remaining slice.
-   - **FR-013 / US4, the unconditional `SConsistentRxnBool` read**, which the in-repo
-     caller `optimalExtremePoolDriver.m:121` still hits. `'missingField'` exists in the
-     status vocabulary but is never produced.
+   - **FR-010 / US3 is now FIXED** (approved at the second Gate 3). Confirmed on
+     iDopaNeuroC: 101 rows for 101 rays found against 105 expected, **0 all-zero rows**,
+     reported `incomplete`. Before the fix the same run returned 105 rows of which 4
+     were padding, which is exactly what the `varkin` guards test.
+   - **FR-013 / US4 remains**: the unconditional `SConsistentRxnBool` read, which the
+     in-repo caller `optimalExtremePoolDriver.m:121` still hits. `'missingField'` exists
+     in the status vocabulary but is never produced. This is the last known defect from
+     the original set, and the only user story left unimplemented.
 5. **The interactive MATLAB session is wedged** and needs a manual interrupt. Caused by
    an earlier probe of mine that ran the tightened acceptance before the T016b timeout
    fix existed, and so span forever. All verification was completed headless instead.
