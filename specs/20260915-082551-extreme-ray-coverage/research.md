@@ -171,7 +171,7 @@ than quietly retained.
 
 ---
 
-## R5 — The A0/A1/A2/A3 comparison protocol
+## R5 — The A0/A2/A3 comparison protocol
 
 ### Procedure
 

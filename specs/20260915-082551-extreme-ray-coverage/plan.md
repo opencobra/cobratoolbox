@@ -211,7 +211,7 @@ sets as data, and the sampling-versus-structural classification; and
 for the additive status fields. [quickstart.md](./quickstart.md) is the reproduction guide.
 
 The design is deliberately independent of which approach wins: the paired record, the
-status additions and the classification are identical whether A2, A3 or A1 is adopted, so
+status additions and the classification are identical whichever approach is adopted, so
 Phase 1 can be reviewed before Phase 0 selects the remedy.
 
 ## Complexity Tracking

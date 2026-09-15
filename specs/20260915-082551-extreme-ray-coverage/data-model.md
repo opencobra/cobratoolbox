@@ -2,7 +2,7 @@
 
 **Feature**: [spec.md](./spec.md) | **Plan**: [plan.md](./plan.md) | **Date**: 2026-09-15
 
-Remedy-independent: identical whether A2, A3 or A1 is adopted, so it can be reviewed
+Remedy-independent: identical whichever approach is adopted, so it can be reviewed
 before Phase 0 selects the remedy.
 
 ## 1. The paired comparison record

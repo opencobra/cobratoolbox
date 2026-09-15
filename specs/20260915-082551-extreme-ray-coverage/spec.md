@@ -343,10 +343,11 @@ measured before it is relied on.
   intact.
 - **SC-005**: A sampling shortfall and a structural shortfall are distinguishable from the
   status alone, each with its shortfall quantified.
-- **SC-006**: Approaches A1, A2 and A3 are each measured on the same model and seed, with
-  coverage, accuracy, runtime and replicate counts reported per approach in one
-  comparable table, so the selected remedy is traceable to evidence and any rejected
-  approach was rejected on measurement rather than assumption.
+- **SC-006**: The control A0 and the approaches A2 and A3 are each measured on the same
+  model and seed, with coverage, accuracy, runtime and replicate counts reported per
+  approach in one comparable table, so the selected remedy is traceable to evidence and
+  any rejected approach was rejected on measurement rather than assumption. A1 is out of
+  scope by decision and is not measured.
 - **SC-009**: If neither A2 nor A3 meets SC-001, the feature delivers User Story 3 and
   records plainly that the gap was not closed by either tuned single-solver configuration,
   with the measured shortfall of each.
@@ -370,9 +371,7 @@ measured before it is relied on.
 
 - The parent feature's measurements are taken as given and are not re-derived; they are
   reproducible from the scripts named above.
-- **No remedy is assumed to work**, including the three named in Clarifications. Approach
-  A1 is known to combine two individually-measured strengths, but whether the combination
-  survives being run as one procedure is itself unmeasured. Objective perturbation,
+- **No remedy is assumed to work**, including the two pursued. Objective perturbation,
   targeted search for directions outside the current span, and seeding from the strictly
   positive conservation vector remain open candidates that may be folded into A2 or A3.
 - **Whether the gap is closable at all is a FINDING of this work, not an input.** If no
