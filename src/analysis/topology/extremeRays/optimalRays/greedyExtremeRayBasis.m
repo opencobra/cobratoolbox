@@ -60,6 +60,7 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .maxTime - TOTAL time budget in seconds across restarts (default = `param.maxNewBasisTime`, which reproduces the historical behaviour)
 %                  * .maxNewBasisTime - seconds to persist without finding a new basis vector before declaring a dead end and restarting from fresh randomness (default = 10000)
 %                  * .feasTol - may TIGHTEN ray acceptance below the derived accuracy target; it can no longer loosen it above that target (default = 1e-6, which no longer loosens)
+%                  * .solver - LP solver nominated for the duration of this call, restored afterwards on every exit path (default = `'gurobi'`, which returns exact vertices; falls back if it is not installed). Set to `''` to use the session's solver unchanged
 %
 % OUTPUTS:
 %    Zpos:       non-negative linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
@@ -95,6 +96,9 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .attainableDimension - dimension actually reachable with non-negative weights; equals `.raysExpected` under stoichiometric consistency and is smaller otherwise
 %                  * .attainableDimensionAssessed - whether that was determined rather than assumed
 %                  * .elapsedTime - seconds for this call
+%                  * .solverRequested - the solver nominated by `param.solver`
+%                  * .solverUsed - the solver actually used, which differs if the nominated one was unavailable
+%                  * .solverChanged - whether this call switched solver and restored it afterwards
 %
 %                In the `'badlyScaled'` outcome it additionally carries the diagnosis:
 %
@@ -153,6 +157,55 @@ if ~isfield(param,'feasTol')
     param.feasTol = 1e-6;
 end
 
+if ~isfield(param,'solver')
+    % This routine needs an LP solver that returns exact VERTICES. Measured on
+    % iDopaNeuroC: gurobi returns a basis on every solve and clears the derived accuracy
+    % target, reaching 105 of 105 rays in about 5 s, while mosek's interior-point path
+    % returns no basis, sits at ~1e-12 per ray against a ~1.19e-12 target, and stalls at
+    % 99 of 105. The solver therefore matters more than any parameter here, so gurobi is
+    % preferred by default rather than inheriting whatever the session happens to use.
+    %
+    % Set param.solver = '' to disable nomination and use the session's solver as-is.
+    param.solver = 'gurobi';
+end
+
+% Switch to the nominated solver for the duration of this call only, and restore the
+% caller's solver on EVERY exit path -- the normal return, the three early returns, and
+% the error throws. onCleanup is used rather than a restore statement precisely because
+% a `return` or an error would skip the latter, and a routine that silently leaves the
+% session on a different solver is worse than one that never switched.
+solverRequested = param.solver;
+solverOnEntry = CobraSolverState.getSolver('LP');
+solverUsed = solverOnEntry;
+solverChanged = false;
+if ~isempty(solverRequested) && ~strcmp(solverRequested, solverOnEntry)
+    if changeCobraSolver(solverRequested, 'LP', 0)
+        solverUsed = solverRequested;
+        solverChanged = true;
+    else
+        % The nominated solver is not installed. Fall back through solvers that return
+        % vertices, and failing that keep the caller's own, which at least works here.
+        fallbackSolvers = {'gurobi', 'ibm_cplex', 'glpk'};
+        for iFallback = 1:numel(fallbackSolvers)
+            if strcmp(fallbackSolvers{iFallback}, solverOnEntry)
+                continue
+            end
+            if changeCobraSolver(fallbackSolvers{iFallback}, 'LP', 0)
+                solverUsed = fallbackSolvers{iFallback};
+                solverChanged = true;
+                break
+            end
+        end
+        if param.printLevel > 0
+            fprintf('%s\n', ['greedyExtremeRayBasis: ' solverRequested ' is not ' ...
+                'available; using ' solverUsed ' instead.']);
+        end
+    end
+end
+if solverChanged
+    restoreSolver = onCleanup(@() changeCobraSolver(solverOnEntry, 'LP', 0));
+end
+
 if ~isfield(param,'compareSolvers')
     % Paired-comparison instrumentation. Empty is OFF and MUST be inert: with it empty
     % the routine takes the same code path, consumes the random stream identically and
@@ -194,7 +247,7 @@ if ~isfield(model,'SConsistentRxnBool')
         'impliedNullity', NaN, 'independentRank', NaN, 'raysFound', 0, ...
         'raysExpected', NaN, 'raysExpectedIsEstimate', true, ...
         'raysRejectedForAccuracy', 0, 'raysRejectedForDependence', 0, ...
-        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, ...
+        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, 'solverRequested', solverRequested, 'solverUsed', solverUsed, 'solverChanged', solverChanged, ...
         'missingFieldName', 'SConsistentRxnBool', ...
         'howToObtain', ['Set param.internalStoichiometriMatrixLeftNullspace = true ' ...
         'to have it computed by findStoichConsistentSubset, or supply ' ...
@@ -220,7 +273,7 @@ if ~any(model.SConsistentRxnBool) %check if positive vector in left nullspace
         'scalingBoundary', NaN, 'raysFound', 0, ...
         'raysExpected', 0, 'raysExpectedIsEstimate', true, ...
         'raysRejectedForAccuracy', 0, 'raysRejectedForDependence', 0, ...
-        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, ...
+        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, 'solverRequested', solverRequested, 'solverUsed', solverUsed, 'solverChanged', solverChanged, ...
         'message', ['No stoichiometrically consistent reaction, so there is no ' ...
         'positive vector in the left nullspace to find.']);
     return;
@@ -343,6 +396,9 @@ if strcmp(regime, 'badlyScaled')
     status.timedOut = false;
     status.nRestarts = 0;
     status.elapsedTime = 0;
+    status.solverRequested = solverRequested;
+    status.solverUsed = solverUsed;
+    status.solverChanged = solverChanged;
     % what is badly scaled, by how much, against what, and what to do about it
     status.scalingQuantity = 'smallest non-zero singular value of the operative matrix';
     status.scalingValue = sigmaMinPlus;
@@ -714,6 +770,9 @@ status.raysRejectedForDependence = nRejectedForDependence;
 status.timedOut = timedOut;
 status.nRestarts = nRestarts;
 status.pairedComparison = pairedRecord;
+status.solverRequested = solverRequested;
+status.solverUsed = solverUsed;
+status.solverChanged = solverChanged;
 status.nTargetedObjectives = nTargetedObjectives;
 status.shortfallKind = shortfallKind;
 status.attainableDimension = attainableDimension;
