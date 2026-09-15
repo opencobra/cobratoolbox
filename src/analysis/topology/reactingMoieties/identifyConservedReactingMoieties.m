@@ -66,11 +66,21 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %                compatibility; automatically falls back to the
 %                open-source path (with a warning) if the required
 %                toolbox is not licensed on this machine.
+%                * .conservedMoietiesOnly {(0),1} false (default) to compute
+%                both conserved and reacting moieties as before. Set to true
+%                to compute only conserved moieties: the function returns
+%                after populating `arm` and `moietyFormulae`, and skips the
+%                entire reacting-moiety bond-graph/minimum-set-cover section
+%                (BG is still a required input but is not processed). This
+%                mode does not require a MILP solver.
 %
 % OUTPUTS:
 %    arm:               atomically resolved model as a matlab structure (fields detailed below)
 %    moietyFormulae:    `nIsomorphismClasses x 1` cell array of conserved-moiety chemical formulae in Hill notation
-%    reacting:          structure of reacting-moiety results derived from `BG` and `dATM`
+%    reacting:          structure of reacting-moiety results derived from `BG` and `dATM`;
+%                       when `options.conservedMoietiesOnly` is true, this is instead
+%                       `struct('computed', false)`, signalling that reacting-moiety
+%                       analysis was not performed
 %
 % arm            atomically resolved model as a matlab structure with the following fields:
 %
@@ -208,6 +218,16 @@ if ~isfield(options,'useOpenSourceMoietyTools')
     options.useOpenSourceMoietyTools = true;
 end
 useOpenSourceMoietyTools = options.useOpenSourceMoietyTools;
+
+if ~isfield(options,'conservedMoietiesOnly')
+    % Default false: compute both conserved and reacting moieties, as
+    % before. Set to true to compute only conserved moieties (arm,
+    % moietyFormulae) and skip the reacting-moiety bond-graph/minimum-
+    % set-cover section entirely; this mode does not require a MILP
+    % solver. See OPTIONAL INPUTS above.
+    options.conservedMoietiesOnly = false;
+end
+conservedMoietiesOnly = options.conservedMoietiesOnly;
 
 bool = contains(model.mets,'#');
 if any(bool)
@@ -1457,6 +1477,15 @@ arm.M2R = M2R; % Matrix to map moiety transitions to reactions. Multiple moiety 
 
 arm.MG=MG; % (undirected) moiety graph (chemical structure of each moiety instance) (Hadjar)
 arm.L =  L;    % Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes can map to multiple metabolites.
+
+if conservedMoietiesOnly
+    % Conserved-moiety computation is complete; skip the reacting-moiety
+    % bond-graph/minimum-set-cover section entirely (no MILP solver is
+    % invoked in this mode). `reacting` is returned as an explicit
+    % "not computed" marker rather than partial/stale data.
+    reacting = struct('computed', false);
+    return;
+end
 
 %% Reacting moiety (bond-level) analysis  % Hadjar
 %
