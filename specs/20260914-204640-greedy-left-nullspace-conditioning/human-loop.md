@@ -1,9 +1,9 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 3 complete — **at Gate 3** (closeout). Approved slice T001-T021 implemented and verified.
+- Status: Bundle 4 complete — **work finished and verified; feature NOT yet merged**. All 53 tasks resolved (52 done, 1 deliberately not done), both checklists clear, 9 commits on the feature branch, 0 behind `develop`.
 - Active feature directory: `specs/20260914-204640-greedy-left-nullspace-conditioning`
-- Last completed bundle: Bundle 3 (approved implementation)
+- Last completed bundle: Bundle 4 (verification and closeout)
 - Source code modified by this workflow: **yes** — `greedyExtremeRayBasis.m` (+220/-19) and a new `testGreedyExtremeRayBasis.m`. `findExtremePool.m` deliberately NOT modified.
 
 ## Core Command Ledger
@@ -14,7 +14,7 @@
 - plan:           invoked — plan.md, research.md, data-model.md, quickstart.md, contracts/
 - tasks:          invoked — tasks.md, 47 tasks across 7 phases
 - analyze:        invoked — 5 findings (1 HIGH, 2 MEDIUM, 2 LOW), 0 CRITICAL; 4 applied, 1 accepted; coverage 39/39
-- implement:      invoked — `/speckit-implement`, tasks T001-T021 plus three recorded additions (T016a/b/c). Test passes headless: PASSED=1 FAILED=0.
+- implement:      invoked — `/speckit-implement`; US1, US2, US3, US4 and closeout. Passes through `test/testAll.m` itself: 0 failed, 0 skipped.
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -131,3 +131,30 @@
   tolerance or the truncation. Both prior diagnoses were refuted by measurement.
 - **Known state**: the interactive MATLAB session is wedged and needs a manual
   interrupt; all verification was completed headless via `matlab -batch`, the CI path.
+
+## Closeout status (2026-09-15)
+
+**The work is complete and verified. The feature is not yet closed**, because closing it
+means merging, and that is the user's decision.
+
+| Closeout condition | State |
+|---|---|
+| All tasks resolved | **yes** — 52 done, 1 (`T014`) deliberately not done |
+| All success criteria SC-001..SC-015 discharged | **yes** |
+| Both checklists clear | **yes** — requirements 16/16, numerical-integrity 46/46 + standing item |
+| Implementation receipt written | **yes** — `agent-runs/20260914T235411Z-us1-regime-a-accuracy/` |
+| Tests green in the project harness | **yes** — `testAll` with `COBRA_TESTS`: 0 failed, 0 skipped |
+| Headline property measured end to end | **yes** — augmented rank unanimous at 1244; `norm(M*ker(M))` 4.78 -> 2.18e-13 |
+| Working tree clean | **yes**, apart from 3 pre-existing submodule pointers |
+| **Merged to `develop` / PR opened** | **NO — outstanding, needs a human decision** |
+
+### Follow-up work this feature identified but did not do
+
+1. **Solver coverage vs accuracy.** gurobi gives the accuracy (1.185e-16) without the
+   coverage (101 of 105 rays); mosek gives the coverage (105 of 105) without the accuracy
+   (9.342e-09). All 105 directions ARE reachable — `ker(N')` holds a strictly positive
+   vector — so this is degenerate-vertex selection, not geometry. Needs its own feature.
+2. **`varkin` guards**, specified in `plan.md`, deliberately untouched here.
+3. **`.agents/skills/speckit-human-loop/SKILL.md`** is untracked while its 17 siblings
+   are tracked. Unrelated to this feature and left alone rather than committed onto a
+   feature branch.
