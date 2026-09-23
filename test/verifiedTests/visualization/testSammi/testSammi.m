@@ -276,6 +276,92 @@ delete(testFile);
 %     % Remove function result
 %     delete(testFile);
 
+% case 12
+% Verify the 'subSystems' grouping mode gives identical results to the
+% pre-fix unique/ismember approach for the existing flat-shape case
+% (FR-004 Acceptance Scenario 2), and correctly groups a reaction
+% assigned to more than one subsystem (nested-cell shape) into every
+% subgraph it belongs to (FR-004 Acceptance Scenario 1, SC-003), without
+% mutating model.subSystems (FR-011, SC-007).
+load([CBTDIR '/test/models/mat/ecoli_core_model.mat'])
+
+% (a) Equivalence oracle: reproduce the pre-fix unique/ismember grouping
+% independently and compare it against the new matrix-based grouping,
+% for the model's existing flat-char subSystems (unchanged shape).
+% Excludes the empty-string name unique() included (an existing sammi.m
+% quirk unrelated to this fix) since it must not appear as a subsystem
+% name per spec Edge Cases, matching getModelSubSystems/buildRxn2subSystem's
+% existing exclusion.
+ssOld = unique(model.subSystems);
+ssOld = ssOld(~cellfun('isempty', ssOld));
+oldNames = ssOld;
+oldRxnSets = cell(size(ssOld));
+for i = 1:length(ssOld)
+    oldRxnSets{i} = sort(model.rxns(ismember(model.subSystems,ssOld{i})));
+end
+[~, rxn2subSystemMat, subSystemNames] = buildRxn2subSystem(model, false);
+newNames = subSystemNames;
+newRxnSets = cell(size(subSystemNames));
+for i = 1:length(subSystemNames)
+    newRxnSets{i} = sort(model.rxns(logical(rxn2subSystemMat(:,i))));
+end
+assert(isequal(sort(oldNames), sort(newNames)), ...
+    'New matrix-based subsystem name set differs from the pre-fix unique() result.');
+[~, order] = ismember(oldNames, newNames);
+assert(all(order > 0) && isequal(oldRxnSets, newRxnSets(order)), ...
+    'New matrix-based per-subsystem reaction grouping differs from the pre-fix ismember() result.');
+
+% (b) New capability: a reaction assigned to more than one subsystem
+% (uniformly nested-cell shape, which throws today at sammi.m:156's
+% unique() before this fix) must be grouped into every subgraph it
+% belongs to, and sammi(...) must not throw.
+modelMulti = model;
+modelMulti.subSystems = cellfun(@(x) {x}, model.subSystems, 'UniformOutput', false);
+multiRxn = modelMulti.rxns{1};
+modelMulti.subSystems{1} = {'Glycolysis','MultiSubsystemTestMarker'};
+subSystemsBefore = modelMulti.subSystems;
+sammi(modelMulti,'subSystems', [], [], options);
+assert(isfile(testFile));
+htmlTxt = fileread(testFile);
+
+% MultiSubsystemTestMarker is a synthetic label unique to this fixture,
+% so it forms its own single-reaction subgraph
+assert(~isempty(regexp(htmlTxt, ...
+    ['\["MultiSubsystemTestMarker",\["' multiRxn '"\]\]'], 'once')), ...
+    'Reaction was not grouped into its synthetic second subsystem.');
+% Glycolysis is shared with several other reactions; bound the search
+% window to just after its own label so the check cannot spill into an
+% unrelated subgraph
+glyStart = strfind(htmlTxt, '["Glycolysis",');
+assert(~isempty(glyStart), 'Glycolysis subgraph not found in sammi output.');
+glyWindow = htmlTxt(glyStart(1):min(glyStart(1)+500, numel(htmlTxt)));
+assert(contains(glyWindow, ['["' multiRxn '"]']), ...
+    'Reaction was not grouped into its pre-existing Glycolysis subsystem.');
+assert(isequal(modelMulti.subSystems, subSystemsBefore), ...
+    'sammi mutated model.subSystems.');
+% Remove function result
+delete(testFile);
+
+% case 13
+% A model with no named subsystems (every reaction's subSystems entry is
+% empty) is a supported edge case, not an error: sammi(model,'subSystems')
+% MUST NOT throw, and a routine call without a pre-built
+% rxn2subSystem/subSystemNames MUST NOT emit a warning (code-review
+% findings on this feature: zero-name grouping crash, noisy warning).
+modelNoSub = model;
+modelNoSub.subSystems = repmat({''}, numel(model.rxns), 1);
+sammi(modelNoSub,'subSystems', [], [], options);
+assert(isfile(testFile));
+delete(testFile);
+
+lastwarn('');
+sammi(model,'subSystems', [], [], options);
+[warnMsg, ~] = lastwarn();
+assert(isfile(testFile));
+delete(testFile);
+assert(isempty(warnMsg), ...
+    'sammi emitted a warning for a routine subSystems call without a pre-built rxn2subSystem/subSystemNames.');
+
 % output a success message
 fprintf('Done.\n');
 
