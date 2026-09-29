@@ -237,3 +237,24 @@ been offered it, and its outcome will be appended here if it is run.
 - The `sanityChecks = 1` crashes that predate this feature: `identifyIsomorphicClasses:34` on the CI
   fixture, and `identifyConservedReactingMoieties:499` on tyr.
 - A project skill for MATLAB coding conventions (Constitution VII-F).
+
+### Run 2026-09-29 08:24 UTC — fixtures: nglycan,phe,andest,chol,urea,tyr,bileacid,ci; modes: default,conservedOnly (timing gate off)
+
+| Fixture | Mode | Run | Status | arm eq | moietyFormulae eq | reacting eq (differing fields) | console eq | median s before -> after (ratio) | targeted stages s before -> after | Solver | Corpus (.rxn) | Snapshot | Commit | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| nglycan | default | COMPARE | EQUAL | yes | yes | yes | yes | 1.43 -> 0.86 (1.66x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| nglycan | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| phe | default | COMPARE | EQUAL | yes | yes | yes | yes | 2.75 -> 1.68 (1.64x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| phe | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| andest | default | COMPARE | EQUAL | yes | yes | yes | yes | 6.84 -> 3.76 (1.82x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| andest | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| chol | default | COMPARE | EQUAL | yes | yes | yes | yes | 19.56 -> 9.38 (2.08x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| chol | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| urea | default | COMPARE | EQUAL | yes | yes | yes | yes | 9.85 -> 4.89 (2.02x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| urea | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| tyr | default | COMPARE | EQUAL | yes | yes | yes | yes | 15.66 -> 8.73 (1.79x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| tyr | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| bileacid | default | COMPARE | EQUAL | yes | yes | yes | yes | 45.96 -> 18.63 (2.47x) | 09: 42.32 -> 11.82; 14-17: 4.14 -> 0.06 (profiled, relative) | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| bileacid | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| ci | default | COMPARE | TIMING (not gated) | yes | yes | yes | yes | 0.17 -> 0.13 (1.28x) | - | gurobi | 18 | in repo | b5740477376f+src-uncommitted |  |
+| ci | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 18 | in repo | b5740477376f+src-uncommitted |  |
