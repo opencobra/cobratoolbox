@@ -30,7 +30,7 @@ thisDir = fileparts(mfilename('fullpath'));
 repoRoot = fileparts(fileparts(thisDir));
 homeDir = getenv('HOME');
 
-corpusDir = '/media/JACK/repos/ctf/rxns/atomMapped_std';   % NOT atomMapped_standardised (research.md R8)
+corpusDir = '/media/JACK/repos/ctf/rxns/moiety_rxns/atomMapped_std';   % NOT atomMapped_standardised (research.md R8)
 subModelMatPath = fullfile(homeDir, 'repos', 'ReconXKG-cidev', 'ReconXKGtoCobra', 'models', ...
     'subsystemSubModels', 'subsystemSubModels.mat');
 externalDir = fullfile(homeDir, 'repos', 'reconXmoieties', 'experiments', 'moietySizing', ...

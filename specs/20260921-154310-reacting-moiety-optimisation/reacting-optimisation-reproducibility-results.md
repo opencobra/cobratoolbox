@@ -292,3 +292,36 @@ been offered it, and its outcome will be appended here if it is run.
 | tyr | sanity | COMPARE | EQUAL | - | - | same error | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted | error outcome:  |
 | bileacid | sanity | CAPTURE | ERROR | - | - | - | - | - | - | gurobi | 17072 | - | 858feabc15bc+src-uncommitted | reactingOptimisationCheck:srcModified: Refusing to CAPTURE: src/ differs from develop. (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:160) |
 | ci | sanity | COMPARE | EQUAL | - | - | same error | yes | - | - | gurobi | 18 | in repo | 858feabc15bc+src-uncommitted | error outcome:  |
+
+### Run 2026-09-30 14:09 UTC — fixtures: nglycan,phe,andest,chol,urea,tyr,bileacid,ci; modes: default,conservedOnly (timing gate off)
+
+| Fixture | Mode | Run | Status | arm eq | moietyFormulae eq | reacting eq (differing fields) | console eq | median s before -> after (ratio) | targeted stages s before -> after | Solver | Corpus (.rxn) | Snapshot | Commit | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| nglycan | - | build | ERROR | - | - | - | - | - | - | - | - | - | f4a62639e51d+src-uncommitted | : Atom-mapped corpus not found: /media/JACK/repos/ctf/rxns/atomMapped_std (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:112) |
+| phe | - | build | ERROR | - | - | - | - | - | - | - | - | - | f4a62639e51d+src-uncommitted | : Atom-mapped corpus not found: /media/JACK/repos/ctf/rxns/atomMapped_std (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:112) |
+| andest | - | build | ERROR | - | - | - | - | - | - | - | - | - | f4a62639e51d+src-uncommitted | : Atom-mapped corpus not found: /media/JACK/repos/ctf/rxns/atomMapped_std (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:112) |
+| chol | - | build | ERROR | - | - | - | - | - | - | - | - | - | f4a62639e51d+src-uncommitted | : Atom-mapped corpus not found: /media/JACK/repos/ctf/rxns/atomMapped_std (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:112) |
+| urea | - | build | ERROR | - | - | - | - | - | - | - | - | - | f4a62639e51d+src-uncommitted | : Atom-mapped corpus not found: /media/JACK/repos/ctf/rxns/atomMapped_std (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:112) |
+| tyr | - | build | ERROR | - | - | - | - | - | - | - | - | - | f4a62639e51d+src-uncommitted | : Atom-mapped corpus not found: /media/JACK/repos/ctf/rxns/atomMapped_std (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:112) |
+| bileacid | - | build | ERROR | - | - | - | - | - | - | - | - | - | f4a62639e51d+src-uncommitted | : Atom-mapped corpus not found: /media/JACK/repos/ctf/rxns/atomMapped_std (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:112) |
+| ci | default | COMPARE | TIMING (not gated) | yes | yes | yes | yes | 0.17 -> 2.58 (0.07x) | - | gurobi | 18 | in repo | f4a62639e51d+src-uncommitted |  |
+| ci | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 18 | in repo | f4a62639e51d+src-uncommitted |  |
+
+### Run 2026-10-01 08:10 UTC — fixtures: nglycan,phe,andest,chol,urea,tyr,bileacid; modes: default,conservedOnly (timing gate off)
+
+| Fixture | Mode | Run | Status | arm eq | moietyFormulae eq | reacting eq (differing fields) | console eq | median s before -> after (ratio) | targeted stages s before -> after | Solver | Corpus (.rxn) | Snapshot | Commit | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| nglycan | default | COMPARE | SLOWER (not gated) | yes | yes | yes | yes | 1.43 -> 2.10 (0.68x) | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| nglycan | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| phe | default | COMPARE | EQUAL | yes | yes | yes | yes | 2.75 -> 1.82 (1.51x) | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| phe | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| andest | default | COMPARE | EQUAL | yes | yes | yes | yes | 6.84 -> 4.03 (1.70x) | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| andest | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| chol | default | COMPARE | EQUAL | yes | yes | yes | yes | 19.56 -> 8.64 (2.26x) | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| chol | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| urea | default | COMPARE | EQUAL | yes | yes | yes | yes | 9.85 -> 4.22 (2.33x) | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| urea | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| tyr | default | COMPARE | EQUAL | yes | yes | yes | yes | 15.66 -> 6.78 (2.31x) | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| tyr | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| bileacid | default | COMPARE | EQUAL | yes | yes | yes | yes | 45.96 -> 12.54 (3.67x) | 09: 42.32 -> 14.86; 14-17: 4.14 -> 0.08 (profiled, relative) | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
+| bileacid | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | f4a62639e51d+src-uncommitted |  |
