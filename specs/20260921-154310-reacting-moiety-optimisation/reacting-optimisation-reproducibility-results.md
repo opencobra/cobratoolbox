@@ -237,3 +237,58 @@ been offered it, and its outcome will be appended here if it is run.
 - The `sanityChecks = 1` crashes that predate this feature: `identifyIsomorphicClasses:34` on the CI
   fixture, and `identifyConservedReactingMoieties:499` on tyr.
 - A project skill for MATLAB coding conventions (Constitution VII-F).
+
+### Run 2026-09-29 08:24 UTC — fixtures: nglycan,phe,andest,chol,urea,tyr,bileacid,ci; modes: default,conservedOnly (timing gate off)
+
+| Fixture | Mode | Run | Status | arm eq | moietyFormulae eq | reacting eq (differing fields) | console eq | median s before -> after (ratio) | targeted stages s before -> after | Solver | Corpus (.rxn) | Snapshot | Commit | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| nglycan | default | COMPARE | EQUAL | yes | yes | yes | yes | 1.43 -> 0.86 (1.66x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| nglycan | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| phe | default | COMPARE | EQUAL | yes | yes | yes | yes | 2.75 -> 1.68 (1.64x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| phe | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| andest | default | COMPARE | EQUAL | yes | yes | yes | yes | 6.84 -> 3.76 (1.82x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| andest | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| chol | default | COMPARE | EQUAL | yes | yes | yes | yes | 19.56 -> 9.38 (2.08x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| chol | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| urea | default | COMPARE | EQUAL | yes | yes | yes | yes | 9.85 -> 4.89 (2.02x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| urea | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| tyr | default | COMPARE | EQUAL | yes | yes | yes | yes | 15.66 -> 8.73 (1.79x) | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| tyr | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| bileacid | default | COMPARE | EQUAL | yes | yes | yes | yes | 45.96 -> 18.63 (2.47x) | 09: 42.32 -> 11.82; 14-17: 4.14 -> 0.06 (profiled, relative) | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| bileacid | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | b5740477376f+src-uncommitted |  |
+| ci | default | COMPARE | TIMING (not gated) | yes | yes | yes | yes | 0.17 -> 0.13 (1.28x) | - | gurobi | 18 | in repo | b5740477376f+src-uncommitted |  |
+| ci | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 18 | in repo | b5740477376f+src-uncommitted |  |
+
+### Run 2026-09-30 08:12 UTC — fixtures: nglycan,phe,andest,chol,urea,tyr,bileacid,ci; modes: default,conservedOnly (timing gate off)
+
+| Fixture | Mode | Run | Status | arm eq | moietyFormulae eq | reacting eq (differing fields) | console eq | median s before -> after (ratio) | targeted stages s before -> after | Solver | Corpus (.rxn) | Snapshot | Commit | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| nglycan | default | COMPARE | SLOWER (not gated) | yes | yes | yes | yes | 1.43 -> 1.56 (0.92x) | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| nglycan | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| phe | default | COMPARE | EQUAL | yes | yes | yes | yes | 2.75 -> 1.72 (1.60x) | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| phe | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| andest | default | COMPARE | EQUAL | yes | yes | yes | yes | 6.84 -> 4.28 (1.60x) | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| andest | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| chol | default | COMPARE | EQUAL | yes | yes | yes | yes | 19.56 -> 9.08 (2.15x) | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| chol | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| urea | default | COMPARE | EQUAL | yes | yes | yes | yes | 9.85 -> 3.79 (2.60x) | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| urea | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| tyr | default | COMPARE | EQUAL | yes | yes | yes | yes | 15.66 -> 5.41 (2.90x) | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| tyr | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| bileacid | default | COMPARE | EQUAL | yes | yes | yes | yes | 45.96 -> 11.86 (3.88x) | 09: 42.32 -> 11.33; 14-17: 4.14 -> 0.06 (profiled, relative) | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| bileacid | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted |  |
+| ci | default | COMPARE | TIMING (not gated) | yes | yes | yes | yes | 0.17 -> 0.12 (1.42x) | - | gurobi | 18 | in repo | 858feabc15bc+src-uncommitted |  |
+| ci | conservedOnly | COMPARE | EQUAL | yes | yes | yes | yes | - | - | gurobi | 18 | in repo | 858feabc15bc+src-uncommitted |  |
+
+### Run 2026-09-30 08:18 UTC — fixtures: nglycan,phe,andest,chol,urea,tyr,bileacid,ci; modes: sanity (timing gate off)
+
+| Fixture | Mode | Run | Status | arm eq | moietyFormulae eq | reacting eq (differing fields) | console eq | median s before -> after (ratio) | targeted stages s before -> after | Solver | Corpus (.rxn) | Snapshot | Commit | Notes |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| nglycan | sanity | CAPTURE | ERROR | - | - | - | - | - | - | gurobi | 17072 | - | 858feabc15bc+src-uncommitted | reactingOptimisationCheck:srcModified: Refusing to CAPTURE: src/ differs from develop. (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:160) |
+| phe | sanity | CAPTURE | ERROR | - | - | - | - | - | - | gurobi | 17072 | - | 858feabc15bc+src-uncommitted | reactingOptimisationCheck:srcModified: Refusing to CAPTURE: src/ differs from develop. (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:160) |
+| andest | sanity | CAPTURE | ERROR | - | - | - | - | - | - | gurobi | 17072 | - | 858feabc15bc+src-uncommitted | reactingOptimisationCheck:srcModified: Refusing to CAPTURE: src/ differs from develop. (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:160) |
+| chol | sanity | CAPTURE | ERROR | - | - | - | - | - | - | gurobi | 17072 | - | 858feabc15bc+src-uncommitted | reactingOptimisationCheck:srcModified: Refusing to CAPTURE: src/ differs from develop. (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:160) |
+| urea | sanity | CAPTURE | ERROR | - | - | - | - | - | - | gurobi | 17072 | - | 858feabc15bc+src-uncommitted | reactingOptimisationCheck:srcModified: Refusing to CAPTURE: src/ differs from develop. (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:160) |
+| tyr | sanity | COMPARE | EQUAL | - | - | same error | yes | - | - | gurobi | 17072 | in repo | 858feabc15bc+src-uncommitted | error outcome:  |
+| bileacid | sanity | CAPTURE | ERROR | - | - | - | - | - | - | gurobi | 17072 | - | 858feabc15bc+src-uncommitted | reactingOptimisationCheck:srcModified: Refusing to CAPTURE: src/ differs from develop. (/home/jackmcgoldrick/cobratoolbox/specs/20260921-154310-reacting-moiety-optimisation/reactingOptimisationReproducibilityCheck.m:160) |
+| ci | sanity | COMPARE | EQUAL | - | - | same error | yes | - | - | gurobi | 18 | in repo | 858feabc15bc+src-uncommitted | error outcome:  |
