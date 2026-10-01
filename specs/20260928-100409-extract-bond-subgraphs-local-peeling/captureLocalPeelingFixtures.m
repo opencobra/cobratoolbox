@@ -116,7 +116,7 @@ if ~isempty(realFixtures)
     if ~isfolder(extDir)
         mkdir(extDir);
     end
-    corpusDir = '/media/JACK/repos/ctf/rxns/atomMapped_std';
+    corpusDir = '/media/JACK/repos/ctf/rxns/moiety_rxns/atomMapped_std';
     assert(isfolder(corpusDir), 'Atom-mapped RXN corpus not found: %s', corpusDir)
     icrmFile = fullfile(repoRoot, 'src', 'analysis', 'topology', 'reactingMoieties', ...
         'identifyConservedReactingMoieties.m');

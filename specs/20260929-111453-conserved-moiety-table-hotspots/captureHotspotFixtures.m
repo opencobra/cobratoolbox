@@ -131,7 +131,7 @@ if ismember('B', parts)
     if ~isfolder(extDir)
         mkdir(extDir);
     end
-    corpusDir = '/media/JACK/repos/ctf/rxns/atomMapped_std';
+    corpusDir = '/media/JACK/repos/ctf/rxns/moiety_rxns/atomMapped_std';
     models = buildLowSymmetrySubsetModels(corpusDir, homeDir);
     model = models.n1960;
     clear models

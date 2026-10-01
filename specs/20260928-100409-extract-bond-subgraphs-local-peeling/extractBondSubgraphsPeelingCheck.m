@@ -174,7 +174,7 @@ end
 
 %% End-to-end check (SC-002)
 if strcmp(getenv('CBT_EBS_END_TO_END'), '1')
-    corpusDir = '/media/JACK/repos/ctf/rxns/atomMapped_std';
+    corpusDir = '/media/JACK/repos/ctf/rxns/moiety_rxns/atomMapped_std';
     models = buildLowSymmetrySubsetModels(corpusDir, homeDir);
     [dATM, ~, ~, ~, ~, ~, BG] = buildAtomAndBondTransitionMultigraph(models.n1960, corpusDir, ...
         struct('directed', 0, 'sanityChecks', 0));

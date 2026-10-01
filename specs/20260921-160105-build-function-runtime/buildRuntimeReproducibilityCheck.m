@@ -85,7 +85,7 @@ cfg.snapshotDir = fullfile(cfg.thisDir, 'snapshots');
 cfg.resultsPath = fullfile(cfg.thisDir, 'reproducibility-results.md');
 cfg.subModelMatPath = fullfile(getenv('HOME'), 'repos', 'ReconXKG-cidev', 'ReconXKGtoCobra', ...
     'models', 'subsystemSubModels', 'subsystemSubModels.mat');
-cfg.corpusDir = '/media/JACK/repos/ctf/rxns/atomMapped_std';
+cfg.corpusDir = '/media/JACK/repos/ctf/rxns/moiety_rxns/atomMapped_std';
 cfg.baseRev = '64efe1dc8';
 cfg.nTimedRuns = 5;
 cfg.memRelTol = 0.05;       % spec Edge Cases: 5% or 50 MB, whichever is larger

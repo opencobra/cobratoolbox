@@ -43,7 +43,7 @@
 % without changing the rest of this script's intent.
 modelPath = fullfile(getenv('HOME'), 'repos', 'ReconXKG-cidev', 'ReconXKGtoCobra', ...
     'models', 'subsystemSubModels', 'subsystemSubModels.mat');
-rxnFilesDir = '/media/JACK/repos/ctf/rxns/atomMapped_standardised';
+rxnFilesDir = '/media/JACK/repos/ctf/rxns/moiety_rxns/atomMapped_std';
 modelVarNameHint = 'tyr'; % matches subModels.tyr (the Tyrosine metabolism subsystem abbreviation; confirmed via subsystemSubModels.mat's summaryTable, 139 reactions)
 nSampleRxnFiles = 3; % number of atom-mapped RXN files to directly re-parse via readABRXNFile for the atoms/bonds sample (FR-010a)
 nTimedRuns = 2; % SC-004: wall-clock time is averaged over at least 2 runs
