@@ -73,6 +73,20 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %                entire reacting-moiety bond-graph/minimum-set-cover section
 %                (BG is still a required input but is not processed). This
 %                mode does not require a MILP solver.
+%                * .computeMoietyGraphs {(1),0} true (default) to build the
+%                bond-level structures (bond mapping components, bond
+%                isomorphism classes, atom-bond graph) and return the
+%                per-moiety molecular graphs in `arm.MG`, as before. Set to
+%                false, together with `conservedMoietiesOnly = true`, to skip
+%                that bond-level stage entirely: `arm.MG` is then returned as
+%                an empty cell array and every other output is unchanged.
+%                Intended for genome-scale conserved-moiety runs, where the
+%                unlabelled bond-component isomorphism classification can
+%                fail to terminate (KNOWN ISSUE KI-001, see
+%                src/analysis/topology/reactingMoieties/KNOWN_ISSUES.md).
+%                Setting it to false without `conservedMoietiesOnly = true`
+%                is an error, because reacting-moiety analysis needs the
+%                bond-level structures.
 %
 % OUTPUTS:
 %    arm:               atomically resolved model as a matlab structure (fields detailed below)
@@ -233,6 +247,18 @@ if ~isfield(options,'conservedMoietiesOnly')
     options.conservedMoietiesOnly = false;
 end
 conservedMoietiesOnly = options.conservedMoietiesOnly;
+
+if ~isfield(options,'computeMoietyGraphs')
+    % Default true: build the bond-level structures and arm.MG, as before.
+    % See OPTIONAL INPUTS above and KNOWN ISSUE KI-001.
+    options.computeMoietyGraphs = true;
+end
+computeMoietyGraphs = logical(options.computeMoietyGraphs);
+if ~computeMoietyGraphs && ~conservedMoietiesOnly
+    error('identifyConservedReactingMoieties:computeMoietyGraphsRequiresConservedOnly', ...
+        ['options.computeMoietyGraphs = false requires options.conservedMoietiesOnly = true, ' ...
+        'because reacting-moiety analysis needs the bond-level structures.']);
+end
 
 bool = contains(model.mets,'#');
 if any(bool)
@@ -826,6 +852,11 @@ end
 
 
 %% Connected Components for Bonds (Bond Mapping + Conserved/Reacting Partition)  % Hadjar
+% Skipped when options.computeMoietyGraphs is false (conserved-only mode only):
+% nothing below up to "Moiety transition graph" feeds L, M2M, M2R, MTG or
+% moietyFormulae; it only serves arm.MG and the reacting-moiety analysis.
+% See KNOWN ISSUE KI-001 (src/analysis/topology/reactingMoieties/KNOWN_ISSUES.md).
+if computeMoietyGraphs
 %
 % This section builds bond-level structures that mirror the atom-level logic used
 % for conserved moieties, but now at the level of *bond instances*.
@@ -927,6 +958,7 @@ BIG = digraph(edgeTable, nodeTable);
 %   - BIG.Edges.Component
 %   - BIG.Edges.IsomorphismClass
 % and BIG is rebuilt using the updated edge table.
+end % if computeMoietyGraphs (bond-mapping components)
 
 %% Moiety transition graph
 %create the moiety transition graph explicitly as a
@@ -1123,6 +1155,8 @@ if sanityChecks
 end
 
 %% Add bond information to Moiety transition graph (Hadjar)
+% Skipped when options.computeMoietyGraphs is false: arm.MG is returned empty.
+if computeMoietyGraphs
 %
 % Goal:
 %   Connect conserved bond instances (from BIG) to conserved moieties (from ATG),
@@ -1194,6 +1228,9 @@ isInternalBond = moietyBondIndexABG == moietyOfNode(bondSource) & ...
     moietyBondIndexABG == moietyOfNode(bondTarget);
 MG = extractPartitionSubgraphs(ABG, moietyOfNode, isInternalBond); %todo: check graph or digraph
 clear moietyOfNode bondSource bondTarget moietyBondIndexABG isInternalBond
+else
+    MG = {}; % moiety graphs not computed (options.computeMoietyGraphs = false)
+end % if computeMoietyGraphs (moiety graphs)
 
 %% Map between moiety graph and metabolic network
 %map metabolite to moieties

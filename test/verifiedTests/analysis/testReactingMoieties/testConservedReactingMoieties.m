@@ -106,6 +106,45 @@ assert(isequal(armSibling.M2R, armConservedOnly.M2R), ...
 assert(isequal(moietyFormulaeSibling, moietyFormulaeConservedOnly), ...
     'moietyFormulae must be identical between identifyConservedReactingMoieties(conservedMoietiesOnly=true) and identifyConservedMoieties (spec 027 SC-001/SC-002).');
 
+% --- feature 20261002-conserved-only-skip-moiety-graphs (KNOWN ISSUE KI-001) ---
+% options.computeMoietyGraphs = false (with conservedMoietiesOnly = true) skips the
+% bond-level stage. Every output except arm.MG must be identical to the default
+% conserved-only call above, and arm.MG must be an empty cell array. Placed before the
+% MILP gate: no MILP is solved.
+optionsNoMoietyGraphs = optionsConservedOnly;
+optionsNoMoietyGraphs.computeMoietyGraphs = false;
+[armNoMG, moietyFormulaeNoMG, reactingNoMG] = ...
+    identifyConservedReactingMoieties(subModel, BG, dATM, optionsNoMoietyGraphs);
+
+assert(iscell(armNoMG.MG) && isempty(armNoMG.MG), ...
+    'arm.MG must be an empty cell array when options.computeMoietyGraphs = false (KI-001).');
+assert(isequal(sort(fieldnames(armNoMG)), sort(fieldnames(armConservedOnly))), ...
+    'arm must have the same fields with and without options.computeMoietyGraphs (KI-001).');
+armFields = setdiff(fieldnames(armConservedOnly), {'MG'});
+for k = 1:numel(armFields)
+    assert(isequal(armNoMG.(armFields{k}), armConservedOnly.(armFields{k})), ...
+        sprintf('arm.%s must be unchanged by options.computeMoietyGraphs = false (KI-001).', armFields{k}));
+end
+assert(isequal(moietyFormulaeNoMG, moietyFormulaeConservedOnly), ...
+    'moietyFormulae must be unchanged by options.computeMoietyGraphs = false (KI-001).');
+assert(isequal(reactingNoMG, reactingConservedOnly), ...
+    'reacting must be unchanged by options.computeMoietyGraphs = false (KI-001).');
+
+% computeMoietyGraphs = false is only valid in conserved-only mode
+optionsInvalid = options;
+optionsInvalid.sanityChecks = 0;
+optionsInvalid.conservedMoietiesOnly = false;
+optionsInvalid.computeMoietyGraphs = false;
+raisedExpected = false;
+try
+    identifyConservedReactingMoieties(subModel, BG, dATM, optionsInvalid);
+catch ME
+    raisedExpected = strcmp(ME.identifier, ...
+        'identifyConservedReactingMoieties:computeMoietyGraphsRequiresConservedOnly');
+end
+assert(raisedExpected, ...
+    'computeMoietyGraphs = false without conservedMoietiesOnly = true must raise the documented error (KI-001).');
+
 % the minimum-set-cover step uses a MILP (intlinprog or solveCobraMILP); require a
 % MILP solver so the remaining, full-mode part of this test skips cleanly
 % (COBRA:RequirementsNotMet) where none exists. Relocated here (was previously at the
