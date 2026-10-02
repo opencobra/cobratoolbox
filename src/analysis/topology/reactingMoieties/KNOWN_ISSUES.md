@@ -42,6 +42,12 @@ options.computeMoietyGraphs   = false;   % new, default true
 
 With `computeMoietyGraphs = false`, `arm.MG` is an empty cell array and every other output is identical to the default (regression-tested in `testConservedReactingMoieties.m`). The default (`true`) leaves all existing behaviour and golden-test outputs unchanged. Combining `false` with `conservedMoietiesOnly = false` is an error.
 
+Verified 2026-10-02 (details and artefacts in `specs/20261002-conserved-only-skip-moiety-graphs/spec.md`, Evidence):
+
+- the unit test passes, including all existing golden cases;
+- the `pufa` n=495 model that never returned now completes conserved-moiety identification in about 30 s (332 moieties, L*N = 0);
+- at n=494, where both modes complete, all 20 other `arm` fields and `moietyFormulae` are identical between modes; only `arm.MG` differs (4700 graphs vs empty). Identify time 81.9 s -> 27.9 s.
+
 **This removes the hang only. It does not fix consequence 2.** Results from runs made this way are expected to contain hydrogen-driven over-splitting and must be treated as provisional.
 
 ### Fix options (to decide later)
