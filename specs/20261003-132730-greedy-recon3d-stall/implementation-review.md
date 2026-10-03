@@ -76,9 +76,9 @@ None.
 - O1: the printed "Hit fraction" overstates efficiency (pre-existing, out of scope).
 
 ## Human Approval
-- Approved: no
-- Approved option:
-- Approved tasks/scope:
-- Implementation path (core `/speckit-implement` or agent-assign pipeline):
+- Approved: yes (pending the explicit invocation below)
+- Approved option: Approve all tasks (Recommended); SC-003 re-derivation accepted
+- Approved tasks/scope: T001–T027
+- Implementation path (core `/speckit-implement` or agent-assign pipeline): `/speckit-implement`
 - Required implementation invocation per constitution: `/speckit-implement`, or `/speckit-agent-assign-assign` → `-validate` → `-execute`
-- Date (UTC):
+- Date (UTC): 2026-10-03
