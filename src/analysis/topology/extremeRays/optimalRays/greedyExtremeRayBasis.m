@@ -1,5 +1,5 @@
 function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
-% Computes a non-negative basis for the left nullspace of the stoichiometric
+% Computes a non-negative basis for the left/right nullspace of the stoichiometric
 % matrix using optimization to pick random extreme rays, then test a
 % posteriori if each is linearly independent from the existing stored
 % extreme rays.
@@ -157,7 +157,12 @@ if ~isfield(param,'feasTol')
     param.feasTol = 1e-6;
 end
 
-if ~isfield(param,'solver')
+
+if isfield(param,'solver')
+    if strcmp(param.solver,'mosek')
+        error('needs an LP solver that returns exact VERTICES, e.g., gurobi')
+    end
+else
     % This routine needs an LP solver that returns exact VERTICES. Measured on
     % iDopaNeuroC: gurobi returns a basis on every solve and clears the derived accuracy
     % target, reaching 105 of 105 rays in about 5 s, while mosek's interior-point path
