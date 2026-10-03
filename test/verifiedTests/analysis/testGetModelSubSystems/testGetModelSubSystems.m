@@ -55,6 +55,18 @@ modelNew = rmfield(modelNew, 'subSystems');
 [subSystems]  = getModelSubSystems(modelNew);
 assert(isempty(subSystems));
 
+% getModelSubSystems and buildRxn2subSystem MUST NOT diverge: the latter
+% delegates its own name-enumeration to the former (FR-003)
+[~, ~, subSystemNamesFromMatrix] = buildRxn2subSystem(model, false);
+assert(isequal(getModelSubSystems(model), subSystemNamesFromMatrix), ...
+    'getModelSubSystems diverged from buildRxn2subSystem''s subSystemNames output.');
+
+% getModelSubSystems MUST NOT mutate model.subSystems as a side effect (FR-011, SC-007)
+subSystemsBefore = model.subSystems;
+getModelSubSystems(model);
+assert(isequal(model.subSystems, subSystemsBefore), ...
+    'getModelSubSystems mutated model.subSystems.');
+
 % output a success message
 fprintf('Done.\n');
 
