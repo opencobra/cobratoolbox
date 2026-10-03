@@ -1,10 +1,10 @@
 # Human Loop State
 
 ## Current State
-- Status: Gate 2 approved (all); awaiting explicit /speckit-implement
+- Status: Bundle 3 implemented (T001–T027); awaiting Gate 3
 - Active feature directory: specs/20261003-132730-greedy-recon3d-stall
-- Last completed bundle: 2 (implementation preparation)
-- Source code modified by this workflow: no
+- Last completed bundle: 3 (approved implementation)
+- Source code modified by this workflow: yes (within approved scope)
 
 ## Core Command Ledger
 - constitution:   checked (read 2026-10-03; Principle VI gate applies)
@@ -14,13 +14,14 @@
 - plan:           invoked 2026-10-03 (research by scratchpad prototype on VK file; SC-003 re-derived)
 - tasks:          invoked 2026-10-03 (27 tasks)
 - analyze:        invoked 2026-10-03 (0 crit/0 high/3 med/6 low; remediated)
-- implement:
+- implement:      invoked 2026-10-03 by the user (/speckit-implement); T001–T027 complete
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
 |---|---|---|---|
 | 2026-10-03 | Clarification | Assumptions (10-min bound; fixture) "are correct"; reference call = user snippet on VK file as-is | Recorded in spec Clarifications |
 | 2026-10-03 | Clarification | CI fixture: "Use a different model ... small ecoli model" in COBRA.models; VK file loaded via load(...) for development | FR-015 / Assumptions updated |
+| 2026-10-03 | Implement | user invoked /speckit-implement | T001–T027 done; all 4 tests pass; reference call 251/251 in 32.4 s |
 | 2026-10-03 | Gate 2 | "Approve all tasks (Recommended)"; path "/speckit-implement (Recommended)"; SC-003 re-derivation accepted | Scope T001–T027 recorded; awaiting the user's explicit /speckit-implement invocation (Principle VI) |
 | 2026-10-03 | Analyze remediation | "Fix all, then Gate 2 (Recommended)" | U1 A1 C1 C2 I1 I2 I3 fixed in artifacts; U1 measured 1e8-element SVD 8.3 s |
 | 2026-10-03 | Gate 1 | "continue using human loop" (continue to implementation-preparation bundle) | Bundle 2 started; per-phase commit hooks deferred to one commit at end of bundle |
@@ -35,7 +36,7 @@
 - Files not allowed: findExtremePool.m, optimalExtremePoolDriver.m, testFindExtremePathway.m, test/models/**, external/**, deprecated/**, the VK model file
 
 ## Pointers
-- Implementation receipt(s): (none yet; constitution ledger under agent-runs/)
+- Implementation receipt(s): specs/20261003-132730-greedy-recon3d-stall/agent-runs/20261003T160954Z-greedy-recon3d-stall/implementation-receipt.md
 - Implementation review: specs/20261003-132730-greedy-recon3d-stall/implementation-review.md
 - Baseline diagnosis: measurements/20261003-baseline-diagnosis.md
 

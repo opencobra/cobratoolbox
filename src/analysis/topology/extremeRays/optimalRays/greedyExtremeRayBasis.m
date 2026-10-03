@@ -44,6 +44,21 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %    previous default are NOT reproducible through this function; reproducing
 %    them requires a release of the toolbox predating this change.
 %
+%    CHANGE OF DEFAULT NUMERICAL BEHAVIOUR, October 2026, feature
+%    20261003-132730-greedy-recon3d-stall. Each candidate ray is now judged, and
+%    returned, as the LP solver computed it, with negative entries clipped to zero.
+%    Previously it was judged after `findExtremePool` had zeroed every entry below
+%    `10*feasTol`. That truncation turned exact vertices into inaccurate ones: on the
+%    Recon3D internal matrix (5824 x 8748, left nullity 251) the search stalled at 237
+%    rays after 884 accuracy rejections, and with no `maxTime` set it then ran for the
+%    full default budget. It now returns all 251 rays in under a minute. Returned rays
+%    may therefore carry small positive entries that were formerly zeroed. They are
+%    exact, and every row still meets `status.acceptanceTarget`. Accuracy rejections
+%    now also count toward the stall detection, so they escalate to the targeted
+%    objective as dependence failures always did. The shortfall classification uses a
+%    maximal-support LP, so `shortfallKind` reports `'sampling'` where it formerly
+%    reported a false `'structural'`.
+%
 %
 % INPUT:
 %    model:      COBRA model structure with fields:
@@ -59,6 +74,7 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .internalStoichiometriMatrixLeftNullspace - if true, restrict `model.S` to `model.SConsistentRxnBool` (default = 0)
 %                  * .maxTime - TOTAL time budget in seconds across restarts (default = `param.maxNewBasisTime`, which reproduces the historical behaviour)
 %                  * .maxNewBasisTime - seconds to persist without finding a new basis vector before declaring a dead end and restarting from fresh randomness (default = 10000)
+%                  * .maxElementsForSpectrum - largest `numel` of the operative matrix for which the dense spectrum is computed to derive the accuracy target and assess the regime; above it the target falls back to `eps*normest` and the regime is `'notAssessed'` (default = 1e8)
 %                  * .feasTol - may TIGHTEN ray acceptance below the derived accuracy target; it can no longer loosen it above that target (default = 1e-6, which no longer loosens)
 %                  * .solver - LP solver nominated for the duration of this call, restored afterwards on every exit path (default = `'gurobi'`, which returns exact vertices; falls back if it is not installed). Set to `''` to use the session's solver unchanged
 %
@@ -91,10 +107,12 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .raysRejectedForDependence - candidates dropped as linearly dependent
 %                  * .timedOut - true if the search stopped on its total time budget
 %                  * .nRestarts - times the search hit a dead end and restarted from fresh randomness
+%                  * .nStallEscalations - times consecutive failed attempts (empty solve, accuracy rejection or dependence) reached the threshold at which the search escalates to its stall remedies
 %                  * .nTargetedObjectives - times the search aimed the objective at the unspanned part of the nullspace instead of drawing at random
 %                  * .shortfallKind - `'none'`, `'sampling'` (reachable but not found), `'structural'` (not reachable with non-negative weights) or `'notAssessed'`
 %                  * .attainableDimension - dimension actually reachable with non-negative weights; equals `.raysExpected` under stoichiometric consistency and is smaller otherwise
 %                  * .attainableDimensionAssessed - whether that was determined rather than assumed
+%                  * .spectrumTime - seconds spent on the spectrum that derives the accuracy target and regime (0 if it was not computed)
 %                  * .elapsedTime - seconds for this call
 %                  * .solverRequested - the solver nominated by `param.solver`
 %                  * .solverUsed - the solver actually used, which differs if the nominated one was unavailable
@@ -155,6 +173,15 @@ end
 
 if ~isfield(param,'feasTol')
     param.feasTol = 1e-6;
+end
+
+if ~isfield(param,'maxElementsForSpectrum')
+    % Largest operative matrix whose dense spectrum is computed to derive the accuracy
+    % target and assess the regime. Set by measured cost: 5.3 s for the 5824 x 8748
+    % Recon3D operative matrix, 8.3 s at 1e8 elements (research.md R3 of feature
+    % 20261003-132730-greedy-recon3d-stall). The previous hard-coded 5e7 put Recon3D, at
+    % 5.09e7 elements, just outside it.
+    param.maxElementsForSpectrum = 1e8;
 end
 
 
@@ -252,7 +279,7 @@ if ~isfield(model,'SConsistentRxnBool')
         'impliedNullity', NaN, 'independentRank', NaN, 'raysFound', 0, ...
         'raysExpected', NaN, 'raysExpectedIsEstimate', true, ...
         'raysRejectedForAccuracy', 0, 'raysRejectedForDependence', 0, ...
-        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, 'solverRequested', solverRequested, 'solverUsed', solverUsed, 'solverChanged', solverChanged, ...
+        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'nStallEscalations', 0, 'spectrumTime', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, 'solverRequested', solverRequested, 'solverUsed', solverUsed, 'solverChanged', solverChanged, ...
         'missingFieldName', 'SConsistentRxnBool', ...
         'howToObtain', ['Set param.internalStoichiometriMatrixLeftNullspace = true ' ...
         'to have it computed by findStoichConsistentSubset, or supply ' ...
@@ -278,7 +305,7 @@ if ~any(model.SConsistentRxnBool) %check if positive vector in left nullspace
         'scalingBoundary', NaN, 'raysFound', 0, ...
         'raysExpected', 0, 'raysExpectedIsEstimate', true, ...
         'raysRejectedForAccuracy', 0, 'raysRejectedForDependence', 0, ...
-        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, 'solverRequested', solverRequested, 'solverUsed', solverUsed, 'solverChanged', solverChanged, ...
+        'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'nStallEscalations', 0, 'spectrumTime', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, 'solverRequested', solverRequested, 'solverUsed', solverUsed, 'solverChanged', solverChanged, ...
         'message', ['No stoichiometrically consistent reaction, so there is no ' ...
         'positive vector in the left nullspace to find.']);
     return;
@@ -295,74 +322,19 @@ end
 
 [nVar,nRxn]=size(model.S);
 
-% Derive the accuracy target each accepted ray must meet.
-%
-% A rank determination on a matrix M augmented with this basis reports the same
-% integer for every relative tolerance tau in a span only if the singular values
-% that ought to be zero stay below the TIGHTEST tolerance in that span:
-%
-%     sigma_{r+1}(M) <= tauMin * sigma_1(M),   tauMin = eps*max(size(M))
-%
-% Writing the computed basis as L = L0 + E with L0*Sop = 0 exactly, Weyl's
-% inequality gives sigma_{r+1}(M) <= ||E||_2, and the measurable residual
-% R = L*Sop = E*Sop bounds ||E||_2 <= ||R||_2 / sigmaMinPlus(Sop). Substituting:
-%
-%     ||L*Sop||_2 <= tauMin * sigma_1(M) * sigmaMinPlus(Sop)
-%
-% This target is DERIVED from what a rank determination needs, not chosen. See
-% specs/20260914-204640-greedy-left-nullspace-conditioning/research.md R3, which
-% records the derivation, its validation against two known outcomes, and the
-% controlled-perturbation measurement of how conservative it is.
-%
-% The spectrum is computed directly. Measured cost: 0.15 s for the 1244 x 1710
-% iDopaNeuroC operative matrix and 0.35 s for the 1668 x 2382 iAF1260 matrix, against
-% a greedy search that takes seconds to minutes, so this is affordable on every model
-% the toolbox handles. Only a matrix too large to hold densely falls back.
-%
-% The same spectrum decides the scaling regime, so it is computed once for both.
-maxElementsForSpectrum = 5e7;
-tauMin = eps*max(nVar + nRxn, nVar);
-accuracyTargetDerived = false;
-regime = 'notAssessed';
-sigmaMinPlus = NaN;
-regimeBoundary = NaN;
-if numel(model.S) <= maxElementsForSpectrum
-    singularValues = svd(full(model.S));
-    sigmaOne = singularValues(1);
-    nAboveRankTol = sum(singularValues > eps*max(size(model.S))*sigmaOne);
-    if nAboveRankTol > 0 && sigmaOne > 0
-        sigmaMinPlus = singularValues(nAboveRankTol);
-        accuracyTarget = tauMin*sigmaOne*sigmaMinPlus;
-        accuracyTargetDerived = true;
-
-        % Scaling regime. The question a regime asks is whether a usable basis is
-        % OBTAINABLE at all, so the boundary is the point at which the accuracy target
-        % above falls below the residual an LP can actually deliver:
-        %
-        %     Regime B  <=>  accuracyTarget < residualFloor
-        %               <=>  sigmaMinPlus   < residualFloor / (tauMin * sigma_1)
-        %
-        % residualFloor is machine epsilon, which research.md R2 measured as the
-        % attainable absolute residual: gurobi returned exactly 0 and glpk at most
-        % 1.110e-16 on raw untruncated solutions. A solver with a worse floor (mosek
-        % measured ~1e-12 per ray) does not mis-classify the regime; it simply fails
-        % the accuracy target and reports accuracy rejections instead.
-        residualFloor = eps;
-        regimeBoundary = residualFloor/(tauMin*sigmaOne);
-        if sigmaMinPlus < regimeBoundary
-            regime = 'badlyScaled';
-        else
-            regime = 'wellScaled';
-        end
-    end
-end
-if ~accuracyTargetDerived
-    % Too large to factor densely. Do not guess: fall back to a machine-precision
-    % scaled requirement and leave the regime recorded as 'notAssessed' rather than
-    % claiming a classification that was never made.
-    sigmaOne = normest(model.S);
-    accuracyTarget = eps*sigmaOne;
-end
+% Derive the accuracy target each accepted ray must meet, and the scaling regime, from
+% the spectrum of the operative matrix. The derivation (Weyl's inequality applied to a
+% rank determination on the augmented matrix; see
+% specs/20260914-204640-greedy-left-nullspace-conditioning/research.md R3) lives in
+% nullspaceAccuracyTarget, so that checkNullspaceBasis judges a supplied basis by the
+% identical contract.
+target = nullspaceAccuracyTarget(model.S, param);
+accuracyTarget = target.accuracyTarget;
+accuracyTargetDerived = target.accuracyTargetDerived;
+regime = target.regime;
+sigmaMinPlus = target.sigmaMinPlus;
+regimeBoundary = target.regimeBoundary;
+spectrumTime = target.spectrumTime;
 
 % param.feasTol may TIGHTEN acceptance but must never loosen it above the derived
 % target (see the NOTE in the help header).
@@ -400,6 +372,8 @@ if strcmp(regime, 'badlyScaled')
     status.raysRejectedForDependence = 0;
     status.timedOut = false;
     status.nRestarts = 0;
+    status.nStallEscalations = 0;
+    status.spectrumTime = spectrumTime;
     status.elapsedTime = 0;
     status.solverRequested = solverRequested;
     status.solverUsed = solverUsed;
@@ -441,6 +415,9 @@ t1 = tic;
 t2 = tic;
 nfail=0;
 nfailMax = 5;
+% times nfail reached nfailMax, i.e. the search escalated from random draws towards the
+% stall remedies; reported so that an escalation path that never fires is visible
+nStallEscalations = 0;
 nRejectedForAccuracy = 0;
 nRejectedForDependence = 0;
 timedOut = false;
@@ -528,7 +505,16 @@ while nBases < (nVar-rankS)
 
     positive = 1;
     if isempty(param.compareSolvers)
-        [x, sol] = findExtremePool(model,obj,param.printLevel-2,positive,0,param.solverSettings);
+        [~, sol] = findExtremePool(model,obj,param.printLevel-2,positive,0,param.solverSettings);
+        % Judge, and return, the ray the solver computed, not findExtremePool's first
+        % output, which zeroes every entry below 10*feasTol. That truncation is a
+        % sparsity convenience for findExtremePool's other callers, but here it destroys
+        % exact vertices: on Recon3D, once the objective is zeroed on covered
+        % metabolites, gurobi returns rays with ~200 entries below 1e-5 whose residual is
+        % <= 3.2e-16 as solved and ~1.6e-4 once truncated, so every one was rejected for
+        % accuracy and the search stalled at 237 of 251 rays (feature
+        % 20261003-132730-greedy-recon3d-stall, research.md R1).
+        x = untruncatedRay(sol, nVar);
     else
         % PAIRED comparison. Every solver is handed the identical LP built from the
         % identical partial basis and the identical objective vector drawn above, so a
@@ -546,6 +532,10 @@ while nBases < (nVar-rankS)
     end
 
     if contains(sol.origStat,'WARNING')
+        if nfail < nfailMax
+            % a solver warning escalates at once, which is a crossing like any other
+            nStallEscalations = nStallEscalations + 1;
+        end
         nfail = nfailMax;
     end
 
@@ -555,7 +545,7 @@ while nBases < (nVar-rankS)
     % the normalisation, so the LP is genuinely infeasible and there is nothing to find.
     % Guard it before the residual is taken, or S' is multiplied by an empty vector.
     if isempty(x) || numel(x) ~= nVar
-        nfail = nfail + 1;
+        [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
         nRejectedForAccuracy = nRejectedForAccuracy + 1;
         continue
     end
@@ -566,6 +556,11 @@ while nBases < (nVar-rankS)
     % signature of a solver that cannot serve this use.
     if norm(model.S'*x,inf) > acceptanceTarget
         nRejectedForAccuracy = nRejectedForAccuracy + 1;
+        % An accuracy rejection is as much a failed attempt as a dependent ray or an
+        % empty solve, so it counts toward the stall detection. Not counting it meant a
+        % run of accuracy failures could never relax coverage-zeroing or reach the
+        % targeted objective: on Recon3D, 884 rejections and 0 targeted objectives.
+        [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
         continue
     end
 
@@ -590,7 +585,7 @@ while nBases < (nVar-rankS)
         end
         nfail=0;
     else
-        nfail = nfail+1;
+        [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
         nRejectedForDependence = nRejectedForDependence + 1;
         if param.printLevel>2
             fprintf('%s\n','Linearly dependent pool vector discarded');
@@ -779,6 +774,8 @@ status.solverRequested = solverRequested;
 status.solverUsed = solverUsed;
 status.solverChanged = solverChanged;
 status.nTargetedObjectives = nTargetedObjectives;
+status.nStallEscalations = nStallEscalations;
+status.spectrumTime = spectrumTime;
 status.shortfallKind = shortfallKind;
 status.attainableDimension = attainableDimension;
 status.attainableDimensionAssessed = attainableDimensionAssessed;
@@ -848,9 +845,12 @@ for iS = 1:numel(solvers)
         continue
     end
     tSolve = tic;
-    [xi, soli] = findExtremePool(model, obj, param.printLevel-2, positive, 0, ...
+    [~, soli] = findExtremePool(model, obj, param.printLevel-2, positive, 0, ...
         param.solverSettings);
     elapsed = toc(tSolve);
+    % the same untruncated ray the ordinary path judges, so that the instrumentation
+    % stays inert: switching it on must not change how a ray is judged
+    xi = untruncatedRay(soli, numel(obj));
 
     row = struct();
     row.pointIndex = pointIndex;
@@ -896,6 +896,29 @@ end
 
 % restore the solver the caller had active, so the comparison leaves no trace
 changeCobraSolver(nominated, 'LP', 0);
+
+
+function x = untruncatedRay(sol, nVar)
+% The ray as the solver computed it, with any negative entries clipped to zero, since
+% non-negativity is a hard requirement. Empty if the solve returned no usable vector.
+%
+% Clipping is a guard, not a correction: gurobi returned no negative entry on any of the
+% Recon3D solves measured. A clipped ray is still judged against the acceptance target
+% like any other, so a clip large enough to matter is rejected, never returned.
+x = [];
+if isfield(sol, 'full') && numel(sol.full) == nVar
+    x = sol.full;
+    x(x < 0) = 0;
+end
+
+
+function [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations)
+% One failed attempt at a new ray. Crossing nfailMax is what moves the search from
+% random draws to its stall remedies, so that crossing is counted.
+nfail = nfail + 1;
+if nfail == nfailMax
+    nStallEscalations = nStallEscalations + 1;
+end
 
 
 function obj = targetedObjective(Z, Zpos, nBases, nVar)
@@ -946,11 +969,24 @@ function [attainable, known] = attainableNullspaceDimension(S, nVar)
 % Dimension of the subspace of ker(S') that is reachable with NON-NEGATIVE weights,
 % i.e. dim span(ker(S') n R^m_+).
 %
-% Method: the maximal support of a non-negative nullspace vector is found by one LP
-% maximising sum(x) over {S'x = 0, 0 <= x <= 1}; the support of its optimum is the
-% largest support any non-negative nullspace vector can have. The reachable subspace is
-% exactly the part of ker(S') living on that support, whose dimension is
-% |support| - rank(S(support, :)).
+% Method: one LP finds the MAXIMAL support of a non-negative nullspace vector,
+%
+%     maximise sum(z)  subject to  S'x = 0,  0 <= z <= x,  z <= 1,  x >= 0 (unbounded),
+%
+% and the reachable subspace is exactly the part of ker(S') living on that support,
+% whose dimension is |support| - rank(S(support, :)). Because the feasible x form a cone,
+% any coordinate that SOME non-negative nullspace vector can carry can be scaled up
+% until its z reaches 1, so at the optimum z is 0/1 and z = 1 marks exactly the
+% reachable coordinates.
+%
+% The earlier formulation, maximising sum(x) over {S'x = 0, 0 <= x <= 1}, does NOT
+% attain maximal support: a vertex optimum can leave a reachable coordinate at zero when
+% raising it would cost weight elsewhere. The smallest exhibit is S = [1; -1; 2], whose
+% cone has extreme rays (1,1,0) and (0,2,1). Maximising the sum prefers (1,1,0) (2 beats
+% 1.5), excludes metabolite 3, and reports 1 instead of 2. On the Recon3D internal
+% matrix it excluded 19 metabolites and reported 237 instead of 251, which turned a
+% sampling shortfall into a false 'structural' verdict (feature
+% 20261003-132730-greedy-recon3d-stall, research.md R4).
 %
 % This is sound in both directions, unlike a test for a strictly positive vector, whose
 % absence does NOT imply the cone fails to span.
@@ -959,13 +995,15 @@ attainable = NaN;
 known = false;
 [nMet, nRxn] = size(S);
 
-LPproblem.A = sparse(S');
-LPproblem.b = zeros(nRxn, 1);
-LPproblem.csense = repmat('E', nRxn, 1);
-LPproblem.lb = zeros(nMet, 1);
-LPproblem.ub = ones(nMet, 1);
-LPproblem.c = ones(nMet, 1);
-LPproblem.osense = -1;                      % maximise the total weight
+% variables [x; z]
+LPproblem.A = [sparse(S'), sparse(nRxn, nMet);
+               -speye(nMet), speye(nMet)];
+LPproblem.b = zeros(nRxn + nMet, 1);
+LPproblem.csense = [repmat('E', nRxn, 1); repmat('L', nMet, 1)];
+LPproblem.lb = zeros(2*nMet, 1);
+LPproblem.ub = [inf(nMet, 1); ones(nMet, 1)];
+LPproblem.c = [zeros(nMet, 1); ones(nMet, 1)];
+LPproblem.osense = -1;                      % maximise the number of reachable coordinates
 try
     sol = solveCobraLP(LPproblem, 'printLevel', 0);
 catch ME
@@ -978,11 +1016,12 @@ catch ME
     return
 end
 
-if sol.stat ~= 1 || isempty(sol.full) || numel(sol.full) ~= nVar
+if sol.stat ~= 1 || isempty(sol.full) || numel(sol.full) ~= 2*nVar
     return
 end
 
-supportBool = sol.full > 1e-9;
+% z is 0/1 at the optimum, so the midpoint separates reachable from unreachable robustly
+supportBool = sol.full(nMet+1:end) > 0.5;
 if ~any(supportBool)
     attainable = 0;                         % only the zero vector is non-negative here
     known = true;

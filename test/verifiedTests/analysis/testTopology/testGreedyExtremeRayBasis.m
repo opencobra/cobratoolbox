@@ -495,6 +495,148 @@ for k = 1:length(solvers.LP)
             statusG1.raysFound == statusG1.raysExpected, ...
             'FR-005: sampling and structural shortfalls must be distinguishable');
 
+        % ---- Stall feature: 20261003-132730-greedy-recon3d-stall ----
+
+        % T007 / US1 / FR-001, FR-002, FR-003: a ray is judged, and returned, as the
+        % solver computed it, not after findExtremePool zeroes its entries below
+        % 10*feasTol. On Recon3D that truncation turned exact vertices (residual
+        % <= 3e-16) into rejected ones (~1.6e-4), and the search stalled at 237 of 251.
+        %
+        % ecoli_core does not exhibit it as shipped: its rays have no entries that
+        % small. Rescaling one conserved metabolite's row is a change of units: it
+        % divides that metabolite's entry in every conservation vector by the same
+        % factor and leaves the nullspace structure intact, which reproduces the
+        % mechanism. Measured before the fix: 7 of 11 rays, 1814 accuracy rejections.
+        [~, ~, ~, ~, ~, ~, ecoliConsistent] = findStoichConsistentSubset(ecoli.model, 0, 0);
+        Sinternal = ecoliConsistent.S(:, ecoliConsistent.SConsistentRxnBool);
+        linearLeftBasis = getNullSpace(Sinternal', 0);
+        % the metabolite present in the most nullspace directions, chosen
+        % programmatically so the test does not depend on a metabolite name
+        [~, iRescaled] = max(sum(abs(linearLeftBasis) > 1e-9, 1));
+        Srescaled = Sinternal;
+        Srescaled(iRescaled, :) = Srescaled(iRescaled, :)*2e5;
+        rescaledModel = struct('S', Srescaled, 'SConsistentRxnBool', true(size(Srescaled, 2), 1));
+        rescaledParam = param;
+        rescaledParam.internalStoichiometriMatrixLeftNullspace = 1;
+        rescaledParam.maxTime = 60;
+        rng(20261003, 'twister');
+        warnState = warning('off', 'greedyExtremeRayBasis:incompleteBasis');
+        [ZposRescaled, ~, statusRescaled] = greedyExtremeRayBasis(rescaledModel, rescaledParam);
+        warning(warnState);
+        assert(strcmp(statusRescaled.regime, 'wellScaled'), ...
+            'the rescaled fixture must stay well scaled, or it tests the wrong regime');
+        assert(strcmp(statusRescaled.outcome, 'complete'), ...
+            sprintf(['FR-001: rescaled ecoli_core gave %d of %d rays (%s), with %d ' ...
+            'accuracy rejections'], statusRescaled.raysFound, statusRescaled.raysExpected, ...
+            statusRescaled.outcome, statusRescaled.raysRejectedForAccuracy));
+        assert(statusRescaled.raysRejectedForAccuracy == 0, ...
+            sprintf(['FR-002: %d exact rays were rejected for accuracy; post-solve ' ...
+            'processing must not manufacture accuracy failures'], ...
+            statusRescaled.raysRejectedForAccuracy));
+        assert(all(full(max(abs(ZposRescaled*Srescaled), [], 2)) <= statusRescaled.acceptanceTarget), ...
+            'FR-016: every returned row must meet the acceptance target');
+        assert(full(min(ZposRescaled(:))) >= 0, 'FR-003: non-negativity is exact');
+        assert(any(ZposRescaled(:) > 0 & ZposRescaled(:) < 1e-5), ...
+            ['the fixture must contain the legitimately tiny entries that truncation ' ...
+            'used to destroy, or it does not test FR-002']);
+
+        % the same in the right-nullspace mode (spec edge case: identical behaviour)
+        rightRescaledParam = rescaledParam;
+        rightRescaledParam.leftRight = 'right';
+        rightRescaledParam.internalStoichiometriMatrixLeftNullspace = 0;
+        rightRescaledModel = struct('S', Srescaled', 'SConsistentRxnBool', true(size(Srescaled, 1), 1));
+        rng(20261003, 'twister');
+        warnState = warning('off', 'greedyExtremeRayBasis:incompleteBasis');
+        [ZposRightRescaled, ~, statusRightRescaled] = greedyExtremeRayBasis(rightRescaledModel, rightRescaledParam);
+        warning(warnState);
+        assert(strcmp(statusRightRescaled.outcome, 'complete') && ...
+            statusRightRescaled.raysFound == statusRescaled.raysFound && ...
+            statusRightRescaled.raysRejectedForAccuracy == 0, ...
+            sprintf('right mode must behave identically: %d of %d rays, %d accuracy rejections', ...
+            statusRightRescaled.raysFound, statusRightRescaled.raysExpected, ...
+            statusRightRescaled.raysRejectedForAccuracy));
+        assert(all(full(max(abs(rightRescaledModel.S*ZposRightRescaled), [], 1)) <= ...
+            statusRightRescaled.acceptanceTarget), ...
+            'right mode: every returned column must meet the acceptance target');
+
+        % T008 / US1 / FR-004: an accuracy rejection counts toward the stall
+        % detection, so a run of them escalates exactly as a run of dependence failures
+        % does. Before the fix the targeted objective could never fire on accuracy
+        % failures (Recon3D: nTargetedObjectives = 0 after 884 rejections).
+        assert(isfield(statusStrict, 'nStallEscalations') && statusStrict.nStallEscalations > 0, ...
+            'FR-004: a run that rejects every candidate for accuracy must escalate');
+        assert(isfield(statusRescaled, 'nStallEscalations') && ...
+            statusRescaled.nStallEscalations >= 0 && ...
+            statusRescaled.nStallEscalations == round(statusRescaled.nStallEscalations), ...
+            'nStallEscalations must be a non-negative count on a complete run');
+        % the field exists on every return path
+        emptyModel = struct('S', ecoliModel.S, 'SConsistentRxnBool', false(size(ecoliModel.S, 2), 1));
+        [~, ~, statusEmptyPath] = greedyExtremeRayBasis(emptyModel, param);
+        assert(strcmp(statusEmptyPath.outcome, 'emptyNullspace'), ...
+            'no consistent reaction must take the emptyNullspace early return');
+        for earlyStatus = {statusBad, statusBare, statusEmptyPath}
+            assert(isfield(earlyStatus{1}, 'nStallEscalations') && ...
+                earlyStatus{1}.nStallEscalations == 0, ...
+                sprintf('the ''%s'' return must carry nStallEscalations = 0', earlyStatus{1}.outcome));
+        end
+
+        % T015 / US2 / FR-008, FR-009: the attainable dimension is the dimension of
+        % the subspace reachable with non-negative weights, which needs the MAXIMAL
+        % support of the non-negative cone. Maximising sum(y) with y <= 1 does not
+        % give it. F4's cone has extreme rays (1,1,0) and (0,2,1); that LP prefers
+        % (1,1,0) (sum 2 beats 1.5), so it excluded metabolite 3, which is reachable,
+        % and reported 1 instead of 2. On Recon3D the same defect reported 237 of 251
+        % and a false 'structural' verdict.
+        F4 = struct('S', sparse([1; -1; 2]), 'SConsistentRxnBool', true);
+        shortfallParam = param;
+        shortfallParam.feasTol = -1;              % forces a shortfall, so it is classified
+        shortfallParam.maxNewBasisTime = 2;
+        shortfallParam.maxTime = 2;
+        warnState = warning('off', 'greedyExtremeRayBasis:incompleteBasis');
+        [~, ~, statusF4] = greedyExtremeRayBasis(F4, shortfallParam);
+        warning(warnState);
+        assert(statusF4.raysFound < statusF4.raysExpected, ...
+            'F4 must genuinely fall short for its classification to mean anything');
+        assert(statusF4.attainableDimensionAssessed, 'FR-008: the attainable dimension must be assessed');
+        assert(statusF4.attainableDimension == 2 && statusF4.raysExpected == 2, ...
+            sprintf(['FR-008: F4''s whole nullspace is reachable with non-negative ' ...
+            'weights, so the attainable dimension is 2, got %d'], statusF4.attainableDimension));
+        assert(strcmp(statusF4.shortfallKind, 'sampling'), ...
+            sprintf('FR-008: F4''s shortfall is sampling, got ''%s''', statusF4.shortfallKind));
+        % FR-009: an input whose direction needs opposite signs still reads structural,
+        % now with its true attainable dimension
+        if statusG1.raysFound < statusG1.raysExpected
+            assert(statusG1.attainableDimension == 0, ...
+                sprintf(['FR-009: no non-negative vector annihilates G1, so its ' ...
+                'attainable dimension is 0, got %d'], statusG1.attainableDimension));
+        end
+
+        % T018 / US3 / FR-006, FR-007: the size ceiling for the dense spectrum is a
+        % parameter, and its cost is reported. Recon3D's operative matrix (5.09e7
+        % elements) sat just above the old hard-coded 5e7, which silently replaced the
+        % derived target with a 13-times stricter fallback and left the regime
+        % unassessed. A small matrix exercises both sides of the ceiling.
+        assert(isfield(statusRescaled, 'spectrumTime') && statusRescaled.accuracyTargetDerived && ...
+            statusRescaled.spectrumTime >= 0, ...
+            'FR-006: the default ceiling must derive the target and report the spectrum cost');
+        fallbackParam = rescaledParam;
+        fallbackParam.maxElementsForSpectrum = 1;
+        rng(20261003, 'twister');
+        warnState = warning('off', 'greedyExtremeRayBasis:incompleteBasis');
+        [ZposFallback, ~, statusFallback] = greedyExtremeRayBasis(rescaledModel, fallbackParam);
+        warning(warnState);
+        assert(~statusFallback.accuracyTargetDerived && strcmp(statusFallback.regime, 'notAssessed'), ...
+            'FR-007: above the ceiling the documented fallback must apply and say so');
+        assert(statusFallback.spectrumTime == 0, 'no spectrum cost may be reported when none was incurred');
+        assert(~isempty(ZposFallback) && ...
+            all(full(max(abs(ZposFallback*Srescaled), [], 2)) <= statusFallback.acceptanceTarget), ...
+            'FR-007: the fallback must still return a basis that meets its own target');
+        % the field exists on every return path
+        for earlyStatus = {statusBad, statusBare, statusEmptyPath}
+            assert(isfield(earlyStatus{1}, 'spectrumTime') && earlyStatus{1}.spectrumTime >= 0, ...
+                sprintf('the ''%s'' return must carry spectrumTime', earlyStatus{1}.outcome));
+        end
+
         % FR-015 / SC-010: the historical two-output call still works unmodified
         [ZposTwo, ZTwo] = greedyExtremeRayBasis(ecoliModel, param);
         assert(full(all(ZposTwo(:) >= 0)), 'two-output call must still return a valid basis');
