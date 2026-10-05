@@ -66,11 +66,35 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %                compatibility; automatically falls back to the
 %                open-source path (with a warning) if the required
 %                toolbox is not licensed on this machine.
+%                * .conservedMoietiesOnly {(0),1} false (default) to compute
+%                both conserved and reacting moieties as before. Set to true
+%                to compute only conserved moieties: the function returns
+%                after populating `arm` and `moietyFormulae`, and skips the
+%                entire reacting-moiety bond-graph/minimum-set-cover section
+%                (BG is still a required input but is not processed). This
+%                mode does not require a MILP solver.
+%                * .computeMoietyGraphs {(1),0} true (default) to build the
+%                bond-level structures (bond mapping components, bond
+%                isomorphism classes, atom-bond graph) and return the
+%                per-moiety molecular graphs in `arm.MG`, as before. Set to
+%                false, together with `conservedMoietiesOnly = true`, to skip
+%                that bond-level stage entirely: `arm.MG` is then returned as
+%                an empty cell array and every other output is unchanged.
+%                Intended for genome-scale conserved-moiety runs, where the
+%                unlabelled bond-component isomorphism classification can
+%                fail to terminate (KNOWN ISSUE KI-001, see
+%                src/analysis/topology/reactingMoieties/KNOWN_ISSUES.md).
+%                Setting it to false without `conservedMoietiesOnly = true`
+%                is an error, because reacting-moiety analysis needs the
+%                bond-level structures.
 %
 % OUTPUTS:
 %    arm:               atomically resolved model as a matlab structure (fields detailed below)
 %    moietyFormulae:    `nIsomorphismClasses x 1` cell array of conserved-moiety chemical formulae in Hill notation
-%    reacting:          structure of reacting-moiety results derived from `BG` and `dATM`
+%    reacting:          structure of reacting-moiety results derived from `BG` and `dATM`;
+%                       when `options.conservedMoietiesOnly` is true, this is instead
+%                       `struct('computed', false)`, signalling that reacting-moiety
+%                       analysis was not performed
 %
 % arm            atomically resolved model as a matlab structure with the following fields:
 %
@@ -181,6 +205,11 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %               minimumSetCoverPlain), gated by the new
 %               options.useOpenSourceMoietyTools flag for backward
 %               compatibility.
+%             - COBRA Toolbox, feature 20260929-111453-conserved-moiety-table-hotspots:
+%               one-pass reorientation of atom transitions, per-component and
+%               per-moiety subgraphs built from their own rows
+%               (extractPartitionSubgraphs), moiety-index propagation without
+%               whole-graph scans; outputs unchanged.
 %
 % Ghaderi, S., Haraldsdóttir, H.S., Ahookhosh, M., Arreckx, S., and Fleming, R.M.T. (2020).
 % Structural conserved moiety splitting of a stoichiometric matrix. Journal of Theoretical Biology 499, 110276.
@@ -208,6 +237,28 @@ if ~isfield(options,'useOpenSourceMoietyTools')
     options.useOpenSourceMoietyTools = true;
 end
 useOpenSourceMoietyTools = options.useOpenSourceMoietyTools;
+
+if ~isfield(options,'conservedMoietiesOnly')
+    % Default false: compute both conserved and reacting moieties, as
+    % before. Set to true to compute only conserved moieties (arm,
+    % moietyFormulae) and skip the reacting-moiety bond-graph/minimum-
+    % set-cover section entirely; this mode does not require a MILP
+    % solver. See OPTIONAL INPUTS above.
+    options.conservedMoietiesOnly = false;
+end
+conservedMoietiesOnly = options.conservedMoietiesOnly;
+
+if ~isfield(options,'computeMoietyGraphs')
+    % Default true: build the bond-level structures and arm.MG, as before.
+    % See OPTIONAL INPUTS above and KNOWN ISSUE KI-001.
+    options.computeMoietyGraphs = true;
+end
+computeMoietyGraphs = logical(options.computeMoietyGraphs);
+if ~computeMoietyGraphs && ~conservedMoietiesOnly
+    error('identifyConservedReactingMoieties:computeMoietyGraphsRequiresConservedOnly', ...
+        ['options.computeMoietyGraphs = false requires options.conservedMoietiesOnly = true, ' ...
+        'because reacting-moiety analysis needs the bond-level structures.']);
+end
 
 bool = contains(model.mets,'#');
 if any(bool)
@@ -298,21 +349,25 @@ ATM.Edges.orientationATM2dATM = orientationATM2dATM;
 
 %update the ATM Trans, HeadIndex, TailIndex, HeadAtom and TailAtom to match
 %any reorientation of EndNodes
-for i=1:nTransInstances
-    if orientationATM2dATM(i)==1
-        %remove the reaction prefix from the Transition name
-        [~,rem]=strtok(ATM.Edges.Trans{i},'#');
-        ATM.Edges.Trans{i}=rem(2:end);
-    else
-        ATM.Edges.HeadAtomIndex(i) = ATM.Edges.EndNodes(i,2);
-        ATM.Edges.TailAtomIndex(i) = ATM.Edges.EndNodes(i,1);
-        HeadAtom = ATM.Edges.TailAtom{i};
-        TailAtom = ATM.Edges.HeadAtom{i};
-        ATM.Edges.HeadAtom{i} = HeadAtom;
-        ATM.Edges.TailAtom{i} = TailAtom;
-        ATM.Edges.Trans{i} = [HeadAtom '#' TailAtom];
-    end
-end
+% Any row that is not forward-oriented takes the reverse branch, including
+% orientation 0 rows when sanityChecks is off, exactly as the per-row loop did.
+forwardOriented = orientationATM2dATM == 1;
+reverseOriented = ~forwardOriented;
+
+%remove the reaction prefix from the Transition name
+[~, transRemainder] = cellfun(@(transName) strtok(transName, '#'), ...
+    ATM.Edges.Trans(forwardOriented), 'UniformOutput', false);
+ATM.Edges.Trans(forwardOriented) = cellfun(@(remainder) remainder(2:end), ...
+    transRemainder, 'UniformOutput', false);
+
+ATM.Edges.HeadAtomIndex(reverseOriented) = ATM.Edges.EndNodes(reverseOriented, 2);
+ATM.Edges.TailAtomIndex(reverseOriented) = ATM.Edges.EndNodes(reverseOriented, 1);
+reorientedHeadAtom = ATM.Edges.TailAtom(reverseOriented);
+reorientedTailAtom = ATM.Edges.HeadAtom(reverseOriented);
+ATM.Edges.HeadAtom(reverseOriented) = reorientedHeadAtom;
+ATM.Edges.TailAtom(reverseOriented) = reorientedTailAtom;
+ATM.Edges.Trans(reverseOriented) = cellfun(@(headAtom, tailAtom) [headAtom '#' tailAtom], ...
+    reorientedHeadAtom, reorientedTailAtom, 'UniformOutput', false);
 
 if sanityChecks
     %boolean of edges whose orientation is the same
@@ -397,17 +452,30 @@ end
 ATG.Edges.orientationATG2dATM = orientationATG2dATM;
 
 %update the ATG Trans, HeadIndex, TailIndex, HeadAtom and TailAtom to match
-%any reorientation of EndNodes
-for i=1:nTrans
-    if orientationATG2dATM(i)==-1
-        ATG.Edges.HeadAtomIndex(i) = ATG.Edges.EndNodes(i,2);
-        ATG.Edges.TailAtomIndex(i) = ATG.Edges.EndNodes(i,1);
-        HeadAtom = ATG.Edges.TailAtom{i};
-        TailAtom = ATG.Edges.HeadAtom{i};
-        ATG.Edges.HeadAtom{i} = HeadAtom;
-        ATG.Edges.TailAtom{i} = TailAtom;
-        ATG.Edges.Trans{i} = [HeadAtom '#' TailAtom];
-    end
+%any reorientation of EndNodes. All reoriented transitions are swapped in one
+%pass over the edge table, rather than by writing into the graph edge by edge
+reorientedBool = orientationATG2dATM==-1;
+if any(reorientedBool)
+    edgesATG = ATG.Edges;
+    newHeadAtom = edgesATG.TailAtom(reorientedBool);
+    newTailAtom = edgesATG.HeadAtom(reorientedBool);
+    headAtomIndex = edgesATG.HeadAtomIndex;
+    headAtomIndex(reorientedBool) = edgesATG.EndNodes(reorientedBool,2);
+    tailAtomIndex = edgesATG.TailAtomIndex;
+    tailAtomIndex(reorientedBool) = edgesATG.EndNodes(reorientedBool,1);
+    headAtoms = edgesATG.HeadAtom;
+    headAtoms(reorientedBool) = newHeadAtom;
+    tailAtoms = edgesATG.TailAtom;
+    tailAtoms(reorientedBool) = newTailAtom;
+    transNames = edgesATG.Trans;
+    transNames(reorientedBool) = cellfun(@(headAtom, tailAtom) [headAtom '#' tailAtom], ...
+        newHeadAtom, newTailAtom, 'UniformOutput', false);
+    ATG.Edges.HeadAtomIndex = headAtomIndex;
+    ATG.Edges.TailAtomIndex = tailAtomIndex;
+    ATG.Edges.HeadAtom = headAtoms;
+    ATG.Edges.TailAtom = tailAtoms;
+    ATG.Edges.Trans = transNames;
+    clear edgesATG newHeadAtom newTailAtom headAtomIndex tailAtomIndex headAtoms tailAtoms transNames
 end
 
 if sanityChecks
@@ -564,11 +632,10 @@ else
     nComps = max(atoms2component);
 end
 
-%create a subgraph from each component
-subgraphs=cell(nComps,1);
-for i = 1:nComps
-    subgraphs{i,1}=subgraph(ATG,atoms2component==i);
-end
+%create a subgraph from each component, from the rows of that component only
+%(see extractPartitionSubgraphs); the parts come in ascending component
+%order, so subgraphs{i} is component i
+subgraphs = extractPartitionSubgraphs(ATG, atoms2component);
 
 compElements = cell(nComps, 1); % Element for each atom conservation relation
 for i = 1:nComps
@@ -785,6 +852,11 @@ end
 
 
 %% Connected Components for Bonds (Bond Mapping + Conserved/Reacting Partition)  % Hadjar
+% Skipped when options.computeMoietyGraphs is false (conserved-only mode only):
+% nothing below up to "Moiety transition graph" feeds L, M2M, M2R, MTG or
+% moietyFormulae; it only serves arm.MG and the reacting-moiety analysis.
+% See KNOWN ISSUE KI-001 (src/analysis/topology/reactingMoieties/KNOWN_ISSUES.md).
+if computeMoietyGraphs
 %
 % This section builds bond-level structures that mirror the atom-level logic used
 % for conserved moieties, but now at the level of *bond instances*.
@@ -820,7 +892,7 @@ end
 %   - Each BMG{k} keeps the same node set as bondSubgraphs{k},
 %     but edges contain ONLY bond-instance edges (no atom transition edges).
 %   - BMG is therefore the bond-only view of each bond-mapping component.
-[bondSubgraphs, BMG] = extractBondSubgraphs(BIG, ATG);
+[bondSubgraphs, BMG, bmgEdgeIndex] = extractBondSubgraphs(BIG, ATG);
 % STEP B2 — Separate conserved vs reacting bond-mapping components
 % This function:
 %   - Identifies the largest isomorphic group of bond-mapping components.
@@ -828,7 +900,7 @@ end
 % Note: "largest isomorphic group" refers to the most frequent repeating bond-pattern component.
 %   - All remaining components are treated as REACTING (not part of that conserved pattern).
 %
-[CMTG, RMTG, CMG, RMG, conservedGroups, reactingGroups] = findAndExtractMolecularGraphs(BIG, BMG, bondSubgraphs); 
+[CMTG, RMTG, CMG, RMG, conservedGroups, reactingGroups] = findAndExtractMolecularGraphs(BIG, BMG, bondSubgraphs, bmgEdgeIndex);
 CBSubgrahs=BMG(conservedGroups);
 RBSubgraph=BMG(reactingGroups);
 % STEP B3 — Compute bond isomorphism classes (within conserved components only)
@@ -845,19 +917,10 @@ nBonds= size(BIG.Edges,1);
 % Initialize the mapping from bonds to their components
 bonds2component = zeros(nBonds, 1);
 
-% Loop through all components in BMG
+% Loop through all components in BMG, assigning the component index to all its edges
+% edge indices come from the extractBondSubgraphs cache (same set as BMG{i}.Edges.EdgeIndex)
 for i = 1:length(BMG)
-    % Extract the edge indices of the current component
-    currentComponentEdgeIndices = BMG{i, 1}.Edges.EdgeIndex;
-
-    % Determine the number of edges in the current component
-    numberOfEdgesInComponent = length(currentComponentEdgeIndices);
-
-    % Assign the current component index to all edges in the component
-    componentIndices = repelem(i, numberOfEdgesInComponent)';
-
-    % Map the component indices to the corresponding bond indices
-    bonds2component(currentComponentEdgeIndices) = componentIndices;
+    bonds2component(bmgEdgeIndex{i}) = i;
 end
 
 
@@ -865,20 +928,11 @@ end
 % By convention: bonds2isomorphismClass == 0 means "reacting / not conserved".
 bonds2isomorphismClass = zeros(nBonds, 1);
 
-% Loop through all conserved bond components (CBSubgrahs)
+% Loop through all conserved bond components (CBSubgrahs = BMG(conservedGroups)),
+% assigning the isomorphism class index to all edges of each
+% edge indices come from the extractBondSubgraphs cache (same set as BMG{i}.Edges.EdgeIndex)
 for i = 1:length(CBSubgrahs)
-    % Extract the edge indices of the current subgraph
-    currentSubgraphEdgeIndices = CBSubgrahs{i, 1}.Edges.EdgeIndex;
-
-    % Determine the number of edges in the current subgraph
-    numberOfEdgesInSubgraph = length(currentSubgraphEdgeIndices);
-
-    % Repeat the isomorphism class index for all edges in the subgraph
-    currentIsomorphismClass = bondSubsequentSubgraphIndices(i); % Current class
-    repeatedIsomorphismClass = repelem(currentIsomorphismClass, numberOfEdgesInSubgraph)';
-
-    % Map the repeated isomorphism class to the corresponding bond indices
-    bonds2isomorphismClass(currentSubgraphEdgeIndices) = repeatedIsomorphismClass;
+    bonds2isomorphismClass(bmgEdgeIndex{conservedGroups(i)}) = bondSubsequentSubgraphIndices(i);
 end
 %map BIG to connected component and isomorphism class
 % Extract the table of nodes from the graph BIG
@@ -904,6 +958,7 @@ BIG = digraph(edgeTable, nodeTable);
 %   - BIG.Edges.Component
 %   - BIG.Edges.IsomorphismClass
 % and BIG is rebuilt using the updated edge table.
+end % if computeMoietyGraphs (bond-mapping components)
 
 %% Moiety transition graph
 %create the moiety transition graph explicitly as a
@@ -1031,30 +1086,46 @@ for i=1:nAtoms
     end
 end
 
-%recreate a subgraph from each component
-subgraphs=cell(nComps,1);
-for i = 1:nComps
-    subgraphs{i,1}=subgraph(ATG,atoms2component==i);
-end
+%recreate a subgraph from each component, from the rows of that component
+%only (see extractPartitionSubgraphs)
+subgraphs = extractPartitionSubgraphs(ATG, atoms2component);
 
 %assign the moiety indices by using the indices for the first
-%component in each isomorphism class
+%component in each isomorphism class, visiting only the member components
+%of each class, in ascending order
 for i=1:nIsomorphismClasses
     MoietyIndices = subgraphs{firstSubgraphIndices(i)}.Nodes.MoietyIndex;
-    for j=1:nComps
-        if I2C(i,j)==1 && j~=firstSubgraphIndices(i)
-            subgraphs{j}.Nodes.MoietyIndex=MoietyIndices;
-        end
+    memberComps = find(I2C(i,:)==1);
+    for j=memberComps(memberComps~=firstSubgraphIndices(i))
+        subgraphs{j}.Nodes.MoietyIndex=MoietyIndices;
     end
 end
 
 %compile the moiety indices from the nodes in the subgraph into the
-%atom transition graph
-for i = 1:nComps
-    if ~any(i==firstSubgraphIndices)
-        for j=1:size(subgraphs{i}.Nodes,1)
-            bool = ismember(ATG.Nodes.AtomIndex,subgraphs{i}.Nodes.AtomIndex(j));
-            ATG.Nodes.MoietyIndex(bool) = subgraphs{i}.Nodes.MoietyIndex(j);
+%atom transition graph. The nodes of subgraphs{i} are the atoms of component
+%i in ascending order, so with unique atom indices their moiety indices are
+%written to those atoms in one pass; otherwise each atom index is looked up
+if numel(unique(ATG.Nodes.AtomIndex)) == numel(ATG.Nodes.AtomIndex)
+    atomsByComp = accumarray(atoms2component(:), (1:numel(atoms2component))', [nComps, 1], ...
+        @(v) {sort(v(:))});
+    isNonFirstComp = true(nComps, 1);
+    isNonFirstComp(firstSubgraphIndices(firstSubgraphIndices > 0)) = false;
+    nonFirstComps = find(isNonFirstComp);
+    compiledAtoms = vertcat(zeros(0, 1), atomsByComp{nonFirstComps});
+    compiledMoieties = cellfun(@(g) g.Nodes.MoietyIndex, subgraphs(nonFirstComps), ...
+        'UniformOutput', false);
+    compiledMoieties = vertcat(zeros(0, 1), compiledMoieties{:});
+    moietyIndexATG = ATG.Nodes.MoietyIndex;
+    moietyIndexATG(compiledAtoms) = compiledMoieties;
+    ATG.Nodes.MoietyIndex = moietyIndexATG;
+    clear atomsByComp isNonFirstComp nonFirstComps compiledAtoms compiledMoieties moietyIndexATG
+else
+    for i = 1:nComps
+        if ~any(i==firstSubgraphIndices)
+            for j=1:size(subgraphs{i}.Nodes,1)
+                bool = ismember(ATG.Nodes.AtomIndex,subgraphs{i}.Nodes.AtomIndex(j));
+                ATG.Nodes.MoietyIndex(bool) = subgraphs{i}.Nodes.MoietyIndex(j);
+            end
         end
     end
 end
@@ -1084,6 +1155,8 @@ if sanityChecks
 end
 
 %% Add bond information to Moiety transition graph (Hadjar)
+% Skipped when options.computeMoietyGraphs is false: arm.MG is returned empty.
+if computeMoietyGraphs
 %
 % Goal:
 %   Connect conserved bond instances (from BIG) to conserved moieties (from ATG),
@@ -1143,32 +1216,21 @@ nodeTable = ATG.Nodes;
 
 % Create a new directed graph using the updated edge table and the node table from ATG
 ABG = graph(edgeTable, nodeTable); % ToDo: Find a better name (atom bond graph?) %Hadjar
-% Initialize an array to store the MoietySubgraphs
-MG = {};
-
-% Get the unique MoietyIndex values from the node table
-uniqueMoietyIndices = unique(ABG.Nodes.MoietyIndex);
-
-% Loop through each unique MoietyIndex
-for i = 1:length(uniqueMoietyIndices)
-    % Get the current MoietyIndex
-    currentMoietyIndex = uniqueMoietyIndices(i);
-
-    % Find the nodes with the current MoietyIndex
-    nodeIndices = find(ABG.Nodes.MoietyIndex == currentMoietyIndex);
-
-    % Extract the subgraph containing only these nodes
-    subgraphNodes = subgraph(ABG, nodeIndices);
-
-    % Filter the edges in the subgraph based on MoietyBondIndex
-    edgeIndices = find(subgraphNodes.Edges.MoietyBondIndex == currentMoietyIndex);
-
-    % Create a new edge table with only the filtered edges
-    edgeTable = subgraphNodes.Edges(edgeIndices, :);
-
-    % Recreate the subgraph with the filtered edge table
-    MG{i,1} = graph(edgeTable, subgraphNodes.Nodes); %todo: check graph or digraph
-end
+% Build one moiety graph per unique MoietyIndex (in ascending order), with the
+% nodes of that moiety and the bonds whose MoietyBondIndex equals the moiety
+% index of both end atoms, from the rows of that moiety only (see
+% extractPartitionSubgraphs), rather than extracting a subgraph of the whole
+% atom bond graph once per moiety
+moietyOfNode = ABG.Nodes.MoietyIndex;
+[bondSource, bondTarget] = findedge(ABG);
+moietyBondIndexABG = ABG.Edges.MoietyBondIndex;
+isInternalBond = moietyBondIndexABG == moietyOfNode(bondSource) & ...
+    moietyBondIndexABG == moietyOfNode(bondTarget);
+MG = extractPartitionSubgraphs(ABG, moietyOfNode, isInternalBond); %todo: check graph or digraph
+clear moietyOfNode bondSource bondTarget moietyBondIndexABG isInternalBond
+else
+    MG = {}; % moiety graphs not computed (options.computeMoietyGraphs = false)
+end % if computeMoietyGraphs (moiety graphs)
 
 %% Map between moiety graph and metabolic network
 %map metabolite to moieties
@@ -1458,6 +1520,15 @@ arm.M2R = M2R; % Matrix to map moiety transitions to reactions. Multiple moiety 
 arm.MG=MG; % (undirected) moiety graph (chemical structure of each moiety instance) (Hadjar)
 arm.L =  L;    % Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes can map to multiple metabolites.
 
+if conservedMoietiesOnly
+    % Conserved-moiety computation is complete; skip the reacting-moiety
+    % bond-graph/minimum-set-cover section entirely (no MILP solver is
+    % invoked in this mode). `reacting` is returned as an explicit
+    % "not computed" marker rather than partial/stale data.
+    reacting = struct('computed', false);
+    return;
+end
+
 %% Reacting moiety (bond-level) analysis  % Hadjar
 %
 % Goal:
@@ -1494,14 +1565,21 @@ arm.L =  L;    % Matrix to map isomorphism classes to metabolites. L = I2M*M2M';
 edgeTable=ABG.Edges(ABG.Edges.IsomorphismClass==0,:);
 nodeIds=unique([edgeTable.EndNodes(:,1);edgeTable.EndNodes(:,2)]);
 nodeTable=ABG.Nodes(nodeIds,:);
-newEndNodes = zeros(size(edgeTable, 1), 2);
-% Update the EndNodes by finding the new positions in the nodeTable
-for i = 1:size(edgeTable, 1)
-    % Find the new position for the first node (EndNodes1) in the edgeTable
-    newEndNodes(i, 1) = find(nodeTable.AtomIndex == edgeTable.EndNodes(i,1));
+% Update the EndNodes to their positions in the nodeTable. nodeTable.AtomIndex is
+% unique, so the first-match location from ismember is the position find() returns.
+[~, newEndNodes] = ismember(full(edgeTable.EndNodes), full(nodeTable.AtomIndex));
+if numel(unique(nodeTable.AtomIndex)) ~= height(nodeTable) || any(newEndNodes(:) == 0)
+    % Duplicated or missing atom indices: use the original per-edge search, which
+    % reports such inputs exactly as it always has
+    newEndNodes = zeros(size(edgeTable, 1), 2);
+    % Update the EndNodes by finding the new positions in the nodeTable
+    for i = 1:size(edgeTable, 1)
+        % Find the new position for the first node (EndNodes1) in the edgeTable
+        newEndNodes(i, 1) = find(nodeTable.AtomIndex == edgeTable.EndNodes(i,1));
     
-    % Find the new position for the second node (EndNodes2) in the edgeTable
-    newEndNodes(i, 2) = find(nodeTable.AtomIndex == edgeTable.EndNodes(i,2));
+        % Find the new position for the second node (EndNodes2) in the edgeTable
+        newEndNodes(i, 2) = find(nodeTable.AtomIndex == edgeTable.EndNodes(i,2));
+    end
 end
 %Replace the EndNodes in the edgeTable with the new positions
 edgeTable.EndNodes = newEndNodes;
@@ -1519,23 +1597,38 @@ newIds = (1:length(uniqueComponents))';
 
 % Create a new table with 'Component' and 'NewId'
 componentTable = table(uniqueComponents, newIds, 'VariableNames', {'Component', 'NewId'});
- % Initialize the new EndNodes vector
-endNodesModified = zeros(size(RBG.Edges.EndNodes));
+% Replace each EndNode with the NewId of its node's Component. RBG.Nodes.NewId is
+% 1:numnodes, so an EndNode is already its node's row, and componentTable.NewId is the
+% position of the Component in the sorted uniqueComponents. The reshape keeps the
+% EndNodes shape when there is exactly one edge (indexing a column vector with a 1-by-2
+% index would otherwise return a 2-by-1 result).
+rbgEndNodes = RBG.Edges.EndNodes;
+if isnumeric(rbgEndNodes)
+    endpointComponents = reshape(RBG.Nodes.Component(rbgEndNodes), size(rbgEndNodes));
+    [~, endNodesModified] = ismember(full(endpointComponents), full(uniqueComponents));
+else
+    endNodesModified = [];
+end
+if ~isnumeric(rbgEndNodes) || any(endNodesModified(:) == 0)
+    % Non-numeric end nodes or unmatched components: use the original per-edge search
+    % Initialize the new EndNodes vector
+    endNodesModified = zeros(size(RBG.Edges.EndNodes));
 
-% Loop over all edges in RBG to replace the EndNodes with the Component values
-for i = 1:size(RBG.Edges.EndNodes, 1)
-    % Get the current edge's EndNode(s)
-    currentEndNode = RBG.Edges.EndNodes(i, :);
+    % Loop over all edges in RBG to replace the EndNodes with the Component values
+    for i = 1:size(RBG.Edges.EndNodes, 1)
+        % Get the current edge's EndNode(s)
+        currentEndNode = RBG.Edges.EndNodes(i, :);
     
-    % Replace each EndNode with the corresponding Component value from ATG
-    for j = 1:2
-        % Find the index of the node in ATG whose AtomIndex matches the EndNode
-        idx = find(RBG.Nodes.NewId == currentEndNode(j));
+        % Replace each EndNode with the corresponding Component value from ATG
+        for j = 1:2
+            % Find the index of the node in ATG whose AtomIndex matches the EndNode
+            idx = find(RBG.Nodes.NewId == currentEndNode(j));
         
-        % If the index is found, replace the EndNode with the Component value
-        if ~isempty(idx)
-            component=RBG.Nodes.Component(idx);
-            endNodesModified(i, j) = componentTable.NewId(componentTable.Component==component);
+            % If the index is found, replace the EndNode with the Component value
+            if ~isempty(idx)
+                component=RBG.Nodes.Component(idx);
+                endNodesModified(i, j) = componentTable.NewId(componentTable.Component==component);
+            end
         end
     end
 end
@@ -1606,25 +1699,48 @@ tailATM = dATM.Edges.TailAtomIndex;
 % Reaction column indices
 [~, rxnCols] = ismember(dATM.Edges.rxns, model.rxns);
 
-for i = 1:nCRB
-    b = bondIdx(i);
-
-    % Lookup BG edge row
-    row = bondRowMap(b);
-    if row == 0
-        warning('BondIndex %d not found.', b);
-        continue;
+% Build CRB2R from a sparse atom -> reaction incidence: row i holds the reactions with
+% an atom transition that touches either end atom of condensed reacting bond i. This
+% replaces a scan of every atom transition for every bond. The original per-bond loop
+% is kept for inputs whose indices are not positive whole numbers.
+isPositiveWholeNumeric = @(v) isnumeric(v) && all(v(:) >= 1) && all(v(:) == fix(v(:)));
+if isPositiveWholeNumeric(atom1_all) && isPositiveWholeNumeric(atom2_all) ...
+        && isPositiveWholeNumeric(headATM) && isPositiveWholeNumeric(tailATM) ...
+        && isPositiveWholeNumeric(bondIdx) && all(bondIdx <= maxBondIndex)
+    rowsInBG = bondRowMap(bondIdx);
+    foundInBG = rowsInBG > 0;
+    for iMissing = find(~foundInBG)'
+        warning('BondIndex %d not found.', bondIdx(iMissing));
     end
+    validTr = rxnCols > 0;
+    nAtomsMax = max([0; atom1_all(:); atom2_all(:); headATM(:); tailATM(:)]);
+    atomToRxn = spones(sparse([headATM(validTr); tailATM(validTr)], ...
+        [rxnCols(validTr); rxnCols(validTr)], 1, nAtomsMax, nRxns));
+    foundIdx = find(foundInBG);
+    touch = atomToRxn(atom1_all(rowsInBG(foundIdx)), :) + atomToRxn(atom2_all(rowsInBG(foundIdx)), :);
+    [touchRow, touchCol] = find(touch);
+    CRB2R = sparse(foundIdx(touchRow), touchCol, 1, nCRB, nRxns);
+else
+    for i = 1:nCRB
+        b = bondIdx(i);
 
-    a1 = atom1_all(row);
-    a2 = atom2_all(row);
+        % Lookup BG edge row
+        row = bondRowMap(b);
+        if row == 0
+            warning('BondIndex %d not found.', b);
+            continue;
+        end
 
-    % Find transitions involving either atom
-    involved = (headATM == a1 | tailATM == a1 | ...
-                headATM == a2 | tailATM == a2);
+        a1 = atom1_all(row);
+        a2 = atom2_all(row);
 
-    cols = unique(rxnCols(involved));
-    CRB2R(i, cols(cols>0)) = 1;
+        % Find transitions involving either atom
+        involved = (headATM == a1 | tailATM == a1 | ...
+                    headATM == a2 | tailATM == a2);
+
+        cols = unique(rxnCols(involved));
+        CRB2R(i, cols(cols>0)) = 1;
+    end
 end
 
 

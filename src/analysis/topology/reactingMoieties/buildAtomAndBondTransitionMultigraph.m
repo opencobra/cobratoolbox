@@ -75,6 +75,7 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG, dBT
 %
 %                     * .sanityChecks - boolean controlling whether sanity checks are performed within the function (default = 1)
 %                     * .bondTransitionMultigraph - boolean specifying whether the function generates the bond transition multigraph (default = 1)
+%                     * .denseBondMatrices - boolean; if 1, `M2BiE`, `M2BiW` and `BTi2R` are returned as full matrices, as before (default = 0, sparse)
 % 
 %
 % OUTPUT:
@@ -136,12 +137,16 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG, dBT
 %                   * .EdgeTable.HeadMetBondTypes  - head Nodes.BondTypes
 %                   * .EdgeTable.TailMetBondTypes  - tail Nodes.BondTypes
 %
-%    M2BiE:              `m` x `b` matrix mapping each metabolite to a bond in the directed bond transition multigraph
-%    M2BiW:              `m` x `b` matrix specifying the bond type of each metabolite-bond entry of `M2BiE`
-%    BTi2R:              `s` x `n` matrix mapping each directed bond transition instance to a mapped reaction
+%    M2BiE:              `m` x `b` matrix mapping each metabolite to a bond in the directed bond transition multigraph (sparse by default; set options.denseBondMatrices = 1 for the historical full matrix)
+%    M2BiW:              `m` x `b` matrix specifying the bond type of each metabolite-bond entry of `M2BiE` (sparse by default; set options.denseBondMatrices = 1 for the historical full matrix)
+%    BTi2R:              `s` x `n` matrix mapping each directed bond transition instance to a mapped reaction (sparse by default; set options.denseBondMatrices = 1 for the historical full matrix)
 %    BTiE:               incidence matrix of the directed bond transition multigraph (`incidence(dBTM)`)
 
 % .. Authors: - Ronan M. T. Fleming, 2022, Hadjar Rahou 2022 (Bond section)
+%             - COBRA Toolbox, 2026: the bond loop hands its parsed RXN file to
+%               addBondMappingsRXNFile instead of having it read again, and
+%               dBTM.Nodes.BondElmts is filled in one assignment; outputs unchanged
+%               (feature 20260921-160105-build-function-runtime).
 
 if ~exist('options','var')
     options=[];
@@ -152,6 +157,9 @@ if ~isfield(options,'sanityChecks')
 end
 if ~isfield(options,'bondTransitionMultigraph')
     options.bondTransitionMultigraph=1;
+end
+if ~isfield(options,'denseBondMatrices')
+    options.denseBondMatrices=0;
 end
 
 [nMets,nRxns]=size(model.S);
@@ -630,7 +638,7 @@ for i = 1:nRxns
     if rbool(i)
         try
             [atoms,bonds] = readABRXNFile(model.rxns{i},RXNFileDir);
-            [bondMappings] = addBondMappingsRXNFile(model.rxns{i},RXNFileDir);
+            [bondMappings] = addBondMappingsRXNFile(model.rxns{i},RXNFileDir,atoms,bonds);
             % record each metabolite's true bond count (one instance only) the first time it is seen
             firstInstanceBondMets = unique(bonds.mets(bonds.instances==1));
             for bMetIdx = 1:numel(firstInstanceBondMets)
@@ -802,10 +810,15 @@ HeadBondTailAtom(find(cellfun(@isempty,HeadBondTailAtom)))=TailBondTailAtom(find
 BondTailAtom=HeadBondTailAtom;
 dBTM.Nodes = addvars(dBTM.Nodes,Bond,BondIndex,BondElmts,BondHeadAtom,BondTailAtom,BondHeadAtomIndex,BondTailAtomIndex,Met,BondType,'NewVariableNames',{'Bond','BondIndex','BondElmts','BondHeadAtom','BondTailAtom','BondHeadAtomIndex','BondTailAtomIndex','mets','BondType'});
 %Add bond Elements
-for i=1:size(dBTM.Nodes,1)
-    bondTail=dBTM.Nodes.BondHeadAtomIndex(i);
-    bondHead=dBTM.Nodes.BondTailAtomIndex(i);
-    dBTM.Nodes.BondElmts(i)={[dATME.Nodes.Element{bondTail} '-' dATME.Nodes.Element{bondHead}]};
+% One assignment of the whole column instead of one node-table write per bond (FR-004).
+% Each string is the element at BondHeadAtomIndex, '-', then the element at
+% BondTailAtomIndex, exactly as the previous per-bond loop built it; an invalid index
+% still raises an indexing error. With no bond nodes, dATME is not touched, as before.
+if height(dBTM.Nodes) > 0
+    bondElementList = dATME.Nodes.Element;
+    bondHeadElmts = bondElementList(full(dBTM.Nodes.BondHeadAtomIndex(:)));
+    bondTailElmts = bondElementList(full(dBTM.Nodes.BondTailAtomIndex(:)));
+    dBTM.Nodes.BondElmts = cellfun(@(a, b) [a '-' b], bondHeadElmts, bondTailElmts, 'UniformOutput', false);
 end
 
 
@@ -880,22 +893,28 @@ end
 nBonds = size(dBTM.Nodes,1);
 %[~,bonds2mets] = ismember(dBTM.Nodes.Met,model.mets(metBondMappedBool));
 %M2Bi = full(sparse(bonds2mets,(1:nBonds)',1,nMappedMets,nBonds));
-M2BiE=zeros(length(model.mets),nBonds);
-for i=1:length(model.mets)
-    M2BiE(i,:)=(ismember(dBTM.Nodes.mets,model.mets(i)))';
-end
+%built in one pass over the bond nodes; model.mets is unique (checked above), so each
+%bond node maps to at most one row, and bond nodes of non-metabolites (energy nodes) to none
+nModelMets = length(model.mets);
+[isModelMetBond, bondMetRow] = ismember(dBTM.Nodes.mets, model.mets);
+bondCols = find(isModelMetBond);
+M2BiE = sparse(bondMetRow(isModelMetBond), bondCols, 1, nModelMets, nBonds);
 
 %Matrix that specifies the type of chemical bonds in M2Bi
-M2BiW=zeros(length(model.mets),nBonds);
-for i=1:length(model.mets)
-    bondId=find(ismember(dBTM.Nodes.mets,model.mets(i)));
-    M2BiW(i,bondId)=dBTM.Nodes.BondType(bondId);
-end
+M2BiW = sparse(bondMetRow(isModelMetBond), bondCols, ...
+    double(full(dBTM.Nodes.BondType(isModelMetBond))), nModelMets, nBonds);
 
 %Matrix mapping one or more directed atom transition instances to each mapped reaction
 nTransInstances = size(dBTM.Edges,1);
 [~,transInstance2rxns] = ismember(dBTM.Edges.rxns,model.rxns(rxnBondMappedBool));
-BTi2R = full(sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns));
+BTi2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
+
+%options.denseBondMatrices = 1 restores the historical full matrices before any further use
+if options.denseBondMatrices
+    M2BiE = full(M2BiE);
+    M2BiW = full(M2BiW);
+    BTi2R = full(BTi2R);
+end
 
 % %Matrix R2Bi taht maps each bond to each reaction in the network
 % R2Bi=zeros(nBonds,length(model.rxns));

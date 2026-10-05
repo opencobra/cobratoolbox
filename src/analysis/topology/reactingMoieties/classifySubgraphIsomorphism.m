@@ -41,8 +41,17 @@ function [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] =
 %    reads it. This branch never triggers during normal classification
 %    calls, which always pass a cell array as `subgraphs`.
 %
+%    `isisomorphic` compares label-only copies of the subgraphs, built once per
+%    subgraph: the same nodes and edges (directions, parallel edges and
+%    self-loops) carrying only the `NodeVariables`/`EdgeVariables` compared.
+%    Re-reading the label variables out of the full node and edge tables on
+%    every comparison dominated the cost of the classification. The
+%    invariants, the candidate pairs, the call count and all outputs are
+%    unchanged (feature 20260930-102230-isomorphism-label-only-copies).
+%
 % Author:
 %    - COBRA Toolbox, feature 021-prefilter-isomorphism-classification
+%    - COBRA Toolbox, feature 20260930-102230-isomorphism-label-only-copies
 
     persistent isisomorphicCallCount
     if isempty(isisomorphicCallCount)
@@ -93,6 +102,7 @@ function [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] =
     numEdgesVec = zeros(numSubgraphs, 1);
     nodeLabels = cell(numSubgraphs, 1);
     edgeLabels = cell(numSubgraphs, 1);
+    labelOnlySubgraphs = cell(numSubgraphs, 1);
     for i = 1:numSubgraphs
         numNodesVec(i) = numnodes(subgraphs{i, 1});
         numEdgesVec(i) = numedges(subgraphs{i, 1});
@@ -102,6 +112,8 @@ function [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] =
         if ~isempty(edgeVarName)
             edgeLabels{i} = sort(subgraphs{i, 1}.Edges.(edgeVarName));
         end
+        % copy carrying only the compared label variables, built once per subgraph
+        labelOnlySubgraphs{i} = labelOnlyCopy(subgraphs{i, 1}, nodeVarName, edgeVarName);
     end
 
     % single forward-scan exclusion algorithm: for each not-yet-excluded
@@ -137,7 +149,7 @@ function [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] =
             end
 
             isisomorphicCallCount = isisomorphicCallCount + 1;
-            if isisomorphic(subgraphs{i, 1}, subgraphs{j, 1}, varargin{:})
+            if isisomorphic(labelOnlySubgraphs{i}, labelOnlySubgraphs{j}, varargin{:})
                 currentClass = [currentClass, j]; %#ok<AGROW>
                 excludedSubgraphs(j) = true;
                 subsequentSubgraphIndices(j) = isomorphismClassNumber;
@@ -147,4 +159,21 @@ function [isomorphismClasses, firstSubgraphIndices, subsequentSubgraphIndices] =
         isomorphismClasses{1, isomorphismClassNumber} = currentClass; %#ok<AGROW>
         firstSubgraphIndices(isomorphismClassNumber, 1) = i; %#ok<AGROW>
     end
+end
+
+function labelOnlySubgraph = labelOnlyCopy(subgraph, nodeVarName, edgeVarName)
+% Copy of a graph or digraph with the same nodes and edges (directions, parallel edges and
+% self-loops, in the same edge row order) that carries only the label variables compared
+[sourceNodes, targetNodes] = findedge(subgraph);
+if isa(subgraph, 'digraph')
+    labelOnlySubgraph = digraph(sourceNodes, targetNodes, [], numnodes(subgraph));
+else
+    labelOnlySubgraph = graph(sourceNodes, targetNodes, [], numnodes(subgraph));
+end
+if ~isempty(nodeVarName)
+    labelOnlySubgraph.Nodes.(nodeVarName) = subgraph.Nodes.(nodeVarName);
+end
+if ~isempty(edgeVarName)
+    labelOnlySubgraph.Edges.(edgeVarName) = subgraph.Edges.(edgeVarName);
+end
 end

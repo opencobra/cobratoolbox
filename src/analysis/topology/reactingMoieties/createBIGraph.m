@@ -24,39 +24,26 @@ function BIG = createBIGraph(BG)
     % Add all nodes from the original graph to the bond multigraph, preserving properties
     BIG = addnode(BIG, graphNoE.Nodes);
 
-    % Initialize arrays for new edges
-    srcNodes = [];
-    tgtNodes = [];
-    edgeProps = struct();
     propNames = graphNoE.Edges.Properties.VariableNames;
-
-    % Prepare edge properties array
-    for propIdx = 1:numel(propNames)
-        edgeProps.(propNames{propIdx}) = [];
-    end
-
-    % Iterate over each edge to handle bond instances
     numEdges = numedges(graphNoE);
-    for edgeIdx = 1:numEdges
-        srcNode = graphNoE.Edges.EndNodes(edgeIdx, 1);
-        tgtNode = graphNoE.Edges.EndNodes(edgeIdx, 2);
-        edgeData = graphNoE.Edges(edgeIdx, :);
 
-        bondMult = edgeData.Weight; % Assuming Weight indicates bond multiplicity
-        for bInstance = 1:bondMult
-            % Add edges for each bond instance
-            srcNodes = [srcNodes; srcNode];
-            tgtNodes = [tgtNodes; tgtNode];
+    % Expand each edge into one row per bond instance, in edge-major order.
+    % Weight indicates bond multiplicity; max(floor(Weight), 0) matches the
+    % 1:Weight instance count exactly (non-integer weights truncate, zero or
+    % negative weights emit nothing).
+    instanceCounts = max(floor(graphNoE.Edges.Weight), 0);
+    rowIdx = repelem((1:numEdges)', instanceCounts);
+    srcNodes = graphNoE.Edges.EndNodes(rowIdx, 1);
+    tgtNodes = graphNoE.Edges.EndNodes(rowIdx, 2);
 
-            % Duplicate edge properties for each instance
-            for propIdx = 1:numel(propNames)
-                propName = propNames{propIdx};
-                if strcmp(propName, 'Weight')
-                    edgeProps.(propName) = [edgeProps.(propName); 1]; % Assign weight as 1 for each bond instance
-                else
-                    edgeProps.(propName) = [edgeProps.(propName); edgeData{1, propIdx}];
-                end
-            end
+    % Duplicate edge properties for each instance, with every instance's weight set to 1
+    edgeProps = struct();
+    for propIdx = 1:numel(propNames)
+        propName = propNames{propIdx};
+        if strcmp(propName, 'Weight')
+            edgeProps.(propName) = ones(numel(rowIdx), 1);
+        else
+            edgeProps.(propName) = graphNoE.Edges.(propName)(rowIdx, :);
         end
     end
 

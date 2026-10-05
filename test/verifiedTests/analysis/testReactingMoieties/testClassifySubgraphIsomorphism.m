@@ -13,9 +13,18 @@
 %       correct grouping (no false negatives) across the three comparison
 %       modes the three call sites use: plain (no label matching),
 %       `NodeVariables`, and `EdgeVariables`.
+%     - Pre-change reference (feature 20260930-102230-isomorphism-label-only-copies, spec
+%       FR-002, FR-004, FR-005, FR-007): data/classifySubgraphIsomorphismReference.mat holds
+%       the classifications and isisomorphic call counts of the helper captured before it began
+%       comparing label-only copies, for 30 lists of graph and digraph multigraphs (parallel
+%       edges, self-loops, extra node and edge variables, some with many) in five modes
+%       (plain, NodeVariables, EdgeVariables, both, and a string-valued option), and the errors
+%       it raised for a cell-valued option and a missing variable. Every output, call count
+%       and error must be unchanged.
 %
 % Authors:
 %     - COBRA Toolbox, feature 021-prefilter-isomorphism-classification.
+%     - COBRA Toolbox, feature 20260930-102230-isomorphism-label-only-copies (reference cases).
 
 % N == 0: all outputs empty, no error, no division by zero or indexing
 % out of range.
@@ -78,3 +87,43 @@ hNodeC = digraph(edgeTableNV, nodeTableDiff);
 [classes, ~, subs] = classifySubgraphIsomorphism({hNodeA; hNodeC}, 'NodeVariables', 'mets');
 assert(numel(classes) == 2);
 assert(subs(1) ~= subs(2));
+
+% Pre-change reference: identical classifications, call counts and errors (feature
+% 20260930-102230-isomorphism-label-only-copies)
+reference = load([fileparts(which('testClassifySubgraphIsomorphism')) filesep 'data' filesep ...
+    'classifySubgraphIsomorphismReference.mat']);
+for k = 1:numel(reference.referenceCases)
+    referenceCase = reference.referenceCases(k);
+    subgraphList = reference.referenceLists{referenceCase.listIndex};
+    classifySubgraphIsomorphism('resetCallCount');
+    [classes, firsts, subs] = classifySubgraphIsomorphism(subgraphList, referenceCase.options{:});
+    callCount = classifySubgraphIsomorphism('getCallCount');
+    caseName = sprintf('reference case %d (list %d, %d option arguments)', k, ...
+        referenceCase.listIndex, numel(referenceCase.options));
+    assert(isequal(classes, referenceCase.isomorphismClasses), ...
+        sprintf('isomorphismClasses differ from the pre-change helper (%s).', caseName));
+    assert(isequal(firsts, referenceCase.firstSubgraphIndices), ...
+        sprintf('firstSubgraphIndices differ from the pre-change helper (%s).', caseName));
+    assert(isequal(subs, referenceCase.subsequentSubgraphIndices), ...
+        sprintf('subsequentSubgraphIndices differ from the pre-change helper (%s).', caseName));
+    assert(callCount == referenceCase.callCount, ...
+        sprintf('isisomorphic call count %d differs from the pre-change %d (%s).', callCount, ...
+        referenceCase.callCount, caseName));
+end
+for k = 1:numel(reference.errorCases)
+    errorCase = reference.errorCases(k);
+    errorRaised = false;
+    try
+        classifySubgraphIsomorphism(errorCase.subgraphs, errorCase.options{:});
+    catch ME
+        errorRaised = true;
+        assert(strcmp(ME.identifier, errorCase.errorIdentifier) && ...
+            strcmp(ME.message, errorCase.errorMessage), ...
+            sprintf(['classifySubgraphIsomorphism raised a different error from the pre-change ' ...
+            'helper (error case %d): expected %s: %s; got %s: %s (%s:%d).'], k, ...
+            errorCase.errorIdentifier, errorCase.errorMessage, ME.identifier, ME.message, ...
+            ME.stack(1).file, ME.stack(1).line));
+    end
+    assert(errorRaised, sprintf(['classifySubgraphIsomorphism returned normally, but the ' ...
+        'pre-change helper raised %s (error case %d).'], errorCase.errorIdentifier, k));
+end
