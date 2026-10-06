@@ -1,5 +1,25 @@
 <!--
 Sync Impact Report
+Version change: 1.6.0 -> 1.6.1
+Modified principles:
+- III-Coverage (clarification only, no new principle): every test file MUST open
+  with a prepareTest(...) call after the `cd(fileDir)` boilerplate; a Tier 1 test
+  calls prepareTest() with no arguments. Tier 1 wording "never skipped" changed to
+  "declares no requirements, so it is never skipped for missing requirements".
+Modified sections: III-Coverage. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate test openings, and per
+  Principle X none may, so no template change is required.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for PATCH bump: clarifies how an existing rule (Principle III already
+requires declaring requirements with prepareTest) applies to requirement-free tests;
+no new obligation class, no principle removed or redefined.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.5.0 -> 1.6.0
 Modified principles:
 - III. Testing, Reproducibility, And Continuous Integration (added sub-clause
@@ -356,11 +376,20 @@ branch) is permitted to stay uncovered ONLY when the test file header documents 
 exemption: the line number(s) and the reason. Undocumented uncovered lines are a
 defect in the test.
 
+Every test file MUST open with a `prepareTest(...)` call placed after the
+`cd(fileDir)` boilerplate, declaring the test's requirements (solvers, MATLAB
+toolboxes, operating system). A Tier 1 test calls `prepareTest()` with no arguments
+because it needs none of these; the call is the standard COBRA test opening and the
+place where a requirement is added later. Failures are caught by the harness
+(`runScriptFile`); `prepareTest` only causes a skip (`COBRA:RequirementsNotMet`) when
+a declared requirement is unmet.
+
 Each test MUST declare its tier in its header:
 
 * **Tier 1 — no genome-scale model.** Pure helpers on matrices, strings, and
   structs. Inputs are hand-built or come from `buildToyModel1`/`buildToyModel2`.
-  No solver is used, so the test is never skipped and runs in milliseconds.
+  No solver is used. The test declares no requirements, so it is never skipped for
+  missing requirements, and it runs in milliseconds.
 * **Tier 2 — model manipulation** (for example `removeGenes`, `changeObjective`,
   `addReaction`). Model size is unrestricted because the operations are cheap. No
   solver is used. Assertions check structural consistency: sizes and mutual
@@ -924,4 +953,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.6.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-06
+**Version**: 1.6.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-06
