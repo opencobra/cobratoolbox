@@ -1,5 +1,35 @@
 <!--
 Sync Impact Report
+Version change: 1.5.0 -> 1.6.0
+Modified principles: none (no principle added, removed, or redefined).
+Modified sections:
+- Development Workflow And Quality Gates (Git conventions) — the paragraph that
+  previously covered commit-message conventions only now also requires every pull
+  request to carry a TITLE and a SUMMARY, where the summary is a short description of
+  the enhancement and MUST be the first thing in the body. Explicitly states that a long
+  body merely containing the information does not satisfy it, and that the requirement
+  binds automated/agent-opened pull requests equally.
+Added sections: none. Removed sections: none.
+Occasion for the amendment: a pull request opened in this repository
+(rmtfleming/cobratoolbox#7) carried a title and a 5685-character body, but the body
+opened with context ("Two stacked Spec Kit features on greedyExtremeRayBasis...") rather
+than a short statement of the enhancement, so a reviewer could not tell in one line what
+the change delivered. The rule is worded to close exactly that gap rather than to require
+a longer description.
+Templates requiring updates:
+- ✅ .specify/templates/plan-template.md, spec-template.md, tasks-template.md,
+  checklist-template.md — reviewed; none of them generates or describes pull-request
+  bodies, so no template change is required. The Constitution Check bullets remain
+  applicable unchanged.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — reviewed; both remain thin pointers to this file under
+  Principle X, so the rule is NOT restated in either. Single-sourced here.
+Rationale for MINOR bump: a materially expanded compliance requirement within an
+existing section; no principle removed or redefined, and no existing approved plan is
+invalidated.
+-->
+<!--
+Sync Impact Report
 Version change: 1.4.0 -> 1.5.0
 Modified principles:
 - III. Testing, Reproducibility, And Continuous Integration (added sub-clause
@@ -767,6 +797,23 @@ requests where relevant; include `[documentation]` in the message when only
 documentation changes. The Spec Kit `git` extension may automate commits at phase
 boundaries; its messages MUST still respect this convention.
 
+Every pull request MUST carry both a **title** and a **summary**:
+
+* the **title** names the change in one line, in the same present-tense style as a
+  commit subject;
+* the **summary** is a SHORT description of the enhancement — what the change gives the
+  reader — and MUST be the FIRST thing in the pull request body.
+
+A long body that mentions the enhancement somewhere does not satisfy this requirement:
+the summary MUST come first and MUST be short. Background, provenance, measurements, and
+the reasoning behind the change belong after it, not before it. Where a pull request is
+opened by an automated workflow or an agent, the same requirement applies.
+
+Rationale: a reviewer arriving at a pull request decides in one line whether it concerns
+them and what it delivers. Opening with context instead of the enhancement spends that
+line on orientation rather than substance, and a reader who stops there learns nothing
+about what changed.
+
 Code review MUST confirm that public interfaces remain compatible or the break is
 approved; model, solver, and status semantics remain correct or are deliberately
 changed and documented; tests and CI pass; performance changes do not hide
@@ -847,4 +894,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.5.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-08-17
+**Version**: 1.6.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-09-15
