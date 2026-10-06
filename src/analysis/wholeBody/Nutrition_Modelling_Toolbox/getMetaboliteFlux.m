@@ -15,11 +15,34 @@ function [metFlux] = getMetaboliteFlux(diet, varargin)
 %    varargin:        Name-value pairs:
 %
 %                       * databaseType - char or cell array selecting which
-%                         database is used ('usda' and/or 'frida')
-%                         (default 'usda')
+%                         database is used: 'usda', 'frida' or 'bls' for all
+%                         food items, or a cell array with the database of
+%                         each food item (default 'usda')
 %                       * addStarch - boolean, whether additional starch is
 %                         added to the flux vector when it is not measured in
 %                         the macros (default false)
+%                       * fluxTableUsda - table, pre-loaded fluxTableUsda from
+%                         USDA<YEAR>_100gFluxValue.mat. Loaded from file when
+%                         not given (default [])
+%                       * fluxTableFrida - table, pre-loaded fluxTableFrida
+%                         from frida<YEAR>_100gFluxValue.mat. Loaded from file
+%                         when not given (default [])
+%                       * foodMacroUsda - table, pre-loaded foodMacroUsda from
+%                         USDA<YEAR>_100gMacros.mat, used when addStarch is
+%                         true. Loaded from file when not given (default [])
+%                       * usdaEdition - char or numeric, four-digit year of
+%                         the USDA database edition loaded from file. If empty
+%                         the latest available edition is used (default '')
+%                       * fridaEdition - char or numeric, four-digit year of
+%                         the Frida database edition loaded from file. If
+%                         empty the latest available edition is used
+%                         (default '')
+%                       * fluxTableBLS - table, pre-loaded fluxTableBLS from
+%                         BLS<YEAR>_100gFluxValue.mat. Loaded from file when
+%                         not given (default [])
+%                       * blsEdition - char or numeric, four-digit year of
+%                         the BLS database edition loaded from file. If empty
+%                         the latest available edition is used (default '')
 %
 % OUTPUT:
 %    metFlux:         An n x 2 cell array listing all n metabolites in the
@@ -38,81 +61,97 @@ parser = inputParser();
 parser.addRequired('diet', @iscell);
 parser.addParameter('databaseType', 'usda', @(x)ischar(x)||iscell(x));
 parser.addParameter('addStarch', false,@islogical);
+parser.addParameter('fluxTableUsda', [], @(x)istable(x)||isempty(x));
+parser.addParameter('fluxTableFrida', [], @(x)istable(x)||isempty(x));
+parser.addParameter('foodMacroUsda', [], @(x)istable(x)||isempty(x));
+parser.addParameter('usdaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('fridaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('fluxTableBLS', [], @(x)istable(x)||isempty(x));
+parser.addParameter('blsEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
 
 parser.parse(diet, varargin{:});
 
 diet = parser.Results.diet;
 databaseType = parser.Results.databaseType;
 addStarch = parser.Results.addStarch;
+foodTableUsda = parser.Results.fluxTableUsda;
+foodTableFrida = parser.Results.fluxTableFrida;
+foodMacroUsda = parser.Results.foodMacroUsda;
+usdaEdition = parser.Results.usdaEdition;
+fridaEdition = parser.Results.fridaEdition;
+foodTableBLS = parser.Results.fluxTableBLS;
+blsEdition = parser.Results.blsEdition;
 %%
-% Split, if present, the different databases
-usdaItems = diet(strcmp(databaseType,'usda'),:);
-
-fridaItems = diet(strcmp(databaseType,'frida'),:);
-
-%Sum any duplicate entries in diet
-if size(unique(usdaItems(:,1)),1) ~= size(usdaItems,1)
-    fprintf('The same food ID has been found in the diet. Adding the consumed weights together');
-    summedDiet = groupsummary(cell2table(usdaItems),1,"sum");
-    usdaItems = [summedDiet{:,1},num2cell(summedDiet{:,3})];
+% Obtain the database of each food item. A single database name applies to
+% all food items.
+if ischar(databaseType) || isstring(databaseType)
+    databaseType = repmat(cellstr(databaseType), size(diet,1), 1);
+end
+databaseType = lower(cellstr(databaseType(:)));
+unknownDatabase = ~ismember(databaseType, {'usda', 'frida', 'bls'});
+if any(unknownDatabase)
+    error('Unknown database(s): %s. Please use usda, frida or bls.', strjoin(unique(databaseType(unknownDatabase))', ', '))
 end
 
-if size(unique(string(fridaItems(:,1))),1) ~= size(fridaItems,1)
-    fprintf('The same food ID has been found in the diet. Adding the consumed weights together');
-    summedDiet = groupsummary(cell2table(fridaItems),1,"sum");
-    fridaItems = [summedDiet{:,1},num2cell(summedDiet{:,3})];
+% Calculate the metabolite flux for the food items of each database and add
+% the fluxes of the databases together
+metFlux = cell(0, 2);
+for database = {'usda', 'frida', 'bls'}
+    dbItems = diet(strcmp(databaseType, database{1}),:);
+    if isempty(dbItems)
+        continue
+    end
+
+    %Sum any duplicate entries in diet
+    if size(unique(string(dbItems(:,1))),1) ~= size(dbItems,1)
+        fprintf('The same food ID has been found in the diet. Adding the consumed weights together');
+        summedDiet = groupsummary(cell2table(dbItems),1,"sum");
+        dbItems = [summedDiet{:,1},num2cell(summedDiet{:,3})];
+    end
+
+    switch database{1}
+        case 'usda'
+            % Load the flux values per 100g of food items if not given as input
+            if isempty(foodTableUsda)
+                foodTableUsda = load(getNutritionDatabaseFile('usda', '100gFluxValue', usdaEdition)).fluxTableUsda;
+            end
+            % Load the USDA macros for the additional starch if not given as input
+            if addStarch && isempty(foodMacroUsda)
+                foodMacroUsda = load(getNutritionDatabaseFile('usda', '100gMacros', usdaEdition)).foodMacroUsda;
+            end
+            % Calculate the metabolite flux
+            dbFlux = generateFluxFromItem(dbItems, foodTableUsda, addStarch, 'usda', foodMacroUsda);
+        case 'frida'
+            % Load the flux values per 100g of food items if not given as input
+            if isempty(foodTableFrida)
+                foodTableFrida = load(getNutritionDatabaseFile('frida', '100gFluxValue', fridaEdition)).fluxTableFrida;
+            end
+            % Calculate the metabolite flux, never add additional starch for frida
+            dbFlux = generateFluxFromItem(dbItems, foodTableFrida, 0, 'frida', []);
+        case 'bls'
+            % Load the flux values per 100g of food items if not given as input
+            if isempty(foodTableBLS)
+                foodTableBLS = load(getNutritionDatabaseFile('bls', '100gFluxValue', blsEdition)).fluxTableBLS;
+            end
+            % Calculate the metabolite flux, never add additional starch for
+            % BLS as starch is measured
+            dbFlux = generateFluxFromItem(dbItems, foodTableBLS, 0, 'bls', []);
+    end
+
+    % Add the fluxes of metabolites already in the flux list and append the
+    % new metabolites
+    [found, loc] = ismember(dbFlux(:,1), metFlux(:,1));
+    metFlux(loc(found),2) = num2cell(cell2mat(metFlux(loc(found),2)) + cell2mat(dbFlux(found,2)));
+    metFlux = [metFlux; dbFlux(~found,:)];
 end
 
-if ~isempty(usdaItems)
-    % Load the flux values per 100g of food items
-    foodTableUsda = load('USDA2024_100gFluxValue.mat').fluxTableUsda;
-    % Calculate the metabolite flux
-    metFluxUsda = generateFluxFromItem(usdaItems, foodTableUsda, addStarch, 'usda');
 end
 
-if ~isempty(fridaItems)
-    % Load the flux values per 100g of food items
-    foodTableFrida = load('frida2024_100gFluxValue.mat').fluxTableFrida;
-    % Calculate the metabolite flux, never add additional starch for frida
-    metFluxFrida = generateFluxFromItem(fridaItems, foodTableFrida, 0, 'frida');
-end
-
-% If metFluxFrida and metFluxUsda are both filled, combine them
-if ~isempty(fridaItems) && ~isempty(usdaItems)
-    % Obtain indexes of common metabolites
-    [~, idFrida, idUsda] = intersect(metFluxFrida(:,1), metFluxUsda(:,1));
-
-    % Obtain the unique metabolites for the databases
-    uniqueFrida = metFluxFrida;
-    uniqueFrida(idFrida,:) = [];
-
-    uniqueUsda = metFluxUsda;
-    uniqueUsda(idUsda,:) = [];
-
-    % Extract the flux values for the common metabolites
-    commonValuesFrida = cell2mat(metFluxFrida(idFrida,2));
-    commonValuesUsda = cell2mat(metFluxUsda(idUsda,2));
-
-    % Create final flux array by adding to common flux values and appending
-    % the uniques
-    metFlux = [metFluxFrida(idFrida,1), num2cell(commonValuesUsda + commonValuesFrida)];
-    metFlux = [metFlux;uniqueFrida;uniqueUsda];
-
-    % If either usda or frida does not have any items treat the one that does
-    % as the final output.
-elseif ~isempty(fridaItems) && isempty(usdaItems)
-    metFlux = metFluxFrida;
-else
-    metFlux = metFluxUsda;
-end
-
-end
-
-function metFlux = generateFluxFromItem(foodItems, foodTable, addStarch, database)
+function metFlux = generateFluxFromItem(foodItems, foodTable, addStarch, database, foodMacroUsda)
 % Function to calculte the flux value from food items based on a database
 %
 % USAGE:
-%   metFlux = generateFluxFromItem(foodItems, foodTable, addStarch)
+%   metFlux = generateFluxFromItem(foodItems, foodTable, addStarch, database, foodMacroUsda)
 %
 % INPUT:
 %   foodItems:  an nx2 cell array consisting of n dietary/food components and
@@ -123,6 +162,8 @@ function metFlux = generateFluxFromItem(foodItems, foodTable, addStarch, databas
 %   addStarch:  Boolean, indicate if additional starch has to be added
 %               based on macronutrient composition.
 %   database:   Character: Database to be used for adding on additional starch
+%   foodMacroUsda: Table with the USDA macros per 100g, used for adding
+%               additional starch. Can be empty if addStarch is false.
 %
 % OUTPUT:
 %   metFlux: returns an nx2 cell array containing a list of all n metabolites
@@ -131,16 +172,9 @@ function metFlux = generateFluxFromItem(foodItems, foodTable, addStarch, databas
 % AUTHORS:
 %   Bram Nap, 02-2025
 
-% obtain the food and metabolite names
+% obtain the food names
 foodTableItems = foodTable.Properties.VariableNames;
-foodMetabolites= foodTable.VMHID;
 
-%Convert Table into Numerical Matrix
-sMatrix=table2array(foodTable(1:length(foodMetabolites),2:end));
-% convert values into /1g of food item
-sMatrix = sMatrix/100;
-% NaNs set to 0
-sMatrix(isnan(sMatrix))=0;
 %Convert Diet flux values from string to numeric if necessary
 for i=1:length(foodItems(:,2))
     if ischar(foodItems{i,2})
@@ -167,10 +201,17 @@ for i=1:length(foodOnly)
     ind(i)=find(strcmp(foodTableItems, foodOnly(i)));
 end
 
-%Calculate flux for all food items. ind-1 because the first when finding
-%the indexes the first column header was included which is not present in
-%the sMatrix.
-metFlux=[foodTable.VMHID,num2cell(sMatrix(:,ind-1)*cell2mat(foodItems(:,2)))];
+%Convert only the columns of the food items in the diet into a numerical
+%matrix. Converting the whole table for every call is very slow for the
+%large USDA database.
+sMatrix=table2array(foodTable(:,ind));
+% convert values into /1g of food item
+sMatrix = sMatrix/100;
+% NaNs set to 0
+sMatrix(isnan(sMatrix))=0;
+
+%Calculate flux for all food items
+metFlux=[foodTable.VMHID,num2cell(sMatrix*cell2mat(foodItems(:,2)))];
 
 % Adjust metabolite names so it can be used to contrains WBMs
 metFlux(:,1)=strcat('Diet_EX_',metFlux(:,1));
@@ -178,21 +219,21 @@ metFlux(:,1)=strcat(metFlux(:,1),'[d]');
 
 if addStarch
     % Find the base starch flux value from the computed diet
-    initialStarch = metFlux{strcmp(metFlux(:,1), 'Diet_EX_starch1200[d]'),2};
+    initialStarch = metFlux{strcmp(metFlux(:,1), 'Diet_EX_strch1[d]'),2};
     % Find how much starch has to be added that was not previously
     % given or measured
-    starch2add = addExtraStarch(foodItems, database);
+    starch2add = addExtraStarch(foodItems, database, foodMacroUsda);
     if iscell(starch2add)
         % Convert to mmols and add to the initial starch flux value
-        starch2addAdj = cell2mat(starch2add(:,2)) /194.4814 .* cell2mat(foodItems(:,2));
+        starch2addAdj = cell2mat(starch2add(:,2)) /1.8006 .* cell2mat(foodItems(:,2));
         starch2addAdj = sum(starch2addAdj);
         totStarchAdd = starch2addAdj + initialStarch;
-        metFlux{strcmp(metFlux(:,1), 'Diet_EX_starch1200[d]'),2} = totStarchAdd;
+        metFlux{strcmp(metFlux(:,1), 'Diet_EX_strch1[d]'),2} = totStarchAdd;
     end
 end
 end
 
-function [starch2Add] = addExtraStarch(foodItem, database)
+function [starch2Add] = addExtraStarch(foodItem, database, foodMacroUsda)
 % An optional function that will found out how much starch is missing from
 % a food item if it is not measured. It calculates the amount of starch
 % missing by starch = carbohydrates - sugars - fibers. If one of the three
@@ -200,10 +241,14 @@ function [starch2Add] = addExtraStarch(foodItem, database)
 % starch will be 0 as we cannot calculate the amount of missing starch.
 %
 % USAGE:
-%   [starch2Add] = addExtraStarch(foodItem)
+%   [starch2Add] = addExtraStarch(foodItem, database, foodMacroUsda)
 % Input:
 %   foodItem:   An array or table (n x m) where the first column is the
 %               food IDs as found in the USDA FoodData database
+%   database:   Character, database of the food items ('usda' or 'frida')
+%   foodMacroUsda: Table with the USDA macros per 100g. Always loaded by
+%               getMetaboliteFlux when addStarch is true, so that the same
+%               database edition is used.
 % Output:
 %   starch2Add: A nx2 cell array that contains the amount of added starch
 %               in grams per 1 gram of each food ID
@@ -213,8 +258,6 @@ function [starch2Add] = addExtraStarch(foodItem, database)
 
 % Load the macro table as macroTable
 if strcmpi(database, 'usda')
-    load("USDA2024_100gMacros.mat", "foodMacroUsda");
-
     % Initialise the output structure and store the food item IDs in the first
     % column
     starch2Add = cell(size(foodItem,1), 2);
