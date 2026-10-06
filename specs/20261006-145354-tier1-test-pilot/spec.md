@@ -106,7 +106,7 @@ exemption/handling pattern the constitution requires.
 - **FR-002**: Each test MUST aim for 100% line coverage of its function (III-Coverage);
   any uncovered line MUST be listed with its reason in the test header.
 - **FR-003**: Each test MUST declare "Tier 1" in its header and use only hand-built inputs:
-  no genome-scale model, no solver, no `prepareTest` requirement beyond none needed.
+  no genome-scale model, no solver. Each test still opens with `prepareTest()`, declaring no requirements.
 - **FR-004**: Each test header MUST state purpose, tier, function under test, coverage
   exemptions, and authors/date. The body MUST use a `%%` section per behaviour or branch
   with a comment on each assertion group.

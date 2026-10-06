@@ -34,6 +34,12 @@ currentDir = pwd;
 fileDir = fileparts(which('testGetDefaultValue'));
 cd(fileDir);
 
+% declare the requirements of this test. A Tier 1 test needs no solver, MATLAB toolbox
+% or particular operating system, so none is listed; the call is still the standard
+% opening of a COBRA test, and it is where a requirement would be added later (a
+% test whose requirements are not met is skipped by the harness, not failed)
+prepareTest();
+
 %% Numeric inputs: NaN cast to the input class, same size as the input
 
 % double matrix -> matrix of NaN with the same size (NaN is not equal to itself,

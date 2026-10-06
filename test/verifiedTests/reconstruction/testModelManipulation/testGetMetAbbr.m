@@ -28,6 +28,12 @@ currentDir = pwd;
 fileDir = fileparts(which('testGetMetAbbr'));
 cd(fileDir);
 
+% declare the requirements of this test. A Tier 1 test needs no solver, MATLAB toolbox
+% or particular operating system, so none is listed; the call is still the standard
+% opening of a COBRA test, and it is where a requirement would be added later (a
+% test whose requirements are not met is skipped by the harness, not failed)
+prepareTest();
+
 %% a single metabolite ID given as a char vector
 
 % char in -> char out, for BOTH outputs (the unique list of one entry is unwrapped)
