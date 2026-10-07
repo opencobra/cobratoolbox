@@ -1,8 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/20260903-150733-canonicalize-subsystem-matrix/plan.md
-at specs/024-fix-empty-selection-bugs/plan.md
+at specs/20261006-145354-tier1-test-pilot/plan.md
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->

@@ -1,5 +1,46 @@
 <!--
 Sync Impact Report
+Version change: 1.6.0 -> 1.6.1
+Modified principles:
+- III-Coverage (clarification only, no new principle): every test file MUST open
+  with a prepareTest(...) call after the `cd(fileDir)` boilerplate; a Tier 1 test
+  calls prepareTest() with no arguments. Tier 1 wording "never skipped" changed to
+  "declares no requirements, so it is never skipped for missing requirements".
+Modified sections: III-Coverage. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate test openings, and per
+  Principle X none may, so no template change is required.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for PATCH bump: clarifies how an existing rule (Principle III already
+requires declaring requirements with prepareTest) applies to requirement-free tests;
+no new obligation class, no principle removed or redefined.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
+Version change: 1.5.0 -> 1.6.0
+Modified principles:
+- III. Testing, Reproducibility, And Continuous Integration (added sub-clause
+  III-Coverage: Line-Coverage Goal, Test Tiers, Memory Efficiency, And Readability
+  — 100% line-coverage goal with documented exemptions; five tiers (no-model,
+  model-manipulation, optimisation, getDistributedModel loading, first-run
+  reference values); one-file-per-function reaffirmed; memory-efficiency and
+  human-readability rules.)
+Modified sections: none. Added sections: III-Coverage. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate test tiers or coverage
+  goals, and per Principle X none may, so no template change is required.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for MINOR bump: materially expanded compliance requirements within an
+existing principle; no principle removed or redefined, no approved plan invalidated.
+Deferred items: none. Pilot batch (5 Tier-1 functions) is a separate feature.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.4.0 -> 1.5.0
 Modified principles:
 - III. Testing, Reproducibility, And Continuous Integration (added sub-clause
@@ -326,6 +367,71 @@ predictable. Splitting one function's coverage across two differently-named file
 lets a maintainer or agent find one and reasonably believe it is complete, missing
 real assertions that live in the other. One name, one file, keeps "does this
 function have a test, and is it complete" a single lookup rather than a search.
+
+#### III-Coverage: Line-Coverage Goal, Test Tiers, Memory Efficiency, And Readability
+
+Every test file MUST aim for 100% line coverage of the single function it tests.
+A line that cannot be reached (unavailable solver or toolbox, GUI, OS-specific
+branch) is permitted to stay uncovered ONLY when the test file header documents the
+exemption: the line number(s) and the reason. Undocumented uncovered lines are a
+defect in the test.
+
+Every test file MUST open with a `prepareTest(...)` call placed after the
+`cd(fileDir)` boilerplate, declaring the test's requirements (solvers, MATLAB
+toolboxes, operating system). A Tier 1 test calls `prepareTest()` with no arguments
+because it needs none of these; the call is the standard COBRA test opening and the
+place where a requirement is added later. Failures are caught by the harness
+(`runScriptFile`); `prepareTest` only causes a skip (`COBRA:RequirementsNotMet`) when
+a declared requirement is unmet.
+
+Each test MUST declare its tier in its header:
+
+* **Tier 1 — no genome-scale model.** Pure helpers on matrices, strings, and
+  structs. Inputs are hand-built or come from `buildToyModel1`/`buildToyModel2`.
+  No solver is used. The test declares no requirements, so it is never skipped for
+  missing requirements, and it runs in milliseconds.
+* **Tier 2 — model manipulation** (for example `removeGenes`, `changeObjective`,
+  `addReaction`). Model size is unrestricted because the operations are cheap. No
+  solver is used. Assertions check structural consistency: sizes and mutual
+  agreement of `S`, `rxns`, `mets`, `genes`, `rules`, and `rxnGeneMat`.
+* **Tier 3 — optimisation.** Requirements are declared with `prepareTest`. The test
+  MUST use the SMALLEST model that exercises every branch of the code (a toy model
+  or `ecoli_core_model` by default; escalate, for example to Recon3D, only when the
+  code needs it, and say why in the header). Assertions MUST check invariants —
+  `S*v = b` within tolerance, bounds respected, `stat`, objective value — and not
+  merely that a call returned. Where the solution is non-unique, assert the
+  objective or flux ranges, never a specific flux vector.
+* **Tier 4 — model loading.** Tests MUST obtain models through
+  `getDistributedModel`, not ad-hoc `load`/`readCbModel` paths.
+* **Tier 5 — reference values.** When an optimisation or numeric assertion has no
+  prior reference, the author writes a first draft, runs it, and records that run's
+  result as the reference constant; later runs assert against it with a justified
+  tolerance. The header MUST state that the value was generated by the first run
+  (date and solver) and not derived independently, so readers know it guards
+  consistency, not independent correctness.
+
+One test file per function (III-Naming) is reaffirmed and non-negotiable. Shared
+set-up efficiency MUST come from cheap per-file fixtures, never from merging
+several functions into one file or splitting one function across files.
+
+Tests MUST be very memory efficient: load each model once per file, load only the
+model required, `clear` large variables when no longer needed, avoid copying large
+models, prefer perturbing one model (bounds, knock-outs) over loading several, and
+leave no large artifacts on disk.
+
+Tests MUST be written for human readers: a header (purpose, tier, function under
+test, coverage exemptions, authors and date); a `%%` section per behaviour or
+branch; descriptive variable names; and, for each group of assertions, a comment
+stating what it proves and, where used, why the tolerance was chosen.
+
+No CI time budget is imposed on tests; efficiency is governed by the memory and
+smallest-model rules above.
+
+Rationale: coverage is only trustworthy when it is measured against a stated goal
+and every gap is explained. Tiers match test cost and model size to what the code
+actually needs, keeping most tests solver-free and cheap, while first-run
+references give legacy numeric code a regression anchor without pretending it is
+independently verified.
 
 ### IV. Solver Abstraction, Numerical Integrity, And Performance
 
@@ -847,4 +953,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.5.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-08-17
+**Version**: 1.6.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-06
