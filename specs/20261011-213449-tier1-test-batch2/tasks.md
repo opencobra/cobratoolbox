@@ -19,7 +19,7 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 hand-built inputs to record current behaviour; write the test with the standard header,
 `currentDir`/`fileDir`/`cd(fileDir)`, `prepareTest()`, shared inputs before the first `%%`
 section, one `%%` section per branch with commented assertion groups, `cd(currentDir)`.
-Pin defects and quirks, never fix them. If the function turns out to need a model, file,
+Never change any function under src/. If the function has an error or defect, document it in the test header (with the uncovered line as a coverage exemption) and skip that input; do not assert the defective behaviour. If the function turns out to need a model, file,
 solver, toolbox or display, STOP that task and replace it from the spec's reserve list
 (probe first), reporting the swap. Never put personal information in specs/ files.
 

@@ -13,10 +13,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     Line 38 of calculateMetrics.m (the single-taxon branch computing dataSummed) is
+%     not tested because of the defect below, so that line is uncovered.
 %
-% Known defects / quirks pinned (NOT fixed here):
-%     With a single taxon (one table row) the Bray-Curtis values are wrong: sum(comparisonData) sums along the row instead of down the column, so the result differs from 1 - 2*min/(a+b). The values observed are pinned below. Pielou evenness is NaN when a sample has only one non-zero taxon (0/0).
+% Known defects documented (NOT tested, NOT fixed here):
+%     With a single taxon (one table row) the Bray-Curtis values are wrong:
+%     sum(comparisonData) sums along the row instead of down the column, so the
+%     result differs from 1 - 2*min/(a+b) (observed 0 and 1/3 where 1/2 and 2/3 are
+%     expected). That input is therefore skipped here.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
@@ -86,16 +90,6 @@ perTaxonCounts = [1 3 5; 2 0 6; 0 4 7];
 expectedSummary = [mean(perTaxonCounts, 2), std(perTaxonCounts, 0, 2), min(perTaxonCounts, [], 2), ...
                    max(perTaxonCounts, [], 2), sum(perTaxonCounts > 0, 2)];
 assert(norm(table2array(taxonSummary) - expectedSummary, 'fro') < tol);
-
-%% a single taxon (one row): Bray-Curtis values from the current implementation (see header)
-
-singleTaxon = table({'t1'}, 1, 3, 5, 'VariableNames', {'Taxon', 'S1', 'S2', 'S3'});
-[braySingle, pielouSingle, summarySingle] = calculateMetrics(singleTaxon, true);
-% recorded from the current implementation (the correct values would be 1/2, 2/3 and 1/4)
-assert(norm(table2array(braySingle) - [0 0 1/3; 0 0 1/4; 1/3 1/4 0], 'fro') < tol);
-% each sample has one taxon present: 0/0 -> NaN
-assert(all(isnan(pielouSingle)));
-assert(norm(table2array(summarySingle) - [3, 2, 1, 5, 3]) < tol);
 
 % change the directory
 cd(currentDir)

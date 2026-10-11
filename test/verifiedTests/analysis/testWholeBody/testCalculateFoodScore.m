@@ -13,10 +13,16 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     Line 46 of calculateFoodScore.m (translation = NaN, the default translation) is
+%     uncovered: it only runs when fewer than three inputs are given, and that call
+%     fails (see the defect below), so it is skipped.
 %
-% Known defects / quirks pinned (NOT fixed here):
-%     The default translation (NaN) is assigned when nargin < 3 instead of nargin < 4, so a call with fewer than four inputs can never work; it errors. Calls without a translation array only work when an empty translation is passed explicitly and the table row names equal the food names (and then a warning is issued).
+% Known defects documented (NOT tested, NOT fixed here):
+%     The default translation (NaN) is assigned when nargin < 3 instead of nargin < 4,
+%     so a call with fewer than four inputs cannot work (it errors). Calls without a
+%     translation array only work when an empty translation is passed explicitly and
+%     the table row names equal the food names (a warning is then issued); that
+%     working path is what the test uses.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
@@ -88,10 +94,6 @@ assert(contains(lastwarn, 'No translation array is given'));
 % same numbers as with the translation array
 assert(isequal(outputNoTranslation.shadowA.Protein, ["10"; "50%"; "100%"]));
 assert(norm(outputNoTranslation.shadowB.similarityScore - [0; 0; 3]) < tol);
-
-%% fewer than four inputs: the NaN default translation cannot be used -> error
-
-assert(verifyCobraFunctionError('calculateFoodScore', 'inputs', {originalFood, labelMacros}));
 
 % change the directory
 cd(currentDir)

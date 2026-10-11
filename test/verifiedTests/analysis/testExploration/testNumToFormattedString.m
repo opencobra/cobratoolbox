@@ -15,8 +15,11 @@
 % Coverage exemptions:
 %     None. Every executable line is reached below.
 %
-% Known defects / quirks pinned (NOT fixed here):
-%     For non-scalar input the recursive call passes false as the 4th argument (nChar), so nChar is ignored and the default width of 5 is used for array elements.
+% Known defects documented (NOT tested, NOT fixed here):
+%     For non-scalar input the recursive call passes false as the 4th argument (nChar),
+%     so the requested width is ignored for array elements (width 5 is used). The
+%     array checks below therefore only use values whose text does not depend on the
+%     width.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
@@ -70,14 +73,14 @@ assert(strcmp(numToFormattedString(1234.5678, [], [], 7), '1234.57'));
 % scalar with cellOutput = true is wrapped in a cell
 assert(isequal(numToFormattedString(5, [], [], [], true), {'5'}));
 
-% a non-scalar input returns a cell array of strings of the same size; element width is
-% 5 (see the quirk in the header), so pi gives '3.142'
-formattedArray = numToFormattedString([pi 1], [], [], 12);
+% a non-scalar input returns a cell array of strings of the same size (values chosen so
+% that the text does not depend on the width, see the header)
+formattedArray = numToFormattedString([1.5 1]);
 assert(iscell(formattedArray) && isequal(size(formattedArray), [1 2]));
-assert(isequal(formattedArray, {'3.142', '1'}));
+assert(isequal(formattedArray, {'1.5', '1'}));
 
-formattedMatrix = numToFormattedString([1.5 2e9; 0 3], [], [], [], true);
-assert(isequal(formattedMatrix, {'1.5', '2e+09'; '0', '3'}));
+formattedMatrix = numToFormattedString([1.5 2; 0 3]);
+assert(isequal(formattedMatrix, {'1.5', '2'; '0', '3'}));
 
 % change the directory
 cd(currentDir)

@@ -15,8 +15,10 @@
 % Coverage exemptions:
 %     None. Every executable line is reached below.
 %
-% Known defects / quirks pinned (NOT fixed here):
-%     If removing the energy node leaves no edges, the function errors inside MATLAB (an empty edge property cannot be assigned to the new graph). The error is pinned below.
+% Known defects documented (NOT tested, NOT fixed here):
+%     If removing the energy node leaves no edges, the function errors inside MATLAB
+%     (an empty edge property cannot be assigned to the new graph). That input is
+%     skipped here.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
@@ -54,12 +56,6 @@ assert(isequal(bondInstanceGraph.Edges.Weight, [1; 1; 1]));
 assert(isequal(bondInstanceGraph.Edges.Bond, [10; 10; 20]));
 % instances are numbered consecutively
 assert(isequal(bondInstanceGraph.Edges.EdgeIndex, [1; 2; 3]));
-
-%% a graph whose only edges touch the energy node cannot be converted
-
-energyOnly = graph([1 2], [2 3], [1 1]);
-energyOnly.Nodes.Element = {'C'; 'E'; 'O'};
-assert(verifyCobraFunctionError('createBIGraph', 'inputs', {energyOnly}));
 
 % change the directory
 cd(currentDir)
