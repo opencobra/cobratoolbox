@@ -66,13 +66,15 @@ assert(norm(table2array(bray) - expectedBray, 'fro') < tol);
 %% Bray-Curtis switched off: a table of zeros of the same shape
 
 [brayOff, pielouOff] = calculateMetrics(readCounts, false);
+[~, pielouOn] = calculateMetrics(readCounts, true);
 assert(isequal(table2array(brayOff), zeros(3, 3)));
 assert(isequal(brayOff.Properties.VariableNames, sampleNames));
 % the other outputs do not depend on this switch
-assert(norm(pielouOff - pielou) < tol);
+assert(norm(pielouOff - pielouOn) < tol);
 
 %% Pielou evenness per sample: -sum(p .* log(p)) / log(number of taxa present)
 
+[~, pielou] = calculateMetrics(readCounts, true);
 expectedPielou = zeros(1, 3);
 presentCounts = {[1; 2], [3; 4], [5; 6; 7]};   % non-zero counts of S1, S2, S3
 for sampleIndex = 1:3
@@ -83,6 +85,7 @@ assert(norm(pielou - expectedPielou) < tol);
 
 %% per-taxon summary: mean, standard deviation, minimum, maximum, number of samples present
 
+[~, ~, taxonSummary] = calculateMetrics(readCounts, true);
 assert(isequal(taxonSummary.Properties.VariableNames, ...
                {'Mean reads', 'St. dev.', 'Min. Reads', 'Max. Reads', 'Samples with non zero value'}));
 assert(isequal(taxonSummary.Properties.RowNames', {'t1', 't2', 't3'}));

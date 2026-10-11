@@ -37,16 +37,20 @@ prepareTest();
 % (multiples of 1/n), so rounding is far below 1e-12
 tol = 1e-12;
 
+% data sets shared by the sections below
+dataMatrix = [1 2 3 4; 4 3 2 1];     % 2 variables, 4 points, perfectly separable
+labels = [1 1 0 0]';                  % zeros are treated as -1
+separableLarger = [1 2 3 4 5 6; 6 5 4 3 2 1];
+separableLabels = [1 1 1 0 0 0]';
+uninformative = [1 2 3 4 5 6; 1 1 1 1 1 1];   % the second variable carries no information
+alternatingLabels = [1 0 1 0 1 0]';
+
 %% perfectly separable data: every point is classified correctly
 
-dataMatrix = [1 2 3 4; 4 3 2 1];     % 2 variables, 4 points
-labels = [1 1 0 0]';                  % zeros are treated as -1
 assert(abs(score_ridge(dataMatrix, labels) - 1) < tol);
 % a different regularisation weight still separates these points
 assert(abs(score_ridge(dataMatrix, labels, 0.5) - 1) < tol);
 % strong regularisation, still separable
-separableLarger = [1 2 3 4 5 6; 6 5 4 3 2 1];
-separableLabels = [1 1 1 0 0 0]';
 assert(abs(score_ridge(separableLarger, separableLabels, 100, 0) - 1) < tol);
 
 %% leave-one-out cross-validation (fourth input different from 0)
@@ -57,8 +61,6 @@ assert(abs(score_ridge(separableLarger, separableLabels, 0.01, 1) - 2/3) < tol);
 
 %% data that does not separate the labels
 
-uninformative = [1 2 3 4 5 6; 1 1 1 1 1 1];
-alternatingLabels = [1 0 1 0 1 0]';
 % first-run references (see header)
 assert(abs(score_ridge(uninformative, alternatingLabels) - 2/3) < tol);
 assert(abs(score_ridge(uninformative, alternatingLabels, 0.01, 1) - 0) < tol);

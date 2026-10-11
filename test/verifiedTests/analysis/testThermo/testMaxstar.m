@@ -57,8 +57,9 @@ assert(abs(maxstar([1 2 3], [], 2) - maxstar([1 2 3])) < tol);
 % weights of the same size as x
 assert(abs(maxstar([1 2 3], [1 2 3]) - log(1 * exp(1) + 2 * exp(2) + 3 * exp(3))) < tol);
 % a weight vector as long as the summed dimension is expanded over the other dimension
+unweightedColumns = maxstar([1 2; 3 4]);
 weightedColumns = maxstar([1 2; 3 4], [1; 1], 1);
-assert(norm(weightedColumns - columnResult) < tol);
+assert(norm(weightedColumns - unweightedColumns) < tol);
 % orientation of the weight vector does not matter
 assert(abs(maxstar([1; 2; 3], [1 1 1]') - maxstar([1 2 3])) < tol);
 
