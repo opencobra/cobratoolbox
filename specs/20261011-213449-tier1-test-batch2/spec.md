@@ -55,7 +55,7 @@ under the harness runner with 100% (or documented) line coverage.
    that group passes and meets the coverage goal.
 2. **Given** a function that the behaviour probe shows is not Tier 1 after all (needs a
    model, a file, a solver or a display), **When** it is found, **Then** it is replaced by the
-   next reserve (R1..R12) and the replacement is reported, never silently dropped.
+   next reserve (R1..R5) and the replacement is reported, never silently dropped.
 
 ---
 
@@ -159,15 +159,15 @@ the plan phase confirms each). "New" folders do not exist yet; all others do.
 | 2 | `src/analysis/exploration/surfNetSubfunctions/numToFormattedString.m` | `testNumToFormattedString.m` | `test/verifiedTests/analysis/testExploration/` | 51 | 17 |
 | 3 | `src/analysis/persephone/calculateMetrics.m` | `testCalculateMetrics.m` | `test/verifiedTests/analysis/testPersephone/` (new folder) | 35 | 9 |
 | 4 | `src/analysis/rumba/compareConditions.m` | `testCompareConditions.m` | `test/verifiedTests/analysis/testRumba/` (new folder) | 34 | 4 |
-| 5 | `src/analysis/sampling/compareTwoSamplesStat.m` | `testCompareTwoSamplesStat.m` | `test/verifiedTests/analysis/testSampling/` | 46 | 12 |
-| 6 | `src/analysis/subspaces/gmscale.m` | `testGmscale.m` | `test/verifiedTests/analysis/testSubspaces/` | 57 | 7 |
-| 7 | `src/analysis/thermo/componentContribution/reaction2sparse.m` | `testReaction2sparse.m` | `test/verifiedTests/analysis/testThermo/` | 37 | 6 |
+| 5 | `src/analysis/subspaces/gmscale.m` | `testGmscale.m` | `test/verifiedTests/analysis/testSubspaces/` | 57 | 7 |
+| 6 | `src/analysis/thermo/componentContribution/reaction2sparse.m` | `testReaction2sparse.m` | `test/verifiedTests/analysis/testThermo/` | 37 | 6 |
+| 7 | `src/analysis/thermo/utilities/logmod.m` | `testLogmod.m` | `test/verifiedTests/analysis/testThermo/` | 31 | 11 |
 | 8 | `src/analysis/thermo/utilities/maxstar.m` | `testMaxstar.m` | `test/verifiedTests/analysis/testThermo/` | 54 | 9 |
 | 9 | `src/analysis/topology/reactingMoieties/createBIGraph.m` | `testCreateBIGraph.m` | `test/verifiedTests/analysis/testTopology/` | 44 | 11 |
 | 10 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateFoodScore.m` | `testCalculateFoodScore.m` | `test/verifiedTests/analysis/testWholeBody/` (new folder) | 45 | 4 |
 | 11 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDiets.m` | `testCompareDiets.m` | `test/verifiedTests/analysis/testWholeBody/` (new folder) | 37 | 9 |
 | 12 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/convertNutrientsToMmol.m` | `testConvertNutrientsToMmol.m` | `test/verifiedTests/analysis/testWholeBody/` (new folder) | 35 | 8 |
-| 13 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/normalizeDiet.m` | `testNormalizeDiet.m` | `test/verifiedTests/analysis/testWholeBody/` (new folder) | 33 | 7 |
+| 13 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m` | `testSearcher.m` | `test/verifiedTests/analysis/testWholeBody/` (new folder) | 77 | 18 |
 | 14 | `src/analysis/wholeBody/PSCMToolbox/calculateBMR.m` | `testCalculateBMR.m` | `test/verifiedTests/analysis/testWholeBody/` (new folder) | 16 | 3 |
 | 15 | `src/analysis/wholeBody/PSCMToolbox/compareMaleFemale.m` | `testCompareMaleFemale.m` | `test/verifiedTests/analysis/testWholeBody/` (new folder) | 30 | 4 |
 | 16 | `src/base/solvers/cardOpt/sparseLP/evalObj.m` | `testEvalObj.m` | `test/verifiedTests/base/testCardOpt/` | 33 | 12 |
@@ -175,32 +175,32 @@ the plan phase confirms each). "New" folders do not exist yet; all others do.
 | 18 | `src/base/io/utilities/SBML/getDataBases.m` | `testGetDataBases.m` | `test/verifiedTests/base/testIO/testUtilities/` | 21 | 6 |
 | 19 | `src/base/io/utilities/parseSBMLAnnotationField.m` | `testParseSBMLAnnotationField.m` | `test/verifiedTests/base/testIO/testUtilities/` | 48 | 16 |
 | 20 | `src/base/io/utilities/parseSBMLAnnotationFieldRxn.m` | `testParseSBMLAnnotationFieldRxn.m` | `test/verifiedTests/base/testIO/testUtilities/` | 18 | 5 |
-| 21 | `src/base/solvers/param/parseSolverParameters.m` | `testParseSolverParameters.m` | `test/verifiedTests/base/testSolvers/` | 53 | 14 |
-| 22 | `src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m` | `testStopCritBDCA.m` | `test/verifiedTests/base/testSolvers/` | 48 | 12 |
-| 23 | `src/base/solvers/varKin/derFreeMethods/StopCritDuplo.m` | `testStopCritDuplo.m` | `test/verifiedTests/base/testSolvers/` | 48 | 12 |
-| 24 | `src/base/solvers/varKin/levMarMethods/Initialization.m` | `testInitialization.m` | `test/verifiedTests/base/testSolvers/` | 57 | 11 |
-| 25 | `src/base/hyperlink.m` | `testHyperlink.m` | `test/verifiedTests/base/testTools/` | 15 | 4 |
-| 26 | `src/base/parseGPR.m` | `testParseGPR.m` | `test/verifiedTests/base/testTools/` | 32 | 6 |
-| 27 | `src/base/parseMetNames.m` | `testParseMetNames.m` | `test/verifiedTests/base/testTools/` | 17 | 5 |
-| 28 | `src/base/preparseGPR.m` | `testPreparseGPR.m` | `test/verifiedTests/base/testTools/` | 24 | 5 |
-| 29 | `src/base/utilities/calcDist.m` | `testCalcDist.m` | `test/verifiedTests/base/testTools/` | 37 | 4 |
-| 30 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | `testEditChemicalFormula.m` | `test/verifiedTests/dataIntegration/testChemoInformatics/` | 41 | 8 |
-| 31 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | `testGetInchiData.m` | `test/verifiedTests/dataIntegration/testChemoInformatics/` | 50 | 9 |
-| 32 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | `testCombination.m` | `test/verifiedTests/dataIntegration/testFitC13Data/` | 45 | 10 |
-| 33 | `src/dataIntegration/fluxomics/c13solver/errorComputation2.m` | `testErrorComputation2.m` | `test/verifiedTests/dataIntegration/testFitC13Data/` | 24 | 5 |
-| 34 | `src/dataIntegration/fluxomics/c13solver/errorComputation2_grad.m` | `testErrorComputation2_grad.m` | `test/verifiedTests/dataIntegration/testFitC13Data/` | 55 | 10 |
+| 21 | `src/base/io/utilities/parseSBMLNotesField.m` | `testParseSBMLNotesField.m` | `test/verifiedTests/base/testIO/testUtilities/` | 67 | 17 |
+| 22 | `src/base/solvers/varKin/BDCAmethods/InitialBDCA.m` | `testInitialBDCA.m` | `test/verifiedTests/base/testSolvers/` | 72 | 14 |
+| 23 | `src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m` | `testStopCritBDCA.m` | `test/verifiedTests/base/testSolvers/` | 48 | 12 |
+| 24 | `src/base/solvers/varKin/derFreeMethods/InitialDuplo.m` | `testInitialDuplo.m` | `test/verifiedTests/base/testSolvers/` | 77 | 15 |
+| 25 | `src/base/solvers/varKin/derFreeMethods/StopCritDuplo.m` | `testStopCritDuplo.m` | `test/verifiedTests/base/testSolvers/` | 48 | 12 |
+| 26 | `src/base/solvers/varKin/levMarMethods/Initialization.m` | `testInitialization.m` | `test/verifiedTests/base/testSolvers/` | 57 | 11 |
+| 27 | `src/base/hyperlink.m` | `testHyperlink.m` | `test/verifiedTests/base/testTools/` | 15 | 4 |
+| 28 | `src/base/parseGPR.m` | `testParseGPR.m` | `test/verifiedTests/base/testTools/` | 32 | 6 |
+| 29 | `src/base/parseMetNames.m` | `testParseMetNames.m` | `test/verifiedTests/base/testTools/` | 17 | 5 |
+| 30 | `src/base/preparseGPR.m` | `testPreparseGPR.m` | `test/verifiedTests/base/testTools/` | 24 | 5 |
+| 31 | `src/base/utilities/calcDist.m` | `testCalcDist.m` | `test/verifiedTests/base/testTools/` | 37 | 4 |
+| 32 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | `testEditChemicalFormula.m` | `test/verifiedTests/dataIntegration/testChemoInformatics/` | 41 | 8 |
+| 33 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | `testGetInchiData.m` | `test/verifiedTests/dataIntegration/testChemoInformatics/` | 50 | 9 |
+| 34 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | `testCombination.m` | `test/verifiedTests/dataIntegration/testFitC13Data/` | 45 | 10 |
 | 35 | `src/dataIntegration/fluxomics/c13solver/solveLin.m` | `testSolveLin.m` | `test/verifiedTests/dataIntegration/testFitC13Data/` | 24 | 4 |
 | 36 | `src/dataIntegration/fluxomics/score_ridge.m` | `testScore_ridge.m` | `test/verifiedTests/dataIntegration/testFitC13Data/` | 26 | 4 |
-| 37 | `src/dataIntegration/metaboAnnotator/buildMetStruct/removeSmilesInchiKey.m` | `testRemoveSmilesInchiKey.m` | `test/verifiedTests/dataIntegration/testMetaboAnnotator/` (new folder) | 34 | 6 |
-| 38 | `src/design/analyzeRxns.m` | `testAnalyzeRxns.m` | `test/verifiedTests/design/` | 26 | 5 |
-| 39 | `src/design/optEnvelope/seperateTransposeJoinOE.m` | `testSeperateTransposeJoinOE.m` | `test/verifiedTests/design/` | 50 | 5 |
-| 40 | `src/reconstruction/demeter/src/integration/checkInputData.m` | `testCheckInputData.m` | `test/verifiedTests/reconstruction/testDemeter/` (new folder) | 52 | 10 |
-| 41 | `src/reconstruction/demeter/src/integration/mapMediumData2AGORA.m` | `testMapMediumData2AGORA.m` | `test/verifiedTests/reconstruction/testDemeter/` (new folder) | 26 | 5 |
-| 42 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquations.m` | `testBuildRxnEquations.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 53 | 12 |
-| 43 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | `testBuildRxnEquationsFromName.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 54 | 12 |
-| 44 | `src/reconstruction/comparison/modelBorgifier/newCompsNewMets.m` | `testNewCompsNewMets.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 25 | 6 |
-| 45 | `src/reconstruction/comparison/modelBorgifier/removeDuplicateNames.m` | `testRemoveDuplicateNames.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 27 | 5 |
-| 46 | `src/reconstruction/comparison/modelBorgifier/removeProblematicCharacters.m` | `testRemoveProblematicCharacters.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 56 | 9 |
+| 37 | `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m` | `testCleanUpMetabolite_structure.m` | `test/verifiedTests/dataIntegration/testMetaboAnnotator/` (new folder) | 47 | 15 |
+| 38 | `src/dataIntegration/metaboAnnotator/buildMetStruct/removeSmilesInchiKey.m` | `testRemoveSmilesInchiKey.m` | `test/verifiedTests/dataIntegration/testMetaboAnnotator/` (new folder) | 34 | 6 |
+| 39 | `src/design/analyzeRxns.m` | `testAnalyzeRxns.m` | `test/verifiedTests/design/` | 26 | 5 |
+| 40 | `src/design/optEnvelope/seperateTransposeJoinOE.m` | `testSeperateTransposeJoinOE.m` | `test/verifiedTests/design/` | 50 | 5 |
+| 41 | `src/reconstruction/demeter/src/integration/checkInputData.m` | `testCheckInputData.m` | `test/verifiedTests/reconstruction/testDemeter/` (new folder) | 52 | 10 |
+| 42 | `src/reconstruction/demeter/src/integration/mapMediumData2AGORA.m` | `testMapMediumData2AGORA.m` | `test/verifiedTests/reconstruction/testDemeter/` (new folder) | 26 | 5 |
+| 43 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquations.m` | `testBuildRxnEquations.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 53 | 12 |
+| 44 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | `testBuildRxnEquationsFromName.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 54 | 12 |
+| 45 | `src/reconstruction/comparison/modelBorgifier/newCompsNewMets.m` | `testNewCompsNewMets.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 25 | 6 |
+| 46 | `src/reconstruction/comparison/modelBorgifier/removeDuplicateNames.m` | `testRemoveDuplicateNames.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 27 | 5 |
 | 47 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | `testCombineChildren.m` | `test/verifiedTests/reconstruction/testModelManipulation/` | 37 | 9 |
 | 48 | `src/reconstruction/refinement/convertIrrevFluxDistribution.m` | `testConvertIrrevFluxDistribution.m` | `test/verifiedTests/reconstruction/testModelManipulation/` | 15 | 3 |
 | 49 | `src/reconstruction/refinement/reassignFwBwMatch.m` | `testReassignFwBwMatch.m` | `test/verifiedTests/reconstruction/testModelManipulation/` | 18 | 4 |
@@ -217,22 +217,31 @@ New test folders requested (no existing folder matches the domain):
 - `test/verifiedTests/dataIntegration/testMetaboAnnotator/`
 - `test/verifiedTests/reconstruction/testDemeter/`
 
-### Reserve list (replacements if the probe demotes a selected function)
+### Plan-phase amendments (selection after the MATLAB probe)
+
+Six functions were demoted after reading the source and probing in MATLAB, and replaced by
+six reserves (the replacements were probed and run). The table above is the amended selection.
+
+| Demoted function | Reason |
+|------------------|--------|
+| `compareTwoSamplesStat` | needs the Statistics Toolbox (kstest2, ranksum, ttest2): not requirement-free |
+| `normalizeDiet` | loads a data file and depends on other nutrition functions |
+| `parseSolverParameters` | depends on the initialized solver state |
+| `errorComputation2` | calls the C13 fit scorer and writes a file on NaN |
+| `errorComputation2_grad` | calls errorComputation2, uses pause/display |
+| `removeProblematicCharacters` | source contains non-ASCII characters whose meaning depends on file encoding |
+
+### Reserve list (replacements if a further function is demoted at implementation time)
+
+Not yet probed; any reserve used must first pass a probe.
 
 | Reserve | Source function | Code lines | Branch keywords |
 |---------|-----------------|-----------:|----------------:|
-| R1 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m` | 77 | 18 |
-| R2 | `src/base/solvers/cplex/getParamList.m` | 76 | 17 |
-| R3 | `src/base/io/utilities/parseSBMLNotesField.m` | 67 | 17 |
-| R4 | `src/analysis/thermo/groupContribution/new/regulariseGroupIncidenceMatrix.m` | 59 | 17 |
-| R5 | `src/analysis/rumba/classifyRxns.m` | 71 | 16 |
-| R6 | `src/base/solvers/varKin/derFreeMethods/InitialDuplo.m` | 77 | 15 |
-| R7 | `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m` | 47 | 15 |
-| R8 | `src/base/solvers/varKin/BDCAmethods/InitialBDCA.m` | 72 | 14 |
-| R9 | `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m` | 63 | 13 |
-| R10 | `src/analysis/topology/reactingMoieties/extractBondSubgraphs.m` | 73 | 13 |
-| R11 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | 77 | 13 |
-| R12 | `src/analysis/sampling/BarrierRound/PolytopeSimplifier/lewisCenter.m` | 79 | 12 |
+| R1 | `src/base/solvers/cplex/getParamList.m` | 76 | 17 |
+| R2 | `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m` | 63 | 13 |
+| R3 | `src/analysis/topology/reactingMoieties/extractBondSubgraphs.m` | 73 | 13 |
+| R4 | `src/analysis/sampling/BarrierRound/PolytopeSimplifier/lewisCenter.m` | 79 | 12 |
+| R5 | `src/dataIntegration/metaboAnnotator/molFileFinder/getMissingHMDBMolForm.m` | 45 | 12 |
 
 ## Success Criteria *(mandatory)*
 
