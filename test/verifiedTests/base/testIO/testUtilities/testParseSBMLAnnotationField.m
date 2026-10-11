@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     None. Every executable line is reached below.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     For the urn:miriam notation the ChEBI ID keeps a stray "3A" prefix (the text "obo.chebi:CHEBI%" is removed from "obo.chebi:CHEBI%3A15422", leaving "3A15422"). This is documented and the ChEBI value of that notation is NOT asserted.
 %
 % Authors:

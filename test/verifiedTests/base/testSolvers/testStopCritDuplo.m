@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     Lines 33-35, 37 and 38 of StopCritDuplo.m (inside "case 1" of the switch) are uncovered because of the defect below; the line that evaluates the undefined variable is reached only by an erroring call, which is not tested.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     Stopping criterion 1 refers to the undefined variable nhxk (it should probably be nfxk), so calling the function with criterion 1 errors (MATLAB:UndefinedFunction). That criterion is skipped here (documented, not tested, not fixed). A criterion outside 1..5 leaves the outputs unassigned; also not tested.
 %
 % Authors:

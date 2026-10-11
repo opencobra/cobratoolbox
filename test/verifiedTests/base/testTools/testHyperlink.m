@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     Line 29 of hyperlink.m (the HTML link) is only reached when MATLAB runs with its desktop (usejava("desktop") true). On headless/CI runs (matlab -batch) it is uncovered; the test adapts its expectation to the environment so it passes in both.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     None found.
 %
 % Authors:

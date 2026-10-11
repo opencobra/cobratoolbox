@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     Line 74 of compareDiets.m (the line that flips the sign of the result (fluxChanges = fluxChanges*-1, used when the direction argument is false) is uncovered because of the defect below.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     Calling the function with the direction argument false errors (MATLAB:math:mustBeNumericCharOrLogical): the result is a cell array and cannot be multiplied by -1. That input is skipped here (documented, not tested, not fixed).
 %
 % Authors:

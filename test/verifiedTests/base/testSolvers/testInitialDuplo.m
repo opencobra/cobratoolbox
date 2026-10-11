@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     Line 122 of InitialDuplo.m (flag_x_error = options.flag_x_error) is uncovered because of the defect below.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     The function tests the misspelled field name "flag_`x_error`" (with backticks), so the option flag_x_error can never be set from options: the 12th output (flag_x_error) is always 0. That output is documented here and NOT tested.
 %
 % Authors:

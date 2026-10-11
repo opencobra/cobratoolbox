@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     None. Every executable line is reached below. (The function body check "nargin > 3" is shadowed by MATLAB itself rejecting a 4th argument with "Too many input arguments".)
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     None found.
 %
 % Authors:

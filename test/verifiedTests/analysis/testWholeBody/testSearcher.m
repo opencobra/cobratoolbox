@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     Lines 90-133 of searcher.m (the whole else-branch for a searchType other than "iterative", from queryItems = {x} to the end of that branch) are uncovered because of the defect below.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     The non-iterative search type cannot be used: the input parser requires the database to be a cell array, but that branch reads database.description, which only exists for a table. Every such call errors; that branch is skipped here (documented, not tested, not fixed).
 %
 % Authors:

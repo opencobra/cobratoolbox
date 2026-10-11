@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     None. Every executable line is reached below.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     None found. (The function uses the old strmatch function.)
 %
 % Authors:

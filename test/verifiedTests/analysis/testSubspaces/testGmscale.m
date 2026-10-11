@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     None expected; the iteration-limit break (npass == maxpass) shares a line with the convergence test and is executed.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     None found. With iprint > 0 the function prints a scaling report to the console (console noise, not suppressed, see Constitution VII-A).
 %
 % Authors:

@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     None for line coverage: the catch blocks are reached through resource lists that do not match the pattern.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     Two behaviours are documented and NOT tested: (1) if the resources do not match, the third output (qualifiers) is never assigned, so requesting three outputs errors; (2) a list that mixes matching and non-matching resources returns empty results for all of them.
 %
 % Authors:

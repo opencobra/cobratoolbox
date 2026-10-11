@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     None. Every executable line (including the local functions insertDist and simDistance) is reached below.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     None found.
 %
 % Authors:

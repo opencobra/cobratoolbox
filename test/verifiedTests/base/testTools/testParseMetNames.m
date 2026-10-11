@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     None. Every executable line is reached below.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     None found. (Only a single-character compartment symbol is recognised; longer ones fall through to the last pattern and give an empty compartment, which is documented here as current behaviour.)
 %
 % Authors:

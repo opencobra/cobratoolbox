@@ -15,7 +15,7 @@
 % Coverage exemptions:
 %     None. Every executable line is reached below.
 %
-% Known defects / quirks pinned (NOT fixed here):
+% Known defects documented (NOT tested, NOT fixed here):
 %     The number of sample points used for both conditions is taken from the first metabolite of the first list only (ConnectedMet1{1}).
 %
 % Authors:
