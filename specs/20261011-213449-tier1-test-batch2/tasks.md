@@ -27,9 +27,9 @@ solver, toolbox or display, STOP that task and replace it from the spec's reserv
 
 ## Phase 1: Setup
 
-- [ ] T001 Confirm baseline: `git diff --stat -- src` is empty, MATLAB R2025a runs, `initCobraToolbox(false)` succeeds; create the new test folders listed in spec.md (empty folders are not tracked; they appear with their first test).
-- [ ] T002 Create the throwaway coverage runner and harness runner script in the session scratchpad (not committed): runs `runScriptFile` from `test/` and `CodeCoveragePlugin.forFile` with Cobertura output (`hits` attribute precedes `number`), printing status and covered/total lines for a list of test/source pairs.
-- [ ] T003 Read two sibling tests (`test/verifiedTests/base/testTools/testSplitString.m` and `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m`) and match header and boilerplate style.
+- [X] T001 Confirm baseline: `git diff --stat -- src` is empty, MATLAB R2025a runs, `initCobraToolbox(false)` succeeds; create the new test folders listed in spec.md (empty folders are not tracked; they appear with their first test).
+- [X] T002 Create the throwaway coverage runner and harness runner script in the session scratchpad (not committed): runs `runScriptFile` from `test/` and `CodeCoveragePlugin.forFile` with Cobertura output (`hits` attribute precedes `number`), printing status and covered/total lines for a list of test/source pairs.
+- [X] T003 Read two sibling tests (`test/verifiedTests/base/testTools/testSplitString.m` and `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m`) and match header and boilerplate style.
 
 ---
 
@@ -39,41 +39,41 @@ solver, toolbox or display, STOP that task and replace it from the spec's reserv
 
 ### Test folder `test/verifiedTests/analysis/testExploration`
 
-- [ ] T004 [P] [US1] Row 1: write `test/verifiedTests/analysis/testExploration/testFindMatchingFieldEntries.m` for `src/analysis/exploration/findMatchingFieldEntries.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T005 [P] [US1] Row 2: write `test/verifiedTests/analysis/testExploration/testNumToFormattedString.m` for `src/analysis/exploration/surfNetSubfunctions/numToFormattedString.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T006 [US1] Run the 2 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
+- [X] T004 [P] [US1] Row 1: write `test/verifiedTests/analysis/testExploration/testFindMatchingFieldEntries.m` for `src/analysis/exploration/findMatchingFieldEntries.m` (probe, test, run via harness runner, measure coverage).
+- [X] T005 [P] [US1] Row 2: write `test/verifiedTests/analysis/testExploration/testNumToFormattedString.m` for `src/analysis/exploration/surfNetSubfunctions/numToFormattedString.m` (probe, test, run via harness runner, measure coverage).
+- [X] T006 [US1] Run the 2 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
 
 ### Test folder `test/verifiedTests/analysis/testPersephone`
 
-- [ ] T007 [P] [US1] Row 3: write `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` for `src/analysis/persephone/calculateMetrics.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T008 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
+- [X] T007 [P] [US1] Row 3: write `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` for `src/analysis/persephone/calculateMetrics.m` (probe, test, run via harness runner, measure coverage).
+- [X] T008 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
 
 ### Test folder `test/verifiedTests/analysis/testRumba`
 
-- [ ] T009 [P] [US1] Row 4: write `test/verifiedTests/analysis/testRumba/testCompareConditions.m` for `src/analysis/rumba/compareConditions.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T010 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
+- [X] T009 [P] [US1] Row 4: write `test/verifiedTests/analysis/testRumba/testCompareConditions.m` for `src/analysis/rumba/compareConditions.m` (probe, test, run via harness runner, measure coverage).
+- [X] T010 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
 
 ### Test folder `test/verifiedTests/analysis/testSubspaces`
 
-- [ ] T011 [P] [US1] Row 5: write `test/verifiedTests/analysis/testSubspaces/testGmscale.m` for `src/analysis/subspaces/gmscale.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T012 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
+- [X] T011 [P] [US1] Row 5: write `test/verifiedTests/analysis/testSubspaces/testGmscale.m` for `src/analysis/subspaces/gmscale.m` (probe, test, run via harness runner, measure coverage).
+- [X] T012 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
 
 ### Test folder `test/verifiedTests/analysis/testThermo`
 
-- [ ] T013 [P] [US1] Row 6: write `test/verifiedTests/analysis/testThermo/testReaction2sparse.m` for `src/analysis/thermo/componentContribution/reaction2sparse.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T014 [P] [US1] Row 7: write `test/verifiedTests/analysis/testThermo/testLogmod.m` for `src/analysis/thermo/utilities/logmod.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T015 [P] [US1] Row 8: write `test/verifiedTests/analysis/testThermo/testMaxstar.m` for `src/analysis/thermo/utilities/maxstar.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T016 [US1] Run the 3 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
+- [X] T013 [P] [US1] Row 6: write `test/verifiedTests/analysis/testThermo/testReaction2sparse.m` for `src/analysis/thermo/componentContribution/reaction2sparse.m` (probe, test, run via harness runner, measure coverage).
+- [X] T014 [P] [US1] Row 7: write `test/verifiedTests/analysis/testThermo/testLogmod.m` for `src/analysis/thermo/utilities/logmod.m` (probe, test, run via harness runner, measure coverage).
+- [X] T015 [P] [US1] Row 8: write `test/verifiedTests/analysis/testThermo/testMaxstar.m` for `src/analysis/thermo/utilities/maxstar.m` (probe, test, run via harness runner, measure coverage).
+- [X] T016 [US1] Run the 3 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
 
 ### Test folder `test/verifiedTests/analysis/testTopology`
 
-- [ ] T017 [P] [US1] Row 9: write `test/verifiedTests/analysis/testTopology/testCreateBIGraph.m` for `src/analysis/topology/reactingMoieties/createBIGraph.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T018 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
+- [X] T017 [P] [US1] Row 9: write `test/verifiedTests/analysis/testTopology/testCreateBIGraph.m` for `src/analysis/topology/reactingMoieties/createBIGraph.m` (probe, test, run via harness runner, measure coverage).
+- [X] T018 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
 
 ### Test folder `test/verifiedTests/analysis/testWholeBody`
 
-- [ ] T019 [P] [US1] Row 10: write `test/verifiedTests/analysis/testWholeBody/testCalculateFoodScore.m` for `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateFoodScore.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T020 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
+- [X] T019 [P] [US1] Row 10: write `test/verifiedTests/analysis/testWholeBody/testCalculateFoodScore.m` for `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateFoodScore.m` (probe, test, run via harness runner, measure coverage).
+- [X] T020 [US1] Run the 1 test(s) above through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption in the header; record covered/total per function.
 
 - [ ] T021 [US1] CHECKPOINT: stop. Commit locally, report rows 1-10 (coverage table, quirks pinned, any swaps) and WAIT for maintainer approval before Phase 3. Do not start Phase 3 without approval.
 
