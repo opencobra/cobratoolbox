@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-41 known defects in 33 functions (11 wrong-result, 14 error, 3 unusable-option, 6 cosmetic, 7 limitation).
+43 known defects in 35 functions (12 wrong-result, 14 error, 4 unusable-option, 6 cosmetic, 7 limitation).
 
 ## Summary
 
@@ -45,8 +45,10 @@
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m` | cosmetic | Loop index printed to the console | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCleanUpMetabolite_structure.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | wrong-result | Backward-only reactions list the substrate on both sides | `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m` |
+| `src/reconstruction/comparison/modelBorgifier/countC.m` | wrong-result | Elements whose symbol starts with C are counted as carbon | `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | cosmetic | Header name listed in removedStrains | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | wrong-result | Unknown strain row not removed when the headers are equal | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
+| `src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m` | unusable-option | The NoWeight argument never has an effect | `test/verifiedTests/reconstruction/testFastGapFill/testAssignRxnWeights.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
 | `src/reconstruction/refinement/getMetAbbr.m` | wrong-result | IDs without brackets are silently dropped | `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
@@ -435,6 +437,17 @@
 - **Source lines**: 59
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m`
 
+### `src/reconstruction/comparison/modelBorgifier/countC.m`
+
+#### Elements whose symbol starts with C are counted as carbon
+
+- **Severity**: wrong-result
+- **Trigger**: a formula with chlorine, calcium, cobalt, copper, ... and no carbon, for example Cl2 or CaCl2
+- **Observed**: the pattern C followed by digits matches the first letter of Cl, Ca, Co, Cu, ..., so Cl2 gives 1 instead of 0
+- **Expected**: 0 carbon atoms
+- **Source lines**: 39-47
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m`
+
 ### `src/reconstruction/demeter/src/integration/checkInputData.m`
 
 #### Header name listed in removedStrains
@@ -454,6 +467,17 @@
 - **Expected**: the row removed
 - **Source lines**: 29
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m`
+
+### `src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m`
+
+#### The NoWeight argument never has an effect
+
+- **Severity**: unusable-option
+- **Trigger**: the optional argument NoWeight (or its default 1000) for reactions that are neither metabolic, exchange nor transport
+- **Observed**: the weight vector is filled with NoWeight and then replaced by zeros a few lines later, so such reactions get 0
+- **Expected**: NoWeight for those reactions
+- **Source lines**: 45, 54
+- **Documented in**: `test/verifiedTests/reconstruction/testFastGapFill/testAssignRxnWeights.m`
 
 ### `src/reconstruction/refinement/GPRLogic/combineChildren.m`
 
