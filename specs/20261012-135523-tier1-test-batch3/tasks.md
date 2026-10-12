@@ -19,9 +19,9 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ## Phase 1: Setup
 
-- [ ] T001 Confirm the baseline: on `develop`, `git diff --stat -- src` empty, MATLAB R2025a runs, `initCobraToolbox(false)` succeeds, `python3 .github/scripts/known_defects.py --check` passes.
-- [ ] T002 Prepare the throwaway coverage/harness runner in the session scratchpad (not committed): runs `runScriptFile` from `test/` and the code-coverage plugin per test/source pair, reports status, covered/total lines and failing `%%` sections.
-- [ ] T003 Record, in the scratchpad, the non-comment lines of existing tests that will be touched (none expected) and confirm that every new test name is unique under `test/`.
+- [X] T001 Confirm the baseline: on `develop`, `git diff --stat -- src` empty, MATLAB R2025a runs, `initCobraToolbox(false)` succeeds, `python3 .github/scripts/known_defects.py --check` passes.
+- [X] T002 Prepare the throwaway coverage/harness runner in the session scratchpad (not committed): runs `runScriptFile` from `test/` and the code-coverage plugin per test/source pair, reports status, covered/total lines and failing `%%` sections.
+- [X] T003 Record, in the scratchpad, the non-comment lines of existing tests that will be touched (none expected) and confirm that every new test name is unique under `test/`.
 
 ---
 
@@ -29,49 +29,49 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ### Test folder `test/verifiedTests/reconstruction/testMassChargeBalance`
 
-- [ ] T004 [P] [US1] Row: write `test/verifiedTests/reconstruction/testMassChargeBalance/testIspolymer.m` for `src/reconstruction/modelGeneration/massBalance/ispolymer.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T005 [US1] Run the tests of `reconstruction/testMassChargeBalance` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T004 [P] [US1] Row: write `test/verifiedTests/reconstruction/testMassChargeBalance/testIspolymer.m` for `src/reconstruction/modelGeneration/massBalance/ispolymer.m` (probe, test, run via harness runner, measure coverage).
+- [X] T005 [US1] Run the tests of `reconstruction/testMassChargeBalance` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/base/testTools`
 
-- [ ] T006 [P] [US1] Row: write `test/verifiedTests/base/testTools/testCountUnique.m` for `src/base/utilities/countUnique.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T007 [US1] Run the tests of `base/testTools` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T006 [P] [US1] Row: write `test/verifiedTests/base/testTools/testCountUnique.m` for `src/base/utilities/countUnique.m` (probe, test, run via harness runner, measure coverage).
+- [X] T007 [US1] Run the tests of `base/testTools` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/visualization/testMetabolicCartography`
 
-- [ ] T008 [P] [US1] Row: write `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeFluxFromFile.m` for `src/visualization/metabolicCartography/visualizeFluxFromFile.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T009 [US1] Run the tests of `visualization/testMetabolicCartography` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T008 [P] [US1] Row: write `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeFluxFromFile.m` for `src/visualization/metabolicCartography/visualizeFluxFromFile.m` (probe, test, run via harness runner, measure coverage).  DROPPED: it reads map and flux files (not Tier 1); replaced in this set by testMixFraction.
+- [X] T009 [US1] Run the tests of `visualization/testMetabolicCartography` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testMetaboAnnotator`
 
-- [ ] T010 [P] [US1] Row: write `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` for `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T011 [US1] Run the tests of `dataIntegration/testMetaboAnnotator` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T010 [P] [US1] Row: write `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` for `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` (probe, test, run via harness runner, measure coverage).
+- [X] T011 [US1] Run the tests of `dataIntegration/testMetaboAnnotator` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testExploration`
 
-- [ ] T012 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testIsValidPrintFields.m` for `src/analysis/exploration/surfNetSubfunctions/isValidPrintFields.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T013 [US1] Run the tests of `analysis/testExploration` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T012 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testIsValidPrintFields.m` for `src/analysis/exploration/surfNetSubfunctions/isValidPrintFields.m` (probe, test, run via harness runner, measure coverage).
+- [X] T013 [US1] Run the tests of `analysis/testExploration` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testGT1`
 
-- [ ] T014 [P] [US1] Row: write `test/verifiedTests/analysis/testGT1/testFindGenesAboveThresholdGT1.m` for `src/analysis/igemRNA/GT1/findGenesAboveThresholdGT1.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T015 [P] [US1] Row: write `test/verifiedTests/analysis/testGT1/testFindGenesBelowThresholdGT1.m` for `src/analysis/igemRNA/GT1/findGenesBelowThresholdGT1.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T016 [US1] Run the tests of `analysis/testGT1` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T014 [P] [US1] Row: write `test/verifiedTests/analysis/testGT1/testFindGenesAboveThresholdGT1.m` for `src/analysis/igemRNA/GT1/findGenesAboveThresholdGT1.m` (probe, test, run via harness runner, measure coverage).
+- [X] T015 [P] [US1] Row: write `test/verifiedTests/analysis/testGT1/testFindGenesBelowThresholdGT1.m` for `src/analysis/igemRNA/GT1/findGenesBelowThresholdGT1.m` (probe, test, run via harness runner, measure coverage).
+- [X] T016 [US1] Run the tests of `analysis/testGT1` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/base/testTools`
 
-- [ ] T017 [P] [US1] Row: write `test/verifiedTests/base/testTools/testIsvar.m` for `src/base/utilities/isvar.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T018 [US1] Run the tests of `base/testTools` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T017 [P] [US1] Row: write `test/verifiedTests/base/testTools/testIsvar.m` for `src/base/utilities/isvar.m` (probe, test, run via harness runner, measure coverage).
+- [X] T018 [US1] Run the tests of `base/testTools` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testPersephone`
 
-- [ ] T019 [P] [US1] Row: write `test/verifiedTests/analysis/testPersephone/testFdrBHadjustment.m` for `src/analysis/persephone/fdrBHadjustment.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T020 [US1] Run the tests of `analysis/testPersephone` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T019 [P] [US1] Row: write `test/verifiedTests/analysis/testPersephone/testFdrBHadjustment.m` for `src/analysis/persephone/fdrBHadjustment.m` (probe, test, run via harness runner, measure coverage).
+- [X] T020 [US1] Run the tests of `analysis/testPersephone` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testSubspaces`
 
-- [ ] T021 [P] [US1] Row: write `test/verifiedTests/analysis/testSubspaces/testLsqraprod.m` for `src/analysis/subspaces/lsqr/lsqraprod.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T022 [US1] Run the tests of `analysis/testSubspaces` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [X] T021 [P] [US1] Row: write `test/verifiedTests/analysis/testSubspaces/testLsqraprod.m` for `src/analysis/subspaces/lsqr/lsqraprod.m` (probe, test, run via harness runner, measure coverage).
+- [X] T022 [US1] Run the tests of `analysis/testSubspaces` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 - [ ] T023 [US1] CHECKPOINT: regenerate the registry, commit locally, report these ten (coverage table, defects, drops) and WAIT for maintainer approval before Phase 3. Do not start Phase 3 without approval.
 
@@ -109,7 +109,7 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ### Test folder `test/verifiedTests/analysis/testSampling`
 
-- [ ] T040 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testMixFraction.m` for `src/analysis/sampling/ACHR/mixFraction.m` (probe, test, run via harness runner, measure coverage).
+- [X] T040 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testMixFraction.m` for `src/analysis/sampling/ACHR/mixFraction.m` (probe, test, run via harness runner, measure coverage).  (done early, in the checkpoint set)
 - [ ] T041 [US2] Run the tests of `analysis/testSampling` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testSubspaces`

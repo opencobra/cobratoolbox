@@ -3,13 +3,15 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-29 known defects in 23 functions (9 wrong-result, 11 error, 3 unusable-option, 4 cosmetic, 2 limitation).
+34 known defects in 28 functions (9 wrong-result, 14 error, 3 unusable-option, 4 cosmetic, 4 limitation).
 
 ## Summary
 
 | Function | Severity | Problem | Test file |
 |----------|----------|---------|-----------|
 | `src/analysis/exploration/surfNetSubfunctions/numToFormattedString.m` | unusable-option | Width argument ignored for array input | `test/verifiedTests/analysis/testExploration/testNumToFormattedString.m` |
+| `src/analysis/igemRNA/GT1/findGenesAboveThresholdGT1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testGT1/testFindGenesAboveThresholdGT1.m` |
+| `src/analysis/igemRNA/GT1/findGenesBelowThresholdGT1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testGT1/testFindGenesBelowThresholdGT1.m` |
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
 | `src/analysis/topology/reactingMoieties/createBIGraph.m` | error | No edges left after removing the energy node errors | `test/verifiedTests/analysis/testTopology/testCreateBIGraph.m` |
@@ -26,15 +28,18 @@
 | `src/base/solvers/varKin/derFreeMethods/StopCritDuplo.m` | error | Outputs unassigned for a criterion outside 1 to 5 | `test/verifiedTests/base/testSolvers/testStopCritDuplo.m` |
 | `src/base/solvers/varKin/derFreeMethods/StopCritDuplo.m` | error | Stopping criterion 1 uses an undefined variable | `test/verifiedTests/base/testSolvers/testStopCritDuplo.m` |
 | `src/base/utilities/getDefaultValue.m` | error | No default for struct and function-handle input | `test/verifiedTests/base/testTools/testGetDefaultValue.m` |
+| `src/base/utilities/isvar.m` | limitation | Index is 1 for a structure even when the field is missing | `test/verifiedTests/base/testTools/testIsvar.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | error | Several layers containing the letter p error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | cosmetic | Negative parameters print a message and return empty | `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m` |
 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | error | k = 0 errors | `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m` | cosmetic | Loop index printed to the console | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCleanUpMetabolite_structure.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | wrong-result | Backward-only reactions list the substrate on both sides | `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | cosmetic | Header name listed in removedStrains | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | wrong-result | Unknown strain row not removed when the headers are equal | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
+| `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | error | Always errors because the element list contains names with digits | `test/verifiedTests/reconstruction/testMassChargeBalance/testIspolymer.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
 | `src/reconstruction/refinement/getMetAbbr.m` | wrong-result | IDs without brackets are silently dropped | `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
@@ -51,6 +56,28 @@
 - **Expected**: every element formatted with the requested width
 - **Source lines**: 48
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testNumToFormattedString.m`
+
+### `src/analysis/igemRNA/GT1/findGenesAboveThresholdGT1.m`
+
+#### Errors when no gene qualifies
+
+- **Severity**: error
+- **Trigger**: a threshold that no expression value passes
+- **Observed**: the output genes is only assigned inside the loop, so the call errors (MATLAB:unassignedOutputs)
+- **Expected**: an empty list
+- **Source lines**: 24-33
+- **Documented in**: `test/verifiedTests/analysis/testGT1/testFindGenesAboveThresholdGT1.m`
+
+### `src/analysis/igemRNA/GT1/findGenesBelowThresholdGT1.m`
+
+#### Errors when no gene qualifies
+
+- **Severity**: error
+- **Trigger**: a threshold that no expression value passes
+- **Observed**: the output genes is only assigned inside the loop, so the call errors (MATLAB:unassignedOutputs)
+- **Expected**: an empty list
+- **Source lines**: 24-33
+- **Documented in**: `test/verifiedTests/analysis/testGT1/testFindGenesBelowThresholdGT1.m`
 
 ### `src/analysis/persephone/calculateMetrics.m`
 
@@ -222,6 +249,17 @@
 - **Source lines**: 13-29
 - **Documented in**: `test/verifiedTests/base/testTools/testGetDefaultValue.m`
 
+### `src/base/utilities/isvar.m`
+
+#### Index is 1 for a structure even when the field is missing
+
+- **Severity**: limitation
+- **Trigger**: a structure and a name that is not one of its fields
+- **Observed**: the third output (ind) is always 1 for structures
+- **Expected**: an empty index when the field does not exist
+- **Source lines**: 24-27
+- **Documented in**: `test/verifiedTests/base/testTools/testIsvar.m`
+
 ### `src/dataIntegration/chemoInformatics/editChemicalFormula.m`
 
 #### Element with zero atoms stays in the formula
@@ -284,6 +322,17 @@
 - **Source lines**: 38
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCleanUpMetabolite_structure.m`
 
+### `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m`
+
+#### Identifiers of 12 or more characters give an empty result
+
+- **Severity**: limitation
+- **Trigger**: an identifier with 12 or more characters, for example HMDB00012345
+- **Observed**: the result is an empty text instead of the identifier
+- **Expected**: the identifier returned unchanged or an error
+- **Source lines**: 19-28
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m`
+
 ### `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m`
 
 #### Backward-only reactions list the substrate on both sides
@@ -314,6 +363,17 @@
 - **Expected**: the row removed
 - **Source lines**: 29
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m`
+
+### `src/reconstruction/modelGeneration/massBalance/ispolymer.m`
+
+#### Always errors because the element list contains names with digits
+
+- **Severity**: error
+- **Trigger**: any formula, for example ispolymer('C6H12O6')
+- **Observed**: the list includes FULLR2 and FULLR3; numAtomsOfElementInFormula rejects element names that contain numbers (Element must not contain numbers), so the call errors for every formula (an empty formula errors with an index error)
+- **Expected**: true when the formula contains a polymer placeholder, false otherwise
+- **Source lines**: 14-20
+- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testIspolymer.m`
 
 ### `src/reconstruction/refinement/GPRLogic/combineChildren.m`
 
