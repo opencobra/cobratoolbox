@@ -17,12 +17,11 @@
 % Coverage exemptions:
 %     None. Every executable line of getDefaultValue is reached below.
 %
-% Known defect pinned (NOT fixed here):
+% Known defect documented (NOT tested, NOT fixed here):
 %     getDefaultValue has no final 'else' branch, so for an input that is none of
 %     numeric / string / char / logical / cell (for example a struct or a function
 %     handle) the output "defValue" is never assigned and MATLAB raises an
-%     "unassigned output" error. The test asserts that this error still occurs so
-%     that any future fix is a conscious, spec-driven change.
+%     "unassigned output" error. Such inputs are skipped here.
 %
 % Authors:
 %     - Generated for feature 025-tier1-test-pilot, 2026-10-06.
@@ -90,13 +89,6 @@ assert(isequaln(defaultCell, {NaN, ''; false, {NaN}}));
 
 % an empty cell has no elements, so the result is an empty cell of the same size
 assert(isequal(getDefaultValue({}), {}));
-
-%% Unsupported types: the output is never assigned, MATLAB raises an error
-
-% outputArgCount = 1 is required: MATLAB only raises the unassigned-output error
-% when the caller actually requests an output
-assert(verifyCobraFunctionError('getDefaultValue', 'inputs', {struct('a', 1)}, 'outputArgCount', 1));
-assert(verifyCobraFunctionError('getDefaultValue', 'inputs', {@sin}, 'outputArgCount', 1));
 
 % change the directory
 cd(currentDir)

@@ -1,5 +1,28 @@
 <!--
 Sync Impact Report
+Version change: 1.6.1 -> 1.7.0
+Modified principles:
+- III. Testing, Reproducibility, And Continuous Integration (added sub-clause
+  III-Defects: Known-Defects Record — a test never changes a source function and
+  never asserts defective behaviour; each defect is recorded in the test header in
+  one standard format; a single registry at test/known-defects.md is GENERATED from
+  the headers, never hand-edited, and a check fails when it is stale.)
+Modified sections: III-Defects. Added sections: III-Defects. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate defect handling, and per
+  Principle X none may, so no template change is required.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for MINOR bump: a new, materially-expanded compliance requirement within an
+existing principle (a binding record format and a generated registry); no principle
+removed or redefined. The generator, the header grammar and the back-fill of existing
+defects are a separate, spec-driven feature.
+Deferred items: the exact entry grammar, the generator script and the staleness check
+are defined by that feature, not here.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.6.0 -> 1.6.1
 Modified principles:
 - III-Coverage (clarification only, no new principle): every test file MUST open
@@ -432,6 +455,35 @@ and every gap is explained. Tiers match test cost and model size to what the cod
 actually needs, keeping most tests solver-free and cheap, while first-run
 references give legacy numeric code a regression anchor without pretending it is
 independently verified.
+
+#### III-Defects: Known-Defects Record
+
+When writing a test reveals an error or defect in a source function, the test MUST
+NOT change the function and MUST NOT assert the defective behaviour. The defect is
+documented in the test file header and the affected input is skipped; the source
+lines that this leaves uncovered are listed as coverage exemptions (III-Coverage).
+Every test MUST pass.
+
+Each defect MUST be recorded in the test header in ONE standard machine-readable
+format, under the heading "Known defects documented (NOT tested, NOT fixed here):",
+as one entry per defect with the fields DEFECT (short title), SEVERITY (one of
+`wrong-result`, `error`, `unusable-option`, `cosmetic`, `limitation`), TRIGGER (the
+input or call that causes it), OBSERVED, EXPECTED, and LINES (the affected line
+numbers in the source function). A test with no defect writes "None found." The exact
+entry grammar is defined by the generator feature and is not restated here
+(Principle X).
+
+The repository keeps ONE consolidated registry of all known defects at
+`test/known-defects.md`. It is GENERATED from the test headers by a script and MUST
+NOT be edited by hand. A change that adds, edits or removes a defect entry MUST
+regenerate the registry in the same change, and a check MUST fail when the registry
+is out of date with the headers. The registry lives under `test/` (the test-suite
+role of Principle IX); no new top-level folder is created.
+
+Rationale: defects found while back-filling tests are valuable and otherwise stay
+buried in individual headers. Generating one registry from those headers keeps a
+single source of truth that cannot drift from the tests, which a hand-written list
+would.
 
 ### IV. Solver Abstraction, Numerical Integrity, And Performance
 
@@ -953,4 +1005,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.6.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-06
+**Version**: 1.7.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-12
