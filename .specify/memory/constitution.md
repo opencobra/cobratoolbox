@@ -1,5 +1,27 @@
 <!--
 Sync Impact Report
+Version change: 1.7.0 -> 1.7.1
+Modified principles:
+- III-Defects (simplified, no new principle): the enforced staleness check is removed.
+  The registry test/known-defects.md stays GENERATED from the test headers (never
+  hand-edited) but is a reference snapshot that is NOT checked in CI. Whoever relies on
+  an entry, edits a listed function, or works to resolve a defect re-checks the entry
+  against the current source, updates the test header (and writes the test for any
+  formerly skipped input once fixed) and regenerates the registry.
+Modified sections: III-Defects. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; no template restates defect handling.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for PATCH bump: relaxes and clarifies an obligation within an existing
+sub-clause (a complete staleness check would need a far more complicated system; the
+registry is a navigational aid and review at resolution time is sufficient); no
+principle removed or redefined.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.6.1 -> 1.7.0
 Modified principles:
 - III. Testing, Reproducibility, And Continuous Integration (added sub-clause
@@ -475,15 +497,22 @@ entry grammar is defined by the generator feature and is not restated here
 
 The repository keeps ONE consolidated registry of all known defects at
 `test/known-defects.md`. It is GENERATED from the test headers by a script and MUST
-NOT be edited by hand. A change that adds, edits or removes a defect entry MUST
-regenerate the registry in the same change, and a check MUST fail when the registry
-is out of date with the headers. The registry lives under `test/` (the test-suite
-role of Principle IX); no new top-level folder is created.
+NOT be edited by hand. It is a reference snapshot, not an enforced artefact: it is not
+checked in CI. A contributor (human or agent) who adds, changes or removes a defect
+entry SHOULD regenerate the registry in the same change. The registry lives under
+`test/` (the test-suite role of Principle IX); no new top-level folder is created.
+
+A function can be changed or fixed after an entry was written, so entries can become
+outdated. Whoever relies on an entry, edits a function that has an entry, or works to
+resolve a defect MUST re-check the entry against the current source, then update the
+test header (remove or correct the entry and, once the defect is fixed, write the test
+for the formerly skipped input) and regenerate the registry.
 
 Rationale: defects found while back-filling tests are valuable and otherwise stay
-buried in individual headers. Generating one registry from those headers keeps a
-single source of truth that cannot drift from the tests, which a hand-written list
-would.
+buried in individual headers. Generating one registry from those headers keeps a single
+source of truth that a hand-written list would not. A complete staleness check would need
+a far more complicated system; the registry is a navigational aid, and re-checking an
+entry when it is used or resolved is sufficient.
 
 ### IV. Solver Abstraction, Numerical Integrity, And Performance
 
@@ -1005,4 +1034,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.7.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-12
+**Version**: 1.7.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-12

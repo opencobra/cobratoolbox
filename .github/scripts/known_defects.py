@@ -10,8 +10,8 @@ Usage:
     python3 .github/scripts/known_defects.py            # write test/known-defects.md
     python3 .github/scripts/known_defects.py --check    # fail if the registry is stale
 
-Exit status: 0 = ok / written, 1 = registry stale or missing (check mode),
-2 = invalid header entries (nothing is written).
+Exit status: 0 = ok / written, 1 = registry stale or missing (check mode, optional and not
+run in CI), 2 = invalid header entries (nothing is written).
 
 The entry format is defined once, in
 ``specs/20261012-121035-known-defects-registry/contracts/defect-entry-format.md``.
@@ -239,11 +239,12 @@ def render(entries):
     out = [
         "# Known defects in tested functions",
         "",
-        "> **Generated file: must not be edited by hand.** It is built from the "
+        "> **Generated file: do not edit by hand.** It is built from the "
         "\"Known defects documented\" section of each test header by "
         "`%s` (Constitution III-Defects)." % REGENERATE,
-        "> To change an entry, edit the test header and regenerate. CI fails when this file is "
-        "out of date.",
+        "> It is a snapshot: a function may have been changed or fixed since an entry was "
+        "written. When you rely on an entry or work on resolving a defect, re-check it against "
+        "the current source, then update the test header and regenerate this file.",
         "",
     ]
     if not ordered:

@@ -255,7 +255,7 @@ class RenderTests(unittest.TestCase):
         text = kd.render(entries)
         for expected in ("| Function | Severity | Problem | Test file |", "wrong-result",
                          "calling with x", "returns 1", "returns 2", "2, 4-5",
-                         "test/verifiedTests/a/testFn.m", "must not be edited by hand"):
+                         "test/verifiedTests/a/testFn.m", "do not edit by hand", "snapshot"):
             self.assertIn(expected, text)
 
 

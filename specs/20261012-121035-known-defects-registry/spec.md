@@ -195,6 +195,14 @@ every one appears exactly once. All 55 tests still pass and no source file chang
 - Defect notes currently live in the "Known defects" and "Coverage exemptions" parts of the
   headers; coverage exemptions stay as they are.
 
+## Amendment (2026-10-12): CI check removed
+
+By maintainer decision the automated CI check is NOT part of this feature (constitution
+v1.7.1): User Story 3, FR-007 (as a CI-enforced check) and FR-008, and success criterion
+SC-003, no longer apply to CI. The tool keeps an optional local `--check` mode, the
+registry is a reference snapshot, and staleness is handled by whoever resolves a defect.
+No upstream workflow file is changed.
+
 ## Traceability
 
 | Acceptance criterion | Discharging test | src/<domain>/ function under test |

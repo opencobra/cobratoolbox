@@ -1,7 +1,7 @@
 # Known defects in tested functions
 
-> **Generated file: must not be edited by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
-> To change an entry, edit the test header and regenerate. CI fails when this file is out of date.
+> **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
+> It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
 29 known defects in 23 functions (9 wrong-result, 11 error, 3 unusable-option, 4 cosmetic, 2 limitation).
 
