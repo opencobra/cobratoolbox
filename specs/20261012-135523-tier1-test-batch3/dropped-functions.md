@@ -9,3 +9,4 @@ dropped; they get a test and a defect entry (Constitution III-Defects).
 |---|---|---|
 | `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | defect: errors for every input | Its element list `{'X','R','FULLR','FULLR2','FULLR3'}` contains names with digits; `numAtomsOfElementInFormula` rejects them ("Element must not contain numbers"), so every call fails (an empty formula fails with an index error). Lines 14-20. Expected: true when the formula contains a polymer placeholder, false otherwise. |
 | `src/visualization/metabolicCartography/visualizeFluxFromFile.m` | not Tier 1: reads files | Reads a map XML file and a flux CSV file and writes an XML file. |
+| `src/analysis/thermo/groupContribution/wang/createFragmentIncidenceMatrix.m` | not Tier 1: external tool and data path | Calls `autoFragment(inchi, radius, dGPredictorPath, canonicalise)`, which needs the dGPredictor data files and a cheminformatics toolchain; it cannot run on plain data. |
