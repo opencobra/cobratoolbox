@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-43 known defects in 35 functions (12 wrong-result, 14 error, 4 unusable-option, 6 cosmetic, 7 limitation).
+50 known defects in 40 functions (14 wrong-result, 17 error, 4 unusable-option, 6 cosmetic, 9 limitation).
 
 ## Summary
 
@@ -17,6 +17,9 @@
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
 | `src/analysis/subspaces/nullspace/echelonNullspace.m` | wrong-result | The returned null-space matrix L is built with P instead of its transpose | `test/verifiedTests/analysis/testSubspaces/testEchelonNullspace.m` |
+| `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | error | Omitting the row or column selection makes the call fail | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
+| `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | wrong-result | The forward flux is not projected onto the row space | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
+| `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | limitation | The two consistency checks only catch one direction | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
 | `src/analysis/thermo/formulae/checkFormulae.m` | limitation | Elements other than C, H, O, P, S, K, Na and N are ignored | `test/verifiedTests/analysis/testThermo/testCheckFormulae.m` |
 | `src/analysis/thermo/reactantContribution/acidDissociationConstant.m` | cosmetic | Ka and pKa are returned as square matrices with only the first entries filled | `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m` |
 | `src/analysis/topology/reactingMoieties/createBIGraph.m` | error | No edges left after removing the energy node errors | `test/verifiedTests/analysis/testTopology/testCreateBIGraph.m` |
@@ -37,6 +40,7 @@
 | `src/base/utilities/mapAontoB.m` | error | The check that Akey and Bkey have the same class is broken | `test/verifiedTests/base/testTools/testMapAontoB.m` |
 | `src/base/utilities/mapAontoB.m` | wrong-result | Without Ain the matched keys of B are returned wrongly | `test/verifiedTests/base/testTools/testMapAontoB.m` |
 | `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
+| `src/dataIntegration/XomicsToModel/analysis/compareXomicsModels.m` | error | Fewer than two models give no outputs | `test/verifiedTests/dataIntegration/testXomicsToModel/testCompareXomicsModels.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | error | Several layers containing the letter p error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
@@ -46,12 +50,15 @@
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | wrong-result | Backward-only reactions list the substrate on both sides | `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m` |
 | `src/reconstruction/comparison/modelBorgifier/countC.m` | wrong-result | Elements whose symbol starts with C are counted as carbon | `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m` |
+| `src/reconstruction/comparison/modelBorgifier/mergeTrxns.m` | error | A call with nothing to merge fails | `test/verifiedTests/reconstruction/testModelBorgifier/testMergeTrxns.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | cosmetic | Header name listed in removedStrains | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | wrong-result | Unknown strain row not removed when the headers are equal | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
+| `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
 | `src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m` | unusable-option | The NoWeight argument never has an effect | `test/verifiedTests/reconstruction/testFastGapFill/testAssignRxnWeights.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
 | `src/reconstruction/refinement/getMetAbbr.m` | wrong-result | IDs without brackets are silently dropped | `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
+| `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
 
 ## Details
 
@@ -140,6 +147,35 @@
 - **Expected**: L*S = 0 for the left and S*L = 0 for the right null space
 - **Source lines**: 95, 145
 - **Documented in**: `test/verifiedTests/analysis/testSubspaces/testEchelonNullspace.m`
+
+### `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m`
+
+#### Omitting the row or column selection makes the call fail
+
+- **Severity**: error
+- **Trigger**: a call without rowBool and colBool, or without colBool, together with a non-empty vf
+- **Observed**: the sanity check on line 67 uses colBool before its default is created on line 88, so the call errors (not enough input arguments)
+- **Expected**: the defaults (all rows, all columns) used
+- **Source lines**: 67, 88-90
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m`
+
+#### The forward flux is not projected onto the row space
+
+- **Severity**: wrong-result
+- **Trigger**: any call with a non-empty forward flux vf
+- **Observed**: the line that should set vfR sets vrR again, so the output vfR is the unchanged vf instead of the row-space part (vfN is correct)
+- **Expected**: vfR = PR*vf, so that vfN + vfR = vf
+- **Source lines**: 166-169
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m`
+
+#### The two consistency checks only catch one direction
+
+- **Severity**: limitation
+- **Trigger**: a net flux that is smaller than vf - vr, or a potential with u - u0 - lnx below zero
+- **Observed**: the checks test only (vnet - vf + vr) > 1e-12 and (u - u0 - lnx) > 1e-12, without the absolute value, so negative differences pass
+- **Expected**: an error for any difference larger than the tolerance in either direction
+- **Source lines**: 67, 73
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m`
 
 ### `src/analysis/thermo/formulae/checkFormulae.m`
 
@@ -353,6 +389,17 @@
 - **Source lines**: 25-31
 - **Documented in**: `test/verifiedTests/base/testTools/testUpdateStructData.m`
 
+### `src/dataIntegration/XomicsToModel/analysis/compareXomicsModels.m`
+
+#### Fewer than two models give no outputs
+
+- **Severity**: error
+- **Trigger**: a structure with a single model, with outputs requested
+- **Observed**: the function only prints "please check the input variable" and never assigns its outputs, so the call errors (unassigned outputs)
+- **Expected**: an empty result or a clear error message
+- **Source lines**: 93-95
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testCompareXomicsModels.m`
+
 ### `src/dataIntegration/chemoInformatics/editChemicalFormula.m`
 
 #### Element with zero atoms stays in the formula
@@ -448,6 +495,17 @@
 - **Source lines**: 39-47
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m`
 
+### `src/reconstruction/comparison/modelBorgifier/mergeTrxns.m`
+
+#### A call with nothing to merge fails
+
+- **Severity**: error
+- **Trigger**: an empty list of reactions to merge
+- **Observed**: the variable modelfields is created inside the loop only, so the clean-up after the loop errors (Unrecognized function or variable modelfields)
+- **Expected**: the model returned unchanged
+- **Source lines**: 51, 133
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testMergeTrxns.m`
+
 ### `src/reconstruction/demeter/src/integration/checkInputData.m`
 
 #### Header name listed in removedStrains
@@ -467,6 +525,17 @@
 - **Expected**: the row removed
 - **Source lines**: 29
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m`
+
+### `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m`
+
+#### The first gap-filled row overwrites the last annotation row
+
+- **Severity**: wrong-result
+- **Trigger**: a genome annotation to which at least one gap-filling rule applies
+- **Observed**: the row counter starts at the number of rows instead of one more, so the first added row replaces the last row of the input
+- **Expected**: all input rows kept and the new rows appended after them
+- **Source lines**: 127
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m`
 
 ### `src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m`
 
@@ -511,3 +580,14 @@
 - **Expected**: the channel keeps its value
 - **Source lines**: 28-29
 - **Documented in**: `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m`
+
+### `src/visualization/metabolicCartography/addFluxWidthAndColor.m`
+
+#### Map reactions without flux data get no colour entry
+
+- **Severity**: limitation
+- **Trigger**: a map with reactions that are not in the list of reaction IDs given with the fluxes
+- **Observed**: rxnColor is filled only for reactions with flux data (zero or non-zero), so it can be shorter than rxnName and the other map reactions have no colour entry
+- **Expected**: a default colour for every map reaction
+- **Source lines**: 102-105, 133
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m`

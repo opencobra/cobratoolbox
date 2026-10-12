@@ -13,3 +13,12 @@ dropped; they get a test and a defect entry (Constitution III-Defects).
 | `src/dataIntegration/fluxomics/score_KS.m` | not Tier 1: MATLAB toolbox | Uses `kstest2` (Statistics and Machine Learning Toolbox) inside a `parfor` loop (Parallel Computing Toolbox). |
 | `src/dataIntegration/fluxomics/calcMDVfromSamp.m` | not Tier 1: external solver routine | Needs the EMU solver `slvrEMU_fast`, an experiment structure with fragments, and a `parfor` loop. |
 | `src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m` | not Tier 1: needs a solver | Builds a problem and calls `optimizeCardinality`, which needs an optimisation solver. |
+| `src/base/io/convertCobraLP2mps.m` | not Tier 1: writes a file | Builds an MPS problem and writes `<name>.mps` with `SaveMPS`. |
+| `src/analysis/persephone/additionalFunctions/convertVMHIDName.m` | not Tier 1: reads a data file | Loads the VMH metabolite database with `loadVMHDatabase`. |
+| `src/analysis/persephone/additionalFunctions/getVMHID.m` | not Tier 1: reads a data file | Loads the VMH metabolite database with `loadVMHDatabase`. |
+| `src/analysis/persephone/performRegressions.m` | not Tier 1: MATLAB toolbox | Uses `fitglm` (Statistics and Machine Learning Toolbox); the product scan did not report it. |
+| `src/analysis/persephone/runNonparametricTests.m` | not Tier 1: MATLAB toolbox | Uses `ranksum` and `kruskalwallis` (Statistics and Machine Learning Toolbox); the product scan did not report it. |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/performStatisticalAnalysis.m` | not Tier 1: MATLAB toolbox and data file | Uses `ranksum`, `kruskalwallis`, `anova1`, `mafdr` and `loadVMHDatabase`. |
+| `src/analysis/topology/reactingMoieties/addBondMappingsRXNFile.m` | not Tier 1: reads a file | Reads a reaction file (`.rxn`) with `readABRXNFile`. |
+| `src/analysis/topology/reactingMoieties/extractBondSubgraphs.m` | not testable faithfully | Needs domain-specific atom-transition and bond-instance graphs. A minimal hand-built pair of graphs made the function loop without terminating (the loop that resets the edge counter), so no safe, faithful input could be constructed. |
+| `src/visualization/metabolicCartography/removeMapMol.m` | not Tier 1: needs a CellDesigner map | Works on a parsed CellDesigner XML structure together with map matrices (`getMapMatrices`, `getCorrespondingRows/Cols`); no faithful plain-data input exists. |
