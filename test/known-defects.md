@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-52 known defects in 42 functions (14 wrong-result, 18 error, 4 unusable-option, 6 cosmetic, 10 limitation).
+56 known defects in 44 functions (15 wrong-result, 20 error, 4 unusable-option, 6 cosmetic, 11 limitation).
 
 ## Summary
 
@@ -31,6 +31,10 @@
 | `src/base/io/utilities/SBML/getDataBases.m` | error | Third output unassigned when nothing matches | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/parseSBMLAnnotationField.m` | wrong-result | ChEBI ID keeps a stray 3A prefix in the urn:miriam notation | `test/verifiedTests/base/testIO/testUtilities/testParseSBMLAnnotationField.m` |
 | `src/base/parseMetNames.m` | limitation | Mixed or longer compartment notations are not parsed | `test/verifiedTests/base/testTools/testParseMetNames.m` |
+| `src/base/solvers/mosek/inspectMosekProb.m` | error | A constraint matrix without rows or columns stops the inspection with an error | `test/verifiedTests/base/testSolvers/testInspectMosekProb.m` |
+| `src/base/solvers/mosek/inspectMosekProb.m` | limitation | A matrix field of an integer class stops the inspection with an error | `test/verifiedTests/base/testSolvers/testInspectMosekProb.m` |
+| `src/base/solvers/mosek/setMosekParam.m` | error | The SCLP profiles fail when feasTol or numTol is not supplied | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
+| `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
 | `src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m` | error | Outputs unassigned for a criterion outside 1 to 5 | `test/verifiedTests/base/testSolvers/testStopCritBDCA.m` |
 | `src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m` | error | Stopping criterion 1 uses an undefined variable | `test/verifiedTests/base/testSolvers/testStopCritBDCA.m` |
 | `src/base/solvers/varKin/derFreeMethods/InitialDuplo.m` | unusable-option | Option flag_x_error can never be set | `test/verifiedTests/base/testSolvers/testInitialDuplo.m` |
@@ -297,6 +301,46 @@
 - **Expected**: name and compartment separated
 - **Source lines**: 36-38
 - **Documented in**: `test/verifiedTests/base/testTools/testParseMetNames.m`
+
+### `src/base/solvers/mosek/inspectMosekProb.m`
+
+#### A constraint matrix without rows or columns stops the inspection with an error
+
+- **Severity**: error
+- **Trigger**: prob.a or prob.f with zero rows or zero columns, for example zeros(0, 2)
+- **Observed**: min and max of the empty row count vector are empty, so building the table of matrix statistics fails with "All table variables must have the same number of rows"
+- **Expected**: a report for the empty matrix, with NaN statistics
+- **Source lines**: 137-153
+- **Documented in**: `test/verifiedTests/base/testSolvers/testInspectMosekProb.m`
+
+#### A matrix field of an integer class stops the inspection with an error
+
+- **Severity**: limitation
+- **Trigger**: prob.a or prob.f of class int8 (or another integer class)
+- **Observed**: norm(M, 1) rejects integer input with "Invalid data type. First input argument must be single or double."
+- **Expected**: a report, as for a double matrix with the same values
+- **Source lines**: 144
+- **Documented in**: `test/verifiedTests/base/testSolvers/testInspectMosekProb.m`
+
+### `src/base/solvers/mosek/setMosekParam.m`
+
+#### The SCLP profiles fail when feasTol or numTol is not supplied
+
+- **Severity**: error
+- **Trigger**: param.mosekParam set to an SCLP_* profile (other than SCLP_default) without param.feasTol or without param.numTol
+- **Observed**: the missing field is read directly, which raises an error (Unrecognized field name "feasTol" or "numTol"), although the header states that all fields are optional
+- **Expected**: documented defaults used for the absent tolerances
+- **Source lines**: 596-601, 640-644
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSetMosekParam.m`
+
+#### The strict option never switches MOSEK to a free solve form
+
+- **Severity**: wrong-result
+- **Trigger**: param.strict non-empty with a cobra profile
+- **Observed**: the interior-point solve form is already set to MSK_SOLVE_PRIMAL earlier in the same profile, so the test for an absent solve form in the strict block is never true and MSK_SOLVE_FREE is never set
+- **Expected**: a strict solve uses MSK_SOLVE_FREE, as the header of the function states
+- **Source lines**: 541-549
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSetMosekParam.m`
 
 ### `src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m`
 
