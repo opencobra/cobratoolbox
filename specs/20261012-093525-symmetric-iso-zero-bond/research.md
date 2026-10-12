@@ -16,6 +16,7 @@ Phase 0 for [plan.md](plan.md). Code references are to `develop` at f1581781c.
 VF2 explores vertex orders without exploiting the colour partition and stalls on the many near-automorphisms of these sparse, almost-symmetric graphs; IR exploits the partition after every choice.
 
 **Alternatives considered**:
+- reusing `identifyAtomEquivalenceClasses.m` (feature 020): it already does 1-WL colour refinement, but on one metabolite's atoms and bonds (atom numbers, elements, bond endpoints) to find automorphism classes within a molecule, not on a pair of graph objects with multiplicities and direction; adapting its interface would change a public function, so the refinement is written locally;
 - colour refinement + `isisomorphic` with colour labels: measured, still stalls;
 - `isisomorphic` with element labels: changes the semantics of the unlabelled classification (FR-003/FR-006);
 - calling nauty/bliss through an external binary or Python: new external dependency (Principle IV/V), not justified when a MATLAB IR decides the case in 0.33 s.
@@ -54,4 +55,4 @@ VF2 explores vertex orders without exploiting the colour partition and stalls on
 
 ## R8. Performance baseline (FR-008, SC-005)
 
-**Decision**: Time `classifySubgraphIsomorphism`'s share of conserved-moiety identification on the 1,960-reaction model used by feature 20260930-102230 before and after, N = 3 each, median reported; and the stuck pair, N = 3, maximum reported.
+**Decision**: Time classification on the 1,960-reaction captures used by feature 20260930-102230 (its `quickstart.md`): `n1960-identifyInputs.mat` at `/home/jackmcgoldrick/repos/reconXmoieties/results/moietySizing/outputs/conservedMoietyHotspots/` (local capture, not in the repository), with that feature's timing script `specs/20260930-102230-isomorphism-label-only-copies/isomorphismLabelOnlyCheck.m` adapted to time unlabelled classification; before (develop f1581781c) and after, N = 3 each, median reported; and the stuck pair, N = 3, maximum reported. If the capture is missing, T003 stops and reports it.

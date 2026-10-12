@@ -15,15 +15,15 @@
 
 ## Phase 1: Setup
 
-- [ ] T001 Copy the stuck pair from reconXmoieties (`results/ki001_strip_h/lastUnlabelledPair_noH.mat`: label-only copies `g1`, `g2`) into `test/verifiedTests/analysis/testReactingMoieties/data/nearSymmetricBondComponentPair.mat`, keeping only `g1` and `g2`; track it via Git LFS per Principle IX-G with an explicit `*.mat` carve-out if the folder's rules require one
+- [ ] T001 Copy the stuck pair from reconXmoieties (`results/ki001_strip_h/lastUnlabelledPair_noH.mat`: label-only copies `g1`, `g2`) into `test/verifiedTests/analysis/testReactingMoieties/data/nearSymmetricBondComponentPair.mat`, keeping only `g1` and `g2`; commit it as a normal binary `.mat` like the existing references in that folder
 - [ ] T002 [P] Create RXN fixtures under `test/verifiedTests/analysis/testReactingMoieties/data/rxn/`: `H2Ot_implicitH.rxn` (h2o[c] → h2o[e], one O atom per side, mapping 1↔1, no bonds), `KCLt_implicitH.rxn` (two single-atom ions per side, no bonds), and a bonded companion `ETOHt_implicitH.rxn` (ethanol transport, heavy atoms only)
 
 ---
 
 ## Phase 2: Foundational
 
-- [ ] T003 Record the baseline before any source change: run `test/verifiedTests/analysis/testReactingMoieties/` on develop f1581781c and save pass/fail per test; time conserved-moiety identification on the 1,960-reaction model of feature 20260930-102230, N = 3, saving the classification share of the time to `results/20261012-093525-symmetric-iso-zero-bond/baseline_timing.mat` (SC-005 baseline)
-- [ ] T004 [P] Verify MATLAB coding standards for the files this feature edits (`classifySubgraphIsomorphism.m`, `readABRXNFile.m`): no evalc shadowing, warnings visible, try/catch keeps `ME.stack`, no `nargin` for optional arguments; consult the MATLAB best-practice skill if one is available (Principle VII-F) and note the outcome in the receipt
+- [ ] T003 Record the baseline before any source change: run `test/verifiedTests/analysis/testReactingMoieties/` on develop f1581781c and save pass/fail per test; time unlabelled classification on the 1,960-reaction capture `/home/jackmcgoldrick/repos/reconXmoieties/results/moietySizing/outputs/conservedMoietyHotspots/n1960-identifyInputs.mat` (feature 20260930-102230's quickstart), using an adapted copy of `specs/20260930-102230-isomorphism-label-only-copies/isomorphismLabelOnlyCheck.m` saved in this feature's folder, N = 3; stop and report if the capture is missing; save to `results/20261012-093525-symmetric-iso-zero-bond/baseline_timing.mat` (SC-005 baseline)
+- [ ] T004 [P] Verify MATLAB coding standards for the files this feature edits (`classifySubgraphIsomorphism.m`, `readABRXNFile.m`): no evalc (VII-A), warnings visible (VII-B), try/catch keeps `ME.stack` (VII-C), no `nargin` for optional arguments (VII-D); consult the MATLAB best-practice skill if one is available (Principle VII-F) and note the outcome in the receipt
 
 **Checkpoint**: baseline recorded; user stories can proceed (US1 and US2 touch different files).
 
@@ -37,7 +37,7 @@
 
 ### Tests for User Story 1
 
-- [ ] T005 [P] [US1] In `test/verifiedTests/analysis/testReactingMoieties/testClassifySubgraphIsomorphism.m`, add: (a) the stored pair from T001 is one isomorphism class, timed, ≤ 5 s; (b) a graph and a random node relabelling are one class; (c) the same graph with one edge moved are two classes; (d) randomized equivalence with `isisomorphic` on 200 small cases (≤ 12 nodes; simple, multigraph, self-loops, directed; fixed `rng` seed), comparing classifications; (e) `classifySubgraphIsomorphism('getFallbackCount')` returns a non-negative integer and is reset by `'resetCallCount'`
+- [ ] T005 [P] [US1] In `test/verifiedTests/analysis/testReactingMoieties/testClassifySubgraphIsomorphism.m`, add: (a) the stored pair from T001 is one isomorphism class, with a generous timed assertion (< 30 s, following the precedent in `testIdentifyAtomEquivalenceClasses`; SC-001's 5 s is measured in T011); (b) a graph and a random node relabelling are one class; (c) the same graph with one edge moved are two classes; (d) randomized equivalence with `isisomorphic` on 200 small cases (≤ 12 nodes; simple, multigraph, self-loops, directed; fixed `rng` seed), comparing classifications; (e) empty-graph and single-node-graph pairs (graph and digraph, with and without a self-loop) classify as `isisomorphic` would; (f) `classifySubgraphIsomorphism('getFallbackCount')` returns a non-negative integer and is reset by `'resetCallCount'`
 - [ ] T006 [P] [US1] Confirm the existing reference cases (`data/classifySubgraphIsomorphismReference.mat`: classifications, call counts, errors) still load and assert unchanged; extend the test header (Purpose, Authors) with this feature's cases (Principle VII-E)
 
 ### Implementation for User Story 1
