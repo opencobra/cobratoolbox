@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-34 known defects in 28 functions (9 wrong-result, 14 error, 3 unusable-option, 4 cosmetic, 4 limitation).
+33 known defects in 27 functions (9 wrong-result, 13 error, 3 unusable-option, 4 cosmetic, 4 limitation).
 
 ## Summary
 
@@ -39,7 +39,6 @@
 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | wrong-result | Backward-only reactions list the substrate on both sides | `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | cosmetic | Header name listed in removedStrains | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | wrong-result | Unknown strain row not removed when the headers are equal | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
-| `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | error | Always errors because the element list contains names with digits | `test/verifiedTests/reconstruction/testMassChargeBalance/testIspolymer.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
 | `src/reconstruction/refinement/getMetAbbr.m` | wrong-result | IDs without brackets are silently dropped | `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
@@ -363,17 +362,6 @@
 - **Expected**: the row removed
 - **Source lines**: 29
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m`
-
-### `src/reconstruction/modelGeneration/massBalance/ispolymer.m`
-
-#### Always errors because the element list contains names with digits
-
-- **Severity**: error
-- **Trigger**: any formula, for example ispolymer('C6H12O6')
-- **Observed**: the list includes FULLR2 and FULLR3; numAtomsOfElementInFormula rejects element names that contain numbers (Element must not contain numbers), so the call errors for every formula (an empty formula errors with an index error)
-- **Expected**: true when the formula contains a polymer placeholder, false otherwise
-- **Source lines**: 14-20
-- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testIspolymer.m`
 
 ### `src/reconstruction/refinement/GPRLogic/combineChildren.m`
 
