@@ -16,7 +16,19 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     When the first-column header of the data differs from the header of the strain information (as in the test, which is the intended use), the header name is also listed in removedStrains; the test therefore only checks that the unknown strain is in that list. When both headers are equal, the unknown strain is listed but its row is not removed (the first removed index is skipped); that input is not tested.
+%     - DEFECT: Header name listed in removedStrains
+%       SEVERITY: cosmetic
+%       TRIGGER: the first-column header of the data differs from that of the strain information
+%       OBSERVED: removedStrains also contains the header cell
+%       EXPECTED: only strain names
+%       LINES: 27-28
+%     - DEFECT: Unknown strain row not removed when the headers are equal
+%       SEVERITY: wrong-result
+%       TRIGGER: data and strain information with the same first-column header
+%       OBSERVED: the first removed index is skipped (IA(2:end)), so the row of an unknown strain
+%         stays in the checked data
+%       EXPECTED: the row removed
+%       LINES: 29
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

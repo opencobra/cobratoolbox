@@ -16,7 +16,19 @@
 %     Lines 33-35, 37 and 38 of StopCritDuplo.m (inside "case 1" of the switch) are uncovered because of the defect below; the line that evaluates the undefined variable is reached only by an erroring call, which is not tested.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     Stopping criterion 1 refers to the undefined variable nhxk (it should probably be nfxk), so calling the function with criterion 1 errors (MATLAB:UndefinedFunction). That criterion is skipped here (documented, not tested, not fixed). A criterion outside 1..5 leaves the outputs unassigned; also not tested.
+%     - DEFECT: Stopping criterion 1 uses an undefined variable
+%       SEVERITY: error
+%       TRIGGER: Stopping_Crit = 1
+%       OBSERVED: the variable nhxk is undefined: error MATLAB:UndefinedFunction
+%       EXPECTED: the residual nfxk compared with epsilon
+%       LINES: 32-40
+%     - DEFECT: Outputs unassigned for a criterion outside 1 to 5
+%       SEVERITY: error
+%       TRIGGER: Stopping_Crit not in 1..5
+%       OBSERVED: the switch has no otherwise branch, so StopFlag and Status are not assigned (error
+%         MATLAB:unassignedOutputs)
+%       EXPECTED: defined outputs or a clear error message
+%       LINES: 30-81
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

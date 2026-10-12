@@ -16,7 +16,12 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     If a colour channel (red, green or blue) is the same in both colours, that channel is set to 0 in every step instead of keeping its value (for example #ff0000 to #ff0000 gives black). Such colour pairs are documented and NOT tested; the pairs below differ in every channel.
+%     - DEFECT: A channel that is equal in both colours becomes 0
+%       SEVERITY: wrong-result
+%       TRIGGER: start and end colours with the same red, green or blue value
+%       OBSERVED: that channel is 0 in every step, for example #ff0000 to #ff0000 gives #000000
+%       EXPECTED: the channel keeps its value
+%       LINES: 28-29
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

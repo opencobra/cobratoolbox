@@ -16,7 +16,13 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     The number of sample points used for both conditions is taken from the first metabolite of the first list only (ConnectedMet1{1}).
+%     - DEFECT: Sample-point count taken from the first metabolite of the first list
+%       SEVERITY: limitation
+%       TRIGGER: metabolites with different numbers of sample points
+%       OBSERVED: MinNumPts is computed once from the first metabolite of the first list and used
+%         for all
+%       EXPECTED: the minimum over all compared metabolites
+%       LINES: 52
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

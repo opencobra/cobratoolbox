@@ -16,9 +16,13 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     If removing the energy node leaves no edges, the function errors inside MATLAB
-%     (an empty edge property cannot be assigned to the new graph). That input is
-%     skipped here.
+%     - DEFECT: No edges left after removing the energy node errors
+%       SEVERITY: error
+%       TRIGGER: a bond graph whose edges all touch the energy node E
+%       OBSERVED: assigning an empty edge property to the new graph fails inside MATLAB (Weight must
+%         be a column vector with as many entries as there are edges)
+%       EXPECTED: an edgeless bond-instance graph
+%       LINES: 81
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

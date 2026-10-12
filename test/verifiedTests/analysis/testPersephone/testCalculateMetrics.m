@@ -17,10 +17,13 @@
 %     not tested because of the defect below, so that line is uncovered.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     With a single taxon (one table row) the Bray-Curtis values are wrong:
-%     sum(comparisonData) sums along the row instead of down the column, so the
-%     result differs from 1 - 2*min/(a+b) (observed 0 and 1/3 where 1/2 and 2/3 are
-%     expected). That input is therefore skipped here.
+%     - DEFECT: Bray-Curtis wrong for a single taxon
+%       SEVERITY: wrong-result
+%       TRIGGER: a table with one row (one taxon) and calculateBrayCurtis true
+%       OBSERVED: sum(comparisonData) sums along the row instead of down the columns, so counts 1, 3
+%         and 5 give 0 and 1/3 for the sample pairs S1-S2 and S1-S3
+%       EXPECTED: Bray-Curtis = 1 - 2*sum(min)/(a+b), that is 1/2 and 2/3 for the same counts
+%       LINES: 38, 66-67
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

@@ -18,6 +18,15 @@
 % Coverage exemptions:
 %     None. Every executable line of getMetAbbr is reached below.
 %
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: IDs without brackets are silently dropped
+%       SEVERITY: wrong-result
+%       TRIGGER: a metabolite list containing an ID without [compartment]
+%       OBSERVED: the output has fewer entries than the input (3 IDs give 2 abbreviations), so
+%         positions no longer line up
+%       EXPECTED: an entry or an error for every input
+%       LINES: 35-37
+%
 % Authors:
 %     - Generated for feature 025-tier1-test-pilot, 2026-10-06.
 

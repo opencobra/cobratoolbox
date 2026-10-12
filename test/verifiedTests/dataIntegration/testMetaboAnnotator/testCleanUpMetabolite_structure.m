@@ -16,7 +16,12 @@
 %     None for line coverage; see the console note below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     None found. Console noise: the function prints the loop index ("i = ...") for every metabolite; this is not suppressed (Constitution VII-A).
+%     - DEFECT: Loop index printed to the console
+%       SEVERITY: cosmetic
+%       TRIGGER: any call
+%       OBSERVED: the statement i without a semicolon prints i = ... for every metabolite
+%       EXPECTED: no console output
+%       LINES: 38
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

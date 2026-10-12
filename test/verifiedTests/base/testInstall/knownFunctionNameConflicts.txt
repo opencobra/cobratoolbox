@@ -1,0 +1,52 @@
+# Known function-name conflicts (reviewed baseline)
+#
+# testFunctionNameConflicts fails for every function-name conflict that is NOT listed here.
+# The entries below already existed when the check was introduced (2026-10-12); each is
+# listed because removing or renaming the functions was out of scope for that change.
+#
+# One line per conflicting name, case-insensitive:
+#     name | kind | reason
+# kind = duplicate        two or more files with this name (ignoring letter case) in src/ and/or external/
+#        shadows-matlab   a src/ function with the same name as a MATLAB function
+# A name can have one line per kind. Lines starting with # and empty lines are ignored.
+#
+# Add a line ONLY for an intentional duplicate that has been reviewed, and give the reason.
+# Prefer renaming the new function. Remove a line when its conflict has been resolved.
+#
+assignpKasToSpecies | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/protons (new/ is removed from the MATLAB path by initCobraToolbox)
+checkForMissingStereo | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/trainingModel (new/ is removed from the MATLAB path by initCobraToolbox)
+componentContribution | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/componentContribution (new/ is removed from the MATLAB path by initCobraToolbox)
+conda | duplicate | also present in the bundled third-party code under external/ (external/base/utilities/condalab); toolbox copy in src/base/io/python/condalab
+createGroupIncidenceMatrix | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/groupContribution (new/ is removed from the MATLAB path by initCobraToolbox)
+createInChIStruct | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/inchi (new/ is removed from the MATLAB path by initCobraToolbox)
+demo | duplicate | also present in the bundled third-party code under external/ (external/analysis/PolytopeSamplerMatlab); toolbox copy in src/analysis/sampling/BarrierRound/CMatrix
+demo | shadows-matlab | same name as the MATLAB help function demo (toolbox/matlab/helptools)
+estimate_pKa | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/protons (new/ is removed from the MATLAB path by initCobraToolbox)
+example1 | duplicate | also present in the bundled third-party code under external/ (external/base/samplers/looplessFluxSampler); toolbox copy in src/design/TrimGdel
+example2 | duplicate | also present in the bundled third-party code under external/ (external/base/samplers/looplessFluxSampler); toolbox copy in src/design/TrimGdel
+example3 | duplicate | also present in the bundled third-party code under external/ (external/visualization/plotregion); toolbox copy in src/design/TrimGdel
+example4 | duplicate | also present in the bundled third-party code under external/ (external/visualization/plotregion); toolbox copy in src/design/TrimGdel
+example5 | duplicate | also present in the bundled third-party code under external/ (external/visualization/plotregion); toolbox copy in src/design/TrimGdel
+fastSNP | duplicate | also present in the bundled third-party code under external/ (external/base/samplers/looplessFluxSampler/fxns); toolbox copy in src/analysis/thermo/thermoFBA
+getFormulaAndChargeFromInChI | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/inchi (new/ is removed from the MATLAB path by initCobraToolbox)
+getGroupVectorFromInchi | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/groupContribution (new/ is removed from the MATLAB path by initCobraToolbox)
+getInchies | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/trainingModel (new/ is removed from the MATLAB path by initCobraToolbox)
+getKeggpKas | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/trainingModel (new/ is removed from the MATLAB path by initCobraToolbox)
+getMappingScores | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/groupContribution (new/ is removed from the MATLAB path by initCobraToolbox)
+gmscale | duplicate | also present in the bundled third-party code under external/ (external/analysis/PolytopeSamplerMatlab/code/prepare); toolbox copy in src/analysis/subspaces
+invertProjection | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/componentContribution (new/ is removed from the MATLAB path by initCobraToolbox)
+kegg2mol | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/molFiles (new/ is removed from the MATLAB path by initCobraToolbox)
+loadTrainingData | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/trainingModel (new/ is removed from the MATLAB path by initCobraToolbox)
+lsqr | shadows-matlab | same name as the MATLAB function lsqr (toolbox/matlab/sparfun)
+modelMetabolitesToSDF | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/molFiles (new/ is removed from the MATLAB path by initCobraToolbox)
+mol2sdf | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/molFiles (new/ is removed from the MATLAB path by initCobraToolbox)
+populateModelwithRxnIDs | duplicate | two toolbox copies: src/reconstruction/metaboRePort, src/reconstruction/metaboRePort/other
+prepareTrainingData | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/trainingModel (new/ is removed from the MATLAB path by initCobraToolbox)
+Rate_function | duplicate | two toolbox copies: src/base/solvers/varKin/BDCAmethods, src/base/solvers/varKin/derFreeMethods
+reverseTransformTrainingData | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/trainingModel (new/ is removed from the MATLAB path by initCobraToolbox)
+sdf2inchi | duplicate | old and new versions of the same code kept side by side in src/analysis/thermo/inchi (new/ is removed from the MATLAB path by initCobraToolbox)
+setField | duplicate | also present in the bundled third-party code under external/ (external/analysis/PolytopeSamplerMatlab/code/utils); toolbox copy in src/analysis/sampling/BarrierRound/utils
+setupComponentContribution | duplicate | two toolbox copies: src/analysis/thermo/componentContribution, src/analysis/thermo/groupContribution/jankowski
+standardize_problem | duplicate | also present in the bundled third-party code under external/ (external/analysis/PolytopeSamplerMatlab/code/prepare); toolbox copy in src/analysis/sampling/BarrierRound/PolytopeSimplifier
+TableDisplay | duplicate | also present in the bundled third-party code under external/ (external/analysis/PolytopeSamplerMatlab/code/utils); toolbox copy in src/analysis/sampling/BarrierRound/utils
+TwoSidedBarrier | duplicate | also present in the bundled third-party code under external/ (external/analysis/PolytopeSamplerMatlab/code/barrier); toolbox copy in src/analysis/sampling/BarrierRound/PolytopeSimplifier

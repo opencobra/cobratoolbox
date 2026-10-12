@@ -16,7 +16,12 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     For the urn:miriam notation the ChEBI ID keeps a stray "3A" prefix (the text "obo.chebi:CHEBI%" is removed from "obo.chebi:CHEBI%3A15422", leaving "3A15422"). This is documented and the ChEBI value of that notation is NOT asserted.
+%     - DEFECT: ChEBI ID keeps a stray 3A prefix in the urn:miriam notation
+%       SEVERITY: wrong-result
+%       TRIGGER: annotation text containing urn:miriam:obo.chebi:CHEBI%3A15422
+%       OBSERVED: only the text obo.chebi:CHEBI% is removed, so the result is 3A15422
+%       EXPECTED: 15422
+%       LINES: 36-37
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

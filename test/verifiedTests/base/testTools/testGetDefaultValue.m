@@ -17,11 +17,13 @@
 % Coverage exemptions:
 %     None. Every executable line of getDefaultValue is reached below.
 %
-% Known defect documented (NOT tested, NOT fixed here):
-%     getDefaultValue has no final 'else' branch, so for an input that is none of
-%     numeric / string / char / logical / cell (for example a struct or a function
-%     handle) the output "defValue" is never assigned and MATLAB raises an
-%     "unassigned output" error. Such inputs are skipped here.
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: No default for struct and function-handle input
+%       SEVERITY: error
+%       TRIGGER: struct or function handle input
+%       OBSERVED: there is no final else, so defValue is not assigned (MATLAB:unassignedOutputs)
+%       EXPECTED: a default of the same type or a clear error
+%       LINES: 13-29
 %
 % Authors:
 %     - Generated for feature 025-tier1-test-pilot, 2026-10-06.

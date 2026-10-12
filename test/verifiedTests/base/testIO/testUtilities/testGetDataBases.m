@@ -16,7 +16,21 @@
 %     None for line coverage: the catch blocks are reached through resource lists that do not match the pattern.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     Two behaviours are documented and NOT tested: (1) if the resources do not match, the third output (qualifiers) is never assigned, so requesting three outputs errors; (2) a list that mixes matching and non-matching resources returns empty results for all of them.
+%     - DEFECT: Third output unassigned when nothing matches
+%       SEVERITY: error
+%       TRIGGER: three outputs requested when no resource matches either pattern
+%       OBSERVED: qualifiers is only assigned inside the block that runs for matches, so the call
+%         errors
+%       EXPECTED: an empty qualifiers output
+%       LINES: 46
+%     - DEFECT: Mixed matching and non-matching resources return nothing
+%       SEVERITY: wrong-result
+%       TRIGGER: a list that contains both matching identifiers and strings that match neither
+%         pattern
+%       OBSERVED: the cellfun over the whole list fails, so databases and ids are empty for all
+%         entries
+%       EXPECTED: the matching entries returned
+%       LINES: 29-44
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
