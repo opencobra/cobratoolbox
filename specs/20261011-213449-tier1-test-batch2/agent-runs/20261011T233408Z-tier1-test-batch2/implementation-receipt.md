@@ -6,7 +6,7 @@ User: "good build the other 40" (after approving the first 10 tests), with the s
 
 ## Final response
 
-Implemented all 50 Tier-1 characterization tests of batch 2 (rows 1-50 of the spec table; rows 1-10 were reviewed at the checkpoint). All 50 pass through the harness runner (runScriptFile) and as separate sections under the unit-test runner. Line coverage of the 50 functions is 1353/1407 (96.2%); every uncovered line is a documented exemption in the test header (defect branches, external tools, desktop-only line). No file under src/ was changed and no test creates files. Defects found were documented in the test headers and skipped, not fixed.
+Implemented all 50 Tier-1 characterization tests of batch 2 (rows 1-50 of the spec table; rows 1-10 were reviewed at the checkpoint). All 50 pass through the harness runner (runScriptFile) and as separate sections under the unit-test runner. Line coverage of the 50 functions is 1351/1407 (96.0%); every uncovered line is a documented exemption in the test header (defect branches, external tools, desktop-only line). No file under src/ was changed and no test creates files. Defects found were documented in the test headers and skipped, not fixed.
 
 ## Diff summary
 
@@ -48,7 +48,7 @@ Run through runScriptFile (the harness runner) from test/; coverage measured wit
 | testInitialization | passed | 33/33 | - |
 | testHyperlink | passed | 8/9 | 29 |
 | testParseGPR | passed | 23/23 | - |
-| testParseMetNames | passed | 13/13 | - |
+| testParseMetNames | passed | 11/13 | 36 38 |
 | testPreparseGPR | passed | 17/17 | - |
 | testCalcDist | passed | 25/25 | - |
 | testEditChemicalFormula | passed | 29/29 | - |
@@ -71,7 +71,7 @@ Run through runScriptFile (the harness runner) from test/; coverage measured wit
 | testReassignFwBwMatch | passed | 11/11 | - |
 | testMakeColorGradient | passed | 12/12 | - |
 
-Total: 1353/1407 lines (96.2%).
+Total: 1351/1407 lines (96.0%).
 
 Not verified: CI coverage numbers (Codecov), other MATLAB versions or Octave, the full testAll run.
 
@@ -90,6 +90,8 @@ Defects in source functions, documented in the test headers and skipped (not fix
 - StopCritBDCA, StopCritDuplo: criterion 1 uses undefined variable nhxk.
 - Combination: k = 0 errors.
 - getInchiData: negative q-charge gives NaN.
+- parseMetNames: mixed or longer-compartment notations fall through to the last pattern (not tested).
+- getDefaultValue: struct / function-handle input errors (no final else; not tested).
 - buildRxnEquationsFromName: reversed-only reactions list the substrate on both sides.
 - makeColorGradient: channels equal in both colours become 0.
 - combineChildren: identical generated clauses delete the earlier clause.

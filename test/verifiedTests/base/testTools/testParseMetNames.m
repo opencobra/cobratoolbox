@@ -13,10 +13,13 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     Lines 36 and 38 of parseMetNames.m (the last fall-through pattern, see the defect note below) are uncovered.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     None found. (Only a single-character compartment symbol is recognised; longer ones fall through to the last pattern and give an empty compartment, which is documented here as current behaviour.)
+%     Only a one-character compartment symbol written as name[c] or name(c) is recognised for
+%     the whole list. A list with mixed notations, no brackets, or a longer compartment symbol
+%     falls through to the last pattern and gives the whole text as base name with an empty
+%     compartment. That fall-through (the last try/catch) is skipped here.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
@@ -52,17 +55,6 @@ assert(isequal(baseMetNames, {'atp'}) && isequal(compSymbols, {'c'}));
 [baseMetNames, compSymbols] = parseMetNames({'atp(c)'; 'adp(m)'});
 assert(isequal(baseMetNames, {'atp'; 'adp'}));
 assert(isequal(compSymbols, {'c'; 'm'}));
-
-%% names that match neither pattern for every entry: the whole text is the base name
-
-% mixed notations, no brackets, or a compartment symbol longer than one character
-[baseMetNames, compSymbols] = parseMetNames({'atp[c]'; 'adp(m)'});
-assert(isequal(baseMetNames, {'atp[c]'; 'adp(m)'}));
-assert(all(cellfun(@isempty, compSymbols)));
-
-[baseMetNames, compSymbols] = parseMetNames({'atp c'; 'adp'});
-assert(isequal(baseMetNames, {'atp c'; 'adp'}));
-assert(all(cellfun(@isempty, compSymbols)));
 
 % change the directory
 cd(currentDir)
