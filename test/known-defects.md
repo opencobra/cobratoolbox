@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-50 known defects in 40 functions (14 wrong-result, 17 error, 4 unusable-option, 6 cosmetic, 9 limitation).
+52 known defects in 42 functions (14 wrong-result, 18 error, 4 unusable-option, 6 cosmetic, 10 limitation).
 
 ## Summary
 
@@ -22,6 +22,7 @@
 | `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | limitation | The two consistency checks only catch one direction | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
 | `src/analysis/thermo/formulae/checkFormulae.m` | limitation | Elements other than C, H, O, P, S, K, Na and N are ignored | `test/verifiedTests/analysis/testThermo/testCheckFormulae.m` |
 | `src/analysis/thermo/reactantContribution/acidDissociationConstant.m` | cosmetic | Ka and pKa are returned as square matrices with only the first entries filled | `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m` |
+| `src/analysis/topology/FR/bilinearDecomposition.m` | error | A lone reaction with one substrate and three products gives inconsistent sizes | `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m` |
 | `src/analysis/topology/reactingMoieties/createBIGraph.m` | error | No edges left after removing the energy node errors | `test/verifiedTests/analysis/testTopology/testCreateBIGraph.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateFoodScore.m` | error | Default translation assigned when nargin < 3 | `test/verifiedTests/analysis/testWholeBody/testCalculateFoodScore.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDiets.m` | error | Direction false errors | `test/verifiedTests/analysis/testWholeBody/testCompareDiets.m` |
@@ -47,6 +48,7 @@
 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | cosmetic | Negative parameters print a message and return empty | `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m` |
 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | error | k = 0 errors | `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m` | cosmetic | Loop index printed to the console | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCleanUpMetabolite_structure.m` |
+| `src/dataIntegration/metaboAnnotator/buildMetStruct/sanityCheckMetIds.m` | limitation | Metabolites without a charge field make the check fail | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testSanityCheckMetIds.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | wrong-result | Backward-only reactions list the substrate on both sides | `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m` |
 | `src/reconstruction/comparison/modelBorgifier/countC.m` | wrong-result | Elements whose symbol starts with C are counted as carbon | `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m` |
@@ -198,6 +200,17 @@
 - **Expected**: vectors of length p-1
 - **Source lines**: 62-63
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m`
+
+### `src/analysis/topology/FR/bilinearDecomposition.m`
+
+#### A lone reaction with one substrate and three products gives inconsistent sizes
+
+- **Severity**: error
+- **Trigger**: a stoichiometric matrix whose only reaction with extra reactants has one substrate and three products, for example [-1; 1; 1; 1]
+- **Observed**: the number of faux species counted for A (one) differs from the number used in B (two), so A*B*C fails with a dimension error and debugging output is printed
+- **Expected**: the three matrices with consistent sizes and S = A*B*C
+- **Source lines**: 45-53, 124-148, 288-300
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m`
 
 ### `src/analysis/topology/reactingMoieties/createBIGraph.m`
 
@@ -461,6 +474,17 @@
 - **Expected**: no console output
 - **Source lines**: 38
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCleanUpMetabolite_structure.m`
+
+### `src/dataIntegration/metaboAnnotator/buildMetStruct/sanityCheckMetIds.m`
+
+#### Metabolites without a charge field make the check fail
+
+- **Severity**: limitation
+- **Trigger**: a metabolite structure without the field charge
+- **Observed**: the charge is read for every metabolite without an isfield test, so a missing field raises an error
+- **Expected**: a missing charge treated like any other optional field
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testSanityCheckMetIds.m`
 
 ### `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m`
 
