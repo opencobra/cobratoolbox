@@ -3,17 +3,22 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-33 known defects in 27 functions (9 wrong-result, 13 error, 3 unusable-option, 4 cosmetic, 4 limitation).
+41 known defects in 33 functions (11 wrong-result, 14 error, 3 unusable-option, 6 cosmetic, 7 limitation).
 
 ## Summary
 
 | Function | Severity | Problem | Test file |
 |----------|----------|---------|-----------|
 | `src/analysis/exploration/surfNetSubfunctions/numToFormattedString.m` | unusable-option | Width argument ignored for array input | `test/verifiedTests/analysis/testExploration/testNumToFormattedString.m` |
+| `src/analysis/exploration/surfNetSubfunctions/printMetRxnInfo.m` | cosmetic | Matrix values are separated by a comma without a space | `test/verifiedTests/analysis/testExploration/testPrintMetRxnInfo.m` |
+| `src/analysis/exploration/surfNetSubfunctions/printMetRxnInfo.m` | limitation | Other value types print as an unreadable character or error | `test/verifiedTests/analysis/testExploration/testPrintMetRxnInfo.m` |
 | `src/analysis/igemRNA/GT1/findGenesAboveThresholdGT1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testGT1/testFindGenesAboveThresholdGT1.m` |
 | `src/analysis/igemRNA/GT1/findGenesBelowThresholdGT1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testGT1/testFindGenesBelowThresholdGT1.m` |
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
+| `src/analysis/subspaces/nullspace/echelonNullspace.m` | wrong-result | The returned null-space matrix L is built with P instead of its transpose | `test/verifiedTests/analysis/testSubspaces/testEchelonNullspace.m` |
+| `src/analysis/thermo/formulae/checkFormulae.m` | limitation | Elements other than C, H, O, P, S, K, Na and N are ignored | `test/verifiedTests/analysis/testThermo/testCheckFormulae.m` |
+| `src/analysis/thermo/reactantContribution/acidDissociationConstant.m` | cosmetic | Ka and pKa are returned as square matrices with only the first entries filled | `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m` |
 | `src/analysis/topology/reactingMoieties/createBIGraph.m` | error | No edges left after removing the energy node errors | `test/verifiedTests/analysis/testTopology/testCreateBIGraph.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateFoodScore.m` | error | Default translation assigned when nargin < 3 | `test/verifiedTests/analysis/testWholeBody/testCalculateFoodScore.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDiets.m` | error | Direction false errors | `test/verifiedTests/analysis/testWholeBody/testCompareDiets.m` |
@@ -29,6 +34,9 @@
 | `src/base/solvers/varKin/derFreeMethods/StopCritDuplo.m` | error | Stopping criterion 1 uses an undefined variable | `test/verifiedTests/base/testSolvers/testStopCritDuplo.m` |
 | `src/base/utilities/getDefaultValue.m` | error | No default for struct and function-handle input | `test/verifiedTests/base/testTools/testGetDefaultValue.m` |
 | `src/base/utilities/isvar.m` | limitation | Index is 1 for a structure even when the field is missing | `test/verifiedTests/base/testTools/testIsvar.m` |
+| `src/base/utilities/mapAontoB.m` | error | The check that Akey and Bkey have the same class is broken | `test/verifiedTests/base/testTools/testMapAontoB.m` |
+| `src/base/utilities/mapAontoB.m` | wrong-result | Without Ain the matched keys of B are returned wrongly | `test/verifiedTests/base/testTools/testMapAontoB.m` |
+| `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | error | Several layers containing the letter p error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
@@ -55,6 +63,26 @@
 - **Expected**: every element formatted with the requested width
 - **Source lines**: 48
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testNumToFormattedString.m`
+
+### `src/analysis/exploration/surfNetSubfunctions/printMetRxnInfo.m`
+
+#### Matrix values are separated by a comma without a space
+
+- **Severity**: cosmetic
+- **Trigger**: a numeric matrix value
+- **Observed**: strcat drops the trailing space of the separator, so rows print as 1.5,2; 3,4
+- **Expected**: 1.5, 2; 3, 4
+- **Source lines**: 38
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testPrintMetRxnInfo.m`
+
+#### Other value types print as an unreadable character or error
+
+- **Severity**: limitation
+- **Trigger**: a value that is a logical, or a nested cell
+- **Observed**: a logical is printed as a control character and a nested cell makes fprintf error
+- **Expected**: a readable text for such values or a clear error
+- **Source lines**: 42-45
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testPrintMetRxnInfo.m`
 
 ### `src/analysis/igemRNA/GT1/findGenesAboveThresholdGT1.m`
 
@@ -99,6 +127,39 @@
 - **Expected**: the minimum over all compared metabolites
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/analysis/testRumba/testCompareConditions.m`
+
+### `src/analysis/subspaces/nullspace/echelonNullspace.m`
+
+#### The returned null-space matrix L is built with P instead of its transpose
+
+- **Severity**: wrong-result
+- **Trigger**: any matrix whose QR pivoting permutes the rows (left) or columns (right), e.g. [1 0 1 2; 0 1 1 3; 1 1 2 5]
+- **Observed**: L = [-L0 I]*P does not satisfy L*S = 0 (left) or S*L = 0 (right); the documented identity holds only with P ([-L0 I]*P*S = 0)
+- **Expected**: L*S = 0 for the left and S*L = 0 for the right null space
+- **Source lines**: 95, 145
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testEchelonNullspace.m`
+
+### `src/analysis/thermo/formulae/checkFormulae.m`
+
+#### Elements other than C, H, O, P, S, K, Na and N are ignored
+
+- **Severity**: limitation
+- **Trigger**: two formulas that differ only in another element, for example C6H12O6Cl and C6H12O6
+- **Observed**: the function returns 1 (equal)
+- **Expected**: 0 (different)
+- **Source lines**: 31-45
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testCheckFormulae.m`
+
+### `src/analysis/thermo/reactantContribution/acidDissociationConstant.m`
+
+#### Ka and pKa are returned as square matrices with only the first entries filled
+
+- **Severity**: cosmetic
+- **Trigger**: a metabolite with p species
+- **Observed**: Ka and pKa are (p-1)-by-(p-1) matrices of which only the first p-1 entries (linear index) are set, the rest are 0
+- **Expected**: vectors of length p-1
+- **Source lines**: 62-63
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m`
 
 ### `src/analysis/topology/reactingMoieties/createBIGraph.m`
 
@@ -258,6 +319,37 @@
 - **Expected**: an empty index when the field does not exist
 - **Source lines**: 24-27
 - **Documented in**: `test/verifiedTests/base/testTools/testIsvar.m`
+
+### `src/base/utilities/mapAontoB.m`
+
+#### The check that Akey and Bkey have the same class is broken
+
+- **Severity**: error
+- **Trigger**: Akey and Bkey of different classes, for example {'a'} and 1
+- **Observed**: the class names are compared with ~=, so classes with names of different length give an incompatible-sizes error, and classes whose names have the same length are not detected
+- **Expected**: the error: class of Akey and Bkey must be the same
+- **Source lines**: 43-45
+- **Documented in**: `test/verifiedTests/base/testTools/testMapAontoB.m`
+
+#### Without Ain the matched keys of B are returned wrongly
+
+- **Severity**: wrong-result
+- **Trigger**: a call with only Akey and Bkey
+- **Observed**: the matched keys are taken with a logical index that picks the first entries of Bkey (for Akey {a,b,c} and Bkey {b,z,c} the result is {b,[],z} instead of {b,[],c})
+- **Expected**: {b,[],c}
+- **Source lines**: 121-135
+- **Documented in**: `test/verifiedTests/base/testTools/testMapAontoB.m`
+
+### `src/base/utilities/updateStructData.m`
+
+#### A structure update is ignored when the original field is not a structure
+
+- **Severity**: limitation
+- **Trigger**: a field that is a structure in the update but not a structure in the original
+- **Observed**: the original value is kept and the update is dropped without a message
+- **Expected**: the field replaced by the update (or an error)
+- **Source lines**: 25-31
+- **Documented in**: `test/verifiedTests/base/testTools/testUpdateStructData.m`
 
 ### `src/dataIntegration/chemoInformatics/editChemicalFormula.m`
 
