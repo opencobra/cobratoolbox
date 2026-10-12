@@ -16,10 +16,13 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     For non-scalar input the recursive call passes false as the 4th argument (nChar),
-%     so the requested width is ignored for array elements (width 5 is used). The
-%     array checks below therefore only use values whose text does not depend on the
-%     width.
+%     - DEFECT: Width argument ignored for array input
+%       SEVERITY: unusable-option
+%       TRIGGER: a non-scalar input together with the width argument nChar
+%       OBSERVED: the recursive call passes false as the 4th argument (nChar), so every element is
+%         formatted with the minimum width 5
+%       EXPECTED: every element formatted with the requested width
+%       LINES: 48
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

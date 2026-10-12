@@ -16,7 +16,19 @@
 %     None for the tested inputs. The local function getNumberCombinations is covered through the n == k, n > k and n < k cases.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     k = 0 errors (MATLAB:badsubscript) because the combination vector cannot be indexed; that input is documented and NOT tested. For negative n or k the function prints "Negative parameter in constructor" to the console (console noise, not suppressed) and returns an empty value.
+%     - DEFECT: k = 0 errors
+%       SEVERITY: error
+%       TRIGGER: Combination(n, 0)
+%       OBSERVED: data(0) is an invalid index (MATLAB:badsubscript)
+%       EXPECTED: one empty combination
+%       LINES: 23
+%     - DEFECT: Negative parameters print a message and return empty
+%       SEVERITY: cosmetic
+%       TRIGGER: n < 0 or k < 0
+%       OBSERVED: the text Negative parameter in constructor is printed to the console and an empty
+%         value is returned
+%       EXPECTED: a clear error instead of console text
+%       LINES: 17-20
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

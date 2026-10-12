@@ -46,3 +46,39 @@ git diff --name-only --diff-filter=ACMRT origin/develop...HEAD > changed.txt
 python3 .github/scripts/select_tests.py --changed changed.txt --root .
 # machine output on stdout (mode/run_tests/test_filter); summary on stderr
 ```
+
+# Known-defects registry
+
+`known_defects.py` builds **`test/known-defects.md`**, the single registry of defects that
+were found in source functions while writing tests (Constitution III-Defects). The registry is
+**generated, never edited by hand**. Its only source of truth is the
+`Known defects documented (NOT tested, NOT fixed here):` section in the header of each
+`test/verifiedTests/**/test*.m`.
+
+```matlab
+% Function under test:
+%     src/<domain>/<functionName>.m
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: short title, unique for this function
+%       SEVERITY: wrong-result | error | unusable-option | cosmetic | limitation
+%       TRIGGER: the input or call that causes it
+%       OBSERVED: what happens
+%       EXPECTED: what should happen
+%       LINES: 40, 62-64
+```
+
+A test with no defect writes `None found.` under the heading. The full grammar is in
+`specs/20261012-121035-known-defects-registry/contracts/defect-entry-format.md`.
+
+```bash
+python3 .github/scripts/known_defects.py            # (re)generate test/known-defects.md
+python3 .github/scripts/known_defects.py --check    # fail if the registry is stale
+python3 -m unittest discover -s .github/scripts -p "test_known_defects.py"   # tool tests
+```
+
+Exit status: `0` ok, `1` registry missing/out of date (check mode), `2` invalid header entry
+(reported as `file:line: message`, nothing is written). Python 3 standard library only; no
+MATLAB. The CI step **Check known-defects registry (no MATLAB)** in
+`.github/workflows/testAllCI_step1.yml` runs the unit tests and `--check` on every pull
+request, so a header change must come with a regenerated registry in the same commit.

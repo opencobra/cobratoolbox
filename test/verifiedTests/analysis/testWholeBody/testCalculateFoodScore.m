@@ -18,11 +18,16 @@
 %     fails (see the defect below), so it is skipped.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     The default translation (NaN) is assigned when nargin < 3 instead of nargin < 4,
-%     so a call with fewer than four inputs cannot work (it errors). Calls without a
-%     translation array only work when an empty translation is passed explicitly and
-%     the table row names equal the food names (a warning is then issued); that
-%     working path is what the test uses.
+%     - DEFECT: Default translation assigned when nargin < 3
+%       SEVERITY: error
+%       TRIGGER: fewer than four inputs, for example calculateFoodScore(originalFood, labelMacros,
+%         measuredMacros)
+%       OBSERVED: translation = NaN is only assigned when nargin < 3, so with three inputs
+%         translation is undefined and the call errors; with NaN the following lines index it and
+%         fail too
+%       EXPECTED: a default translation that works with three inputs (the check should be nargin <
+%         4)
+%       LINES: 45-46
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

@@ -16,7 +16,13 @@
 %     Line 122 of InitialDuplo.m (flag_x_error = options.flag_x_error) is uncovered because of the defect below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     The function tests the misspelled field name "flag_`x_error`" (with backticks), so the option flag_x_error can never be set from options: the 12th output (flag_x_error) is always 0. That output is documented here and NOT tested.
+%     - DEFECT: Option flag_x_error can never be set
+%       SEVERITY: unusable-option
+%       TRIGGER: options.flag_x_error given
+%       OBSERVED: the code tests the misspelled field name flag_`x_error` (with backticks), so the
+%         output flag_x_error is always 0
+%       EXPECTED: the given value returned
+%       LINES: 121-122
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

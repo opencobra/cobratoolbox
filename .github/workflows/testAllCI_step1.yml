@@ -71,6 +71,15 @@ jobs:
       #   mode        = full | selective | none
       #   run_tests   = true | false   (false => skip the MATLAB + report steps)
       #   test_filter = runTestSuite() regexp (empty when full)
+      # Constitution III-Defects: the registry test/known-defects.md is generated from the
+      # test headers and must not drift. Plain Python, no MATLAB; fast, so it runs on every PR
+      # (including ones where no MATLAB tests are selected).
+      - name: Check known-defects registry (no MATLAB)
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s .github/scripts -p "test_known_defects.py"
+          python3 .github/scripts/known_defects.py --check
+
       - name: Analyze changed files and select relevant tests
         id: select
         env:

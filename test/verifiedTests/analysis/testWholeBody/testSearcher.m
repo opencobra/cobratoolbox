@@ -16,7 +16,13 @@
 %     Lines 90-133 of searcher.m (the whole else-branch for a searchType other than "iterative", from queryItems = {x} to the end of that branch) are uncovered because of the defect below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     The non-iterative search type cannot be used: the input parser requires the database to be a cell array, but that branch reads database.description, which only exists for a table. Every such call errors; that branch is skipped here (documented, not tested, not fixed).
+%     - DEFECT: Non-iterative search type cannot run
+%       SEVERITY: unusable-option
+%       TRIGGER: searchType other than iterative
+%       OBSERVED: the input parser requires database to be a cell array, but this branch reads
+%         database.description, a property of tables, so every call errors
+%       EXPECTED: a search that works with the database type the branch needs
+%       LINES: 33, 90-133
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

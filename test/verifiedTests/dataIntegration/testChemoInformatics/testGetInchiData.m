@@ -16,7 +16,18 @@
 %     None. Every executable line is reached below; the defect below concerns inputs that are skipped.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     A negative charge written as a "q-" layer (for example /q-1) gives a net charge of NaN, because only "q+" is removed before the conversion to a number. Such inputs are documented and NOT tested. An InChI with two layers that contain the letter p would also fail inside regexprep; also not tested.
+%     - DEFECT: Negative charge layer gives NaN
+%       SEVERITY: wrong-result
+%       TRIGGER: an InChI with a q- layer, for example /q-1
+%       OBSERVED: only q+ is removed before the conversion to a number, so netCharge is NaN
+%       EXPECTED: netCharge -1
+%       LINES: 69
+%     - DEFECT: Several layers containing the letter p error
+%       SEVERITY: error
+%       TRIGGER: an InChI with two layers that contain the letter p
+%       OBSERVED: regexprep receives several layers at once and fails (Invalid option for regexprep)
+%       EXPECTED: the proton layers added up
+%       LINES: 63
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

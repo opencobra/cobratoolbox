@@ -25,6 +25,9 @@
 %     forbids suppressing output with evalc. Expect those lines when this test
 %     runs.
 %
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Generated for feature 025-tier1-test-pilot, 2026-10-06.
 

@@ -16,7 +16,12 @@
 %     Line 63 of buildRxnEquationsFromName.m (the line printing "do not understand directionality" for lower bound > 0 and upper bound <= 0) is uncovered: that input has no defined arrow.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     For a reaction that runs only backward (lower bound < 0, upper bound <= 0) the swap of educts and products is wrong (products = educts), so the equation lists the substrate on both sides (for example "(2) A <-- (-2) A"). That reaction is part of the model below only so that the branch runs; its equation is documented here and NOT tested.
+%     - DEFECT: Backward-only reactions list the substrate on both sides
+%       SEVERITY: wrong-result
+%       TRIGGER: a reaction with lower bound < 0 and upper bound <= 0
+%       OBSERVED: products is overwritten with educts, for example (2) A <-- (-2) A
+%       EXPECTED: (2) A <-- C
+%       LINES: 59
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

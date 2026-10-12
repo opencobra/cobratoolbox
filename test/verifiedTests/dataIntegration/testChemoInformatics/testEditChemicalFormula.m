@@ -16,7 +16,12 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     Removing all atoms of an element leaves the element with a zero count (for example C2H5OH minus one O gives "C2H6O0"). This cosmetic behaviour is documented and NOT tested.
+%     - DEFECT: Element with zero atoms stays in the formula
+%       SEVERITY: cosmetic
+%       TRIGGER: removing all atoms of an element, for example C2H5OH minus one O
+%       OBSERVED: the result is C2H6O0
+%       EXPECTED: C2H6
+%       LINES: 71-74
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

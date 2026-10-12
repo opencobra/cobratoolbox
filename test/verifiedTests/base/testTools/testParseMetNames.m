@@ -16,10 +16,14 @@
 %     Lines 36 and 38 of parseMetNames.m (the last fall-through pattern, see the defect note below) are uncovered.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     Only a one-character compartment symbol written as name[c] or name(c) is recognised for
-%     the whole list. A list with mixed notations, no brackets, or a longer compartment symbol
-%     falls through to the last pattern and gives the whole text as base name with an empty
-%     compartment. That fall-through (the last try/catch) is skipped here.
+%     - DEFECT: Mixed or longer compartment notations are not parsed
+%       SEVERITY: limitation
+%       TRIGGER: a list that mixes name[c] and name(c), names without brackets, or a compartment
+%         symbol longer than one character
+%       OBSERVED: the last pattern is used: the whole text is the base name and the compartment is
+%         empty
+%       EXPECTED: name and compartment separated
+%       LINES: 36-38
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

@@ -16,7 +16,13 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     When two generated clauses contain exactly the same genes, the earlier clause is deleted and the new one is not added, so clauses are lost (for example (a AND b) OR (a OR b) returns an empty node instead of (a OR b)). Inputs that produce identical clauses are documented and NOT tested.
+%     - DEFECT: Identical generated clauses delete the earlier clause
+%       SEVERITY: wrong-result
+%       TRIGGER: (a AND b) OR (a OR b), where two generated clauses contain exactly the same genes
+%       OBSERVED: the clause is both existing and superseded, so the earlier clause is removed and
+%         the new one is not added, giving an empty node
+%       EXPECTED: the clause (a OR b)
+%       LINES: 53-63
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.

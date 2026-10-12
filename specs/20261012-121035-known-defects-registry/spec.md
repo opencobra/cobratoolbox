@@ -100,11 +100,15 @@ every one appears exactly once. All 55 tests still pass and no source file chang
 1. **Given** the 55 tests, **When** their headers are rewritten, **Then** no assertion and no
    source file changes, and all 55 tests pass through the harness runner.
 2. **Given** the rewritten headers, **When** the registry is generated, **Then** it contains
-   the defects of calculateMetrics, calculateFoodScore, compareDiets, searcher,
-   createBIGraph, numToFormattedString, getDataBases, parseSBMLAnnotationField,
-   InitialDuplo, StopCritBDCA, StopCritDuplo, Combination, getInchiData,
-   buildRxnEquationsFromName, makeColorGradient, combineChildren, checkInputData,
-   editChemicalFormula, removeSmilesInchiKey, hyperlink, parseMetNames and getDefaultValue.
+   every defect named in the batch-2 implementation receipt that is a defect of a source
+   function (calculateMetrics, calculateFoodScore, compareDiets, searcher, createBIGraph,
+   numToFormattedString, getDataBases, parseSBMLAnnotationField, InitialDuplo, StopCritBDCA,
+   StopCritDuplo, Combination, getInchiData, buildRxnEquationsFromName, makeColorGradient,
+   combineChildren, checkInputData, editChemicalFormula, parseMetNames, getDefaultValue),
+   plus the defects found when the pilot and batch-2 headers were re-read (compareConditions,
+   getMetAbbr, cleanUpMetabolite_structure). Coverage exemptions that are not defects (the
+   desktop-only line of hyperlink, the external converter of removeSmilesInchiKey) are not
+   entries.
 
 ---
 
@@ -167,8 +171,8 @@ every one appears exactly once. All 55 tests still pass and no source file chang
 
 ### Measurable Outcomes
 
-- **SC-001**: Every defect listed in the batch-2 implementation receipt (22 functions)
-  appears in the registry exactly once.
+- **SC-001**: Every defect documented in the headers of the 55 tests appears in the registry
+  exactly once (29 defects in 23 functions at the time of the back-fill).
 - **SC-002**: Generating the registry twice, from different working directories, produces
   byte-identical files.
 - **SC-003**: The check passes on a clean tree and fails after hand-editing the registry and

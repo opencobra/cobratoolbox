@@ -17,6 +17,9 @@
 % Coverage exemptions:
 %     None. Every executable line of getIDPositions is reached below.
 %
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Generated for feature 025-tier1-test-pilot, 2026-10-06.
 

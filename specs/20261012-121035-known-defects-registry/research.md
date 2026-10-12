@@ -33,8 +33,7 @@ numToFormattedString, getDataBases (two entries), parseSBMLAnnotationField, Init
 StopCritBDCA, StopCritDuplo, Combination (two entries: k = 0 and negative parameters
 printing), getInchiData (negative charge), buildRxnEquationsFromName, makeColorGradient,
 combineChildren, checkInputData (header listed; equal headers skip removal),
-editChemicalFormula (zero count), parseMetNames, getDefaultValue. The registry-only
-documentation items removeSmilesInchiKey (external converter) and hyperlink (desktop-only
-line) are coverage exemptions, not defects, but the spec lists them; each gets a
-`limitation` entry because the function cannot be exercised fully without external
-resources. The pilot tests are re-read in the first task of the back-fill.
+editChemicalFormula (zero count), parseMetNames, getDefaultValue. Coverage exemptions that are not defects (hyperlink's desktop-only line,
+removeSmilesInchiKey's external converter) are NOT entries. The re-read of the headers added
+compareConditions (limitation), getMetAbbr (wrong-result) and cleanUpMetabolite_structure
+(cosmetic). Result: 29 defects in 23 functions.
