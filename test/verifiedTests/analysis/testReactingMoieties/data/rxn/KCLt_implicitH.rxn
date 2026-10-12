@@ -1,0 +1,37 @@
+$RXN
+KCLt_implicitH
+Test fixture: implicit-hydrogen form (no hydrogen atoms)
+k[e] + cl[e] -> k[c] + cl[c]
+  2  2
+$MOL
+k[e]
+  RDT     09072616212D
+
+  1  0  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 K   0  3  0  0  0  0  0  0  0  1  0  0
+M  CHG  1   1   1
+M  END
+$MOL
+cl[e]
+  RDT     09072616212D
+
+  1  0  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 Cl  0  5  0  0  0  0  0  0  0  2  0  0
+M  CHG  1   1  -1
+M  END
+$MOL
+k[c]
+  RDT     09072616212D
+
+  1  0  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 K   0  3  0  0  0  0  0  0  0  1  0  0
+M  CHG  1   1   1
+M  END
+$MOL
+cl[c]
+  RDT     09072616212D
+
+  1  0  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 Cl  0  5  0  0  0  0  0  0  0  2  0  0
+M  CHG  1   1  -1
+M  END

@@ -56,3 +56,25 @@ VF2 explores vertex orders without exploiting the colour partition and stalls on
 ## R8. Performance baseline (FR-008, SC-005)
 
 **Decision**: Time classification on the 1,960-reaction captures used by feature 20260930-102230 (its `quickstart.md`): `n1960-identifyInputs.mat` at `/home/jackmcgoldrick/repos/reconXmoieties/results/moietySizing/outputs/conservedMoietyHotspots/` (local capture, not in the repository), with that feature's timing script `specs/20260930-102230-isomorphism-label-only-copies/isomorphismLabelOnlyCheck.m` adapted to time unlabelled classification; before (develop f1581781c) and after, N = 3 each, median reported; and the stuck pair, N = 3, maximum reported. If the capture is missing, T003 stops and reports it.
+
+## R9. Implementation findings (added during /speckit-implement, 2026-10-12)
+
+Recorded after T003, when the exact test as planned (R1–R3) was measured on the 1,960-reaction bond-mapping components (44,631 components; 49,009 unlabelled candidate pairs; baseline median 14.38 s at T003, 9.79 s at T011 under lower load).
+
+- **IR alone was too slow for SC-005.**
+  - The full-graph joint refinement of R1 was decided correctly (0 mismatches on all real pairs), but cost 2.61× the baseline (T011 first measurement: 25.85 s against 9.90 s).
+  - Most of the cost was 3,388 non-isomorphic pairs of about 12,000-node components and 218 isomorphic large pairs, each needing about 1,000 single-node individualisations.
+  - The maintainer chose "optimise, then measure" (2026-10-12) over an opt-in mode or accepting the slowdown.
+- **Changes beyond R1–R3.** Each keeps the test exact: a positive answer is always a verified bijection, a negative one an invariant difference or the complete search.
+  1. *Identity fast path*: two subgraphs with identical edge lists (end nodes from `findedge` on the label-only copies, same class) are isomorphic by the identity map. This applies to 38,467 of the 49,009 candidate pairs.
+  2. *Per-subgraph certificate*: node hashes after four rounds of colour refinement, with fixed (node-order-independent) integer hashing that is exact below 2^53; the certificate is their sorted list. It is computed once per subgraph, and different certificates prove non-isomorphism (5,445 pairs, 0.77 s). The node hashes seed the joint refinement as its initial colouring.
+  3. *Worklist refinement*: only the cells next to recoloured nodes are re-examined, with per-node weights updated incrementally.
+  4. *Verified greedy pass* before the exact search: the t-th node of each non-singleton class in graph 1 is individualised against the t-th node of the same class in graph 2. The batch is halved while refinement is incompatible, and the result is used only when the final bijection verifies.
+- **Result.**
+  - SC-005: median ratio 0.658 (6.44 s against 9.79 s, N = 3, alternating); classification and candidate-pair count identical; 0 fallbacks.
+  - SC-001: stored pair at most 0.039 s.
+  - 0 mismatches against `isisomorphic` on 3,000 random small graphs and on all 43,947 first-leader real pairs (prototype benchmark).
+- **R6/R7 found two more zero-bond defects**, fixed at the smallest place:
+  - `checkABRXNFiles` computed `nBondTransitions = max(bondTransitionNrs)`, which is empty for a reaction with no bonds and turned `nTotalBondTransitions` empty. It now uses `max([0; ...])`. This is one source file outside the plan's list, so a zero-bond assertion was added to `testCheckABRXNFiles` (III-Naming);
+  - `buildAtomAndBondTransitionMultigraph` sized `BTi2R` by the atom-mapped reaction count while indexing columns by bond-mapped reactions. It now uses `nBondMappedRxns`. The two counts are equal whenever every atom-mapped reaction has a bond, so existing outputs are unchanged (golden tests pass);
+  - in a non-empty bond table, `bonds.isSubstrate` is double, not logical, so the empty table uses `zeros(0, 1)`.

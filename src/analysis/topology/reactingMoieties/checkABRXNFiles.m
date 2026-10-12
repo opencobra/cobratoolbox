@@ -48,6 +48,9 @@ function [modelOut, nTotalAtomTransitions, nTotalBondTransitions] = checkABRXNFi
 %             - COBRA Toolbox, 2026: each RXN file is read once per reaction
 %               and handed to addBondMappingsRXNFile, instead of being read
 %               again (twice for the first reaction); outputs unchanged
+%             - COBRA Toolbox, feature 20261012-093525-symmetric-iso-zero-bond: a
+%               reaction with no bonds adds 0 to nTotalBondTransitions instead of
+%               making it empty
 %               (feature 20260921-160105-build-function-runtime).
 
 fprintf('Checking quality of RXN files...\n');
@@ -254,7 +257,8 @@ for i = 1:nRxns
             
             nAtomTransitions = max(atomTransitionNrs);
             %Bonds
-            nBondTransitions = max(bondTransitionNrs);
+            % a reaction with no bonds has no bond transitions (max of an empty array is empty)
+            nBondTransitions = max([0; bondTransitionNrs(:)]);
             matchingElementBool=false(nAtomTransitions,1);
             for k=1:nAtomTransitions
                 if strcmp(metEls(atomTransitionNrs==k & isSubstrate),metEls(atomTransitionNrs==k & ~isSubstrate))

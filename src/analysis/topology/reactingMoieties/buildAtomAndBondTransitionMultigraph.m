@@ -139,7 +139,7 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG, dBT
 %
 %    M2BiE:              `m` x `b` matrix mapping each metabolite to a bond in the directed bond transition multigraph (sparse by default; set options.denseBondMatrices = 1 for the historical full matrix)
 %    M2BiW:              `m` x `b` matrix specifying the bond type of each metabolite-bond entry of `M2BiE` (sparse by default; set options.denseBondMatrices = 1 for the historical full matrix)
-%    BTi2R:              `s` x `n` matrix mapping each directed bond transition instance to a mapped reaction (sparse by default; set options.denseBondMatrices = 1 for the historical full matrix)
+%    BTi2R:              `s` x `n` matrix mapping each directed bond transition instance to a bond-mapped reaction (`n` bond-mapped reactions; sparse by default; set options.denseBondMatrices = 1 for the historical full matrix)
 %    BTiE:               incidence matrix of the directed bond transition multigraph (`incidence(dBTM)`)
 
 % .. Authors: - Ronan M. T. Fleming, 2022, Hadjar Rahou 2022 (Bond section)
@@ -147,6 +147,8 @@ function [dATM, metAtomMappedBool, rxnAtomMappedBool, M2Ai, Ti2R, dATME, BG, dBT
 %               addBondMappingsRXNFile instead of having it read again, and
 %               dBTM.Nodes.BondElmts is filled in one assignment; outputs unchanged
 %               (feature 20260921-160105-build-function-runtime).
+%             - COBRA Toolbox, feature 20261012-093525-symmetric-iso-zero-bond: BTi2R has
+%               one column per bond-mapped reaction, so a reaction with no bonds builds
 
 if ~exist('options','var')
     options=[];
@@ -907,7 +909,9 @@ M2BiW = sparse(bondMetRow(isModelMetBond), bondCols, ...
 %Matrix mapping one or more directed atom transition instances to each mapped reaction
 nTransInstances = size(dBTM.Edges,1);
 [~,transInstance2rxns] = ismember(dBTM.Edges.rxns,model.rxns(rxnBondMappedBool));
-BTi2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nMappedRxns);
+% one column per bond-mapped reaction, the columns of N above (a reaction with no bonds is atom
+% mapped but not bond mapped, so the two counts can differ)
+BTi2R = sparse((1:nTransInstances)',transInstance2rxns,1,nTransInstances,nBondMappedRxns);
 
 %options.denseBondMatrices = 1 restores the historical full matrices before any further use
 if options.denseBondMatrices

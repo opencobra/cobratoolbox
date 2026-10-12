@@ -11,9 +11,13 @@
 %       both modes on a deliberately inconsistent model.
 %     - Test that options.denseBondMatrices has no effect when
 %       options.bondTransitionMultigraph = 0.
+%     - Test that a model containing a reaction with no bonds (implicit-hydrogen water
+%       transport, data/rxn) builds, with that reaction's atom transition in the atom graph and
+%       no bond transition from it (feature 20261012-093525-symmetric-iso-zero-bond, FR-005).
 %
 % Authors:
 %     - COBRA Toolbox, feature 20260921-125236-sparse-bond-matrices
+%     - COBRA Toolbox, feature 20261012-093525-symmetric-iso-zero-bond (zero-bond reaction)
 
 global CBTDIR
 
@@ -129,6 +133,40 @@ for k = 1:5
         issparse(noBondOut{k}) == issparse(noBondDenseOut{k}), ...
         sprintf('FR-015 (f): output %d depends on options.denseBondMatrices when options.bondTransitionMultigraph = 0.', k));
 end
+
+% (g) a reaction with no bonds (feature 20261012-093525-symmetric-iso-zero-bond, FR-005, SC-004):
+% implicit-hydrogen ethanol transport plus water transport, whose single-atom molecules have no
+% bonds. The build completes, the water atom transition is in the atom graph, the water
+% reaction contributes no bond transition, and both decompositions hold.
+implicitHDir = [fileDir filesep 'data' filesep 'rxn'];
+zeroBondModel = struct();
+zeroBondModel.mets = {'etoh[e]'; 'etoh[c]'; 'h2o[c]'; 'h2o[e]'};
+zeroBondModel.rxns = {'ETOHt_implicitH'; 'H2Ot_implicitH'};
+zeroBondModel.S = sparse([-1, 0; 1, 0; 0, -1; 0, 1]);
+zeroBondModel.lb = [-1000; -1000];
+zeroBondModel.ub = [1000; 1000];
+zeroBondModel.c = [0; 0];
+zeroBondModel.b = [0; 0; 0; 0];
+zeroBondOut = cell(1, 12);
+[zeroBondOut{:}] = buildAtomAndBondTransitionMultigraph(zeroBondModel, implicitHDir, options);
+zeroBondATM = zeroBondOut{1};
+zeroBondBTM = zeroBondOut{8};
+assert(all(zeroBondOut{3}), 'FR-005: both reactions must be atom mapped.');
+waterTransitions = strcmp(zeroBondATM.Edges.rxns, 'H2Ot_implicitH');
+assert(nnz(waterTransitions) == 1, 'FR-005: the water reaction must contribute one atom transition.');
+waterEnds = zeroBondATM.Edges.EndNodes(waterTransitions, :);
+waterEndMets = zeroBondATM.Nodes.mets(findnode(zeroBondATM, waterEnds));
+assert(isequal(sort(waterEndMets(:)), {'h2o[c]'; 'h2o[e]'}), ...
+    'FR-005: the water atom transition must join the two water oxygens.');
+assert(nnz(strcmp(zeroBondATM.Edges.rxns, 'ETOHt_implicitH')) == 3, ...
+    'FR-005: the ethanol reaction must contribute three atom transitions.');
+assert(~any(strcmp(zeroBondBTM.Edges.rxns, 'H2Ot_implicitH')), ...
+    'FR-005: the water reaction must contribute no bond transition.');
+assert(any(strcmp(zeroBondBTM.Edges.rxns, 'ETOHt_implicitH')), ...
+    'FR-005: the ethanol reaction must contribute bond transitions.');
+[atomResidual, bondResidual] = decompositionResiduals(zeroBondModel, zeroBondOut);
+assert(atomResidual == 0 && bondResidual == 0, ...
+    sprintf('FR-005: decomposition residuals %g (atoms) and %g (bonds) must be zero.', atomResidual, bondResidual));
 
 % return to the original directory
 cd(currentDir);

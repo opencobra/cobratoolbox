@@ -218,3 +218,6 @@ test/verifiedTests/visualization/testSammi/sammi_test_output.html
 # regenerable group-contribution fragmentation cache (feature 013). autoFragment writes these
 # .mat caches on demand; they must not be committed into src/.
 src/analysis/thermo/groupContribution/wang/cache/
+
+# per-feature timing and reproducibility outputs (feature 20261012-093525-symmetric-iso-zero-bond)
+/results/

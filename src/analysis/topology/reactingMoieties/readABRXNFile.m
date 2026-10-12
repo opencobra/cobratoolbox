@@ -43,6 +43,8 @@ function [atoms, bonds] = readABRXNFile(rxnfileName, rxnfileDirectory, options)
 %                          * .instances - A `q` x 1 vector indicating which instance of a repeated metabolite atom `i` belongs to for bonds.
 % .. Author: - Hulda S. Haraldsdóttir and Ronan M. T. Fleming, 2022.
 % Hadjar Rahou (readBonds)
+% COBRA Toolbox, feature 20261012-093525-symmetric-iso-zero-bond: a reaction in which no
+% molecule has a bond returns an empty bond table with the same variables and types
 
 rxnfileName = regexprep(rxnfileName,'(\.rxn)$',''); % Format inputs and remove rxnfile ending from reaction identifier
 
@@ -207,6 +209,16 @@ for i = 1:length(umets)
 end
 
 aIsSubstrate = logical(aIsSubstrate);
+if isempty(bMets)
+    % no molecule has a bond (for example, single heavy-atom molecules in implicit-hydrogen form):
+    % typed empty columns, of the same classes as a non-empty bond table
+    bMets = cell(0, 1);
+    bHeadAtom = zeros(0, 1);
+    bTailAtom = zeros(0, 1);
+    bTypes = zeros(0, 1);
+    bIsSubstrate = zeros(0, 1);
+    bInstances = zeros(0, 1);
+end
 
 if mod(length(aElements),2)~=0
     fprintf('%s%s%s%s\n',rxnfileName,' ',rxnFormulaFull,' is elementally unbalanced.');
@@ -251,6 +263,9 @@ end
 nAllBonds=size(bonds,1);
 bonds.headAtomTransitionNrs=zeros(nAllBonds,1);
 bonds.tailAtomTransitionNrs=zeros(nAllBonds,1);
+% created before the per-bond loop so that a bond table with no rows still has them
+bonds.headAtomElements=cell(nAllBonds,1);
+bonds.tailAtomElements=cell(nAllBonds,1);
 % Lookup built once, keyed by (met, metNr, instance), replacing the previous
 % per-bond, per-column find(...&ismember(...)) linear scans over the whole
 % atoms table (feature 022-eliminate-table-object-hotspots, FR-001). Values
