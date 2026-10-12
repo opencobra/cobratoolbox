@@ -9,9 +9,12 @@
 %       header lines (unparsable).
 %     - Test that an unparsable RXN file for the first mapped reaction still
 %       raises an error, as before.
+%     - Test that a reaction with no bonds adds no bond transitions to the total
+%       (feature 20261012-093525-symmetric-iso-zero-bond).
 %
 % Authors:
 %     - COBRA Toolbox, feature 20260921-160105-build-function-runtime
+%     - COBRA Toolbox, feature 20261012-093525-symmetric-iso-zero-bond (zero-bond reaction)
 
 global CBTDIR
 
@@ -61,6 +64,19 @@ assert(modelOut.RXNParsedBool(strcmp(subModel.rxns, unparsableRxn)) == 0, ...
 removeFirstBrokenDir = onCleanup(@() rmdir(firstBrokenDir, 's'));
 assert(verifyCobraFunctionError('checkABRXNFiles', 'inputs', {subModel, firstBrokenDir}), ...
     'An unparsable RXN file for the first mapped reaction must raise an error.');
+
+% a reaction with no bonds (implicit-hydrogen water transport) adds no bond transitions; the
+% implicit-hydrogen ethanol transport has two (feature 20261012-093525-symmetric-iso-zero-bond)
+zeroBondModel = struct();
+zeroBondModel.mets = {'etoh[e]'; 'etoh[c]'; 'h2o[c]'; 'h2o[e]'};
+zeroBondModel.rxns = {'ETOHt_implicitH'; 'H2Ot_implicitH'};
+zeroBondModel.S = sparse([-1, 0; 1, 0; 0, -1; 0, 1]);
+zeroBondModel.lb = [-1000; -1000];
+zeroBondModel.ub = [1000; 1000];
+[~, nTotalAtomTransitions, nTotalBondTransitions] = checkABRXNFiles(zeroBondModel, ...
+    [fileDir filesep 'data' filesep 'rxn']);
+assert(isequal(nTotalAtomTransitions, 4) && isequal(nTotalBondTransitions, 2), ...
+    'A reaction with no bonds must add no bond transitions to the total.');
 
 fprintf('testCheckABRXNFiles: done\n');
 

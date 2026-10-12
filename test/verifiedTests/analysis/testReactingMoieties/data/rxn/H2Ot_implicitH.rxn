@@ -1,0 +1,19 @@
+$RXN
+H2Ot_implicitH
+Test fixture: implicit-hydrogen form (no hydrogen atoms)
+h2o[c] -> h2o[e]
+  1  1
+$MOL
+h2o[c]
+  RDT     09072616212D
+
+  1  0  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  1  0  0
+M  END
+$MOL
+h2o[e]
+  RDT     09072616212D
+
+  1  0  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 O   0  0  0  0  0  0  0  0  0  1  0  0
+M  END
