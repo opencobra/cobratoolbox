@@ -53,6 +53,11 @@ FULL_FRACTION = 0.90
 
 IDENT_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]*")
 
+# The function-name conflict test must run whenever a src function file is added, renamed or
+# changed: a new function can clash with ANY existing name, yet no test mentions it, so the
+# reverse-dependency walk below would otherwise select nothing for it.
+NAME_CONFLICT_TEST = "test/verifiedTests/base/testInstall/testFunctionNameConflicts.m"
+
 
 def truthy(val):
     return str(val).strip().lower() in ("1", "true", "yes", "on")
@@ -197,6 +202,11 @@ def main():
             if ref not in visited:
                 visited.add(ref)
                 frontier.append(ref)
+
+    # always check function-name conflicts when a src function file changed
+    if (NAME_CONFLICT_TEST in all_test_files
+            and any(c.startswith("src/") and c.endswith(".m") for c in changed)):
+        selected.add(NAME_CONFLICT_TEST)
 
     # ---- decide mode ---------------------------------------------------------
     ignored = [c for c in changed

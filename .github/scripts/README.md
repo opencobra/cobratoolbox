@@ -14,6 +14,11 @@ step in `.github/workflows/testAllCI_step1.yml`.
 3. From the PR's changed **src** files, walk the reverse edges transitively to
    reach every `test*.m` that uses them directly or indirectly.
 4. Changed `test*.m` files are always included directly.
+5. Whenever any `src/**/*.m` file is added, renamed or changed, the function-name
+   conflict test (`test/verifiedTests/base/testInstall/testFunctionNameConflicts.m`) is also
+   selected. A new function can clash with any existing name although no test mentions it, so
+   the reverse-dependency walk alone would select nothing for it. Unit tests of this rule:
+   `python3 -m unittest discover -s .github/scripts -p "test_select_tests.py"`.
 
 The analysis **over-approximates**: it errs toward running more tests, never
 fewer, so it will not silently skip a test that should have run.
