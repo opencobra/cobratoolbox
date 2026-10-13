@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-82 known defects in 68 functions (23 wrong-result, 29 error, 4 unusable-option, 13 cosmetic, 13 limitation).
+86 known defects in 72 functions (24 wrong-result, 30 error, 5 unusable-option, 14 cosmetic, 13 limitation).
 
 ## Summary
 
@@ -87,8 +87,12 @@
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | wrong-result | Unknown strain row not removed when the headers are equal | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
 | `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
 | `src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m` | unusable-option | The NoWeight argument never has an effect | `test/verifiedTests/reconstruction/testFastGapFill/testAssignRxnWeights.m` |
+| `src/reconstruction/modelGeneration/modelVerification/checkPresentFields.m` | error | A numeric size requirement stops the function with an error | `test/verifiedTests/reconstruction/testModelGeneration/testCheckPresentFields.m` |
+| `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m` | wrong-result | Reactions with names of one or two characters get the wrong sign | `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
+| `src/reconstruction/refinement/flipRxnOrientation.m` | cosmetic | The message for reactions that are not in the model has no line break | `test/verifiedTests/reconstruction/testRefinement/testFlipRxnOrientation.m` |
 | `src/reconstruction/refinement/getMetAbbr.m` | wrong-result | IDs without brackets are silently dropped | `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m` |
+| `src/reconstruction/refinement/updateMetNames.m` | unusable-option | The wipe option is always overwritten with false | `test/verifiedTests/reconstruction/testRefinement/testUpdateMetNames.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
 
@@ -924,6 +928,28 @@
 - **Source lines**: 45, 54
 - **Documented in**: `test/verifiedTests/reconstruction/testFastGapFill/testAssignRxnWeights.m`
 
+### `src/reconstruction/modelGeneration/modelVerification/checkPresentFields.m`
+
+#### A numeric size requirement stops the function with an error
+
+- **Severity**: error
+- **Trigger**: a field property row whose second or third column is a number instead of a field name
+- **Observed**: the error message for the first dimension uses the variable x_pres before it is assigned, so the call stops with "Unrecognized function or variable x_pres"
+- **Expected**: the expected size compared with the actual size
+- **Source lines**: 53-56
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testCheckPresentFields.m`
+
+### `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m`
+
+#### Reactions with names of one or two characters get the wrong sign
+
+- **Severity**: wrong-result
+- **Trigger**: an irreversible reaction whose identifier has at most two characters (for example r1) with a constraint
+- **Observed**: the test that decides whether the reaction was reversed in the irreversible model is only applied for names longer than two characters, so the value of the constraint is negated although the reaction was not reversed
+- **Expected**: the value is kept for a reaction that is not reversed, whatever the length of its name
+- **Source lines**: 22
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m`
+
 ### `src/reconstruction/refinement/GPRLogic/combineChildren.m`
 
 #### Identical generated clauses delete the earlier clause
@@ -935,6 +961,17 @@
 - **Source lines**: 53-63
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m`
 
+### `src/reconstruction/refinement/flipRxnOrientation.m`
+
+#### The message for reactions that are not in the model has no line break
+
+- **Severity**: cosmetic
+- **Trigger**: a reaction list with identifiers that are not in the model
+- **Observed**: the message is printed with fprintf and no newline, so several messages are printed on one line
+- **Expected**: one message per line
+- **Source lines**: 31
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testFlipRxnOrientation.m`
+
 ### `src/reconstruction/refinement/getMetAbbr.m`
 
 #### IDs without brackets are silently dropped
@@ -945,6 +982,17 @@
 - **Expected**: an entry or an error for every input
 - **Source lines**: 35-37
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m`
+
+### `src/reconstruction/refinement/updateMetNames.m`
+
+#### The wipe option is always overwritten with false
+
+- **Severity**: unusable-option
+- **Trigger**: a call with the third argument true, for example updateMetNames(referenceModel, modelToUpdate, true)
+- **Observed**: the default is applied when a variable called wipeExistening does not exist, which is always the case, so the value passed for wipeExisting is replaced by false and the existing names are never wiped
+- **Expected**: the existing metabolite names removed when wipeExisting is true
+- **Source lines**: 27-29
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testUpdateMetNames.m`
 
 ### `src/visualization/maps/ReconMap/makeColorGradient.m`
 

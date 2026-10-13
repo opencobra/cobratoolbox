@@ -26,3 +26,7 @@ Functions of the selection table that the probe showed cannot be tested faithful
 | `src/dataIntegration/fluxomics/getBinsOfFluxes.m` | always errors on its main path | After the early exits (too few samples), the output variable is a number (`output = 0`) and the function then assigns `output.samps`, which fails for every input that reaches that line. |
 | `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m` | not Tier 1: MATLAB toolbox | Uses `fit`, `fittype` and `fitoptions` (Curve Fitting Toolbox). |
 | `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m` | not Tier 1: MATLAB toolbox | Uses `fit`, `fittype` and `fitoptions` (Curve Fitting Toolbox). |
+| `src/reconstruction/refinement/assignGPRA.m` | not Tier 1: reads a file | Reads a SimPheny GPRA file with `parseSimPhenyGPRA`. |
+| `src/reconstruction/refinement/assignSubSystems.m` | not Tier 1: reads a file | Reads a SimPheny GPRA file with `parseSimPhenyGPRA`. |
+| `src/visualization/cellDesigner/readCD.m` | not testable faithfully | Needs the parsed CellDesigner structure whose layout is undocumented; the result mixes the name columns into the identifier table and the function prints every assignment (statements without semicolons). |
+| `src/visualization/cellDesigner/updateCD.m` | not testable faithfully | Edits lines of a CellDesigner XML text using undocumented line structures and positions, with extensive unterminated displays. |

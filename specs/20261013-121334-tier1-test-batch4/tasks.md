@@ -323,58 +323,58 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ### Test folder `test/verifiedTests/reconstruction/testDemeter`
 
-- [ ] T172 [P] [US2] Row: write `test/verifiedTests/reconstruction/testDemeter/testAdaptDraftModelID.m` for `src/reconstruction/demeter/src/integration/adaptDraftModelID.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T173 [P] [US2] Row: write `test/verifiedTests/reconstruction/testDemeter/testAddRefinementComments.m` for `src/reconstruction/demeter/src/refinement/addRefinementComments.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T174 [US2] Run the tests of `reconstruction/testDemeter` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T172 [P] [US2] Row: write `test/verifiedTests/reconstruction/testDemeter/testAdaptDraftModelID.m` for `src/reconstruction/demeter/src/integration/adaptDraftModelID.m` (probe, test, run via harness runner, measure coverage).
+- [x] T173 [P] [US2] Row: write `test/verifiedTests/reconstruction/testDemeter/testAddRefinementComments.m` for `src/reconstruction/demeter/src/refinement/addRefinementComments.m` (probe, test, run via harness runner, measure coverage).
+- [x] T174 [US2] Run the tests of `reconstruction/testDemeter` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/reconstruction/testFastGapFill`
 
-- [ ] T175 [P] [US2] Row: write `test/verifiedTests/reconstruction/testFastGapFill/testFindIntracellularRxns.m` for `src/reconstruction/fastGapFill/AuxillaryFiles/findIntracellularRxns.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T176 [US2] Run the tests of `reconstruction/testFastGapFill` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T175 [P] [US2] Row: write `test/verifiedTests/reconstruction/testFastGapFill/testFindIntracellularRxns.m` for `src/reconstruction/fastGapFill/AuxillaryFiles/findIntracellularRxns.m` (probe, test, run via harness runner, measure coverage).
+- [x] T176 [US2] Run the tests of `reconstruction/testFastGapFill` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/reconstruction/testModelGeneration`
 
-- [ ] T177 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testCheckFormulaValidty.m` for `src/reconstruction/modelGeneration/massBalance/checkFormulaValidty.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T178 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testRegulariseModelFormulae.m` for `src/reconstruction/modelGeneration/massBalance/regulariseModelFormulae.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T179 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testPrintBiomass.m` for `src/reconstruction/modelGeneration/modelProperties/printBiomass.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T180 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testCheckPresentFields.m` for `src/reconstruction/modelGeneration/modelVerification/checkPresentFields.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T181 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testPrintObjective.m` for `src/reconstruction/modelGeneration/printObjective.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T182 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m` for `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T183 [US2] Run the tests of `reconstruction/testModelGeneration` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T177 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testCheckFormulaValidty.m` for `src/reconstruction/modelGeneration/massBalance/checkFormulaValidty.m` (probe, test, run via harness runner, measure coverage).
+- [x] T178 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testRegulariseModelFormulae.m` for `src/reconstruction/modelGeneration/massBalance/regulariseModelFormulae.m` (probe, test, run via harness runner, measure coverage).
+- [x] T179 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testPrintBiomass.m` for `src/reconstruction/modelGeneration/modelProperties/printBiomass.m` (probe, test, run via harness runner, measure coverage).
+- [x] T180 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testCheckPresentFields.m` for `src/reconstruction/modelGeneration/modelVerification/checkPresentFields.m` (probe, test, run via harness runner, measure coverage).
+- [x] T181 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testPrintObjective.m` for `src/reconstruction/modelGeneration/printObjective.m` (probe, test, run via harness runner, measure coverage).
+- [x] T182 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m` for `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m` (probe, test, run via harness runner, measure coverage).
+- [x] T183 [US2] Run the tests of `reconstruction/testModelGeneration` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/reconstruction/testRefinement`
 
-- [ ] T184 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testAssignGPRA.m` for `src/reconstruction/refinement/assignGPRA.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T185 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testAssignSubSystems.m` for `src/reconstruction/refinement/assignSubSystems.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T186 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testCheckIDsForTypeExist.m` for `src/reconstruction/refinement/checkIDsForTypeExist.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T187 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testDispStoichAsTable.m` for `src/reconstruction/refinement/dispStoichAsTable.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T188 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testFlipRxnOrientation.m` for `src/reconstruction/refinement/flipRxnOrientation.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T189 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testGetEmptyConstraints.m` for `src/reconstruction/refinement/getEmptyConstraints.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T190 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testUpdateMetNames.m` for `src/reconstruction/refinement/updateMetNames.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T191 [US2] Run the tests of `reconstruction/testRefinement` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T184 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testAssignGPRA.m` for `src/reconstruction/refinement/assignGPRA.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T185 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testAssignSubSystems.m` for `src/reconstruction/refinement/assignSubSystems.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T186 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testCheckIDsForTypeExist.m` for `src/reconstruction/refinement/checkIDsForTypeExist.m` (probe, test, run via harness runner, measure coverage).
+- [x] T187 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testDispStoichAsTable.m` for `src/reconstruction/refinement/dispStoichAsTable.m` (probe, test, run via harness runner, measure coverage).
+- [x] T188 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testFlipRxnOrientation.m` for `src/reconstruction/refinement/flipRxnOrientation.m` (probe, test, run via harness runner, measure coverage).
+- [x] T189 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testGetEmptyConstraints.m` for `src/reconstruction/refinement/getEmptyConstraints.m` (probe, test, run via harness runner, measure coverage).
+- [x] T190 [P] [US2] Row: write `test/verifiedTests/reconstruction/testRefinement/testUpdateMetNames.m` for `src/reconstruction/refinement/updateMetNames.m` (probe, test, run via harness runner, measure coverage).
+- [x] T191 [US2] Run the tests of `reconstruction/testRefinement` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/visualization/testEscherMap`
 
-- [ ] T192 [P] [US2] Row: write `test/verifiedTests/visualization/testEscherMap/testModel2escher.m` for `src/visualization/EscherMap/model2escher.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T193 [US2] Run the tests of `visualization/testEscherMap` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T192 [P] [US2] Row: write `test/verifiedTests/visualization/testEscherMap/testModel2escher.m` for `src/visualization/EscherMap/model2escher.m` (probe, test, run via harness runner, measure coverage).
+- [x] T193 [US2] Run the tests of `visualization/testEscherMap` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/visualization/testSAMMIM`
 
-- [ ] T194 [P] [US2] Row: write `test/verifiedTests/visualization/testSAMMIM/testMakeSAMMIJson.m` for `src/visualization/SAMMIM/makeSAMMIJson.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T195 [P] [US2] Row: write `test/verifiedTests/visualization/testSAMMIM/testMakeSAMMIdataString.m` for `src/visualization/SAMMIM/makeSAMMIdataString.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T196 [US2] Run the tests of `visualization/testSAMMIM` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T194 [P] [US2] Row: write `test/verifiedTests/visualization/testSAMMIM/testMakeSAMMIJson.m` for `src/visualization/SAMMIM/makeSAMMIJson.m` (probe, test, run via harness runner, measure coverage).
+- [x] T195 [P] [US2] Row: write `test/verifiedTests/visualization/testSAMMIM/testMakeSAMMIdataString.m` for `src/visualization/SAMMIM/makeSAMMIdataString.m` (probe, test, run via harness runner, measure coverage).
+- [x] T196 [US2] Run the tests of `visualization/testSAMMIM` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/visualization/testCellDesigner`
 
-- [ ] T197 [P] [US2] Row: write `test/verifiedTests/visualization/testCellDesigner/testReadCD.m` for `src/visualization/cellDesigner/readCD.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T198 [P] [US2] Row: write `test/verifiedTests/visualization/testCellDesigner/testRetrieveMet.m` for `src/visualization/cellDesigner/retrieveMet.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T199 [P] [US2] Row: write `test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m` for `src/visualization/cellDesigner/updateCD.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T200 [US2] Run the tests of `visualization/testCellDesigner` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T197 [P] [US2] Row: write `test/verifiedTests/visualization/testCellDesigner/testReadCD.m` for `src/visualization/cellDesigner/readCD.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T198 [P] [US2] Row: write `test/verifiedTests/visualization/testCellDesigner/testRetrieveMet.m` for `src/visualization/cellDesigner/retrieveMet.m` (probe, test, run via harness runner, measure coverage).
+- [x] T199 [P] [US2] Row: write `test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m` for `src/visualization/cellDesigner/updateCD.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T200 [US2] Run the tests of `visualization/testCellDesigner` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/visualization/testMetabolicCartography`
 
-- [ ] T201 [P] [US2] Row: write `test/verifiedTests/visualization/testMetabolicCartography/testUniqueSpeciesInMap.m` for `src/visualization/metabolicCartography/uniqueSpeciesInMap.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T202 [US2] Run the tests of `visualization/testMetabolicCartography` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T201 [P] [US2] Row: write `test/verifiedTests/visualization/testMetabolicCartography/testUniqueSpeciesInMap.m` for `src/visualization/metabolicCartography/uniqueSpeciesInMap.m` (probe, test, run via harness runner, measure coverage).
+- [x] T202 [US2] Run the tests of `visualization/testMetabolicCartography` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ---
 
