@@ -382,35 +382,35 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ### Test folder `test/verifiedTests/analysis/testSubspaces`
 
-- [ ] T203 [P] [US3] Row: write `test/verifiedTests/analysis/testSubspaces/testConservationAnalysis.m` for `src/analysis/subspaces/conservationAnalysis.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T204 [US3] Run the tests of `analysis/testSubspaces` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T203 [P] [US3] Row: write `test/verifiedTests/analysis/testSubspaces/testConservationAnalysis.m` for `src/analysis/subspaces/conservationAnalysis.m` (probe, test, run via harness runner, measure coverage).
+- [x] T204 [US3] Run the tests of `analysis/testSubspaces` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testWholeBody`
 
-- [ ] T205 [P] [US3] Row: write `test/verifiedTests/analysis/testWholeBody/testAnnotateModel.m` for `src/analysis/wholeBody/PSCMToolbox/annotateModel.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T206 [P] [US3] Row: write `test/verifiedTests/analysis/testWholeBody/testSetFeedingFastingConstraints.m` for `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T207 [US3] Run the tests of `analysis/testWholeBody` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T205 [P] [US3] Row: write `test/verifiedTests/analysis/testWholeBody/testAnnotateModel.m` for `src/analysis/wholeBody/PSCMToolbox/annotateModel.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T206 [P] [US3] Row: write `test/verifiedTests/analysis/testWholeBody/testSetFeedingFastingConstraints.m` for `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T207 [US3] Run the tests of `analysis/testWholeBody` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/base/testSolvers`
 
-- [ ] T208 [P] [US3] Row: write `test/verifiedTests/base/testSolvers/testCheckSolFeas.m` for `src/base/solvers/cplex/checkSolFeas.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T209 [US3] Run the tests of `base/testSolvers` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T208 [P] [US3] Row: write `test/verifiedTests/base/testSolvers/testCheckSolFeas.m` for `src/base/solvers/cplex/checkSolFeas.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T209 [US3] Run the tests of `base/testSolvers` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/base/testEntropicFBA`
 
-- [ ] T210 [P] [US3] Row: write `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` for `src/base/solvers/entropicFBA/processConcConstraints.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T211 [US3] Run the tests of `base/testEntropicFBA` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T210 [P] [US3] Row: write `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` for `src/base/solvers/entropicFBA/processConcConstraints.m` (probe, test, run via harness runner, measure coverage).
+- [x] T211 [US3] Run the tests of `base/testEntropicFBA` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/base/testSolvers`
 
-- [ ] T212 [P] [US3] Row: write `test/verifiedTests/base/testSolvers/testSolveCobraLPLindo.m` for `src/base/solvers/lindo/solveCobraLPLindo.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T213 [P] [US3] Row: write `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` for `src/base/solvers/varKin/optimizeVKmodel0.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T214 [US3] Run the tests of `base/testSolvers` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T212 [P] [US3] Row: write `test/verifiedTests/base/testSolvers/testSolveCobraLPLindo.m` for `src/base/solvers/lindo/solveCobraLPLindo.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T213 [P] [US3] Row: write `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` for `src/base/solvers/varKin/optimizeVKmodel0.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T214 [US3] Run the tests of `base/testSolvers` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testMetaboAnnotator`
 
-- [ ] T215 [P] [US3] Row: write `test/verifiedTests/dataIntegration/testMetaboAnnotator/testReplaceVMHIds.m` for `src/dataIntegration/metaboAnnotator/buildMetStruct/replaceVMHIds.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T216 [US3] Run the tests of `dataIntegration/testMetaboAnnotator` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T215 [P] [US3] Row: write `test/verifiedTests/dataIntegration/testMetaboAnnotator/testReplaceVMHIds.m` for `src/dataIntegration/metaboAnnotator/buildMetStruct/replaceVMHIds.m` (probe, test, run via harness runner, measure coverage).
+- [x] T216 [US3] Run the tests of `dataIntegration/testMetaboAnnotator` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ---
 

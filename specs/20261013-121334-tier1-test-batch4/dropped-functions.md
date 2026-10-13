@@ -30,3 +30,8 @@ Functions of the selection table that the probe showed cannot be tested faithful
 | `src/reconstruction/refinement/assignSubSystems.m` | not Tier 1: reads a file | Reads a SimPheny GPRA file with `parseSimPhenyGPRA`. |
 | `src/visualization/cellDesigner/readCD.m` | not testable faithfully | Needs the parsed CellDesigner structure whose layout is undocumented; the result mixes the name columns into the identifier table and the function prints every assignment (statements without semicolons). |
 | `src/visualization/cellDesigner/updateCD.m` | not testable faithfully | Edits lines of a CellDesigner XML text using undocumented line structures and positions, with extensive unterminated displays. |
+| `src/analysis/wholeBody/PSCMToolbox/annotateModel.m` | not Tier 1: reads data files | Reads the VMH reaction and metabolite tables (`VMH_Reactions.tsv`, `VMH_Metabolites.tsv`) with `tdfread`. |
+| `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m` | not Tier 1: runs a data script | Runs the script `AAStorage`, which defines the stored amino acid lists by running a script file. |
+| `src/base/solvers/cplex/checkSolFeas.m` | not Tier 1: needs a solver | Takes a `Cplex` object (CPLEX interface) as its first argument. |
+| `src/base/solvers/lindo/solveCobraLPLindo.m` | not Tier 1: needs a solver | Calls the LINDO solver interface (`mxlindo`) and a license file. |
+| `src/base/solvers/varKin/optimizeVKmodel0.m` | not testable faithfully | A 368-line iterative kinetic solver (Levenberg-Marquardt and DCA/BDCA variants) driven by an undocumented model structure and parameter set; the individual components (stopping criteria, rate functions, linear solves) are tested separately. |

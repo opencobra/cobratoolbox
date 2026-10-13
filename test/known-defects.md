@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-86 known defects in 72 functions (24 wrong-result, 30 error, 5 unusable-option, 14 cosmetic, 13 limitation).
+90 known defects in 73 functions (25 wrong-result, 31 error, 6 unusable-option, 15 cosmetic, 13 limitation).
 
 ## Summary
 
@@ -48,6 +48,10 @@
 | `src/base/io/utilities/SBML/getDataBases.m` | error | Third output unassigned when nothing matches | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/parseSBMLAnnotationField.m` | wrong-result | ChEBI ID keeps a stray 3A prefix in the urn:miriam notation | `test/verifiedTests/base/testIO/testUtilities/testParseSBMLAnnotationField.m` |
 | `src/base/parseMetNames.m` | limitation | Mixed or longer compartment notations are not parsed | `test/verifiedTests/base/testTools/testParseMetNames.m` |
+| `src/base/solvers/entropicFBA/processConcConstraints.m` | cosmetic | Documented defaults for the concentration unit and the maximum concentration differ from the code | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
+| `src/base/solvers/entropicFBA/processConcConstraints.m` | unusable-option | The case dxReplacement always stops with an error | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
+| `src/base/solvers/entropicFBA/processConcConstraints.m` | wrong-result | The default row selection indexes the first row repeatedly | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
+| `src/base/solvers/entropicFBA/processConcConstraints.m` | error | The parameter printLevel is required although it is documented as optional | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/mosek/inspectMosekProb.m` | error | A constraint matrix without rows or columns stops the inspection with an error | `test/verifiedTests/base/testSolvers/testInspectMosekProb.m` |
 | `src/base/solvers/mosek/inspectMosekProb.m` | limitation | A matrix field of an integer class stops the inspection with an error | `test/verifiedTests/base/testSolvers/testInspectMosekProb.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | error | The SCLP profiles fail when feasTol or numTol is not supplied | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
@@ -514,6 +518,44 @@
 - **Expected**: name and compartment separated
 - **Source lines**: 36-38
 - **Documented in**: `test/verifiedTests/base/testTools/testParseMetNames.m`
+
+### `src/base/solvers/entropicFBA/processConcConstraints.m`
+
+#### Documented defaults for the concentration unit and the maximum concentration differ from the code
+
+- **Severity**: cosmetic
+- **Trigger**: param without concUnit and maxConc
+- **Observed**: concUnit is set to 10-3, which evaluates to 7, and maxConc is set to infinity, while the header states 1e-3 and 1e4
+- **Expected**: the documented defaults
+- **Source lines**: 131-137
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
+
+#### The case dxReplacement always stops with an error
+
+- **Severity**: unusable-option
+- **Trigger**: param.externalNetFluxBounds = dxReplacement, or model.dcl or model.dcu present without an explicit option
+- **Observed**: the case begins with error(revise how net initial and final conc bounds are dealt with), so the option can never be used; this is also the default when model.dcl or model.dcu exists
+- **Expected**: the external net flux bounds replaced by concentration differences, as documented
+- **Source lines**: 245-262
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
+
+#### The default row selection indexes the first row repeatedly
+
+- **Severity**: wrong-result
+- **Trigger**: a model without the field pp, with external reactions
+- **Observed**: the default pp is a numeric vector of ones, and indexing the external stoichiometric matrix with it repeats row 1 for every metabolite instead of selecting all rows
+- **Expected**: the default pp should be a logical vector of ones (true for all rows) so that all rows are kept
+- **Source lines**: 116-118, 297
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
+
+#### The parameter printLevel is required although it is documented as optional
+
+- **Severity**: error
+- **Trigger**: a parameter structure without printLevel when the model has external reactions and externalNetFluxBounds is original or none
+- **Observed**: the field is read without a default, so the call stops with "Unrecognized field name printLevel"
+- **Expected**: printLevel defaulting to 0
+- **Source lines**: 161, 224
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
 
 ### `src/base/solvers/mosek/inspectMosekProb.m`
 
