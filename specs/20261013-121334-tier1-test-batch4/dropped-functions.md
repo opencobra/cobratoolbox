@@ -15,3 +15,11 @@ Functions of the selection table that the probe showed cannot be tested faithful
 | `src/analysis/topology/FR/combinatorialDependentRows.m` | not Tier 1: needs a solver | Solves a binary semidefinite program with CVX and MOSEK (`cvx_solver mosek`, `cvx_begin sdp`). |
 | `src/analysis/topology/FR/connectedFR.m` | not Tier 1: external library | Needs the GAIMC graph library (`largest_component`, `scomponents`), which is not part of the toolbox; without it the function only raises an error. |
 | `src/analysis/topology/FR/largestConnectedFR.m` | not Tier 1: external library | Needs the GAIMC graph library (`largest_component`), which is not part of the toolbox; without it the function only raises an error. |
+| `src/analysis/wholeBody/PSCMToolbox/setConstraints/setDietConstraints.m` | not Tier 1: runs data scripts | Calls the diet and AGORA essential-metabolite scripts (`EUAverageDietNew`, `AGORAEssentialMetabolites`, ...), which define their data by running script files. |
+| `src/base/install/addCOBRABinaryPathToSystemPath.m` | not Tier 1: changes the system environment | Changes the system path of the MATLAB process and depends on the operating system. |
+| `src/base/install/getGitBashVersion.m` | not Tier 1: runs system commands | Runs `git` through the operating system. |
+| `src/base/io/KEGG/mapKEGGID2Model.m` | always errors | Every input tried fails: a metabolite with a compartment stops with "Too many input arguments" and a metabolite without one reads the never-assigned variable `KEGGComp`. |
+| `src/base/io/utilities/model2xls.m` | not Tier 1: writes a file | Writes a spreadsheet with `xlswrite`/`writetable`. |
+| `src/base/io/writeGDXFromCOBRA.m` | not Tier 1: writes a file and needs GAMS | Writes a GDX file with the GAMS interface. |
+| `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m` | not Tier 1: needs a solver | Creates a `Cplex()` object and stops with an error when CPLEX is not installed or licensed. |
+| `src/base/solvers/param/parseSolverParameters.m` | not Tier 1: depends on solver configuration | Reads the default solver and its parameter defaults from the solver state, so the result depends on the installed and configured solvers. |

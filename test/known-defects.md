@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-72 known defects in 58 functions (21 wrong-result, 25 error, 4 unusable-option, 10 cosmetic, 12 limitation).
+73 known defects in 59 functions (21 wrong-result, 25 error, 4 unusable-option, 11 cosmetic, 12 limitation).
 
 ## Summary
 
@@ -43,6 +43,7 @@
 | `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | error | Reactions missing from a model are collected in a character matrix, which fails for names of different lengths | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
 | `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | cosmetic | The numbers of mismatched bounds are displayed instead of returned | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
 | `src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m` | cosmetic | The function name inside the file differs from the file name | `test/verifiedTests/analysis/testWholeBody/testConvertATPflux2StepNumer.m` |
+| `src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/setSimulationConstraints.m` | cosmetic | Warnings stay switched off after the call | `test/verifiedTests/analysis/testWholeBody/testSetSimulationConstraints.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | wrong-result | Mixed matching and non-matching resources return nothing | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | error | Third output unassigned when nothing matches | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/parseSBMLAnnotationField.m` | wrong-result | ChEBI ID keeps a stray 3A prefix in the urn:miriam notation | `test/verifiedTests/base/testIO/testUtilities/testParseSBMLAnnotationField.m` |
@@ -447,6 +448,17 @@
 - **Expected**: the declared name equal to the file name
 - **Source lines**: 1
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testConvertATPflux2StepNumer.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/setSimulationConstraints.m`
+
+#### Warnings stay switched off after the call
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: the function runs warning off and does not restore the previous state, so every later warning in the session is silenced
+- **Expected**: the warning state is restored before returning
+- **Source lines**: 2
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testSetSimulationConstraints.m`
 
 ### `src/base/io/utilities/SBML/getDataBases.m`
 
