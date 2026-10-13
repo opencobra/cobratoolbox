@@ -132,38 +132,38 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 - [x] T057 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testAssignQualDir.m` for `src/analysis/thermo/directionalityReport/assignQualDir.m` (probe, test, run via harness runner, measure coverage).
 - [x] T058 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testCompareQualAndQuantDir.m` for `src/analysis/thermo/directionalityReport/compareQualAndQuantDir.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T059 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` for `src/analysis/thermo/inchi/getMolecularWeight.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T060 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testSingleMetaboliteSpeciesReaction.m` for `src/analysis/thermo/reactantContribution/singleMetaboliteSpeciesReaction.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T061 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testWaterGibbsEnergyOfFormation.m` for `src/analysis/thermo/reactantContribution/waterGibbsEnergyOfFormation.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T062 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testAssignQuantDir.m` for `src/analysis/thermo/thermoDirectionality/assignQuantDir.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T063 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testDGfzeroGroupContToBiochemical.m` for `src/analysis/thermo/thermoDirectionality/dGfzeroGroupContToBiochemical.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T064 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testPrintDirectionalityFromBounds.m` for `src/analysis/thermo/thermoFBA/printDirectionalityFromBounds.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T065 [US2] Run the tests of `analysis/testThermo` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T059 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` for `src/analysis/thermo/inchi/getMolecularWeight.m` (probe, test, run via harness runner, measure coverage).
+- [x] T060 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testSingleMetaboliteSpeciesReaction.m` for `src/analysis/thermo/reactantContribution/singleMetaboliteSpeciesReaction.m` (probe, test, run via harness runner, measure coverage).
+- [x] T061 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testWaterGibbsEnergyOfFormation.m` for `src/analysis/thermo/reactantContribution/waterGibbsEnergyOfFormation.m` (probe, test, run via harness runner, measure coverage).
+- [x] T062 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testAssignQuantDir.m` for `src/analysis/thermo/thermoDirectionality/assignQuantDir.m` (probe, test, run via harness runner, measure coverage).
+- [x] T063 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testDGfzeroGroupContToBiochemical.m` for `src/analysis/thermo/thermoDirectionality/dGfzeroGroupContToBiochemical.m` (probe, test, run via harness runner, measure coverage).
+- [x] T064 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testPrintDirectionalityFromBounds.m` for `src/analysis/thermo/thermoFBA/printDirectionalityFromBounds.m` (probe, test, run via harness runner, measure coverage).
+- [x] T065 [US2] Run the tests of `analysis/testThermo` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testTopology`
 
-- [ ] T066 [P] [US2] Row: write `test/verifiedTests/analysis/testTopology/testCombinatorialDependentRows.m` for `src/analysis/topology/FR/combinatorialDependentRows.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T067 [P] [US2] Row: write `test/verifiedTests/analysis/testTopology/testConnectedFR.m` for `src/analysis/topology/FR/connectedFR.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T068 [P] [US2] Row: write `test/verifiedTests/analysis/testTopology/testLargestConnectedFR.m` for `src/analysis/topology/FR/largestConnectedFR.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T069 [P] [US2] Row: write `test/verifiedTests/analysis/testTopology/testIntegerizeS.m` for `src/analysis/topology/integerizeS.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T070 [US2] Run the tests of `analysis/testTopology` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T066 [P] [US2] Row: write `test/verifiedTests/analysis/testTopology/testCombinatorialDependentRows.m` for `src/analysis/topology/FR/combinatorialDependentRows.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T067 [P] [US2] Row: write `test/verifiedTests/analysis/testTopology/testConnectedFR.m` for `src/analysis/topology/FR/connectedFR.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T068 [P] [US2] Row: write `test/verifiedTests/analysis/testTopology/testLargestConnectedFR.m` for `src/analysis/topology/FR/largestConnectedFR.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T069 [P] [US2] Row: write `test/verifiedTests/analysis/testTopology/testIntegerizeS.m` for `src/analysis/topology/integerizeS.m` (probe, test, run via harness runner, measure coverage).
+- [x] T070 [US2] Run the tests of `analysis/testTopology` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testTransport`
 
-- [ ] T071 [P] [US2] Row: write `test/verifiedTests/analysis/testTransport/testFindTransRxns.m` for `src/analysis/transport/findTransRxns.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T072 [US2] Run the tests of `analysis/testTransport` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T071 [P] [US2] Row: write `test/verifiedTests/analysis/testTransport/testFindTransRxns.m` for `src/analysis/transport/findTransRxns.m` (probe, test, run via harness runner, measure coverage).
+- [x] T072 [US2] Run the tests of `analysis/testTransport` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testWholeBody`
 
-- [ ] T073 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testCalculateMacroOriginalDiet.m` for `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateMacroOriginalDiet.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T074 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testExtractDietFromModel.m` for `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/extractDietFromModel.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T075 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m` for `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T076 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testAdjustWholeBodyRxnCoeff.m` for `src/analysis/wholeBody/PSCMToolbox/adjustWholeBodyRxnCoeff.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T077 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` for `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T078 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testConvertATPflux2StepNumer.m` for `src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T079 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testDetermineFluxValuesOnBoundary.m` for `src/analysis/wholeBody/PSCMToolbox/determineFluxValuesOnBoundary.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T080 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testFindMetinOrgan.m` for `src/analysis/wholeBody/PSCMToolbox/findMetinOrgan.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T081 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testGetBasicHarveyStats.m` for `src/analysis/wholeBody/PSCMToolbox/getBasicHarveyStats.m` (probe, test, run via harness runner, measure coverage).
+- [x] T073 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testCalculateMacroOriginalDiet.m` for `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateMacroOriginalDiet.m` (probe, test, run via harness runner, measure coverage).
+- [x] T074 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testExtractDietFromModel.m` for `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/extractDietFromModel.m` (probe, test, run via harness runner, measure coverage).
+- [x] T075 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m` for `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m` (probe, test, run via harness runner, measure coverage).
+- [x] T076 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testAdjustWholeBodyRxnCoeff.m` for `src/analysis/wholeBody/PSCMToolbox/adjustWholeBodyRxnCoeff.m` (probe, test, run via harness runner, measure coverage).
+- [x] T077 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` for `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` (probe, test, run via harness runner, measure coverage).
+- [x] T078 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testConvertATPflux2StepNumer.m` for `src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m` (probe, test, run via harness runner, measure coverage).
+- [x] T079 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testDetermineFluxValuesOnBoundary.m` for `src/analysis/wholeBody/PSCMToolbox/determineFluxValuesOnBoundary.m` (probe, test, run via harness runner, measure coverage).
+- [x] T080 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testFindMetinOrgan.m` for `src/analysis/wholeBody/PSCMToolbox/findMetinOrgan.m` (probe, test, run via harness runner, measure coverage).
+- [x] T081 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testGetBasicHarveyStats.m` for `src/analysis/wholeBody/PSCMToolbox/getBasicHarveyStats.m` (probe, test, run via harness runner, measure coverage).
 - [ ] T082 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testGetListOfUniqueIsozymes.m` for `src/analysis/wholeBody/PSCMToolbox/getListOfUniqueIsozymes.m` (probe, test, run via harness runner, measure coverage).
 - [ ] T083 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testGetRxnsFromGene.m` for `src/analysis/wholeBody/PSCMToolbox/getRxnsFromGene.m` (probe, test, run via harness runner, measure coverage).
 - [ ] T084 [P] [US2] Row: write `test/verifiedTests/analysis/testWholeBody/testSetSimulationConstraints.m` for `src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/setSimulationConstraints.m` (probe, test, run via harness runner, measure coverage).

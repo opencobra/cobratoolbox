@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-63 known defects in 51 functions (19 wrong-result, 22 error, 4 unusable-option, 7 cosmetic, 11 limitation).
+72 known defects in 58 functions (21 wrong-result, 25 error, 4 unusable-option, 10 cosmetic, 12 limitation).
 
 ## Summary
 
@@ -28,12 +28,21 @@
 | `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | limitation | The two consistency checks only catch one direction | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
 | `src/analysis/thermo/directionalityReport/assignQualDir.m` | wrong-result | Reverse reactions are reported as forward | `test/verifiedTests/analysis/testThermo/testAssignQualDir.m` |
 | `src/analysis/thermo/formulae/checkFormulae.m` | limitation | Elements other than C, H, O, P, S, K, Na and N are ignored | `test/verifiedTests/analysis/testThermo/testCheckFormulae.m` |
+| `src/analysis/thermo/inchi/getMolecularWeight.m` | wrong-result | Hydrogens are lost for an InChI whose formula starts with H | `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` |
+| `src/analysis/thermo/inchi/getMolecularWeight.m` | cosmetic | Warnings are printed without a line break | `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` |
 | `src/analysis/thermo/reactantContribution/acidDissociationConstant.m` | cosmetic | Ka and pKa are returned as square matrices with only the first entries filled | `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m` |
+| `src/analysis/thermo/reactantContribution/waterGibbsEnergyOfFormation.m` | wrong-result | The Gibbs energy of formation uses the absolute entropy of water instead of the entropy of formation | `test/verifiedTests/analysis/testThermo/testWaterGibbsEnergyOfFormation.m` |
 | `src/analysis/topology/FR/bilinearDecomposition.m` | error | A lone reaction with one substrate and three products gives inconsistent sizes | `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m` |
+| `src/analysis/topology/integerizeS.m` | error | A reaction with a single non-integer coefficient stops the function with an error | `test/verifiedTests/analysis/testTopology/testIntegerizeS.m` |
 | `src/analysis/topology/reactingMoieties/createBIGraph.m` | error | No edges left after removing the energy node errors | `test/verifiedTests/analysis/testTopology/testCreateBIGraph.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateFoodScore.m` | error | Default translation assigned when nargin < 3 | `test/verifiedTests/analysis/testWholeBody/testCalculateFoodScore.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateMacroOriginalDiet.m` | error | A diet in which every amount is zero stops the function with an error | `test/verifiedTests/analysis/testWholeBody/testCalculateMacroOriginalDiet.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDiets.m` | error | Direction false errors | `test/verifiedTests/analysis/testWholeBody/testCompareDiets.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m` | limitation | Identifiers with surrounding blanks are rejected although they are trimmed for the other checks | `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m` | unusable-option | Non-iterative search type cannot run | `test/verifiedTests/analysis/testWholeBody/testSearcher.m` |
+| `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | error | Reactions missing from a model are collected in a character matrix, which fails for names of different lengths | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
+| `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | cosmetic | The numbers of mismatched bounds are displayed instead of returned | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
+| `src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m` | cosmetic | The function name inside the file differs from the file name | `test/verifiedTests/analysis/testWholeBody/testConvertATPflux2StepNumer.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | wrong-result | Mixed matching and non-matching resources return nothing | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | error | Third output unassigned when nothing matches | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/parseSBMLAnnotationField.m` | wrong-result | ChEBI ID keeps a stray 3A prefix in the urn:miriam notation | `test/verifiedTests/base/testIO/testUtilities/testParseSBMLAnnotationField.m` |
@@ -278,6 +287,26 @@
 - **Source lines**: 31-45
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testCheckFormulae.m`
 
+### `src/analysis/thermo/inchi/getMolecularWeight.m`
+
+#### Hydrogens are lost for an InChI whose formula starts with H
+
+- **Severity**: wrong-result
+- **Trigger**: an InChI whose formula layer begins with hydrogen, for example water, InChI=1S/H2O/h1H2
+- **Observed**: the formula returned by getFormulaAndChargeFromInChI is O and the hydrogen count is returned separately, but only the formula is used, so water gets a molecular weight of 16 and 0 hydrogens
+- **Expected**: a molecular weight of 18 and 2 hydrogens for water
+- **Source lines**: 41-61
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m`
+
+#### Warnings are printed without a line break
+
+- **Severity**: cosmetic
+- **Trigger**: an empty InChI or an element that is not in the table, with warnings switched on
+- **Observed**: the warning text is printed with fprintf and no trailing newline, so consecutive warnings run together on one line
+- **Expected**: each warning on its own line
+- **Source lines**: 37, 54
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m`
+
 ### `src/analysis/thermo/reactantContribution/acidDissociationConstant.m`
 
 #### Ka and pKa are returned as square matrices with only the first entries filled
@@ -289,6 +318,17 @@
 - **Source lines**: 62-63
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m`
 
+### `src/analysis/thermo/reactantContribution/waterGibbsEnergyOfFormation.m`
+
+#### The Gibbs energy of formation uses the absolute entropy of water instead of the entropy of formation
+
+- **Severity**: wrong-result
+- **Trigger**: any temperature, for example T = 298.15 K
+- **Observed**: the entropy term uses the absolute entropy of liquid water (about 0.07 kJ/(mol K)) and not the entropy of formation relative to H2 and O2, so the result is about -306.7 kJ/mol at 298.15 K
+- **Expected**: about -237.1 kJ/mol at 298.15 K, the tabulated standard Gibbs energy of formation of liquid water
+- **Source lines**: 39-46
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testWaterGibbsEnergyOfFormation.m`
+
 ### `src/analysis/topology/FR/bilinearDecomposition.m`
 
 #### A lone reaction with one substrate and three products gives inconsistent sizes
@@ -299,6 +339,17 @@
 - **Expected**: the three matrices with consistent sizes and S = A*B*C
 - **Source lines**: 45-53, 124-148, 288-300
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m`
+
+### `src/analysis/topology/integerizeS.m`
+
+#### A reaction with a single non-integer coefficient stops the function with an error
+
+- **Severity**: error
+- **Trigger**: a reaction with exactly one non-zero stoichiometric coefficient that is not an integer, among the reactions to be integerised (for example an exchange reaction 0.5 A ->, with internalRxnsOnly = 0)
+- **Observed**: the least common multiple starts from the first two denominators, so a reaction with one coefficient makes the function stop with an index error
+- **Expected**: the factor is the denominator of the single coefficient
+- **Source lines**: 105
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testIntegerizeS.m`
 
 ### `src/analysis/topology/reactingMoieties/createBIGraph.m`
 
@@ -322,6 +373,17 @@
 - **Source lines**: 45-46
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCalculateFoodScore.m`
 
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateMacroOriginalDiet.m`
+
+#### A diet in which every amount is zero stops the function with an error
+
+- **Severity**: error
+- **Trigger**: a diet whose amounts are all zero, for example {bread, 0}
+- **Observed**: the rows with a zero amount are removed first, which leaves an empty diet, and multiplying the empty list of amounts with the nutrient table fails with "Arrays have incompatible sizes for this operation"
+- **Expected**: zero amounts for all nutrients
+- **Source lines**: 33-37
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCalculateMacroOriginalDiet.m`
+
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDiets.m`
 
 #### Direction false errors
@@ -333,6 +395,17 @@
 - **Source lines**: 73-74
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCompareDiets.m`
 
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m`
+
+#### Identifiers with surrounding blanks are rejected although they are trimmed for the other checks
+
+- **Severity**: limitation
+- **Trigger**: an identifier such as  pyr  with leading or trailing blanks
+- **Observed**: the blank test is applied to the untrimmed text, so the identifier is invalid, while the empty, placeholder and "not in VMH" tests use the trimmed text
+- **Expected**: a blank-padded identifier treated like its trimmed form
+- **Source lines**: 28
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m`
+
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m`
 
 #### Non-iterative search type cannot run
@@ -343,6 +416,37 @@
 - **Expected**: a search that works with the database type the branch needs
 - **Source lines**: 33, 90-133
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testSearcher.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m`
+
+#### Reactions missing from a model are collected in a character matrix, which fails for names of different lengths
+
+- **Severity**: error
+- **Trigger**: two or more reactions missing from the same model whose identifiers have different lengths
+- **Observed**: the names are appended as rows of a character array, so unequal lengths stop the function with "Dimensions of arrays being concatenated are not consistent"
+- **Expected**: the missing reactions returned in a cell array
+- **Source lines**: 48-50
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m`
+
+#### The numbers of mismatched bounds are displayed instead of returned
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: the last two statements show mismatch_lb and mismatch_ub in the command window; they are not outputs
+- **Expected**: the counts returned or not displayed
+- **Source lines**: 84-85
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m`
+
+#### The function name inside the file differs from the file name
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: the file is named convertATPflux2StepNumer.m but declares convertATPflux2StepNumber, so MATLAB resolves calls through the file name and the declared name is ignored
+- **Expected**: the declared name equal to the file name
+- **Source lines**: 1
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testConvertATPflux2StepNumer.m`
 
 ### `src/base/io/utilities/SBML/getDataBases.m`
 

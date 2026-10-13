@@ -12,3 +12,6 @@ Functions of the selection table that the probe showed cannot be tested faithful
 | `src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m` | not Tier 1: changes the MATLAB path | Adds folders to the path and loads further modules through `loadModular`. |
 | `src/analysis/sampling/BarrierRound/utils/loadModular.m` | not Tier 1: changes the MATLAB path | Adds a sibling folder to the path and runs its `config` function. |
 | `src/analysis/sampling/CHRR/chrrExpSampler.m` | not Tier 1: random walk with compiled helpers | Preprocessing and sampling call the BarrierRound routines (compiled MEX code) and the Parallel Computing Toolbox is reported. |
+| `src/analysis/topology/FR/combinatorialDependentRows.m` | not Tier 1: needs a solver | Solves a binary semidefinite program with CVX and MOSEK (`cvx_solver mosek`, `cvx_begin sdp`). |
+| `src/analysis/topology/FR/connectedFR.m` | not Tier 1: external library | Needs the GAIMC graph library (`largest_component`, `scomponents`), which is not part of the toolbox; without it the function only raises an error. |
+| `src/analysis/topology/FR/largestConnectedFR.m` | not Tier 1: external library | Needs the GAIMC graph library (`largest_component`), which is not part of the toolbox; without it the function only raises an error. |
