@@ -6,7 +6,7 @@ User: "yes" to a second scan for Tier-1 functions without a test, then "yes make
 
 ## Final response
 
-Implemented 128 Tier-1 characterization tests (158 candidate functions in the spec table; 31 dropped and documented in `dropped-functions.md`; the candidate list also excluded the two files that share the name `Rate_function`). All 128 pass through the harness runner (`runScriptFile`) and also as independent `%%` sections (no section failures); total time 27.5 s. 34 defects found in this batch are recorded in the test headers in the standard format; the generated registry `test/known-defects.md` now lists 90 defects. No file under `src/` was changed.
+Implemented 128 Tier-1 characterization tests (158 candidate functions in the spec table, of which 30 were dropped and documented in `dropped-functions.md`; the two files that share the name `Rate_function` were excluded before the table was built and are recorded there too). All 128 pass through the harness runner (`runScriptFile`) and also as independent `%%` sections (no section failures); total time 27.5 s. 34 defects found in this batch are recorded in the test headers in the standard format; the generated registry `test/known-defects.md` now lists 90 defects. No file under `src/` was changed.
 
 ## Diff summary
 
