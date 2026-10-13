@@ -64,12 +64,12 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 - [x] T019 [P] [US2] Row: write `test/verifiedTests/analysis/testExploration/testFindOrphanRxns.m` for `src/analysis/exploration/findOrphanRxns.m` (probe, test, run via harness runner, measure coverage).
 - [x] T020 [P] [US2] Row: write `test/verifiedTests/analysis/testExploration/testPrintRxnFormulaLinked.m` for `src/analysis/exploration/surfNetSubfunctions/printRxnFormulaLinked.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T021 [US2] Run the tests of `analysis/testExploration` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T021 [US2] Run the tests of `analysis/testExploration` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testMgPipe`
 
 - [x] T022 [P] [US2] Row: write `test/verifiedTests/analysis/testMgPipe/testMakeDummyModel.m` for `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/makeDummyModel.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T023 [US2] Run the tests of `analysis/testMgPipe` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T023 [US2] Run the tests of `analysis/testMgPipe` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testPersephone`
 
@@ -77,61 +77,61 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 - [x] T025 [P] [US2] Row: write `test/verifiedTests/analysis/testPersephone/testCreateForestPlot.m` for `src/analysis/persephone/createForestPlot.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
 - [x] T026 [P] [US2] Row: write `test/verifiedTests/analysis/testPersephone/testCreateVolcanoPlot.m` for `src/analysis/persephone/createVolcanoPlot.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
 - [x] T027 [P] [US2] Row: write `test/verifiedTests/analysis/testPersephone/testFindPvalCategories.m` for `src/analysis/persephone/findPvalCategories.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T028 [US2] Run the tests of `analysis/testPersephone` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T028 [US2] Run the tests of `analysis/testPersephone` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testRMTA`
 
 - [x] T029 [P] [US2] Row: write `test/verifiedTests/analysis/testRMTA/testMTA_TS.m` for `src/analysis/rMTA/MTA_TS.m` (probe, test, run via harness runner, measure coverage).
 - [x] T030 [P] [US2] Row: write `test/verifiedTests/analysis/testRMTA/testBuildMTAproblemFromModel.m` for `src/analysis/rMTA/buildMTAproblemFromModel.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T031 [US2] Run the tests of `analysis/testRMTA` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T031 [US2] Run the tests of `analysis/testRMTA` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testRelaxedFBA`
 
 - [x] T032 [P] [US2] Row: write `test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m` for `src/analysis/relaxedFBA/plotRelaxedFBA.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
-- [ ] T033 [US2] Run the tests of `analysis/testRelaxedFBA` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T033 [US2] Run the tests of `analysis/testRelaxedFBA` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testRumba`
 
 - [x] T034 [P] [US2] Row: write `test/verifiedTests/analysis/testRumba/testAddMissingReactions.m` for `src/analysis/rumba/addMissingReactions.m` (probe, test, run via harness runner, measure coverage).
 - [x] T035 [P] [US2] Row: write `test/verifiedTests/analysis/testRumba/testPValDistForModelOverlap.m` for `src/analysis/rumba/pValDistForModelOverlap.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T036 [US2] Run the tests of `analysis/testRumba` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T036 [US2] Run the tests of `analysis/testRumba` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testSampling`
 
 - [x] T037 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testRemoveCorrelRxns.m` for `src/analysis/sampling/ACHR/removeCorrelRxns.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T038 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testConfigCMatrix.m` for `src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T039 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testConfigPolytopeSimplifier.m` for `src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T040 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testStandardize_problem.m` for `src/analysis/sampling/BarrierRound/PolytopeSimplifier/standardize_problem.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T041 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testFullification.m` for `src/analysis/sampling/BarrierRound/fullification.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T042 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testGetField.m` for `src/analysis/sampling/BarrierRound/utils/getField.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T043 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testLoadModular.m` for `src/analysis/sampling/BarrierRound/utils/loadModular.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T044 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m` for `src/analysis/sampling/CHRR/chrrExpSampler.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T045 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testChrrParseModel.m` for `src/analysis/sampling/CHRR/chrrParseModel.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T046 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testCalcSampleDifference.m` for `src/analysis/sampling/calcSampleDifference.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T047 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testIdentifyCorrelSets.m` for `src/analysis/sampling/identifyCorrelSets.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T048 [US2] Run the tests of `analysis/testSampling` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T038 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testConfigCMatrix.m` for `src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T039 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testConfigPolytopeSimplifier.m` for `src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T040 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testStandardize_problem.m` for `src/analysis/sampling/BarrierRound/PolytopeSimplifier/standardize_problem.m` (probe, test, run via harness runner, measure coverage).
+- [x] T041 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testFullification.m` for `src/analysis/sampling/BarrierRound/fullification.m` (probe, test, run via harness runner, measure coverage).
+- [x] T042 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testGetField.m` for `src/analysis/sampling/BarrierRound/utils/getField.m` (probe, test, run via harness runner, measure coverage).
+- [x] T043 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testLoadModular.m` for `src/analysis/sampling/BarrierRound/utils/loadModular.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T044 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m` for `src/analysis/sampling/CHRR/chrrExpSampler.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T045 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testChrrParseModel.m` for `src/analysis/sampling/CHRR/chrrParseModel.m` (probe, test, run via harness runner, measure coverage).
+- [x] T046 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testCalcSampleDifference.m` for `src/analysis/sampling/calcSampleDifference.m` (probe, test, run via harness runner, measure coverage).
+- [x] T047 [P] [US2] Row: write `test/verifiedTests/analysis/testSampling/testIdentifyCorrelSets.m` for `src/analysis/sampling/identifyCorrelSets.m` (probe, test, run via harness runner, measure coverage).
+- [x] T048 [US2] Run the tests of `analysis/testSampling` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testSubspaces`
 
-- [ ] T049 [P] [US2] Row: write `test/verifiedTests/analysis/testSubspaces/testAprod.m` for `src/analysis/subspaces/lsqr/aprod.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T050 [P] [US2] Row: write `test/verifiedTests/analysis/testSubspaces/testCgls.m` for `src/analysis/subspaces/lsqr/cgls.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T051 [US2] Run the tests of `analysis/testSubspaces` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T049 [P] [US2] Row: write `test/verifiedTests/analysis/testSubspaces/testAprod.m` for `src/analysis/subspaces/lsqr/aprod.m` (probe, test, run via harness runner, measure coverage).
+- [x] T050 [P] [US2] Row: write `test/verifiedTests/analysis/testSubspaces/testCgls.m` for `src/analysis/subspaces/lsqr/cgls.m` (probe, test, run via harness runner, measure coverage).
+- [x] T051 [US2] Run the tests of `analysis/testSubspaces` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testNullspace`
 
-- [ ] T052 [P] [US2] Row: write `test/verifiedTests/analysis/testNullspace/testNullspaceLUSOLapply2Modes.m` for `src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T053 [US2] Run the tests of `analysis/testNullspace` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T052 [P] [US2] Row: write `test/verifiedTests/analysis/testNullspace/testNullspaceLUSOLapply2Modes.m` for `src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m` (probe, test, run via harness runner, measure coverage).
+- [x] T053 [US2] Run the tests of `analysis/testNullspace` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testSubspaces`
 
-- [ ] T054 [P] [US2] Row: write `test/verifiedTests/analysis/testSubspaces/testProjectSVD.m` for `src/analysis/subspaces/subspaceProjection/projectSVD.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T055 [P] [US2] Row: write `test/verifiedTests/analysis/testSubspaces/testSubspaceSVD.m` for `src/analysis/subspaces/subspaceProjection/subspaceSVD.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T056 [US2] Run the tests of `analysis/testSubspaces` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T054 [P] [US2] Row: write `test/verifiedTests/analysis/testSubspaces/testProjectSVD.m` for `src/analysis/subspaces/subspaceProjection/projectSVD.m` (probe, test, run via harness runner, measure coverage).
+- [x] T055 [P] [US2] Row: write `test/verifiedTests/analysis/testSubspaces/testSubspaceSVD.m` for `src/analysis/subspaces/subspaceProjection/subspaceSVD.m` (probe, test, run via harness runner, measure coverage).
+- [x] T056 [US2] Run the tests of `analysis/testSubspaces` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testThermo`
 
-- [ ] T057 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testAssignQualDir.m` for `src/analysis/thermo/directionalityReport/assignQualDir.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T058 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testCompareQualAndQuantDir.m` for `src/analysis/thermo/directionalityReport/compareQualAndQuantDir.m` (probe, test, run via harness runner, measure coverage).
+- [x] T057 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testAssignQualDir.m` for `src/analysis/thermo/directionalityReport/assignQualDir.m` (probe, test, run via harness runner, measure coverage).
+- [x] T058 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testCompareQualAndQuantDir.m` for `src/analysis/thermo/directionalityReport/compareQualAndQuantDir.m` (probe, test, run via harness runner, measure coverage).
 - [ ] T059 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` for `src/analysis/thermo/inchi/getMolecularWeight.m` (probe, test, run via harness runner, measure coverage).
 - [ ] T060 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testSingleMetaboliteSpeciesReaction.m` for `src/analysis/thermo/reactantContribution/singleMetaboliteSpeciesReaction.m` (probe, test, run via harness runner, measure coverage).
 - [ ] T061 [P] [US2] Row: write `test/verifiedTests/analysis/testThermo/testWaterGibbsEnergyOfFormation.m` for `src/analysis/thermo/reactantContribution/waterGibbsEnergyOfFormation.m` (probe, test, run via harness runner, measure coverage).

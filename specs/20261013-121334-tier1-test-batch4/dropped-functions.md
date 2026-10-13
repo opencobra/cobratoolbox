@@ -8,3 +8,7 @@ Functions of the selection table that the probe showed cannot be tested faithful
 | `src/analysis/persephone/createForestPlot.m` | not Tier 1: plotting | Draws with `scatter`, `line`, `legend` and axes properties; the result is a figure, not data. |
 | `src/analysis/persephone/createVolcanoPlot.m` | not Tier 1: plotting | Draws with `scatter`, `text`, `xline` and axes properties; the result is a figure, not data. |
 | `src/analysis/relaxedFBA/plotRelaxedFBA.m` | not Tier 1: plotting | Creates figures and bar plots from a relaxed FBA solution. |
+| `src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m` | not Tier 1: changes the MATLAB path | Adds folders to the path and runs a `config` script; the effect is persistent session state. |
+| `src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m` | not Tier 1: changes the MATLAB path | Adds folders to the path and loads further modules through `loadModular`. |
+| `src/analysis/sampling/BarrierRound/utils/loadModular.m` | not Tier 1: changes the MATLAB path | Adds a sibling folder to the path and runs its `config` function. |
+| `src/analysis/sampling/CHRR/chrrExpSampler.m` | not Tier 1: random walk with compiled helpers | Preprocessing and sampling call the BarrierRound routines (compiled MEX code) and the Parallel Computing Toolbox is reported. |

@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-58 known defects in 46 functions (17 wrong-result, 20 error, 4 unusable-option, 6 cosmetic, 11 limitation).
+63 known defects in 51 functions (19 wrong-result, 22 error, 4 unusable-option, 7 cosmetic, 11 limitation).
 
 ## Summary
 
@@ -18,10 +18,15 @@
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
 | `src/analysis/sampling/ACHR/convRevSamples.m` | wrong-result | Bounds of a reverse-only reaction are not exchanged correctly | `test/verifiedTests/analysis/testSampling/testConvRevSamples.m` |
 | `src/analysis/sampling/ACHR/removeCorrelRxns.m` | wrong-result | A reaction whose own correlation is below the cutoff gets an empty group and no name | `test/verifiedTests/analysis/testSampling/testRemoveCorrelRxns.m` |
+| `src/analysis/sampling/CHRR/chrrParseModel.m` | error | Extra constraints with a less-than or equality sense cannot be used | `test/verifiedTests/analysis/testSampling/testChrrParseModel.m` |
+| `src/analysis/sampling/calcSampleDifference.m` | cosmetic | Default number of difference profiles does not match the documentation | `test/verifiedTests/analysis/testSampling/testCalcSampleDifference.m` |
+| `src/analysis/sampling/identifyCorrelSets.m` | error | The function stops with an error when no reactions are correlated | `test/verifiedTests/analysis/testSampling/testIdentifyCorrelSets.m` |
 | `src/analysis/subspaces/nullspace/echelonNullspace.m` | wrong-result | The returned null-space matrix L is built with P instead of its transpose | `test/verifiedTests/analysis/testSubspaces/testEchelonNullspace.m` |
+| `src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m` | wrong-result | Mode 2 is not the transpose of mode 1 for a general column permutation | `test/verifiedTests/analysis/testNullspace/testNullspaceLUSOLapply2Modes.m` |
 | `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | error | Omitting the row or column selection makes the call fail | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
 | `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | wrong-result | The forward flux is not projected onto the row space | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
 | `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | limitation | The two consistency checks only catch one direction | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
+| `src/analysis/thermo/directionalityReport/assignQualDir.m` | wrong-result | Reverse reactions are reported as forward | `test/verifiedTests/analysis/testThermo/testAssignQualDir.m` |
 | `src/analysis/thermo/formulae/checkFormulae.m` | limitation | Elements other than C, H, O, P, S, K, Na and N are ignored | `test/verifiedTests/analysis/testThermo/testCheckFormulae.m` |
 | `src/analysis/thermo/reactantContribution/acidDissociationConstant.m` | cosmetic | Ka and pKa are returned as square matrices with only the first entries filled | `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m` |
 | `src/analysis/topology/FR/bilinearDecomposition.m` | error | A lone reaction with one substrate and three products gives inconsistent sizes | `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m` |
@@ -167,6 +172,39 @@
 - **Source lines**: 67-70
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testRemoveCorrelRxns.m`
 
+### `src/analysis/sampling/CHRR/chrrParseModel.m`
+
+#### Extra constraints with a less-than or equality sense cannot be used
+
+- **Severity**: error
+- **Trigger**: model.C, model.d and model.dsense with an L or E entry, or with dsense given as a cell array
+- **Observed**: the sense is read with parentheses for G and with braces for E, so a character dsense with an L entry (or any E entry) stops with "Brace indexing is not supported" and a cell dsense stops with an invalid data type error; only a character dsense made of G entries works
+- **Expected**: L entries are kept, G entries are negated, and E entries raise the documented "not supported" error
+- **Source lines**: 49-56
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testChrrParseModel.m`
+
+### `src/analysis/sampling/calcSampleDifference.m`
+
+#### Default number of difference profiles does not match the documentation
+
+- **Severity**: cosmetic
+- **Trigger**: calcSampleDifference called without nPts
+- **Observed**: the number of profiles is 25 times the number of samples in the first sample set
+- **Expected**: the header states that the default is 10% of the samples
+- **Source lines**: 30-32
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testCalcSampleDifference.m`
+
+### `src/analysis/sampling/identifyCorrelSets.m`
+
+#### The function stops with an error when no reactions are correlated
+
+- **Severity**: error
+- **Trigger**: a correlation matrix (or sample) in which no pair of reactions reaches the threshold
+- **Observed**: no set is created, so the set list is never defined and the function stops with "Unrecognized function or variable setSize"
+- **Expected**: empty outputs
+- **Source lines**: 65-79
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testIdentifyCorrelSets.m`
+
 ### `src/analysis/subspaces/nullspace/echelonNullspace.m`
 
 #### The returned null-space matrix L is built with P instead of its transpose
@@ -177,6 +215,17 @@
 - **Expected**: L*S = 0 for the left and S*L = 0 for the right null space
 - **Source lines**: 95, 145
 - **Documented in**: `test/verifiedTests/analysis/testSubspaces/testEchelonNullspace.m`
+
+### `src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m`
+
+#### Mode 2 is not the transpose of mode 1 for a general column permutation
+
+- **Severity**: wrong-result
+- **Trigger**: a null-space structure whose column permutation p is not its own inverse (for example p = [2; 3; 1])
+- **Observed**: mode 1 places the rows with W(p,:) = Z while mode 2 applies the same assignment to the input instead of its inverse, so the inner products <Z V1, V2> and <V1, Z V2> differ (-159 against 255 for the example factors); the author notes that the permutation handling in mode 2 is uncertain
+- **Expected**: mode 2 returns Z V, so both inner products are equal
+- **Source lines**: 71-73
+- **Documented in**: `test/verifiedTests/analysis/testNullspace/testNullspaceLUSOLapply2Modes.m`
 
 ### `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m`
 
@@ -206,6 +255,17 @@
 - **Expected**: an error for any difference larger than the tolerance in either direction
 - **Source lines**: 67, 73
 - **Documented in**: `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m`
+
+### `src/analysis/thermo/directionalityReport/assignQualDir.m`
+
+#### Reverse reactions are reported as forward
+
+- **Severity**: wrong-result
+- **Trigger**: a reaction with both bounds negative (for example lb = -5, ub = -1)
+- **Observed**: the result vector is created as a logical array, so the value -1 assigned to reverse reactions is stored as true, which is 1 and identical to the forward value
+- **Expected**: qualDir equals -1 for reactions that are irreversible in the reverse direction, as the header states
+- **Source lines**: 27-29
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testAssignQualDir.m`
 
 ### `src/analysis/thermo/formulae/checkFormulae.m`
 
