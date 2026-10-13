@@ -54,7 +54,7 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 - [x] T016 [P] [US1] Row: write `test/verifiedTests/analysis/testSampling/testSetField.m` for `src/analysis/sampling/BarrierRound/utils/setField.m` (probe, test, run via harness runner, measure coverage).
 - [x] T017 [US1] Run the tests of `analysis/testSampling` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
-- [ ] T018 [US1] CHECKPOINT: regenerate the registry, commit locally, report these ten (coverage table, defects, drops) and WAIT for maintainer approval before Phase 3. Do not start Phase 3 without it.
+- [x] T018 [US1] CHECKPOINT: regenerate the registry, commit locally, report these ten (coverage table, defects, drops) and WAIT for maintainer approval before Phase 3. Do not start Phase 3 without it.
 
 ---
 
@@ -416,12 +416,12 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ## Phase 5: Registry, verification and receipt (User Story 4)
 
-- [ ] T217 [US4] Regenerate the registry with `python3 .github/scripts/known_defects.py`; confirm the tool exits 0, every new defect appears once, and no entry is invalid.
-- [ ] T218 [US4] Run all new tests together through `runScriptFile`; record pass count, section failures and total time (target under 10 minutes).
-- [ ] T219 [US4] Verify `git diff --stat -- src` is empty, no test created a file, each function name appears in exactly one test file, and no test asserts a defective behaviour (read each defect entry against its assertions).
-- [ ] T220 [US4] Scan every added or changed file for personal information; none.
-- [ ] T221 [US4] Write the implementation receipt (Prompt, Final response, Diff summary, Tests with covered/total per function, dropped functions with reasons, Unresolved issues) under `specs/20261013-121334-tier1-test-batch4/agent-runs/<UTC-timestamp>-tier1-test-batch4/`.
-- [ ] T222 [US4] Commit on `develop` (author from the local git configuration, no co-author line); do not push.
+- [x] T217 [US4] Regenerate the registry with `python3 .github/scripts/known_defects.py`; confirm the tool exits 0, every new defect appears once, and no entry is invalid.
+- [x] T218 [US4] Run all new tests together through `runScriptFile`; record pass count, section failures and total time (target under 10 minutes).
+- [x] T219 [US4] Verify `git diff --stat -- src` is empty, no test created a file, each function name appears in exactly one test file, and no test asserts a defective behaviour (read each defect entry against its assertions).
+- [x] T220 [US4] Scan every added or changed file for personal information; none.
+- [x] T221 [US4] Write the implementation receipt (Prompt, Final response, Diff summary, Tests with covered/total per function, dropped functions with reasons, Unresolved issues) under `specs/20261013-121334-tier1-test-batch4/agent-runs/<UTC-timestamp>-tier1-test-batch4/`.
+- [x] T222 [US4] Commit on `develop` (author from the local git configuration, no co-author line); do not push.
 
 ---
 
