@@ -20,9 +20,9 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ## Phase 1: Setup
 
-- [ ] T001 Confirm the baseline: on `develop`, `git diff --stat -- src` empty, MATLAB R2025a runs, `initCobraToolbox(false)` succeeds, `python3 .github/scripts/known_defects.py --check` passes.
-- [ ] T002 Prepare the throwaway coverage/harness runner in the session scratchpad (not committed): runs `runScriptFile` from `test/` and the code-coverage plugin per test/source pair, reports status, covered/total lines and failing sections.
-- [ ] T003 Confirm that every new test name is unique under `test/`, and that no function name of the selection table is also a MATLAB built-in or an `external/` function (`which -all`).
+- [x] T001 Confirm the baseline: on `develop`, `git diff --stat -- src` empty, MATLAB R2025a runs, `initCobraToolbox(false)` succeeds, `python3 .github/scripts/known_defects.py --check` passes.
+- [x] T002 Prepare the throwaway coverage/harness runner in the session scratchpad (not committed): runs `runScriptFile` from `test/` and the code-coverage plugin per test/source pair, reports status, covered/total lines and failing sections.
+- [x] T003 Confirm that every new test name is unique under `test/`, and that no function name of the selection table is also a MATLAB built-in or an `external/` function (`which -all`).
 
 ---
 
@@ -30,29 +30,29 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ### Test folder `test/verifiedTests/analysis/testExploration`
 
-- [ ] T004 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindEpistaticInteractions.m` for `src/analysis/exploration/findEpistaticInteractions.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T005 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindHiCarbonRxns.m` for `src/analysis/exploration/findHiCarbonRxns.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T006 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindRootNPmets.m` for `src/analysis/exploration/findRootNPmets.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T007 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindRxnsActiveWithGenes.m` for `src/analysis/exploration/findRxnsActiveWithGenes.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T008 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindRxnsInActiveWithGenes.m` for `src/analysis/exploration/findRxnsInActiveWithGenes.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T009 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testGetObjectiveSense.m` for `src/analysis/exploration/getObjectiveSense.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T010 [US1] Run the tests of `analysis/testExploration` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T004 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindEpistaticInteractions.m` for `src/analysis/exploration/findEpistaticInteractions.m` (probe, test, run via harness runner, measure coverage).
+- [x] T005 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindHiCarbonRxns.m` for `src/analysis/exploration/findHiCarbonRxns.m` (probe, test, run via harness runner, measure coverage).
+- [x] T006 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindRootNPmets.m` for `src/analysis/exploration/findRootNPmets.m` (probe, test, run via harness runner, measure coverage).
+- [x] T007 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindRxnsActiveWithGenes.m` for `src/analysis/exploration/findRxnsActiveWithGenes.m` (probe, test, run via harness runner, measure coverage).
+- [x] T008 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testFindRxnsInActiveWithGenes.m` for `src/analysis/exploration/findRxnsInActiveWithGenes.m` (probe, test, run via harness runner, measure coverage).
+- [x] T009 [P] [US1] Row: write `test/verifiedTests/analysis/testExploration/testGetObjectiveSense.m` for `src/analysis/exploration/getObjectiveSense.m` (probe, test, run via harness runner, measure coverage).
+- [x] T010 [US1] Run the tests of `analysis/testExploration` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testAdditionalAnalysis`
 
-- [ ] T011 [P] [US1] Row: write `test/verifiedTests/analysis/testAdditionalAnalysis/testInorder.m` for `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/inorder.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T012 [US1] Run the tests of `analysis/testAdditionalAnalysis` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T011 [P] [US1] Row: write `test/verifiedTests/analysis/testAdditionalAnalysis/testInorder.m` for `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/inorder.m` (probe, test, run via harness runner, measure coverage).
+- [x] T012 [US1] Run the tests of `analysis/testAdditionalAnalysis` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testNutritionAlgorithm`
 
-- [ ] T013 [P] [US1] Row: write `test/verifiedTests/analysis/testNutritionAlgorithm/testGetMolFormula.m` for `src/analysis/nutritionAlgorithm/getMolFormula.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T014 [US1] Run the tests of `analysis/testNutritionAlgorithm` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T013 [P] [US1] Row: write `test/verifiedTests/analysis/testNutritionAlgorithm/testGetMolFormula.m` for `src/analysis/nutritionAlgorithm/getMolFormula.m` (probe, test, run via harness runner, measure coverage).
+- [x] T014 [US1] Run the tests of `analysis/testNutritionAlgorithm` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/analysis/testSampling`
 
-- [ ] T015 [P] [US1] Row: write `test/verifiedTests/analysis/testSampling/testConvRevSamples.m` for `src/analysis/sampling/ACHR/convRevSamples.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T016 [P] [US1] Row: write `test/verifiedTests/analysis/testSampling/testSetField.m` for `src/analysis/sampling/BarrierRound/utils/setField.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T017 [US1] Run the tests of `analysis/testSampling` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T015 [P] [US1] Row: write `test/verifiedTests/analysis/testSampling/testConvRevSamples.m` for `src/analysis/sampling/ACHR/convRevSamples.m` (probe, test, run via harness runner, measure coverage).
+- [x] T016 [P] [US1] Row: write `test/verifiedTests/analysis/testSampling/testSetField.m` for `src/analysis/sampling/BarrierRound/utils/setField.m` (probe, test, run via harness runner, measure coverage).
+- [x] T017 [US1] Run the tests of `analysis/testSampling` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 - [ ] T018 [US1] CHECKPOINT: regenerate the registry, commit locally, report these ten (coverage table, defects, drops) and WAIT for maintainer approval before Phase 3. Do not start Phase 3 without it.
 
