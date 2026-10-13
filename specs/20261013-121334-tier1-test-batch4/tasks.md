@@ -227,99 +227,99 @@ Per test file: read the source; call the function in MATLAB (`matlab -batch`) wi
 
 ### Test folder `test/verifiedTests/dataIntegration/testXomicsToModel`
 
-- [ ] T118 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` for `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T119 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testXomicsToModel/testDestroyDummyModel.m` for `src/dataIntegration/XomicsToModel/oneRxnPerActiveGene/destroyDummyModel.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T120 [US2] Run the tests of `dataIntegration/testXomicsToModel` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T118 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` for `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` (probe, test, run via harness runner, measure coverage).
+- [x] T119 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testXomicsToModel/testDestroyDummyModel.m` for `src/dataIntegration/XomicsToModel/oneRxnPerActiveGene/destroyDummyModel.m` (probe, test, run via harness runner, measure coverage).
+- [x] T120 [US2] Run the tests of `dataIntegration/testXomicsToModel` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testChemoInformatics`
 
-- [ ] T121 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testChemoInformatics/testSortAtomMappingIdx.m` for `src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T122 [US2] Run the tests of `dataIntegration/testChemoInformatics` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T121 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testChemoInformatics/testSortAtomMappingIdx.m` for `src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m` (probe, test, run via harness runner, measure coverage).
+- [x] T122 [US2] Run the tests of `dataIntegration/testChemoInformatics` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testATN`
 
-- [ ] T123 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testATN/testExtractElementalTransitionNetwork.m` for `src/dataIntegration/fluxomics/atomTransition/ATN/extractElementalTransitionNetwork.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T124 [US2] Run the tests of `dataIntegration/testATN` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T123 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testATN/testExtractElementalTransitionNetwork.m` for `src/dataIntegration/fluxomics/atomTransition/ATN/extractElementalTransitionNetwork.m` (probe, test, run via harness runner, measure coverage).
+- [x] T124 [US2] Run the tests of `dataIntegration/testATN` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testC13solver`
 
-- [ ] T125 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testCdv2idv.m` for `src/dataIntegration/fluxomics/c13solver/cdv2idv.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T126 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testIdv2cdv.m` for `src/dataIntegration/fluxomics/c13solver/idv2cdv.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T127 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testIdv2mdv.m` for `src/dataIntegration/fluxomics/c13solver/idv2mdv.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T128 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testRatioScore.m` for `src/dataIntegration/fluxomics/c13solver/ratioScore.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T129 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testRatioScore_grad.m` for `src/dataIntegration/fluxomics/c13solver/ratioScore_grad.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T130 [US2] Run the tests of `dataIntegration/testC13solver` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T125 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testCdv2idv.m` for `src/dataIntegration/fluxomics/c13solver/cdv2idv.m` (probe, test, run via harness runner, measure coverage).
+- [x] T126 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testIdv2cdv.m` for `src/dataIntegration/fluxomics/c13solver/idv2cdv.m` (probe, test, run via harness runner, measure coverage).
+- [x] T127 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testIdv2mdv.m` for `src/dataIntegration/fluxomics/c13solver/idv2mdv.m` (probe, test, run via harness runner, measure coverage).
+- [x] T128 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testRatioScore.m` for `src/dataIntegration/fluxomics/c13solver/ratioScore.m` (probe, test, run via harness runner, measure coverage).
+- [x] T129 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testC13solver/testRatioScore_grad.m` for `src/dataIntegration/fluxomics/c13solver/ratioScore_grad.m` (probe, test, run via harness runner, measure coverage).
+- [x] T130 [US2] Run the tests of `dataIntegration/testC13solver` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testFluxomics`
 
-- [ ] T131 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testFluxomics/testGetBinsOfFluxes.m` for `src/dataIntegration/fluxomics/getBinsOfFluxes.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T132 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testFluxomics/testGetRandGlc.m` for `src/dataIntegration/fluxomics/getRandGlc.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T133 [US2] Run the tests of `dataIntegration/testFluxomics` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T131 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testFluxomics/testGetBinsOfFluxes.m` for `src/dataIntegration/fluxomics/getBinsOfFluxes.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T132 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testFluxomics/testGetRandGlc.m` for `src/dataIntegration/fluxomics/getRandGlc.m` (probe, test, run via harness runner, measure coverage).
+- [x] T133 [US2] Run the tests of `dataIntegration/testFluxomics` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testMetaboAnnotator`
 
-- [ ] T134 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m` for `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T135 [US2] Run the tests of `dataIntegration/testMetaboAnnotator` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T134 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m` for `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m` (probe, test, run via harness runner, measure coverage).
+- [x] T135 [US2] Run the tests of `dataIntegration/testMetaboAnnotator` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testMOOMIN`
 
-- [ ] T136 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testMOOMIN/testWeightFunction.m` for `src/dataIntegration/transcriptomics/MOOMIN/weightFunction.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T137 [US2] Run the tests of `dataIntegration/testMOOMIN` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T136 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testMOOMIN/testWeightFunction.m` for `src/dataIntegration/transcriptomics/MOOMIN/weightFunction.m` (probe, test, run via harness runner, measure coverage).
+- [x] T137 [US2] Run the tests of `dataIntegration/testMOOMIN` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testEFlux`
 
-- [ ] T138 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testEFlux/testVerifyEFluxExpressionStruct.m` for `src/dataIntegration/transcriptomics/eFlux/verifyEFluxExpressionStruct.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T139 [US2] Run the tests of `dataIntegration/testEFlux` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T138 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testEFlux/testVerifyEFluxExpressionStruct.m` for `src/dataIntegration/transcriptomics/eFlux/verifyEFluxExpressionStruct.m` (probe, test, run via harness runner, measure coverage).
+- [x] T139 [US2] Run the tests of `dataIntegration/testEFlux` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testPreprocessing`
 
-- [ ] T140 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testPreprocessing/testGPRparser.m` for `src/dataIntegration/transcriptomics/preprocessing/GPRparser.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T141 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testPreprocessing/testFindUsedGenesLevels.m` for `src/dataIntegration/transcriptomics/preprocessing/findUsedGenesLevels.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T142 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` for `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T143 [US2] Run the tests of `dataIntegration/testPreprocessing` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T140 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testPreprocessing/testGPRparser.m` for `src/dataIntegration/transcriptomics/preprocessing/GPRparser.m` (probe, test, run via harness runner, measure coverage).
+- [x] T141 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testPreprocessing/testFindUsedGenesLevels.m` for `src/dataIntegration/transcriptomics/preprocessing/findUsedGenesLevels.m` (probe, test, run via harness runner, measure coverage).
+- [x] T142 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` for `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` (probe, test, run via harness runner, measure coverage).
+- [x] T143 [US2] Run the tests of `dataIntegration/testPreprocessing` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/dataIntegration/testRFASTCORMICS`
 
-- [ ] T144 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testGPRrulesMapper.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/GPRrulesMapper.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T145 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testCreateFitL.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T146 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testCreateFitR.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T147 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testFindOrganicExRxns.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/findOrganicExRxns.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T148 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testFixIrr.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/fixIrr.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T149 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testMapExpressionToModel.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/mapExpressionToModel.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T150 [US2] Run the tests of `dataIntegration/testRFASTCORMICS` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T144 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testGPRrulesMapper.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/GPRrulesMapper.m` (probe, test, run via harness runner, measure coverage).
+- [x] T145 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testCreateFitL.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T146 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testCreateFitR.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m` (probe, test, run via harness runner, measure coverage). (DROPPED: see dropped-functions.md)
+- [x] T147 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testFindOrganicExRxns.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/findOrganicExRxns.m` (probe, test, run via harness runner, measure coverage).
+- [x] T148 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testFixIrr.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/fixIrr.m` (probe, test, run via harness runner, measure coverage).
+- [x] T149 [P] [US2] Row: write `test/verifiedTests/dataIntegration/testRFASTCORMICS/testMapExpressionToModel.m` for `src/dataIntegration/transcriptomics/rFASTCORMICS/mapExpressionToModel.m` (probe, test, run via harness runner, measure coverage).
+- [x] T150 [US2] Run the tests of `dataIntegration/testRFASTCORMICS` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/design/testTrimGdel`
 
-- [ ] T151 [P] [US2] Row: write `test/verifiedTests/design/testTrimGdel/testCalculateGR.m` for `src/design/TrimGdel/calculateGR.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T152 [US2] Run the tests of `design/testTrimGdel` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T151 [P] [US2] Row: write `test/verifiedTests/design/testTrimGdel/testCalculateGR.m` for `src/design/TrimGdel/calculateGR.m` (probe, test, run via harness runner, measure coverage).
+- [x] T152 [US2] Run the tests of `design/testTrimGdel` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/design/testDesign`
 
-- [ ] T153 [P] [US2] Row: write `test/verifiedTests/design/testDesign/testAugmentBOF.m` for `src/design/augmentBOF.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T154 [P] [US2] Row: write `test/verifiedTests/design/testDesign/testCreateBilevelMILPproblem.m` for `src/design/createBilevelMILPproblem.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T155 [US2] Run the tests of `design/testDesign` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T153 [P] [US2] Row: write `test/verifiedTests/design/testDesign/testAugmentBOF.m` for `src/design/augmentBOF.m` (probe, test, run via harness runner, measure coverage).
+- [x] T154 [P] [US2] Row: write `test/verifiedTests/design/testDesign/testCreateBilevelMILPproblem.m` for `src/design/createBilevelMILPproblem.m` (probe, test, run via harness runner, measure coverage).
+- [x] T155 [US2] Run the tests of `design/testDesign` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/reconstruction/testComparison`
 
-- [ ] T156 [P] [US2] Row: write `test/verifiedTests/reconstruction/testComparison/testCompareModels.m` for `src/reconstruction/comparison/compareModels.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T157 [US2] Run the tests of `reconstruction/testComparison` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T156 [P] [US2] Row: write `test/verifiedTests/reconstruction/testComparison/testCompareModels.m` for `src/reconstruction/comparison/compareModels.m` (probe, test, run via harness runner, measure coverage).
+- [x] T157 [US2] Run the tests of `reconstruction/testComparison` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/reconstruction/testModelBorgifier`
 
-- [ ] T158 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testTmodelFields.m` for `src/reconstruction/comparison/modelBorgifier/TmodelFields.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T159 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` for `src/reconstruction/comparison/modelBorgifier/charpos.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T160 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testColText.m` for `src/reconstruction/comparison/modelBorgifier/colText.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T161 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testFindRxnMatch.m` for `src/reconstruction/comparison/modelBorgifier/findRxnMatch.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T162 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testFixChemFormulas.m` for `src/reconstruction/comparison/modelBorgifier/fixChemFormulas.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T163 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testFixNames.m` for `src/reconstruction/comparison/modelBorgifier/fixNames.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T164 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testIsmatlab.m` for `src/reconstruction/comparison/modelBorgifier/ismatlab.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T165 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testOptWeightExp.m` for `src/reconstruction/comparison/modelBorgifier/optWeightExp.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T166 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testOptWeightLin.m` for `src/reconstruction/comparison/modelBorgifier/optWeightLin.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T167 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testOrderModelFieldsBorg.m` for `src/reconstruction/comparison/modelBorgifier/orderModelFieldsBorg.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T168 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testOrganizeModelCool.m` for `src/reconstruction/comparison/modelBorgifier/organizeModelCool.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T169 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testRemoveProblematicCharacters.m` for `src/reconstruction/comparison/modelBorgifier/removeProblematicCharacters.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T170 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testRowvector.m` for `src/reconstruction/comparison/modelBorgifier/rowvector.m` (probe, test, run via harness runner, measure coverage).
-- [ ] T171 [US2] Run the tests of `reconstruction/testModelBorgifier` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
+- [x] T158 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testTmodelFields.m` for `src/reconstruction/comparison/modelBorgifier/TmodelFields.m` (probe, test, run via harness runner, measure coverage).
+- [x] T159 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` for `src/reconstruction/comparison/modelBorgifier/charpos.m` (probe, test, run via harness runner, measure coverage).
+- [x] T160 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testColText.m` for `src/reconstruction/comparison/modelBorgifier/colText.m` (probe, test, run via harness runner, measure coverage).
+- [x] T161 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testFindRxnMatch.m` for `src/reconstruction/comparison/modelBorgifier/findRxnMatch.m` (probe, test, run via harness runner, measure coverage).
+- [x] T162 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testFixChemFormulas.m` for `src/reconstruction/comparison/modelBorgifier/fixChemFormulas.m` (probe, test, run via harness runner, measure coverage).
+- [x] T163 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testFixNames.m` for `src/reconstruction/comparison/modelBorgifier/fixNames.m` (probe, test, run via harness runner, measure coverage).
+- [x] T164 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testIsmatlab.m` for `src/reconstruction/comparison/modelBorgifier/ismatlab.m` (probe, test, run via harness runner, measure coverage).
+- [x] T165 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testOptWeightExp.m` for `src/reconstruction/comparison/modelBorgifier/optWeightExp.m` (probe, test, run via harness runner, measure coverage).
+- [x] T166 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testOptWeightLin.m` for `src/reconstruction/comparison/modelBorgifier/optWeightLin.m` (probe, test, run via harness runner, measure coverage).
+- [x] T167 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testOrderModelFieldsBorg.m` for `src/reconstruction/comparison/modelBorgifier/orderModelFieldsBorg.m` (probe, test, run via harness runner, measure coverage).
+- [x] T168 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testOrganizeModelCool.m` for `src/reconstruction/comparison/modelBorgifier/organizeModelCool.m` (probe, test, run via harness runner, measure coverage).
+- [x] T169 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testRemoveProblematicCharacters.m` for `src/reconstruction/comparison/modelBorgifier/removeProblematicCharacters.m` (probe, test, run via harness runner, measure coverage).
+- [x] T170 [P] [US2] Row: write `test/verifiedTests/reconstruction/testModelBorgifier/testRowvector.m` for `src/reconstruction/comparison/modelBorgifier/rowvector.m` (probe, test, run via harness runner, measure coverage).
+- [x] T171 [US2] Run the tests of `reconstruction/testModelBorgifier` through `runScriptFile` and measure coverage; fix gaps until 100% or document each exemption; record covered/total.
 
 ### Test folder `test/verifiedTests/reconstruction/testDemeter`
 

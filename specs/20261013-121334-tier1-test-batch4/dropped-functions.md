@@ -23,3 +23,6 @@ Functions of the selection table that the probe showed cannot be tested faithful
 | `src/base/io/writeGDXFromCOBRA.m` | not Tier 1: writes a file and needs GAMS | Writes a GDX file with the GAMS interface. |
 | `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m` | not Tier 1: needs a solver | Creates a `Cplex()` object and stops with an error when CPLEX is not installed or licensed. |
 | `src/base/solvers/param/parseSolverParameters.m` | not Tier 1: depends on solver configuration | Reads the default solver and its parameter defaults from the solver state, so the result depends on the installed and configured solvers. |
+| `src/dataIntegration/fluxomics/getBinsOfFluxes.m` | always errors on its main path | After the early exits (too few samples), the output variable is a number (`output = 0`) and the function then assigns `output.samps`, which fails for every input that reaches that line. |
+| `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m` | not Tier 1: MATLAB toolbox | Uses `fit`, `fittype` and `fitoptions` (Curve Fitting Toolbox). |
+| `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m` | not Tier 1: MATLAB toolbox | Uses `fit`, `fittype` and `fitoptions` (Curve Fitting Toolbox). |

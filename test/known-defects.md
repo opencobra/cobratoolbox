@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-73 known defects in 59 functions (21 wrong-result, 25 error, 4 unusable-option, 11 cosmetic, 12 limitation).
+82 known defects in 68 functions (23 wrong-result, 29 error, 4 unusable-option, 13 cosmetic, 13 limitation).
 
 ## Summary
 
@@ -63,16 +63,25 @@
 | `src/base/utilities/mapAontoB.m` | wrong-result | Without Ain the matched keys of B are returned wrongly | `test/verifiedTests/base/testTools/testMapAontoB.m` |
 | `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
 | `src/dataIntegration/XomicsToModel/analysis/compareXomicsModels.m` | error | Fewer than two models give no outputs | `test/verifiedTests/dataIntegration/testXomicsToModel/testCompareXomicsModels.m` |
+| `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` | error | The deleted reactions are not computed when the old model is empty and no deletion lists are given | `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | error | Several layers containing the letter p error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
+| `src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m` | cosmetic | The flag for a non-ascending file is overwritten and the function always returns the file text | `test/verifiedTests/dataIntegration/testChemoInformatics/testSortAtomMappingIdx.m` |
 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | cosmetic | Negative parameters print a message and return empty | `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m` |
 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | error | k = 0 errors | `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m` |
+| `src/dataIntegration/fluxomics/c13solver/cdv2idv.m` | error | Asking for zero carbons fails once the cache holds an entry | `test/verifiedTests/dataIntegration/testC13solver/testCdv2idv.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m` | cosmetic | Loop index printed to the console | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCleanUpMetabolite_structure.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/sanityCheckMetIds.m` | limitation | Metabolites without a charge field make the check fail | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testSanityCheckMetIds.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
+| `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` | wrong-result | With minSum the reported gene does not belong to the selected alternative | `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` |
+| `src/dataIntegration/transcriptomics/rFASTCORMICS/mapExpressionToModel.m` | error | Invalid input is reported by a message and leaves the output unassigned | `test/verifiedTests/dataIntegration/testRFASTCORMICS/testMapExpressionToModel.m` |
+| `src/design/augmentBOF.m` | error | The outputs are not assigned when the function cannot augment the objective | `test/verifiedTests/design/testDesign/testAugmentBOF.m` |
+| `src/reconstruction/comparison/compareModels.m` | limitation | Two arguments with the same variable name make the function stop | `test/verifiedTests/reconstruction/testComparison/testCompareModels.m` |
 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | wrong-result | Backward-only reactions list the substrate on both sides | `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m` |
+| `src/reconstruction/comparison/modelBorgifier/charpos.m` | wrong-result | The letters i and j count as digits | `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` |
 | `src/reconstruction/comparison/modelBorgifier/countC.m` | wrong-result | Elements whose symbol starts with C are counted as carbon | `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m` |
+| `src/reconstruction/comparison/modelBorgifier/findRxnMatch.m` | cosmetic | The separators between joined metabolites lose their blank | `test/verifiedTests/reconstruction/testModelBorgifier/testFindRxnMatch.m` |
 | `src/reconstruction/comparison/modelBorgifier/mergeTrxns.m` | error | A call with nothing to merge fails | `test/verifiedTests/reconstruction/testModelBorgifier/testMergeTrxns.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | cosmetic | Header name listed in removedStrains | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | wrong-result | Unknown strain row not removed when the headers are equal | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
@@ -657,6 +666,17 @@
 - **Source lines**: 93-95
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testCompareXomicsModels.m`
 
+### `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m`
+
+#### The deleted reactions are not computed when the old model is empty and no deletion lists are given
+
+- **Severity**: error
+- **Trigger**: an empty old model and no deletedRxns (and no deletedMets), for example coreMetRxnAnalysis([], model, coreMets, coreRxns)
+- **Observed**: when deletedRxns is missing and the old model is empty, the code sets deletedMets to empty instead of deletedRxns, so the reaction analysis later reads an undefined variable and stops with an error
+- **Expected**: an empty list of deleted reactions
+- **Source lines**: 48-52
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m`
+
 ### `src/dataIntegration/chemoInformatics/editChemicalFormula.m`
 
 #### Element with zero atoms stays in the formula
@@ -688,6 +708,17 @@
 - **Source lines**: 63
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m`
 
+### `src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m`
+
+#### The flag for a non-ascending file is overwritten and the function always returns the file text
+
+- **Severity**: cosmetic
+- **Trigger**: any call, including product atoms whose mapping number has no substrate partner
+- **Observed**: the output ascendingRxnFile is set to false for unmapped product atoms and non-zero sums, but the last statement replaces it by the renumbered file text, so the false value is never returned
+- **Expected**: the documented flag or text, not a mix of both
+- **Source lines**: 36-45
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testSortAtomMappingIdx.m`
+
 ### `src/dataIntegration/fluxomics/c13solver/Combination.m`
 
 #### Negative parameters print a message and return empty
@@ -707,6 +738,17 @@
 - **Expected**: one empty combination
 - **Source lines**: 23
 - **Documented in**: `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m`
+
+### `src/dataIntegration/fluxomics/c13solver/cdv2idv.m`
+
+#### Asking for zero carbons fails once the cache holds an entry
+
+- **Severity**: error
+- **Trigger**: cdv2idv(0) called after the cache has been filled for any n >= 1
+- **Observed**: the cache test reads CDV2IDVSAV{0}, and index 0 is invalid, so the call stops with "Array indices must be positive integers or logical values"
+- **Expected**: the identity for zero carbons, as when the cache is empty
+- **Source lines**: 5-10
+- **Documented in**: `test/verifiedTests/dataIntegration/testC13solver/testCdv2idv.m`
 
 ### `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m`
 
@@ -741,6 +783,50 @@
 - **Source lines**: 19-28
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m`
 
+### `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m`
+
+#### With minSum the reported gene does not belong to the selected alternative
+
+- **Severity**: wrong-result
+- **Trigger**: minSum set and a rule with an alternative that has more than one gene before the selected alternative, for example (g1 and g2) or g3 with g3 selected
+- **Observed**: the list of candidate genes has one entry per gene while the list of values has one entry per alternative, so the position of the minimum points into the wrong list entry (here g2 is reported instead of g3)
+- **Expected**: the gene of the selected alternative
+- **Source lines**: 44-49
+- **Documented in**: `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m`
+
+### `src/dataIntegration/transcriptomics/rFASTCORMICS/mapExpressionToModel.m`
+
+#### Invalid input is reported by a message and leaves the output unassigned
+
+- **Severity**: error
+- **Trigger**: a dictionary that is not a table, row names with empty entries, or row names that match nothing in the dictionary, when the output is requested
+- **Observed**: the function prints a message (or nothing for the no-match case) and returns before assigning mapping, so a call with an output argument stops with "Output argument mapping not assigned"
+- **Expected**: an error with a clear message, or an empty mapping
+- **Source lines**: 35-50
+- **Documented in**: `test/verifiedTests/dataIntegration/testRFASTCORMICS/testMapExpressionToModel.m`
+
+### `src/design/augmentBOF.m`
+
+#### The outputs are not assigned when the function cannot augment the objective
+
+- **Severity**: error
+- **Trigger**: a target reaction whose metabolite takes part in three or more reactions, called with output arguments
+- **Observed**: the function returns early without assigning model or rxn_name, so a call that requests the outputs stops with "Output argument rxn_name ... not assigned"
+- **Expected**: the unchanged model and an empty reaction name
+- **Source lines**: 41-47
+- **Documented in**: `test/verifiedTests/design/testDesign/testAugmentBOF.m`
+
+### `src/reconstruction/comparison/compareModels.m`
+
+#### Two arguments with the same variable name make the function stop
+
+- **Severity**: limitation
+- **Trigger**: compareModels called with arguments that have the same variable name, for example compareModels(A, A)
+- **Observed**: the names of the input variables are used as table column names and two columns named alike make the table construction fail with "Duplicate table variable name"
+- **Expected**: a table with distinct column names
+- **Source lines**: 16-19
+- **Documented in**: `test/verifiedTests/reconstruction/testComparison/testCompareModels.m`
+
 ### `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m`
 
 #### Backward-only reactions list the substrate on both sides
@@ -752,6 +838,17 @@
 - **Source lines**: 59
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m`
 
+### `src/reconstruction/comparison/modelBorgifier/charpos.m`
+
+#### The letters i and j count as digits
+
+- **Severity**: wrong-result
+- **Trigger**: a text containing the letter i or j (or other characters that str2double reads as numbers)
+- **Observed**: each character is tested with str2double, which reads i and j as the imaginary unit, so charpos reports them as numeric
+- **Expected**: only the digits 0 to 9 reported as numeric
+- **Source lines**: 4-6
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m`
+
 ### `src/reconstruction/comparison/modelBorgifier/countC.m`
 
 #### Elements whose symbol starts with C are counted as carbon
@@ -762,6 +859,17 @@
 - **Expected**: 0 carbon atoms
 - **Source lines**: 39-47
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m`
+
+### `src/reconstruction/comparison/modelBorgifier/findRxnMatch.m`
+
+#### The separators between joined metabolites lose their blank
+
+- **Severity**: cosmetic
+- **Trigger**: a reaction with several reactants or products, or the score and index of a match
+- **Observed**: the pieces are joined with strcat and the separator ; followed by a blank, but strcat removes the trailing blank of character arguments, so the lists read a;b and the score reads 0.9;2
+- **Expected**: the separators written in the code: a; b and 0.9; 2
+- **Source lines**: 37, 41-47, 91
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testFindRxnMatch.m`
 
 ### `src/reconstruction/comparison/modelBorgifier/mergeTrxns.m`
 
