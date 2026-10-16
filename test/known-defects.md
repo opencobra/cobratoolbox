@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-56 known defects in 44 functions (15 wrong-result, 20 error, 4 unusable-option, 6 cosmetic, 11 limitation).
+90 known defects in 73 functions (25 wrong-result, 31 error, 6 unusable-option, 15 cosmetic, 13 limitation).
 
 ## Summary
 
@@ -16,21 +16,42 @@
 | `src/analysis/igemRNA/GT1/findGenesBelowThresholdGT1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testGT1/testFindGenesBelowThresholdGT1.m` |
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
+| `src/analysis/sampling/ACHR/convRevSamples.m` | wrong-result | Bounds of a reverse-only reaction are not exchanged correctly | `test/verifiedTests/analysis/testSampling/testConvRevSamples.m` |
+| `src/analysis/sampling/ACHR/removeCorrelRxns.m` | wrong-result | A reaction whose own correlation is below the cutoff gets an empty group and no name | `test/verifiedTests/analysis/testSampling/testRemoveCorrelRxns.m` |
+| `src/analysis/sampling/CHRR/chrrParseModel.m` | error | Extra constraints with a less-than or equality sense cannot be used | `test/verifiedTests/analysis/testSampling/testChrrParseModel.m` |
+| `src/analysis/sampling/calcSampleDifference.m` | cosmetic | Default number of difference profiles does not match the documentation | `test/verifiedTests/analysis/testSampling/testCalcSampleDifference.m` |
+| `src/analysis/sampling/identifyCorrelSets.m` | error | The function stops with an error when no reactions are correlated | `test/verifiedTests/analysis/testSampling/testIdentifyCorrelSets.m` |
 | `src/analysis/subspaces/nullspace/echelonNullspace.m` | wrong-result | The returned null-space matrix L is built with P instead of its transpose | `test/verifiedTests/analysis/testSubspaces/testEchelonNullspace.m` |
+| `src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m` | wrong-result | Mode 2 is not the transpose of mode 1 for a general column permutation | `test/verifiedTests/analysis/testNullspace/testNullspaceLUSOLapply2Modes.m` |
 | `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | error | Omitting the row or column selection makes the call fail | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
 | `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | wrong-result | The forward flux is not projected onto the row space | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
 | `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m` | limitation | The two consistency checks only catch one direction | `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m` |
+| `src/analysis/thermo/directionalityReport/assignQualDir.m` | wrong-result | Reverse reactions are reported as forward | `test/verifiedTests/analysis/testThermo/testAssignQualDir.m` |
 | `src/analysis/thermo/formulae/checkFormulae.m` | limitation | Elements other than C, H, O, P, S, K, Na and N are ignored | `test/verifiedTests/analysis/testThermo/testCheckFormulae.m` |
+| `src/analysis/thermo/inchi/getMolecularWeight.m` | wrong-result | Hydrogens are lost for an InChI whose formula starts with H | `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` |
+| `src/analysis/thermo/inchi/getMolecularWeight.m` | cosmetic | Warnings are printed without a line break | `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` |
 | `src/analysis/thermo/reactantContribution/acidDissociationConstant.m` | cosmetic | Ka and pKa are returned as square matrices with only the first entries filled | `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m` |
+| `src/analysis/thermo/reactantContribution/waterGibbsEnergyOfFormation.m` | wrong-result | The Gibbs energy of formation uses the absolute entropy of water instead of the entropy of formation | `test/verifiedTests/analysis/testThermo/testWaterGibbsEnergyOfFormation.m` |
 | `src/analysis/topology/FR/bilinearDecomposition.m` | error | A lone reaction with one substrate and three products gives inconsistent sizes | `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m` |
+| `src/analysis/topology/integerizeS.m` | error | A reaction with a single non-integer coefficient stops the function with an error | `test/verifiedTests/analysis/testTopology/testIntegerizeS.m` |
 | `src/analysis/topology/reactingMoieties/createBIGraph.m` | error | No edges left after removing the energy node errors | `test/verifiedTests/analysis/testTopology/testCreateBIGraph.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateFoodScore.m` | error | Default translation assigned when nargin < 3 | `test/verifiedTests/analysis/testWholeBody/testCalculateFoodScore.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateMacroOriginalDiet.m` | error | A diet in which every amount is zero stops the function with an error | `test/verifiedTests/analysis/testWholeBody/testCalculateMacroOriginalDiet.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDiets.m` | error | Direction false errors | `test/verifiedTests/analysis/testWholeBody/testCompareDiets.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m` | limitation | Identifiers with surrounding blanks are rejected although they are trimmed for the other checks | `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m` | unusable-option | Non-iterative search type cannot run | `test/verifiedTests/analysis/testWholeBody/testSearcher.m` |
+| `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | error | Reactions missing from a model are collected in a character matrix, which fails for names of different lengths | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
+| `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | cosmetic | The numbers of mismatched bounds are displayed instead of returned | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
+| `src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m` | cosmetic | The function name inside the file differs from the file name | `test/verifiedTests/analysis/testWholeBody/testConvertATPflux2StepNumer.m` |
+| `src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/setSimulationConstraints.m` | cosmetic | Warnings stay switched off after the call | `test/verifiedTests/analysis/testWholeBody/testSetSimulationConstraints.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | wrong-result | Mixed matching and non-matching resources return nothing | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | error | Third output unassigned when nothing matches | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/parseSBMLAnnotationField.m` | wrong-result | ChEBI ID keeps a stray 3A prefix in the urn:miriam notation | `test/verifiedTests/base/testIO/testUtilities/testParseSBMLAnnotationField.m` |
 | `src/base/parseMetNames.m` | limitation | Mixed or longer compartment notations are not parsed | `test/verifiedTests/base/testTools/testParseMetNames.m` |
+| `src/base/solvers/entropicFBA/processConcConstraints.m` | cosmetic | Documented defaults for the concentration unit and the maximum concentration differ from the code | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
+| `src/base/solvers/entropicFBA/processConcConstraints.m` | unusable-option | The case dxReplacement always stops with an error | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
+| `src/base/solvers/entropicFBA/processConcConstraints.m` | wrong-result | The default row selection indexes the first row repeatedly | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
+| `src/base/solvers/entropicFBA/processConcConstraints.m` | error | The parameter printLevel is required although it is documented as optional | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/mosek/inspectMosekProb.m` | error | A constraint matrix without rows or columns stops the inspection with an error | `test/verifiedTests/base/testSolvers/testInspectMosekProb.m` |
 | `src/base/solvers/mosek/inspectMosekProb.m` | limitation | A matrix field of an integer class stops the inspection with an error | `test/verifiedTests/base/testSolvers/testInspectMosekProb.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | error | The SCLP profiles fail when feasTol or numTol is not supplied | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
@@ -46,23 +67,36 @@
 | `src/base/utilities/mapAontoB.m` | wrong-result | Without Ain the matched keys of B are returned wrongly | `test/verifiedTests/base/testTools/testMapAontoB.m` |
 | `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
 | `src/dataIntegration/XomicsToModel/analysis/compareXomicsModels.m` | error | Fewer than two models give no outputs | `test/verifiedTests/dataIntegration/testXomicsToModel/testCompareXomicsModels.m` |
+| `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` | error | The deleted reactions are not computed when the old model is empty and no deletion lists are given | `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | error | Several layers containing the letter p error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
+| `src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m` | cosmetic | The flag for a non-ascending file is overwritten and the function always returns the file text | `test/verifiedTests/dataIntegration/testChemoInformatics/testSortAtomMappingIdx.m` |
 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | cosmetic | Negative parameters print a message and return empty | `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m` |
 | `src/dataIntegration/fluxomics/c13solver/Combination.m` | error | k = 0 errors | `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m` |
+| `src/dataIntegration/fluxomics/c13solver/cdv2idv.m` | error | Asking for zero carbons fails once the cache holds an entry | `test/verifiedTests/dataIntegration/testC13solver/testCdv2idv.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m` | cosmetic | Loop index printed to the console | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCleanUpMetabolite_structure.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/sanityCheckMetIds.m` | limitation | Metabolites without a charge field make the check fail | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testSanityCheckMetIds.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
+| `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` | wrong-result | With minSum the reported gene does not belong to the selected alternative | `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` |
+| `src/dataIntegration/transcriptomics/rFASTCORMICS/mapExpressionToModel.m` | error | Invalid input is reported by a message and leaves the output unassigned | `test/verifiedTests/dataIntegration/testRFASTCORMICS/testMapExpressionToModel.m` |
+| `src/design/augmentBOF.m` | error | The outputs are not assigned when the function cannot augment the objective | `test/verifiedTests/design/testDesign/testAugmentBOF.m` |
+| `src/reconstruction/comparison/compareModels.m` | limitation | Two arguments with the same variable name make the function stop | `test/verifiedTests/reconstruction/testComparison/testCompareModels.m` |
 | `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m` | wrong-result | Backward-only reactions list the substrate on both sides | `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m` |
+| `src/reconstruction/comparison/modelBorgifier/charpos.m` | wrong-result | The letters i and j count as digits | `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` |
 | `src/reconstruction/comparison/modelBorgifier/countC.m` | wrong-result | Elements whose symbol starts with C are counted as carbon | `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m` |
+| `src/reconstruction/comparison/modelBorgifier/findRxnMatch.m` | cosmetic | The separators between joined metabolites lose their blank | `test/verifiedTests/reconstruction/testModelBorgifier/testFindRxnMatch.m` |
 | `src/reconstruction/comparison/modelBorgifier/mergeTrxns.m` | error | A call with nothing to merge fails | `test/verifiedTests/reconstruction/testModelBorgifier/testMergeTrxns.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | cosmetic | Header name listed in removedStrains | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
 | `src/reconstruction/demeter/src/integration/checkInputData.m` | wrong-result | Unknown strain row not removed when the headers are equal | `test/verifiedTests/reconstruction/testDemeter/testCheckInputData.m` |
 | `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
 | `src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m` | unusable-option | The NoWeight argument never has an effect | `test/verifiedTests/reconstruction/testFastGapFill/testAssignRxnWeights.m` |
+| `src/reconstruction/modelGeneration/modelVerification/checkPresentFields.m` | error | A numeric size requirement stops the function with an error | `test/verifiedTests/reconstruction/testModelGeneration/testCheckPresentFields.m` |
+| `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m` | wrong-result | Reactions with names of one or two characters get the wrong sign | `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
+| `src/reconstruction/refinement/flipRxnOrientation.m` | cosmetic | The message for reactions that are not in the model has no line break | `test/verifiedTests/reconstruction/testRefinement/testFlipRxnOrientation.m` |
 | `src/reconstruction/refinement/getMetAbbr.m` | wrong-result | IDs without brackets are silently dropped | `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m` |
+| `src/reconstruction/refinement/updateMetNames.m` | unusable-option | The wipe option is always overwritten with false | `test/verifiedTests/reconstruction/testRefinement/testUpdateMetNames.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
 
@@ -143,6 +177,61 @@
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/analysis/testRumba/testCompareConditions.m`
 
+### `src/analysis/sampling/ACHR/convRevSamples.m`
+
+#### Bounds of a reverse-only reaction are not exchanged correctly
+
+- **Severity**: wrong-result
+- **Trigger**: a reaction named with the suffix _r, for example with lb = -10 and ub = 0
+- **Observed**: the new upper bound is computed from the lower bound that was just overwritten, so it equals the old upper bound; lb = -10, ub = 0 becomes lb = 0, ub = 0
+- **Expected**: the bounds are exchanged and negated: lb = -10, ub = 0 becomes lb = 0, ub = 10
+- **Source lines**: 31-32
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testConvRevSamples.m`
+
+### `src/analysis/sampling/ACHR/removeCorrelRxns.m`
+
+#### A reaction whose own correlation is below the cutoff gets an empty group and no name
+
+- **Severity**: wrong-result
+- **Trigger**: a correlation matrix whose diagonal entry for a reaction is below the cutoff (for example 0.5) and that is not selected with any other reaction
+- **Observed**: the group of the reaction is empty, the function prints the empty group to the command window and its entry in the name list is an empty array instead of a reaction name
+- **Expected**: the reaction is listed as its own group with its identifier as name
+- **Source lines**: 67-70
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testRemoveCorrelRxns.m`
+
+### `src/analysis/sampling/CHRR/chrrParseModel.m`
+
+#### Extra constraints with a less-than or equality sense cannot be used
+
+- **Severity**: error
+- **Trigger**: model.C, model.d and model.dsense with an L or E entry, or with dsense given as a cell array
+- **Observed**: the sense is read with parentheses for G and with braces for E, so a character dsense with an L entry (or any E entry) stops with "Brace indexing is not supported" and a cell dsense stops with an invalid data type error; only a character dsense made of G entries works
+- **Expected**: L entries are kept, G entries are negated, and E entries raise the documented "not supported" error
+- **Source lines**: 49-56
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testChrrParseModel.m`
+
+### `src/analysis/sampling/calcSampleDifference.m`
+
+#### Default number of difference profiles does not match the documentation
+
+- **Severity**: cosmetic
+- **Trigger**: calcSampleDifference called without nPts
+- **Observed**: the number of profiles is 25 times the number of samples in the first sample set
+- **Expected**: the header states that the default is 10% of the samples
+- **Source lines**: 30-32
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testCalcSampleDifference.m`
+
+### `src/analysis/sampling/identifyCorrelSets.m`
+
+#### The function stops with an error when no reactions are correlated
+
+- **Severity**: error
+- **Trigger**: a correlation matrix (or sample) in which no pair of reactions reaches the threshold
+- **Observed**: no set is created, so the set list is never defined and the function stops with "Unrecognized function or variable setSize"
+- **Expected**: empty outputs
+- **Source lines**: 65-79
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testIdentifyCorrelSets.m`
+
 ### `src/analysis/subspaces/nullspace/echelonNullspace.m`
 
 #### The returned null-space matrix L is built with P instead of its transpose
@@ -153,6 +242,17 @@
 - **Expected**: L*S = 0 for the left and S*L = 0 for the right null space
 - **Source lines**: 95, 145
 - **Documented in**: `test/verifiedTests/analysis/testSubspaces/testEchelonNullspace.m`
+
+### `src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m`
+
+#### Mode 2 is not the transpose of mode 1 for a general column permutation
+
+- **Severity**: wrong-result
+- **Trigger**: a null-space structure whose column permutation p is not its own inverse (for example p = [2; 3; 1])
+- **Observed**: mode 1 places the rows with W(p,:) = Z while mode 2 applies the same assignment to the input instead of its inverse, so the inner products <Z V1, V2> and <V1, Z V2> differ (-159 against 255 for the example factors); the author notes that the permutation handling in mode 2 is uncertain
+- **Expected**: mode 2 returns Z V, so both inner products are equal
+- **Source lines**: 71-73
+- **Documented in**: `test/verifiedTests/analysis/testNullspace/testNullspaceLUSOLapply2Modes.m`
 
 ### `src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m`
 
@@ -183,6 +283,17 @@
 - **Source lines**: 67, 73
 - **Documented in**: `test/verifiedTests/analysis/testSubspaces/testProjectOntoSubspace.m`
 
+### `src/analysis/thermo/directionalityReport/assignQualDir.m`
+
+#### Reverse reactions are reported as forward
+
+- **Severity**: wrong-result
+- **Trigger**: a reaction with both bounds negative (for example lb = -5, ub = -1)
+- **Observed**: the result vector is created as a logical array, so the value -1 assigned to reverse reactions is stored as true, which is 1 and identical to the forward value
+- **Expected**: qualDir equals -1 for reactions that are irreversible in the reverse direction, as the header states
+- **Source lines**: 27-29
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testAssignQualDir.m`
+
 ### `src/analysis/thermo/formulae/checkFormulae.m`
 
 #### Elements other than C, H, O, P, S, K, Na and N are ignored
@@ -193,6 +304,26 @@
 - **Expected**: 0 (different)
 - **Source lines**: 31-45
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testCheckFormulae.m`
+
+### `src/analysis/thermo/inchi/getMolecularWeight.m`
+
+#### Hydrogens are lost for an InChI whose formula starts with H
+
+- **Severity**: wrong-result
+- **Trigger**: an InChI whose formula layer begins with hydrogen, for example water, InChI=1S/H2O/h1H2
+- **Observed**: the formula returned by getFormulaAndChargeFromInChI is O and the hydrogen count is returned separately, but only the formula is used, so water gets a molecular weight of 16 and 0 hydrogens
+- **Expected**: a molecular weight of 18 and 2 hydrogens for water
+- **Source lines**: 41-61
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m`
+
+#### Warnings are printed without a line break
+
+- **Severity**: cosmetic
+- **Trigger**: an empty InChI or an element that is not in the table, with warnings switched on
+- **Observed**: the warning text is printed with fprintf and no trailing newline, so consecutive warnings run together on one line
+- **Expected**: each warning on its own line
+- **Source lines**: 37, 54
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m`
 
 ### `src/analysis/thermo/reactantContribution/acidDissociationConstant.m`
 
@@ -205,6 +336,17 @@
 - **Source lines**: 62-63
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testAcidDissociationConstant.m`
 
+### `src/analysis/thermo/reactantContribution/waterGibbsEnergyOfFormation.m`
+
+#### The Gibbs energy of formation uses the absolute entropy of water instead of the entropy of formation
+
+- **Severity**: wrong-result
+- **Trigger**: any temperature, for example T = 298.15 K
+- **Observed**: the entropy term uses the absolute entropy of liquid water (about 0.07 kJ/(mol K)) and not the entropy of formation relative to H2 and O2, so the result is about -306.7 kJ/mol at 298.15 K
+- **Expected**: about -237.1 kJ/mol at 298.15 K, the tabulated standard Gibbs energy of formation of liquid water
+- **Source lines**: 39-46
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testWaterGibbsEnergyOfFormation.m`
+
 ### `src/analysis/topology/FR/bilinearDecomposition.m`
 
 #### A lone reaction with one substrate and three products gives inconsistent sizes
@@ -215,6 +357,17 @@
 - **Expected**: the three matrices with consistent sizes and S = A*B*C
 - **Source lines**: 45-53, 124-148, 288-300
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m`
+
+### `src/analysis/topology/integerizeS.m`
+
+#### A reaction with a single non-integer coefficient stops the function with an error
+
+- **Severity**: error
+- **Trigger**: a reaction with exactly one non-zero stoichiometric coefficient that is not an integer, among the reactions to be integerised (for example an exchange reaction 0.5 A ->, with internalRxnsOnly = 0)
+- **Observed**: the least common multiple starts from the first two denominators, so a reaction with one coefficient makes the function stop with an index error
+- **Expected**: the factor is the denominator of the single coefficient
+- **Source lines**: 105
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testIntegerizeS.m`
 
 ### `src/analysis/topology/reactingMoieties/createBIGraph.m`
 
@@ -238,6 +391,17 @@
 - **Source lines**: 45-46
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCalculateFoodScore.m`
 
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateMacroOriginalDiet.m`
+
+#### A diet in which every amount is zero stops the function with an error
+
+- **Severity**: error
+- **Trigger**: a diet whose amounts are all zero, for example {bread, 0}
+- **Observed**: the rows with a zero amount are removed first, which leaves an empty diet, and multiplying the empty list of amounts with the nutrient table fails with "Arrays have incompatible sizes for this operation"
+- **Expected**: zero amounts for all nutrients
+- **Source lines**: 33-37
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCalculateMacroOriginalDiet.m`
+
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDiets.m`
 
 #### Direction false errors
@@ -249,6 +413,17 @@
 - **Source lines**: 73-74
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCompareDiets.m`
 
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m`
+
+#### Identifiers with surrounding blanks are rejected although they are trimmed for the other checks
+
+- **Severity**: limitation
+- **Trigger**: an identifier such as  pyr  with leading or trailing blanks
+- **Observed**: the blank test is applied to the untrimmed text, so the identifier is invalid, while the empty, placeholder and "not in VMH" tests use the trimmed text
+- **Expected**: a blank-padded identifier treated like its trimmed form
+- **Source lines**: 28
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m`
+
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m`
 
 #### Non-iterative search type cannot run
@@ -259,6 +434,48 @@
 - **Expected**: a search that works with the database type the branch needs
 - **Source lines**: 33, 90-133
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testSearcher.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m`
+
+#### Reactions missing from a model are collected in a character matrix, which fails for names of different lengths
+
+- **Severity**: error
+- **Trigger**: two or more reactions missing from the same model whose identifiers have different lengths
+- **Observed**: the names are appended as rows of a character array, so unequal lengths stop the function with "Dimensions of arrays being concatenated are not consistent"
+- **Expected**: the missing reactions returned in a cell array
+- **Source lines**: 48-50
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m`
+
+#### The numbers of mismatched bounds are displayed instead of returned
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: the last two statements show mismatch_lb and mismatch_ub in the command window; they are not outputs
+- **Expected**: the counts returned or not displayed
+- **Source lines**: 84-85
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m`
+
+#### The function name inside the file differs from the file name
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: the file is named convertATPflux2StepNumer.m but declares convertATPflux2StepNumber, so MATLAB resolves calls through the file name and the declared name is ignored
+- **Expected**: the declared name equal to the file name
+- **Source lines**: 1
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testConvertATPflux2StepNumer.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/setSimulationConstraints.m`
+
+#### Warnings stay switched off after the call
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: the function runs warning off and does not restore the previous state, so every later warning in the session is silenced
+- **Expected**: the warning state is restored before returning
+- **Source lines**: 2
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testSetSimulationConstraints.m`
 
 ### `src/base/io/utilities/SBML/getDataBases.m`
 
@@ -301,6 +518,44 @@
 - **Expected**: name and compartment separated
 - **Source lines**: 36-38
 - **Documented in**: `test/verifiedTests/base/testTools/testParseMetNames.m`
+
+### `src/base/solvers/entropicFBA/processConcConstraints.m`
+
+#### Documented defaults for the concentration unit and the maximum concentration differ from the code
+
+- **Severity**: cosmetic
+- **Trigger**: param without concUnit and maxConc
+- **Observed**: concUnit is set to 10-3, which evaluates to 7, and maxConc is set to infinity, while the header states 1e-3 and 1e4
+- **Expected**: the documented defaults
+- **Source lines**: 131-137
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
+
+#### The case dxReplacement always stops with an error
+
+- **Severity**: unusable-option
+- **Trigger**: param.externalNetFluxBounds = dxReplacement, or model.dcl or model.dcu present without an explicit option
+- **Observed**: the case begins with error(revise how net initial and final conc bounds are dealt with), so the option can never be used; this is also the default when model.dcl or model.dcu exists
+- **Expected**: the external net flux bounds replaced by concentration differences, as documented
+- **Source lines**: 245-262
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
+
+#### The default row selection indexes the first row repeatedly
+
+- **Severity**: wrong-result
+- **Trigger**: a model without the field pp, with external reactions
+- **Observed**: the default pp is a numeric vector of ones, and indexing the external stoichiometric matrix with it repeats row 1 for every metabolite instead of selecting all rows
+- **Expected**: the default pp should be a logical vector of ones (true for all rows) so that all rows are kept
+- **Source lines**: 116-118, 297
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
+
+#### The parameter printLevel is required although it is documented as optional
+
+- **Severity**: error
+- **Trigger**: a parameter structure without printLevel when the model has external reactions and externalNetFluxBounds is original or none
+- **Observed**: the field is read without a default, so the call stops with "Unrecognized field name printLevel"
+- **Expected**: printLevel defaulting to 0
+- **Source lines**: 161, 224
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
 
 ### `src/base/solvers/mosek/inspectMosekProb.m`
 
@@ -457,6 +712,17 @@
 - **Source lines**: 93-95
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testCompareXomicsModels.m`
 
+### `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m`
+
+#### The deleted reactions are not computed when the old model is empty and no deletion lists are given
+
+- **Severity**: error
+- **Trigger**: an empty old model and no deletedRxns (and no deletedMets), for example coreMetRxnAnalysis([], model, coreMets, coreRxns)
+- **Observed**: when deletedRxns is missing and the old model is empty, the code sets deletedMets to empty instead of deletedRxns, so the reaction analysis later reads an undefined variable and stops with an error
+- **Expected**: an empty list of deleted reactions
+- **Source lines**: 48-52
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m`
+
 ### `src/dataIntegration/chemoInformatics/editChemicalFormula.m`
 
 #### Element with zero atoms stays in the formula
@@ -488,6 +754,17 @@
 - **Source lines**: 63
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m`
 
+### `src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m`
+
+#### The flag for a non-ascending file is overwritten and the function always returns the file text
+
+- **Severity**: cosmetic
+- **Trigger**: any call, including product atoms whose mapping number has no substrate partner
+- **Observed**: the output ascendingRxnFile is set to false for unmapped product atoms and non-zero sums, but the last statement replaces it by the renumbered file text, so the false value is never returned
+- **Expected**: the documented flag or text, not a mix of both
+- **Source lines**: 36-45
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testSortAtomMappingIdx.m`
+
 ### `src/dataIntegration/fluxomics/c13solver/Combination.m`
 
 #### Negative parameters print a message and return empty
@@ -507,6 +784,17 @@
 - **Expected**: one empty combination
 - **Source lines**: 23
 - **Documented in**: `test/verifiedTests/dataIntegration/testFitC13Data/testCombination.m`
+
+### `src/dataIntegration/fluxomics/c13solver/cdv2idv.m`
+
+#### Asking for zero carbons fails once the cache holds an entry
+
+- **Severity**: error
+- **Trigger**: cdv2idv(0) called after the cache has been filled for any n >= 1
+- **Observed**: the cache test reads CDV2IDVSAV{0}, and index 0 is invalid, so the call stops with "Array indices must be positive integers or logical values"
+- **Expected**: the identity for zero carbons, as when the cache is empty
+- **Source lines**: 5-10
+- **Documented in**: `test/verifiedTests/dataIntegration/testC13solver/testCdv2idv.m`
 
 ### `src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m`
 
@@ -541,6 +829,50 @@
 - **Source lines**: 19-28
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m`
 
+### `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m`
+
+#### With minSum the reported gene does not belong to the selected alternative
+
+- **Severity**: wrong-result
+- **Trigger**: minSum set and a rule with an alternative that has more than one gene before the selected alternative, for example (g1 and g2) or g3 with g3 selected
+- **Observed**: the list of candidate genes has one entry per gene while the list of values has one entry per alternative, so the position of the minimum points into the wrong list entry (here g2 is reported instead of g3)
+- **Expected**: the gene of the selected alternative
+- **Source lines**: 44-49
+- **Documented in**: `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m`
+
+### `src/dataIntegration/transcriptomics/rFASTCORMICS/mapExpressionToModel.m`
+
+#### Invalid input is reported by a message and leaves the output unassigned
+
+- **Severity**: error
+- **Trigger**: a dictionary that is not a table, row names with empty entries, or row names that match nothing in the dictionary, when the output is requested
+- **Observed**: the function prints a message (or nothing for the no-match case) and returns before assigning mapping, so a call with an output argument stops with "Output argument mapping not assigned"
+- **Expected**: an error with a clear message, or an empty mapping
+- **Source lines**: 35-50
+- **Documented in**: `test/verifiedTests/dataIntegration/testRFASTCORMICS/testMapExpressionToModel.m`
+
+### `src/design/augmentBOF.m`
+
+#### The outputs are not assigned when the function cannot augment the objective
+
+- **Severity**: error
+- **Trigger**: a target reaction whose metabolite takes part in three or more reactions, called with output arguments
+- **Observed**: the function returns early without assigning model or rxn_name, so a call that requests the outputs stops with "Output argument rxn_name ... not assigned"
+- **Expected**: the unchanged model and an empty reaction name
+- **Source lines**: 41-47
+- **Documented in**: `test/verifiedTests/design/testDesign/testAugmentBOF.m`
+
+### `src/reconstruction/comparison/compareModels.m`
+
+#### Two arguments with the same variable name make the function stop
+
+- **Severity**: limitation
+- **Trigger**: compareModels called with arguments that have the same variable name, for example compareModels(A, A)
+- **Observed**: the names of the input variables are used as table column names and two columns named alike make the table construction fail with "Duplicate table variable name"
+- **Expected**: a table with distinct column names
+- **Source lines**: 16-19
+- **Documented in**: `test/verifiedTests/reconstruction/testComparison/testCompareModels.m`
+
 ### `src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m`
 
 #### Backward-only reactions list the substrate on both sides
@@ -552,6 +884,17 @@
 - **Source lines**: 59
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testBuildRxnEquationsFromName.m`
 
+### `src/reconstruction/comparison/modelBorgifier/charpos.m`
+
+#### The letters i and j count as digits
+
+- **Severity**: wrong-result
+- **Trigger**: a text containing the letter i or j (or other characters that str2double reads as numbers)
+- **Observed**: each character is tested with str2double, which reads i and j as the imaginary unit, so charpos reports them as numeric
+- **Expected**: only the digits 0 to 9 reported as numeric
+- **Source lines**: 4-6
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m`
+
 ### `src/reconstruction/comparison/modelBorgifier/countC.m`
 
 #### Elements whose symbol starts with C are counted as carbon
@@ -562,6 +905,17 @@
 - **Expected**: 0 carbon atoms
 - **Source lines**: 39-47
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m`
+
+### `src/reconstruction/comparison/modelBorgifier/findRxnMatch.m`
+
+#### The separators between joined metabolites lose their blank
+
+- **Severity**: cosmetic
+- **Trigger**: a reaction with several reactants or products, or the score and index of a match
+- **Observed**: the pieces are joined with strcat and the separator ; followed by a blank, but strcat removes the trailing blank of character arguments, so the lists read a;b and the score reads 0.9;2
+- **Expected**: the separators written in the code: a; b and 0.9; 2
+- **Source lines**: 37, 41-47, 91
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testFindRxnMatch.m`
 
 ### `src/reconstruction/comparison/modelBorgifier/mergeTrxns.m`
 
@@ -616,6 +970,28 @@
 - **Source lines**: 45, 54
 - **Documented in**: `test/verifiedTests/reconstruction/testFastGapFill/testAssignRxnWeights.m`
 
+### `src/reconstruction/modelGeneration/modelVerification/checkPresentFields.m`
+
+#### A numeric size requirement stops the function with an error
+
+- **Severity**: error
+- **Trigger**: a field property row whose second or third column is a number instead of a field name
+- **Observed**: the error message for the first dimension uses the variable x_pres before it is assigned, so the call stops with "Unrecognized function or variable x_pres"
+- **Expected**: the expected size compared with the actual size
+- **Source lines**: 53-56
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testCheckPresentFields.m`
+
+### `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m`
+
+#### Reactions with names of one or two characters get the wrong sign
+
+- **Severity**: wrong-result
+- **Trigger**: an irreversible reaction whose identifier has at most two characters (for example r1) with a constraint
+- **Observed**: the test that decides whether the reaction was reversed in the irreversible model is only applied for names longer than two characters, so the value of the constraint is negated although the reaction was not reversed
+- **Expected**: the value is kept for a reaction that is not reversed, whatever the length of its name
+- **Source lines**: 22
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m`
+
 ### `src/reconstruction/refinement/GPRLogic/combineChildren.m`
 
 #### Identical generated clauses delete the earlier clause
@@ -627,6 +1003,17 @@
 - **Source lines**: 53-63
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m`
 
+### `src/reconstruction/refinement/flipRxnOrientation.m`
+
+#### The message for reactions that are not in the model has no line break
+
+- **Severity**: cosmetic
+- **Trigger**: a reaction list with identifiers that are not in the model
+- **Observed**: the message is printed with fprintf and no newline, so several messages are printed on one line
+- **Expected**: one message per line
+- **Source lines**: 31
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testFlipRxnOrientation.m`
+
 ### `src/reconstruction/refinement/getMetAbbr.m`
 
 #### IDs without brackets are silently dropped
@@ -637,6 +1024,17 @@
 - **Expected**: an entry or an error for every input
 - **Source lines**: 35-37
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testGetMetAbbr.m`
+
+### `src/reconstruction/refinement/updateMetNames.m`
+
+#### The wipe option is always overwritten with false
+
+- **Severity**: unusable-option
+- **Trigger**: a call with the third argument true, for example updateMetNames(referenceModel, modelToUpdate, true)
+- **Observed**: the default is applied when a variable called wipeExistening does not exist, which is always the case, so the value passed for wipeExisting is replaced by false and the existing names are never wiped
+- **Expected**: the existing metabolite names removed when wipeExisting is true
+- **Source lines**: 27-29
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testUpdateMetNames.m`
 
 ### `src/visualization/maps/ReconMap/makeColorGradient.m`
 
