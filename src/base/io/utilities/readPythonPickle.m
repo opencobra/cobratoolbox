@@ -1,7 +1,8 @@
 function data = readPythonPickle(fileName)
-% Reads a Python pickle file (binary protocols 2 to 5) containing basic
-% Python objects and NumPy arrays, without requiring Python. Supported
-% objects and their MATLAB representation:
+% Reads a Python pickle file (binary protocols 2 to 5, with in-band buffers
+% for protocol 5) containing basic Python objects and NumPy arrays,
+% without requiring Python. Supported objects and their MATLAB
+% representation:
 %
 %    =======================  ==========================================
 %    Python                   MATLAB
@@ -38,11 +39,12 @@ function data = readPythonPickle(fileName)
 % NOTE:
 %
 %    Arrays stored in C order are permuted so that `A(i, j)` corresponds to
-%    `array[i-1, j-1]` in Python. Lists and tuples are value types in MATLAB:
-%    if a pickle references the same list several times (shared references),
-%    later modifications of the list are not propagated to the other
-%    references. Dictionaries (containers.Map) are handle objects and do not
-%    have this limitation.
+%    `array[i-1, j-1]` in Python. Objects referenced several times in the
+%    pickle (shared references) are read completely: lists and sets are
+%    built in handle objects and converted to cell arrays at the end (see
+%    `resolvePickleProxies`), so each reference receives a copy of the
+%    complete list. Dictionaries (containers.Map) are handle objects, so
+%    shared dictionaries remain shared in MATLAB.
 %
 % .. Author: - Sebastián N. Mendoza, 13/10/2026
 
@@ -76,12 +78,10 @@ while p <= nBytes && ~finished
             p = p + 8;
         case 125 % EMPTY_DICT
             stack{end + 1} = containers.Map('KeyType', 'char', 'ValueType', 'any');
-        case 93 % EMPTY_LIST
-            stack{end + 1} = cell(0, 1);
+        case {93, 143} % EMPTY_LIST, EMPTY_SET (list proxies, see resolvePickleProxies)
+            stack{end + 1} = containers.Map('KeyType', 'double', 'ValueType', 'any');
         case 41 % EMPTY_TUPLE
             stack{end + 1} = cell(1, 0);
-        case 143 % EMPTY_SET
-            stack{end + 1} = cell(0, 1);
         case 40 % MARK
             stack{end + 1} = mark;
         case 148 % MEMOIZE
@@ -111,7 +111,7 @@ while p <= nBytes && ~finished
             end
             stack{end + 1} = native2unicode(b(p:p + n - 1), 'UTF-8');
             p = p + n;
-        case {67, 66, 142} % SHORT_BINBYTES, BINBYTES, BINBYTES8
+        case {67, 66, 142, 150} % SHORT_BINBYTES, BINBYTES, BINBYTES8, BYTEARRAY8
             if op == 67
                 n = double(b(p));
                 p = p + 1;
@@ -124,6 +124,9 @@ while p <= nBytes && ~finished
             end
             stack{end + 1} = b(p:p + n - 1);
             p = p + n;
+        case 152 % READONLY_BUFFER (in-band buffers are read as bytes)
+        case 151 % NEXT_BUFFER
+            error('%s uses out-of-band buffers (pickle protocol 5), which are not supported.', fileName);
         case 147 % STACK_GLOBAL
             name = stack{end};
             module = stack{end - 1};
@@ -176,7 +179,10 @@ while p <= nBytes && ~finished
             elseif op == 145
                 stack{end + 1} = items(:);
             else
-                stack{end} = [stack{end}; items(:)];
+                target = stack{end};
+                for i = 1:numel(items)
+                    target(target.Count + 1) = items{i};
+                end
             end
         case 133 % TUPLE1
             stack{end} = stack(end);
@@ -189,7 +195,7 @@ while p <= nBytes && ~finished
             stack(end - 2:end) = [];
             stack{end + 1} = items;
         case {82, 129} % REDUCE, NEWOBJ
-            args = stack{end};
+            args = resolvePickleProxies(stack{end});
             callable = stack{end - 1};
             stack(end - 1:end) = [];
             if isstruct(callable) && isfield(callable, 'pyGlobal')
@@ -202,6 +208,11 @@ while p <= nBytes && ~finished
             end
             if any(strcmp(className, {'numpy.core.multiarray._reconstruct', 'numpy._core.multiarray._reconstruct'}))
                 obj = struct('pyNdarray', true, 'value', []);
+            elseif any(strcmp(className, {'numpy.core.numeric._frombuffer', 'numpy._core.numeric._frombuffer'}))
+                % arrays of protocol 5: (buffer, dtype, shape, order)
+                dtype = args{2};
+                obj = numpyBufferToArray(args{1}, [dtype.byteOrder, regexprep(dtype.pyDtype, '^[<>|=]', '')], ...
+                    cell2mat(args{3}), strcmp(args{4}, 'F'));
             elseif strcmp(className, 'numpy.dtype')
                 obj = struct('pyDtype', args{1}, 'byteOrder', '<');
             elseif any(strcmp(className, {'numpy.core.multiarray.scalar', 'numpy._core.multiarray.scalar'}))
@@ -222,9 +233,14 @@ while p <= nBytes && ~finished
                         obj = obj ~= 0;
                     end
                 end
+            elseif strcmp(className, '_codecs.encode') && numel(args) == 2 && any(strcmpi(args{2}, {'latin1', 'latin-1'}))
+                % bytes of protocol 2: _codecs.encode(text, 'latin1')
+                obj = uint8(double(args{1}));
+            elseif any(strcmp(className, {'builtins.bytes', '__builtin__.bytes'})) && isempty(args)
+                obj = zeros(1, 0, 'uint8');
             elseif strcmp(className, 'collections.OrderedDict')
                 obj = containers.Map('KeyType', 'char', 'ValueType', 'any');
-            elseif any(strcmp(className, {'builtins.set', 'builtins.frozenset', '__builtin__.set'}))
+            elseif any(strcmp(className, {'builtins.set', 'builtins.frozenset', '__builtin__.set', '__builtin__.frozenset'}))
                 if isempty(args)
                     obj = cell(0, 1);
                 else
@@ -239,38 +255,11 @@ while p <= nBytes && ~finished
             stack(end) = [];
             obj = stack{end};
             if isstruct(obj) && isfield(obj, 'pyNdarray')
-                shape = cell2mat(state{2});
+                % state: (version, shape, dtype, isFortran, rawdata)
+                state = resolvePickleProxies(state);
                 dtype = state{3};
-                isFortran = state{4};
-                raw = state{5};
-                code = regexprep(dtype.pyDtype, '^[<>|=]', '');
-                classes = {'b1', 'uint8'; 'i1', 'int8'; 'u1', 'uint8'; 'i2', 'int16'; 'u2', 'uint16'; ...
-                    'i4', 'int32'; 'u4', 'uint32'; 'i8', 'int64'; 'u8', 'uint64'; 'f4', 'single'; 'f8', 'double'};
-                row = find(strcmp(classes(:, 1), code));
-                if iscell(raw)
-                    values = raw(:);
-                elseif isempty(row)
-                    error('NumPy data type %s is not supported.', dtype.pyDtype);
-                else
-                    if strcmp(dtype.byteOrder, '>')
-                        itemSize = numel(typecast(zeros(1, 1, classes{row, 2}), 'uint8'));
-                        raw = reshape(fliplr(reshape(raw, itemSize, [])')', 1, []);
-                    end
-                    values = typecast(uint8(raw), classes{row, 2});
-                    if strcmp(code, 'b1')
-                        values = values ~= 0;
-                    end
-                    values = values(:);
-                end
-                if isempty(shape)
-                    obj = values;
-                elseif numel(shape) == 1
-                    obj = reshape(values, shape, 1);
-                elseif isFortran
-                    obj = reshape(values, shape);
-                else
-                    obj = permute(reshape(values, fliplr(shape)), numel(shape):-1:1);
-                end
+                obj = numpyBufferToArray(state{5}, [dtype.byteOrder, regexprep(dtype.pyDtype, '^[<>|=]', '')], ...
+                    cell2mat(state{2}), state{4});
             elseif isstruct(obj) && isfield(obj, 'pyDtype')
                 if iscell(state) && numel(state) >= 2 && ischar(state{2})
                     obj.byteOrder = state{2};
@@ -312,7 +301,8 @@ while p <= nBytes && ~finished
         case 97 % APPEND
             value = stack{end};
             stack(end) = [];
-            stack{end} = [stack{end}; {value}];
+            target = stack{end};
+            target(target.Count + 1) = value;
         case 101 % APPENDS
             for m = numel(stack):-1:1
                 if isstruct(stack{m}) && isfield(stack{m}, 'pyMark')
@@ -321,7 +311,10 @@ while p <= nBytes && ~finished
             end
             items = stack(m + 1:end);
             stack(m:end) = [];
-            stack{end} = [stack{end}; items(:)];
+            target = stack{end};
+            for i = 1:numel(items)
+                target(target.Count + 1) = items{i};
+            end
         case 48 % POP
             stack(end) = [];
         case 49 % POP_MARK
@@ -342,5 +335,5 @@ end
 if isempty(stack)
     error('Empty pickle file %s.', fileName);
 end
-data = stack{end};
+data = resolvePickleProxies(stack{end});
 end

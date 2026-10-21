@@ -140,21 +140,19 @@ end
 for f = 1:numel(flag)
     scenarios = scenarios(~contains(scenarios, flag{f}));
 end
+% input Fe of each scenario (looked up with the names of the table)
+inputFe = zeros(numel(scenarios), 1);
+for i = 1:numel(scenarios)
+    row = find(strcmp(filenames, scenarios{i}), 1);
+    inputFe(i) = str2double(strrep(cols.InputFe{row}, ',', '.'));
+end
+% names of the result files
 scenarios = strrep(scenarios, '_a0_', '_a00_');
 scenarios = strrep(scenarios, '_a0.', '_a0');
 scenarios = strrep(scenarios, '_a0,', '_a0');
 scenarios = strrep(scenarios, '_a1_', '_a10_');
 
 % sort by input Fe and name
-inputFe = zeros(numel(scenarios), 1);
-for i = 1:numel(scenarios)
-    row = find(strcmp(filenames, scenarios{i}), 1);
-    if isempty(row)
-        inputFe(i) = NaN;
-    else
-        inputFe(i) = str2double(strrep(cols.InputFe{row}, ',', '.'));
-    end
-end
 [~, order] = sortrows(table(inputFe, scenarios(:)));
 scenarios = scenarios(order);
 scenarios = scenarios(:);

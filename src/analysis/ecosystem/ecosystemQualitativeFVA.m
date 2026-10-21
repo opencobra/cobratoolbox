@@ -53,7 +53,10 @@ function [eco, qualVectors, fvaResults] = ecosystemQualitativeFVA(eco, varargin)
 %    Equivalent to `Ecosystem.analyze_grid(analysis='qual_fva')` of the
 %    Python implementation. FVA is computed with `fluxVariability` without
 %    fixing the objective (optPercentage = 0), since the member objectives
-%    are already fixed by the point.
+%    are already fixed by the point. Infeasible points (which can be analyzed
+%    when the feasibility has not been computed) get NaN fluxes and the
+%    qualitative state 5, whereas the Python implementation stops with an
+%    error.
 %
 % .. Author: - Sebastián N. Mendoza, 13/10/2026, MATLAB implementation based on the Python code of N.E. Jiménez et al.
 
@@ -122,6 +125,7 @@ fvaOptions = {'optPercentage', 0, 'rxnNameList', rxnList, 'printLevel', 0};
 if ~isempty(threads)
     fvaOptions = [fvaOptions, {'threads', threads}];
 end
+nInfeasible = 0;
 for i = 1:nAnalyzed
     p = pointIndex(i);
     if printLevel > 1
@@ -129,7 +133,17 @@ for i = 1:nAnalyzed
     end
     modelPoint = constrainEcosystemPoint(eco, eco.points(p, :), 'updateBounds', updateBounds, ...
         'pfraction', pfractions(p, :));
-    [minFlux, maxFlux] = fluxVariability(modelPoint, fvaOptions{:});
+    try
+        [minFlux, maxFlux] = fluxVariability(modelPoint, fvaOptions{:});
+    catch ME
+        if ~contains(ME.message, 'infeasible or unbounded')
+            rethrow(ME);
+        end
+        % infeasible point (feasibility not computed): NaN fluxes, qualitative state 5
+        minFlux = NaN(nRxns, 1);
+        maxFlux = NaN(nRxns, 1);
+        nInfeasible = nInfeasible + 1;
+    end
     fvaResults(i, :, 1) = minFlux(:)';
     fvaResults(i, :, 2) = maxFlux(:)';
     qualVectors(i, :) = getQualitativeFluxStates(minFlux(:)', maxFlux(:)', delta);
@@ -141,5 +155,8 @@ eco.clusters = [];
 eco.k = [];
 if printLevel > 0
     fprintf('Qualitative FVA computed for %d points and %d reactions.\n', nAnalyzed, nRxns);
+    if nInfeasible > 0
+        fprintf('Warning: %d infeasible points (NaN fluxes, qualitative state 5).\n', nInfeasible);
+    end
 end
 end

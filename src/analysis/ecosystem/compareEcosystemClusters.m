@@ -64,6 +64,9 @@ for i = 1:2
     end
     cols(i) = cid;
 end
+if cols(1) == cols(2)
+    error('The two clusters must be different.');
+end
 a = repValues(:, cols(1));
 b = repValues(:, cols(2));
 differ = (isnan(a) ~= isnan(b)) | (~isnan(a) & ~isnan(b) & a ~= b);
