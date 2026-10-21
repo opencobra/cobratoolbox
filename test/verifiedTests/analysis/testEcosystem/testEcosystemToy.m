@@ -13,9 +13,8 @@
 
 global CBTDIR
 
-% require an LP solver and the Statistics and Machine Learning Toolbox (clustering)
-solvers = prepareTest('needsLP', true, 'requiredToolboxes', {'statistics_toolbox'}, ...
-    'useSolversIfAvailable', {'glpk', 'gurobi', 'ibm_cplex', 'mosek'});
+% require an LP solver (no MATLAB toolbox is needed)
+solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'glpk', 'gurobi', 'ibm_cplex', 'mosek'});
 
 % save the current path and initialize the test
 currentDir = cd(fileparts(which(mfilename)));
