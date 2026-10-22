@@ -17,10 +17,10 @@ exceeds 4 GB peak memory, or (b) spends at least 5 % of its stage time outside t
 (`gurobi`) and the cause is a data-structure or repeated-work pattern. Others are recorded as
 "measured, not worth changing".
 
-Decision so far: `checkDuplicateRxn` (rule a). `findMassLeaksAndSiphons` is out (346 of 357 s in
-`gurobi`). `findSExRxnInd`, `removeRxns`, `removeMetabolites`, `findFluxConsistentSubset`,
-`findStoichConsistentSubset`, `maxCardinalityConservationVector`: decided in task T020 from the
-profiles; each added function gets its own test-first task group.
+Final decisions are in research.md ("Decisions"): `checkDuplicateRxn` (rule a) and
+`removeFieldEntriesForType` (rule b) are changed; the other functions of the CI path are
+solver-bound (98 to 99 % of their time in `gurobi`, also `checkModelProperties`, which the third CI
+test runs: 715 of 734 s on Recon3D) or below 1 s, and are left unchanged.
 
 ## Technical Context
 
