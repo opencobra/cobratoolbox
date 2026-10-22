@@ -34,5 +34,5 @@ function before any `src/` edit; the test file is never edited after it first pa
 
 ## Phase 4: Close
 - [x] T030 (manual consistency pass: spec FR-009, plan selection rule, research decisions and tasks agree; SC-005 cannot be verified locally) Run /speckit-analyze consistency check
-- [ ] T031 Write the implementation receipt in the format of the Implementation Receipt Ledger
-- [ ] T032 Commit on the feature branch (ASCII message, repo conventions); push to the maintainer's fork only; no PR
+- [x] T031 Write the implementation receipt in the format of the Implementation Receipt Ledger
+- [x] T032 Commit on the feature branch (ASCII message, repo conventions); push to the maintainer's fork only; no PR
