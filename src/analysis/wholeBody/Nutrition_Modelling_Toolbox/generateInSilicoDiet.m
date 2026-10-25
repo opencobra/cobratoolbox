@@ -38,6 +38,18 @@ function [dietFlux] = generateInSilicoDiet(toCreateDiet, varargin)
 %                             * addStarch - boolean, whether additional starch
 %                               is added based on the reported macros
 %                               (default false)
+%                             * usdaEdition - char or numeric, four-digit year
+%                               of the USDA database edition to use. If empty
+%                               the latest available edition is used
+%                               (default '')
+%                             * fridaEdition - char or numeric, four-digit
+%                               year of the Frida database edition to use. If
+%                               empty the latest available edition is used
+%                               (default '')
+%                             * blsEdition - char or numeric, four-digit year
+%                               of the BLS database edition to use. If empty
+%                               the latest available edition is used
+%                               (default '')
 %
 % OUTPUT:
 %    dietFlux:              Table with the dietary flux (mmol/person/day) for
@@ -57,6 +69,9 @@ parser.addParameter('outputDir', pwd,@ischar);
 parser.addParameter('originalDietMacros', '',@ischar);
 parser.addParameter('analyseMacros', true, @islogical);
 parser.addParameter('addStarch', false, @islogical);
+parser.addParameter('usdaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('fridaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('blsEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
 
 parser.parse(toCreateDiet, varargin{:});
 
@@ -65,6 +80,12 @@ outputDir = parser.Results.outputDir;
 originalDietMacros = parser.Results.originalDietMacros;
 analyseMacros = parser.Results.analyseMacros;
 addStarch = parser.Results.addStarch;
+usdaEdition = parser.Results.usdaEdition;
+fridaEdition = parser.Results.fridaEdition;
+blsEdition = parser.Results.blsEdition;
+% Name-value pairs selecting the database editions, passed to the
+% functions that load the databases
+editionArgs = {'usdaEdition', usdaEdition, 'fridaEdition', fridaEdition, 'blsEdition', blsEdition};
 
 %%
 % Load in the diets to analyse
@@ -88,19 +109,19 @@ for i = 4:size(toCreateDiet,2)
     diet2Make = toCreateDiet(:, [1:3, i]);
 
     % Calculate the diet flux vector
-    metFlux = getMetaboliteFlux(table2cell(diet2Make(:,[2 4])), 'databaseType',diet2Make.databaseUsed, "addStarch",addStarch);
+    metFlux = getMetaboliteFlux(table2cell(diet2Make(:,[2 4])), 'databaseType',diet2Make.databaseUsed, "addStarch",addStarch, editionArgs{:});
 
     % Calculate the macros from the metabolite flux vector and from the
     % measured/reported (label) macros
-    macroMets = getDietComposition(metFlux, "macroType", 'metabolites');
+    macroMets = getDietComposition(metFlux, "macroType", 'metabolites', editionArgs{:});
     macroMets.Properties.VariableNames(2) = toCreateDiet.Properties.VariableNames(i);
-    macroLabel = getDietComposition(table2cell(diet2Make(:,[2 4])), "macroType", diet2Make.databaseUsed);
+    macroLabel = getDietComposition(table2cell(diet2Make(:,[2 4])), "macroType", diet2Make.databaseUsed, editionArgs{:});
     macroLabel.Properties.VariableNames(2) = toCreateDiet.Properties.VariableNames(i);
 
     % Obtain the energy based on the food items and based on the
     % metabolites from the diet
-    energyLabel = getDietEnergy(table2cell(diet2Make(:,[2 4])), 'databaseType', diet2Make.databaseUsed);
-    energyMets = getDietEnergy(metFlux, 'databaseType', 'metabolites');
+    energyLabel = getDietEnergy(table2cell(diet2Make(:,[2 4])), 'databaseType', diet2Make.databaseUsed, editionArgs{:});
+    energyMets = getDietEnergy(metFlux, 'databaseType', 'metabolites', editionArgs{:});
 
     % Add energy to macro tables
     macroMets(end+1,:) = {'Energy', energyMets};

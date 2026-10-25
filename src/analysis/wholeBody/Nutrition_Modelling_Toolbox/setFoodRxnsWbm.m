@@ -1,27 +1,38 @@
-function [wbm] = setFoodRxnsWbm(wbm, database, resetDietBounds, addPrice)
+function [wbm] = setFoodRxnsWbm(wbm, database, varargin)
 % Adjust a WBM so that it can exchange food items and break them down into
 % their respective metabolite components, preparing the WBM to accept food
 % item consumed weights as dietary input
 %
 % USAGE:
 %
-%    [wbm] = setFoodRxnsWbm(wbm, database, resetDietBounds, addPrice)
+%    [wbm] = setFoodRxnsWbm(wbm, database, resetDietBounds, addPrice, varargin)
 %
 % INPUTS:
 %    wbm:               A WBM model, with fields:
 %
 %                         * .rxns - reaction identifiers
 %    database:          Cell array naming the databases the food items
-%                       originate from; 'usda', 'frida' or both are used to
-%                       add the food items
+%                       originate from; any combination of 'usda', 'frida'
+%                       and 'bls' is used to add the food items
 %
 % OPTIONAL INPUTS:
 %    resetDietBounds:     Boolean; if true all Diet_EX_ reactions are set to 0
 %                       (default true)
 %    addPrice:          Cell array assigning a price to food items: column one
-%                       the food item IDs, column two the database ('usda' or
-%                       'frida') and column three the price. Defaults to an
-%                       empty cell array
+%                       the food item IDs, column two the database ('usda',
+%                       'frida' or 'bls') and column three the price. Defaults
+%                       to an empty cell array
+%    varargin:          Name-value pairs:
+%
+%                         * usdaEdition - char or numeric, four-digit year of
+%                           the USDA database edition to use. If empty the
+%                           latest available edition is used (default '')
+%                         * fridaEdition - char or numeric, four-digit year of
+%                           the Frida database edition to use. If empty the
+%                           latest available edition is used (default '')
+%                         * blsEdition - char or numeric, four-digit year of
+%                           the BLS database edition to use. If empty the
+%                           latest available edition is used (default '')
 %
 % OUTPUT:
 %    wbm:               The updated WBM model with food exchange and breakdown
@@ -29,13 +40,25 @@ function [wbm] = setFoodRxnsWbm(wbm, database, resetDietBounds, addPrice)
 %
 % .. Author: - Bram Nap, 04-2025
 
-if nargin<3
-    resetDietBounds = true;
-end
+% Parse the inputs
+parser = inputParser();
+parser.addRequired('wbm', @isstruct);
+parser.addRequired('database', @(x)ischar(x)||iscell(x)||isstring(x));
+parser.addOptional('resetDietBounds', true, @islogical);
+parser.addOptional('addPrice', {}, @iscell);
+parser.addParameter('usdaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('fridaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('blsEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
 
-if nargin <4
-    addPrice = {};
-end
+parser.parse(wbm, database, varargin{:});
+
+wbm = parser.Results.wbm;
+database = parser.Results.database;
+resetDietBounds = parser.Results.resetDietBounds;
+addPrice = parser.Results.addPrice;
+usdaEdition = parser.Results.usdaEdition;
+fridaEdition = parser.Results.fridaEdition;
+blsEdition = parser.Results.blsEdition;
 
 if resetDietBounds
     % Set all dietary metabolite exchanges to 0
@@ -45,8 +68,8 @@ end
 % If USDA food items are used
 if sum(strcmpi(database, 'usda')) > 0
     % Load USDA database
-    load('USDA2024_100gFluxValue.mat', 'fluxTableUsda');
-    load('USDA2024_100gMacros.mat', 'foodMacroUsda');
+    load(getNutritionDatabaseFile('usda', '100gFluxValue', usdaEdition), 'fluxTableUsda');
+    load(getNutritionDatabaseFile('usda', '100gMacros', usdaEdition), 'foodMacroUsda');
 
     % Check the value for entry "Energy_(KCAL)", nutrient ID 1008
     energyUsda = foodMacroUsda(foodMacroUsda.nutrient_id == 1008,3:end);
@@ -135,8 +158,8 @@ end
 % if Frida food items are used
 if sum(strcmpi(database, 'frida')) > 0
     % Load Frida database
-    load('frida2024_100gFluxValue.mat','fluxTableFrida');
-    load('frida2024_100gMacros.mat','foodMacroFrida');
+    load(getNutritionDatabaseFile('frida', '100gFluxValue', fridaEdition), 'fluxTableFrida');
+    load(getNutritionDatabaseFile('frida', '100gMacros', fridaEdition), 'foodMacroFrida');
     
     % Find the various macros associated with each food item
     energyFrida = foodMacroFrida(strcmp(foodMacroFrida.macroName, 'Energy, labelling (kcal)'),:);
@@ -178,6 +201,50 @@ if sum(strcmpi(database, 'frida')) > 0
 
     % Set the frida food items as reactions on the models
     wbm = addFoodSMatrix(wbm, fluxTableFrida, 'frida');
+end
+
+% if BLS food items are used
+if sum(strcmpi(database, 'bls')) > 0
+    % Load BLS database
+    load(getNutritionDatabaseFile('bls', '100gFluxValue', blsEdition), 'fluxTableBLS');
+    load(getNutritionDatabaseFile('bls', '100gMacros', blsEdition), 'foodMacroBLS');
+
+    % Find the macros associated with each food item by their BLS component
+    % codes: energy (kcal), available carbohydrates, protein, fat and sugars
+    macroCodes = {'ENERCC'; 'CHO'; 'PROT625'; 'FAT'; 'SUGAR'};
+    [~, macroIdx] = ismember(macroCodes, foodMacroBLS.componentCode);
+    macro2AddBLS = foodMacroBLS(macroIdx, [{'macroName'}, foodMacroBLS.Properties.VariableNames(4:end)]);
+
+    % Rename the macros to match with usda and frida
+    macro2AddBLS(:,1) = {'energy'; 'carbohydrate'; 'protein'; 'lipid'; 'sugars'};
+
+    % Initialise the correct structure to add price as a variable
+    pricesBLS = macro2AddBLS(1,:);
+    % set all the number to 0
+    pricesBLS(1, 2:end) = num2cell(zeros([1,size(pricesBLS,2)-1]));
+    % Change the first cell to money
+    pricesBLS(1,1) = {'money'};
+
+    if ~isempty(addPrice)
+        if any(strcmpi(addPrice(:,2), 'bls'))
+            addPriceBLS = addPrice(strcmpi(addPrice(:,2), 'bls'),:);
+            % Find the indexes of the food item IDs in the table and in the
+            % addPrice variables that are present in both
+            [~, idx1, idx2] = intersect(pricesBLS.Properties.VariableNames, addPriceBLS(:,1));
+            % Add the price
+            pricesBLS(1, idx1) = addPriceBLS(idx2, 3);
+        end
+    end
+    % Add to the macro table that has to be added to the model
+    macro2AddBLS = [macro2AddBLS;pricesBLS];
+
+    % Rename first column header to be able to merge with the flux table
+    macro2AddBLS.Properties.VariableNames(1) = {'VMHID'};
+    % Add the macros to the flux table
+    fluxTableBLS = [fluxTableBLS;macro2AddBLS];
+
+    % Set the BLS food items as reactions on the models
+    wbm = addFoodSMatrix(wbm, fluxTableBLS, 'bls');
 end
 end
 

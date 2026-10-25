@@ -17,7 +17,7 @@ function model2JSON(model, fileName)
 %                   * .lb - `n x 1` vector of reaction lower bounds
 %                   * .ub - `n x 1` vector of reaction upper bounds
 %                   * .grRules - `n x 1` cell array of gene-reaction rules
-%                   * .subSystems - `n x 1` cell array of subsystem assignments for each reaction
+%                   * .subSystems - `n x 1` cell array of subsystem assignments for each reaction (char, or a cell array of char for a reaction assigned to more than one subsystem, which is written as a `;`-joined string)
 %                   * .genes - `g x 1` cell array of gene identifiers
 %                   * .modelID - (optional) short model identifier
 %                   * .modelAnnotation - (optional) cell array of model annotation entries; the second element is written as the model version
@@ -173,7 +173,8 @@ for i = 1 : length(model.rxns)
         fprintf(fid,strcat('"subsystem":"',model.subSystems{i},'",\n'));
     catch % there seems to be a cell array in some instances
         a=model.subSystems{i};
-        fprintf(fid,strcat('"subsystem":"',a{1},'",\n'));
+        % Join all names (';'-separated, as model2xls.m/xls2model.m already do) instead of keeping only a{1}
+        fprintf(fid,strcat('"subsystem":"',strjoin(a,';'),'",\n'));
     end
     fprintf(fid,strcat('"notes":','{\n'));
     fprintf(fid,strcat('"original_vmh_ids":','[\n'));

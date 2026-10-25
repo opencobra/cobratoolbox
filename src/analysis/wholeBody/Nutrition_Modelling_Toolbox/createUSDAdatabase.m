@@ -28,6 +28,18 @@ function createUSDAdatabase(path2Files, varargin)
 %                       * foodSource2Use - cell array of food source tables
 %                         used to build the final flux and macro databases
 %                         (default {'sr_legacy_food'; 'foundation_food'; 'survey_fndds_food'})
+%                       * databaseEdition - char or numeric, four-digit year
+%                         of the USDA FoodData Central edition used. Output
+%                         files are named USDA<YEAR>_... (default '2024')
+%                       * infoFile - char, name of the info file in
+%                         path2Files linking USDA nutrients to VMH metabolites.
+%                         It must contain a molecularWeight_g/mmol column with
+%                         a weight for every metabolite
+%                         (default 'usda2vmhInfoFile.xlsx')
+%
+% NOTE:
+%    If multiple USDA nutrients map to the same VMH metabolite in the info
+%    file, the highest value of those nutrients is used for each food item.
 %
 % .. Author: - Bram Nap, 09-2024
 
@@ -38,6 +50,8 @@ parser.addParameter('brandedFoods', false, @islogical);
 parser.addParameter('outputDir', [path2Files , filesep, 'foodSourceNutrientTables'], @ischar);
 parser.addParameter('finalDatabaseDir', [path2Files, filesep, 'fluxMacroTables'], @ischar);
 parser.addParameter('foodSource2Use', {'sr_legacy_food';'foundation_food';'survey_fndds_food'}', @iscell);
+parser.addParameter('databaseEdition', '2024', @(x) ~isempty(regexp(num2str(x), '^\d{4}$', 'once')));
+parser.addParameter('infoFile', 'usda2vmhInfoFile.xlsx', @ischar);
 
 parser.parse(path2Files, varargin{:});
 
@@ -46,6 +60,8 @@ brandedFoods = parser.Results.brandedFoods;
 outputDir = parser.Results.outputDir;
 finalDatabaseDir = parser.Results.finalDatabaseDir;
 foodSource2Use = parser.Results.foodSource2Use;
+databaseEdition = num2str(parser.Results.databaseEdition);
+infoFile = parser.Results.infoFile;
 %% Step 0 - Set paths and load important files
 % Set the path where files are stored
 % path2Files = 'D:\OneDrive - National University of Ireland, Galway\ViennaDiet\databases\updated_USDA\RequiredFiles';
@@ -159,21 +175,31 @@ for i = 2:max(size(foodSource2Use))
     end
 end
 
-% Load the table with information on nutrient IDs, names and vmh
-% associations
-nutrientVmhTable = readtable([path2Files, filesep, 'usda2vmhInfoFile.xlsx']);
+% Load the table with information on nutrient IDs, names, vmh
+% associations and molecular weights
+nutrientVmhTable = readtable([path2Files, filesep, infoFile]);
 
-% Extract all nutrient info that are metabolites
+% Find the column with the molecular weights in g/mmol (molecularWeight_g/mmol,
+% renamed to molecularWeight_g_mmol by readtable)
+mwColumn = nutrientVmhTable.Properties.VariableNames(startsWith(nutrientVmhTable.Properties.VariableNames, 'molecularWeight_g'));
+if numel(mwColumn) ~= 1
+    error('The info file should contain exactly one molecularWeight_g/mmol column.')
+end
+
+% Extract all nutrient info that are metabolites with a valid VMH ID
 metVmhTable = nutrientVmhTable(nutrientVmhTable.metBool==1,:);
+[validVmhID, notInVmh] = isValidVmhID(metVmhTable.vmhID);
+% Warn for entries that are not explicitly marked as Not in VMH
+invalidVmhID = ~validVmhID & ~notInVmh;
+if any(invalidVmhID)
+    warning('The following metabolite nutrients have no valid VMH ID and are skipped: %s', ...
+        strjoin(strcat(metVmhTable.name_usda(invalidVmhID), ' (', metVmhTable.vmhID(invalidVmhID), ')'), '; '))
+end
+metVmhTable = metVmhTable(validVmhID,:);
 
 % Find the index of the metabolite nutrient IDs in the food-nutrient tables
 [~, idx1Met, idx2Met] = intersect(metVmhTable.nutrientID_usda, totTable.nutrient_id, 'stable');
-
-% Create table with food-nutrient information with only VMH metabolites
-foodVMHMetaboliteTable = totTable(idx2Met,:);
-foodVMHMetaboliteTable.VMHID = metVmhTable.vmhID(idx1Met);
-% Move the VMH ID column to the second position
-foodVMHMetaboliteTable = foodVMHMetaboliteTable(:,[1 end 2:end-1]);
+metVmhTable = metVmhTable(idx1Met,:);
 
 % Extract all the macro info
 macroTable = nutrientVmhTable(nutrientVmhTable.macroBool==1,:);
@@ -193,52 +219,21 @@ foodMacroUsda.nutrientName = macroNames;
 foodMacroUsda = foodMacroUsda(:,[1 end 2:end-1]);
 %% Step 3 - Convert metabolite weights from g/mg/ug to mmol
 
-% Obtain the units of each measured metabolite
-unitMetabolite = metVmhTable.unit_usda(idx1Met);
+% Obtain the measured values for all VMH metabolites for the food items
+foodValues = totTable{idx2Met, 2:end};
 
-% Convert units to values for conversions factors to grams
-unitMetabolite = strrep(unitMetabolite, 'UG', '1e6');
-unitMetabolite = strrep(unitMetabolite, 'MG', '1e3');
-unitMetabolite = strrep(unitMetabolite, 'G', '1');
-
-unitMetabolite = str2double(unitMetabolite);
-
-% Obtain the measures weight values for all VMH metabolites for the food
-% items
-foodValues = foodVMHMetaboliteTable{:, 3:end};
-
-% Convert all measured values to grams
-valuesGrams = bsxfun(@rdivide,foodValues,unitMetabolite(:));
-
-% Obtain the metabolite information from the VMH database
-vmhDatabase = loadVMHDatabase;
-metaboliteData = cell2table(vmhDatabase.metabolites);
-
-% Extract the metabolite formalas of metabolites found in the USDA database
-[~, metidx] = ismember(foodVMHMetaboliteTable.VMHID, metaboliteData.Var1,'legacy');
-
-formulas = metaboliteData.Var4(metidx);
-
-% Obtain the molecular mass from the formulas in gram/mol
-mws = getMolecularMass(formulas);
-% convert to gram/mmol
-mws = mws*1e-3;
-
-% Add molecular weights for cobalt and nickel
-cobalt = 58.93319/1000;
-nickel = 58.693/1000;
-
-[~,~,spefidx] = intersect({'Co', 'Ni'}, formulas, 'stable');
-mws(spefidx) = [cobalt, nickel];
-
-% Calculate the mmol values for each metabolite
-valuesMol =  bsxfun(@rdivide,valuesGrams,mws(:));
+% Convert the values to mmol/100g with the molecular weights (g/mmol) from
+% the info file. If multiple USDA nutrients map to the same VMH metabolite,
+% the highest value of those nutrients is used for each food item.
+[metIDs, valuesMol, duplicates] = convertNutrientsToMmol(foodValues, metVmhTable.unit_usda, ...
+    metVmhTable.vmhID, metVmhTable.(mwColumn{1}));
+for i = 1:size(duplicates,1)
+    fprintf('%s is measured by %d USDA nutrients, the highest value per food item is used.\n', duplicates{i,1}, duplicates{i,2});
+end
 
 % Create the new table with mmol/100g of food item table
-fluxTableUsda = foodVMHMetaboliteTable;
-
-fluxTableUsda(:, 3:end) = array2table(valuesMol);
-fluxTableUsda.nutrient_id = [];
+fluxTableUsda = [table(metIDs, 'VariableNames', {'VMHID'}), ...
+    array2table(valuesMol, 'VariableNames', totTable.Properties.VariableNames(2:end))];
 
 %% Save tables as both csv and .mat files
 
@@ -246,14 +241,14 @@ if ~exist(finalDatabaseDir, 'dir')
     mkdir(finalDatabaseDir);
 end
 
-writetable(fluxTableUsda, [finalDatabaseDir, filesep, 'USDA2024_100gFluxValue.csv']);
-save([finalDatabaseDir, filesep, 'USDA2024_100gFluxValue.mat'], "fluxTableUsda");
+writetable(fluxTableUsda, [finalDatabaseDir, filesep, 'USDA', databaseEdition, '_100gFluxValue.csv']);
+save([finalDatabaseDir, filesep, 'USDA', databaseEdition, '_100gFluxValue.mat'], "fluxTableUsda");
 
-writetable(foodMacroUsda, [finalDatabaseDir, filesep, 'USDA2024_100gMacros.csv']);
-save([finalDatabaseDir, filesep, 'USDA2024_100gMacros.mat'], "foodMacroUsda");
+writetable(foodMacroUsda, [finalDatabaseDir, filesep, 'USDA', databaseEdition, '_100gMacros.csv']);
+save([finalDatabaseDir, filesep, 'USDA', databaseEdition, '_100gMacros.mat'], "foodMacroUsda");
 
 % Save the infofile
-save([outputDir, filesep, 'usda2024_infoFile.mat'], 'nutrientVmhTable');
+save([outputDir, filesep, 'usda', databaseEdition, '_infoFile.mat'], 'nutrientVmhTable');
 
 % Change the ; in the foodnames to a , and save as .mat file
 allFoods.description = strrep(allFoods.description, ';', ',');
@@ -267,6 +262,6 @@ for i = 1:size(foodCats,1)
     end
 end
 
-save([outputDir, filesep, 'USDAFoodItems.mat'], 'allFoods');
+save([outputDir, filesep, 'USDA', databaseEdition, '_foodItems.mat'], 'allFoods');
 
 end
