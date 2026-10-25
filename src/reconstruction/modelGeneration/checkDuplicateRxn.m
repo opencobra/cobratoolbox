@@ -93,31 +93,33 @@ switch method
             if printLevel > 0
                 fprintf('%u%s\n', nDuplicates, ' duplicate reaction(s) (up to orientation)')
             end
-            for n = 1:nRxn
-                bool = (ic == n);
-                if nnz(bool) > 1
-                    ind = oneToN(bool);
+            % visit only the groups with more than one member, in the order of their first member
+            groups = findDuplicateGroups(ic);
+            removedTmp = zeros(numel(groups), 1);
+            keptTmp = zeros(numel(groups), 1);
+            for g = 1:numel(groups)
+                ind = groups{g};
 
-                    keptOneRxnInd = ind(1);
-                    removedOneRxnInd = ind(end);
+                keptOneRxnInd = ind(1);
+                removedOneRxnInd = ind(end);
 
-                    if length(ind) > 2
-                        warning(['Reaction: ' model.rxns{ind(1)} ' has more than one replicate'])
-                    end
+                if length(ind) > 2
+                    warning(['Reaction: ' model.rxns{ind(1)} ' has more than one replicate'])
+                end
 
 
-                    removedRxnInd = [removedRxnInd; removedOneRxnInd];
-                    keptRxnInd = [keptRxnInd; keptOneRxnInd];
+                removedTmp(g) = removedOneRxnInd;
+                keptTmp(g) = keptOneRxnInd;
 
-                    if printLevel > 0
-                        %fprintf('%u%s\n',length(removedOneRxnInd),' duplicate reaction(s) (up to orientation)')
-                        fprintf('%s\t', '     Keep: ');
-                        formulas = printRxnFormula(model, model.rxns{keptOneRxnInd});
-                        fprintf('%s\t', 'Duplicate: ');
-                        formulas = printRxnFormula(model, model.rxns{removedOneRxnInd});
-                    end
+                if printLevel > 0
+                    fprintf('%s\t', '     Keep: ');
+                    formulas = printRxnFormula(model, model.rxns{keptOneRxnInd});
+                    fprintf('%s\t', 'Duplicate: ');
+                    formulas = printRxnFormula(model, model.rxns{removedOneRxnInd});
                 end
             end
+            removedRxnInd = removedTmp;
+            keptRxnInd = keptTmp;
         end
 
     case {'FR'}
@@ -126,18 +128,14 @@ switch method
         end
 
         % vanilla forward and reverse half stoichiometric matrices
-        F        = - model.S;
-        F(F < 0) = 0;
-        R        = model.S;
-        R(R < 0) = 0;
-
-        A = F + R;  % invariant to direction of reaction
+        A = abs(model.S);  % invariant to direction of reaction
 
         % detect the cols of A that are identical upto scalar multiplication
         % divide each col by the sum of each row.
         sumA1 = sum(A, 1);
         sumA1(sumA1 == 0) = 1;
-        normalA1 = A * diag(1 ./ sumA1);
+        % scale the columns with a sparse diagonal: a dense nRxn x nRxn matrix does not fit in memory
+        normalA1 = A * spdiags((1 ./ sumA1)', 0, nRxn, nRxn);
 
         % get unique cols, but do not change the order
         % [C,IA,IC] = unique(A,'rows') also returns index vectors IA and IC such
@@ -149,30 +147,37 @@ switch method
         end
 
 
-        for n =1:nRxn
-            bool = (ic == n);
-            if nnz(bool) > 1
-                ind = oneToN(bool);
-                if norm(model.S(:, ind(1)) + model.S(:, ind(2))) == 0 || norm(model.S(:, ind(1)) - model.S(:, ind(2))) == 0
-                    keptOneRxnInd = ind(1);
-                    removedOneRxnInd = ind(end);
+        % visit only the groups with more than one member, in the order of their first member
+        groups = findDuplicateGroups(ic);
+        removedTmp = zeros(numel(groups), 1);
+        keptTmp = zeros(numel(groups), 1);
+        nFound = 0;
+        for g = 1:numel(groups)
+            ind = groups{g};
+            if norm(model.S(:, ind(1)) + model.S(:, ind(2))) == 0 || norm(model.S(:, ind(1)) - model.S(:, ind(2))) == 0
+                keptOneRxnInd = ind(1);
+                removedOneRxnInd = ind(end);
 
-                    if length(ind) > 2
-                        warning([model.rxns{ind(1)} ' has more than one replicate']);
-                    end
-
-                    removedRxnInd = [removedRxnInd; removedOneRxnInd];
-                    keptRxnInd = [keptRxnInd; keptOneRxnInd];
-
-                    if printLevel > 0
-                        fprintf('%s\t', '     Keep: ');
-                        formulas = printRxnFormula(model, model.rxns{keptOneRxnInd});
-                        fprintf('%s\t', 'Duplicate: ');
-                        formulas = printRxnFormula(model, model.rxns{removedOneRxnInd});
-                    end
-                %else: these reactions involve the same metabolites but they are not duplicates.
+                if length(ind) > 2
+                    warning([model.rxns{ind(1)} ' has more than one replicate']);
                 end
+
+                nFound = nFound + 1;
+                removedTmp(nFound) = removedOneRxnInd;
+                keptTmp(nFound) = keptOneRxnInd;
+
+                if printLevel > 0
+                    fprintf('%s\t', '     Keep: ');
+                    formulas = printRxnFormula(model, model.rxns{keptOneRxnInd});
+                    fprintf('%s\t', 'Duplicate: ');
+                    formulas = printRxnFormula(model, model.rxns{removedOneRxnInd});
+                end
+            %else: these reactions involve the same metabolites but they are not duplicates.
             end
+        end
+        if nFound > 0
+            removedRxnInd = removedTmp(1:nFound);
+            keptRxnInd = keptTmp(1:nFound);
         end
 end
 
@@ -189,4 +194,17 @@ else
     else
         modelOut=model;
     end
+end
+
+function groups = findDuplicateGroups(ic)
+% Members of every group that has more than one member, as row vectors of increasing indices,
+% ordered by group number. ic is the group number of every reaction (third output of unique).
+counts = accumarray(ic(:), 1);
+[~, order] = sort(ic(:));  % sort is stable: the members of a group stay in increasing order
+last = cumsum(counts);
+first = last - counts + 1;
+duplicateGroups = find(counts > 1);
+groups = cell(numel(duplicateGroups), 1);
+for k = 1:numel(duplicateGroups)
+    groups{k} = order(first(duplicateGroups(k)):last(duplicateGroups(k)))';
 end

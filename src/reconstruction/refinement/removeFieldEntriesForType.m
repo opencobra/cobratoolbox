@@ -95,7 +95,7 @@ if strcmp(type,'genes')
             error(errormessage);
         end
         %obtain the relevant rules
-        relrules = cellfun(@(y) cellfun(@(x) ~isempty(strfind(y,x)),strcat('x(',cellfun(@num2str,num2cell(genePos),'UniformOutput',0),')')),model.rules,'UniformOutput',0);
+        relrules = findRulesWithGenes(model.rules, cellfun(@num2str,num2cell(genePos),'UniformOutput',0));
         matchingRules = find(cellfun(@any,relrules));
         %Define modified rules.
         modifiedRules = matchingRules;
@@ -216,3 +216,30 @@ while ~all(strcmp(origrules,model.rules(rxns)))
     model.rules(rxns) = regexprep(model.rules(rxns),'\( *(x\([0-9]+\)) *\)','$1');
 end
 
+function relrules = findRulesWithGenes(rules, genePosStr)
+% Marks, for every rule, which of the genes it refers to as x(N).
+% USAGE:
+%    relrules = findRulesWithGenes(rules, genePosStr)
+% INPUTS:
+%    rules:       the rules, a cell array of character vectors
+%    genePosStr:  the positions of the genes, each one as a character vector
+%
+% OUTPUT:
+%    relrules:    a cell array of the size of rules. The entry of a rule that refers to at least
+%                 one of the genes is a logical array, of the size of genePosStr, that is true for
+%                 the genes it refers to; the entry of any other rule is empty.
+
+positionOfGene = containers.Map(genePosStr(:)', num2cell(1:numel(genePosStr)));
+referred = regexp(rules, 'x\((\d+)\)', 'tokens');
+relrules = cell(size(rules));
+for r = 1:numel(rules)
+    for k = 1:numel(referred{r})
+        gene = referred{r}{k}{1};
+        if isKey(positionOfGene, gene)
+            if isempty(relrules{r})
+                relrules{r} = false(size(genePosStr));
+            end
+            relrules{r}(positionOfGene(gene)) = true;
+        end
+    end
+end

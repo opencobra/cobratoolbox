@@ -87,7 +87,23 @@ function [newDietModel, pointsModel, roiFlux, pointsModelSln, menuChanges, macro
 %       column the price (any currency) associated with that food item.
 %       Allows for optimizing the price of a diet, but only if enough
 %       information is available.
-% 
+%
+%       * .usdaEdition: four-digit year (char or numeric) of the USDA
+%       database edition to use. If empty the latest available edition is
+%       used (default '')
+%
+%       * .fridaEdition: four-digit year (char or numeric) of the Frida
+%       database edition to use. If empty the latest available edition is
+%       used (default '')
+%
+%       * .blsEdition: four-digit year (char or numeric) of the BLS
+%       database edition to use. If empty the latest available edition is
+%       used (default '')
+%
+%       * .databases: cell array of the food databases whose food items are
+%       added to the model when it has no food items yet: any combination
+%       of 'usda', 'frida' and 'bls' (default {'usda', 'frida'})
+%
 % OUTPUTS:
 %    newDietModel:     The input model with diet reaction bounds updated to
 %                      reflect the recommended dietary changes
@@ -182,6 +198,10 @@ foodRemovedLimit=1000000;
 freeMets={};
 removeFoodItem = {};
 addPrice = {};
+usdaEdition = '';
+fridaEdition = '';
+blsEdition = '';
+databases = {'usda', 'frida'};
 
 % Overwrite the variables by the ones specified in the options input
 if exist('options','var')
@@ -254,6 +274,17 @@ if exist('options','var')
             if size(addPrice, 2) ~= 3
                 error('You give more than two columns for the foods that have to be excluded from analysis. Please give in column 1 the food ID, column 2 the food database name (frida or usda), and column three the price of the food item (any currency)')
             end
+        elseif strcmpi(fn{k},'usdaEdition')
+            usdaEdition = options.(fn{k});
+        elseif strcmpi(fn{k},'fridaEdition')
+            fridaEdition = options.(fn{k});
+        elseif strcmpi(fn{k},'blsEdition')
+            blsEdition = options.(fn{k});
+        elseif strcmpi(fn{k},'databases')
+            databases = lower(cellstr(options.(fn{k})));
+            if ~all(ismember(databases, {'usda', 'frida', 'bls'}))
+                error('Invalid databases input. Use any combination of "usda", "frida" and "bls"')
+            end
         else
             error(['Invalid "options" field entered: ', fn{k}])
         end
@@ -267,7 +298,8 @@ end
 % Add food items if not yet set on the WBMs
 if strcmpi(foodOrMets,'Food')
     if ~foodItemInModel
-        model = setFoodRxnsWbm(model, {'usda', 'frida'}, false, addPrice);
+        model = setFoodRxnsWbm(model, databases, false, addPrice, ...
+            'usdaEdition', usdaEdition, 'fridaEdition', fridaEdition, 'blsEdition', blsEdition);
     end
 elseif ~strcmpi(foodOrMets,'foodmets') && ~strcmpi(foodOrMets,'allmets')
     error('foodOrMets invalid. Possible inputs are: "Food", "AllMets", "FoodMets".')
@@ -275,6 +307,10 @@ end
 
 % Add the price to the model if food reactions were already added
 if ~isempty(addPrice) && foodItemInModel
+    % Find the databases of the food items in the model
+    databasesInModel = {'usda', 'frida', 'bls'};
+    databasesInModel = databasesInModel(cellfun(@(db) any(endsWith(model.rxns(startsWith(model.rxns, 'Food_EX_')), ['_' db])), databasesInModel));
+
     % Store the original food dietary bounds
     originalFoodBounds = [model.lb(contains(model.rxns, 'Food_EX_')), model.ub(contains(model.rxns, 'Food_EX_'))];
     
@@ -284,7 +320,9 @@ if ~isempty(addPrice) && foodItemInModel
     model = removeRxns(model, {'Diet_EX_energy[d]', 'Diet_EX_carbohydrate[d]', 'Diet_EX_protein[d]', 'Diet_EX_lipid[d]', 'Diet_EX_sugars[d]', 'Diet_EX_money[d]'});
     
     % Re-introduce the food reactions with the money metabolite associated
-    model = setFoodRxnsWbm(model, {'usda', 'frida'}, false, addPrice);
+    % for the databases that were in the model
+    model = setFoodRxnsWbm(model, databasesInModel, false, addPrice, ...
+        'usdaEdition', usdaEdition, 'fridaEdition', fridaEdition, 'blsEdition', blsEdition);
     
     % Reset the dietary food bounds on the model
     model.lb(contains(model.rxns, 'Food_EX_')) = originalFoodBounds(:,1);
@@ -564,10 +602,6 @@ foodRemovedIndexes=find(contains(pointsModel.rxns,'Food_Removed_EX_'));
 slnIndexes1=foodAddedIndexes(pointsModelSln.v(foodAddedIndexes)<0);
 slnIndexes2=foodRemovedIndexes(pointsModelSln.v(foodRemovedIndexes)<0);
 
-% Load in the food item names to translate the food item IDs
-load("USDAfoodItems.mat", 'allFoods');
-load("frida2024_foodIdDictionary.mat", "foodIdDictionaryFrida")
-
 % Create table with the dietary changes
 disp('Food items of interest are:')
 T=table([pointsModel.rxns(slnIndexes1);pointsModel.rxns(slnIndexes2)],pointsModelSln.v([slnIndexes1;slnIndexes2]),'VariableNames',{'Food Rxn', 'Flux'});
@@ -583,12 +617,31 @@ if strcmpi(foodOrMets, 'food')
         foodIds = foodIds';
     end
     
-    % Obtain the names for the usda items
+    % Load in the food item names of the databases in the solution to
+    % translate the food item IDs
+    if size(foodIds,2) < 5
+        solutionDatabases = {};
+    else
+        solutionDatabases = lower(foodIds(:,5));
+    end
+    if any(strcmp(solutionDatabases, 'usda'))
+        load(getNutritionDatabaseFile('usda', 'foodItems', usdaEdition), 'allFoods');
+    end
+    if any(strcmp(solutionDatabases, 'frida'))
+        load(getNutritionDatabaseFile('frida', 'foodIdDictionary', fridaEdition), "foodIdDictionaryFrida")
+    end
+    if any(strcmp(solutionDatabases, 'bls'))
+        load(getNutritionDatabaseFile('bls', 'foodIdDictionary', blsEdition), "foodIdDictionaryBLS")
+    end
+
+    % Obtain the names for the food items
     for k = 1:size(foodIds,1)
         if strcmpi(foodIds(k,5), 'usda')
             foodIds{k,6} = allFoods.description(allFoods.fdc_id==str2double(string(foodIds(k,4))));
-        else
+        elseif strcmpi(foodIds(k,5), 'frida')
             foodIds{k,6} = foodIdDictionaryFrida.foodName(strcmp(foodIdDictionaryFrida.foodId, foodIds(k,4)));
+        else
+            foodIds{k,6} = foodIdDictionaryBLS.foodName(strcmp(foodIdDictionaryBLS.foodId, foodIds(k,4)));
         end
     end
     

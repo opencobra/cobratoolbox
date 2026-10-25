@@ -334,19 +334,19 @@ parfor i = 1:length(hmPaths)
     % solve reactions
     for j = 1 : length(rxnList)
         % Set reaction objective
-        model = changeObjective(model,rxnList{j});
+        model2Solve = changeObjective(model,rxnList{j});
         
          % Set objective function to user defined sense for the reaction
-         model.osenseStr = rxnSense{j}
+         model2Solve.osenseStr = rxnSense{j};
 
         % Open the reaction if it is a demand reaction
         if contains(rxnList(j),'DM_')
-            model = changeRxnBounds(model,rxnList{j},100000,'u');
+            model2Solve = changeRxnBounds(model2Solve,rxnList{j},100000,'u');
         end
 
        
         disp(strcat("Investigate reaction ", string(rxnList{j})))
-        FBA = optimizeWBModel(model);
+        FBA = optimizeWBModel(model2Solve);
 
         % save solution
         if isempty(FBA.f)
@@ -357,10 +357,10 @@ parfor i = 1:length(hmPaths)
 
         % Add LP and solver statistics
         solution.solver = FBA.solver;
-        solution.osenseStr{1,j} = model.osenseStr;
+        solution.osenseStr{1,j} = model2Solve.osenseStr;
         solution.stat(1,j)=FBA.stat;
-        if isfield(solution, "origStat")
-            solution.origStat(1,j)=FBA.origStat;
+        if isfield(FBA, 'origStat')
+            solution.OrigStat(1,j) = string(FBA.origStat);
         else
             solution.OrigStat(1,j) = "Not available due to solver type";
         end

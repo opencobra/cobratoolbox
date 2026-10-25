@@ -1,0 +1,3 @@
+# Regenerable measurement outputs. The .m drivers beside this file reproduce them;
+# the numbers they produced are recorded in results.md and ../research.md.
+*.mat

@@ -1,5 +1,91 @@
 <!--
 Sync Impact Report
+Version change: 1.7.0 -> 1.7.1
+Modified principles:
+- III-Defects (simplified, no new principle): the enforced staleness check is removed.
+  The registry test/known-defects.md stays GENERATED from the test headers (never
+  hand-edited) but is a reference snapshot that is NOT checked in CI. Whoever relies on
+  an entry, edits a listed function, or works to resolve a defect re-checks the entry
+  against the current source, updates the test header (and writes the test for any
+  formerly skipped input once fixed) and regenerates the registry.
+Modified sections: III-Defects. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; no template restates defect handling.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for PATCH bump: relaxes and clarifies an obligation within an existing
+sub-clause (a complete staleness check would need a far more complicated system; the
+registry is a navigational aid and review at resolution time is sufficient); no
+principle removed or redefined.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
+Version change: 1.6.1 -> 1.7.0
+Modified principles:
+- III. Testing, Reproducibility, And Continuous Integration (added sub-clause
+  III-Defects: Known-Defects Record — a test never changes a source function and
+  never asserts defective behaviour; each defect is recorded in the test header in
+  one standard format; a single registry at test/known-defects.md is GENERATED from
+  the headers, never hand-edited, and a check fails when it is stale.)
+Modified sections: III-Defects. Added sections: III-Defects. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate defect handling, and per
+  Principle X none may, so no template change is required.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for MINOR bump: a new, materially-expanded compliance requirement within an
+existing principle (a binding record format and a generated registry); no principle
+removed or redefined. The generator, the header grammar and the back-fill of existing
+defects are a separate, spec-driven feature.
+Deferred items: the exact entry grammar, the generator script and the staleness check
+are defined by that feature, not here.
+-->
+
+<!--
+Sync Impact Report
+Version change: 1.6.0 -> 1.6.1
+Modified principles:
+- III-Coverage (clarification only, no new principle): every test file MUST open
+  with a prepareTest(...) call after the `cd(fileDir)` boilerplate; a Tier 1 test
+  calls prepareTest() with no arguments. Tier 1 wording "never skipped" changed to
+  "declares no requirements, so it is never skipped for missing requirements".
+Modified sections: III-Coverage. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate test openings, and per
+  Principle X none may, so no template change is required.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for PATCH bump: clarifies how an existing rule (Principle III already
+requires declaring requirements with prepareTest) applies to requirement-free tests;
+no new obligation class, no principle removed or redefined.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
+Version change: 1.5.0 -> 1.6.0
+Modified principles:
+- III. Testing, Reproducibility, And Continuous Integration (added sub-clause
+  III-Coverage: Line-Coverage Goal, Test Tiers, Memory Efficiency, And Readability
+  — 100% line-coverage goal with documented exemptions; five tiers (no-model,
+  model-manipulation, optimisation, getDistributedModel loading, first-run
+  reference values); one-file-per-function reaffirmed; memory-efficiency and
+  human-readability rules.)
+Modified sections: none. Added sections: III-Coverage. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate test tiers or coverage
+  goals, and per Principle X none may, so no template change is required.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for MINOR bump: materially expanded compliance requirements within an
+existing principle; no principle removed or redefined, no approved plan invalidated.
+Deferred items: none. Pilot batch (5 Tier-1 functions) is a separate feature.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.4.0 -> 1.5.0
 Modified principles:
 - III. Testing, Reproducibility, And Continuous Integration (added sub-clause
@@ -326,6 +412,107 @@ predictable. Splitting one function's coverage across two differently-named file
 lets a maintainer or agent find one and reasonably believe it is complete, missing
 real assertions that live in the other. One name, one file, keeps "does this
 function have a test, and is it complete" a single lookup rather than a search.
+
+#### III-Coverage: Line-Coverage Goal, Test Tiers, Memory Efficiency, And Readability
+
+Every test file MUST aim for 100% line coverage of the single function it tests.
+A line that cannot be reached (unavailable solver or toolbox, GUI, OS-specific
+branch) is permitted to stay uncovered ONLY when the test file header documents the
+exemption: the line number(s) and the reason. Undocumented uncovered lines are a
+defect in the test.
+
+Every test file MUST open with a `prepareTest(...)` call placed after the
+`cd(fileDir)` boilerplate, declaring the test's requirements (solvers, MATLAB
+toolboxes, operating system). A Tier 1 test calls `prepareTest()` with no arguments
+because it needs none of these; the call is the standard COBRA test opening and the
+place where a requirement is added later. Failures are caught by the harness
+(`runScriptFile`); `prepareTest` only causes a skip (`COBRA:RequirementsNotMet`) when
+a declared requirement is unmet.
+
+Each test MUST declare its tier in its header:
+
+* **Tier 1 — no genome-scale model.** Pure helpers on matrices, strings, and
+  structs. Inputs are hand-built or come from `buildToyModel1`/`buildToyModel2`.
+  No solver is used. The test declares no requirements, so it is never skipped for
+  missing requirements, and it runs in milliseconds.
+* **Tier 2 — model manipulation** (for example `removeGenes`, `changeObjective`,
+  `addReaction`). Model size is unrestricted because the operations are cheap. No
+  solver is used. Assertions check structural consistency: sizes and mutual
+  agreement of `S`, `rxns`, `mets`, `genes`, `rules`, and `rxnGeneMat`.
+* **Tier 3 — optimisation.** Requirements are declared with `prepareTest`. The test
+  MUST use the SMALLEST model that exercises every branch of the code (a toy model
+  or `ecoli_core_model` by default; escalate, for example to Recon3D, only when the
+  code needs it, and say why in the header). Assertions MUST check invariants —
+  `S*v = b` within tolerance, bounds respected, `stat`, objective value — and not
+  merely that a call returned. Where the solution is non-unique, assert the
+  objective or flux ranges, never a specific flux vector.
+* **Tier 4 — model loading.** Tests MUST obtain models through
+  `getDistributedModel`, not ad-hoc `load`/`readCbModel` paths.
+* **Tier 5 — reference values.** When an optimisation or numeric assertion has no
+  prior reference, the author writes a first draft, runs it, and records that run's
+  result as the reference constant; later runs assert against it with a justified
+  tolerance. The header MUST state that the value was generated by the first run
+  (date and solver) and not derived independently, so readers know it guards
+  consistency, not independent correctness.
+
+One test file per function (III-Naming) is reaffirmed and non-negotiable. Shared
+set-up efficiency MUST come from cheap per-file fixtures, never from merging
+several functions into one file or splitting one function across files.
+
+Tests MUST be very memory efficient: load each model once per file, load only the
+model required, `clear` large variables when no longer needed, avoid copying large
+models, prefer perturbing one model (bounds, knock-outs) over loading several, and
+leave no large artifacts on disk.
+
+Tests MUST be written for human readers: a header (purpose, tier, function under
+test, coverage exemptions, authors and date); a `%%` section per behaviour or
+branch; descriptive variable names; and, for each group of assertions, a comment
+stating what it proves and, where used, why the tolerance was chosen.
+
+No CI time budget is imposed on tests; efficiency is governed by the memory and
+smallest-model rules above.
+
+Rationale: coverage is only trustworthy when it is measured against a stated goal
+and every gap is explained. Tiers match test cost and model size to what the code
+actually needs, keeping most tests solver-free and cheap, while first-run
+references give legacy numeric code a regression anchor without pretending it is
+independently verified.
+
+#### III-Defects: Known-Defects Record
+
+When writing a test reveals an error or defect in a source function, the test MUST
+NOT change the function and MUST NOT assert the defective behaviour. The defect is
+documented in the test file header and the affected input is skipped; the source
+lines that this leaves uncovered are listed as coverage exemptions (III-Coverage).
+Every test MUST pass.
+
+Each defect MUST be recorded in the test header in ONE standard machine-readable
+format, under the heading "Known defects documented (NOT tested, NOT fixed here):",
+as one entry per defect with the fields DEFECT (short title), SEVERITY (one of
+`wrong-result`, `error`, `unusable-option`, `cosmetic`, `limitation`), TRIGGER (the
+input or call that causes it), OBSERVED, EXPECTED, and LINES (the affected line
+numbers in the source function). A test with no defect writes "None found." The exact
+entry grammar is defined by the generator feature and is not restated here
+(Principle X).
+
+The repository keeps ONE consolidated registry of all known defects at
+`test/known-defects.md`. It is GENERATED from the test headers by a script and MUST
+NOT be edited by hand. It is a reference snapshot, not an enforced artefact: it is not
+checked in CI. A contributor (human or agent) who adds, changes or removes a defect
+entry SHOULD regenerate the registry in the same change. The registry lives under
+`test/` (the test-suite role of Principle IX); no new top-level folder is created.
+
+A function can be changed or fixed after an entry was written, so entries can become
+outdated. Whoever relies on an entry, edits a function that has an entry, or works to
+resolve a defect MUST re-check the entry against the current source, then update the
+test header (remove or correct the entry and, once the defect is fixed, write the test
+for the formerly skipped input) and regenerate the registry.
+
+Rationale: defects found while back-filling tests are valuable and otherwise stay
+buried in individual headers. Generating one registry from those headers keeps a single
+source of truth that a hand-written list would not. A complete staleness check would need
+a far more complicated system; the registry is a navigational aid, and re-checking an
+entry when it is used or resolved is sufficient.
 
 ### IV. Solver Abstraction, Numerical Integrity, And Performance
 
@@ -767,6 +954,23 @@ requests where relevant; include `[documentation]` in the message when only
 documentation changes. The Spec Kit `git` extension may automate commits at phase
 boundaries; its messages MUST still respect this convention.
 
+Every pull request MUST carry both a **title** and a **summary**:
+
+* the **title** names the change in one line, in the same present-tense style as a
+  commit subject;
+* the **summary** is a SHORT description of the enhancement — what the change gives the
+  reader — and MUST be the FIRST thing in the pull request body.
+
+A long body that mentions the enhancement somewhere does not satisfy this requirement:
+the summary MUST come first and MUST be short. Background, provenance, measurements, and
+the reasoning behind the change belong after it, not before it. Where a pull request is
+opened by an automated workflow or an agent, the same requirement applies.
+
+Rationale: a reviewer arriving at a pull request decides in one line whether it concerns
+them and what it delivers. Opening with context instead of the enhancement spends that
+line on orientation rather than substance, and a reader who stops there learns nothing
+about what changed.
+
 Code review MUST confirm that public interfaces remain compatible or the break is
 approved; model, solver, and status semantics remain correct or are deliberately
 changed and documented; tests and CI pass; performance changes do not hide
@@ -847,4 +1051,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.5.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-08-17
+**Version**: 1.7.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-12

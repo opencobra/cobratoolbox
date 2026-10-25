@@ -47,6 +47,17 @@ function setInSilicoDiet(dietToSetPath, varargin)
 %                           * addStarch - boolean, whether additional starch is
 %                             added when generating the in silico diet
 %                             (default false)
+%                           * usdaEdition - char or numeric, four-digit year
+%                             of the USDA database edition to use. If empty
+%                             the latest available edition is used
+%                             (default '')
+%                           * fridaEdition - char or numeric, four-digit year
+%                             of the Frida database edition to use. If empty
+%                             the latest available edition is used
+%                             (default '')
+%                           * blsEdition - char or numeric, four-digit year
+%                             of the BLS database edition to use. If empty the
+%                             latest available edition is used (default '')
 %
 % NOTE:
 %    The tutorial folder in the COBRA Toolbox provides template files showing
@@ -66,6 +77,9 @@ parser.addParameter('checkFeasibility', true,@islogical);
 parser.addParameter('wbmVersion', '',@ischar);
 parser.addParameter('pathToWbms', '', @ischar);
 parser.addParameter('addStarch', false, @islogical);
+parser.addParameter('usdaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('fridaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('blsEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
 
 parser.parse(dietToSetPath, varargin{:});
 
@@ -78,13 +92,19 @@ checkFeasibility = parser.Results.checkFeasibility;
 wbmVersion = parser.Results.wbmVersion;
 pathToWbms = parser.Results.pathToWbms;
 addStarch = parser.Results.addStarch;
+usdaEdition = parser.Results.usdaEdition;
+fridaEdition = parser.Results.fridaEdition;
+blsEdition = parser.Results.blsEdition;
+% Name-value pairs selecting the database editions, passed to the
+% functions that load the databases
+editionArgs = {'usdaEdition', usdaEdition, 'fridaEdition', fridaEdition, 'blsEdition', blsEdition};
 
 %% Obtaining the metabolite dietary fluxes
 
 % Load in the table
 dietToSet = readtable(dietToSetPath);
 % Calculate the metabolite composition of the diets
-dietFlux = generateInSilicoDiet(dietToSetPath, 'addStarch', addStarch, 'analyseMacros', false, 'outputDir', outputDir);
+dietFlux = generateInSilicoDiet(dietToSetPath, 'addStarch', addStarch, 'analyseMacros', false, 'outputDir', outputDir, editionArgs{:});
 %% Setup and WBM loading
 
 % Initialise the output directories
@@ -232,8 +252,8 @@ if constrainFoodWBM
 
     % If no custom WBMs are to be used, alter the previously loaded gener
     if only2Models
-        maleFood = setFoodRxnsWbm(male, dietToSet.databaseUsed);
-        femaleFood = setFoodRxnsWbm(female, dietToSet.databaseUsed);
+        maleFood = setFoodRxnsWbm(male, dietToSet.databaseUsed, editionArgs{:});
+        femaleFood = setFoodRxnsWbm(female, dietToSet.databaseUsed, editionArgs{:});
     end
 
     % Create the WBMs that have food item reactions added
@@ -316,7 +336,7 @@ if constrainFoodWBM
                         mets2Add = findMet2Add2FoodDiet(model2Alter, fluxDiet);
     
                         % Prepare the WBM for food items
-                        foodModel = setFoodRxnsWbm(model2Alter, dietToSet.databaseUsed);
+                        foodModel = setFoodRxnsWbm(model2Alter, dietToSet.databaseUsed, editionArgs{:});
     
                         % Set the filename
                         fileName = strcat(foodConstrainedWBM, filesep,strrep(model2Load, '.mat', 'foodItem.mat'));
