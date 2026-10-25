@@ -71,6 +71,31 @@ assert(isstruct(reactingConservedOnly) && isfield(reactingConservedOnly, 'comput
 assert(~isfield(reactingConservedOnly, 'selectedReactionNames'), ...
     'reacting must not carry reacting-moiety fields when options.conservedMoietiesOnly = true (spec FR-004).');
 
+% --- feature 027-conserved-moiety-equivalence-test: cross-function equivalence guard ---
+% Guards against future divergence between the two independent implementations of the
+% conserved-moiety decomposition algorithm: identifyConservedReactingMoieties.m (in
+% conserved-only mode, above) uses the newer prefiltered classifySubgraphIsomorphism
+% helper internally, while the sibling identifyConservedMoieties.m still uses the
+% original nested-loop isisomorphic approach. options.sanityChecks = 0 is used on the
+% sibling call because sanityChecks = 1 on the conserved-only call above is a known,
+% pre-existing, out-of-scope crash in a bond-subgraph classification path unrelated to
+% conserved-moiety computation (spec 027 Edge Cases). Distinct variable names
+% (armSibling/moietyFormulaeSibling) avoid colliding with this file's own arm/
+% moietyFormulae variables from the full-mode call below. Neither this call nor the
+% comparison requires a MILP solver, so this block is placed before the
+% prepareTest('needsMILP', true) gate below (spec 027 FR-007).
+optionsSibling = struct('sanityChecks', 0);
+[armSibling, moietyFormulaeSibling] = identifyConservedMoieties(subModel, dATM, optionsSibling);
+
+assert(isequal(armSibling.L, armConservedOnly.L), ...
+    'arm.L must be identical between identifyConservedReactingMoieties(conservedMoietiesOnly=true) and identifyConservedMoieties (spec 027 SC-001/SC-002).');
+assert(isequal(armSibling.M2M, armConservedOnly.M2M), ...
+    'arm.M2M must be identical between identifyConservedReactingMoieties(conservedMoietiesOnly=true) and identifyConservedMoieties (spec 027 SC-001/SC-002).');
+assert(isequal(armSibling.M2R, armConservedOnly.M2R), ...
+    'arm.M2R must be identical between identifyConservedReactingMoieties(conservedMoietiesOnly=true) and identifyConservedMoieties (spec 027 SC-001/SC-002).');
+assert(isequal(moietyFormulaeSibling, moietyFormulaeConservedOnly), ...
+    'moietyFormulae must be identical between identifyConservedReactingMoieties(conservedMoietiesOnly=true) and identifyConservedMoieties (spec 027 SC-001/SC-002).');
+
 % the minimum-set-cover step uses a MILP (intlinprog or solveCobraMILP); require a
 % MILP solver so the remaining, full-mode part of this test skips cleanly
 % (COBRA:RequirementsNotMet) where none exists. Relocated here (was previously at the
