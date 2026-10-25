@@ -17,10 +17,6 @@
 
 global CBTDIR
 
-% the minimum-set-cover step uses a MILP (intlinprog or solveCobraMILP); require a
-% MILP solver so the test skips cleanly (COBRA:RequirementsNotMet) where none exists
-prepareTest('needsMILP', true);
-
 % save the current path and figure-visibility state; restore both even on error
 currentDir = pwd;
 origFigVis = get(0, 'DefaultFigureVisible');
@@ -57,6 +53,32 @@ options.sanityChecks = 1;
 assert(numnodes(dATM) > 0);
 assert(numnodes(BG) > 0);
 
+% --- feature 026-conserved-moieties-only-option: US1 conserved-moieties-only mode ---
+% Placed BEFORE the prepareTest('needsMILP', true) gate below (feature 026 spec FR-002,
+% SC-001; analysis finding F1): options.conservedMoietiesOnly = true skips the
+% reacting-moiety bond-graph/minimum-set-cover section entirely, so this call must not
+% require a MILP solver, and this assertion block must run even on a runner where the
+% MILP-gated full-mode call and comparison below are skipped.
+optionsConservedOnly = options;
+optionsConservedOnly.sanityChecks = 0;
+optionsConservedOnly.conservedMoietiesOnly = true;
+[armConservedOnly, moietyFormulaeConservedOnly, reactingConservedOnly] = ...
+    identifyConservedReactingMoieties(subModel, BG, dATM, optionsConservedOnly);
+
+assert(isstruct(reactingConservedOnly) && isfield(reactingConservedOnly, 'computed') && ...
+    reactingConservedOnly.computed == false, ...
+    'reacting must be struct(''computed'', false) when options.conservedMoietiesOnly = true (spec FR-004).');
+assert(~isfield(reactingConservedOnly, 'selectedReactionNames'), ...
+    'reacting must not carry reacting-moiety fields when options.conservedMoietiesOnly = true (spec FR-004).');
+
+% the minimum-set-cover step uses a MILP (intlinprog or solveCobraMILP); require a
+% MILP solver so the remaining, full-mode part of this test skips cleanly
+% (COBRA:RequirementsNotMet) where none exists. Relocated here (was previously at the
+% very top of this file) so the conserved-moieties-only assertions above -- which must
+% not require a MILP solver (spec FR-002, SC-001) -- are still exercised on a runner
+% with no MILP solver, rather than being skipped along with the rest of the script.
+prepareTest('needsMILP', true);
+
 % identify conserved and reacting moieties
 options.sanityChecks = 0;
 [arm, moietyFormulae, reacting] = ...
@@ -70,6 +92,24 @@ assert(numel(moietyFormulae) == 2);
 % the minimum set cover selects a minimal set of reactions covering reacting bonds
 assert(numel(reacting.selectedReactionNames) == 2);
 assert(all(ismember(reacting.selectedReactionNames, subModel.rxns)));
+
+% --- feature 026-conserved-moieties-only-option: US2 equivalence with the existing
+% full computation (spec FR-003/FR-008/FR-009, SC-002/SC-003) ---
+% The conserved-moieties-only run above and this full-mode run must agree exactly on
+% every conserved-moiety-specific field, since both execute the identical conserved-
+% moiety code path -- the option only decides whether execution continues past it.
+assert(isequal(armConservedOnly.L, arm.L), ...
+    'arm.L must be identical between conserved-moieties-only mode and the full computation (spec SC-002).');
+assert(isequal(armConservedOnly.M2M, arm.M2M), ...
+    'arm.M2M must be identical between conserved-moieties-only mode and the full computation (spec SC-002).');
+assert(isequal(armConservedOnly.M2R, arm.M2R), ...
+    'arm.M2R must be identical between conserved-moieties-only mode and the full computation (spec SC-002).');
+assert(isequal(moietyFormulaeConservedOnly, moietyFormulae), ...
+    'moietyFormulae must be identical between conserved-moieties-only mode and the full computation (spec SC-002).');
+
+% the conservation invariant must also hold on the conserved-moieties-only run's arm.L
+% (spec Acceptance Scenario 3 of US2), reusing the same N and tol as the full-mode check.
+assert(norm(full(armConservedOnly.L) * N) < tol);
 
 % classify bond transitions into conserved/reacting subgraphs
 [brokenBondsTable, formedBondsTable, CAG, RAG, CBG, RBG] = ...
