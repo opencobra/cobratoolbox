@@ -661,6 +661,9 @@ for i = 2:size(normalised,2)
     taxaSetToZero(2:sum(toAdjust)+1,i-1) = normalised.Taxon(toAdjust);
 end
 
+% Renormalise the table
+normalised{:, 2:end} = table2array(normalised(:, 2:end))./(sum(table2array(normalised(:, 2:end))));
+
 % Calculate the total amount of reads of the processed microbiome data
 if size(processed,1) > 1
     readsProcessed = sum(table2array(processed(:,2:end)));

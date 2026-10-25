@@ -27,6 +27,15 @@ function [allFluxes, allMacros] = collectFoodItemInfo(foods2Check, foodNames, va
 %                       * databaseType - char selecting which database is
 %                         used; currently only 'usda' (USDA FoodData) is
 %                         supported (default 'usda')
+%                       * usdaEdition - char or numeric, four-digit year of
+%                         the USDA database edition to use. If empty the
+%                         latest available edition is used (default '')
+%                       * fridaEdition - char or numeric, four-digit year of
+%                         the Frida database edition to use. If empty the
+%                         latest available edition is used (default '')
+%                       * blsEdition - char or numeric, four-digit year of
+%                         the BLS database edition to use. If empty the
+%                         latest available edition is used (default '')
 %
 % OUTPUTS:
 %    allFluxes:       Structure with one field per food item, each holding a
@@ -42,12 +51,64 @@ parser.addRequired('foods2Check', @isstruct);
 parser.addParameter('addStarch', false, @islogical);
 parser.addParameter('databaseType', 'usda', @ischar);
 parser.addParameter('macroType', 'metabolites', @ischar);
+parser.addParameter('usdaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('fridaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('blsEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
 
 parser.parse(foods2Check, foodNames, varargin{:});
 
 foods2Check = parser.Results.foods2Check;
 addStarch = parser.Results.addStarch;
 macroType = parser.Results.macroType;
+usdaEdition = parser.Results.usdaEdition;
+fridaEdition = parser.Results.fridaEdition;
+blsEdition = parser.Results.blsEdition;
+
+% Find which databases the suggested food items come from
+databasesUsed = {};
+namesStruct = fieldnames(foods2Check);
+for i = 1:numel(namesStruct)
+    databasesUsed = [databasesUsed; lower(foods2Check.(namesStruct{i})(:,3))]; %#ok<AGROW>
+end
+databasesUsed = unique(databasesUsed);
+
+% Load the food databases once so they do not have to be reloaded by
+% getMetaboliteFlux, getDietComposition and getDietEnergy for every food
+% item. Only the databases of the suggested food items are loaded.
+[fluxTableUsda, fluxTableFrida, fluxTableBLS, foodMacroUsda, foodMacroFrida, foodMacroBLS] = deal([]);
+if ismember('usda', databasesUsed)
+    fluxTableUsda = load(getNutritionDatabaseFile('usda', '100gFluxValue', usdaEdition)).fluxTableUsda;
+    foodMacroUsda = load(getNutritionDatabaseFile('usda', '100gMacros', usdaEdition)).foodMacroUsda;
+end
+if ismember('frida', databasesUsed)
+    fluxTableFrida = load(getNutritionDatabaseFile('frida', '100gFluxValue', fridaEdition)).fluxTableFrida;
+    foodMacroFrida = load(getNutritionDatabaseFile('frida', '100gMacros', fridaEdition)).foodMacroFrida;
+end
+if ismember('bls', databasesUsed)
+    fluxTableBLS = load(getNutritionDatabaseFile('bls', '100gFluxValue', blsEdition)).fluxTableBLS;
+    foodMacroBLS = load(getNutritionDatabaseFile('bls', '100gMacros', blsEdition)).foodMacroBLS;
+end
+if strcmp(macroType, 'metabolites')
+    % Only needed when the macros are calculated from the metabolites
+    nutrientVmhTable = load(getNutritionDatabaseFile('usda', 'infoFile', usdaEdition)).nutrientVmhTable;
+    nutrientInfoFileFrida = load(getNutritionDatabaseFile('frida', 'infoFile', fridaEdition)).nutrientInfoFileFrida;
+    nutrientInfoFileBLS = load(getNutritionDatabaseFile('bls', 'infoFile', blsEdition)).nutrientInfoFileBLS;
+
+    % Calculate the molecular weights once for the metabolites in the flux
+    % tables. Passing the full VMH database to getDietComposition and
+    % recalculating the weights for every food item is very slow.
+    fluxMets = {};
+    for t = {fluxTableUsda, fluxTableFrida, fluxTableBLS}
+        if ~isempty(t{1})
+            fluxMets = [fluxMets; t{1}.VMHID]; %#ok<AGROW>
+        end
+    end
+    vmhDatabase = loadVMHDatabase;
+    vmhMets = vmhDatabase.metabolites;
+    vmhMets = vmhMets(ismember(vmhMets(:,1), fluxMets), :);
+    metaboliteWeights = table(vmhMets(:,1), vmhMets(:,4), getMolecularMass(vmhMets(:,4)), ...
+        'VariableNames', {'VMHID', 'formula', 'molecularWeight'});
+end
 
 % Obtain the fieldnames of foods2Check
 namesStruct = fieldnames(foods2Check);
@@ -61,20 +122,25 @@ for i = 1:size(namesStruct,1)
     % Obtain the table with suggested VMH food items
     foodItems = foods2Check.(cell2mat(namesStruct(i)));
     % Remove empty cells
-    foodItems(strcmp(foodItems, '')) = [];
+    foodItems(strcmp(foodItems(:,2), ''),:) = [];
         
     for j = 1:size(foodItems,1)
         
         % For each food item obtain the flux and macro distibution
-        metFlux = getMetaboliteFlux(foodItems(j,[2 4]), 'databaseType',foodItems(j,3), "addStarch",addStarch);
+        metFlux = getMetaboliteFlux(foodItems(j,[2 4]), 'databaseType',foodItems(j,3), "addStarch",addStarch, ...
+            'fluxTableUsda', fluxTableUsda, 'fluxTableFrida', fluxTableFrida, 'fluxTableBLS', fluxTableBLS, 'foodMacroUsda', foodMacroUsda);
         if strcmp(macroType, 'metabolites')
-            macroSamp = getDietComposition(metFlux, "macroType", macroType);
+            macroSamp = getDietComposition(metFlux, "macroType", macroType, ...
+                'nutrientVmhTable', nutrientVmhTable, 'nutrientInfoFileFrida', nutrientInfoFileFrida, ...
+                'nutrientInfoFileBLS', nutrientInfoFileBLS, 'metaboliteWeights', metaboliteWeights);
         else
-            macroSamp = getDietComposition(foodItems(j,[2 4]), "macroType", foodItems(j,3));
+            macroSamp = getDietComposition(foodItems(j,[2 4]), "macroType", foodItems(j,3), ...
+                'foodMacroUsda', foodMacroUsda, 'foodMacroFrida', foodMacroFrida, 'foodMacroBLS', foodMacroBLS);
         end
-        
+
         % Obtain the kcal of the food item and store as macro
-        energy = getDietEnergy(foodItems(j, [2 4]), 'databaseType', foodItems(j,3));
+        energy = getDietEnergy(foodItems(j, [2 4]), 'databaseType', foodItems(j,3), ...
+            'foodMacroUsda', foodMacroUsda, 'foodMacroFrida', foodMacroFrida, 'foodMacroBLS', foodMacroBLS);
         % energy = getDietEnergy(metFlux, 'databaseType', 'metabolites');
         macroSamp(end+1, :) = {'Energy (kcal)', energy};
         % Give variablenames to metFlux table

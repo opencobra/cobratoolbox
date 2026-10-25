@@ -18,9 +18,12 @@ function [scoredFoods, fluxValues] = vmhFoodFinder(templateFilePath, varargin)
 %                           * addStarch - boolean indicating if additional
 %                             starch is added based on the VMH food macros
 %                             (default false)
-%                           * databaseType - char selecting the database:
-%                             'usda' (USDA FoodData), 'frida' (Danish food
-%                             institute) or 'mixed' for both (default 'mixed')
+%                           * databaseType - char or cell array selecting the
+%                             databases: 'usda' (USDA FoodData), 'frida'
+%                             (Danish food institute), 'bls' (German Nutrient
+%                             Database), 'mixed' for usda and frida, 'all' for
+%                             all three, or a cell array with any combination,
+%                             e.g., {'usda', 'bls'} (default 'mixed')
 %                           * maxItems - numeric, maximum number of VMH food
 %                             alternatives analysed for macros (default 50)
 %                           * outputDir - path where the output files are
@@ -29,6 +32,17 @@ function [scoredFoods, fluxValues] = vmhFoodFinder(templateFilePath, varargin)
 %                             selecting which USDA food sources are used to
 %                             find food items (default {'sr_legacy_food';
 %                             'foundation_food'; 'survey_fndds_food'})
+%                           * usdaEdition - char or numeric, four-digit year
+%                             of the USDA database edition to use. If empty
+%                             the latest available edition is used
+%                             (default '')
+%                           * fridaEdition - char or numeric, four-digit year
+%                             of the Frida database edition to use. If empty
+%                             the latest available edition is used
+%                             (default '')
+%                           * blsEdition - char or numeric, four-digit year
+%                             of the BLS database edition to use. If empty the
+%                             latest available edition is used (default '')
 %
 % OUTPUTS:
 %    scoredFoods:         Structure with one field per food item, each holding
@@ -45,10 +59,13 @@ parser = inputParser();
 parser.addRequired('templateFilePath', @ischar);
 parser.addParameter('searchType', 'iterative',@ischar);
 parser.addParameter('addStarch', false,@islogical);
-parser.addParameter('databaseType', 'mixed',@ischar);
+parser.addParameter('databaseType', 'mixed',@(x)ischar(x)||iscell(x)||isstring(x));
 parser.addParameter('maxItems', 50, @isnumeric);
 parser.addParameter('outputDir', [pwd filesep 'NT_Result'], @ischar);
 parser.addParameter('foodSources2Use', {'sr_legacy_food';'foundation_food';'survey_fndds_food'}, @iscell);
+parser.addParameter('usdaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('fridaEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
+parser.addParameter('blsEdition', '', @(x)ischar(x)||isstring(x)||isnumeric(x));
 
 parser.parse(templateFilePath, varargin{:});
 
@@ -59,35 +76,34 @@ databaseType = parser.Results.databaseType;
 maxItems = parser.Results.maxItems;
 outputDir = parser.Results.outputDir;
 foodSources2Use = parser.Results.foodSources2Use;
+usdaEdition = parser.Results.usdaEdition;
+fridaEdition = parser.Results.fridaEdition;
+blsEdition = parser.Results.blsEdition;
 %%
 
 % Read the template file as a table
 userInput = readtable(templateFilePath, 'preserveVariableNames', true);
 
-% Read in the database
-if strcmpi(databaseType, 'usda')
-    foodNames = load('USDAfoodItems.mat').allFoods;
-
-    for i = 1:max(size(foodSources2Use))
-        if i == 1
-            foodNamesSub = foodNames(strcmpi(foodNames.data_type, foodSources2Use(i)),:);
-        else
-            foodNamesSub1 = foodNames(strcmpi(foodNames.data_type, foodSources2Use(i)),:);
-            foodNamesSub = [foodNamesSub; foodNamesSub1];
-        end
-    end
-    foodNames = [foodNamesSub.description, foodNamesSub.fdc_id];
-    foodNames(:,3) = {'usda'};
-elseif strcmpi(databaseType, 'frida')
-    foodNames = load("frida2024_foodIdDictionary.mat").foodIdDictionary;
-    foodNamesFrida = [foodNames.foodName, foodNames.foodId];
-    foodNamesFrida(:,3) = {'frida'};
-
-    if isstring(foodNamesFrida)
-        foodNamesFrida = cellstr(foodNamesFrida);
-    end
+% Determine which databases are searched
+if iscell(databaseType) || isstring(databaseType)
+    databases2Use = lower(cellstr(databaseType(:)))';
 elseif strcmpi(databaseType, 'mixed')
-    foodNames = load('USDAfoodItems.mat').allFoods;
+    databases2Use = {'usda', 'frida'};
+elseif strcmpi(databaseType, 'all')
+    databases2Use = {'usda', 'frida', 'bls'};
+else
+    databases2Use = {lower(databaseType)};
+end
+if isempty(databases2Use) || ~all(ismember(databases2Use, {'usda', 'frida', 'bls'}))
+    error(['Database type does not correspond to the options please choose ' ...
+        'usda, frida, bls, mixed (usda and frida), all, or a cell array of usda, frida and/or bls'])
+end
+
+% Read in the databases as n x 3 cell arrays of food name, food ID and
+% database name
+foodNameLists = struct('usda', {{}}, 'frida', {{}}, 'bls', {{}});
+if ismember('usda', databases2Use)
+    foodNames = load(getNutritionDatabaseFile('usda', 'foodItems', usdaEdition)).allFoods;
 
     for i = 1:max(size(foodSources2Use))
         if i == 1
@@ -103,17 +119,23 @@ elseif strcmpi(databaseType, 'mixed')
     if isstring(foodNamesUsda)
         foodNamesUsda = cellstr(foodNamesUsda);
     end
-
-    foodNames = load("frida2024_foodIdDictionary.mat").foodIdDictionaryFrida;
+    foodNameLists.usda = foodNamesUsda;
+end
+if ismember('frida', databases2Use)
+    foodNames = load(getNutritionDatabaseFile('frida', 'foodIdDictionary', fridaEdition)).foodIdDictionaryFrida;
     foodNamesFrida = [foodNames.foodName, foodNames.foodId];
     foodNamesFrida(:,3) = {'frida'};
 
     if isstring(foodNamesFrida)
         foodNamesFrida = cellstr(foodNamesFrida);
     end
-else
-    error(['Database type does not correspond to the options please choose' ...
-        'usda, frida or mixed'])
+    foodNameLists.frida = foodNamesFrida;
+end
+if ismember('bls', databases2Use)
+    foodNames = load(getNutritionDatabaseFile('bls', 'foodIdDictionary', blsEdition)).foodIdDictionaryBLS;
+    foodNamesBLS = cellstr([foodNames.foodName, foodNames.foodId]);
+    foodNamesBLS(:,3) = {'bls'};
+    foodNameLists.bls = foodNamesBLS;
 end
 % Initialise storage variables
 foods2Check = struct();
@@ -157,15 +179,24 @@ for i = 1:size(userInput,1)
         
         foodNameItemList = cell(size(toStore,1),1);
         for k = 1:size(toStore,1)
-            if strcmpi(toStore(k,2), 'usda')
-                foodNameItem = foodNamesUsda(str2double(string(foodNamesUsda(:,2))) == str2double(toStore{k,1}),1);
-                foodNameItemList(k,1) = foodNameItem;
-            elseif strcmpi(toStore(k,2), 'frida')
-                foodNameItem = foodNamesFrida(str2double(string(foodNamesFrida(:,2))) == str2double(toStore{k,1}),1);
-                foodNameItemList(k,1) = foodNameItem;
-            else
-                error('Please use only USDA or FRIDA as database names')
+            database = lower(toStore{k,2});
+            if ~ismember(database, {'usda', 'frida', 'bls'})
+                error('Please use only USDA, FRIDA or BLS as database names')
+            elseif ~ismember(database, databases2Use)
+                error('Food item %s is given with database %s, but only %s are searched. Please add %s to databaseType.', ...
+                    toStore{k,1}, toStore{k,2}, strjoin(databases2Use, ', '), database)
             end
+            foodNameList = foodNameLists.(database);
+            if strcmp(database, 'bls')
+                % BLS codes are text (e.g., C131000)
+                foodNameItem = foodNameList(strcmp(foodNameList(:,2), toStore{k,1}),1);
+            else
+                foodNameItem = foodNameList(str2double(string(foodNameList(:,2))) == str2double(toStore{k,1}),1);
+            end
+            if isempty(foodNameItem)
+                error('Food item %s could not be found in the %s database.', toStore{k,1}, database)
+            end
+            foodNameItemList(k,1) = foodNameItem(1);
         end
         % Set the original food names
         toStore = [foodNameItemList, toStore];
@@ -192,15 +223,7 @@ for i = 1:size(userInput,1)
             notIncludeKeyWords = {};
         end
         % Find VMH food suggestions with the searcher function
-        if strcmpi(databaseType, 'mixed')
-            totGroupSubUsda = searcher(keyWords, foodNamesUsda, "searchType", searchType, "notInclude", notIncludeKeyWords);
-            totGroupSubFrida = searcher(keyWords, foodNamesFrida, "searchType", searchType, "notInclude", notIncludeKeyWords);
-            totGroupSub = [totGroupSubUsda;totGroupSubFrida];
-        elseif strcmpi(databaseType, 'usda')
-            totGroupSub = searcher(keyWords, foodNamesUsda, "searchType", searchType, "notInclude", notIncludeKeyWords);
-        elseif strcmpi(databaseType, 'frida')
-            totGroupSub = searcher(keyWords, foodNamesFrida, "searchType", searchType, "notInclude", notIncludeKeyWords);
-        end
+        totGroupSub = searchDatabases(keyWords, foodNameLists, databases2Use, searchType, notIncludeKeyWords);
 
         % Initialise a boolean indication if the keywords were changed
         keyWordAltered = 0;
@@ -213,13 +236,7 @@ for i = 1:size(userInput,1)
             totGroupSubold = totGroupSub;
             % Search again for VMH food suggestions with the altered
             % keywords
-            if strcmpi(databaseType, 'mixed')
-                totGroupSubUsda = searcher(altKeyWord, foodNamesUsda, "searchType", searchType, "notInclude", notIncludeKeyWords);
-                totGroupSubFrida = searcher(altKeyWord, foodNamesFrida, "searchType", searchType, "notInclude", notIncludeKeyWords);
-                totGroupSub = [totGroupSubUsda;totGroupSubFrida];
-            else
-                totGroupSub = searcher(altKeyWord, foodNames, "searchType", searchType, "notInclude", notIncludeKeyWords);
-            end
+            totGroupSub = searchDatabases(altKeyWord, foodNameLists, databases2Use, searchType, notIncludeKeyWords);
             % If no items or too many items found, revert to old results
             if isempty(totGroupSub) || size(totGroupSub,1) > maxItems
                 totGroupSub = totGroupSubold;
@@ -254,8 +271,10 @@ for i = 1:size(userInput,1)
 end
 
 % Obtain the flux and macro values
-[~, macroValuesLabel] = collectFoodItemInfo(foods2Check, "addStarch",addStarch, "macroType", 'database');
-[fluxValues, macroValuesMetabolites] = collectFoodItemInfo(foods2Check, "addStarch",addStarch, "macroType", 'metabolites');
+[~, macroValuesLabel] = collectFoodItemInfo(foods2Check, "addStarch",addStarch, "macroType", 'database', ...
+    'usdaEdition', usdaEdition, 'fridaEdition', fridaEdition, 'blsEdition', blsEdition);
+[fluxValues, macroValuesMetabolites] = collectFoodItemInfo(foods2Check, "addStarch",addStarch, "macroType", 'metabolites', ...
+    'usdaEdition', usdaEdition, 'fridaEdition', fridaEdition, 'blsEdition', blsEdition);
 
 
 % Compare the suggested VMH food's macros witht the macros of the original
@@ -375,6 +394,34 @@ if ~isempty(colourChangeIdx)
 
     % Quit Excel
     Excel.Quit();
+end
+end
+
+function totGroupSub = searchDatabases(keyWords, foodNameLists, databases2Use, searchType, notIncludeKeyWords)
+% Function to search the keywords in the selected food databases
+%
+% Usage:
+%   totGroupSub = searchDatabases(keyWords, foodNameLists, databases2Use, searchType, notIncludeKeyWords)
+%
+% Inputs:
+%   keyWords:           cell array of keywords to search for
+%   foodNameLists:      structure with per database (usda, frida, bls) an
+%                       n x 3 cell array of food names, IDs and database
+%   databases2Use:      cell array of the databases to search
+%   searchType:         'iterative' or 'cumulative', passed to searcher
+%   notIncludeKeyWords: cell array of words to exclude, passed to searcher
+%
+% Output:
+%   totGroupSub:        The combined search results in the order usda,
+%                       frida, bls
+%
+% .. Author - Bram Nap, 10-2026
+
+totGroupSub = {};
+for database = {'usda', 'frida', 'bls'}
+    if ismember(database{1}, databases2Use)
+        totGroupSub = [totGroupSub; searcher(keyWords, foodNameLists.(database{1}), "searchType", searchType, "notInclude", notIncludeKeyWords)]; %#ok<AGROW>
+    end
 end
 end
 
