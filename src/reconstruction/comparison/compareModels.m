@@ -34,6 +34,10 @@ end
 if isempty(nameB)
     nameB = 'modelB';
 end
+if strcmp(nameA, nameB)
+    nameA = [nameA '_A'];
+    nameB = [nameB '_B'];
+end
 
 if isSameModel
     % Return an empty table with consistent column names.
@@ -111,11 +115,32 @@ function out = formatTableColumn(in)
 
     out = cell(size(in));
     for k = 1:numel(in)
-        try
-            out{k} = char(any2str(in{k}));
-        catch
-            out{k} = evalc('disp(in{k})');
-            out{k} = strtrim(out{k});
+        out{k} = summariseValue(in{k});
+    end
+end
+
+function s = summariseValue(x)
+% Show a value in full when it is small, otherwise as "[size class]".
+% Rendering large fields (e.g. S, rxns) as full text is slow and memory
+% hungry, so they are summarised instead.
+
+    maxNumel = 10;
+    if (isnumeric(x) || islogical(x)) && ismatrix(x) && numel(x) <= maxNumel
+        s = mat2str(full(x));
+    elseif ischar(x) && size(x,1) <= 1 && numel(x) <= 80
+        s = x;
+    elseif isstring(x) && isscalar(x)
+        s = char(x);
+    elseif isa(x,'function_handle')
+        s = func2str(x);
+    elseif iscellstr(x) && numel(x) <= maxNumel
+        s = ['{' strjoin(x,', ') '}'];
+    else
+        sz = char(sizeVec2str(size(x)));
+        if issparse(x)
+            s = sprintf('[%s sparse %s]',sz,class(x));
+        else
+            s = sprintf('[%s %s]',sz,class(x));
         end
     end
 end

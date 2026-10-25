@@ -954,6 +954,23 @@ requests where relevant; include `[documentation]` in the message when only
 documentation changes. The Spec Kit `git` extension may automate commits at phase
 boundaries; its messages MUST still respect this convention.
 
+Every pull request MUST carry both a **title** and a **summary**:
+
+* the **title** names the change in one line, in the same present-tense style as a
+  commit subject;
+* the **summary** is a SHORT description of the enhancement — what the change gives the
+  reader — and MUST be the FIRST thing in the pull request body.
+
+A long body that mentions the enhancement somewhere does not satisfy this requirement:
+the summary MUST come first and MUST be short. Background, provenance, measurements, and
+the reasoning behind the change belong after it, not before it. Where a pull request is
+opened by an automated workflow or an agent, the same requirement applies.
+
+Rationale: a reviewer arriving at a pull request decides in one line whether it concerns
+them and what it delivers. Opening with context instead of the enhancement spends that
+line on orientation rather than substance, and a reader who stops there learns nothing
+about what changed.
+
 Code review MUST confirm that public interfaces remain compatible or the break is
 approved; model, solver, and status semantics remain correct or are deliberately
 changed and documented; tests and CI pass; performance changes do not hide
