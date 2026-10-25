@@ -24,7 +24,7 @@
 % without changing the rest of this script's intent.
 modelPath = fullfile(getenv('HOME'), 'repos', 'ReconXKG-cidev', 'ReconXKGtoCobra', ...
     'models', 'subsystemSubModels', 'subsystemSubModels.mat');
-rxnFilesDir = '/media/JACK/repos/ctf/rxns/atomMapped_standardised';
+rxnFilesDir = '/media/JACK/repos/ctf/rxns/moiety_rxns/atomMapped_std';
 modelVarNameHint = 'tyr'; % matches subModels.tyr (the Tyrosine metabolism subsystem abbreviation; confirmed via subsystemSubModels.mat's summaryTable, 139 reactions)
 
 % NOTE ON OUTPUT FIELD NAMES: spec.md's Assumptions/FR-009 describe the

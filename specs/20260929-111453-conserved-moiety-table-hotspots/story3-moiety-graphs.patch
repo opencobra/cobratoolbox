@@ -1,0 +1,170 @@
+diff --git a/src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m b/src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m
+index bab930339..b9c8f41ec 100644
+--- a/src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m
++++ b/src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m
+@@ -421,17 +421,30 @@ end
+ ATG.Edges.orientationATG2dATM = orientationATG2dATM;
+ 
+ %update the ATG Trans, HeadIndex, TailIndex, HeadAtom and TailAtom to match
+-%any reorientation of EndNodes
+-for i=1:nTrans
+-    if orientationATG2dATM(i)==-1
+-        ATG.Edges.HeadAtomIndex(i) = ATG.Edges.EndNodes(i,2);
+-        ATG.Edges.TailAtomIndex(i) = ATG.Edges.EndNodes(i,1);
+-        HeadAtom = ATG.Edges.TailAtom{i};
+-        TailAtom = ATG.Edges.HeadAtom{i};
+-        ATG.Edges.HeadAtom{i} = HeadAtom;
+-        ATG.Edges.TailAtom{i} = TailAtom;
+-        ATG.Edges.Trans{i} = [HeadAtom '#' TailAtom];
+-    end
++%any reorientation of EndNodes. All reoriented transitions are swapped in one
++%pass over the edge table, rather than by writing into the graph edge by edge
++reorientedBool = orientationATG2dATM==-1;
++if any(reorientedBool)
++    edgesATG = ATG.Edges;
++    newHeadAtom = edgesATG.TailAtom(reorientedBool);
++    newTailAtom = edgesATG.HeadAtom(reorientedBool);
++    headAtomIndex = edgesATG.HeadAtomIndex;
++    headAtomIndex(reorientedBool) = edgesATG.EndNodes(reorientedBool,2);
++    tailAtomIndex = edgesATG.TailAtomIndex;
++    tailAtomIndex(reorientedBool) = edgesATG.EndNodes(reorientedBool,1);
++    headAtoms = edgesATG.HeadAtom;
++    headAtoms(reorientedBool) = newHeadAtom;
++    tailAtoms = edgesATG.TailAtom;
++    tailAtoms(reorientedBool) = newTailAtom;
++    transNames = edgesATG.Trans;
++    transNames(reorientedBool) = cellfun(@(headAtom, tailAtom) [headAtom '#' tailAtom], ...
++        newHeadAtom, newTailAtom, 'UniformOutput', false);
++    ATG.Edges.HeadAtomIndex = headAtomIndex;
++    ATG.Edges.TailAtomIndex = tailAtomIndex;
++    ATG.Edges.HeadAtom = headAtoms;
++    ATG.Edges.TailAtom = tailAtoms;
++    ATG.Edges.Trans = transNames;
++    clear edgesATG newHeadAtom newTailAtom headAtomIndex tailAtomIndex headAtoms tailAtoms transNames
+ end
+ 
+ if sanityChecks
+@@ -588,11 +601,10 @@ else
+     nComps = max(atoms2component);
+ end
+ 
+-%create a subgraph from each component
+-subgraphs=cell(nComps,1);
+-for i = 1:nComps
+-    subgraphs{i,1}=subgraph(ATG,atoms2component==i);
+-end
++%create a subgraph from each component, from the rows of that component only
++%(see extractPartitionSubgraphs); the parts come in ascending component
++%order, so subgraphs{i} is component i
++subgraphs = extractPartitionSubgraphs(ATG, atoms2component);
+ 
+ compElements = cell(nComps, 1); % Element for each atom conservation relation
+ for i = 1:nComps
+@@ -1037,30 +1049,46 @@ for i=1:nAtoms
+     end
+ end
+ 
+-%recreate a subgraph from each component
+-subgraphs=cell(nComps,1);
+-for i = 1:nComps
+-    subgraphs{i,1}=subgraph(ATG,atoms2component==i);
+-end
++%recreate a subgraph from each component, from the rows of that component
++%only (see extractPartitionSubgraphs)
++subgraphs = extractPartitionSubgraphs(ATG, atoms2component);
+ 
+ %assign the moiety indices by using the indices for the first
+-%component in each isomorphism class
++%component in each isomorphism class, visiting only the member components
++%of each class, in ascending order
+ for i=1:nIsomorphismClasses
+     MoietyIndices = subgraphs{firstSubgraphIndices(i)}.Nodes.MoietyIndex;
+-    for j=1:nComps
+-        if I2C(i,j)==1 && j~=firstSubgraphIndices(i)
+-            subgraphs{j}.Nodes.MoietyIndex=MoietyIndices;
+-        end
++    memberComps = find(I2C(i,:)==1);
++    for j=memberComps(memberComps~=firstSubgraphIndices(i))
++        subgraphs{j}.Nodes.MoietyIndex=MoietyIndices;
+     end
+ end
+ 
+ %compile the moiety indices from the nodes in the subgraph into the
+-%atom transition graph
+-for i = 1:nComps
+-    if ~any(i==firstSubgraphIndices)
+-        for j=1:size(subgraphs{i}.Nodes,1)
+-            bool = ismember(ATG.Nodes.AtomIndex,subgraphs{i}.Nodes.AtomIndex(j));
+-            ATG.Nodes.MoietyIndex(bool) = subgraphs{i}.Nodes.MoietyIndex(j);
++%atom transition graph. The nodes of subgraphs{i} are the atoms of component
++%i in ascending order, so with unique atom indices their moiety indices are
++%written to those atoms in one pass; otherwise each atom index is looked up
++if numel(unique(ATG.Nodes.AtomIndex)) == numel(ATG.Nodes.AtomIndex)
++    atomsByComp = accumarray(atoms2component(:), (1:numel(atoms2component))', [nComps, 1], ...
++        @(v) {sort(v(:))});
++    isNonFirstComp = true(nComps, 1);
++    isNonFirstComp(firstSubgraphIndices(firstSubgraphIndices > 0)) = false;
++    nonFirstComps = find(isNonFirstComp);
++    compiledAtoms = vertcat(zeros(0, 1), atomsByComp{nonFirstComps});
++    compiledMoieties = cellfun(@(g) g.Nodes.MoietyIndex, subgraphs(nonFirstComps), ...
++        'UniformOutput', false);
++    compiledMoieties = vertcat(zeros(0, 1), compiledMoieties{:});
++    moietyIndexATG = ATG.Nodes.MoietyIndex;
++    moietyIndexATG(compiledAtoms) = compiledMoieties;
++    ATG.Nodes.MoietyIndex = moietyIndexATG;
++    clear atomsByComp isNonFirstComp nonFirstComps compiledAtoms compiledMoieties moietyIndexATG
++else
++    for i = 1:nComps
++        if ~any(i==firstSubgraphIndices)
++            for j=1:size(subgraphs{i}.Nodes,1)
++                bool = ismember(ATG.Nodes.AtomIndex,subgraphs{i}.Nodes.AtomIndex(j));
++                ATG.Nodes.MoietyIndex(bool) = subgraphs{i}.Nodes.MoietyIndex(j);
++            end
+         end
+     end
+ end
+@@ -1149,32 +1177,18 @@ nodeTable = ATG.Nodes;
+ 
+ % Create a new directed graph using the updated edge table and the node table from ATG
+ ABG = graph(edgeTable, nodeTable); % ToDo: Find a better name (atom bond graph?) %Hadjar
+-% Initialize an array to store the MoietySubgraphs
+-MG = {};
+-
+-% Get the unique MoietyIndex values from the node table
+-uniqueMoietyIndices = unique(ABG.Nodes.MoietyIndex);
+-
+-% Loop through each unique MoietyIndex
+-for i = 1:length(uniqueMoietyIndices)
+-    % Get the current MoietyIndex
+-    currentMoietyIndex = uniqueMoietyIndices(i);
+-
+-    % Find the nodes with the current MoietyIndex
+-    nodeIndices = find(ABG.Nodes.MoietyIndex == currentMoietyIndex);
+-
+-    % Extract the subgraph containing only these nodes
+-    subgraphNodes = subgraph(ABG, nodeIndices);
+-
+-    % Filter the edges in the subgraph based on MoietyBondIndex
+-    edgeIndices = find(subgraphNodes.Edges.MoietyBondIndex == currentMoietyIndex);
+-
+-    % Create a new edge table with only the filtered edges
+-    edgeTable = subgraphNodes.Edges(edgeIndices, :);
+-
+-    % Recreate the subgraph with the filtered edge table
+-    MG{i,1} = graph(edgeTable, subgraphNodes.Nodes); %todo: check graph or digraph
+-end
++% Build one moiety graph per unique MoietyIndex (in ascending order), with the
++% nodes of that moiety and the bonds whose MoietyBondIndex equals the moiety
++% index of both end atoms, from the rows of that moiety only (see
++% extractPartitionSubgraphs), rather than extracting a subgraph of the whole
++% atom bond graph once per moiety
++moietyOfNode = ABG.Nodes.MoietyIndex;
++[bondSource, bondTarget] = findedge(ABG);
++moietyBondIndexABG = ABG.Edges.MoietyBondIndex;
++isInternalBond = moietyBondIndexABG == moietyOfNode(bondSource) & ...
++    moietyBondIndexABG == moietyOfNode(bondTarget);
++MG = extractPartitionSubgraphs(ABG, moietyOfNode, isInternalBond); %todo: check graph or digraph
++clear moietyOfNode bondSource bondTarget moietyBondIndexABG isInternalBond
+ 
+ %% Map between moiety graph and metabolic network
+ %map metabolite to moieties

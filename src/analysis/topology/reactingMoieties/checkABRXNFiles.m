@@ -45,6 +45,13 @@ function [modelOut, nTotalAtomTransitions, nTotalBondTransitions] = checkABRXNFi
 %               around RXN file reads. Not a licensing swap:
 %               findRXNFiles/findRXNFilesPlain are core COBRA functions,
 %               not proprietary-toolbox calls.
+%             - COBRA Toolbox, 2026: each RXN file is read once per reaction
+%               and handed to addBondMappingsRXNFile, instead of being read
+%               again (twice for the first reaction); outputs unchanged
+%             - COBRA Toolbox, feature 20261012-093525-symmetric-iso-zero-bond: a
+%               reaction with no bonds adds 0 to nTotalBondTransitions instead of
+%               making it empty
+%               (feature 20260921-160105-build-function-runtime).
 
 fprintf('Checking quality of RXN files...\n');
 
@@ -91,7 +98,11 @@ nTotalAtomTransitions = 0;
 nTotalBondTransitions = 0; %add bonds
 for i = 1:nRxns
     if RXNBool(i)
-        
+        % Each RXN file is read once per reaction and the result handed to
+        % addBondMappingsRXNFile (FR-005). Only this reaction's atoms/bonds are held,
+        % and only within this iteration (FR-006, no parse cache across reactions).
+        rxnParsedInBlock1 = false;
+
         if checkDecompartmentaliseRXN==1
             % Read atom mapping from RXNfile to test if it is decompartmentalised
             %[atomMets,metEls, metNrs, atomTransitionNrs,isSubstrate,instances] = readRXNFile(model.rxns{1},RXNFileDir);
@@ -100,6 +111,7 @@ for i = 1:nRxns
                     i, numel(model.rxns), model.rxns{i});
 
                 [atoms,bonds] = readABRXNFile(model.rxns{i}, RXNFileDir);
+                rxnParsedInBlock1 = true;
 
             catch ME
                 fprintf('\nFailed while reading reaction %d/%d: %s\n', ...
@@ -115,7 +127,7 @@ for i = 1:nRxns
             instances=atoms.instances;
             %   Bonds
             % Add bond mapping from RXNfile
-            [bondMappings] = addBondMappingsRXNFile(model.rxns{i},RXNFileDir);
+            [bondMappings] = addBondMappingsRXNFile(model.rxns{i},RXNFileDir,atoms,bonds);
             bondTransitionNrs=bondMappings.bondTransitionNrs;
             
             decompartmentaliseRXN=0;
@@ -151,7 +163,9 @@ for i = 1:nRxns
         try
             %read in each RXN file
             %[atomMets,metEls, metNrs, atomTransitionNrs,isSubstrate,instances] = readRXNFile(rxn,RXNFileDir);
-            [atoms,bonds] = readABRXNFile(rxn,RXNFileDir);
+            if ~rxnParsedInBlock1
+                [atoms,bonds] = readABRXNFile(rxn,RXNFileDir);
+            end
             atomMets=atoms.mets;
             metEls=atoms.elements;
             metNrs=atoms.metNrs;
@@ -160,7 +174,7 @@ for i = 1:nRxns
             instances=atoms.instances;
             
             %Bonds
-            [bondMappings] = addBondMappingsRXNFile(rxn,RXNFileDir);
+            [bondMappings] = addBondMappingsRXNFile(rxn,RXNFileDir,atoms,bonds);
             bondTransitionNrs=bondMappings.bondTransitionNrs;
             
             if decompartmentaliseRXN
@@ -243,7 +257,8 @@ for i = 1:nRxns
             
             nAtomTransitions = max(atomTransitionNrs);
             %Bonds
-            nBondTransitions = max(bondTransitionNrs);
+            % a reaction with no bonds has no bond transitions (max of an empty array is empty)
+            nBondTransitions = max([0; bondTransitionNrs(:)]);
             matchingElementBool=false(nAtomTransitions,1);
             for k=1:nAtomTransitions
                 if strcmp(metEls(atomTransitionNrs==k & isSubstrate),metEls(atomTransitionNrs==k & ~isSubstrate))

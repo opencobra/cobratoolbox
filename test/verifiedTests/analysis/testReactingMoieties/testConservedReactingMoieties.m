@@ -8,14 +8,24 @@
 %       displayReactingMoieties, createMoietyGraph and getMetMoietySubgraphs.
 %     - Asserts the conserved-moiety invariant L*N = 0 and stable structural facts.
 %
+%     - Golden comparison (feature 20260929-111453-conserved-moiety-table-hotspots, spec
+%       FR-002, FR-008): data/conservedReactingMoietiesReference.mat holds the outputs (or the
+%       error) of identifyConservedReactingMoieties captured before its table hotspots were
+%       rewritten, for the main fixture in conserved-only and default mode with sanityChecks
+%       0 and 1, and for the coaX and crnM bond-key fixtures (reoriented atom transitions,
+%       moieties without internal bonds, multi-member isomorphism classes). Every case must
+%       give identical outputs, or raise the identical error.
+%
 %     Derived from tutorials/analysis/reactingMoieties/tutorial_conservedAndReactingMoieties.m
 %     (feature 004-reacting-moieties-test). Figures are generated but not displayed.
 %
 % Authors:
 %     - COBRA Toolbox, repurposed from the tutorial by Hadjar Rahou & Ronan M.T. Fleming.
+%     - COBRA Toolbox, feature 20260929-111453-conserved-moiety-table-hotspots (golden comparison)
 %
 
 global CBTDIR
+global CBT_MILP_SOLVER
 
 % save the current path and figure-visibility state; restore both even on error
 currentDir = pwd;
@@ -96,13 +106,71 @@ assert(isequal(armSibling.M2R, armConservedOnly.M2R), ...
 assert(isequal(moietyFormulaeSibling, moietyFormulaeConservedOnly), ...
     'moietyFormulae must be identical between identifyConservedReactingMoieties(conservedMoietiesOnly=true) and identifyConservedMoieties (spec 027 SC-001/SC-002).');
 
+% --- feature 20261002-conserved-only-skip-moiety-graphs (KNOWN ISSUE KI-001) ---
+% options.computeMoietyGraphs = false (with conservedMoietiesOnly = true) skips the
+% bond-level stage. Every output except arm.MG must be identical to the default
+% conserved-only call above, and arm.MG must be an empty cell array. Placed before the
+% MILP gate: no MILP is solved.
+optionsNoMoietyGraphs = optionsConservedOnly;
+optionsNoMoietyGraphs.computeMoietyGraphs = false;
+[armNoMG, moietyFormulaeNoMG, reactingNoMG] = ...
+    identifyConservedReactingMoieties(subModel, BG, dATM, optionsNoMoietyGraphs);
+
+assert(iscell(armNoMG.MG) && isempty(armNoMG.MG), ...
+    'arm.MG must be an empty cell array when options.computeMoietyGraphs = false (KI-001).');
+assert(isequal(sort(fieldnames(armNoMG)), sort(fieldnames(armConservedOnly))), ...
+    'arm must have the same fields with and without options.computeMoietyGraphs (KI-001).');
+armFields = setdiff(fieldnames(armConservedOnly), {'MG'});
+for k = 1:numel(armFields)
+    assert(isequal(armNoMG.(armFields{k}), armConservedOnly.(armFields{k})), ...
+        sprintf('arm.%s must be unchanged by options.computeMoietyGraphs = false (KI-001).', armFields{k}));
+end
+assert(isequal(moietyFormulaeNoMG, moietyFormulaeConservedOnly), ...
+    'moietyFormulae must be unchanged by options.computeMoietyGraphs = false (KI-001).');
+assert(isequal(reactingNoMG, reactingConservedOnly), ...
+    'reacting must be unchanged by options.computeMoietyGraphs = false (KI-001).');
+
+% computeMoietyGraphs = false is only valid in conserved-only mode
+optionsInvalid = options;
+optionsInvalid.sanityChecks = 0;
+optionsInvalid.conservedMoietiesOnly = false;
+optionsInvalid.computeMoietyGraphs = false;
+raisedExpected = false;
+try
+    identifyConservedReactingMoieties(subModel, BG, dATM, optionsInvalid);
+catch ME
+    raisedExpected = strcmp(ME.identifier, ...
+        'identifyConservedReactingMoieties:computeMoietyGraphsRequiresConservedOnly');
+end
+assert(raisedExpected, ...
+    'computeMoietyGraphs = false without conservedMoietiesOnly = true must raise the documented error (KI-001).');
+
 % the minimum-set-cover step uses a MILP (intlinprog or solveCobraMILP); require a
 % MILP solver so the remaining, full-mode part of this test skips cleanly
 % (COBRA:RequirementsNotMet) where none exists. Relocated here (was previously at the
 % very top of this file) so the conserved-moieties-only assertions above -- which must
 % not require a MILP solver (spec FR-002, SC-001) -- are still exercised on a runner
 % with no MILP solver, rather than being skipped along with the rest of the script.
+% --- feature 20260929-111453: golden comparison, conserved-moieties-only cases ---
+% Placed before the MILP gate: these cases solve no MILP, so they run on every runner.
+goldenReference = load([fileDir filesep 'data' filesep 'conservedReactingMoietiesReference.mat']);
+for k = 1:numel(goldenReference.goldenCases)
+    if isfield(goldenReference.goldenCases(k).options, 'conservedMoietiesOnly')
+        checkGoldenCase(goldenReference.goldenCases(k), true);
+    end
+end
+
 prepareTest('needsMILP', true);
+
+% --- feature 20260929-111453: golden comparison, default-mode cases ---
+% reacting is compared only when the MILP solver matches the one used at capture: optimal
+% MILP solutions need not be unique across solvers.
+for k = 1:numel(goldenReference.goldenCases)
+    if ~isfield(goldenReference.goldenCases(k).options, 'conservedMoietiesOnly')
+        checkGoldenCase(goldenReference.goldenCases(k), ...
+            strcmp(goldenReference.goldenCases(k).milpSolver, CBT_MILP_SOLVER));
+    end
+end
 
 % identify conserved and reacting moieties
 options.sanityChecks = 0;
@@ -419,3 +487,38 @@ end
 
 % return to the original directory
 cd(currentDir);
+
+function checkGoldenCase(goldenCase, compareReacting)
+% Assert that identifyConservedReactingMoieties gives the captured outputs, or raises the
+% captured error, on one golden case
+if strcmp(goldenCase.outcome, 'error')
+    errorRaised = false;
+    try
+        identifyConservedReactingMoieties(goldenCase.model, goldenCase.BG, goldenCase.dATM, ...
+            goldenCase.options);
+    catch ME
+        errorRaised = true;
+        assert(strcmp(ME.identifier, goldenCase.errorIdentifier) && ...
+            strcmp(ME.message, goldenCase.errorMessage), ...
+            sprintf(['identifyConservedReactingMoieties raised a different error from the ' ...
+            'captured one (%s): expected "%s", got "%s" (%s:%d).'], goldenCase.name, ...
+            goldenCase.errorMessage, ME.message, ME.stack(1).file, ME.stack(1).line));
+    end
+    assert(errorRaised, sprintf(['identifyConservedReactingMoieties returned normally, but ' ...
+        'the captured run raised "%s" (%s).'], goldenCase.errorMessage, goldenCase.name));
+    return
+end
+[arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(goldenCase.model, ...
+    goldenCase.BG, goldenCase.dATM, goldenCase.options);
+assert(isequaln(arm, goldenCase.arm), ...
+    sprintf('arm differs from the captured reference (%s).', goldenCase.name));
+assert(isequaln(moietyFormulae, goldenCase.moietyFormulae), ...
+    sprintf('moietyFormulae differs from the captured reference (%s).', goldenCase.name));
+if compareReacting
+    assert(isequaln(reacting, goldenCase.reacting), ...
+        sprintf('reacting differs from the captured reference (%s).', goldenCase.name));
+else
+    fprintf('%s: reacting not compared (MILP solver differs from the captured %s).\n', ...
+        goldenCase.name, goldenCase.milpSolver);
+end
+end

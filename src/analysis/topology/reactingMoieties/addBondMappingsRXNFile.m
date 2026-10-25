@@ -1,8 +1,9 @@
-function [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory)
+function [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory, atoms, bonds)
 % Add bond mappings from an MDL rxn file.
 % USAGE:
 %
 %    [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory)
+%    [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory, atoms, bonds)
 %
 % INPUT:
 %    rxnfileName:         The file name.
@@ -10,6 +11,12 @@ function [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory)
 % OPTIONAL INPUT:
 %    rxnfileDirectory:    Path to directory containing the rxnfile. Defaults
 %                         to current directory.
+%    atoms:               Table of atom information returned by
+%                         `readABRXNFile(rxnfileName, rxnfileDirectory)`.
+%    bonds:               Table of bond information returned by the same call.
+%                         When both `atoms` and `bonds` are given and non-empty,
+%                         they are used instead of reading the rxnfile again;
+%                         otherwise the rxnfile is read, as before.
 %
 % OUTPUTS:
 %    bondMappings:                Table of bond mapping information, with `s` rows, one for each bond transition. 
@@ -37,11 +44,21 @@ function [bondMappings] = addBondMappingsRXNFile(rxnfileName, rxnfileDirectory)
 %                          bond is broken (-1), formed (1) or conserved (0)
 %                          * .bondTransitionNrs - A 's'x 1 vector
 %                          indicating bond transition indices.
-%  
-%    
-%                         
-%   
-% .. Author: - Hadjar Rahou, 2022 
+%
+%
+%
+%
+% NOTE:
+%    `atoms` and `bonds` must come from `readABRXNFile` for the same rxnfile, with
+%    its default options (bonds read). Tables from another file, or read with
+%    `options.readBonds = 0`, are outside this function's contract and are not
+%    checked, because checking them would mean reading the rxnfile again.
+%
+% .. Author: - Hadjar Rahou, 2022
+%            - COBRA Toolbox, 2026: optional `atoms`/`bonds` inputs so callers that
+%              have just read the rxnfile do not read it again; energy row built
+%              only in the two reacting-bond branches that use it (feature
+%              20260921-160105-build-function-runtime).
 
 
 rxnfileName = regexprep(rxnfileName,'(\.rxn)$',''); % Format inputs and remove rxnfile ending from reaction identifier
@@ -58,8 +75,10 @@ rxnfileDirectory = [regexprep(rxnfileDirectory,'(/|\\)$',''), filesep];
 
 % Read reaction file
 rxnFilePath = [rxnfileDirectory rxnfileName '.rxn'];
-%Read the RXN File
-[atoms,bonds] = readABRXNFile(rxnfileName,rxnfileDirectory);
+%Read the RXN File, unless the caller has already read it (FR-005)
+if ~exist('atoms', 'var') || isempty(atoms) || ~exist('bonds', 'var') || isempty(bonds)
+    [atoms,bonds] = readABRXNFile(rxnfileName,rxnfileDirectory);
+end
 
 %construct a graph for the substrate by using the atomTransitionNrs for the
 %atoms forming the bonds 
@@ -160,8 +179,11 @@ for i=1:size(bondMappings,1)
      %1,NaN , 1,NaN,
      %NaN,'variableNames',bondMappings.Properties.VariableNames); %One node
      %for all the reactions
-     energy=table({rxnfileName}', NaN, NaN, 1,{'E'},{'E'},NaN, NaN, NaN, 1,NaN , 1,NaN, NaN,'variableNames',bondMappings.Properties.VariableNames);% It is better to have an energy node for each reaction
+    % The energy row is built only in the two reacting-bond branches below, which are
+    % the only places it is used (FR-003); each branch builds exactly the row that was
+    % previously built at this point on every iteration.
     if (bondMappings.isReacting(i)<0 & bondMappings.bondTransitionNrs(i)==0)
+        energy=table({rxnfileName}', NaN, NaN, 1,{'E'},{'E'},NaN, NaN, NaN, 1,NaN , 1,NaN, NaN,'variableNames',bondMappings.Properties.VariableNames);% It is better to have an energy node for each reaction
         bondMappings.bondTransitionNrs(i)=k;
         energy.bondTransitionNrs(1)=k;
         energy.isReacting(1)=-1;
@@ -171,6 +193,7 @@ for i=1:size(bondMappings,1)
         k=k+1;
     end
     if (bondMappings.isReacting(i)>0 & bondMappings.bondTransitionNrs(i)==0)
+        energy=table({rxnfileName}', NaN, NaN, 1,{'E'},{'E'},NaN, NaN, NaN, 1,NaN , 1,NaN, NaN,'variableNames',bondMappings.Properties.VariableNames);% It is better to have an energy node for each reaction
         bondMappings.bondTransitionNrs(i)=k;
         energy.bondTransitionNrs(1)=k;
         energy.isReacting(1)=1;

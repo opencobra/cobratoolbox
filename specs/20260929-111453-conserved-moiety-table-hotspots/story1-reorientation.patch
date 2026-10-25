@@ -1,0 +1,46 @@
+diff --git a/src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m b/src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m
+index bab930339..725022e8c 100644
+--- a/src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m
++++ b/src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m
+@@ -421,17 +421,30 @@ end
+ ATG.Edges.orientationATG2dATM = orientationATG2dATM;
+ 
+ %update the ATG Trans, HeadIndex, TailIndex, HeadAtom and TailAtom to match
+-%any reorientation of EndNodes
+-for i=1:nTrans
+-    if orientationATG2dATM(i)==-1
+-        ATG.Edges.HeadAtomIndex(i) = ATG.Edges.EndNodes(i,2);
+-        ATG.Edges.TailAtomIndex(i) = ATG.Edges.EndNodes(i,1);
+-        HeadAtom = ATG.Edges.TailAtom{i};
+-        TailAtom = ATG.Edges.HeadAtom{i};
+-        ATG.Edges.HeadAtom{i} = HeadAtom;
+-        ATG.Edges.TailAtom{i} = TailAtom;
+-        ATG.Edges.Trans{i} = [HeadAtom '#' TailAtom];
+-    end
++%any reorientation of EndNodes. All reoriented transitions are swapped in one
++%pass over the edge table, rather than by writing into the graph edge by edge
++reorientedBool = orientationATG2dATM==-1;
++if any(reorientedBool)
++    edgesATG = ATG.Edges;
++    newHeadAtom = edgesATG.TailAtom(reorientedBool);
++    newTailAtom = edgesATG.HeadAtom(reorientedBool);
++    headAtomIndex = edgesATG.HeadAtomIndex;
++    headAtomIndex(reorientedBool) = edgesATG.EndNodes(reorientedBool,2);
++    tailAtomIndex = edgesATG.TailAtomIndex;
++    tailAtomIndex(reorientedBool) = edgesATG.EndNodes(reorientedBool,1);
++    headAtoms = edgesATG.HeadAtom;
++    headAtoms(reorientedBool) = newHeadAtom;
++    tailAtoms = edgesATG.TailAtom;
++    tailAtoms(reorientedBool) = newTailAtom;
++    transNames = edgesATG.Trans;
++    transNames(reorientedBool) = cellfun(@(headAtom, tailAtom) [headAtom '#' tailAtom], ...
++        newHeadAtom, newTailAtom, 'UniformOutput', false);
++    ATG.Edges.HeadAtomIndex = headAtomIndex;
++    ATG.Edges.TailAtomIndex = tailAtomIndex;
++    ATG.Edges.HeadAtom = headAtoms;
++    ATG.Edges.TailAtom = tailAtoms;
++    ATG.Edges.Trans = transNames;
++    clear edgesATG newHeadAtom newTailAtom headAtomIndex tailAtomIndex headAtoms tailAtoms transNames
+ end
+ 
+ if sanityChecks

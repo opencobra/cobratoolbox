@@ -1,0 +1,201 @@
+diff --git a/src/analysis/topology/reactingMoieties/extractBondSubgraphs.m b/src/analysis/topology/reactingMoieties/extractBondSubgraphs.m
+index edba58954..fe5fb73d4 100644
+--- a/src/analysis/topology/reactingMoieties/extractBondSubgraphs.m
++++ b/src/analysis/topology/reactingMoieties/extractBondSubgraphs.m
+@@ -76,6 +76,166 @@ end
+ nodesByComp = accumarray(atoms2component(:), (1:numel(atoms2component))', [nComps, 1], ...
+     @(v) {sort(v(:))});
+ 
++% The peeling below always processes the first remaining edge, which relies on every atom
++% lying in the component its Component label names, i.e. on ATG.Nodes.Component being the
++% conncomp(ATG) labelling, as identifyConservedReactingMoieties sets it. Otherwise the
++% previous peeling loop is used.
++if ~isequal(componentATG(:), atoms2component(:))
++    [bondSubgraphs, BMG, bmgEdgeIndex] = extractBondSubgraphsByEdgeScan(BIG, ATG, compOfAtom, ...
++        nodesByComp, endNodes, edgeIdx);
++    return
++end
++
++% Edge and node tables of BIG, read once (every read of BIG.Edges builds a full table)
++BIGEdges = BIG.Edges;
++BIGNodes = BIG.Nodes;
++nBIGNodes = numnodes(BIG);
++nEdges = size(endNodes, 1);
++
++% Group the bond instance edges by the unordered pair of components of their end atoms.
++% The edges with both end atoms in components A and B are then exactly the buckets
++% (A,A), (B,B) and (A,B), so each component pair only touches its own edges.
++edgeComp = reshape(compOfAtom(endNodes), [], 2);
++[edgesByBucket, bucketId] = buildPairEdgeIndex(min(edgeComp, [], 2), max(edgeComp, [], 2), nComps);
++
++% Processed edges are flagged rather than removed from a copy of BIG; the rows still
++% flagged are, in order, the edge table that copy would have
++remaining = true(nEdges, 1);
++% Position of each atom in the current component pair (0 outside it)
++localPos = zeros(max(max(atomIndexATG), nBIGNodes), 1);
++
++% Initialize cell arrays to store all combined subgraphs
++bondSubgraphs = {};  % Contains subgraphs of connected bonds
++BMG = {};  % Bond Mapping Graphs: Isolated sets of bonds that are mapped to each other
++bmgEdgeIndex = {};  % EdgeIndex values of the edges of each Bond Mapping Graph
++
++% Initialize counter for the subgraph index
++subgraphIndex = 1;
++
++% Each pass peels every remaining edge of the component pair of the first remaining edge,
++% that edge included, so the next pass starts at the next remaining edge
++first = 1;
++while first <= nEdges
++    % Define the component IDs for the nodes involved in the bond
++    component1 = compOfAtom(endNodes(first, 1));
++    component2 = compOfAtom(endNodes(first, 2));
++    lowComp = min(component1, component2);
++    highComp = max(component1, component2);
++
++    % Combine the nodes from both components. Normally component1 and
++    % component2 are distinct, so this is a simple union of two disjoint
++    % node sets. However, for bond-cleaving reactions (e.g. peroxidases,
++    % hydrolases) where a bond within a reactant connects two atoms that
++    % end up in different product molecules, atom-transition tracking can
++    % merge both product fragments (and the original reactant) into a
++    % single connected component -- so the bond's own two endpoint atoms
++    % can already share the same component (component1 == component2).
++    % In that case the two node sets are identical, and concatenating
++    % them would duplicate every node, which subgraph() rejects. Guard
++    % against that case explicitly.
++    if component1 == component2
++        nodesInBothComponents = nodesByComp{component1};
++    else
++        nodesInBothComponents = [nodesByComp{component1}; nodesByComp{component2}];
++    end
++    % Create the subgraph containing nodes from both selected components
++    combinedSubgraph = subgraph(ATG, nodesInBothComponents);
++
++    % Atoms of the component pair, in the node order of combinedSubgraph
++    pairAtoms = atomIndexATG(nodesInBothComponents);
++    if any(pairAtoms > nBIGNodes)
++        % Raise the error that selecting these atoms from BIG raised before this change;
++        % never reached on valid inputs
++        subgraph(BIG, pairAtoms);
++    end
++
++    % Remaining edges with both end atoms in the component pair, numbered locally and in
++    % the row order subgraph(BIGCopy, pairAtoms) gave them: sorted by local (source,
++    % target), ties kept in their order in BIG
++    buckets = full([bucketId(lowComp, lowComp); bucketId(highComp, highComp); ...
++        bucketId(lowComp, highComp)]);
++    buckets = unique(buckets(buckets > 0));
++    rows = vertcat(zeros(0, 1), edgesByBucket{buckets});
++    rows = rows(remaining(rows));
++    localPos(pairAtoms) = 1:numel(pairAtoms);
++    localEnds = reshape(localPos(endNodes(rows, :)), [], 2);
++    localPos(pairAtoms) = 0;
++    [~, order] = sortrows([localEnds rows]);
++    rows = rows(order);
++
++    % Edge and node tables of the bond instance subgraph of the component pair
++    GEdges = BIGEdges(rows, :);
++    GEdges.EndNodes = localEnds(order, :);
++    GNodes = BIGNodes(pairAtoms, :);
++
++    % Initialize cell arrays to store the combined subgraphs for each iteration
++    combinedSubgraphs = {};
++    BMgraph = {};  % Temporary storage for Bond Mapping Graphs
++    BMedgeIdx = {};  % Temporary storage for their EdgeIndex values
++
++    % Repeat until no edges of GBB are left
++    while size(GEdges, 1) > 0
++        % Get unique BondIndex values
++        [~, firstOccurrenceIndices, groupIndices] = unique(GEdges.BondIndex, 'first');
++
++        % Calculate the number of occurrences of each unique BondIndex
++        occurrences = accumarray(groupIndices, 1);
++        maxOccurrences = max(occurrences);
++
++        % Peel one layer of first occurrences per repeat
++        for layer = 1:maxOccurrences
++            % Extract the first occurrence indices
++            layerEdgeIdx = GEdges.EdgeIndex(firstOccurrenceIndices);
++
++            % Source and target nodes of those edges
++            layerEndNodes = GEdges.EndNodes(firstOccurrenceIndices, :);
++
++            % Create the Bond Mapping Graph for the current set of bonds
++            EdgeTable = GEdges(firstOccurrenceIndices, :);
++            BMgraph{layer, 1} = digraph(EdgeTable, GNodes); %#ok<AGROW>
++            BMedgeIdx{layer, 1} = layerEdgeIdx; %#ok<AGROW>
++
++            % Add these edges to the combined subgraph
++            combinedSubgraphs{layer, 1} = addedge(combinedSubgraph, ...
++                layerEndNodes(:, 1), layerEndNodes(:, 2)); %#ok<AGROW>
++
++            % Remove the processed edges (row order of the rest is kept, as rmedge does)
++            GEdges(firstOccurrenceIndices, :) = [];
++
++            % Update `firstOccurrenceIndices` after edge removal
++            if size(GEdges, 1) > 0
++                [~, firstOccurrenceIndices, ~] = unique(GEdges.BondIndex, 'first');
++            else
++                break; % No more edges left
++            end
++        end
++    end
++
++    % Store the combined subgraphs created in this iteration
++    for m = 1:length(combinedSubgraphs)
++        bondSubgraphs{subgraphIndex, 1} = combinedSubgraphs{m}; %#ok<AGROW>
++        BMG{subgraphIndex, 1} = BMgraph{m}; %#ok<AGROW>
++        bmgEdgeIndex{subgraphIndex, 1} = BMedgeIdx{m}; %#ok<AGROW>
++        subgraphIndex = subgraphIndex + 1; % Increment subgraph index
++    end
++
++    % Flag the peeled edges as processed and move to the next remaining edge
++    remaining(rows) = false;
++    while first <= nEdges && ~remaining(first)
++        first = first + 1;
++    end
++end
++
++end
++
++function [bondSubgraphs, BMG, bmgEdgeIndex] = extractBondSubgraphsByEdgeScan(BIG, ATG, compOfAtom, ...
++    nodesByComp, endNodes, edgeIdx)
++% The previous peeling loop of extractBondSubgraphs, which removes the processed edges from
++% a copy of the bond instance graph after every component pair. It is kept for inputs
++% whose ATG.Nodes.Component is not the conncomp(ATG) labelling, where the processed edge is
++% not always the first remaining one, so that such inputs give exactly the results, or
++% raise exactly the errors, they always did.
++
+ % Initialize cell arrays to store all combined subgraphs
+ bondSubgraphs = {};  % Contains subgraphs of connected bonds
+ BMG = {};  % Bond Mapping Graphs: Isolated sets of bonds that are mapped to each other
+@@ -203,6 +363,29 @@ end
+ 
+ end
+ 
++function [edgesByBucket, bucketId] = buildPairEdgeIndex(lowComp, highComp, nComps)
++% Group edge rows by the unordered pair of components of their end nodes
++%
++% INPUTS:
++%    lowComp:     n x 1, the smaller component of the two end nodes of every edge
++%    highComp:    n x 1, the larger component of the two end nodes of every edge
++%    nComps:      number of components
++%
++% OUTPUTS:
++%    edgesByBucket:    cell array, the ascending edge rows of every distinct pair
++%    bucketId:         nComps x nComps sparse, bucketId(lowComp, highComp) is the index
++%                      of that pair in edgesByBucket, 0 when no edge joins the pair
++
++if isempty(lowComp)
++    edgesByBucket = {};
++    bucketId = sparse(nComps, nComps);
++    return
++end
++[pairKeys, firstRow, bucketOfEdge] = unique([lowComp(:), highComp(:)], 'rows');
++edgesByBucket = accumarray(bucketOfEdge, (1:numel(lowComp))', [], @(v) {sort(v)});
++bucketId = sparse(pairKeys(:, 1), pairKeys(:, 2), bucketOfEdge(firstRow), nComps, nComps);
++end
++
+ function [bondSubgraphs, BMG] = extractBondSubgraphsByComponentScan(BIG, ATG, atoms2component)
+ % The original extractBondSubgraphs algorithm, which reads the component of every bond's
+ % end atoms by scanning ATG.Nodes. It is kept as the fallback for inputs whose atom or edge

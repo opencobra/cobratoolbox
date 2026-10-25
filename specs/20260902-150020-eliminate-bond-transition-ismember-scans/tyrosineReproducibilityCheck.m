@@ -41,7 +41,7 @@
 % the correct location without changing the rest of this script's intent.
 modelPath = fullfile(getenv('HOME'), 'repos', 'ReconXKG-cidev', 'ReconXKGtoCobra', ...
     'models', 'subsystemSubModels', 'subsystemSubModels.mat');
-rxnFilesDir = '/media/JACK/repos/ctf/rxns/atomMapped_standardised';
+rxnFilesDir = '/media/JACK/repos/ctf/rxns/moiety_rxns/atomMapped_std';
 modelVarNameHint = 'tyr'; % matches subModels.tyr (the Tyrosine metabolism subsystem abbreviation; 139 reactions)
 nTimedRuns = 2; % wall-clock time averaged over at least 2 runs (SC-005; consistent with features 021/022's own ±10% run-to-run noise allowance)
 
