@@ -14,3 +14,5 @@ The `.mat` files in `baseline/` hold the full outputs and are not committed.
 Self-check: `baselineRecord('compare')` immediately after recording reported all three runs identical.
 
 After US2 (sign retry, commit following 37dd5ef4c): `baselineRecord('compare')` reported all three runs identical; no sign retry fired on any baseline run.
+
+Final (T025, after header documentation): `baselineRecord('compare')` reported all three runs identical.

@@ -59,6 +59,20 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %    maximal-support LP, so `shortfallKind` reports `'sampling'` where it formerly
 %    reported a false `'structural'`.
 %
+%    CHANGE OF DEFAULT NUMERICAL BEHAVIOUR, October 2026, feature
+%    20261025-235131-greedy-initial-basis. When random objectives stall, the search aims
+%    its objective at the direction `g` of the nullspace that the rays held do not yet
+%    span. The sign of `g` comes from an SVD and is arbitrary, and when the maximum of
+%    `g'*w` is zero the vertex returned can lie in the span of the rays held, which was
+%    counted as a failure. At least one of `+g` and `-g` has a positive maximum, and its
+%    optimal vertex is a new extreme ray (moietyRank manuscript, Proposition
+%    prop:mr:left-basis (c)), so a targeted candidate that is accurate but linearly
+%    dependent is now re-solved once with the opposite sign before a failure is counted.
+%    The retry draws nothing from the random stream: a run in which it never fires,
+%    `status.nSignRetries = 0`, returns exactly what it returned before. The same feature
+%    adds `param.initialBasis`, which completes a supplied partial basis instead of
+%    computing one from scratch; without it nothing else changes.
+%
 %
 % INPUT:
 %    model:      COBRA model structure with fields:
@@ -77,6 +91,8 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .maxElementsForSpectrum - largest `numel` of the operative matrix for which the dense spectrum is computed to derive the accuracy target and assess the regime; above it the target falls back to `eps*normest` and the regime is `'notAssessed'` (default = 1e8)
 %                  * .feasTol - may TIGHTEN ray acceptance below the derived accuracy target; it can no longer loosen it above that target (default = 1e-6, which no longer loosens)
 %                  * .solver - LP solver nominated for the duration of this call, restored afterwards on every exit path (default = `'gurobi'`, which returns exact vertices; falls back if it is not installed). Set to `''` to use the session's solver unchanged
+%                  * .initialBasis - supplied partial basis to complete (default = `[]`, none). Left mode: `k x m`, one candidate per row; right mode: `n x k`, one candidate per column, where `m` and `n` are the dimensions of the operative matrix after any consistency restriction. A candidate is rejected if any entry is negative, or if it misses the accuracy target that every accepted ray must meet; of the rest, those that raise the rank are kept in supplied order and the others are reported as dependent. Kept candidates are returned unchanged as the leading rows (right mode: columns) of `Zpos`, survive every restart, and only the missing rays are searched for; if they already span the nullspace no LP is solved
+%                  * .testHook - TEST ONLY; absent by default, which leaves the search unchanged. `.targetedSignFirst` (+1 or -1) orients the targeted direction so that its largest-magnitude entry is positive and tries that sign first; `.forceTargeted` (logical) uses the targeted objective whenever some rays are held and some are missing, without waiting for a stall
 %
 % OUTPUTS:
 %    Zpos:       non-negative linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
@@ -117,6 +133,19 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .solverRequested - the solver nominated by `param.solver`
 %                  * .solverUsed - the solver actually used, which differs if the nominated one was unavailable
 %                  * .solverChanged - whether this call switched solver and restored it afterwards
+%                  * .initialBasisSupplied - number of candidates in `param.initialBasis` (0 if none)
+%                  * .initialBasisKept - number kept, which are the leading rows (right mode: columns) of `Zpos`
+%                  * .initialBasisKeptIndex - their indices in supplied order
+%                  * .initialBasisDependent - number dropped as linearly dependent on those kept before them
+%                  * .initialBasisDependentIndex - their indices
+%                  * .initialBasisRejected - number rejected as negative or inaccurate; never returned
+%                  * .initialBasisRejectedIndex - their indices
+%                  * .initialBasisRejectedReason - `'negative'` or `'accuracy'` for each, aligned with the indices
+%                  * .raysAdded - rays found by the search, i.e. `.raysFound` minus `.initialBasisKept`
+%                  * .nSignRetries - targeted candidates re-solved with the opposite sign
+%                  * .nLPSolves - LPs solved by the search with the nominated solver, sign retries included (0 when the supplied basis is already complete); excludes the shortfall-classification LP
+%
+%                Candidates the search judged are counted by `.raysRejectedForAccuracy` and `.raysRejectedForDependence` exactly as before; supplied candidates are never counted there. If kept candidates outnumber the estimated nullity, every one is still returned, `.outcome` is `'complete'`, and the warning `greedyExtremeRayBasis:keptExceedsNullity` is raised.
 %
 %                In the `'badlyScaled'` outcome it additionally carries the diagnosis:
 %
@@ -140,6 +169,11 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %        case 'badlyScaled'     % no basis obtainable; see status.recommendedRepair
 %        case 'missingField'    % see status.missingFieldName
 %    end
+%
+%    % complete a set of conserved moiety vectors, keeping them as the first rows
+%    param.initialBasis = L0;
+%    [Zpos, ~, status] = greedyExtremeRayBasis(model, param);
+%    addedRays = Zpos(status.initialBasisKept+1:end, :);
 
 if ~exist('param','var')
     param = struct();

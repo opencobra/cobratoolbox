@@ -277,7 +277,7 @@ leading rows; only `nullity - kept` rays are searched.
 
 ## Phase 8: Polish & Cross-Cutting Concerns
 
-- [ ] T023 In `SRC`'s help header:
+- [X] T023 In `SRC`'s help header:
   - add `OPTIONAL INPUT` entries for `.initialBasis` (shape per mode, validation, kept
     rows first and unchanged) and `.testHook` (marked test only, both fields);
   - add `status` lines for every E5 field;
@@ -287,11 +287,11 @@ leading rows; only `nullity - kept` rays are searched.
     identical when `nSignRetries = 0`; new `initialBasis` capability, Prop. prop:mr:left-basis).
 
   Follow the openCOBRA header format (VII-E).
-- [ ] T024 Run `check_matlab_code` (MATLAB MCP) on `SRC` and `TST`, apply
+- [X] T024 Run `check_matlab_code` (MATLAB MCP) on `SRC` and `TST`, apply
   `matlab-core:matlab-review-code`, and fix any new Code Analyzer warning introduced by this
   feature. Confirm there is no `evalc`, no `nargin`, no suppressed warning and no new
   `try/catch`.
-- [ ] T025 Final run: `TST`, `testCheckNullspaceBasis`, `testNullspaceAccuracyTarget`,
+- [X] T025 Final run: `TST`, `testCheckNullspaceBasis`, `testNullspaceAccuracyTarget`,
   `baselineRecord('compare')`. Then a diff-scope check: `git diff --stat develop` must list
   only `SRC`, `TST`, `CLAUDE.md` (SPECKIT pointer) and `FD/`. In particular,
   `findExtremePool.m` and the solver files must be unchanged (FR-014, FR-015). Record the
