@@ -253,9 +253,9 @@ it, divergence is a defect.
   new warnings (`keptExceedsNullity`, plus the existing ones) are raised with identifiers
   and never suppressed. No new `try/catch` is introduced.
 - The test file already declares `solvers = prepareTest('needsLP', true)` and loops over
-  `solvers.LP`. The new fixture blocks run inside that file, gated on
-  `any(strcmp(solvers.LP, 'gurobi'))` so that they skip gracefully without gurobi. The
-  function nominates gurobi by default, and the fixtures rely on vertex solutions. Each
-  fixture block fixes `rng`. Rays are
+  `solvers.LP`. The new fixture blocks run inside that file. Fixtures 1 and 3 solve no LP
+  and run with any solver. Fixtures 2 and 4 need vertex solutions and run per available
+  vertex-returning solver (gurobi, ibm_cplex, glpk), so CI exercises them even without
+  gurobi (analyze C1). Each fixture block fixes `rng`. Rays are
   compared in exact rational form via `rats`/`round` after scaling by the smallest nonzero
   entry.

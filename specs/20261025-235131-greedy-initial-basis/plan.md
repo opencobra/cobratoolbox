@@ -68,8 +68,9 @@ Recon3D internal (5824 x 8748, nullity 251)
   - The in-repo caller `optimalExtremePoolDriver.m:121` passes no `param` and is unaffected.
 - **Testing and reproducibility (III)**:
   - The narrowest test is `testGreedyExtremeRayBasis.m` (III-Naming: extended, not
-    duplicated). Its new blocks are gated on gurobi within the file's existing
-    `prepareTest('needsLP', true)`, use fixed seeds, and compare rays in exact rational form.
+    duplicated). Its new blocks sit within the file's existing
+    `prepareTest('needsLP', true)`. The no-LP fixtures run with any solver and the vertex
+    fixtures run per available vertex-returning solver (analyze C1). They use fixed seeds, and compare rays in exact rational form.
   - Baseline record/compare script (R8) for SC-004.
   - Real-model reproducibility script with expected output (R7), local only, as in
     20260914.

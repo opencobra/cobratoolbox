@@ -1,10 +1,10 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 2 (implementation preparation) in progress
+- Status: awaiting Gate 2
 - Active feature directory: specs/20261025-235131-greedy-initial-basis
 - Branch: 20261025-235131-greedy-initial-basis (from develop @ 5e8170e12, pulled 2026-10-25)
-- Last completed bundle: 1 (requirements preparation)
+- Last completed bundle: 2 (implementation preparation)
 - Source code modified by this workflow: no
 
 ## Core Command Ledger
@@ -12,9 +12,9 @@
 - specify:        invoked (2 [NEEDS CLARIFICATION] markers resolved by user 2026-10-26)
 - clarify:        invoked (2 questions: kept>nullity -> keep all + warn; LP count -> status.nLPSolves)
 - checklist:      invoked (requirements.md 16/16; numerics-compat.md 32/35, 3 deferred to plan: CHK017, CHK032, CHK035)
-- plan:
-- tasks:
-- analyze:
+- plan:           invoked (research R1-R9; Constitution Check PASS)
+- tasks:          invoked (26 tasks; MVP slice T001-T011)
+- analyze:        invoked (0 crit, 0 high, 2 med, 3 low; C1 I1 G1 I2 remediated with approval, U1 accepted)
 - implement:
 
 ## Human Decisions
@@ -25,6 +25,7 @@
 | 2026-10-26 | clarify Q1 | Keep all, warn (Recommended) | FR-006a: kept > nullity estimate returns all, outcome complete, warning keptExceedsNullity |
 | 2026-10-26 | clarify Q2 | New status.nLPSolves (Recommended) | FR-011/SC-001: LP count observable |
 | 2026-10-26 | Gate 1 | Continue to plan (Recommended) | Bundle 2 runs: plan, tasks, analyze, implementation-review; stop at Gate 2 |
+| 2026-10-26 | analyze remediation | Apply C1, I1, G1, I2 (Recommended) | spec SC-004/SC-005/FR-017, tasks T006/T012/T019/T025, research R9, plan amended |
 
 ## Approved Implementation Scope
 - Approved: no
@@ -40,7 +41,7 @@
 - Implementation review: specs/20261025-235131-greedy-initial-basis/implementation-review.md
 
 ## Open Risks and Ambiguities
-- The shared MATLAB MCP session (`matlab-shared`) failed to attach during specification;
+- `matlab-shared` MCP fails to attach; the `matlab` MCP server (R2026a) works and will be used.
   fixture ranks were verified in exact arithmetic (sympy) instead. Verification will need a
   working MATLAB session.
 - Fixture 6 route (atom-mapped model for identifyConservedMoieties vs Zpos subset) to be

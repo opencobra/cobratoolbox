@@ -318,8 +318,11 @@ scope.
   places (the feature's spec artifacts and receipt; any changelog the plan identifies).
 - **FR-017**: The narrowest test proving the behaviour MUST be added to the existing
   `test/verifiedTests/analysis/testTopology/testGreedyExtremeRayBasis.m` (constitution
-  III-Naming), declare its requirements with `prepareTest` (gurobi), fix the random seed,
-  and compare rays up to positive scaling in exact rational form.
+  III-Naming), declare its requirements with `prepareTest` (the file's existing `needsLP`),
+  fix the random seed, and compare rays up to positive scaling in exact rational form.
+  Fixtures that solve no LP (1, 3) run with any LP solver. Fixtures that need vertices
+  (2, 4) run with any vertex-returning solver present (gurobi, glpk, ibm_cplex), so that CI
+  exercises them without gurobi.
 - **FR-018**: Numerical integrity: kept vectors and added rays MUST each meet
   `status.acceptanceTarget`; `Zpos` MUST be non-negative; the implied rank of the returned
   basis MUST equal `kept + added`. No warning raised by this path may be suppressed.
@@ -353,10 +356,11 @@ scope.
   (at least ecoli_core, as the existing test uses), outputs of the pre-feature function
   are recorded BEFORE the change and the post-feature call without `initialBasis` returns
   `Zpos` and `Z` value-identical, and every pre-existing `status` field equal except
-  `elapsedTime` and `spectrumTime`, within the scope fixed by FR-013. The record and the
+  `elapsedTime`, `spectrumTime` and `pairedComparison` (empty when instrumentation is off), within the scope fixed by FR-013. The record and the
   comparison are kept in the feature directory.
-- **SC-005**: Fixtures 1-3 pass in right mode with results equal to the left-mode results
-  transposed.
+- **SC-005**: Fixtures 1-3 pass in right mode. For fixtures 1 and 3 (no LP), the results
+  equal the left-mode results transposed. For fixture 2, the kept columns equal `L0'` and
+  exactly one valid ray (either of the two admissible ones) is added.
 - **SC-006**: On the chosen real model, every kept supplied row is returned unchanged
   (bitwise equal), the outcome is `'complete'`, and the counts (supplied, kept, dependent,
   rejected, added, sign retries, nullity) and their scope (model, supply route, solver,
