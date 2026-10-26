@@ -297,7 +297,7 @@ leading rows; only `nullity - kept` rays are searched.
   `findExtremePool.m` and the solver files must be unchanged (FR-014, FR-015). Record the
   outputs for the receipt, and list FR-006a/FR-007's defensive branches as "not verified
   by a fixture" (analyze U1).
-- [ ] T026 Write the implementation receipt
+- [X] T026 Write the implementation receipt
   `FD/agent-runs/<UTC-timestamp>-greedy-initial-basis/implementation-receipt.md` (Prompt,
   Final response, Diff summary, Tests, Unresolved issues) and update `FD/human-loop.md`
   (ledger, receipt pointer, source-modified = yes).
