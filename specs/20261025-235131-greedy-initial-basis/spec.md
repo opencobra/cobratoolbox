@@ -256,10 +256,13 @@ scope.
 
 **Sign recovery in the targeted step**
 
-- **FR-008**: In the targeted step, if the vertex returned for objective `+g` is linearly
-  dependent on the rows currently held, or `|g' * w|` is below a stated tolerance, the
-  function MUST re-solve with `-g` (shifted to the same non-negative form) before counting
-  a failure. Only if the second vertex also fails is one failure counted, as today. This
+- **FR-008**: In the targeted step, if the vertex returned for objective `+g` meets the
+  accuracy target but is linearly dependent on the rows currently held, the function MUST
+  re-solve with `-g` (shifted to the same non-negative form) before counting a failure.
+  (The feature prompt also named "`|g' * w|` below tolerance" as a trigger. Planning
+  research R1 shows that it is subsumed: a dependent vertex always has `g'w ≈ 0`, while a
+  zero-valued INDEPENDENT vertex is a valid new ray that a value trigger would discard. So
+  no separate value tolerance is introduced; `g'w` is reported at `printLevel > 2`.) Only if the second vertex also fails is one failure counted, as today. This
   applies on every call (FR-013). A first vertex rejected for ACCURACY, or an empty solve,
   does not trigger the retry: it is counted exactly as today.
 - **FR-008a**: Counting under the retry keeps existing meanings: `nTargetedObjectives`
@@ -376,8 +379,8 @@ scope.
   stated ranks and nullities were checked in exact arithmetic during specification.
 - The real-model demonstration (US5) is a documented reproducibility check run locally,
   not a CI test, because the models are large and their availability in CI is not assumed.
-- The tolerance for "`|g' * w|` below tolerance" in FR-008 is fixed by the plan, with
-  justification relative to the acceptance target.
+- The "`|g' * w|` below tolerance" trigger of the feature prompt is subsumed by the
+  dependence test (research R1), so no separate tolerance is needed.
 
 ## Out of Scope (recorded follow-ups)
 

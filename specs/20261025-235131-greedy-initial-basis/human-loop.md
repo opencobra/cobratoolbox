@@ -1,7 +1,7 @@
 # Human Loop State
 
 ## Current State
-- Status: awaiting Gate 1
+- Status: Bundle 2 (implementation preparation) in progress
 - Active feature directory: specs/20261025-235131-greedy-initial-basis
 - Branch: 20261025-235131-greedy-initial-basis (from develop @ 5e8170e12, pulled 2026-10-25)
 - Last completed bundle: 1 (requirements preparation)
@@ -24,6 +24,7 @@
 | 2026-10-26 | specify Q (FR-012) | Columns, n x k (Recommended) | right-mode initialBasis has the orientation of right-mode Zpos |
 | 2026-10-26 | clarify Q1 | Keep all, warn (Recommended) | FR-006a: kept > nullity estimate returns all, outcome complete, warning keptExceedsNullity |
 | 2026-10-26 | clarify Q2 | New status.nLPSolves (Recommended) | FR-011/SC-001: LP count observable |
+| 2026-10-26 | Gate 1 | Continue to plan (Recommended) | Bundle 2 runs: plan, tasks, analyze, implementation-review; stop at Gate 2 |
 
 ## Approved Implementation Scope
 - Approved: no

@@ -38,7 +38,7 @@
 - [x] CHK014 Is the accuracy contract for supplied vectors the same one applied to searched rays, and named? [Consistency, Spec §FR-002, §Assumptions]
 - [x] CHK015 Is "unchanged" for kept vectors defined precisely (value-identical, storage class)? [Clarity → resolved, Spec §FR-004]
 - [x] CHK016 Is it specified which failures of the `+g` vertex trigger the retry and which do not (accuracy rejection, empty solve)? [Coverage → resolved, Spec §FR-008]
-- [ ] CHK017 Is the tolerance for "`|g' * w|` below tolerance" quantified? [Clarity, Spec §FR-008] — deliberately deferred to the plan with a justification requirement (Spec §Assumptions); re-check at Gate 2.
+- [x] CHK017 Is the tolerance for "`|g' * w|` below tolerance" quantified? [Clarity, Spec §FR-008] — resolved by research R1: no separate tolerance; the dependence test is the trigger (FR-008 amended).
 - [x] CHK018 Is the double-failure case (both signs dependent, which floating point can produce) specified? [Edge Case, Spec §Edge Cases]
 - [x] CHK019 Is the mathematical basis (Proposition (c): one sign has a positive optimum; its optimal vertex lies outside span(G)) stated so reviewers can check the retry's justification? [Traceability, Spec §Background]
 - [x] CHK020 Are final verification rules prevented from dropping a kept vector, with a loud failure if it would? [Consistency, Spec §FR-007]
@@ -65,13 +65,13 @@
 ## Solver Constraints (Principle IV)
 
 - [x] CHK031 Is the solver requirement stated (gurobi default, mosek rejected, no change to solver nomination/restore)? [Completeness, Spec §FR-015]
-- [ ] CHK032 Is the configuration-surface audit for the LP solver required for this feature? [Gap] — Principle IV places this in the plan/research; re-check at Gate 2.
+- [x] CHK032 Is the configuration-surface audit for the LP solver required for this feature? [Gap] — resolved by research R5 (no default mismatched; nothing overridden).
 
 ## Dependencies & Scope
 
 - [x] CHK033 Are out-of-scope items recorded as named follow-ups rather than silently dropped? [Completeness, Spec §Out of Scope]
 - [x] CHK034 Is the dependency on an atom-mapped model for US5 handled with a fallback route? [Assumption, Spec §US5]
-- [ ] CHK035 Are "the repo's usual places" for recording the change identified? [Ambiguity, Spec §FR-016] — deferred to plan; re-check at Gate 2.
+- [x] CHK035 Are "the repo's usual places" for recording the change identified? [Ambiguity, Spec §FR-016] — resolved by research R6 (header NOTE, feature dir, commit/PR; no changelog exists).
 
 ## Notes
 
@@ -80,3 +80,5 @@
   (FR-001, FR-002, FR-004, FR-008, new FR-008a, SC-004).
 - 3 items remain open by design, each deferred to the plan: CHK017, CHK032, CHK035.
   None blocks Gate 1.
+- 2026-10-26 (plan): CHK017, CHK032, CHK035 resolved by research R1, R5, R6. 35/35 passing
+  (Completion Integrity is checked at closeout).
