@@ -255,6 +255,23 @@ if ~isfield(param, 'initialBasis')
     param.initialBasis = [];
 end
 
+% TEST ONLY. The sign of the targeted direction comes from an SVD and is arbitrary, and
+% the targeted step is normally reached only after a stall, so recovery from the wrong
+% sign cannot otherwise be demonstrated deterministically. Absent, the search behaves
+% exactly as without it.
+targetedSignFirst = 1;
+canonicalDirection = false;
+forceTargeted = false;
+if isfield(param, 'testHook') && isstruct(param.testHook)
+    if isfield(param.testHook, 'targetedSignFirst') && ~isempty(param.testHook.targetedSignFirst)
+        targetedSignFirst = sign(param.testHook.targetedSignFirst);
+        canonicalDirection = true;
+    end
+    if isfield(param.testHook, 'forceTargeted') && ~isempty(param.testHook.forceTargeted)
+        forceTargeted = logical(param.testHook.forceTargeted);
+    end
+end
+
 % Partition of the supplied basis into kept, dependent and rejected vectors. It is
 % reported on every return path, including those that return before the supplied
 % vectors can be judged, where the count supplied is recorded and nothing is kept.
@@ -561,102 +578,123 @@ while nBases < (nVar-rankS)
     % random objective produced a new independent accurate ray in 0 of 40 trials, while
     % an objective aimed at the unspanned part of the left nullspace produced one in
     % 40 of 40. So on a stall, aim.
-    if nfail >= nfailMax && nBases > 0 && nBases < (nVar - rankS)
-        targetedObj = targetedObjective(Z, Zpos, nBases, nVar);
+    targetDirection = [];
+    if (nfail >= nfailMax || forceTargeted) && nBases > 0 && nBases < (nVar - rankS)
+        [targetedObj, targetDirection] = targetedObjective(Z, Zpos, nBases, nVar, ...
+            targetedSignFirst, canonicalDirection);
         if ~isempty(targetedObj)
             obj = targetedObj;
             nTargetedObjectives = nTargetedObjectives + 1;
+        else
+            targetDirection = [];
         end
     end
 
-    positive = 1;
-    nLPSolves = nLPSolves + 1;
-    if isempty(param.compareSolvers)
-        [~, sol] = findExtremePool(model,obj,param.printLevel-2,positive,0,param.solverSettings);
+    % SIGN RETRY. Maximising g'*w with g orthogonal to the rays held returns, whenever the
+    % optimum is positive, a vertex outside their span. The sign of g is arbitrary, and
+    % when the maximum of g'*w is zero the returned vertex can lie in their span. At least
+    % one of +g and -g has a positive maximum (moietyRank manuscript, Proposition
+    % prop:mr:left-basis (c)), so a targeted candidate that is accurate but DEPENDENT is
+    % re-solved once with the opposite sign before a failure is counted. A dependent
+    % vertex always has g'*w = 0, so the rank test is the trigger and no separate
+    % tolerance on g'*w is needed (feature 20261025-235131, research R1). The retry draws
+    % nothing from the random stream; without a dependent targeted candidate this loop
+    % runs exactly once and the search proceeds as it did before the retry existed.
+    signRetried = false;
+    candidateRejected = false;
+    while true
+        positive = 1;
+        nLPSolves = nLPSolves + 1;
         % Judge, and return, the ray the solver computed, not findExtremePool's first
-        % output, which zeroes every entry below 10*feasTol. That truncation is a
-        % sparsity convenience for findExtremePool's other callers, but here it destroys
-        % exact vertices: on Recon3D, once the objective is zeroed on covered
-        % metabolites, gurobi returns rays with ~200 entries below 1e-5 whose residual is
-        % <= 3.2e-16 as solved and ~1.6e-4 once truncated, so every one was rejected for
-        % accuracy and the search stalled at 237 of 251 rays (feature
-        % 20261003-132730-greedy-recon3d-stall, research.md R1).
-        x = untruncatedRay(sol, nVar);
-    else
-        % PAIRED comparison. Every solver is handed the identical LP built from the
-        % identical partial basis and the identical objective vector drawn above, so a
-        % solver's contribution is separated from the search path it would otherwise
-        % diverge onto. A comparison assembled from independent whole runs cannot do
-        % this: after the first accepted ray the runs no longer share a state.
-        %
-        % The comparison consumes NO draws from the random stream -- `obj` is already
-        % drawn -- and the search advances on the nominated solver's ray, reused from
-        % within the loop rather than re-solved. Both are what make the instrumentation
-        % inert when it is off.
-        [x, sol, pairedRows] = compareSolversAtState(model, obj, param, positive, ...
-            Zpos, nBases, acceptanceTarget, nTry, nonZeroColumnsBool);
-        pairedRecord = [pairedRecord; pairedRows]; %#ok<AGROW>
-    end
-
-    if contains(sol.origStat,'WARNING')
-        if nfail < nfailMax
-            % a solver warning escalates at once, which is a crossing like any other
-            nStallEscalations = nStallEscalations + 1;
+        % output, which zeroes every entry below 10*feasTol (see solveCandidate).
+        [x, sol, pairedRows] = solveCandidate(model, obj, param, positive, Zpos, nBases, ...
+            acceptanceTarget, nTry, nonZeroColumnsBool, nVar);
+        if ~isempty(param.compareSolvers)
+            pairedRecord = [pairedRecord; pairedRows]; %#ok<AGROW>
         end
-        nfail = nfailMax;
-    end
 
-    % An infeasible or failed solve returns no ray at all. This is not a tolerance
-    % effect and must not be treated as one: on a stoichiometrically inconsistent input
-    % the only non-negative vector in the left nullspace is zero, which cannot satisfy
-    % the normalisation, so the LP is genuinely infeasible and there is nothing to find.
-    % Guard it before the residual is taken, or S' is multiplied by an empty vector.
-    if isempty(x) || numel(x) ~= nVar
-        [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
-        nRejectedForAccuracy = nRejectedForAccuracy + 1;
-        continue
-    end
-
-    % A candidate that cannot meet the derived accuracy target is DROPPED and the
-    % search continues; it is never returned. The rejection count is the evidence
-    % that the attainable residual floor sits above the target, which is the
-    % signature of a solver that cannot serve this use.
-    if norm(model.S'*x,inf) > acceptanceTarget
-        nRejectedForAccuracy = nRejectedForAccuracy + 1;
-        % An accuracy rejection is as much a failed attempt as a dependent ray or an
-        % empty solve, so it counts toward the stall detection. Not counting it meant a
-        % run of accuracy failures could never relax coverage-zeroing or reach the
-        % targeted objective: on Recon3D, 884 rejections and 0 targeted objectives.
-        [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
-        continue
-    end
-
-    if positive && min(x)<0
-        error('findExtremePool returned negative coefficient')
-    end
-    Zpos(nBases+1,:)=x';
-    if nBases==0
-        rankB=1;
-    else
-        nonZeroColumnsBool=(Zpos~=0);
-        nonZeroColumnsBool=sum(nonZeroColumnsBool,1)~=0;
-        rankB = getRankLUSOL(Zpos(1:nBases+1,nonZeroColumnsBool));
-        % %error as reports wrong rank if zero columns
-        % rankB = getRankLUSOL(B(1:nBases+1,:));
-    end
-    if rankB==(nBases+1)
-        t2 = tic;
-        nBases=nBases+1;
-        if param.printLevel>1
-            fprintf('%s\n',[int2str(nBases) ' of ' int2str(nVar-rankS) ' linearly independent kernel rays, at time ' num2str(round(toc)) ', with ' num2str(nfail+1) ' attempt(s).']);
+        if contains(sol.origStat,'WARNING')
+            if nfail < nfailMax
+                % a solver warning escalates at once, which is a crossing like any other
+                nStallEscalations = nStallEscalations + 1;
+            end
+            nfail = nfailMax;
         end
-        nfail=0;
-    else
-        [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
+
+        % An infeasible or failed solve returns no ray at all. This is not a tolerance
+        % effect and must not be treated as one: on a stoichiometrically inconsistent
+        % input the only non-negative vector in the left nullspace is zero, which cannot
+        % satisfy the normalisation, so the LP is genuinely infeasible and there is
+        % nothing to find. Guard it before the residual is taken, or S' is multiplied by
+        % an empty vector.
+        if isempty(x) || numel(x) ~= nVar
+            [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
+            nRejectedForAccuracy = nRejectedForAccuracy + 1;
+            candidateRejected = true;
+            break
+        end
+
+        % A candidate that cannot meet the derived accuracy target is DROPPED and the
+        % search continues; it is never returned. The rejection count is the evidence
+        % that the attainable residual floor sits above the target, which is the
+        % signature of a solver that cannot serve this use.
+        if norm(model.S'*x,inf) > acceptanceTarget
+            nRejectedForAccuracy = nRejectedForAccuracy + 1;
+            % An accuracy rejection is as much a failed attempt as a dependent ray or an
+            % empty solve, so it counts toward the stall detection. Not counting it meant
+            % a run of accuracy failures could never relax coverage-zeroing or reach the
+            % targeted objective: on Recon3D, 884 rejections and 0 targeted objectives.
+            [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
+            candidateRejected = true;
+            break
+        end
+
+        if positive && min(x)<0
+            error('findExtremePool returned negative coefficient')
+        end
+        Zpos(nBases+1,:)=x';
+        if nBases==0
+            rankB=1;
+        else
+            nonZeroColumnsBool=(Zpos~=0);
+            nonZeroColumnsBool=sum(nonZeroColumnsBool,1)~=0;
+            rankB = getRankLUSOL(Zpos(1:nBases+1,nonZeroColumnsBool));
+            % %error as reports wrong rank if zero columns
+            % rankB = getRankLUSOL(B(1:nBases+1,:));
+        end
+        if rankB==(nBases+1)
+            t2 = tic;
+            nBases=nBases+1;
+            if param.printLevel>1
+                fprintf('%s\n',[int2str(nBases) ' of ' int2str(nVar-rankS) ' linearly independent kernel rays, at time ' num2str(round(toc)) ', with ' num2str(nfail+1) ' attempt(s).']);
+            end
+            nfail=0;
+            break
+        end
+
         nRejectedForDependence = nRejectedForDependence + 1;
+        if ~isempty(targetDirection) && ~signRetried
+            retryObj = objectiveFromDirection(-targetDirection, nVar);
+            if ~isempty(retryObj)
+                if param.printLevel>2
+                    fprintf('%s\n', sprintf(['Targeted vertex dependent (g''*w = %g); ' ...
+                        're-solving with the opposite sign.'], full(targetDirection'*x)));
+                end
+                signRetried = true;
+                nSignRetries = nSignRetries + 1;
+                obj = retryObj;
+                targetDirection = -targetDirection;
+                continue
+            end
+        end
+        [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations);
         if param.printLevel>2
             fprintf('%s\n','Linearly dependent pool vector discarded');
         end
+        break
+    end
+    if candidateRejected
+        continue
     end
     nTry=nTry+1;
     % the budgets are enforced at the top of the loop, where they govern rejected
@@ -1019,15 +1057,23 @@ if nfail == nfailMax
 end
 
 
-function obj = targetedObjective(Z, Zpos, nBases, nVar)
+function [obj, direction] = targetedObjective(Z, Zpos, nBases, nVar, firstSign, canonical)
 % Builds a non-negative objective aimed at the part of the left nullspace that the
 % partial basis does not yet span, for use when random draws have stopped finding new
-% independent rays.
+% independent rays. Also returns the signed direction it favours, so that the caller can
+% re-solve with the opposite sign.
 %
 % `Z` already holds a basis of the requested nullspace, computed once at the top of the
 % search, so no new nullspace computation is needed here.
+%
+% `firstSign` and `canonical` serve only the test hook. With `firstSign = 1` and
+% `canonical = false` the direction is the leading singular vector exactly as the SVD
+% returns it. With `canonical = true` it is first oriented so that its largest-magnitude
+% entry (lowest index on a tie) is positive, which makes the sign reproducible, and is
+% then multiplied by `firstSign`.
 
 obj = [];
+direction = [];
 if isempty(Z) || nBases < 1
     return
 end
@@ -1049,9 +1095,24 @@ if isempty(singularValues) || singularValues(1) <= 1e-8
 end
 
 direction = leftVectors(:, 1);
-% The ray is constrained non-negative, so the objective is shifted to be non-negative
-% while preserving the direction it favours. A sign flip of the leading vector is
-% arbitrary, so the shift keeps the LP pointed at the same subspace either way.
+if canonical
+    [~, iLargest] = max(abs(direction));
+    if direction(iLargest) < 0
+        direction = -direction;
+    end
+    direction = firstSign*direction;
+end
+obj = objectiveFromDirection(direction, nVar);
+if isempty(obj)
+    direction = [];
+end
+
+
+function obj = objectiveFromDirection(direction, nVar)
+% The ray is constrained non-negative, so the objective is shifted to be non-negative.
+% On the feasible set, where the entries of a ray sum to one, the shift adds a constant,
+% so the LP still maximises direction'*w and the sign of `direction` decides which side
+% of the unspanned subspace it favours.
 obj = direction - min(0, min(direction));
 if norm(obj) == 0
     obj = [];
@@ -1060,6 +1121,38 @@ end
 obj = obj/norm(obj);
 if numel(obj) ~= nVar
     obj = [];
+end
+
+
+function [x, sol, pairedRows] = solveCandidate(model, obj, param, positive, Zpos, nBases, ...
+    acceptanceTarget, nTry, nonZeroColumnsBool, nVar)
+% One candidate ray for objective `obj`, from the nominated solver, or from the paired
+% comparison when `param.compareSolvers` is set.
+pairedRows = struct([]);
+if isempty(param.compareSolvers)
+    [~, sol] = findExtremePool(model,obj,param.printLevel-2,positive,0,param.solverSettings);
+    % Judge, and return, the ray the solver computed, not findExtremePool's first
+    % output, which zeroes every entry below 10*feasTol. That truncation is a
+    % sparsity convenience for findExtremePool's other callers, but here it destroys
+    % exact vertices: on Recon3D, once the objective is zeroed on covered
+    % metabolites, gurobi returns rays with ~200 entries below 1e-5 whose residual is
+    % <= 3.2e-16 as solved and ~1.6e-4 once truncated, so every one was rejected for
+    % accuracy and the search stalled at 237 of 251 rays (feature
+    % 20261003-132730-greedy-recon3d-stall, research.md R1).
+    x = untruncatedRay(sol, nVar);
+else
+    % PAIRED comparison. Every solver is handed the identical LP built from the
+    % identical partial basis and the identical objective vector drawn above, so a
+    % solver's contribution is separated from the search path it would otherwise
+    % diverge onto. A comparison assembled from independent whole runs cannot do
+    % this: after the first accepted ray the runs no longer share a state.
+    %
+    % The comparison consumes NO draws from the random stream -- `obj` is already
+    % drawn -- and the search advances on the nominated solver's ray, reused from
+    % within the loop rather than re-solved. Both are what make the instrumentation
+    % inert when it is off.
+    [x, sol, pairedRows] = compareSolversAtState(model, obj, param, positive, ...
+        Zpos, nBases, acceptanceTarget, nTry, nonZeroColumnsBool);
 end
 
 

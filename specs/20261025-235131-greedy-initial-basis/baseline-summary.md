@@ -12,3 +12,5 @@ Source: `greedyExtremeRayBasis.m` at commit 980e532b2, unmodified.
 The `.mat` files in `baseline/` hold the full outputs and are not committed.
 
 Self-check: `baselineRecord('compare')` immediately after recording reported all three runs identical.
+
+After US2 (sign retry, commit following 37dd5ef4c): `baselineRecord('compare')` reported all three runs identical; no sign retry fired on any baseline run.

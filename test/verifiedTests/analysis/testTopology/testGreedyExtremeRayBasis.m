@@ -766,8 +766,38 @@ for k = 1:numel(vertexSolvers)
         strcmp(status.outcome, 'complete') && status.raysAdded == 1, ...
         sprintf('F2 (%s): a rejected vector must not be returned', vertexSolvers{k}));
 end
+% fixture 4, sign recovery: S = [1; -1; 0], whose left-nullspace cone has the extreme
+% rays (1,1,0) and (0,0,1). With (1,1,0) supplied, the targeted direction g is
+% proportional to (0,0,1). Maximising -g returns (1/2,1/2,0), which is dependent, so the
+% search must re-solve with +g and recover (0,0,1). The test hook forces the targeted
+% objective on the first draw and the wrong sign first; without it a random objective
+% finds (0,0,1) about half the time and the targeted step is never reached.
+S4 = [1; -1; 0];
+for k = 1:numel(vertexSolvers)
+    vParam = ibParam;
+    vParam.solver = vertexSolvers{k};
+    vParam.initialBasis = [1 1 0];
+    vParam.testHook = struct('targetedSignFirst', -1, 'forceTargeted', true);
+    rng(20261025, 'twister');
+    [Zpos, ~, status] = greedyExtremeRayBasis(basisModel(S4), vParam);
+    assert(isequal(full(Zpos(1, :)), [1 1 0]) && strcmp(status.outcome, 'complete') && ...
+        status.raysAdded == 1, sprintf('F4 (%s): the missing ray must be added', vertexSolvers{k}));
+    assert(isequal(round(scaledRay(Zpos(2, :))), [0 0 1]) && isIntegerRay(scaledRay(Zpos(2, :))), ...
+        sprintf('F4 (%s): the added ray must be (0,0,1)', vertexSolvers{k}));
+    assert(status.nSignRetries == 1 && status.nLPSolves == 2 && ...
+        status.nTargetedObjectives == 1 && status.raysRejectedForDependence == 1, ...
+        sprintf(['F4 (%s): the wrong-sign vertex must be dropped as dependent and ' ...
+        'recovered by one retry with the opposite sign'], vertexSolvers{k}));
+
+    % control: the right sign first needs no retry
+    vParam.testHook.targetedSignFirst = 1;
+    rng(20261025, 'twister');
+    [Zpos, ~, status] = greedyExtremeRayBasis(basisModel(S4), vParam);
+    assert(isequal(round(scaledRay(Zpos(2, :))), [0 0 1]) && status.nSignRetries == 0 && ...
+        status.nLPSolves == 1, sprintf('F4 (%s): the right sign must need no retry', vertexSolvers{k}));
+end
 if isempty(vertexSolvers)
-    fprintf('   no vertex-returning LP solver available; fixture 2 skipped.\n');
+    fprintf('   no vertex-returning LP solver available; fixtures 2 and 4 skipped.\n');
 end
 fprintf('Done.\n');
 

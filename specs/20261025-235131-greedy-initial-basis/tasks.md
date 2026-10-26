@@ -166,7 +166,7 @@ leading rows; only `nullity - kept` rays are searched.
 
 ### Tests for User Story 2
 
-- [ ] T012 [US2] In `TST` (per solver in `vertexSolvers`, as T006), add fixture 4: `S=[1;-1;0]`,
+- [X] T012 [US2] In `TST` (per solver in `vertexSolvers`, as T006), add fixture 4: `S=[1;-1;0]`,
   `initialBasis=[1 1 0]`, `param.testHook = struct('targetedSignFirst', -1, 'forceTargeted', true)`.
   Assert:
   - the added row ∝ `[0 0 1]`;
@@ -179,13 +179,13 @@ leading rows; only `nullity - kept` rays are searched.
 
 ### Implementation for User Story 2
 
-- [ ] T013 [US2] In `SRC`, extract the two-branch solve (l. 506–532) into a local function
+- [X] T013 [US2] In `SRC`, extract the two-branch solve (l. 506–532) into a local function
   `solveCandidate(model, obj, param, positive, Zpos, nBases, acceptanceTarget, nTry, nonZeroColumnsBool)`
   returning `[x, sol, pairedRows]`. The ordinary branch calls `findExtremePool` and
   `untruncatedRay` exactly as now; the paired branch calls `compareSolversAtState`.
   - The loop appends `pairedRows` as before and increments `nLPSolves` per call.
   - Pure refactor: re-run `baselineRecord('compare')` and `TST`, both must pass.
-- [ ] T014 [US2] In `SRC`, change `targetedObjective(Z, Zpos, nBases, nVar)` to
+- [X] T014 [US2] In `SRC`, change `targetedObjective(Z, Zpos, nBases, nVar)` to
   `[obj, direction] = targetedObjective(Z, Zpos, nBases, nVar, sign, canonical)`:
   - with `canonical` true, flip `direction` so that its largest-magnitude entry (lowest
     index on ties) is positive;
@@ -197,7 +197,7 @@ leading rows; only `nullity - kept` rays are searched.
     `forceTargeted = false`).
   - Extend the targeted gate (l. 498) to
     `(nfail >= nfailMax || forceTargeted) && nBases > 0 && nBases < (nVar - rankS)`.
-- [ ] T015 [US2] In `SRC`, implement the retry (data-model E4):
+- [X] T015 [US2] In `SRC`, implement the retry (data-model E4):
   - Record `wasTargeted`, `signUsed` and `targetDirection` when the targeted objective is
     used.
   - In the independence branch (l. 587), when `wasTargeted` and the candidate is
@@ -211,7 +211,7 @@ leading rows; only `nullity - kept` rays are searched.
     5. count one failure via `countFailure` only if the retried candidate also fails.
   - Print `g'*x` for both signs at `printLevel > 2`.
   - The retry consumes no `rand` draw.
-- [ ] T016 [US2] Run `TST` (fixture 4 both signs) and `baselineRecord('compare')`. If any
+- [X] T016 [US2] Run `TST` (fixture 4 both signs) and `baselineRecord('compare')`. If any
   baseline run diverges, it must report `nSignRetries > 0`; record that in `FD/baseline-summary.md`.
 
 **Checkpoint**: Prop. (c) sign recovery live on every call.
