@@ -77,8 +77,8 @@ None.
 
 ## Human Approval
 
-- Approved: no
-- Approved option:
-- Approved tasks/scope:
+- Approved: yes
+- Approved option: Approve all T001–T022 (Recommended)
+- Approved tasks/scope: T001–T022
 - Required implementation invocation per constitution: `/speckit-implement`, or the agent-assign pipeline
-- Date (UTC):
+- Date (UTC): 2026-10-26

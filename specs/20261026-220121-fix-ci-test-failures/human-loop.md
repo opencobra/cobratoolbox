@@ -26,14 +26,15 @@
 | 2026-10-26 | analyze remediation | Apply A1, C1, U1, I1, I2 (Recommended) | spec/contracts/tasks amended |
 | 2026-10-26 | blocker: US2 cause | Fix filter + keep LUSOL gating (Recommended) | US2 = capture filter (confirmed cause); getRankLUSOL moved to US4 |
 | 2026-10-26 | blocker: verification | -batch for capture tests only | testGenerateFullRowRankFR, testRank, testReconMap verified via matlab -batch |
+| 2026-10-26 | Gate 2 | Approve all T001–T022 (Recommended) | Awaiting /speckit-implement (Principle VI) before any edit |
 
 ## Approved Implementation Scope
-- Approved: no
-- Scope:
-- Tasks approved:
-- Tasks deferred:
-- Files allowed:
-- Files not allowed:
+- Approved: yes (pending /speckit-implement)
+- Scope: all
+- Tasks approved: T001–T022
+- Tasks deferred: none
+- Files allowed: see implementation-review.md 'Files likely to change'
+- Files not allowed: see implementation-review.md 'Files that should NOT change'
 
 ## Pointers
 - Implementation receipt(s):
