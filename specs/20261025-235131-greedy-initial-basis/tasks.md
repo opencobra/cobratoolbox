@@ -31,12 +31,12 @@ Line numbers refer to `SRC` at commit `5e8170e12` and will shift as edits land.
 
 **Purpose**: Freeze the pre-feature behaviour so SC-004 can be checked (research R8).
 
-- [ ] T001 Write `FD/baselineRecord.m`: a function `baselineRecord(mode)` with
+- [X] T001 Write `FD/baselineRecord.m`: a function `baselineRecord(mode)` with
   `mode ∈ {'record','compare'}`.
   - It runs `greedyExtremeRayBasis` with `printLevel 0`, gurobi, and `rng(20261025,'twister')`
     before each call, on:
     - (a) ecoli_core (`load('ecoli_core_model.mat')`, `SConsistentRxnBool = true`), left mode;
-    - (b) the same, right mode;
+    - (b) right mode on `S'` (the same problem transposed, so it completes deterministically; right mode on `S` stops on its wall-clock budget at 1 of 28 rays and its counters vary run to run — measured 4816 vs 5431 targeted objectives — so it cannot be a bit-for-bit baseline);
     - (c) iDopaNeuroC (`papers/2023_iDopaNeuro/models/iDopaNeuroC.mat`; reuse the loading
       in `specs/20260914-204640-greedy-left-nullspace-conditioning/iDopaNeuroCReproducibilityCheck.m`), left mode.
   - `'record'` saves `Zpos`, `Z` and `status` per run to `FD/baseline/<run>.mat` and writes
@@ -46,7 +46,7 @@ Line numbers refer to `SRC` at commit `5e8170e12` and will shift as edits land.
     `isequal` on every field of the baseline `status` except `elapsedTime`, `spectrumTime`
     and `pairedComparison`. If a run differs, it reports whether
     `status.nSignRetries > 0` (the FR-013 exemption) and errors otherwise.
-- [ ] T002 Run `baselineRecord('record')` against the UNMODIFIED `SRC` (confirm with
+- [X] T002 Run `baselineRecord('record')` against the UNMODIFIED `SRC` (confirm with
   `git diff --quiet -- SRC` first). Commit `FD/baseline-summary.md`; the `.mat` files stay
   ignored by `FD/baseline/.gitignore`.
 
