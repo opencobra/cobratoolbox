@@ -19,7 +19,7 @@ unchanged source to show that it fails.
 
 ## Phase 1: Setup
 
-- [ ] T001 Record the regression baseline at the OLD binary pointer.
+- [X] T001 Record the regression baseline at the OLD binary pointer.
   - Run `git -C binary checkout 43f41b0b7`.
   - Run testSolveCobraLP, testSolveCobraQP, testQuadLP, testDuals and
     testMapSolverStatus (research R5), and testExtremePathways, testExtremePools and
@@ -29,7 +29,7 @@ unchanged source to show that it fails.
   - Expect the three lrs tests to fail with "Could not read lrs output file.", which
     reproduces CI.
   - Then run `git -C binary checkout 10697a987`.
-- [ ] T002 Write `specs/20261026-220121-fix-ci-test-failures/getRankLUSOLBaseline.m`.
+- [X] T002 Write `specs/20261026-220121-fix-ci-test-failures/getRankLUSOLBaseline.m`.
   - Modes `'record'` and `'compare'`.
   - Save or compare `[rankA, p, q] = getRankLUSOL(A, pl)` for pl = 0 and 1 on:
     iAF1260.S; ecoli_core S; that S with an all-zero column appended; a fixed-seed
@@ -40,7 +40,7 @@ unchanged source to show that it fails.
 
 ## Phase 2: Foundational
 
-- [ ] T003 Commit the `binary` pointer `10697a987` (already checked out locally) as its
+- [X] T003 Commit the `binary` pointer `10697a987` (already checked out locally) as its
   own commit on this branch (FR-001).
 
 **Checkpoint**: baseline recorded; binary pinned.
@@ -51,7 +51,7 @@ unchanged source to show that it fails.
 command and its status.
 **Independent test**: quickstart §1.
 
-- [ ] T004 [US1] Add checks to
+- [X] T004 [US1] Add checks to
   `test/verifiedTests/analysis/testTopology/testLrsInterface.m`.
   - **FR-002**, run only `if isunix`:
     - Write a stand-in executable `lrs` (`#!/bin/sh`, `echo stand-in lrs failure`,
@@ -67,7 +67,7 @@ command and its status.
     - Rewrite it to `exit 3`; `lrsRun` must raise `lrsRun:commandFailed`.
     - Delete `test.sh` with `onCleanup`.
   - Run the test against the unchanged `lrsRun` and record that the checks fail.
-- [ ] T005 [US1] Change `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsRun.m`.
+- [X] T005 [US1] Change `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsRun.m`.
   - Replace every `status == 1` check after a `system` call to lrs or redund with
     `status ~= 0`, raising `error('lrsRun:commandFailed', ...)`. The message names the
     command, the status and `result` (contracts/lrsRun.md).
@@ -75,10 +75,10 @@ command and its status.
   - In the shell-script branch, assign `fileNameOut`: `<model>.ine` when
     `param.facetEnumeration`, otherwise `<model>.ext`.
   - Change no other behaviour.
-- [ ] T006 [US1] Update the `lrsRun.m` help header (VII-E, FR-010).
+- [X] T006 [US1] Update the `lrsRun.m` help header (VII-E, FR-010).
   - Document the error identifier and what counts as success in shell-script mode.
   - Add a `NOTE:` naming this feature (October 2026).
-- [ ] T007 [US1] Run testLrsInterface, testExtremePathways and testExtremePools; all
+- [X] T007 [US1] Run testLrsInterface, testExtremePathways and testExtremePools; all
   must pass (quickstart §1).
 
 **Checkpoint**: US1 complete and independently verified.

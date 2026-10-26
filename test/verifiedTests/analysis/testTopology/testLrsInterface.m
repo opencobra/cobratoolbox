@@ -131,6 +131,36 @@ if 1
         mat2str(Qsorted), mat2str(Q2sorted))
 end
 
+% lrsRun must stop with an error naming the command and its exit status when lrs cannot
+% run, for vertex and for facet enumeration. Each case reads its own copy of test.ine or
+% test.ext, because the failed run overwrites the file it redirects into.
+if isunix
+    standInInput = {'standInVertex.ine', 'standInFacet.ext'};
+    copyfile([modelName '.ine'], standInInput{1});
+    copyfile([modelName '.ext'], standInInput{2});
+    for facetEnumeration = 0:1
+        param.facetEnumeration = facetEnumeration;
+        message = lrsRunErrorMessageWithStandIn(standInInput{facetEnumeration + 1}(1:end - 4), param);
+        assert(contains(message, 'exit status 127'), ...
+            'lrsRun did not report exit status 127 (facetEnumeration = %d): %s', facetEnumeration, message);
+    end
+end
+
+% shell-script mode: exit status 0 returns the output file name, non-zero is an error
+param.shellScript = 1;
+param.facetEnumeration = 0;
+shellFid = fopen([modelName '.sh'], 'w');
+fprintf(shellFid, '#!/bin/sh\nexit 0\n');
+fclose(shellFid);
+fileNameOut = lrsRun(modelName, param);
+assert(strcmp(fileNameOut, [modelName '.ext']), 'lrsRun shell-script mode returned %s', fileNameOut);
+shellFid = fopen([modelName '.sh'], 'w');
+fprintf(shellFid, '#!/bin/sh\nexit 3\n');
+fclose(shellFid);
+message = lrsRunErrorMessage(modelName, param);
+assert(contains(message, 'exit status 3'), 'lrsRun shell-script failure not reported: %s', message);
+param.shellScript = 0;
+
 if 1
 % delete generated files
 delete('*.ine');
@@ -141,3 +171,33 @@ end
 
 % change the directory
 cd(currentDir)
+
+function message = lrsRunErrorMessageWithStandIn(modelName, param)
+% runs lrsRun with a stand-in lrs that exits 127 first on the PATH; the PATH and the
+% stand-in are restored on return, also when an assertion fails
+standInDir = tempname;
+mkdir(standInDir);
+removeStandIn = onCleanup(@() rmdir(standInDir, 's'));
+standInFid = fopen(fullfile(standInDir, 'lrs'), 'w');
+fprintf(standInFid, '#!/bin/sh\necho stand-in lrs failure\nexit 127\n');
+fclose(standInFid);
+system(['chmod +x ' fullfile(standInDir, 'lrs')]);
+previousPath = getenv('PATH');
+restorePath = onCleanup(@() setenv('PATH', previousPath));
+setenv('PATH', [standInDir pathsep previousPath]);
+message = lrsRunErrorMessage(modelName, param);
+end
+
+function message = lrsRunErrorMessage(modelName, param)
+% runs lrsRun, asserts that it raises lrsRun:commandFailed, and returns the message
+try
+    lrsRun(modelName, param);
+catch ME
+    assert(strcmp(ME.identifier, 'lrsRun:commandFailed'), ...
+        'lrsRun raised %s instead of lrsRun:commandFailed: %s (%s line %d)', ...
+        ME.identifier, ME.message, ME.stack(1).file, ME.stack(1).line);
+    message = ME.message;
+    return
+end
+error('lrsRun did not raise an error.');
+end
