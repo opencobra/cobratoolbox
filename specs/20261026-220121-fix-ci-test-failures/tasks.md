@@ -121,7 +121,7 @@ real stray output.
 the test account.
 **Independent test**: quickstart §3.
 
-- [ ] T012 [US3] Change `test/verifiedTests/visualization/testReconMap/testReconMap.m`.
+- [X] T012 [US3] Change `test/verifiedTests/visualization/testReconMap/testReconMap.m`.
   - Delete the `if 1 … else … end` wrapper and its unreachable `else` branch, which
     holds the personal credentials (FR-005a). Keep the `if 1` body.
   - Add `global CBT_MISSING_REQUIREMENTS_ERROR_ID`.
@@ -134,7 +134,7 @@ the test account.
       vmh.life MINERVA and quoting the reply line (FR-005).
   - Otherwise keep all existing assertions.
   - Update the header: purpose and skip condition.
-- [ ] T013 [US3] Run testReconMap under `-batch`.
+- [X] T013 [US3] Run testReconMap under `-batch`.
   - It must end with `COBRA:RequirementsNotMet`, a message quoting the refusal, and
     `pwd` unchanged.
   - Then run it through `test/runScriptFile.m` (`-batch`) to show the harness classes it
