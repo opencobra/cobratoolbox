@@ -9,7 +9,7 @@
 
 ## Completion Integrity *(standing — always retained; not a sample)*
 
-- [ ] Every `[X]` task in `tasks.md` maps to a real diff hunk (or a named non-code
+- [x] Every `[X]` task in `tasks.md` maps to a real diff hunk (or a named non-code
   artifact) AND to verification evidence: a test that actually ran, or an equivalent
   validation check for non-code work (e.g. checklist re-validation, diff-scope
   check). No task is checked off without both.
