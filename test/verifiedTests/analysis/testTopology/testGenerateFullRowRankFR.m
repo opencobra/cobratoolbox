@@ -567,7 +567,22 @@ if strcmp(previousDiaryState, 'on')
 end
 printedText = fileread(captureFile);
 delete(captureFile);
-% the expected addReaction warning when a reaction is rewritten is not output of the function itself
-printedText = regexprep(printedText, 'Warning: Reaction with the same name already exists in the model, updating the reaction\s*', '');
-printedText = strtrim(printedText);
+% expected warnings are not output of the function itself: the addReaction warning when
+% a reaction is rewritten, and the once-per-session getRankLUSOL fallback warning
+printedText = removeExpectedWarnings(printedText, ...
+    {'Reaction with the same name already exists in the model, updating the reaction', ...
+     'getRankLUSOL: LUSOL unavailable'});
+end
+
+function text = removeExpectedWarnings(text, messages)
+% removes each expected warning in full, in the form matlab -batch writes it (as on CI:
+% "[Warning: ...]" wrapped at about 80 columns, each bracket followed by a backspace
+% character, then a bracketed "[> In ...]" backtrace) and in the desktop form
+% ("Warning: ..." then "> In ..." / "In ..." backtrace lines); any other text is kept
+for i = 1:numel(messages)
+    message = strrep(regexptranslate('escape', messages{i}), ' ', '\s+');
+    text = regexprep(text, ['\[\x08?Warning: ' message '[^\]]*\]\x08?\s*(\[\x08?> In [^\]]*\]\x08?\s*)?'], '');
+    text = regexprep(text, ['Warning: ' message '[^\n]*\n?(\s*(> )?In [^\n]*\(line \d+\)[^\n]*\n?)*'], '');
+end
+text = strtrim(text);
 end

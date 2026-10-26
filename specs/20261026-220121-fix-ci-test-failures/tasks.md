@@ -89,10 +89,10 @@ command and its status.
 real stray output.
 **Independent test**: quickstart §2.
 
-- [ ] T008 [US2] Confirm the failure on the unchanged test. Run
+- [X] T008 [US2] Confirm the failure on the unchanged test. Run
   testGenerateFullRowRankFR under `-batch` (already seen on 2026-10-26: "RESULT FAIL …
   printed output at printLevel 0"). Keep the log.
-- [ ] T009 [US2] In
+- [X] T009 [US2] In
   `test/verifiedTests/analysis/testTopology/testGenerateFullRowRankFR.m`, replace the
   `regexprep` filter in `captureConsoleText` with a local function
   `removeExpectedWarnings(text, messages)` (FR-004, research R8).
@@ -104,8 +104,8 @@ real stray output.
   - Messages: `Reaction with the same name already exists in the model, updating the
     reaction` and `getRankLUSOL: LUSOL unavailable`.
   - Update the comment above the helper.
-- [ ] T010 [US2] Run testGenerateFullRowRankFR under `-batch`; it must pass.
-- [ ] T011 [US2] Sensitivity check (SC-003). In a scratch copy outside the repo, call
+- [X] T010 [US2] Run testGenerateFullRowRankFR under `-batch`; it must pass.
+- [X] T011 [US2] Sensitivity check (SC-003). In a scratch copy outside the repo, call
   `removeExpectedWarnings` on:
   - the T008 log text plus one extra line `stray` → returns `stray`;
   - the T008 log text alone → returns empty;
