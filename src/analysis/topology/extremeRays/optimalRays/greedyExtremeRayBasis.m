@@ -251,6 +251,24 @@ if ~isfield(param,'solverSettings')
     param.solverSettings = struct();
 end
 
+if ~isfield(param, 'initialBasis')
+    param.initialBasis = [];
+end
+
+% Partition of the supplied basis into kept, dependent and rejected vectors. It is
+% reported on every return path, including those that return before the supplied
+% vectors can be judged, where the count supplied is recorded and nothing is kept.
+% Candidates are rows in left mode and columns in right mode, as in the returned Zpos.
+if strcmp(param.leftRight, 'right')
+    nSuppliedVectors = size(param.initialBasis, 2);
+else
+    nSuppliedVectors = size(param.initialBasis, 1);
+end
+if isempty(param.initialBasis)
+    nSuppliedVectors = 0;
+end
+initialBasisPartition = emptyInitialBasisPartition(nSuppliedVectors);
+
 
 if param.internalStoichiometriMatrixLeftNullspace
     if ~isfield(model,'SConsistentRxnBool')
@@ -287,6 +305,7 @@ if ~isfield(model,'SConsistentRxnBool')
         'message', ['model.SConsistentRxnBool is required but absent, and was not ' ...
         'computed because param.internalStoichiometriMatrixLeftNullspace is false. ' ...
         'No basis returned.']);
+    status = addInitialBasisStatus(status, initialBasisPartition, 0, 0, 0);
     warning('greedyExtremeRayBasis:missingField', '%s %s', status.message, status.howToObtain);
     return;
 end
@@ -308,6 +327,7 @@ if ~any(model.SConsistentRxnBool) %check if positive vector in left nullspace
         'timedOut', false, 'nRestarts', 0, 'nTargetedObjectives', 0, 'nStallEscalations', 0, 'spectrumTime', 0, 'shortfallKind', 'none', 'attainableDimension', 0, 'attainableDimensionAssessed', false, 'elapsedTime', 0, 'solverRequested', solverRequested, 'solverUsed', solverUsed, 'solverChanged', solverChanged, ...
         'message', ['No stoichiometrically consistent reaction, so there is no ' ...
         'positive vector in the left nullspace to find.']);
+    status = addInitialBasisStatus(status, initialBasisPartition, 0, 0, 0);
     return;
 end
 
@@ -392,6 +412,7 @@ if strcmp(regime, 'badlyScaled')
         'left-nullspace basis: smallest non-zero singular value %g is below the %g ' ...
         'needed for the accuracy a rank determination requires. No basis returned.'], ...
         sigmaMinPlus, regimeBoundary);
+    status = addInitialBasisStatus(status, initialBasisPartition, 0, 0, 0);
     warning('greedyExtremeRayBasis:badlyScaled', '%s', status.message);
     return
 end
@@ -402,11 +423,47 @@ printLevelL=0;
 
 Z=Z';
 
-Zpos=sparse(nVar-rankS,nVar);
+% SUPPLIED PARTIAL BASIS (param.initialBasis).
+%
+% A caller holding independent non-negative vectors of the nullspace, such as conserved
+% moiety vectors, needs the basis completed AROUND them, not an unrelated basis computed
+% from scratch: when they do not span the nullspace, the rays added are exactly the
+% conservation relations they do not account for (moietyRank manuscript, Proposition
+% prop:mr:left-basis). Each supplied vector is held to the same contract as a ray the
+% search accepts -- exactly non-negative, and within the acceptance target -- and those
+% that pass are kept, in supplied order, while they raise the rank. Kept vectors are
+% returned exactly as supplied, as the leading rows of Zpos, and only the missing rays
+% are searched for.
+keptBasis = sparse(0, nVar);
+if ~isempty(param.initialBasis)
+    suppliedBasis = param.initialBasis;
+    if strcmp(param.leftRight, 'right')
+        suppliedBasis = suppliedBasis';
+        expectedShape = sprintf('%d x k, one candidate per column', nVar);
+    else
+        expectedShape = sprintf('k x %d, one candidate per row', nVar);
+    end
+    if ~(isnumeric(suppliedBasis) && isreal(suppliedBasis)) || size(suppliedBasis, 2) ~= nVar
+        error('greedyExtremeRayBasis:initialBasisSize', ...
+            ['param.initialBasis must be a real numeric matrix of size %s for the ' ...
+            '%s nullspace of the operative matrix; it is %s.'], expectedShape, ...
+            param.leftRight, mat2str(size(param.initialBasis)));
+    end
+    [keptBasis, initialBasisPartition] = partitionInitialBasis(double(suppliedBasis), ...
+        model.S, acceptanceTarget);
+end
+nKept = size(keptBasis, 1);
+
+% Zpos is preallocated to the expected height, or to the number of kept vectors if the
+% rank estimate puts the nullity below that, so that no kept vector is ever truncated.
+Zpos=sparse(max(nVar-rankS, nKept),nVar);
+if nKept > 0
+    Zpos(1:nKept, :) = keptBasis;
+end
 
 
 
-nBases=0;
+nBases=nKept;
 nTry=0;
 t1 = tic;
 % t2 times the search for the CURRENT basis vector. It must be initialised here, not
@@ -424,18 +481,23 @@ timedOut = false;
 pairedRecord = struct([]);
 % Support mask over metabolites already carrying weight. Only READ once nBases >= 2, by
 % which point the loop has assigned it, but it must exist from the start because the
-% paired harness records it at every comparison point including the first.
-nonZeroColumnsBool = false(1, nVar);
+% paired harness records it at every comparison point including the first. Kept supplied
+% vectors count as accepted rays in this respect as in every other.
+nonZeroColumnsBool = keptSupport(keptBasis, nVar);
 nTargetedObjectives = 0;
+% targeted solves repeated with the opposite sign, and LPs solved by the nominated solver
+nSignRetries = 0;
+nLPSolves = 0;
 % The search is stochastic, and zeroing the objective on already-covered metabolites
 % drives it into dead ends: once only a few metabolites remain uncovered, the LP keeps
 % returning rays that are linearly dependent on those already accepted. Measured on
 % iDopaNeuroC, the hit rate collapses to 0.46% and the search stalls short of a
 % complete basis. Persisting in a dead end is worse than drawing again, so on
 % exhausting the per-basis budget the accumulated basis is DISCARDED and the search
-% restarts from fresh randomness, keeping the best basis found across restarts.
+% restarts from fresh randomness, keeping the best basis found across restarts. Only the
+% rays the search added are discarded: kept supplied vectors survive every restart.
 bestZpos = Zpos;
-bestNBases = 0;
+bestNBases = nKept;
 nRestarts = 0;
 while nBases < (nVar-rankS)
     % Budgets are checked at the TOP of the loop so they govern every iteration,
@@ -461,10 +523,14 @@ while nBases < (nVar-rankS)
                 num2str(param.maxNewBasisTime) ' s at ' int2str(nBases) ' of ' ...
                 int2str(nVar-rankS) ' rays; restarting (' int2str(nRestarts) ').']);
         end
-        Zpos = sparse(nVar-rankS, nVar);
-        nBases = 0;
+        % restart from the kept supplied vectors, which are never discarded
+        Zpos = sparse(max(nVar-rankS, nKept), nVar);
+        if nKept > 0
+            Zpos(1:nKept, :) = keptBasis;
+        end
+        nBases = nKept;
         nfail = 0;
-        nonZeroColumnsBool = false(1, nVar);
+        nonZeroColumnsBool = keptSupport(keptBasis, nVar);
         t2 = tic;
         continue
     end
@@ -504,6 +570,7 @@ while nBases < (nVar-rankS)
     end
 
     positive = 1;
+    nLPSolves = nLPSolves + 1;
     if isempty(param.compareSolvers)
         [~, sol] = findExtremePool(model,obj,param.printLevel-2,positive,0,param.solverSettings);
         % Judge, and return, the ray the solver computed, not findExtremePool's first
@@ -612,7 +679,13 @@ end
 Zpos = Zpos(1:nBases, :);
 
 if param.printLevel>0
-    if nBases == (nVar-rankS)
+    if initialBasisPartition.supplied > 0
+        fprintf('%s\n', sprintf(['Supplied basis: %d supplied, %d kept, %d dependent, ' ...
+            '%d rejected; %d rays added.'], initialBasisPartition.supplied, nKept, ...
+            numel(initialBasisPartition.dependentIndex), ...
+            numel(initialBasisPartition.rejectedIndex), nBases - nKept));
+    end
+    if nBases >= (nVar-rankS)
         fprintf('%u%s\n',nVar-rankS, ' extreme rays. Basis complete.');
         fprintf('%.2f%% nozero Zpos.\n', 100 * (nnz(Zpos) / (nVar * (nVar - rankS))));
         fprintf('%.2f%% nozero Z.\n', 100 * (nnz(Z) / (nVar * (nVar - rankS))));
@@ -621,7 +694,8 @@ if param.printLevel>0
         fprintf('%u%s\n',nVar-rankS, ' extreme rays required. Basis incomplete.');
 
     end
-    fprintf('%s%g\n','Hit fraction ',(nVar-rankS)/nTry);
+    % rays the search had to find per attempt; kept supplied vectors were not searched for
+    fprintf('%s%g\n','Hit fraction ',(nVar-rankS-nKept)/nTry);
 end
 
 % Verify the accuracy and non-negativity that were required, ON THE RETURNED
@@ -646,6 +720,18 @@ if nBases > 0
     residualByRow = full(max(abs(Zpos*model.S), [], 2));
 end
 failsTarget = residualByRow > acceptanceTarget;
+if any(failsTarget(1:nKept))
+    % A kept supplied vector passed this very check before the search began and is never
+    % modified, so it cannot fail here. If it does, something has altered it, and
+    % dropping it silently would return a basis that no longer contains what the caller
+    % supplied.
+    failedKept = find(failsTarget(1:nKept));
+    error('greedyExtremeRayBasis:keptRowFailedVerification', ...
+        ['Kept supplied vector(s) %s failed the final accuracy verification ' ...
+        '(largest residual %g against target %g), which they passed on entry.'], ...
+        mat2str(initialBasisPartition.keptIndex(failedKept)), ...
+        max(residualByRow(failedKept)), acceptanceTarget);
+end
 if any(failsTarget)
     nRejectedForAccuracy = nRejectedForAccuracy + nnz(failsTarget);
     Zpos = Zpos(~failsTarget, :);
@@ -726,12 +812,23 @@ end
 status = struct();
 % Terminal outcome. Exactly one of five, mutually exclusive and exhaustive, so a
 % caller can branch on the status alone without inspecting the matrices.
-if raysExpected == 0
+if raysExpected == 0 && nBases == 0
     status.outcome = 'emptyNullspace';
     status.terminationReason = 'basisComplete';
-elseif nBases == raysExpected
+elseif nBases >= raysExpected
+    % More rays than the estimated nullity is possible only when kept supplied vectors
+    % outnumber it, i.e. when two floating-point rank decisions disagree. Every kept
+    % vector is still returned, because truncating what the caller supplied would be
+    % worse, and the disagreement is reported.
     status.outcome = 'complete';
     status.terminationReason = 'basisComplete';
+    if nKept > raysExpected
+        warning('greedyExtremeRayBasis:keptExceedsNullity', ...
+            ['%d supplied vectors were kept as independent, but the rank estimate of ' ...
+            'the operative matrix gives a nullity of only %d. All kept vectors are ' ...
+            'returned; raysFound exceeds raysExpected, which is an estimate.'], ...
+            nKept, raysExpected);
+    end
 else
     status.outcome = 'incomplete';
     if nRejectedForAccuracy > 0 && nBases == 0
@@ -779,6 +876,7 @@ status.spectrumTime = spectrumTime;
 status.shortfallKind = shortfallKind;
 status.attainableDimension = attainableDimension;
 status.attainableDimensionAssessed = attainableDimensionAssessed;
+status = addInitialBasisStatus(status, initialBasisPartition, nBases, nSignRetries, nLPSolves);
 status.elapsedTime = toc(t1);
 switch status.outcome
     case 'complete'
@@ -963,6 +1061,87 @@ obj = obj/norm(obj);
 if numel(obj) ~= nVar
     obj = [];
 end
+
+
+function [keptBasis, partition] = partitionInitialBasis(suppliedBasis, S, acceptanceTarget)
+% Partitions the supplied candidate rows into rejected, dependent and kept ones, in
+% supplied order, and returns the kept rows unchanged.
+%
+% A row is rejected as 'negative' if any entry is below zero, however small, because the
+% returned basis must be exactly non-negative and kept rows are never clipped. Otherwise
+% it is rejected as 'accuracy' if its largest residual entry exceeds the acceptance
+% target, the metric that judges every ray the search accepts. A row passing both is
+% kept if it raises the rank of the rows already kept, decided exactly as the search
+% decides independence, and is otherwise reported as dependent.
+[nSupplied, nVar] = size(suppliedBasis);
+partition = emptyInitialBasisPartition(nSupplied);
+keptBasis = sparse(0, nVar);
+for iSupplied = 1:nSupplied
+    candidate = suppliedBasis(iSupplied, :);
+    if any(candidate < 0)
+        partition.rejectedIndex(end+1) = iSupplied;
+        partition.rejectedReason{end+1} = 'negative';
+        continue
+    end
+    if full(max(abs(candidate*S))) > acceptanceTarget
+        partition.rejectedIndex(end+1) = iSupplied;
+        partition.rejectedReason{end+1} = 'accuracy';
+        continue
+    end
+    trialBasis = [keptBasis; sparse(candidate)];
+    supportBool = full(any(trialBasis ~= 0, 1));
+    if ~any(supportBool)
+        isIndependent = false;
+    elseif size(trialBasis, 1) == 1
+        isIndependent = true;
+    else
+        isIndependent = getRankLUSOL(trialBasis(:, supportBool)) == size(trialBasis, 1);
+    end
+    if isIndependent
+        keptBasis = trialBasis;
+        partition.keptIndex(end+1) = iSupplied;
+    else
+        partition.dependentIndex(end+1) = iSupplied;
+    end
+end
+
+
+function supportBool = keptSupport(keptBasis, nVar)
+% Metabolites carrying weight in the kept supplied vectors; none when nothing is kept.
+supportBool = false(1, nVar);
+if ~isempty(keptBasis)
+    supportBool = full(any(keptBasis ~= 0, 1));
+end
+
+
+function partition = emptyInitialBasisPartition(nSupplied)
+% A partition of nSupplied supplied vectors in which none has yet been judged: nothing is
+% kept, dependent or rejected.
+partition = struct();
+partition.supplied = nSupplied;
+partition.keptIndex = zeros(1, 0);
+partition.dependentIndex = zeros(1, 0);
+partition.rejectedIndex = zeros(1, 0);
+partition.rejectedReason = cell(1, 0);
+
+
+function status = addInitialBasisStatus(status, partition, nBases, nSignRetries, nLPSolves)
+% Adds the supplied-basis partition and the sign-retry and LP counts to a status
+% structure. Fields are assigned one at a time, rather than through struct(...), because
+% struct(...) turns a cell value into a structure array.
+nKept = numel(partition.keptIndex);
+status.initialBasisSupplied = partition.supplied;
+status.initialBasisKept = nKept;
+status.initialBasisKeptIndex = partition.keptIndex;
+status.initialBasisDependent = numel(partition.dependentIndex);
+status.initialBasisDependentIndex = partition.dependentIndex;
+status.initialBasisRejected = numel(partition.rejectedIndex);
+status.initialBasisRejectedIndex = partition.rejectedIndex;
+status.initialBasisRejectedReason = partition.rejectedReason;
+% rays the search added, which is every returned ray beyond the kept supplied vectors
+status.raysAdded = max(nBases - nKept, 0);
+status.nSignRetries = nSignRetries;
+status.nLPSolves = nLPSolves;
 
 
 function [attainable, known] = attainableNullspaceDimension(S, nVar)

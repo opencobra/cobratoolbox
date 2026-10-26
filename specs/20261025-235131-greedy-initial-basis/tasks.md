@@ -57,13 +57,13 @@ Line numbers refer to `SRC` at commit `5e8170e12` and will shift as edits land.
 **Purpose**: Add the new status fields and counters with neutral values on every return
 path, changing no behaviour. All user stories depend on this.
 
-- [ ] T003 In `TST`, add a block asserting that the E5 fields (data-model.md) exist on:
+- [X] T003 In `TST`, add a block asserting that the E5 fields (data-model.md) exist on:
   - the normal path (ecoli_core, no `initialBasis`), with `initialBasisSupplied 0`,
     `initialBasisKept 0`, empty index lists, `raysAdded == raysFound`, `nSignRetries 0`
     and `nLPSolves >= raysFound`;
   - each early-return path already exercised in the file (`statusBad`, `statusBare`,
     `statusEmptyPath`), with every count 0.
-- [ ] T004 In `SRC`, add the counters `nLPSolves = 0` and `nSignRetries = 0` beside
+- [X] T004 In `SRC`, add the counters `nLPSolves = 0` and `nSignRetries = 0` beside
   `nTargetedObjectives` (l. 429). Increment `nLPSolves` once per nominated
   `findExtremePool` solve (the ordinary branch l. 508, and once per call of
   `compareSolversAtState`, not per compared solver).
@@ -74,7 +74,7 @@ path, changing no behaviour. All user stories depend on this.
     - `raysAdded = nBases`.
   - Add the same fields to the three early-return structs (l. 273–289, 299–310, 354–390).
   - Do not touch the random stream.
-- [ ] T005 Run `TST` and `baselineRecord('compare')`; both must pass (inert scaffolding).
+- [X] T005 Run `TST` and `baselineRecord('compare')`; both must pass (inert scaffolding).
 
 **Checkpoint**: status contract present everywhere; outputs unchanged.
 
@@ -89,7 +89,7 @@ leading rows; only `nullity - kept` rays are searched.
 
 ### Tests for User Story 1
 
-- [ ] T006 [US1] In `TST`, add a block after the existing solver loop, with
+- [X] T006 [US1] In `TST`, add a block after the existing solver loop, with
   `rng(20261025,'twister')`. Set `vertexSolvers = intersect({'gurobi','ibm_cplex','glpk'}, solvers.LP, 'stable')`.
   - Fixtures 1 and 3 (no LP) run unconditionally, with `param.solver = ''` (session solver).
   - Fixture 2 and the rejection case run once per solver in `vertexSolvers`, via
@@ -118,7 +118,7 @@ leading rows; only `nullity - kept` rays are searched.
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] In `SRC`, immediately after the `'badlyScaled'` early return (l. 397;
+- [X] T007 [US1] In `SRC`, immediately after the `'badlyScaled'` early return (l. 397;
   `acceptanceTarget` is set at l. 341), add the orientation and validation block (research R3 steps 1–3, R4):
   - read `param.initialBasis` via `isfield`/`isempty`;
   - in right mode transpose it to `k x nVar`;
@@ -130,13 +130,13 @@ leading rows; only `nullity - kept` rays are searched.
     - else independence: keep iff `getRankLUSOL` on the support columns of
       `[Zk; B(i,:)]` equals `size(Zk,1)+1`, else dependent.
   - Store `Zk`, `keptIndex`, `dependentIndex`, `rejectedIndex`, `rejectedReason`.
-- [ ] T008 [US1] In `SRC`, seed the search from `Zk` (data-model E2; plan design steps 2–3):
+- [X] T008 [US1] In `SRC`, seed the search from `Zk` (data-model E2; plan design steps 2–3):
   - `Zpos = sparse(max(nVar-rankS, nKept), nVar)`; `Zpos(1:nKept,:) = Zk`; `nBases = nKept`;
   - `nonZeroColumnsBool = full(any(Zk ~= 0, 1))` (or `false(1,nVar)` if `nKept == 0`);
   - `bestZpos = Zpos`; `bestNBases = nKept`;
   - in the restart block (l. 464–467), reset to the same kept-only state.
   - With `nKept == 0`, every one of these expressions must reduce to today's.
-- [ ] T009 [US1] In `SRC`:
+- [X] T009 [US1] In `SRC`:
   - Final verification (l. 648–654): if `any(failsTarget(1:nKept))`, raise
     `error('greedyExtremeRayBasis:keptRowFailedVerification', ...)` with the row indices and
     residuals, before dropping any row.
@@ -145,13 +145,13 @@ leading rows; only `nullity - kept` rays are searched.
     `warning('greedyExtremeRayBasis:keptExceedsNullity', ...)` (FR-006a).
   - The `printLevel > 0` summary: add one line with supplied/kept/dependent/rejected/added.
   - The completeness print test (l. 615) becomes `nBases >= nVar-rankS`.
-- [ ] T010 [US1] In `SRC`, populate the E5 status fields from the stored partition:
+- [X] T010 [US1] In `SRC`, populate the E5 status fields from the stored partition:
   - counts; index lists in supplied order (columns in right mode);
   - reasons aligned with the indices;
   - `raysAdded = nBases - nKept` after final verification;
   - on the early returns, `initialBasisSupplied = k` (the number of supplied vectors,
     computed from the raw input's row or column count per mode, without validation).
-- [ ] T011 [US1] Run `TST`; fixtures 1–3 left mode pass. Run `baselineRecord('compare')`;
+- [X] T011 [US1] Run `TST`; fixtures 1–3 left mode pass. Run `baselineRecord('compare')`;
   it must still pass (no sign retry exists yet).
 
 **Checkpoint**: MVP — a supplied partial basis is completed (Prop. (a)/(b)).
