@@ -1,7 +1,7 @@
 # Human Loop State
 
 ## Current State
-- Status: awaiting Gate 2
+- Status: Gate 2 approved; awaiting explicit /speckit-implement invocation
 - Active feature directory: specs/20261025-235131-greedy-initial-basis
 - Branch: 20261025-235131-greedy-initial-basis (from develop @ 5e8170e12, pulled 2026-10-25)
 - Last completed bundle: 2 (implementation preparation)
@@ -25,15 +25,17 @@
 | 2026-10-26 | clarify Q1 | Keep all, warn (Recommended) | FR-006a: kept > nullity estimate returns all, outcome complete, warning keptExceedsNullity |
 | 2026-10-26 | clarify Q2 | New status.nLPSolves (Recommended) | FR-011/SC-001: LP count observable |
 | 2026-10-26 | Gate 1 | Continue to plan (Recommended) | Bundle 2 runs: plan, tasks, analyze, implementation-review; stop at Gate 2 |
+| 2026-10-26 | Gate 2 | Approve all T001-T026 (Recommended); path /speckit-implement (Recommended) | implementation authorised on explicit invocation; R1 accepted |
 | 2026-10-26 | analyze remediation | Apply C1, I1, G1, I2 (Recommended) | spec SC-004/SC-005/FR-017, tasks T006/T012/T019/T025, research R9, plan amended |
 
 ## Approved Implementation Scope
-- Approved: no
-- Scope:
-- Tasks approved:
-- Tasks deferred:
-- Files allowed:
-- Files not allowed:
+- Approved: yes (Gate 2, 2026-10-26), including research R1 (dependence-only retry trigger)
+- Scope: all
+- Tasks approved: T001-T026
+- Tasks deferred: none
+- Implementation path: /speckit-implement (core implementer); awaiting the user's explicit invocation per constitution VI
+- Files allowed: src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m; test/verifiedTests/analysis/testTopology/testGreedyExtremeRayBasis.m; specs/20261025-235131-greedy-initial-basis/**
+- Files not allowed: findExtremePool.m, nullspaceAccuracyTarget.m, checkNullspaceBasis.m, getRankLUSOL, src/base/solvers/**, optimalExtremePoolDriver.m, root .gitignore, external/, deprecated/
 
 ## Pointers
 - Feature prompt (authoritative description): feature-prompt.md

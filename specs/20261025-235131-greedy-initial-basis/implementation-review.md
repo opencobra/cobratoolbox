@@ -104,10 +104,10 @@ None.
 
 ## Human Approval
 
-- Approved: no
-- Approved option:
-- Approved tasks/scope:
+- Approved: yes
+- Approved option: Approve all T001–T026 (Recommended); research R1 accepted
+- Approved tasks/scope: T001–T026; implementation path `/speckit-implement`
 - Required implementation invocation per constitution: `/speckit-implement`, or the
   agent-assign pipeline `/speckit-agent-assign-assign` → `/speckit-agent-assign-validate` →
   `/speckit-agent-assign-execute`, in series
-- Date (UTC):
+- Date (UTC): 2026-10-26
