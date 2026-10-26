@@ -148,7 +148,7 @@ the test account.
 outputs don't change.
 **Independent test**: quickstart §2b.
 
-- [ ] T014 [US4] Add checks to `test/verifiedTests/analysis/testRank/testRank.m`
+- [X] T014 [US4] Add checks to `test/verifiedTests/analysis/testRank/testRank.m`
   (research R1, R2).
   - **Setup**:
     - Write a stand-in `lusol_obj.m` into a `tempname` folder; it errors with identifier
@@ -169,7 +169,7 @@ outputs don't change.
       `clear getRankLUSOL`. At printLevel 0 the first call gives one warning naming
       `lusol_obj.m not found`; a second call is silent.
   - Run the test under `-batch` against the unchanged source and record the failures.
-- [ ] T015 [US4] Change `src/analysis/subspaces/rank/getRankLUSOL.m`
+- [X] T015 [US4] Change `src/analysis/subspaces/rank/getRankLUSOL.m`
   (contracts/getRankLUSOL.md, research R6).
   - Wrap the inform 3/4/7/8/9 `fprintf` lines and the `Check norm(b-b2)` line in
     `if printLevel > 0`.
@@ -181,10 +181,10 @@ outputs don't change.
   - Handle the not-on-path branch the same way: same warning id, with cause
     `lusol_obj.m not found on the MATLAB path`.
   - Leave every numerical statement unchanged.
-- [ ] T016 [US4] Update the `getRankLUSOL.m` help header (VII-E, FR-009, FR-010).
+- [X] T016 [US4] Update the `getRankLUSOL.m` help header (VII-E, FR-009, FR-010).
   - Under `OPTIONAL INPUT`, describe what printLevel 0 and ≥ 1 print.
   - Add a `NOTE:` recording the October 2026 diagnostic change and the warning id.
-- [ ] T017 [US4] Under `-batch`, run testRank (it must pass),
+- [X] T017 [US4] Under `-batch`, run testRank (it must pass),
   `getRankLUSOLBaseline('compare')` (it must report identical results, SC-005), and
   testGenerateFullRowRankFR again.
 
