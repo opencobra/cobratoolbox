@@ -192,15 +192,15 @@ outputs don't change.
 
 ## Phase 7: Polish & Cross-Cutting
 
-- [ ] T018 [P] Run `mcp__matlab__check_matlab_code` on the two source files and the four
+- [X] T018 [P] Run `mcp__matlab__check_matlab_code` on the two source files and the four
   edited test files. Fix new issues only; list the pre-existing ones.
-- [ ] T019 Rerun the T001 regression set at `10697a987` and complete
+- [X] T019 Rerun the T001 regression set at `10697a987` and complete
   `binary-bump-regression.md` with a before/after table (FR-012).
-- [ ] T020 Run every `test*.m` in `test/verifiedTests/analysis/testTopology/` and
+- [X] T020 Run every `test*.m` in `test/verifiedTests/analysis/testTopology/` and
   `testRank/`, using `-batch` for the capture-based ones. None may newly fail (SC-006).
-- [ ] T021 Check the scope with `git diff --stat develop...`. Only the files in
+- [X] T021 Check the scope with `git diff --stat develop...`. Only the files in
   plan.md Project Structure, the feature directory and `CLAUDE.md` may have changed.
-- [ ] T022 Write the implementation receipt at
+- [X] T022 Write the implementation receipt at
   `specs/20261026-220121-fix-ci-test-failures/agent-runs/<UTC>-fix-ci-test-failures/implementation-receipt.md`
   (constitution ledger), and point `human-loop.md` at it.
 
