@@ -63,3 +63,10 @@ plan must resolve (or the spec must be amended) before Gate 2.
 - First pass: 21/29 satisfied. CHK004, CHK006, CHK007, CHK008, CHK011, CHK012, CHK016
   and CHK024 were closed by amending spec.md (FR-005, FR-005a, US3-1, FR-007b, FR-008,
   FR-009, FR-010, FR-011). Now 29/29; no new user decision was needed.
+- 2026-10-26, after analyze: spec.md was revised. US2 is now the console-capture filter
+  (confirmed CI cause); the getRankLUSOL items moved to US4. FR ids were renumbered:
+  old FR-004/005/005a/006/007/007a/007b/008/009/010/011 → new FR-006/008/004/007/005/
+  005a/005b/009/011/012/010. CHK items keep their old FR references; each was
+  re-checked against the renamed requirement and still holds. Analyze remediation applied:
+  A1 (backtrace and brackets in the filter), C1 (facet enumeration case), U1 (empty
+  stack), I1, I2.
