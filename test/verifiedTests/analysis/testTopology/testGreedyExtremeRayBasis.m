@@ -799,6 +799,37 @@ end
 if isempty(vertexSolvers)
     fprintf('   no vertex-returning LP solver available; fixtures 2 and 4 skipped.\n');
 end
+
+% The same fixtures in RIGHT-nullspace mode, posed on the transposed matrix with the
+% supplied basis given one candidate per COLUMN, as the right-mode Zpos is returned.
+rightIbParam = ibParam;
+rightIbParam.leftRight = 'right';
+rightIbParam.initialBasis = [1 1 2]';
+[ZposR, ~, statusR] = greedyExtremeRayBasis(basisModel(N1'), rightIbParam);
+assert(isequal(full(ZposR), [1 1 2]') && strcmp(statusR.outcome, 'complete') && ...
+    statusR.nLPSolves == 0, 'F1 right: the supplied column must be returned unchanged');
+rightIbParam.initialBasis = B3';
+[ZposR, ~, statusR] = greedyExtremeRayBasis(basisModel(N3'), rightIbParam);
+assert(isequal(full(ZposR), B3(1:3, :)') && isequal(statusR.initialBasisKeptIndex, [1 2 3]) && ...
+    isequal(statusR.initialBasisDependentIndex, 4) && strcmp(statusR.outcome, 'complete') && ...
+    statusR.nLPSolves == 0, 'F3 right: columns 1-3 kept, column 4 dependent, nothing searched');
+% a k x n basis in right mode has the wrong orientation
+rightIbParam.initialBasis = B3;
+assert(verifyCobraFunctionError('greedyExtremeRayBasis', ...
+    'inputs', {basisModel(N3'), rightIbParam}), ...
+    'a right-mode initialBasis must have one candidate per column');
+for k = 1:numel(vertexSolvers)
+    vParam = rightIbParam;
+    vParam.solver = vertexSolvers{k};
+    vParam.initialBasis = L0';
+    rng(20261025, 'twister');
+    [ZposR, ~, statusR] = greedyExtremeRayBasis(basisModel(N2'), vParam);
+    added = scaledRay(ZposR(:, 3));
+    assert(isequal(full(ZposR(:, 1:2)), L0') && strcmp(statusR.outcome, 'complete') && ...
+        statusR.raysAdded == 1 && size(ZposR, 2) == 3 && isIntegerRay(added) && ...
+        (isequal(round(added), [0 0 1 1 0 0]) || isequal(round(added), [1 1 0 0 1 1])), ...
+        sprintf('F2 right (%s): L0'' kept and one valid ray added', vertexSolvers{k}));
+end
 fprintf('Done.\n');
 
 % change back to the current directory

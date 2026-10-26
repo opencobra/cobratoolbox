@@ -224,11 +224,11 @@ leading rows; only `nullity - kept` rays are searched.
 
 **Independent Test**: regression tests plus the baseline comparison.
 
-- [ ] T017 [US3] Run `TST` in full and `runtests` of
+- [X] T017 [US3] Run `TST` in full and `runtests` of
   `test/verifiedTests/analysis/testTopology/testCheckNullspaceBasis.m` and
   `test/verifiedTests/analysis/testTopology/testNullspaceAccuracyTarget.m`, unchanged.
   All must pass.
-- [ ] T018 [US3] Run `baselineRecord('compare')` on the final `SRC`. Append the result
+- [X] T018 [US3] Run `baselineRecord('compare')` on the final `SRC`. Append the result
   (identical / divergent-with-retry, per run) to `FD/baseline-summary.md`.
 
 ---
@@ -239,13 +239,13 @@ leading rows; only `nullity - kept` rays are searched.
 
 **Independent Test**: fixtures 1–3 posed on `N'` with `leftRight = 'right'`.
 
-- [ ] T019 [US4] In `TST` (same gating as T006), repeat F1–F3 with
+- [X] T019 [US4] In `TST` (same gating as T006), repeat F1–F3 with
   `model.S = sparse(N')`, `leftRight = 'right'` and `initialBasis = B'` (`n x k`). Assert:
   - `Zpos` equals the left-mode `Zpos` transposed for F1/F3;
   - for F2, columns 1–2 equal `L0'`, with 1 added column of the expected form;
   - index fields equal the left-mode ones;
   - a `k x n` input in right mode errors with `initialBasisSize`.
-- [ ] T020 [US4] Run T019. If it fails, fix the orientation in `SRC`'s T007 block or the
+- [X] T020 [US4] Run T019. If it fails, fix the orientation in `SRC`'s T007 block or the
   status index mapping, then re-run `TST`.
 
 ---
