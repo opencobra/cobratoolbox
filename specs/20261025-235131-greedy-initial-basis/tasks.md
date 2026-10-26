@@ -254,7 +254,7 @@ leading rows; only `nullity - kept` rays are searched.
 
 **Goal**: SC-006 evidence on iDopaNeuroC (primary) and Recon3D (secondary), research R7.
 
-- [ ] T021 [P] [US5] Write `FD/fixture6RealModelCheck.m`.
+- [X] T021 [P] [US5] Write `FD/fixture6RealModelCheck.m`.
   - iDopaNeuroC (loaded as in T001):
     - compute `Zpos0` (`rng(20261026)`);
     - choose 50 rows with `randperm` (`rng(20261027)`);
@@ -269,7 +269,7 @@ leading rows; only `nullity - kept` rays are searched.
     - supply 125 random rows of `model.L` (`rng(20261028)`);
     - report the same counts, including any `'accuracy'` rejections, as data.
   - Skip with a printed message if a file is absent.
-- [ ] T022 [US5] Run `FD/fixture6RealModelCheck.m` and write
+- [X] T022 [US5] Run `FD/fixture6RealModelCheck.m` and write
   `FD/fixture6RealModelCheck-expected.md`: the commands, the counts with their scope
   (model, supply route, solver, MATLAB version, elapsed) and the verdicts.
 
