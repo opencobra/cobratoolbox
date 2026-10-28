@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/20260930-102230-isomorphism-label-only-copies/plan.md
+at specs/20261026-220121-fix-ci-test-failures/plan.md
 <!-- SPECKIT END -->
 
 <!-- Hand-maintained; keep OUTSIDE the SPECKIT markers (Spec Kit rewrites that block). -->
