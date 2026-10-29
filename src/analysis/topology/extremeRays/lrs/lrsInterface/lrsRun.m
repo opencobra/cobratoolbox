@@ -19,6 +19,16 @@ function fileNameOut = lrsRun(modelName, param)
 %
 % OUTPUTS:
 %    fileNameOut:    full path to the output file produced by lrs
+%
+% NOTE:
+%
+%    Any non-zero exit status of lrs, redund or the shell script (for example 127 when
+%    the lrs executable cannot start) raises the error `lrsRun:commandFailed`, whose
+%    message names the command, its exit status and its output. In shell-script mode,
+%    exit status 0 is success and `fileNameOut` is returned as in direct mode.
+%    (Feature 20261026-220121-fix-ci-test-failures, October 2026. Before, only exit
+%    status 1 was treated as a failure, and shell-script mode treated success as
+%    failure.)
 
 % Ronan Fleming 2021
 
@@ -89,8 +99,11 @@ if isunix
             % call lrs through a bash script and wait until extreme pathways have been calculated
             systemCallText = ['sh ' pwd filesep modelName '.sh'];
             [status, result] = system(systemCallText);
-            if status == 0
-                error(['Failure to run Bash script ' pwd filesep modelName '.sh']);
+            checkCommandStatus(status, result, systemCallText);
+            if param.facetEnumeration
+                fileNameOut = [modelName '.ine'];
+            else
+                fileNameOut = [modelName '.ext'];
             end
         else
             if param.facetEnumeration
@@ -107,9 +120,7 @@ if isunix
                 disp(localCallText)
             end
             [status, result] = system(systemCallText);
-            if status == 1
-                error(['lsr failed on file ', pwd filesep modelName '.ine']);
-            end
+            checkCommandStatus(status, result, systemCallText);
             if param.facetEnumeration
                 if param.redund == 0
                     fileNameIn = fileNameOut;
@@ -128,10 +139,7 @@ if isunix
                     end
                     disp(localCallText);
                     [status, result] = system(systemCallText);
-                    if status == 1
-                        disp(result)
-                        error(['lsr failed on file ', pwd filesep modelName '.ine']);
-                    end
+                    checkCommandStatus(status, result, systemCallText);
                 end
             end
         end
@@ -140,6 +148,15 @@ if isunix
     end
 else
     fprintf('non unix machines not yet supported\n');
+end
+end
+
+function checkCommandStatus(status, result, systemCallText)
+% any non-zero exit status is a failure (e.g. 127 when lrs cannot be executed), so stop
+% before an empty or missing output file is read
+if status ~= 0
+    error('lrsRun:commandFailed', 'lrsRun: command "%s" failed with exit status %d.\nOutput: %s', ...
+        systemCallText, status, strtrim(result));
 end
 end
 
