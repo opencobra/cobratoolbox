@@ -63,7 +63,7 @@ if strcmp(solver,'gurobi')
     end
     if ~isfield(param, 'BarConvTol')
         % Gurobi default = 1e-8, maximum = 1
-        % Barrier convergence tolerance (default = 1e-8). To find min ½‖v‖²
+        % Barrier convergence tolerance. To find min ½‖v‖²
         % in the constrained solution space, Gurobi iteratively checks the
         % difference between the current solution and an optimal solution.
         % More precisely, it considers the relative difference between the
@@ -75,9 +75,30 @@ if strcmp(solver,'gurobi')
         % numerically difficult to solve due to the large differences in S
         % and bound coefficients, Gurobi can sometimes stall before this
         % threshold is reached, resulting in FBA.stat = -1. Setting this
-        % parameter to a higher threshold (such as 1e-5), prevents stalling
+        % parameter to a higher threshold (such as 1e-7), prevents stalling
         % by sacrificing some precision.
-        param.BarConvTol = 1e-5;
+        % 
+        % An experiment with parameter settings running on Harvey 1.04c gave:
+        % ┌────────────────┬───────────────┬────────┬────────────┬─────────┬──────────┬
+        % │   BarConvTol   │ Gurobi status │  Time  │ Iterations │ relDiff │ feasable │ 
+        % ├────────────────┼───────────────┼────────┼────────────┼─────────┼──────────┼
+        % │ 1e-8 (default) │ SUBOPTIMAL    │ 42.0 s │ 119        │ 7.9e-6  │ yes      │
+        % ├────────────────┼───────────────┼────────┼────────────┼─────────┼──────────┼
+        % │ 1e-7           │ OPTIMAL       │ 41.9 s │ 126        │ 9.8e-6  │ yes      │
+        % ├────────────────┼───────────────┼────────┼────────────┼─────────┼──────────┼
+        % │ 1e-6           │ OPTIMAL       │ 42.4 s │ 126        │ 9.8e-6  │ yes      │
+        % ├────────────────┼───────────────┼────────┼────────────┼─────────┼──────────┼
+        % │ 1e-5           │ OPTIMAL       │ 32.4 s │ 71         │ 5.9e-5  │ yes      │
+        % ├────────────────┼───────────────┼────────┼────────────┼─────────┼──────────┼
+        % │ 1e-4           │ OPTIMAL       │ 30.9 s │ 65         │ 4.5e-4  │ yes      │
+        % └────────────────┴───────────────┴────────┴────────────┴─────────┴──────────┴
+        % relDiff = ‖v − v_opt‖₂ / ‖v_opt‖₂, where v_opt is the theoretical
+        % optimal v, as given by the dual solution. 
+        % (https://en.wikipedia.org/wiki/Duality_gap) A smaller relDiff means
+        % that the solution is closer to its theoretical optimum. 
+        % I am setting 1e-7 here as it provides the best solution for this
+        % problem. 
+        param.BarConvTol = 1e-7;
     end
     % NOTE: This parameter might not be necessary.
     if ~isfield(param, 'BarHomogeneous')
