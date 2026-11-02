@@ -13,15 +13,15 @@ excluding `.gitmodules` paths, `external/` and `deprecated/`.
 
 ## Phase 1: Setup
 
-- [ ] T001 Write `$F/tools/scope_files.py` (lists in-scope tracked `.m` files, excluding submodule, `external/` and `deprecated/` paths) and save its output to `$F/reports/scope.txt`
-- [ ] T002 [P] Write `$F/tools/runmat_discovery.sh ROOT OUT`: RunMat runner discovery (`runmat test --list --path=src --path=test test/verifiedTests`) over a tree, plus an error summary by message
-- [ ] T003 [P] Write `$F/tools/apply_and_verify.sh CATEGORY LIST`: copy the listed files to a before-tree, run the category tool, call `parseTreeEquivalence`/`analyzerSnapshot` in MATLAB (`matlab -batch`), revert rejects into `$F/reports/rejected-<category>.txt`, and write the accepted list to `$F/reports/accepted-<category>.txt`
+- [X] T001 Write `$F/tools/scope_files.py` (lists in-scope tracked `.m` files, excluding submodule, `external/` and `deprecated/` paths) and save its output to `$F/reports/scope.txt`
+- [X] T002 [P] Write `$F/tools/runmat_discovery.sh ROOT OUT`: RunMat runner discovery (`runmat test --list --path=src --path=test test/verifiedTests`) over a tree, plus an error summary by message
+- [X] T003 [P] Write `$F/tools/apply_and_verify.sh CATEGORY LIST`: copy the listed files to a before-tree, run the category tool, call `parseTreeEquivalence`/`analyzerSnapshot` in MATLAB (`matlab -batch`), revert rejects into `$F/reports/rejected-<category>.txt`, and write the accepted list to `$F/reports/accepted-<category>.txt`
 
 ## Phase 2: Foundational (baseline, blocks every story)
 
-- [ ] T004 Run MATLAB `testAll` (`COBRA_CI=1`) on the unchanged branch in the background, and save `resultTable` to `$F/baseline/testAll-before.csv` with its log summary
-- [ ] T005 [P] Save the analyzer snapshot of every in-scope file to `$F/baseline/analyzer-before.json` (`tools/analyzerSnapshot.m`)
-- [ ] T006 [P] Save RunMat runner discovery on the unchanged branch to `$F/baseline/runmat-discovery-before.txt` (expected about 1,186 errors; research.md R3)
+- [X] T004 Run MATLAB `testAll` (`COBRA_CI=1`) on the unchanged branch in the background, and save `resultTable` to `$F/baseline/testAll-before.csv` with its log summary
+- [X] T005 [P] Save the analyzer snapshot of every in-scope file to `$F/baseline/analyzer-before.json` (`tools/analyzerSnapshot.m`)
+- [X] T006 [P] Save RunMat runner discovery on the unchanged branch to `$F/baseline/runmat-discovery-before.txt` (expected about 1,186 errors; research.md R3)
 
 **Checkpoint**: baseline recorded; category work can start.
 
@@ -31,16 +31,16 @@ excluding `.gitmodules` paths, `external/` and `deprecated/`.
 
 **Independent Test**: `$F/tools/runmat_discovery.sh` shows no error of a rewritten category; `$F/reports/accepted-*.txt` files all pass the parse-tree or category check; the analyzer gains no message.
 
-- [ ] T007 [US1] FR-009: re-encode `test/tutorialDerived/analysis/rMTA/tutorial_rMTA.m` from Latin-1 to UTF-8, confirm the decoded characters are identical, and commit
-- [ ] T008 [US1] FR-001: run `add_function_ends.py` through `apply_and_verify.sh` on the in-scope files that RunMat reports with "expected 'end'"; accept only identical parse trees; commit "Add explicit function terminators for RunMat compatibility"
-- [ ] T009 [US1] FR-002: run `explicit_separators.py` through `apply_and_verify.sh` on every in-scope file it changes; accept only identical parse trees; list lexer skips and rejects (research found 3 skips and 6 rejects); commit
-- [ ] T010 [US1] FR-003: write `$F/tools/add_empty_catch.py`, which adds `catch` (on its own line, at the `try` indentation) before the `end` that closes each `try` with no `catch`
-- [ ] T011 [US1] FR-003: run `add_empty_catch.py` through `apply_and_verify.sh` on the files RunMat reports with "expected 'catch' after try". The accept check: the analyzer gains no message, and the parse tree differs from the original only by the added `catch` node, checked by `parseTreeEquivalence` after removing that node. Commit.
-- [ ] T012 [US1] FR-001 again: rerun T008 on files that now report "expected 'end'" (unterminated files surface late, research.md R3); commit
-- [ ] T013 [US1] FR-004: write `$F/tools/explicit_calls.py --names A,B FILE...`, which rewrites each bare occurrence of a listed name (not followed by `(`, not after `.`, not in a string or comment, not on the left of `=`) as `name()`
-- [ ] T014 [US1] FR-004: from RunMat's undefined-name errors, choose the candidate names and record the decision per name in `$F/reports/explicit-calls-names.tsv`. A name is a candidate only when MATLAB `exist(name)` is 2, 3, 5 or 6, and the file never assigns, loads or `eval`s it. Run `explicit_calls.py` on the affected files; accept when the analyzer gains no message; commit.
-- [ ] T015 [US1] FR-006: reduce `src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifierTest.m` and `src/analysis/sampling/BarrierRound/CMatrix/include/AdaptiveChol.m` to the construct that crashes RunMat, using copies outside the repository. Rewrite a file only if a small change keeps the parse tree identical and avoids the crash; otherwise record defect D7 with the reproducer.
-- [ ] T016 [US1] Re-measure discovery with `runmat_discovery.sh` and save it to `$F/reports/runmat-discovery-after-us1.txt`; classify every residual error as either "RunMat defect" (with D-number) or "out of slice" in `$F/reports/residual.tsv`
+- [X] T007 [US1] FR-009: re-encode `test/tutorialDerived/analysis/rMTA/tutorial_rMTA.m` from Latin-1 to UTF-8, confirm the decoded characters are identical, and commit
+- [X] T008 [US1] FR-001: run `add_function_ends.py` through `apply_and_verify.sh` on the in-scope files that RunMat reports with "expected 'end'"; accept only identical parse trees; commit "Add explicit function terminators for RunMat compatibility"
+- [X] T009 [US1] FR-002: run `explicit_separators.py` through `apply_and_verify.sh` on every in-scope file it changes; accept only identical parse trees; list lexer skips and rejects (research found 3 skips and 6 rejects); commit
+- [X] T010 [US1] FR-003: write `$F/tools/add_empty_catch.py`, which adds `catch` (on its own line, at the `try` indentation) before the `end` that closes each `try` with no `catch`
+- [X] T011 [US1] FR-003: run `add_empty_catch.py` through `apply_and_verify.sh` on the files RunMat reports with "expected 'catch' after try". The accept check: the analyzer gains no message, and the parse tree differs from the original only by the added `catch` node, checked by `parseTreeEquivalence` after removing that node. Commit.
+- [X] T012 [US1] FR-001 again: rerun T008 on files that now report "expected 'end'" (unterminated files surface late, research.md R3); commit
+- [X] T013 [US1] FR-004: write `$F/tools/explicit_calls.py --names A,B FILE...`, which rewrites each bare occurrence of a listed name (not followed by `(`, not after `.`, not in a string or comment, not on the left of `=`) as `name()`
+- [X] T014 [US1] FR-004: from RunMat's undefined-name errors, choose the candidate names and record the decision per name in `$F/reports/explicit-calls-names.tsv`. A name is a candidate only when MATLAB `exist(name)` is 2, 3, 5 or 6, and the file never assigns, loads or `eval`s it. Run `explicit_calls.py` on the affected files; accept when the analyzer gains no message; commit.
+- [X] T015 [US1] FR-006: reduce `src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifierTest.m` and `src/analysis/sampling/BarrierRound/CMatrix/include/AdaptiveChol.m` to the construct that crashes RunMat, using copies outside the repository. Rewrite a file only if a small change keeps the parse tree identical and avoids the crash; otherwise record defect D7 with the reproducer.
+- [X] T016 [US1] Re-measure discovery with `runmat_discovery.sh` and save it to `$F/reports/runmat-discovery-after-us1.txt`; classify every residual error as either "RunMat defect" (with D-number) or "out of slice" in `$F/reports/residual.tsv`
 
 **Checkpoint**: US1 complete. Its result is accepted only after T030 confirms MATLAB results are unchanged.
 
