@@ -384,7 +384,7 @@ model = changeGeneAssociation(model, 'HEX1', '(G1) or (G2)');
 % 
 % Define the old and the new GPRs. 
 
-GPRsReplace = {'G1 and G2'	'G1 or G4'};
+GPRsReplace = {'G1 and G2',	'G1 or G4'};
 for  i = 1 : size(GPRsReplace, 1)
     oldGPRrxns = find(strcmp(model.grRules, GPRsReplace{i, 1}));%Find all reactions that have the old GPR
     for j = 1:length(oldGPRrxns)

@@ -278,7 +278,7 @@ Model.metFormulas = fixChemFormulas(Model.metFormulas);
 Model = buildRxnEquations(Model);
 
 %% Ensure all vectors are column vectors.
-colFields = {'rxn' 'rNum' 'met' 'mNum'};
+colFields = {'rxn', 'rNum', 'met', 'mNum'};
 for iName = 1:length(colFields)
     for iField = 1:length(Field.(colFields{iName}))
         Model.(Field.(colFields{iName}){iField}) = ...

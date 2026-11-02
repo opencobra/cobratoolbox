@@ -28,11 +28,11 @@ global CBTDIR
 
 %  model field reactionList column header
 translate={
-    'rxnECNumbers' 'ecnumber'
-    'rxnKEGGID' 'keggId'
-    'rxnMetaNetXID' 'metanetx'
-    'rxnSEEDID' 'seed'
-    'rxnRheaID' 'rhea'
+    'rxnECNumbers', 'ecnumber';
+    'rxnKEGGID', 'keggId';
+    'rxnMetaNetXID', 'metanetx';
+    'rxnSEEDID', 'seed';
+    'rxnRheaID', 'rhea'
     };
 modelUpdated = model;
 % based on VMH data

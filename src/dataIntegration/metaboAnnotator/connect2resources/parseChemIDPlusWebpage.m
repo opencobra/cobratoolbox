@@ -41,12 +41,12 @@ a = 1;
 IDsAdded = '';
 
 mapping ={
-    'unii'  'https://fdasis.nlm.nih.gov/srs/unii'
-    'actor' 'https://actor.epa.gov/actor/chemical'
-    'clinicaltrials'    'https://clinicaltrials.gov/search/intervention'
-    'wikipedia' 'http://en.wikipedia.org/'
-    'echa_id' 'https://echa.europa.eu/substance-information'
-    'ctd' 'http://ctdbase.org/detail'
+    'unii',  'https://fdasis.nlm.nih.gov/srs/unii';
+    'actor', 'https://actor.epa.gov/actor/chemical';
+    'clinicaltrials',    'https://clinicaltrials.gov/search/intervention';
+    'wikipedia', 'http://en.wikipedia.org/';
+    'echa_id', 'https://echa.europa.eu/substance-information';
+    'ctd', 'http://ctdbase.org/detail'
     };
 
 % can use unii ID but I do not have a lot of them, so I will retrieve them
@@ -59,7 +59,7 @@ if 1
                 try
                     url = strcat('https://chem.nlm.nih.gov/chemidplus/inchikey/',metabolite_structure.(Mets{i}).inchiKey);
                     [syst,success] = urlread(url);
-                    [metabolite_structure,idNew] = getData(metabolite_structure,syst,Mets{i}, {'unii'  'https://fdasis.nlm.nih.gov/srs/unii'},IDsAdded);
+                    [metabolite_structure,idNew] = getData(metabolite_structure,syst,Mets{i}, {'unii',  'https://fdasis.nlm.nih.gov/srs/unii'},IDsAdded);
                     if ~isempty(idNew) && isempty(find(isnan(idNew),1))
                         if isempty(metabolite_structure.(Mets{i}).unii) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).unii),1))
                             metabolite_structure.(Mets{i}).unii = (idNew);

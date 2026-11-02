@@ -44,7 +44,7 @@ a = 1;
 IDsAdded = '';
 
 mapping ={
-    'pubchemId' 'https://pubchem.ncbi.nlm.nih.gov/compound'
+    'pubchemId', 'https://pubchem.ncbi.nlm.nih.gov/compound'
     };
 
 for i = startSearch : endSearch

@@ -59,23 +59,23 @@ objFun = 'ATPS4m';
 % *2.1. Close exchange reactions:*
 %%
 modelalter = modelCardioMito;
-exchanges = {'EX_12dgr_m(e)'
-    'EX_arachd(e)'
-    'EX_co2(e)'
-    'EX_coa(e)'
-    'EX_crvnc(e)'
-    'EX_cys-L(e)'
-    'EX_glc(e)'
-    'EX_glu-L(e)'
-    'EX_gly(e)'
-    'EX_glyc(e)'
-    'EX_glyc3p(e)'
-    'EX_hdca(e)'
-    'EX_lac-L(e)'
-    'EX_ocdca(e)'
-    'EX_ocdcea(e)'
-    'EX_ocdcya(e)'
-    'EX_ps_m(e)'
+exchanges = {'EX_12dgr_m(e)';
+    'EX_arachd(e)';
+    'EX_co2(e)';
+    'EX_coa(e)';
+    'EX_crvnc(e)';
+    'EX_cys-L(e)';
+    'EX_glc(e)';
+    'EX_glu-L(e)';
+    'EX_gly(e)';
+    'EX_glyc(e)';
+    'EX_glyc3p(e)';
+    'EX_hdca(e)';
+    'EX_lac-L(e)';
+    'EX_ocdca(e)';
+    'EX_ocdcea(e)';
+    'EX_ocdcya(e)';
+    'EX_ps_m(e)';
     'EX_urea(e)'};
 for i = 1:length(exchanges)
     modelalter = changeRxnBounds(modelalter,exchanges{i},0,'l');

@@ -75,7 +75,7 @@ environment = getEnvironment();
 if ~isempty(translatedDraftsFolder)
     % test draft and refined reconstructions
     folders={
-        translatedDraftsFolder
+        translatedDraftsFolder;
         refinedFolder
         };
 else

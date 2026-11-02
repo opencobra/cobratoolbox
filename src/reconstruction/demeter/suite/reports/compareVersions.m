@@ -34,7 +34,7 @@ cd(reportFolder)
 
 % start the summary table
 outputSummary = string({
-    'Feature', 'Reaction_content', 'Metabolite_content', 'Gene_content', 'Constraints', 'Mass_balance', 'Charge_balance', 'Metabolites_without_formulas', 'Leak_test', 'ATP_production', 'Biomass', 'Carbon_sources', 'Fermentation_products', 'Essential_nutrients', 'Nonessential_nutrients', 'Vitamin_biosynthesis', 'Vitamin_secretion', 'Bile_acid_biosynthesis'
+    'Feature', 'Reaction_content', 'Metabolite_content', 'Gene_content', 'Constraints', 'Mass_balance', 'Charge_balance', 'Metabolites_without_formulas', 'Leak_test', 'ATP_production', 'Biomass', 'Carbon_sources', 'Fermentation_products', 'Essential_nutrients', 'Nonessential_nutrients', 'Vitamin_biosynthesis', 'Vitamin_secretion', 'Bile_acid_biosynthesis';
     'Same_in_both', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''
     });
 onlyInNewModel = {};

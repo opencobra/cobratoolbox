@@ -52,13 +52,13 @@ a = 1;
 IDsAdded = '';
 
 mapping = {
-    'inchiKey'     'https://identifiers.org/inchikey/'
-    'hmdb'  'http://identifiers.org/hmdb'
-    'metanetx'  'http://identifiers.org/metanetx.chemical'
-    'keggId'    'http://identifiers.org/kegg.compound/'
-    'biocyc'    'http://identifiers.org/biocyc/'
-    'reactome'  'http://identifiers.org/reactome/' % for the moment I greb only the first entry
-    'cheBIId'   'http://identifiers.org/chebi/'
+    'inchiKey',     'https://identifiers.org/inchikey/';
+    'hmdb',  'http://identifiers.org/hmdb';
+    'metanetx',  'http://identifiers.org/metanetx.chemical';
+    'keggId',    'http://identifiers.org/kegg.compound/';
+    'biocyc',    'http://identifiers.org/biocyc/';
+    'reactome',  'http://identifiers.org/reactome/'; % for the moment I greb only the first entry
+    'cheBIId',   'http://identifiers.org/chebi/'
     };
 for i = startSearch : endSearch
     

@@ -26,9 +26,9 @@ if ispc && exist('AGORA_infoFile.xlsx','file')
     % few corresponding data points in the input file. Thus, these taxon levels
     % cannot be tested.
     taxLevels={
-        'Species'
-        'Genus'
-        'Family'
+        'Species';
+        'Genus';
+        'Family';
         'Order'
         };
     

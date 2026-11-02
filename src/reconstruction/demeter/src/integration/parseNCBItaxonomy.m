@@ -33,13 +33,13 @@ end
 
 hmtlString = urlread(['https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=', NCBI]);
 lineage = {
-    'superkingdom'
-    'kingdom'
-    'phylum'
-    'class'
-    'order'
-    'family'
-    'genus'
+    'superkingdom';
+    'kingdom';
+    'phylum';
+    'class';
+    'order';
+    'family';
+    'genus';
     'species'
     };
 

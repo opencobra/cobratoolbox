@@ -27,10 +27,10 @@ function [metabolite_structure] = assignClassyFire(metabolite_structure, startSe
 annotationSource = 'ClassyFire search based on inchiKey';
 annotationType = 'automatic';
 
-taxLevel = {'Kingdom'
-    'Superclass'
-    'Class'
-    'Subclass'
+taxLevel = {'Kingdom';
+    'Superclass';
+    'Class';
+    'Subclass';
     'Level 5'
     };
 

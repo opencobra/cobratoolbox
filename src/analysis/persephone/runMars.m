@@ -709,29 +709,29 @@ coverageMappedVsProcessed = mappedReads ./readsProcessed;
 [firBacRatioMapped, phylaDistrMapped] = calcFirBacRatio(mapped, phylum);
 
 % Put the various metrics together in one table
-metrics = [totalReads
-    readsProcessed
-    mappedReads
-    coverageMappedVsTotal
-    coverageMappedVsProcessed
-    pielousTotal
-    pielousProcessed
-    pielousMapped
-    firBacRatioTotal
-    firBacRatioProcessed
+metrics = [totalReads;
+    readsProcessed;
+    mappedReads;
+    coverageMappedVsTotal;
+    coverageMappedVsProcessed;
+    pielousTotal;
+    pielousProcessed;
+    pielousMapped;
+    firBacRatioTotal;
+    firBacRatioProcessed;
     firBacRatioMapped];
 
 % Create row names
-rowNamesMetric = {'Reads original data'
-    'Reads processed data'
-    'Reads mapped data'
-    'Coverage mapped / total'
-    'Coverage mapped / Processed'
-    'Pielous eveness origina data'
-    'Pielous eveness processed data'
-    'Pielous eveness mapped data'
-    'Firmicutes / Bacteroidetes ratio original data'
-    'Firmicutes / Bacteroidetes ratio processed data'
+rowNamesMetric = {'Reads original data';
+    'Reads processed data';
+    'Reads mapped data';
+    'Coverage mapped / total';
+    'Coverage mapped / Processed';
+    'Pielous eveness origina data';
+    'Pielous eveness processed data';
+    'Pielous eveness mapped data';
+    'Firmicutes / Bacteroidetes ratio original data';
+    'Firmicutes / Bacteroidetes ratio processed data';
     'Firmicutes / Bacteroidetes ratio mapped data'
     };
 
@@ -754,13 +754,13 @@ taxonSummary.processed = summaryProcessed;
 taxonSummary.mapped = summaryMapped;
 
 % Create summary for metrics
-summaryMetrics = [size(microbiome, 1), size(processed,1), size(mapped, 1) % Total number of taxa
+summaryMetrics = [size(microbiome, 1), size(processed,1), size(mapped, 1); % Total number of taxa
     % estimated number of taxa,
-    mean(sum(microbiome{:, 2:end} > 0)), mean(sum(processed{:, 2:end} > 0)),mean(sum(mapped{:, 2:end} > 0)) %mean taxa richness
-    std(sum(microbiome{:, 2:end} > 0)), std(sum(processed{:, 2:end} > 0)),std(sum(mapped{:, 2:end} > 0)) %st. dev. taxa richness
-    mean(pielousTotal), mean(pielousProcessed), mean(pielousMapped) % mean pielous eveness
-    std(pielousTotal), std(pielousProcessed), std(pielousMapped) % std pielous eveness
-    mean(sum(microbiome{:, 2:end})), mean(sum(processed{:, 2:end})),mean(sum(mapped{:, 2:end})) %mean taxa richness
+    mean(sum(microbiome{:, 2:end} > 0)), mean(sum(processed{:, 2:end} > 0)),mean(sum(mapped{:, 2:end} > 0)); %mean taxa richness
+    std(sum(microbiome{:, 2:end} > 0)), std(sum(processed{:, 2:end} > 0)),std(sum(mapped{:, 2:end} > 0)); %st. dev. taxa richness
+    mean(pielousTotal), mean(pielousProcessed), mean(pielousMapped); % mean pielous eveness
+    std(pielousTotal), std(pielousProcessed), std(pielousMapped); % std pielous eveness
+    mean(sum(microbiome{:, 2:end})), mean(sum(processed{:, 2:end})),mean(sum(mapped{:, 2:end})); %mean taxa richness
     std(sum(microbiome{:, 2:end})), std(sum(processed{:, 2:end})),std(sum(mapped{:, 2:end})) %st. dev. taxa richness
     ];
 % Add in explanations and coverages as in original MARS?

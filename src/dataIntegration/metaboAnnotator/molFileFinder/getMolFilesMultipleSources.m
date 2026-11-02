@@ -101,9 +101,9 @@ end
 % add mol file info to the metabolite_structure
 
 % possible locations based on obtainMetStructures.m
-location = {'chebi'
-    'hmdb'
-    'kegg'
+location = {'chebi';
+    'hmdb';
+    'kegg';
     'pubchem'
     };
 for j = 1 : length(location)

@@ -220,18 +220,18 @@ end
 %% Check if there are any fields in modelGenerationConditions that are not specified above
 % Because these need to be added to param and cannot yet be used here.
 unknownmodelGenerationConditions = setdiff(fieldnames(modelGenerationConditions), ...
-    {'cobraSolver' 
-    'genericModel'
-    'specificData'
-    'tissueSpecificSolver'
-    'activeGenesApproach'
-    'transcriptomicThreshold'
-    'limitBounds'
-    'inactiveGenesTranscriptomics'
-    'closeIons'
-    'activeOverInactive'
-    'curationOverOmics'
-    'metabolomicsBeforeExtraction'
+    {'cobraSolver'; 
+    'genericModel';
+    'specificData';
+    'tissueSpecificSolver';
+    'activeGenesApproach';
+    'transcriptomicThreshold';
+    'limitBounds';
+    'inactiveGenesTranscriptomics';
+    'closeIons';
+    'activeOverInactive';
+    'curationOverOmics';
+    'metabolomicsBeforeExtraction';
     'outputDir'});
 
 if ~isempty(unknownmodelGenerationConditions)

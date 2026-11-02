@@ -182,11 +182,11 @@ if length(failedModels)>0
 
             % load the relevant test results
             fields = {
-                'Carbon_sources_FalseNegatives'
-                'Fermentation_products_FalseNegatives'
-                'Metabolite_uptake_FalseNegatives'
-                'Secretion_products_FalseNegatives'
-                'Bile_acid_biosynthesis_FalseNegatives'
+                'Carbon_sources_FalseNegatives';
+                'Fermentation_products_FalseNegatives';
+                'Metabolite_uptake_FalseNegatives';
+                'Secretion_products_FalseNegatives';
+                'Bile_acid_biosynthesis_FalseNegatives';
                 'Drug_metabolism_FalseNegatives'
                 };
 

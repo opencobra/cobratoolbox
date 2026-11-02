@@ -472,7 +472,7 @@ modeldinamic = changeRxnBounds (modeldinamic, 'EX_o2[e]', -1000, 'l');
 modeldinamic = changeRxnBounds (modeldinamic, 'EX_ac[e]', -1000, 'l');
 % For Recon3.0 model
 % smi = {'EX_glc_D[e]' 'EX_ac[e]'}; 
-smi = {'EX_glc_D[e]' 'EX_ac[e]'}; 
+smi = {'EX_glc_D[e]', 'EX_ac[e]'}; 
 % exchange reaction for substrate in environment
 
 smc = [10.8]; % Glucose, Acetate concentration (all in mM)

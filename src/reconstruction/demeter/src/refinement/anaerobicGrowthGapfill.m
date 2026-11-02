@@ -50,13 +50,13 @@ if FBA.f < tol
     % List oxygen-utilizing reactions and their anaerobic cofactor-utilizing
     % partner reaction
     anaerobicRxns = {
-        'PDX5PO', {'PDX5PO2'}
-        'ASPO6', {'ASPO5','EX_succ(e)','SUCCt'}
-        'DHORDi', {'DHORDfum','EX_succ(e)','SUCCt'}
-        'CPPPGO', {'CPPPGO2','5DOAN','DM_5DRIB'}
-        'AHMMPS', {'AMPMS2'}
+        'PDX5PO', {'PDX5PO2'};
+        'ASPO6', {'ASPO5','EX_succ(e)','SUCCt'};
+        'DHORDi', {'DHORDfum','EX_succ(e)','SUCCt'};
+        'CPPPGO', {'CPPPGO2','5DOAN','DM_5DRIB'};
+        'AHMMPS', {'AMPMS2'};
         % reaction with low confidence
-        'UNKENZ',{'ACCOAC','H2CO3D'}
+        'UNKENZ',{'ACCOAC','H2CO3D'};
         'FERO', {'EX_fe3(e)','FE3MTP1'}
         };
     
@@ -72,10 +72,10 @@ if FBA.f < tol
     
     % reactions for anaerobic quinone synthesis
     anaerobicQuinone = {
-        'OMMBLHX3'
-        'DMQMT'
-        'OMPHHX3'
-        'OPHHX3'
+        'OMMBLHX3';
+        'DMQMT';
+        'OMPHHX3';
+        'OPHHX3';
         'OMBZLM'
         };
     
@@ -94,18 +94,18 @@ if FBA.f < tol
 
         % List possible fixes if model contains reaction in column 1
         testFix = {
-            'PHE4MO', {'EX_tyr_L(e)', 'TYRt2r'}  % very unlikely tyrosine synthesis reaction
-            'H2SO', {'EX_so4(e)', 'SO4t2'}  % sulfate requirement-add a transporter instead
-            'r0389', {'EX_pydx(e)', 'PYDXabc'}  % could be replaced by reaction 1.1.1.65 but only found in few bacteria
-            'ASPT', {'EX_asp_L(e)', 'ASPt2r'}  % need aspartate to produce fumarate
-            'QUILSYN', {'EX_nac(e)', 'NACt2r', 'NAPRT'}  % can only produce NAD aerobically
-            'CYTBD', {'EX_nac(e)', 'NACt2r', 'NAPRT'}  % can only produce NAD aerobically
-            'PYAM5POr', {'EX_pydx(e)', 'PYDXabc'}  % some can only produce PYDX5P aerobically
-            'PYAM5POr', {'EX_pydxn(e)', 'PYDXNabc', 'PDX5PO2'}  % some can only produce PYDX5P aerobically
-            'SUCDi', {'EX_succ(e)','SUCCt','EX_q8(e)','Q8abc'}
-            'DHFOR2', {'EX_fol(e)','FOLabc'}
-            'FAS141ACP', {'MALACPS'}
-            'ALCD2x', {'EX_etoh(e)','ETOHt2r'}
+            'PHE4MO', {'EX_tyr_L(e)', 'TYRt2r'};  % very unlikely tyrosine synthesis reaction
+            'H2SO', {'EX_so4(e)', 'SO4t2'};  % sulfate requirement-add a transporter instead
+            'r0389', {'EX_pydx(e)', 'PYDXabc'};  % could be replaced by reaction 1.1.1.65 but only found in few bacteria
+            'ASPT', {'EX_asp_L(e)', 'ASPt2r'};  % need aspartate to produce fumarate
+            'QUILSYN', {'EX_nac(e)', 'NACt2r', 'NAPRT'};  % can only produce NAD aerobically
+            'CYTBD', {'EX_nac(e)', 'NACt2r', 'NAPRT'};  % can only produce NAD aerobically
+            'PYAM5POr', {'EX_pydx(e)', 'PYDXabc'};  % some can only produce PYDX5P aerobically
+            'PYAM5POr', {'EX_pydxn(e)', 'PYDXNabc', 'PDX5PO2'};  % some can only produce PYDX5P aerobically
+            'SUCDi', {'EX_succ(e)','SUCCt','EX_q8(e)','Q8abc'};
+            'DHFOR2', {'EX_fol(e)','FOLabc'};
+            'FAS141ACP', {'MALACPS'};
+            'ALCD2x', {'EX_etoh(e)','ETOHt2r'};
             'H2CO3D', {'EX_hco3(e)','HCO3abc'}
             };
         for i = 1:size(testFix, 1)
@@ -129,8 +129,8 @@ if FBA.f < tol
     
     % List possible fixes if model does NOT contain reaction in column 1
     testFix = {
-        'EX_sheme(e)', {'EX_sheme(e)', 'SHEMEabc'}  % if it is due to inability to synthesize heme
-        'EX_pheme(e)', {'EX_pheme(e)', 'HEMEti'}  % if it is due to inability to synthesize heme
+        'EX_sheme(e)', {'EX_sheme(e)', 'SHEMEabc'};  % if it is due to inability to synthesize heme
+        'EX_pheme(e)', {'EX_pheme(e)', 'HEMEti'};  % if it is due to inability to synthesize heme
         'EX_ser_L(e)', {'EX_ser_L(e)', 'SERt2r'}  % if due to deleting the Kegg gapfilled reaction R03472, which used to synthesize serine from glycolaldehyde (makes no sense), fill in serine transporter
         };
     for i = 1:size(testFix, 1)
@@ -162,8 +162,8 @@ if FBA.f < tol
     
     % Try adding fumarate reductase reactions
     rxns={
-        'FRD2'
-        'FRD3'
+        'FRD2';
+        'FRD3';
         'FRD7'
         };
     modelTest=model;
@@ -187,7 +187,7 @@ if FBA.f < tol
     % some models need oxygen to produce 3-methyl-2-oxopentanoate
     if any(ismember(model.rxns, 'ILEDA')) && ~any(ismember(model.rxns, 'ILETA'))
         rxns={
-            'EX_3mop(e)'
+            'EX_3mop(e)';
             '3MOPt2r'
             };
         modelTest=model;
@@ -243,7 +243,7 @@ if FBA.f < tol
     % rare case-acetyl-CoA biosynthesis blocked
     if any(ismember(model.rxns, 'FAO181O'))
         rxns={
-            'ACS'
+            'ACS';
             'H2CO3D'
             };
         modelTest=model;
@@ -261,7 +261,7 @@ if FBA.f < tol
     % rare case-acetyl-CoA biosynthesis blocked (acetate lacking)
     if any(ismember(model.rxns, 'ACKr')) && any(ismember(model.rxns, 'PTAr')) && any(ismember(model.rxns, 'ACOAD20'))
         rxns={
-            'EX_ac(e)'
+            'EX_ac(e)';
             'ACtr'
             };
         modelTest=model;
@@ -300,7 +300,7 @@ if FBA.f < tol
     % add quinone transporters and exchanges
     if FBA.f < tol
         quinoneRxns = {
-            'EX_q8(e)'
+            'EX_q8(e)';
             'Q8abc'
             };
         modelTest=model;
@@ -316,7 +316,7 @@ if FBA.f < tol
         else
             % add demethylmenaquinone transporters and exchanges
             quinoneRxns = {
-                'EX_2dmmq8(e)'
+                'EX_2dmmq8(e)';
                 '2DMMQ8abc'
                 };
             modelTest=model;

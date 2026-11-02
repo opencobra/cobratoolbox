@@ -52,17 +52,17 @@ abundancePath=[CBTDIR filesep 'papers' filesep '2018_microbiomeModelingToolbox' 
 close all
 % replace IDs with descriptions
 replace={
-    'Liver_PCSF'    'Liver Sulfotransferase'
-    'Liver_ALCD2if' 'Liver Alcohol dehydrogenase'
-    'Colon_HMR_0156'    'Colon Carboxylic acid:CoA ligase'
-    'Brain_DM_dopa[c]'  'Brain dopamine production'
-    'Brain_DM_srtn[c]'  'Brain serotonin production'
-    'Brain_DM_adrnl[c]' 'Brain adrenaline production'
-    'Brain_DM_4abut[c]' 'Brain GABA production'
-    'Brain_DM_hista[c]' 'Brain histamine production'
-    'Brain_DM_kynate[c]'    'Brain kynurenic acid production'
-    'Brain_DM_nrpphr[c]'    'Brain norepinephrine production'
-    'Brain_DM_Lkynr[c]' 'Brain L-kynurenine production'
+    'Liver_PCSF',    'Liver Sulfotransferase';
+    'Liver_ALCD2if', 'Liver Alcohol dehydrogenase';
+    'Colon_HMR_0156',    'Colon Carboxylic acid:CoA ligase';
+    'Brain_DM_dopa[c]',  'Brain dopamine production';
+    'Brain_DM_srtn[c]',  'Brain serotonin production';
+    'Brain_DM_adrnl[c]', 'Brain adrenaline production';
+    'Brain_DM_4abut[c]', 'Brain GABA production';
+    'Brain_DM_hista[c]', 'Brain histamine production';
+    'Brain_DM_kynate[c]',    'Brain kynurenic acid production';
+    'Brain_DM_nrpphr[c]',    'Brain norepinephrine production';
+    'Brain_DM_Lkynr[c]', 'Brain L-kynurenine production'
     };
 % Export the species correlations
 for i=1:length(replace)

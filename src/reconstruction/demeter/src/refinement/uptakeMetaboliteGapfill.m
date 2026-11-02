@@ -144,7 +144,7 @@ else
 end
 
 gapfillAddConditional = {
-    'Methylamine', 'any(ismember(model.rxns, ''MOGMAH''))', {'DM_nmth2ogltmt_c_'}
+    'Methylamine', 'any(ismember(model.rxns, ''MOGMAH''))', {'DM_nmth2ogltmt_c_'};
     'Benzoate', 'find(ismember(model.rxns, {''BZ12DOX'', ''BZDIOLDH'', ''CATDOX'', ''MUCCYCI''}))', {'EX_mucl(e)','MUCLt2r'}
     };
 

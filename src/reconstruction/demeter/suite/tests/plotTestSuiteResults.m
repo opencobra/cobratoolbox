@@ -17,25 +17,25 @@ cd(testResultsFolder)
 
 %% load all test results
 fields = {
-    'Carbon_sources_TruePositives'
-    'Carbon_sources_FalseNegatives'
-    'Fermentation_products_TruePositives'
-    'Fermentation_products_FalseNegatives'
-    'growsOnDefinedMedium'
-    'Metabolite_uptake_TruePositives'
-    'Metabolite_uptake_FalseNegatives'
-    'Secretion_products_TruePositives'
-    'Secretion_products_FalseNegatives'
-    'Bile_acid_biosynthesis_TruePositives'
-    'Bile_acid_biosynthesis_FalseNegatives'
-    'Drug_metabolism_TruePositives'
-    'Drug_metabolism_FalseNegatives'
-    'PutrefactionPathways_TruePositives'
-    'PutrefactionPathways_FalseNegatives'
-    'AromaticAminoAcidDegradation_TruePositives'
-    'AromaticAminoAcidDegradation_FalseNegatives'
-    'Mass_imbalanced'
-    'Charge_imbalanced'
+    'Carbon_sources_TruePositives';
+    'Carbon_sources_FalseNegatives';
+    'Fermentation_products_TruePositives';
+    'Fermentation_products_FalseNegatives';
+    'growsOnDefinedMedium';
+    'Metabolite_uptake_TruePositives';
+    'Metabolite_uptake_FalseNegatives';
+    'Secretion_products_TruePositives';
+    'Secretion_products_FalseNegatives';
+    'Bile_acid_biosynthesis_TruePositives';
+    'Bile_acid_biosynthesis_FalseNegatives';
+    'Drug_metabolism_TruePositives';
+    'Drug_metabolism_FalseNegatives';
+    'PutrefactionPathways_TruePositives';
+    'PutrefactionPathways_FalseNegatives';
+    'AromaticAminoAcidDegradation_TruePositives';
+    'AromaticAminoAcidDegradation_FalseNegatives';
+    'Mass_imbalanced';
+    'Charge_imbalanced';
     'Leaking_metabolites'
     };
 
@@ -221,14 +221,14 @@ end
 %% print percentage of reconstructions agreeing with data
 Percentages={'Feature','StrainsWithData','PercentAgreeing'};
 features={
-    'Carbon_sources'
-    'Fermentation_products'
-    'PutrefactionPathways'
-    'Secretion_products'
-    'Metabolite_uptake'
-    'AromaticAminoAcidDegradation'
-    'Bile_acid_biosynthesis'
-    'Drug_metabolism'
+    'Carbon_sources';
+    'Fermentation_products';
+    'PutrefactionPathways';
+    'Secretion_products';
+    'Metabolite_uptake';
+    'AromaticAminoAcidDegradation';
+    'Bile_acid_biosynthesis';
+    'Drug_metabolism';
     'growsOnDefinedMedium'
     };
 for i=1:length(features)

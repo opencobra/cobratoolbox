@@ -37,8 +37,8 @@ function Model = buildTmodel(Model)
 %    www.brain-biotech.de
 
 modelName = Model.description ; % Declare variables.
-nameFields = {'rxnID' 'metID' 'subSystems' 'rxnReferences' ...
-              'rxnECNumbers' 'grRules'} ;
+nameFields = {'rxnID', 'metID', 'subSystems', 'rxnReferences' ...
+              'rxnECNumbers', 'grRules'} ;
 
 %% Put the model name in for appropriate fields.
 for iF = 1:length(nameFields)
@@ -72,7 +72,7 @@ Model.c.(modelName) = c ;
 Model.S = sparse(Model.S) ;
 
 %% Remove extra fields that could get in the way.
-unwantedFields = {'description' 'genes' 'rxnGeneMat' 'rules'} ;
+unwantedFields = {'description', 'genes', 'rxnGeneMat', 'rules'} ;
 for iField = 1:length(unwantedFields)
     try
         Model = rmfield(Model, unwantedFields{iField}) ;

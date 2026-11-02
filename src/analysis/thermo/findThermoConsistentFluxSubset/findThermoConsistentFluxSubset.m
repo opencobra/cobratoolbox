@@ -540,9 +540,9 @@ while go
     
     if param.debug && length(solution.v)<10
         if isfield(solution,'vUnrepaired')
-            table(model.rxns,model.g0,solution.vUnrepaired,solution.p,solution.q,nonZeroFluxBool*1,solution.v,solution.thermoConsistentFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'vThermo' 'it.therm' 'forced' 't.therm'})
+            table(model.rxns,model.g0,solution.vUnrepaired,solution.p,solution.q,nonZeroFluxBool*1,solution.v,solution.thermoConsistentFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns', 'g0', 'v', 'p', 'q', 'nz', 'vThermo', 'it.therm', 'forced', 't.therm'})
         else
-            table(model.rxns,model.g0,solution.v,solution.p,solution.q,nonZeroFluxBool*1,model.forcedIntRxnBool*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'forced'})
+            table(model.rxns,model.g0,solution.v,solution.p,solution.q,nonZeroFluxBool*1,model.forcedIntRxnBool*1,'VariableNames',{'rxns', 'g0', 'v', 'p', 'q', 'nz', 'forced'})
         end
     end
         
@@ -592,9 +592,9 @@ end
 
 if param.debug && length(solution.v)<10
     if isfield(solution,'vUnrepaired')
-        table(model.rxns,model.g0,solution.vUnrepaired,solution.p,solution.q,nonZeroFluxBool*1,solution.v,solution.thermoConsistentFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'vThermo' 'therm' 'forced' 'final'})
+        table(model.rxns,model.g0,solution.vUnrepaired,solution.p,solution.q,nonZeroFluxBool*1,solution.v,solution.thermoConsistentFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns', 'g0', 'v', 'p', 'q', 'nz', 'vThermo', 'therm', 'forced', 'final'})
     else
-        table(model.rxns,model.g0,solution.v,solution.p,solution.q,nonZeroFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns' 'g0' 'v' 'p' 'q' 'nz' 'forced' 't.therm'})
+        table(model.rxns,model.g0,solution.v,solution.p,solution.q,nonZeroFluxBool*1,model.forcedIntRxnBool*1,thermoFluxConsistentBool00*1,'VariableNames',{'rxns', 'g0', 'v', 'p', 'q', 'nz', 'forced', 't.therm'})
     end
 end
     

@@ -99,19 +99,19 @@ M_mets_male = setdiff(M_mets,SL);
 
 Table_Met_comp(1,:) ={' ';'Harvetta';'Harvey'};
 Table_Met_comp(2,:) ={'Number of Reactions';num2str(length(female.rxns));num2str(length(male.rxns))};
-Table_Met_comp(3,:) ={'Number of Metabolites'	num2str(length(female.mets)-length(SL_female))	num2str(length(male.mets)-length(SL_male))};
-Table_Met_comp(4,:) ={'Number of Genes (transcripts)'	num2str(length(female.genes))	num2str(length(male.genes))};
-Table_Met_comp(5,:) ={'Number of Subsystems'	num2str(length(unique(female.subSystems)))	num2str(length(unique(male.subSystems)))};
-Table_Met_comp(6,:) ={'Blood compartment metabolites'	num2str(length(BC_mets_female))	num2str(length(BC_mets_male))};
-Table_Met_comp(7,:) ={'Urine metabolites'	num2str(length(U_mets_female))	num2str(length(U_mets_male))};
-Table_Met_comp(8,:) ={'Portal vein metabolites'	num2str(length(BP_mets_female))	num2str(length(BP_mets_male))};
-Table_Met_comp(9,:) ={'Bile duct metabolites'	num2str(length(BD_mets_female))	num2str(length(BD_mets_male))};
-Table_Met_comp(10,:) ={'CSF metabolites'	num2str(length(CSF_mets_female))	num2str(length(CSF_mets_male))};
-Table_Met_comp(11,:) ={'Diet metabolites'	num2str(length(D_mets_female))	num2str(length(D_mets_male))};
-Table_Met_comp(12,:) ={'Fecal metabolites'	num2str(length(FE_mets_female))	num2str(length(FE_mets_male))};
-Table_Met_comp(13,:) ={'Sweat metabolites'	num2str(length(SW_mets_female))	num2str(length(SW_mets_male))};
-Table_Met_comp(14,:) ={'Air metabolites'	num2str(length(A_mets_female))	num2str(length(A_mets_male))};
-Table_Met_comp(15,:) ={'Milk metabolites'	num2str(length(M_mets_female))	num2str((0))};
+Table_Met_comp(3,:) ={'Number of Metabolites',	num2str(length(female.mets)-length(SL_female)),	num2str(length(male.mets)-length(SL_male))};
+Table_Met_comp(4,:) ={'Number of Genes (transcripts)',	num2str(length(female.genes)),	num2str(length(male.genes))};
+Table_Met_comp(5,:) ={'Number of Subsystems',	num2str(length(unique(female.subSystems))),	num2str(length(unique(male.subSystems)))};
+Table_Met_comp(6,:) ={'Blood compartment metabolites',	num2str(length(BC_mets_female)),	num2str(length(BC_mets_male))};
+Table_Met_comp(7,:) ={'Urine metabolites',	num2str(length(U_mets_female)),	num2str(length(U_mets_male))};
+Table_Met_comp(8,:) ={'Portal vein metabolites',	num2str(length(BP_mets_female)),	num2str(length(BP_mets_male))};
+Table_Met_comp(9,:) ={'Bile duct metabolites',	num2str(length(BD_mets_female)),	num2str(length(BD_mets_male))};
+Table_Met_comp(10,:) ={'CSF metabolites',	num2str(length(CSF_mets_female)),	num2str(length(CSF_mets_male))};
+Table_Met_comp(11,:) ={'Diet metabolites',	num2str(length(D_mets_female)),	num2str(length(D_mets_male))};
+Table_Met_comp(12,:) ={'Fecal metabolites',	num2str(length(FE_mets_female)),	num2str(length(FE_mets_male))};
+Table_Met_comp(13,:) ={'Sweat metabolites',	num2str(length(SW_mets_female)),	num2str(length(SW_mets_male))};
+Table_Met_comp(14,:) ={'Air metabolites',	num2str(length(A_mets_female)),	num2str(length(A_mets_male))};
+Table_Met_comp(15,:) ={'Milk metabolites',	num2str(length(M_mets_female)),	num2str((0))};
 
 BC_male_only = setdiff(male.mets(BC_mets_male),female.mets(BC_mets_female));
 

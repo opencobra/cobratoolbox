@@ -55,7 +55,7 @@ pval = p.Results.pval;
 
 % Traslate omics data from gene level to reaction level
 if ~isempty(SeparateTranscript)
-    aux_table = table(strtok(model.genes,SeparateTranscript),model.genes,'VariableNames',{'gene' 'transcript'});
+    aux_table = table(strtok(model.genes,SeparateTranscript),model.genes,'VariableNames',{'gene', 'transcript'});
     diff_exprs = innerjoin(aux_table, diff_exprs, 'Keys','gene');
 	diff_exprs.gene = diff_exprs.transcript;
 end

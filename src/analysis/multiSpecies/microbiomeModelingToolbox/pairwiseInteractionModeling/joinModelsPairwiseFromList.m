@@ -182,15 +182,15 @@ for i = 1:length(modelList)
         model1 = inputModels{i};
         model2 = inputModels{k};
         models = {
-            model1
+            model1;
             model2
             };
         modelBiomasses = {
-            biomasses{i}
+            biomasses{i};
             biomasses{k}
             };
         nameTagsModels = {
-            strcat(modelList{i}, '_')
+            strcat(modelList{i}, '_');
             strcat(modelList{k}, '_')
             };
         if isempty(find(contains(existingModels,['pairedModel', '_', modelList{i}, '_', modelList{k}, '.mat'])))

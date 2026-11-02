@@ -363,7 +363,7 @@ if ~isempty(pos) && ~isempty(neg)
                 for ijk = 1:length(c)
                     fprintf([model.mets{c(ijk)} '\n'])
                 end
-                bol = askinput('Would you like to proceed (p) or exit expa calculation (r)',{'p' 'r'});
+                bol = askinput('Would you like to proceed (p) or exit expa calculation (r)',{'p', 'r'});
                 if bol == 'r'
                     model = []; 
                     fullmodel = [];
@@ -371,7 +371,7 @@ if ~isempty(pos) && ~isempty(neg)
                     return
                 end
                 bol = askinput(['Would you like me to keep asking whether you would like to procced (a)?\n',...
-                    'or would you like to go on with expa calculation to the end (e)?'], {'a' 'e'});
+                    'or would you like to go on with expa calculation to the end (e)?'], {'a', 'e'});
                 
                 saidsofornow = true;
                 if bol == 'e'
@@ -401,7 +401,7 @@ if ~isempty(pos) && ~isempty(neg)
                 for ijk = 1:length(c)
                     fprintf([model.mets{c(ijk)} '\n'])
                 end
-                bol = askinput('Would you like to proceed (p) or exit expa calculation (r)',{'p' 'r'});
+                bol = askinput('Would you like to proceed (p) or exit expa calculation (r)',{'p', 'r'});
                 if bol == 'r'
                     model = []; 
                     fullmodel = [];
@@ -409,7 +409,7 @@ if ~isempty(pos) && ~isempty(neg)
                     return
                 end
                 bol = askinput(['Would you like me to keep asking whether you would like to procced (a)?\n',...
-                    'or would you like to go on with expa calculation to the end (e)?'], {'a' 'e'});
+                    'or would you like to go on with expa calculation to the end (e)?'], {'a', 'e'});
                 saidsofornow = true;
                 if bol == 'e'
                     alreadysaidso = true;

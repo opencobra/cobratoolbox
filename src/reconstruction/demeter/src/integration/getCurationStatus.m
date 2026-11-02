@@ -41,11 +41,11 @@ infoFile = [infoFile.Properties.VariableNames;table2cell(infoFile)];
 
 % load experimental data
 inputDataToCheck={
-    'CarbonSourcesTable'  'Carbon sources status'  
-    'FermentationTable' 'Fermentation products status'
-    'GrowthRequirementsTable' 'Growth requirements status'
-    'secretionProductTable' 'Secretion products status'
-    'uptakeTable'   'Metabolite uptake status'
+    'CarbonSourcesTable',  'Carbon sources status';  
+    'FermentationTable', 'Fermentation products status';
+    'GrowthRequirementsTable', 'Growth requirements status';
+    'secretionProductTable', 'Secretion products status';
+    'uptakeTable',   'Metabolite uptake status'
     };
 
 for i = 1:length(inputDataToCheck)

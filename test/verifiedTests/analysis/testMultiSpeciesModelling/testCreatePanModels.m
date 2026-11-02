@@ -18,17 +18,17 @@ cd(fileDir);
 solverPkgs = prepareTest('toolboxes', {'distrib_computing_toolbox'}, 'requiredToolboxes', {'Statistics Toolbox'});
 
 modelList={
-        'Abiotrophia_defectiva_ATCC_49176'
-        'Acidaminococcus_fermentans_DSM_20731'
-        'Acidaminococcus_intestini_RyC_MR95'
-        'Acidaminococcus_sp_D21'
-        'Acinetobacter_baumannii_AB0057'
-        'Acinetobacter_calcoaceticus_PHEA_2'
-        'Acinetobacter_haemolyticus_NIPH_261'
-        'Acinetobacter_johnsonii_SH046'
-        'Acinetobacter_junii_SH205'
-        'Acinetobacter_lwoffii_WJ10621'
-        'Acinetobacter_pittii_ANC_4052'
+        'Abiotrophia_defectiva_ATCC_49176';
+        'Acidaminococcus_fermentans_DSM_20731';
+        'Acidaminococcus_intestini_RyC_MR95';
+        'Acidaminococcus_sp_D21';
+        'Acinetobacter_baumannii_AB0057';
+        'Acinetobacter_calcoaceticus_PHEA_2';
+        'Acinetobacter_haemolyticus_NIPH_261';
+        'Acinetobacter_johnsonii_SH046';
+        'Acinetobacter_junii_SH205';
+        'Acinetobacter_lwoffii_WJ10621';
+        'Acinetobacter_pittii_ANC_4052';
         'Acinetobacter_radioresistens_NIPH_2130'
         };
     for i=1:length(modelList)

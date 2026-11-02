@@ -66,12 +66,12 @@ model=convertOldStyleModel(model);
 
 % fix issues of incorrect field lengths
 rxnFields={
-    'grRules'
-    'subSystems'
-    'comments'
-    'citations'
-    'rxnECNumbers'
-    'rxnKEGGID'
+    'grRules';
+    'subSystems';
+    'comments';
+    'citations';
+    'rxnECNumbers';
+    'rxnKEGGID';
     'rxnConfidenceScores'
     };
 

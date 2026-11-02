@@ -285,17 +285,17 @@ modelProp.Scores.Consistency = (modelProp.ConsRxns + modelProp.BalancedMassRxns 
 % Metabolite Annotations Per Database; regular expressions taken from
 % memote
 
-fields = {'metPubChemID'    '^\d+$'
-    'metKEGGID' '^C\d+$'
-    'metSEEDID' '^cpd\d+$'
-    'metInchiString' '^InChI\=1S?\/[A-Za-z0-9\.]+(\+[0-9]+)?###(\/[cnpqbtmsih][A-Za-z0-9\-\+\(\)\,\/\?\;\.]+)*$'
-    'metInchiKey' '^[A-Z]{14}\-[A-Z]{10}(\-[A-Z])?'
-    'metChEBIID' '^CHEBI:\d+$'
-    'metHMDBID' '^HMDB\d{5}$###^HMDB\d{7}$' % I included the new format
-    'metReactomeID' '^R-[A-Z]{3}-[0-9]+(-[0-9]+)?$)|(^REACT_\d+(\.\d+)?$'
-    'metMetaNetXID' '^MNXM\d+$'
-    'metBioCycID' '^[A-Z-0-9]+(?<!CHEBI)(\:)?[A-Za-z0-9+_.%-]+$'
-    'metBiGGID' '^[a-z_A-Z0-9]+$'
+fields = {'metPubChemID',    '^\d+$';
+    'metKEGGID', '^C\d+$';
+    'metSEEDID', '^cpd\d+$';
+    'metInchiString', '^InChI\=1S?\/[A-Za-z0-9\.]+(\+[0-9]+)?###(\/[cnpqbtmsih][A-Za-z0-9\-\+\(\)\,\/\?\;\.]+)*$';
+    'metInchiKey', '^[A-Z]{14}\-[A-Z]{10}(\-[A-Z])?';
+    'metChEBIID', '^CHEBI:\d+$';
+    'metHMDBID', '^HMDB\d{5}$###^HMDB\d{7}$'; % I included the new format
+    'metReactomeID', '^R-[A-Z]{3}-[0-9]+(-[0-9]+)?$)|(^REACT_\d+(\.\d+)?$';
+    'metMetaNetXID', '^MNXM\d+$';
+    'metBioCycID', '^[A-Z-0-9]+(?<!CHEBI)(\:)?[A-Za-z0-9+_.%-]+$';
+    'metBiGGID', '^[a-z_A-Z0-9]+$'
     };
 
 metWOAnno = model.mets;
@@ -386,15 +386,15 @@ modelProp.Scores.AnnotationMetabolites = modelProp.Scores.AnnotationMetabolites*
 %% Annotation Reactions
 % Reactions Annotations Per Database; regular expressions taken from
 % memote
-fields = {'rxnKEGGID'  '^R\d+$'
-    'rxnMetaNetXID' 'MNXR\d+$'
-    'rxnRheaID' '^\d{5}$'
-    'rxnSEEDID' '^rxn\d+$'
-    'rxnBiGGID' '^[a-z_A-Z0-9]+$'
-    'rxnReactomeID' '^R-[A-Z]{3}-[0-9]+(-[0-9]+)?$)|(^REACT_\d+(\.\d+)?$)'
-    'rxnECNumbers' '^\d+\.-\.-\.-|\d+\.\d+\.-\.-|###\d+\.\d+\.\d+\.-|###\d+\.\d+\.\d+\.(n)?\d+$'
-    'rxnBRENDAID' '^\d+\.-\.-\.-|\d+\.\d+\.-\.-|###\d+\.\d+\.\d+\.-|###\d+\.\d+\.\d+\.(n)?\d+$'
-    'rxnBioCycID' '^[A-Z-0-9]+(?<!CHEBI)" r"(\:)?[A-Za-z0-9+_.%-]+$'
+fields = {'rxnKEGGID',  '^R\d+$';
+    'rxnMetaNetXID', 'MNXR\d+$';
+    'rxnRheaID', '^\d{5}$';
+    'rxnSEEDID', '^rxn\d+$';
+    'rxnBiGGID', '^[a-z_A-Z0-9]+$';
+    'rxnReactomeID', '^R-[A-Z]{3}-[0-9]+(-[0-9]+)?$)|(^REACT_\d+(\.\d+)?$)';
+    'rxnECNumbers', '^\d+\.-\.-\.-|\d+\.\d+\.-\.-|###\d+\.\d+\.\d+\.-|###\d+\.\d+\.\d+\.(n)?\d+$';
+    'rxnBRENDAID', '^\d+\.-\.-\.-|\d+\.\d+\.-\.-|###\d+\.\d+\.\d+\.-|###\d+\.\d+\.\d+\.(n)?\d+$';
+    'rxnBioCycID', '^[A-Z-0-9]+(?<!CHEBI)" r"(\:)?[A-Za-z0-9+_.%-]+$'
     };
 rxnWOAnno = model.rxns;
 for i = 1 : size(fields)
@@ -466,15 +466,15 @@ modelProp.geneWAnno = (length(model.genes)-length(missingGeneAnno))*100/length(m
 modelProp.Details.geneWOAnno = missingGeneAnno;
 
 fields = {
-    'geneRefSeqID' '^((AC|AP|NC|NG|NM|NP|NR|NT|###NW|XM|XP|XR|YP|ZP)_\d+|###(NZ\_[A-Z]{4}\d+))(\.\d+)?$'
-    'geneUniprotID' '^([A-N,R-Z][0-9]([A-Z][A-Z, 0-9]###[A-Z, 0-9][0-9]){1,2})|([O,P,Q]###[0-9][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9]###[0-9])(\.\d+)?$'
-    'geneEcoGeneID'    '^EG\d+$'
-    'geneKEGGID' '^\w+:[\w\d\.-]*$'
-    'geneHPRDID' '^\d+$'
-    'geneASAPID' '^[A-Za-z0-9-]+$'
-    'geneCCDSID' '^CCDS\d+\.\d+$'
-    'geneEntrezID' '^\d+$'%ncbigene
-    'geneNCBIProteinID' '^(\w+\d+(\.\d+)?)|(NP_\d+)$'
+    'geneRefSeqID', '^((AC|AP|NC|NG|NM|NP|NR|NT|###NW|XM|XP|XR|YP|ZP)_\d+|###(NZ\_[A-Z]{4}\d+))(\.\d+)?$';
+    'geneUniprotID', '^([A-N,R-Z][0-9]([A-Z][A-Z, 0-9]###[A-Z, 0-9][0-9]){1,2})|([O,P,Q]###[0-9][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9]###[0-9])(\.\d+)?$';
+    'geneEcoGeneID',    '^EG\d+$';
+    'geneKEGGID', '^\w+:[\w\d\.-]*$';
+    'geneHPRDID', '^\d+$';
+    'geneASAPID', '^[A-Za-z0-9-]+$';
+    'geneCCDSID', '^CCDS\d+\.\d+$';
+    'geneEntrezID', '^\d+$';%ncbigene
+    'geneNCBIProteinID', '^(\w+\d+(\.\d+)?)|(NP_\d+)$'
     %        ("ncbigi", re.compile(r"^(GI|gi)\:\d+$")),
     };
 for i = 1 : size(fields)

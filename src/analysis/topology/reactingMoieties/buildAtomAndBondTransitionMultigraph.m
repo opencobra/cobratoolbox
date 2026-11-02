@@ -659,7 +659,7 @@ for i = 1:nRxns
                 end
             end
             %Add energy node to dATM for each reaction(an additional node that represents the energy used to break or build chemical bonds)
-            EnergyNode=table({'E'}', size(dATM.Nodes, 1)+1, {model.rxns{i}}', 1, {'E'}', 'VariableNames', {'Atom' 'AtomIndex' 'mets' 'AtomNumber' 'Element'});
+            EnergyNode=table({'E'}', size(dATM.Nodes, 1)+1, {model.rxns{i}}', 1, {'E'}', 'VariableNames', {'Atom', 'AtomIndex', 'mets', 'AtomNumber', 'Element'});
             dATME= addnode(dATM, EnergyNode);
             % A bond-transition's substrate/product atom identity CAN be this reaction's own
             % energy pseudo-node (contrary to feature 20260902-150020-eliminate-bond-transition-
@@ -837,7 +837,7 @@ dBTM.Edges.TransInstIndex = (1:size(dBTM.Edges,1))';
 dBTM.Edges.dirTransInstIndex = (1:size(dBTM.Edges,1))';
 
 %Create the molecular graphs
-EdgeTableBond=table([dBTM.Nodes.BondHeadAtomIndex dBTM.Nodes.BondTailAtomIndex], full(dBTM.Nodes.BondType), dBTM.Nodes.Bond, full(dBTM.Nodes.BondIndex),dBTM.Nodes.BondHeadAtom, dBTM.Nodes.BondTailAtom, dBTM.Nodes.mets, 'VariableNames',{'EndNodes' 'Weight' 'Bond' 'BondIndex' 'BondHeadAtom' 'BondTailAtom' 'mets'});
+EdgeTableBond=table([dBTM.Nodes.BondHeadAtomIndex dBTM.Nodes.BondTailAtomIndex], full(dBTM.Nodes.BondType), dBTM.Nodes.Bond, full(dBTM.Nodes.BondIndex),dBTM.Nodes.BondHeadAtom, dBTM.Nodes.BondTailAtom, dBTM.Nodes.mets, 'VariableNames',{'EndNodes', 'Weight', 'Bond', 'BondIndex', 'BondHeadAtom', 'BondTailAtom', 'mets'});
 BG=graph(EdgeTableBond,dATME.Nodes);
 
 rxnBondMappedBool = ismember(model.rxns,dBTM.Edges.rxns); % True for reactions included in dBTM

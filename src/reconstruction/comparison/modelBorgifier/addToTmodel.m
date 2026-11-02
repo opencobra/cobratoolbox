@@ -79,7 +79,7 @@ cNameNew = strcat(cName, ':') ;
 cNameAdd = strcat('|', cName,':') ;
 
 % Fields which are kept model specific.
-sepFieldNames = ({'lb' 'ub' 'c'}) ;
+sepFieldNames = ({'lb', 'ub', 'c'}) ;
 
 % Reaction related field names, excluding .rxns, .rxnID and .rxnEquation.
 % anything where getMoDesig = 1 gets model designation.
@@ -118,8 +118,8 @@ end
 
 % Metabolite related field names, excluding .mets and metID. None get a
 % model designatinon.
-metFieldNames = ({'metNames' 'metFormulas' 'metKEGGID' 'metSEEDID' ...
-                  'metChEBIID' 'metPubChemID' 'metInChIString'}) ;
+metFieldNames = ({'metNames', 'metFormulas', 'metKEGGID', 'metSEEDID' ...
+                  'metChEBIID', 'metPubChemID', 'metInChIString'}) ;
 
 % Add indentity and number arrays for model being added.
 Tmodel.Models.(cName).rxns = false(length(Tmodel.rxns), 1) ;

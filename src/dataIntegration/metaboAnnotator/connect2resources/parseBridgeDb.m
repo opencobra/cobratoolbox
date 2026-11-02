@@ -55,29 +55,29 @@ IdsMismatch = '';
 % translation list:
 % https://github.com/bridgedb/BridgeDb/blob/master/org.bridgedb.bio/resources/org/bridgedb/bio/datasources.tsv
 mapping={
-    'cheBIId'   'Ce'
-    'biocyc'    'bc'
-    'casRegistry'   'Ca'
-    'cheBIId'   'Ce'
-    'chemspider'    'Cs'
-    'chembl'    'Cl'
-    'drugbank'  'Dr'
-    'hmdb'  'Ch'
-    'iuphar_id'    'Gpl'%	Guide to Pharmacology Ligand ID (aka IUPHAR)
-      'inchiKey'  'Ik'
-    'keggId'    'Ck'%	KEGG Compound
-    'keggId'    'Kd'    %Kd	KEGG Drug
-    'keggId'    'Kl'    %Kl	KEGG Glycan
-    'lipidmaps'  'Lm'
-    'lipidbank' 'Lb'    %Lb	LipidBank
-    'pharmgkb'  'Pgd'%	PharmGKB Drug
-    'pubChemId' 'Cpc'
+    'cheBIId',   'Ce';
+    'biocyc',    'bc';
+    'casRegistry',   'Ca';
+    'cheBIId',   'Ce';
+    'chemspider',    'Cs';
+    'chembl',    'Cl';
+    'drugbank',  'Dr';
+    'hmdb',  'Ch';
+    'iuphar_id',    'Gpl';%	Guide to Pharmacology Ligand ID (aka IUPHAR)
+      'inchiKey',  'Ik';
+    'keggId',    'Ck';%	KEGG Compound
+    'keggId',    'Kd';    %Kd	KEGG Drug
+    'keggId',    'Kl';    %Kl	KEGG Glycan
+    'lipidmaps',  'Lm';
+    'lipidbank', 'Lb';    %Lb	LipidBank
+    'pharmgkb',  'Pgd';%	PharmGKB Drug
+    'pubChemId', 'Cpc';
     %Cps	PubChem Substance
-    'swisslipids'   'Sl'%	SwissLipids
+    'swisslipids',   'Sl';%	SwissLipids
     %Td	TTD Drug
-    'wikidata' 'Wd' %Wd	Wikidata
-    'wikipedia' 'Wi'%	Wikipedia
-    'VMHId' 'VmhM'
+    'wikidata', 'Wd'; %Wd	Wikidata
+    'wikipedia', 'Wi';%	Wikipedia
+    'VMHId', 'VmhM'
     };
 
 

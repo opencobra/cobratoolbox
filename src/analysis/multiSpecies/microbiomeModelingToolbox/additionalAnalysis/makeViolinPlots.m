@@ -149,11 +149,11 @@ else
     if strcmp(plotType,'Boxplot')
         groups = unique(sampleStratification);
         if length(groups)==2
-            cols =[1 0 0
+            cols =[1 0 0;
                 0 0 1];
         elseif length(groups)==3
-            cols =[0 1 0
-                1 0 0
+            cols =[0 1 0;
+                1 0 0;
                 0 0 1];
         else
             cols = [];

@@ -87,11 +87,11 @@ end
 
 % Calculate the abundance in each sample on all taxon levels
 TaxonomyLevels = {
-    'Phylum'
-    'Class'
-    'Order'
-    'Family'
-    'Genus'
+    'Phylum';
+    'Class';
+    'Order';
+    'Family';
+    'Genus';
     'Species'
 };
 % extract the list of entries on each taxonomical level and prepare the

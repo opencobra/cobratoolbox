@@ -1029,9 +1029,9 @@ end
 
 % Include proteomic data
 if  isfield(specificData, 'proteomicData') && ~isempty(specificData.proteomicData)
-    specificData.proteomicData.Properties.VariableNames = {'genes' 'expVal'};
+    specificData.proteomicData.Properties.VariableNames = {'genes', 'expVal'};
     proteomics_data = specificData.proteomicData;
-    proteomics_data.Properties.VariableNames = {'genes' 'expVal'};
+    proteomics_data.Properties.VariableNames = {'genes', 'expVal'};
     temp = {};
     if isnumeric(proteomics_data.genes)
         for i = 1:length(proteomics_data.genes)

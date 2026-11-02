@@ -93,11 +93,11 @@ for j = 1:length(rxnsList)
 end
 
 TaxonomyLevels = {
-    'Phylum'
-    'Class'
-    'Order'
-    'Family'
-    'Genus'
+    'Phylum';
+    'Class';
+    'Order';
+    'Family';
+    'Genus';
     'Species'
     };
 % extract the list of entries on each taxonomical level

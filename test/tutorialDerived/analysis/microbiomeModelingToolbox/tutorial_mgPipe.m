@@ -414,7 +414,7 @@ analyzeMgPipeResults(infoFilePath,contPath, 'sampleGroupHeaders', sampleGroupHea
 % We will compute the shadow prices for acetate and formate as an example.
 
 objectiveList={
-    'EX_ac[fe]'
+    'EX_ac[fe]';
     'EX_for[fe]'
     };
 %% 

@@ -88,13 +88,13 @@ function [x, istop, itn, r1norm, r2norm, anorm, acond, arnorm, xnorm, var, cov, 
 %    3. `M. A. Saunders (1995). Solution of sparse rectangular systems using
 %       LSQR and CRAIG, BIT 35, 588-604`.
 
-msg=['The exact solution is  x = 0                              '
-     'Ax - b is small enough, given atol, btol                  '
-     'The least-squares solution is good enough, given atol     '
-     'The estimate of cond(Abar) has exceeded conlim            '
-     'Ax - b is small enough for this machine                   '
-     'The least-squares solution is good enough for this machine'
-     'Cond(Abar) seems to be too large for this machine         '
+msg=['The exact solution is  x = 0                              ';
+     'Ax - b is small enough, given atol, btol                  ';
+     'The least-squares solution is good enough, given atol     ';
+     'The estimate of cond(Abar) has exceeded conlim            ';
+     'Ax - b is small enough for this machine                   ';
+     'The least-squares solution is good enough for this machine';
+     'Cond(Abar) seems to be too large for this machine         ';
      'The iteration limit has been reached                      '];
 
 wantvar= nargout >= 6;

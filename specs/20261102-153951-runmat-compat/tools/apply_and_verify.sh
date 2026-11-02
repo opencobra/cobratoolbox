@@ -44,7 +44,7 @@ case "${CATEGORY%%-*}" in
     catch)      TREEMODE=catch;  python3 "$TOOLS/add_empty_catch.py" "${files[@]}" ;;
     calls)      TREEMODE=none;   python3 "$TOOLS/explicit_calls.py" --names "${NAMES:?set NAMES}" "${files[@]}" ;;
     *) echo "unknown category $CATEGORY" >&2; exit 2 ;;
-esac > "$REPORTS/tool-$CATEGORY.log"
+esac > "$REPORTS/tool-$CATEGORY.txt"
 
 CHANGED="$WORK/changed-$CATEGORY.txt"
 : > "$CHANGED"

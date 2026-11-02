@@ -41,7 +41,7 @@ allRxns = reshape(EFMRxns, [], 1);
 rxnDistribution = sortrows(array2table(tabulate(allRxns(allRxns ~= 0))), 2, 'descend');
 rxnDistribution(rxnDistribution.Var2 == 0,:) = [];
 rxnDistribution(:, 3) = [];
-rxnDistribution.Properties.VariableNames = {'rxnID' 'numEFMOccurrence'};
+rxnDistribution.Properties.VariableNames = {'rxnID', 'numEFMOccurrence'};
 
 % compute the percentage of EFMs the reaction occurs in
 rxnDistribution.efmOccPercentage = rxnDistribution.numEFMOccurrence/numEFMs * 100;

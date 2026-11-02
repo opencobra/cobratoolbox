@@ -73,7 +73,7 @@ filename_onmics = 'GSE93425_Recon1_discret_iMAT_07_100.txt';
 onmic_data = readtable(['Data',filesep,filename_onmics],'ReadVariableNames',true);
 
 % Traduce onmic data from gene level to reaction level
-aux_table = table(strtok(model.genes,transcript_separator),model.genes,'VariableNames',{'ENTREZ_ID' 'transcript'});
+aux_table = table(strtok(model.genes,transcript_separator),model.genes,'VariableNames',{'ENTREZ_ID', 'transcript'});
 onmic_data = outerjoin(aux_table, onmic_data, 'Keys','ENTREZ_ID');
 head(onmic_data)
 % prepare data for iMAT algorithm

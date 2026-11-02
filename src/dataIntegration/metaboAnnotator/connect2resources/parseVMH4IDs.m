@@ -36,39 +36,39 @@ annotationType = 'automatic';
 
 transl={
     % VMH term  structure term
-    'metFormula'   'chargedFormula'
-    'charge'    'charge'
-    'biggId'    'biggId'
-    'lmId'  'lipidmaps'
-    'hepatonetId'   'hepatonetId'
-    'keggId'  'keggId'
-    'pubChemId' 'pubChemId'
-    'cheBlId'   'cheBIId'
-    'chembl'    'chembl'
-    'inchiString'   'inchiString'
-    'inchiKey'  'inchiKey'
-    'smile'  'smile'
-    'hmdb'  'hmdb'
-    'metanetx'  'metanetx'
-    'seed'  'seed'
-    'pdmapName' 'pdmapName'
-    'reconMap'  'reconMap'
-    'reconMap3' 'reconMap3'
-    'food_db'   'food_db'
-    'chemspider'    'chemspider'
-    'biocyc'    'biocyc'
-    'wikipedia' 'wikipedia'
-    'drugbank'  'drugbank'
-    'knapsack'  'knapsack'
-    'phenolExplorer' 'phenolExplorer'
-    'metlin' 'metlin'
-    'casRegistry' 'casRegistry'
-    'epa_id'    'epa_id'
-    'echa_id'   'echa_id'
-    'iuphar_id'	'iuphar_id'
-    'fda_id'    'fda_id'
-    'mesh_id'	'mesh_id'
-    'chodb_id'  'chodb_id'
+    'metFormula',   'chargedFormula';
+    'charge',    'charge';
+    'biggId',    'biggId';
+    'lmId',  'lipidmaps';
+    'hepatonetId',   'hepatonetId';
+    'keggId',  'keggId';
+    'pubChemId', 'pubChemId';
+    'cheBlId',   'cheBIId';
+    'chembl',    'chembl';
+    'inchiString',   'inchiString';
+    'inchiKey',  'inchiKey';
+    'smile',  'smile';
+    'hmdb',  'hmdb';
+    'metanetx',  'metanetx';
+    'seed',  'seed';
+    'pdmapName', 'pdmapName';
+    'reconMap',  'reconMap';
+    'reconMap3', 'reconMap3';
+    'food_db',   'food_db';
+    'chemspider',    'chemspider';
+    'biocyc',    'biocyc';
+    'wikipedia', 'wikipedia';
+    'drugbank',  'drugbank';
+    'knapsack',  'knapsack';
+    'phenolExplorer', 'phenolExplorer';
+    'metlin', 'metlin';
+    'casRegistry', 'casRegistry';
+    'epa_id',    'epa_id';
+    'echa_id',   'echa_id';
+    'iuphar_id',	'iuphar_id';
+    'fda_id',    'fda_id';
+    'mesh_id',	'mesh_id';
+    'chodb_id',  'chodb_id'
     };
 
 for i = startSearch : endSearch

@@ -177,7 +177,7 @@ if isempty(fileName)
         case 'json'
             [fileNameFull, filePath] = uiputfile({'*.json'});
         case 'toselect'
-            [fileNameFull, filePath] = uiputfile({'*.mat', 'Matlab File'; '*.xml' 'SBML Model'; '*.txt' 'Text Export'; '*.xls;*.xlsx' 'Excel Export'; '*.MPS' 'MPS Export'});
+            [fileNameFull, filePath] = uiputfile({'*.mat', 'Matlab File'; '*.xml', 'SBML Model'; '*.txt', 'Text Export'; '*.xls;*.xlsx', 'Excel Export'; '*.MPS', 'MPS Export'});
         otherwise
             [fileNameFull, filePath] = uiputfile({'*'});
     end

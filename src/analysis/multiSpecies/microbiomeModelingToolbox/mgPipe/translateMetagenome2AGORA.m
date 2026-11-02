@@ -62,11 +62,11 @@ metagenome_abundance{1,1}='';
 
 % list the taxonomical levels
 taxLevels={
-    'Phylum'
-    'Class'
-    'Order'
-    'Family'
-    'Genus'
+    'Phylum';
+    'Class';
+    'Order';
+    'Family';
+    'Genus';
     'Species'
     };
 
@@ -154,12 +154,12 @@ metagenome_abundance(:,1)=strrep(metagenome_abundance(:,1),'g_Ruminococcus|s_tor
 % taxon descriptions to enable mapping to AGORA
 % specific for MetaPhlAn input files
 sLevels={
-    'Species'   's_'
-    'Genus'     'g_'
-    'Family'    'f_'
-    'Order'     'o_'
-    'Class' 	'c_'
-    'Phylum'    'p_'
+    'Species',   's_';
+    'Genus',     'g_';
+    'Family',    'f_';
+    'Order',     'o_';
+    'Class', 	'c_';
+    'Phylum',    'p_'
     };
 mpsDepth=sLevels{find(strcmp(sLevels(:,1),sequencingDepth)),2};
 delRows=[];

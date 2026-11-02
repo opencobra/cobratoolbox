@@ -94,17 +94,17 @@ a = 1;
 fields = fieldnames(metabolite_structure.(Mets{1}));
 IDsAdded = '';
 % how to find and parse the different IDs in the webpage
-ids = {'cheBIId'    'http://www.ebi.ac.uk/chebi/searchId.do?chebiId'
-    'pubChemId' 'http://pubchem.ncbi.nlm.nih.gov/compound'
-    'metabolights'  'http://www.ebi.ac.uk/metabolights/'
-    'rhea'  'http://www.rhea-db.org/searchresults'
-    'swisslipids'  'http://www.swisslipids.org/#/entity/'
-    'bindingdb' 'http://www.bindingdb.org/bind/chemsearch/marvin'
-    'drugbank'  'http://www.drugbank.ca/drugs/'
-    'keggId'    'http://www.genome.jp/dbget-bin'
-    'hmdb'  'http://www.hmdb.ca/metabolites'
-    'epa_id'    'https://comptox.epa.gov/dashboard/'
-    'lipidmaps'  'http://www.lipidmaps.org/data/LMSDRecord'
+ids = {'cheBIId',    'http://www.ebi.ac.uk/chebi/searchId.do?chebiId';
+    'pubChemId', 'http://pubchem.ncbi.nlm.nih.gov/compound';
+    'metabolights',  'http://www.ebi.ac.uk/metabolights/';
+    'rhea',  'http://www.rhea-db.org/searchresults';
+    'swisslipids',  'http://www.swisslipids.org/#/entity/';
+    'bindingdb', 'http://www.bindingdb.org/bind/chemsearch/marvin';
+    'drugbank',  'http://www.drugbank.ca/drugs/';
+    'keggId',    'http://www.genome.jp/dbget-bin';
+    'hmdb',  'http://www.hmdb.ca/metabolites';
+    'epa_id',    'https://comptox.epa.gov/dashboard/';
+    'lipidmaps',  'http://www.lipidmaps.org/data/LMSDRecord'
     };
 
 for i = startSearch : endSearch

@@ -51,36 +51,36 @@ noDelete = {biomassReaction; 'O2t'; 'O2t5i'; 'CO2t'; 'MG2abc'; 'H2Ot'; 'L2A6ODs'
 checkDelete = setdiff(gfRxns, noDelete);
 
 transp = {  % delete exchange reaction with following transporters
-            'AHCYSts', 'EX_ahcys(e)'
-            'ALAHISabc', 'EX_alahis(e)'
-            'ALALEUabc', 'EX_alaleu(e)'
-            'CBIabc', 'EX_cbi(e)'
-            'CGLYabc', 'EX_cgly(e)'
-            'CHORt', 'EX_chor(e)'
-            'CMPt2', 'EX_cmp(e)'
-            'COAt', 'EX_coa(e)'
-            'Cut1', 'EX_cu2(e)'
-            'CYTDt4', 'EX_cytd(e)'
-            'DATPt', 'EX_datp(e)'
-            'DDCAt', 'EX_ddca(e)'
-            'DGSNt2', 'EX_dgsn(e)'
-            'DGTPt', 'EX_dgtp(e)'
-            'DPCOAt', 'EX_dpcoa(e)'
-            'DTMPt', 'EX_dtmp(e)'
-            'DTTPti', 'EX_dttp(e)'
-            'ETHAt2', 'EX_etha(e)'
-            'G6Pt6_2', 'EX_g6p(e)'
-            'GLYC3Pt', 'EX_glyc3p[e]'
-            'HDCEAtr', 'EX_hdcea(e)'
-            'MALTHPabc', 'EX_malthp(e)'
-            'MALTHXabc', 'EX_malthx(e)'
-            'MK7te', 'EX_mqn7(e)'
-            'NADPt', 'EX_nadp(e)'
-            'OCDCAt2', 'EX_ocdca(e)'
+            'AHCYSts', 'EX_ahcys(e)';
+            'ALAHISabc', 'EX_alahis(e)';
+            'ALALEUabc', 'EX_alaleu(e)';
+            'CBIabc', 'EX_cbi(e)';
+            'CGLYabc', 'EX_cgly(e)';
+            'CHORt', 'EX_chor(e)';
+            'CMPt2', 'EX_cmp(e)';
+            'COAt', 'EX_coa(e)';
+            'Cut1', 'EX_cu2(e)';
+            'CYTDt4', 'EX_cytd(e)';
+            'DATPt', 'EX_datp(e)';
+            'DDCAt', 'EX_ddca(e)';
+            'DGSNt2', 'EX_dgsn(e)';
+            'DGTPt', 'EX_dgtp(e)';
+            'DPCOAt', 'EX_dpcoa(e)';
+            'DTMPt', 'EX_dtmp(e)';
+            'DTTPti', 'EX_dttp(e)';
+            'ETHAt2', 'EX_etha(e)';
+            'G6Pt6_2', 'EX_g6p(e)';
+            'GLYC3Pt', 'EX_glyc3p[e]';
+            'HDCEAtr', 'EX_hdcea(e)';
+            'MALTHPabc', 'EX_malthp(e)';
+            'MALTHXabc', 'EX_malthx(e)';
+            'MK7te', 'EX_mqn7(e)';
+            'NADPt', 'EX_nadp(e)';
+            'OCDCAt2', 'EX_ocdca(e)';
 %             'PTRCt2', 'EX_ptrc(e)'
-            'SALCt2', 'EX_salc(e)'
-            'THMMPt2', 'EX_thmmp(e)'
-            'TTDCAt2', 'EX_ttdca(e)'
+            'SALCt2', 'EX_salc(e)';
+            'THMMPt2', 'EX_thmmp(e)';
+            'TTDCAt2', 'EX_ttdca(e)';
             'UREAt', 'EX_urea(e)'
             };
 cnt = 1;

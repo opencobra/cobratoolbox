@@ -24,7 +24,7 @@ if numWorkers>0 && ~isempty(ver('parallel'))
 end
 
 files={
-    [propertiesFolder filesep 'ComputedFluxes' filesep 'UptakeSecretion_' reconVersion '.txt']
+    [propertiesFolder filesep 'ComputedFluxes' filesep 'UptakeSecretion_' reconVersion '.txt'];
     [propertiesFolder filesep 'ReactionPresence' filesep 'ReactionPresence_' reconVersion '.txt']
         };
 
