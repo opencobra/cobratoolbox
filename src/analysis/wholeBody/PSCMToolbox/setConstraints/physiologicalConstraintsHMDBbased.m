@@ -1092,3 +1092,4 @@ if ~strcmp(Type,'direct')
     % if strcmp(sex,'male')
     %     RBC = 5.5*10^6*
 end
+end

@@ -68,3 +68,4 @@ for i = 1 : length(modelUpdated.rxns)
         modelUpdated.rxnSEEDID{i} = translateSeed{row,1};
     end
 end
+end

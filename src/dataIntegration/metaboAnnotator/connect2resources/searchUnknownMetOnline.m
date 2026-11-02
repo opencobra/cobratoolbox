@@ -116,4 +116,5 @@ if ~exist('metabolite_structure','var')
     [metabolite_structure] = createNewMetEntryFromArray(metInput,source,populate,molFileDirectory,metab_rBioNet_online,rxn_rBioNet_online,metabolite_structure_rBioNet);
     
 end
+end
 

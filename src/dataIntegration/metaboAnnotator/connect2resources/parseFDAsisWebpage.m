@@ -99,6 +99,7 @@ for i = startSearch : endSearch
         end
     end
 end
+end
 
 
 
@@ -114,4 +115,5 @@ try
     idNew = regexprep(idNew,'\W$','');
     
 catch
+end
 end

@@ -149,3 +149,4 @@ for i = startSearch : endSearch
 end
 
 [metabolite_structure] = cleanUpMetabolite_structure(metabolite_structure,startSearch,endSearch);
+end

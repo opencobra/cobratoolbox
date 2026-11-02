@@ -81,6 +81,7 @@ for i = startSearch : endSearch%size(Mets,1)
         end
     end
 end
+end
 
 
 function [metabolite_structure,idNew] = getData(metabolite_structure,syst,met, map,IDsAdded)
@@ -113,4 +114,5 @@ try
     end
     
 catch
+end
 end

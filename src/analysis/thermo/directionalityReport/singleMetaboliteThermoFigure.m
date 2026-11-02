@@ -292,3 +292,4 @@ if horizontal
         model.dGt0Max=dGt0Max;
     end
 end
+end

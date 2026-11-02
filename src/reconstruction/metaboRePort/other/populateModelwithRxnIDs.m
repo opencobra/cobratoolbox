@@ -72,3 +72,4 @@ for i = 1 : length(modelUpdated.rxns)
         end
     end
 end
+end

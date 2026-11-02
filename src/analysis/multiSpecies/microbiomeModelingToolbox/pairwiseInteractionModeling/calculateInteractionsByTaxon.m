@@ -115,3 +115,4 @@ for t = 1:length(TaxonomyLevels)
     % save the table in the output structure
     interactionsByTaxon.(TaxonomyLevels{t}) = interactions;
 end
+end

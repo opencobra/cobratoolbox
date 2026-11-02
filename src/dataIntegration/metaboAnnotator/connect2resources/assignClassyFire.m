@@ -59,6 +59,7 @@ for i = startSearch : endSearch
         end
     end
 end
+end
 function [levelOut] = getData(syst,levelIn)
 tok0 = split(syst,'Taxonomic Classification');
 tok = split(tok0{2},levelIn);
@@ -66,3 +67,4 @@ tok2 = split(tok{2},'<abbr title=');
 tok3 = split(tok2{2},'">');
 tok4 = split(tok3{2},'</');
 levelOut = tok4{1};
+end

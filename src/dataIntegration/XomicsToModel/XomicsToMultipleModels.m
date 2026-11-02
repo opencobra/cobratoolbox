@@ -416,3 +416,4 @@ for firstGruoup = 1:length(cobraSolver)
         end
     end
 end
+end

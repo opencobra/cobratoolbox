@@ -131,6 +131,7 @@ for j = 1 : length(location)
 end
 
  cd(currentPath)
+end
 % try
 %     rmdir([molFileDirectory filesep 'metabolites'],'s');
 % end

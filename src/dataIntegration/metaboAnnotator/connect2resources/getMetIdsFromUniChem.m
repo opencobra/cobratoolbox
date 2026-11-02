@@ -265,6 +265,7 @@ for i = startSearch : endSearch
     end
     
 end
+end
 
 function [metabolite_structure,IDsAdded] = addDataCollected(metabolite_structure,syst, IDsAdded,Mets,i,ids,j,annotationSource,annotationType)
 
@@ -285,4 +286,5 @@ if ~isempty(find(isnan(metabolite_structure.(Mets{i}).(ids{j,1})))) || isempty(m
         IDsAdded{a,2} = ids{j,1};
         IDsAdded{a,3} = char(idNew);
     end
+end
 end

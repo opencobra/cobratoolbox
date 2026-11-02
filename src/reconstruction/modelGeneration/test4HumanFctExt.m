@@ -8386,3 +8386,4 @@ TestSolutionName(:,2) = num2cell(TestSolution);
 TestedRxns = unique(TestedRxns);
 TestedRxns = intersect(modelOri.rxns,TestedRxns); % only those reactions that are also in modelOri not those that have been added to the network
 PercTestedRxns = length(TestedRxns)*100/length(modelOri.rxns);
+end

@@ -622,3 +622,4 @@ modelProp.Scores.AnnotationSBO = modelProp.Scores.AnnotationSBO*100/(11*100) ;
 modelProp.Scores.Overall = (3* modelProp.Scores.Consistency + modelProp.Scores.AnnotationMetabolites + modelProp.Scores.AnnotationReactions + ...
     modelProp.Scores.AnnotationGenes +  2* modelProp.Scores.AnnotationSBO)*100/(3*100 + 100 +100 +100 + 2*100);
 ScoresOverall = modelProp.Scores.Overall;
+end

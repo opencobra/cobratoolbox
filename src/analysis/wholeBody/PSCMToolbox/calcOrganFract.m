@@ -192,3 +192,4 @@ IndividualParameters = rmfield(IndividualParameters,'OrgansWeights');
 for i = 1 : length(organs)
     IndividualParameters.OrgansWeights(i,:) = {organs{i}, num2str(OrganWeight(i)), num2str(OrganWeightFract(i)*100)};
 end
+end

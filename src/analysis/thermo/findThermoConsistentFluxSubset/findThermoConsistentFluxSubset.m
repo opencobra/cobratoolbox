@@ -670,3 +670,4 @@ model.thermoRevFluxConsistentRxnBool=thermoRevFluxConsistentRxnBool;
 if param.printLevel>0
     fprintf('%s\n','--- findThermoFluxConsistentSubset END ----')
 end
+end

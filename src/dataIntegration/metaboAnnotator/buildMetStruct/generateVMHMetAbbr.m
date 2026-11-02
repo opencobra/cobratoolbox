@@ -324,6 +324,7 @@ end
 
 VMHId = VMHIdList;
 writecell(VMHIdList, 'generatedVMHMetAbbr.csv')
+end
 
 function [name] = removeJunk(name)
 % remove parts of the metabolite name (in input as well as in rBioNet) that
@@ -366,3 +367,4 @@ name = regexprep(name,';','_');
 name = regexprep(name,'!','');
 name = regexprep(name,'‐','');
 name = regexprep(name,'â','a');
+end

@@ -144,3 +144,4 @@ if thorStandard
     model.dGt0Min=dGt0Min;
     model.dGt0Max=dGt0Max;
 end
+end

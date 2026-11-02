@@ -207,6 +207,7 @@ if ~isempty(find(contains(rBioNet_existance(:,3),'1')))
 else
     fprintf('All  abbreviations are new to rBioNet.\n ');
 end
+end
 
 % remove temporary folder for the rBioNetDB
 %warning off;

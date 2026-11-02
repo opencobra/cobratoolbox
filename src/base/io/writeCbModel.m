@@ -252,6 +252,7 @@ switch format
     otherwise
         error('Unknown file format');
 end
+end
 
 
 % Construct gene name string
@@ -262,6 +263,7 @@ for i = 1:length(geneNames)
     geneStr = [geneStr ' ' geneNames{i}];
 end
 geneStr = strtrim(geneStr);
+end
 
 
 
@@ -291,4 +293,5 @@ switch extension
         format = 'expa';
     otherwise
         format = 'unknown';
+end
 end

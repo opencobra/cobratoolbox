@@ -1,0 +1,3 @@
+src/analysis/exploration/surfNet.m	parse tree changed; analyzer gained SYNER
+src/dataIntegration/XomicsToModel/oneRxnPerActiveGene/createDummyModel.m	parse tree changed; analyzer gained DEFNU,SYNER; already terminated, RunMat reports expected end for another construct (residual)
+src/visualization/cellDesigner/intergrate.m	MATLAB cannot parse the original; analyzer gained SYNER

@@ -7734,3 +7734,4 @@ PercTestedRxns = length(TestedRxns)*100/length(modelOri.rxns);
 if saveDiary
     diary off
 end
+end

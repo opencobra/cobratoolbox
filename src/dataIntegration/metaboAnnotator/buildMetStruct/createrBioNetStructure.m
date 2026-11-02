@@ -171,3 +171,4 @@ end
 [IDsEnd2,IDcountEnd2,TableEnd2] = getStatsMetStruct(metabolite_structure_rBioNet);
 save met_strc_rBioNet_new_07_10_2021
 writecell(TableEnd2,'rbionetMetStructure.xls');
+end

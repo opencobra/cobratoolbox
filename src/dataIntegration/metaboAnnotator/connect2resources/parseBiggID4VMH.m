@@ -99,6 +99,7 @@ for i = startSearch : endSearch
         continue;
     end
 end
+end
 
 
 function [metabolite_structure,idNew] = getData(metabolite_structure,syst,met, map,IDsAdded)
@@ -117,4 +118,5 @@ try
         idNew = regexprep(idNew,'CHEBI:','');
     end
 catch
+end
 end

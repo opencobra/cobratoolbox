@@ -389,3 +389,4 @@ for i = 1 : length(RxnMin)
         cnt = cnt +1;
     end
 end
+end

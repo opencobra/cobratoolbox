@@ -107,6 +107,7 @@ if 1
         end
     end
 end
+end
 
 function [metabolite_structure,idNew] = getData(metabolite_structure,syst,met, map,IDsAdded)
 a = size(IDsAdded,1)+1;
@@ -140,4 +141,5 @@ try
     end
     
 catch
+end
 end
