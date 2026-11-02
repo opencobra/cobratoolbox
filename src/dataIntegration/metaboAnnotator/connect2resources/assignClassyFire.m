@@ -55,6 +55,7 @@ for i = startSearch : endSearch
                 metabolite_structure.(F{i}).(['classyFire_' regexprep(taxLevel{k},' ','')]) = levelOut;
                 metabolite_structure.(F{i}).(['classyFire_' regexprep(taxLevel{k},' ','') '_source']) = [annotationSource,':',annotationType,':',datestr(now)];
             end
+        catch
         end
     end
 end

@@ -36,6 +36,7 @@ assert(isequal(((refData_y2 - (2 * x') - y2) < 1e-4), ones(20, 1)));
 if isunix
 try
   rmdir([CBTDIR filesep 'tutorials' filesep 'additionalTutorials' filesep 'optKnock' filesep 'Results'], 's');
+catch
 end
 end
 

@@ -109,6 +109,7 @@ for i = startSearch : endSearch
                     end
                 end
             end
+        catch
         end
     end
 end
@@ -164,4 +165,5 @@ try
     if contains(idNew,'Not Available')
         idNew = NaN;
     end
+catch
 end

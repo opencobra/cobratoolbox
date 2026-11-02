@@ -398,7 +398,7 @@ for i = compCrxns
         disp(i)
     end
 end
-try close(h) ; end
+try close(h) ; catch, end
 if verbose
     fprintf('Met name match time = %d.\n', toc)
 end

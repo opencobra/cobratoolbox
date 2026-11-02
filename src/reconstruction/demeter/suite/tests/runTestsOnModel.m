@@ -303,5 +303,6 @@ testResults.PutrefactionPathways_FalseNegatives(1, 2:length(FalseNegatives)+1) =
 [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database);
 testResults.AromaticAminoAcidDegradation_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.AromaticAminoAcidDegradation_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
+catch
 end
 end

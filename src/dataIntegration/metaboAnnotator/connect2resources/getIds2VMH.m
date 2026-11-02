@@ -109,6 +109,7 @@ for i = 1 : length(Mets)
                         end
                     end
                 end
+            catch
             end
         end
     end

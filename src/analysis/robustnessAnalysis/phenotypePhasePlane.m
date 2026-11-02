@@ -67,6 +67,7 @@ for i = 1:nPts %ind1
         try % calculate shadow prices
             shadowPrices1(j,i) = fbasol.y(metID1(1));
             shadowPrices2(j,i) = fbasol.y(metID2(1));
+        catch
         end
     end
 end

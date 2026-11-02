@@ -235,6 +235,7 @@ if length(failedModels)>0
     delete([testResultsFolder filesep 'tooHighATP.mat'])
     try
         rmdir([testResultsFolder filesep reconVersion '_refined'],'s')
+    catch
     end
     if ~isempty(translatedDraftsFolder)
         % plot growth for both draft and refined

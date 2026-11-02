@@ -275,14 +275,14 @@ if isempty(KO)
     rhs = zeros(n_cons, 1);
     rhs(cons.Ndual, 1) = inf;
     rhs(cons.forceBioCons) = -c;
-    try rhs(cons.relations) = inf; end
+    try rhs(cons.relations) = inf; catch, end
     if forceLength == 1
         rhs(cons.forceLength) = 1;
     end
     lhs = zeros(n_cons, 1);
     lhs(cons.Ndual, 1) = 0;
     lhs(cons.forceBioCons) = -1000;
-    try lhs(cons.relations) = 0; end
+    try lhs(cons.relations) = 0; catch, end
     if forceLength == 1
         lhs(cons.forceLength) = 1;
     end
@@ -399,9 +399,9 @@ if isempty(KO)
                 return;
             end
         end
-        try disp(['Number of gMCS saved: ' num2str(length(gmcs))]); end
-        try save('tmp.mat', 'gmcs', 'gmcs_time'); end
-        try largest_gmcs = max(cellfun(@length, gmcs)); end
+        try disp(['Number of gMCS saved: ' num2str(length(gmcs))]); catch, end
+        try save('tmp.mat', 'gmcs', 'gmcs_time'); catch, end
+        try largest_gmcs = max(cellfun(@length, gmcs)); catch, end
     end
 else
 % CALCULATE gMCSs WITH A GIVEN KNOCKOUT
@@ -466,7 +466,7 @@ else
     rhs(cons.forceBioCons) = -c;
     rhs(cons.forceKO) = 10000;
     rhs(cons.linearComb) = [sparse(zeros(n_mets, 1)); dp; zeros(size(t, 2), 1)];
-    try rhs(cons.relations) = inf; end
+    try rhs(cons.relations) = inf; catch, end
     if forceLength == 1
         rhs(cons.forceLength) = 1;
     end
@@ -475,7 +475,7 @@ else
     lhs(cons.forceBioCons) = -1000;
     lhs(cons.forceKO) = b*10;
     lhs(cons.linearComb) = [sparse(zeros(n_mets, 1)); dp; zeros(size(t, 2), 1)];
-    try lhs(cons.relations) = 0; end
+    try lhs(cons.relations) = 0; catch, end
     if forceLength == 1
         lhs(cons.forceLength) = 1;
     end
@@ -630,9 +630,9 @@ else
                 return;
             end
         end
-        try disp(['Number of gMCS saved: ' num2str(length(gmcs))]); end
-        try save('tmp.mat', 'gmcs', 'gmcs_time'); end
-        try largest_gmcs = max(cellfun(@length, gmcs)); end
+        try disp(['Number of gMCS saved: ' num2str(length(gmcs))]); catch, end
+        try save('tmp.mat', 'gmcs', 'gmcs_time'); catch, end
+        try largest_gmcs = max(cellfun(@length, gmcs)); catch, end
     end
 end
 n_time = size(gmcs_time, 1);

@@ -111,12 +111,14 @@ if ~isempty(find(Age))
         try
             IndividualParameters.age =str2num((A{1})) ;
             updated = 1;
+        catch
         end
         if updated ==0
             try
                 IndividualParameters.age =A{1} ;
                 updated = 1;
                 
+            catch
             end
         end
     else
@@ -135,10 +137,12 @@ if ~isempty(find(Weight))
         try
             IndividualParameters.bodyWeight =str2num((W{1})) ;
             updated = 1;
+        catch
         end
         if updated ==0
             try
                 IndividualParameters.bodyWeight =W{1} ;
+            catch
             end
         end
     else
@@ -205,10 +209,12 @@ if ~isempty(find(Height))
         try
             IndividualParameters.Height =str2num((H{1})) ;
             updated = 1;
+        catch
         end
         if updated ==0
             try
                 IndividualParameters.Height = H{1} ;
+            catch
             end
         end
     else

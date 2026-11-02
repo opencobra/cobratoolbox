@@ -71,6 +71,7 @@ if 1
                         end
                     end
                     
+                catch
                 end
             end
         end
@@ -138,4 +139,5 @@ try
         idNew = regexprep(tok2,'>','');
     end
     
+catch
 end

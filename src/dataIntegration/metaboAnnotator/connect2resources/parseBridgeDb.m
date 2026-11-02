@@ -142,6 +142,7 @@ for i = startSearch : endSearch
                         end
                     end
                 end
+            catch
             end
         end
     end

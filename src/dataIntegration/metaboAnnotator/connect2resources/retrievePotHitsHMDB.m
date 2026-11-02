@@ -36,6 +36,7 @@ try
     % avoid that the script fails when the connection is down or times out
     url=strcat(['https://hmdb.ca/unearth/q?utf8=%E2%9C%93&query=' metInt '&searcher=metabolites&button=']);
     syst = urlread(url);
+catch
 end
 
 multipleHits = 0;

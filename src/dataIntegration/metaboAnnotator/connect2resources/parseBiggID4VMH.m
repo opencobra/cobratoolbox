@@ -116,4 +116,5 @@ try
     if contains(idNew,'CHEBI:')
         idNew = regexprep(idNew,'CHEBI:','');
     end
+catch
 end

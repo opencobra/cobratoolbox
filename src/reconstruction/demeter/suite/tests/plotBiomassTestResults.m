@@ -167,6 +167,7 @@ if ~isempty(translatedDraftsFolder)
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'Growth_rates_complex_medium_' reconVersion],'-dpng','-r300')
         
+    catch
     end
     
     % report draft models that are unable to grow
@@ -254,6 +255,7 @@ else
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'Growth_rates_Rich_medium_' reconVersion],'-dpng','-r300')
+    catch
     end
     
     data=[];

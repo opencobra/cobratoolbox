@@ -97,6 +97,7 @@ cd(fileparts(which('tutorial_IO.mlx')));
 try
     delete 'ecoli_core_model.mat';
     copyfile(which('ecoli_core_model.mat'), '.');
+catch
 end
 %% PROCEDURE
 % The time that it takes to load a model depends on the file format, the complexity 
@@ -204,6 +205,7 @@ try
     delete('ecoli_core_model.mat');
     delete('Acidaminococcus.xml');
     delete('Acidaminococcus.sbml');
+catch
 end
 cd(currentDir)
 %% REFERENCES

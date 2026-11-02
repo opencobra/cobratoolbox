@@ -95,6 +95,7 @@ for i = startSearch : endSearch
                         
                         a = a + 1;
                     end
+            catch
                 end
             end
     end

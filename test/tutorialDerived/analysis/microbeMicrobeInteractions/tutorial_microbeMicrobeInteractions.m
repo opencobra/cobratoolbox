@@ -21,6 +21,7 @@ initCobraToolbox
 websave('AGORA-master.zip','https://github.com/VirtualMetabolicHuman/AGORA/archive/master.zip')
 try
     unzip('AGORA-master')
+catch
 end
 modPath = [pwd filesep 'AGORA-master' filesep 'CurrentVersion' filesep 'AGORA_1_03' filesep' 'AGORA_1_03_mat'];
 %% 

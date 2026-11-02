@@ -113,4 +113,5 @@ try
         [tok2,rem2] = strtok(rem,'<');
         idNew = regexprep(tok2,'>','');
     end
+catch
 end

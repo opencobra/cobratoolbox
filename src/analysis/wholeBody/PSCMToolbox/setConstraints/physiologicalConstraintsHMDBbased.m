@@ -919,9 +919,11 @@ if ~strcmp(Type,'direct')
          elseif iscell(muscle_weight)
              try
                      muscle_weight =str2num((muscle_weight{1})) ;
+             catch
              end
              try
                  muscle_weight =muscle_weight{1} ;
+             catch
              end
          else
              muscle_weight =muscle_weight{1} ;
@@ -957,9 +959,11 @@ if ~strcmp(Type,'direct')
          elseif iscell(brain_weight)
              try
              brain_weight =str2num((brain_weight{1})) ;
+             catch
              end
              try
              brain_weight =brain_weight{1} ;
+             catch
              end
          else
              brain_weight =brain_weight{1} ;

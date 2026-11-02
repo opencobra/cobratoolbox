@@ -71,6 +71,7 @@ if length(modelList)>1
         computeInternalMetaboliteProduction(translatedDraftsFolder,[propertiesFolder filesep 'Draft'],[reconVersion '_draft'],{},numWorkers)
         try
             producetSNEPlots([propertiesFolder filesep 'Draft'],infoFilePath,[reconVersion '_draft'],customFeatures)
+        catch
         end
         rankFeaturesByIncidence([propertiesFolder filesep 'Draft'],[reconVersion '_draft'])
     end

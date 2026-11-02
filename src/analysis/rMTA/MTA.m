@@ -202,7 +202,7 @@ while i_alpha < num_alphas
                 break;
             end
         end
-        try save('temp_MTA.mat', 'i','i_alpha','TSscore','Vres'); end
+        try save('temp_MTA.mat', 'i','i_alpha','TSscore','Vres'); catch, end
     end
     clear cplex_model
     if printLevel >0
@@ -216,7 +216,7 @@ time = toc(timerVal);
 if printLevel >0
     fprintf('\tTime: %4.2f seconds = %4.2f minutes\n',time,time/60);
 end
-try save('temp_MTA.mat', 'i','i_alpha','TSscore','Vres'); end
+try save('temp_MTA.mat', 'i','i_alpha','TSscore','Vres'); catch, end
 fprintf('-------------------\n');
 
 %% ---- STEP 2 : Return to gene size ----

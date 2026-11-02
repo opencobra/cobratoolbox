@@ -134,6 +134,7 @@ if ~isempty(translatedDraftsFolder)
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'ATP_complex_medium_' reconVersion],'-dpng','-r300')
         
+    catch
     end
     
     % report draft models that produce too much ATP
@@ -194,6 +195,7 @@ else
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'ATP_complex_medium_' reconVersion],'-dpng','-r300')
+    catch
     end
     
     % report refined models that produce too much ATP

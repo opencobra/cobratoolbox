@@ -71,6 +71,7 @@ function generateSystemConfigReport()
         tic;
         initCobraToolbox;
         toc;
+    catch
     end
 
     % print a summary of the MATLAB installation
@@ -85,6 +86,7 @@ function generateSystemConfigReport()
         [~, tmp_result_shellVersion] = system([shell ' --version']);
         result_shellVersion = strtrim(tmp_result_shellVersion);
         fprintf(' > %-20s:        %s\n', 'Version of shell', result_shellVersion);
+    catch
     end
 
     % output the architecture information
@@ -112,6 +114,7 @@ function generateSystemConfigReport()
     % retrieve the system PATH
     try
         fprintf(fileID, '\n > System PATH:\n%s\n\n', getenv('PATH'));
+    catch
     end
 
     % print out the MATLAB path to the log file

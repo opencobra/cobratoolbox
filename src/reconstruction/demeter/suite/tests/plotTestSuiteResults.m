@@ -104,6 +104,7 @@ for j=1:length(fields)
             set(gca,'TickLabelInterpreter','none')
             set(gca, 'FontSize', 12)
             print(fields{j},'-dpng','-r300')
+        catch
         end
     end
 end

@@ -120,6 +120,7 @@ else
     tic
     try
         standardisedRxns = obtainAtomMappingsRDT(model, molFileDir, outputDir, maxTime, isChemaxonInstalled);
+    catch
     end
     toc
 end
@@ -367,6 +368,7 @@ N = alternativeModel.S(mbool, rbool);
 
 try
     changeCobraSolver('gurobi6', 'milp');
+catch
 end
 D = decomposeMoietyVectors(L, N);
 %% 

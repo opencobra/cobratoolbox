@@ -113,4 +113,5 @@ try
     idNew = regexprep(tok,'https://pubchem.ncbi.nlm.nih.gov/compound/','');
     idNew = regexprep(idNew,'\W$','');
     
+catch
 end

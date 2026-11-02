@@ -117,6 +117,7 @@ for i = startSearch : endSearch
                             b = b + 1;
                         end
                     end
+                catch
                 end
             end
         end
@@ -198,6 +199,7 @@ for i = startSearch : endSearch
                 end
                 
             end
+        catch
         end
         %  end
     end
@@ -266,4 +268,5 @@ try
         idNew = regexprep(tok,'/\W$','');
     end
     
+catch
 end
