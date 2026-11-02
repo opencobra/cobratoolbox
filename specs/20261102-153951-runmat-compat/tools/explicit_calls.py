@@ -13,7 +13,8 @@ A file is left unchanged (SKIP) when it could make `name` a variable:
   output of a function declaration in the file;
 - the file calls `load` without an output, or `eval`, `evalin`, `evalc` or `assignin`.
 An occurrence is rewritten only when it is a bare use: not followed by `(`, `{`, `.` or `=`, not
-after `.`, `@` or `?`, not in command syntax (`name arg`), and not on a `function` line.
+after `.`, `@` or `?`, not in command syntax (`name arg`, or an argument as in `clear name`), and
+not on a `function` line.
 
 Printed per file: OK <path> <count>, SAME <path>, or SKIP <path> <reason>.
 """
@@ -25,6 +26,9 @@ from explicit_separators import Skip, lex  # noqa: E402
 
 STATEMENT_BREAK = {"newline", ",", ";", "continuation"}
 DYNAMIC = {"eval", "evalin", "evalc", "assignin"}
+KEYWORDS = {"if", "elseif", "else", "while", "for", "parfor", "switch", "case", "otherwise", "try",
+            "catch", "end", "return", "break", "continue", "function", "global", "persistent",
+            "spmd", "classdef", "methods", "properties", "events", "enumeration", "arguments"}
 
 
 def statements(tokens):
@@ -91,11 +95,22 @@ def file_blocker(tokens, stmts, name):
     return None
 
 
+def is_command_syntax(tokens, stmt):
+    """True when the statement is `word arg ...`: its arguments are text, not names."""
+    if len(stmt) < 2 or tokens[stmt[0]][0] != "ident" or tokens[stmt[0]][1] in KEYWORDS:
+        return False
+    first = stmt[0]
+    spaced = first + 1 < len(tokens) and tokens[first + 1][0] == "space"
+    return spaced and tokens[stmt[1]][0] in ("ident", "number", "string")
+
+
 def bare_occurrences(tokens, stmts, name):
     found = []
     for stmt in stmts:
         if tokens[stmt[0]][1] == "function":
             continue
+        if is_command_syntax(tokens, stmt) and tokens[stmt[0]][1] != name:
+            continue  # `name` is an argument of command syntax (`clear name`)
         for p, k in enumerate(stmt):
             if tokens[k][0] != "ident" or tokens[k][1] != name:
                 continue

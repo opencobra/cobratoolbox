@@ -68,7 +68,7 @@ excluding `.gitmodules` paths, `external/` and `deprecated/`.
 
 ## Phase 6: Polish & cross-cutting verification
 
-- [ ] T030 Run MATLAB `testAll` (`COBRA_CI=1`) on the finished branch; save `$F/reports/testAll-after.csv`; compare with `$F/baseline/testAll-before.csv` by test name and status (SC-003). Any difference blocks completion and is traced to its category commit.
+- [X] T030 Run MATLAB `testAll` (`COBRA_CI=1`) on the finished branch; save `$F/reports/testAll-after.csv`; compare with `$F/baseline/testAll-before.csv` by test name and status (SC-003). Any difference blocks completion and is traced to its category commit.
 - [ ] T031 [P] Run an analyzer snapshot of all changed files and compare it with `$F/baseline/analyzer-before.json` (SC-002)
 - [ ] T032 [P] Check that `git diff --stat develop` touches no path under `external/`, `deprecated/` or a `.gitmodules` path (FR-007, FR-013)
 - [ ] T033 Update the quickstart with the final commands, write the implementation receipt (constitution ledger), and update `human-loop.md`

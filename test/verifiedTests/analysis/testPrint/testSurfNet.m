@@ -188,7 +188,7 @@ surfNet(model2, [], [], fluxMatrix);
 fprintf('Test error messages ...\n')
 % error messages
 % no initialized model exists
-clear surfNet()
+clear surfNet
 try
     surfNet();
     assert(false)
