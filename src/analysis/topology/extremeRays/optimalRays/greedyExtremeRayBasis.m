@@ -77,6 +77,9 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .maxElementsForSpectrum - largest `numel` of the operative matrix for which the dense spectrum is computed to derive the accuracy target and assess the regime; above it the target falls back to `eps*normest` and the regime is `'notAssessed'` (default = 1e8)
 %                  * .feasTol - may TIGHTEN ray acceptance below the derived accuracy target; it can no longer loosen it above that target (default = 1e-6, which no longer loosens)
 %                  * .solver - LP solver nominated for the duration of this call, restored afterwards on every exit path (default = `'gurobi'`, which returns exact vertices; falls back if it is not installed). Set to `''` to use the session's solver unchanged
+%                  * .initialBasis - `k x m` non-negative rays to resume from, in the caller's orientation (`m x k` when `leftRight` is `'right'`), typically a saved checkpoint. Each row is re-judged by the acceptance rule (non-negative, per-row residual within `acceptanceTarget`, jointly independent); only the rows that pass seed the search, and a restart resets to them rather than to an empty basis (default = empty, no seed)
+%                  * .checkpointFile - MAT-file to which the accepted rays are written while the search runs and on EVERY exit path: normal return, time budget, error and interrupt. Holds `Zpos` (operative orientation, `nBases x nVar`), `nBases`, `raysExpected`, `elapsedTime`, `acceptanceTarget`, `operativeFingerprint` and `final`. Resume with `param.initialBasis = Zpos` in `'left'` mode, or `Zpos'` in `'right'` mode (default = empty, no checkpoint)
+%                  * .checkpointInterval - seconds between checkpoint writes during the search; a write happens after an acceptance once this much time has passed since the last one (default = 300)
 %
 % OUTPUTS:
 %    Zpos:       non-negative linear basis for the left (right) nullspace of N (internal = 1) or S (internal = 0)
@@ -117,6 +120,8 @@ function [Zpos, Z, status] = greedyExtremeRayBasis(model, param)
 %                  * .solverRequested - the solver nominated by `param.solver`
 %                  * .solverUsed - the solver actually used, which differs if the nominated one was unavailable
 %                  * .solverChanged - whether this call switched solver and restored it afterwards
+%                  * .raysSeeded - rows of `param.initialBasis` that passed re-judgement and seeded the search (0 without a seed)
+%                  * .checkpointFile - the checkpoint file written, or empty
 %
 %                In the `'badlyScaled'` outcome it additionally carries the diagnosis:
 %
@@ -249,6 +254,21 @@ if ~isfield(param,'solverSettings')
     % Caller override for the built-in tuned sets. Empty means "use whatever the tuned
     % set for the active solver provides, or the solver's defaults if there is none".
     param.solverSettings = struct();
+end
+
+% Resume and checkpoint (feature 089 large-model-solver-speed). Both are inert when
+% absent. On a whole-body model a 10 h search reached 2206 of 2212 rays and stopped on
+% its time budget, and the accepted rays were lost because nothing was written; a
+% partial basis is therefore saved throughout the search and on every exit path, and a
+% later call can resume from it.
+if ~isfield(param,'initialBasis')
+    param.initialBasis = [];
+end
+if ~isfield(param,'checkpointFile')
+    param.checkpointFile = '';
+end
+if ~isfield(param,'checkpointInterval')
+    param.checkpointInterval = 300;
 end
 
 
@@ -409,6 +429,66 @@ Zpos=sparse(nVar-rankS,nVar);
 nBases=0;
 nTry=0;
 t1 = tic;
+
+% Seed from a supplied partial basis. Every row is judged again by the rule a candidate
+% from the LP must pass, so a seed cannot admit what the search itself would reject: a
+% stale or foreign checkpoint loses its failing rows rather than corrupting the basis.
+raysSeeded = 0;
+seedMask = false(1, nVar);
+if ~isempty(param.initialBasis)
+    seed = sparse(param.initialBasis);
+    if strcmp(param.leftRight, 'right')
+        seed = seed';
+    end
+    if size(seed, 2) ~= nVar
+        error('greedyExtremeRayBasis:initialBasisSize', ...
+            'param.initialBasis has %d columns; the operative matrix has %d rows.', ...
+            size(seed, 2), nVar);
+    end
+    keep = full(all(seed >= 0, 2)) & full(any(seed ~= 0, 2));
+    keep = keep & full(max(abs(seed*model.S), [], 2)) <= acceptanceTarget;
+    seed = seed(keep, :);
+    if ~isempty(seed)
+        seedCols = full(any(seed ~= 0, 1));
+        if getRankLUSOL(seed(:, seedCols)) == size(seed, 1)
+            accepted = true(size(seed, 1), 1);
+        else
+            % dependent rows: keep a maximal independent subset, in the given order
+            accepted = false(size(seed, 1), 1);
+            for iSeed = 1:size(seed, 1)
+                trial = seed([find(accepted); iSeed], :);
+                trialCols = full(any(trial ~= 0, 1));
+                accepted(iSeed) = getRankLUSOL(trial(:, trialCols)) == nnz(accepted) + 1;
+            end
+        end
+        seed = seed(accepted, :);
+        seed = seed(1:min(size(seed, 1), nVar - rankS), :);
+        raysSeeded = size(seed, 1);
+        Zpos(1:raysSeeded, :) = seed;
+        nBases = raysSeeded;
+        seedMask = full(any(seed ~= 0, 1));
+    end
+    if param.printLevel > 0
+        fprintf('greedyExtremeRayBasis: %d of %d supplied rays seed the search (%d of %d required).\n', ...
+            raysSeeded, size(param.initialBasis, 1 + strcmp(param.leftRight, 'right')), ...
+            raysSeeded, nVar - rankS);
+    end
+end
+seedZpos = Zpos;
+
+% Checkpoint state lives in a handle object so that the cleanup, which runs on error
+% and on interrupt as well as on return, writes the rays accepted up to that moment.
+checkpointState = containers.Map('KeyType', 'char', 'ValueType', 'any');
+checkpointState('Zpos') = Zpos(1:nBases, :);
+checkpointState('done') = false;
+tCheckpoint = tic;
+if ~isempty(param.checkpointFile)
+    checkpointMeta = struct('raysExpected', nVar - rankS, 'acceptanceTarget', acceptanceTarget, ...
+        'operativeFingerprint', [nVar, nRxn, nnz(model.S), full(sum(abs(model.S(:))))], ...
+        'leftRight', param.leftRight, 't1', t1);
+    writeCheckpoint(param.checkpointFile, Zpos(1:nBases, :), checkpointMeta, false);
+    checkpointCleanup = onCleanup(@() finalCheckpoint(param.checkpointFile, checkpointState, checkpointMeta));
+end
 % t2 times the search for the CURRENT basis vector. It must be initialised here, not
 % only when a ray is first accepted: a run in which no ray is ever accepted would
 % otherwise reach toc(t2) with t2 undefined.
@@ -435,7 +515,7 @@ nTargetedObjectives = 0;
 % exhausting the per-basis budget the accumulated basis is DISCARDED and the search
 % restarts from fresh randomness, keeping the best basis found across restarts.
 bestZpos = Zpos;
-bestNBases = 0;
+bestNBases = nBases;
 nRestarts = 0;
 while nBases < (nVar-rankS)
     % Budgets are checked at the TOP of the loop so they govern every iteration,
@@ -461,10 +541,10 @@ while nBases < (nVar-rankS)
                 num2str(param.maxNewBasisTime) ' s at ' int2str(nBases) ' of ' ...
                 int2str(nVar-rankS) ' rays; restarting (' int2str(nRestarts) ').']);
         end
-        Zpos = sparse(nVar-rankS, nVar);
-        nBases = 0;
+        Zpos = seedZpos;
+        nBases = raysSeeded;
         nfail = 0;
-        nonZeroColumnsBool = false(1, nVar);
+        nonZeroColumnsBool = seedMask;
         t2 = tic;
         continue
     end
@@ -580,6 +660,13 @@ while nBases < (nVar-rankS)
     if rankB==(nBases+1)
         t2 = tic;
         nBases=nBases+1;
+        if ~isempty(param.checkpointFile)
+            checkpointState('Zpos') = Zpos(1:nBases, :);
+            if toc(tCheckpoint) >= param.checkpointInterval
+                writeCheckpoint(param.checkpointFile, Zpos(1:nBases, :), checkpointMeta, false);
+                tCheckpoint = tic;
+            end
+        end
         if param.printLevel>1
             fprintf('%s\n',[int2str(nBases) ' of ' int2str(nVar-rankS) ' linearly independent kernel rays, at time ' num2str(round(toc)) ', with ' num2str(nfail+1) ' attempt(s).']);
         end
@@ -658,8 +745,8 @@ if nBases > 0
 else
     residualAbsolute = 0;
 end
-normZpos = norm(full(Zpos),'fro');
-normSop = norm(full(model.S),'fro');
+normZpos = norm(Zpos,'fro');
+normSop = norm(model.S,'fro');
 if normZpos > 0 && normSop > 0
     residualScaled = residualAbsolute/(normZpos*normSop);
 else
@@ -780,6 +867,13 @@ status.shortfallKind = shortfallKind;
 status.attainableDimension = attainableDimension;
 status.attainableDimensionAssessed = attainableDimensionAssessed;
 status.elapsedTime = toc(t1);
+status.raysSeeded = raysSeeded;
+status.checkpointFile = param.checkpointFile;
+if ~isempty(param.checkpointFile)
+    % the returned basis, after verification, is the final checkpoint
+    writeCheckpoint(param.checkpointFile, Zpos, checkpointMeta, true);
+    checkpointState('done') = true; %#ok<NASGU> handle object, read by the cleanup
+end
 switch status.outcome
     case 'complete'
         status.message = sprintf('Complete basis: %d of %d rays, scaled residual %g.', ...
@@ -829,7 +923,7 @@ nominated = CobraSolverState.getSolver('LP');
 objectiveHash = sprintf('%.17g|', obj(1:min(8, numel(obj))));
 objectiveHash = sprintf('%s n=%d sum=%.17g', objectiveHash, numel(obj), full(sum(obj)));
 
-normSop = norm(full(model.S), 'fro');
+normSop = norm(model.S, 'fro');
 solvers = param.compareSolvers;
 if ~any(strcmp(solvers, nominated))
     solvers = [solvers(:)', {nominated}];
@@ -896,6 +990,36 @@ end
 
 % restore the solver the caller had active, so the comparison leaves no trace
 changeCobraSolver(nominated, 'LP', 0);
+
+
+function writeCheckpoint(file, Zpos, meta, final)
+% Write the accepted rays atomically: to a temporary file first, then moved into place,
+% so an interrupt during the write never leaves a truncated checkpoint behind.
+nBases = size(Zpos, 1);
+raysExpected = meta.raysExpected;
+acceptanceTarget = meta.acceptanceTarget;
+operativeFingerprint = meta.operativeFingerprint;
+leftRight = meta.leftRight;
+elapsedTime = toc(meta.t1);
+savedUtc = char(datetime('now', 'TimeZone', 'UTC', 'Format', 'yyyy-MM-dd''T''HH:mm:ss''Z'''));
+tmp = [file '.tmp.mat'];
+save(tmp, 'Zpos', 'nBases', 'raysExpected', 'acceptanceTarget', 'operativeFingerprint', ...
+    'leftRight', 'elapsedTime', 'savedUtc', 'final', '-v7.3');
+movefile(tmp, file, 'f');
+
+
+function finalCheckpoint(file, state, meta)
+% onCleanup target: on error or interrupt, write the rays accepted so far. A normal
+% return has already written the verified basis and marked the state done.
+if state('done')
+    return
+end
+try
+    writeCheckpoint(file, state('Zpos'), meta, false);
+catch ME
+    warning('greedyExtremeRayBasis:checkpointFailed', ...
+        'Could not write the checkpoint %s on exit: %s', file, ME.message);
+end
 
 
 function x = untruncatedRay(sol, nVar)
