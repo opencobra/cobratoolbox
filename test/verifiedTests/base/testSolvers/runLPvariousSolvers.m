@@ -49,7 +49,7 @@ for k = 1:length(solverPkgs)
 
     fprintf('   Testing testDifferentLPSolvers using %s ... ', solverPkgs{k});
 
-    if strcmp(solver, 'opti') && ispc
+    if strcmp(solver, 'opti') && ispc()
         % clp
         if exist('opts', 'var')
             clear opts
@@ -219,7 +219,7 @@ for k = 1:length(solverPkgs)
     end
 
     % solver with Windows-only compatibility
-    if ispc && strcmp(solver, 'lp_solve')
+    if ispc() && strcmp(solver, 'lp_solve')
         solverOK = changeCobraSolver(solver, 'LP', 0);
         if solverOK
             solution{i} = solveCobraLP(model);

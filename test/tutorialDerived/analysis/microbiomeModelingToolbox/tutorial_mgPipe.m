@@ -34,7 +34,7 @@
 % and Statistics and Machine Learning Toolbox add-ons in MATLAB.
 %% Initialize the COBRA Toolbox
 
-initCobraToolbox
+initCobraToolbox()
 %% 
 % Set a solver (recommended: ibm_cplex)
 

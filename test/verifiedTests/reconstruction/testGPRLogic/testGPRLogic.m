@@ -73,7 +73,7 @@ assert(isempty(clausesToCheck));
 
 %and now, test the evaluation of Nodes.
 assignment = containers.Map({'1','2','3','4','5','6'},{true,true,false,false,false,false});
-fp = FormulaParser;
+fp = FormulaParser();
 Rule5 = fp.parseFormula(modelNorm.rules{5});
 assert(~Rule5.evaluate(assignment))
 

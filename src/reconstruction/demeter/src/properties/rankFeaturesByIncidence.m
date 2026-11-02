@@ -24,7 +24,7 @@ analyzedFiles={
 mkdir([propertiesFolder filesep 'Ranked_features'])
 
 % load database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 for i=1:length(analyzedFiles)
     data = readInputTableForPipeline([propertiesFolder filesep analyzedFiles{i,2}]);

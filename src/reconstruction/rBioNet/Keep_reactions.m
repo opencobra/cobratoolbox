@@ -100,7 +100,7 @@ function Yes_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = 1;
 guidata(hObject,handles)
-uiresume
+uiresume()
 end
 
 % --- Executes on button press in No.
@@ -110,7 +110,7 @@ function No_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = 2;
 guidata(hObject,handles)
-uiresume
+uiresume()
 end
 
 % --- Executes on button press in Cancel.
@@ -120,7 +120,7 @@ function Cancel_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = 0;
 guidata(hObject,handles)
-uiresume
+uiresume()
 end
 
 
@@ -131,5 +131,5 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume
+uiresume()
 end

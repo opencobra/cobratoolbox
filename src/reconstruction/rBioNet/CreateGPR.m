@@ -233,7 +233,7 @@ else
 end
 guidata(hObject,handles)
 
-uiresume
+uiresume()
 end
 
 % --- Executes on button press in group_addgene.
@@ -267,7 +267,7 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume
+uiresume()
 end
 
 

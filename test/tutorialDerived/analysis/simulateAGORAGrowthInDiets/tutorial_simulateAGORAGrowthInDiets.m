@@ -5,7 +5,7 @@
 % conditions.
 %% Initialize the COBRA Toolbox
 
-initCobraToolbox
+initCobraToolbox()
 %% Prepare input data and models
 % change directory to where the tutorial is located
 

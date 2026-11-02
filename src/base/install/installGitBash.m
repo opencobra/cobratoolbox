@@ -9,7 +9,7 @@ function installGitBash()
     global CBTDIR
     global gitBashVersion
 
-    if ispc
+    if ispc()
         % define the name of the temporary folder
         tmpFolder = '.tmp';
 

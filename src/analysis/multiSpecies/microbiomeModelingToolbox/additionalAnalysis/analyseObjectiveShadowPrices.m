@@ -69,7 +69,7 @@ mkdir(resultsFolder)
 global CBT_LP_SOLVER
 solver = CBT_LP_SOLVER;
 if isempty(solver)
-    initCobraToolbox;
+    initCobraToolbox();
     solver = CBT_LP_SOLVER;
 end
 % initialize parallel pool

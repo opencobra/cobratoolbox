@@ -12,7 +12,7 @@
 % and Statistics and Machine Learning Toolbox add-ons in MATLAB.
 %% Initialize the COBRA Toolbox
 
-initCobraToolbox
+initCobraToolbox()
 %% Prepare input data and models
 % We will use the AGORA resource (Magnusdottir et al., Nat Biotechnol. 2017 
 % Jan;35(1):81-89) in this tutorial. AGORA version 1.03 is available at https://github.com/VirtualMetabolicHuman/AGORA. 

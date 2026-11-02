@@ -12,7 +12,7 @@ function saveDir = setResultPath(solutionDir)
 %    saveDir:        path to the created common results folder
 
 % Set name
-if ispc % Check if os is windows or non-windows
+if ispc() % Check if os is windows or non-windows
     topDir = char(regexp(solutionDir,'.*(?=\\)','match'));
     folder = char(regexp(solutionDir,'[^\\]+$','match'));
 else

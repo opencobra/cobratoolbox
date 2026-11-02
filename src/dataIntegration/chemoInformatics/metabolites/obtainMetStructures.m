@@ -79,7 +79,7 @@ allSources = {'chebi'; 'drugbank'; 'hmdb'; 'inchi'; 'kegg'; 'lipidmaps'; 'pubche
 
 
 % Check openbabel installation
-if isunix || ispc 
+if isunix || ispc() 
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';

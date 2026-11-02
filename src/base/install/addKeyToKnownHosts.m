@@ -25,7 +25,7 @@ function keyAdded = addKeyToKnownHosts(siteName)
     [status_keyscan, result_keyscan] = system('ssh-keyscan');
 
     % user directory
-    if ispc
+    if ispc()
         homeDir = getenv('userprofile');
     else
         homeDir = getenv('HOME');

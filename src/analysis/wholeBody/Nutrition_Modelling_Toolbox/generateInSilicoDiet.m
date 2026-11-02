@@ -212,7 +212,7 @@ if analyseMacros
     
     tiledlayout(5,1);
     % Initialise the axis for the figure
-    ax1 = nexttile;
+    ax1 = nexttile();
     % Create the bar chart
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), lipids);
     % Add the title
@@ -222,25 +222,25 @@ if analyseMacros
     % Add figure label
     text(0.025,ax1.YAxis.Limits(2)+0.1*ax1.YAxis.Limits(2), 'A)')
 
-    ax2 = nexttile;
+    ax2 = nexttile();
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), carbohydrates);
     title(ax2, 'Comparison of carbohydrates between the original and in silico diets')
     ylabel(ax2, 'Carbohydrates (g)')
     text(0.025,ax2.YAxis.Limits(2)+0.2*ax2.YAxis.Limits(2), 'B)')
 
-    ax3 = nexttile;
+    ax3 = nexttile();
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), protein);
     title(ax3, 'Comparison of protein between the original and in silico diets')
     ylabel(ax3, 'Protein (g)')
     text(0.025,ax3.YAxis.Limits(2)+0.1*ax3.YAxis.Limits(2), 'C)')
 
-    ax4 = nexttile;
+    ax4 = nexttile();
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), sugars);
     title(ax4, 'Comparison of sugars between the original and in silico diets')
     ylabel(ax4, 'Sugar (g)')
     text(0.025,ax4.YAxis.Limits(2)+0.1*ax4.YAxis.Limits(2), 'D)')
 
-    ax5 = nexttile;
+    ax5 = nexttile();
     bar(categorical(dietMacroLabel.Properties.VariableNames(2:end)), energy);
     title(ax5, 'Comparison of energy between the original and in silico diets')
     ylabel(ax5, 'Energy (kcal)')

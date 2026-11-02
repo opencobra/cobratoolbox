@@ -41,7 +41,7 @@ else
     cmd = ['python2 ' fullpath inchi2gv '.py -i '];
 end
 
-if ~ispc
+if ~ispc()
     [rval, group_def] = system([cmd, '"', inchi, '"']);
 else
     [rval, group_def] = system([cmd, inchi]);

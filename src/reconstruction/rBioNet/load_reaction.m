@@ -214,7 +214,7 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume;
+uiresume();
 end
 
 
@@ -229,7 +229,7 @@ if S(1) == 1
 
     handles.output = rxnline;
     guidata(hObject,handles)
-    uiresume;
+    uiresume();
 end
 end
 
@@ -242,7 +242,7 @@ function act_cancel_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = [];
 guidata(hObject,handles);
-uiresume;
+uiresume();
 end
 
 

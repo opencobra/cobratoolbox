@@ -20,7 +20,7 @@ cd(fileDir);
 prepareTest('needsLP', true, 'needsMILP', true);
 
 % convert the model
-model = createToyModelForMDFBA;
+model = createToyModelForMDFBA();
 
 solverPkgs = {'gurobi', 'tomlab_cplex', 'ibm_cplex'};
 tolerance = 1e-6;

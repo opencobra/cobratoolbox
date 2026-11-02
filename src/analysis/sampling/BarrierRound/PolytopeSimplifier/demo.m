@@ -1,6 +1,6 @@
 % Demo script showing how to find an interior point and normalize a linear
 % program with the PolytopeSimplifier ConvexProgram interface
-configPolytopeSimplifier;
+configPolytopeSimplifier();
 
 loadModular('Problem');
 P = loadProblem('LPnetlib@"lpi_mondou2"');

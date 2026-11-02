@@ -53,7 +53,7 @@ for i = 1:length(target_cids)
         continue
     end
     
-    if ispc
+    if ispc()
         [success, smiles] = system(['echo ' inchi ' | ' babel_cmd ' -iinchi -osmi']);
     else
         [success, smiles] = system(['echo "' inchi '" | ' babel_cmd ' -iinchi -osmi']);
@@ -68,7 +68,7 @@ for i = 1:length(target_cids)
         
     fprintf('Using cxcalc on C%05d: %s\n', cid, structure);
 
-    if ispc
+    if ispc()
         cmd = [cxcalc_cmd ' "' structure '" pka -a ' num2str(n_pkas) ' -b ' num2str(n_pkas) ' majorms -M true --pH 7'];
     else
         cmd = ['echo "' structure '" | ' cxcalc_cmd ' pka -a ' num2str(n_pkas) ' -b ' num2str(n_pkas) ' majorms -M true --pH 7'];
@@ -107,7 +107,7 @@ for i = 1:length(target_cids)
             majorms_smiles = smiles;
         end
 
-        if ispc
+        if ispc()
             cmd = ['echo ' majorms_smiles ' | babel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];
         else
             cmd = ['echo "' majorms_smiles '" | babel -ismiles -oinchi ---errorlevel 0 -xFT/noiso'];

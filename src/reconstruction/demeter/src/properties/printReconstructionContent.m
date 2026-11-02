@@ -17,7 +17,7 @@ function printReconstructionContent(modelFolder, propertiesFolder, reconVersion,
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 solver = CBT_LP_SOLVER;
 
@@ -79,7 +79,7 @@ if ~isfile([propertiesFolder filesep 'Reactions_' reconVersion '.txt']) && ~isfi
     end
     
     % load VMH database
-    database=loadVMHDatabase;
+    database=loadVMHDatabase();
     
     % print out the unique reactions and metabolites of the resource-only if it
     % used VMH nomenclature

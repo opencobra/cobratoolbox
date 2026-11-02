@@ -91,7 +91,7 @@ updateeditfield(handles)
 end
 
 function popupmenu_propertylist_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+if ispc() && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 end
@@ -101,7 +101,7 @@ function edit_prop_Callback(hObject, eventdata, handles)
 end
 
 function edit_prop_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject, 'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+if ispc() && isequal(get(hObject, 'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 end
@@ -115,7 +115,7 @@ updateeditfield(handles)
 end
 
 function popupmenu_metab_CreateFcn(hObject, eventdata, handles)
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+if ispc() && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 end

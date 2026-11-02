@@ -34,7 +34,7 @@ if ismac
     setenv('PATH', [getenv('PATH') ':/usr/local/bin']); % Ensure Docker is found
 elseif isunix
     vOS = 'unix';
-elseif ispc
+elseif ispc()
     vOS = 'win';
 else
     error('Unsupported operating system.');

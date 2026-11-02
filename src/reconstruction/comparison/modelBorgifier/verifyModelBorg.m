@@ -58,7 +58,7 @@ nMets = length(Model.mets);
 fieldNames = fieldnames(Model);
 
 % Get desired field names.
-fields = TmodelFields ;
+fields = TmodelFields() ;
 Field.rxn = fields{1};
 Field.rNum = fields{2};
 Field.met = fields{3};

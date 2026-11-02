@@ -117,7 +117,7 @@ function act_ok_Callback(hObject, eventdata, handles)
 handles.output = get(handles.group,'String');
 
 guidata(hObject,handles);
-uiresume;
+uiresume();
 end
 
 % --- Executes on button press in act_cancel.
@@ -125,7 +125,7 @@ function act_cancel_Callback(hObject, eventdata, handles)
 % hObject    handle to act_cancel (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-uiresume;
+uiresume();
 end
 
 % --- Executes when user attempts to close figure1.
@@ -135,5 +135,5 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume;
+uiresume();
 end

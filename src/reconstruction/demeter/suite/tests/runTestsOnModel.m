@@ -63,7 +63,7 @@ for k=1:length(fields)
 end
 
 % Load reaction and metabolite database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 try
 biomassReaction = model.rxns{strncmp('bio', model.rxns, 3)};
 

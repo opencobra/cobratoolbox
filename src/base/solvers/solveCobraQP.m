@@ -523,7 +523,7 @@ switch solver
         
         
         % generate set of default parameters for this solver
-        options = pdcoSet;
+        options = pdcoSet();
         options.Method = 22;
         
         % set the printLevel

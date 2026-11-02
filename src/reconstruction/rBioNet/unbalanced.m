@@ -82,7 +82,7 @@ set(handles.uitable1,'data',handles.data(1:3,:));
 
 % Update handles structure
 guidata(hObject, handles);
-uiwait
+uiwait()
 end
 % UIWAIT makes unbalanced wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -107,7 +107,7 @@ function unbal_close_Callback(hObject, eventdata, handles)
 % hObject    handle to unbal_close (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-uiresume
+uiresume()
 end
 
 
@@ -118,7 +118,7 @@ function button_continue_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = 1;
 guidata(hObject,handles)
-uiresume
+uiresume()
 end
 
 
@@ -129,7 +129,7 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume
+uiresume()
 end
 %delete(hObject);
 
@@ -157,7 +157,7 @@ function listbox1_CreateFcn(hObject, eventdata, handles)
 
 % Hint: listbox controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+if ispc() && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 end

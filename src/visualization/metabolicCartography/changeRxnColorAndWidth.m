@@ -37,7 +37,7 @@ function [newMap] = changeRxnColorAndWidth(map, rxnList, color, areaWidth)
     end
 
     newMap = map;
-    colors = createColorsMap;
+    colors = createColorsMap();
 
     index = find(ismember(newMap.rxnName, rxnList));
     for j = index'

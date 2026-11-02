@@ -17,7 +17,7 @@ function drawSecPot(dietPath, rxnmax, startMet, levels, cutoff)
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 microbiota_model=load(dietPath);

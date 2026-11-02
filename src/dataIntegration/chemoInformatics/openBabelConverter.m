@@ -44,7 +44,7 @@ else
 end
 
 % Check openbabel installation
-if isunix || ispc
+if isunix || ispc()
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';

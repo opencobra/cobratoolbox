@@ -28,7 +28,7 @@ if ~exist('KEGGBlackList','var') || isempty(KEGGBlackList)
 end
 
 KEGGReactionList = importdata(KEGGFilename);
-KEGG = createModel;
+KEGG = createModel();
 cnt=1;
 cnti=1;
 showprogress(0,'KEGG reaction list ...');

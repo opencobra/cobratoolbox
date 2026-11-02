@@ -14,7 +14,7 @@
 % Moreover, input files with abundance data from other source may fail due
 % to differences in formatting and nomenclature.
 
-if ispc && exist('AGORA_infoFile.xlsx','file')
+if ispc() && exist('AGORA_infoFile.xlsx','file')
     % Read in the info file with all AGORA strains and taxa
     [~, infoFile, ~] = xlsread('AGORA_infoFile.xlsx');
     

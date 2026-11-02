@@ -50,7 +50,7 @@ end
 nModels = length(modelNames) ;
 
 % Get field names.
-fields = TmodelFields ;
+fields = TmodelFields() ;
 % Reaction related cell field .
 rxnFieldNames = fields{1} ;
 % Metabolite related cell field names.

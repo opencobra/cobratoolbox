@@ -63,7 +63,7 @@ if ~exist(fullfile(cobra_binary_dir, 'CplexFVA.class'), 'file')
   
   curr_dir= pwd();
   cd(fullfile(CBTDIR, 'src', 'analysis', 'FVA'));
-  if ispc
+  if ispc()
      status= system(sprintf('javac -cp "%s" -target %s -source %s CplexFVA.java CplexFVARunnable.java SignedTaskCounter.java',...
       cplex_jar, javaVer, javaVer));   
   else
@@ -112,7 +112,7 @@ cgp.writeParam(prmfile);
 
 javacmd= fullfile(char(java.lang.System.getProperty('java.home')), 'bin', 'java');
 cplex_bin= fullfile(cplex_root, 'bin', arch);
-if ispc
+if ispc()
   [status, cmdout]= system(sprintf(...
     '"%s" -Djava.library.path="%s" -cp "%s;%s" CplexFVA %s %s %s', javacmd, cplex_bin, cplex_jar,...
     cobra_binary_dir, lpfile, prmfile, sprintf('%d ', rxnsIdx)));

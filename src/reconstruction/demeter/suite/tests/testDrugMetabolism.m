@@ -37,7 +37,7 @@ function [TruePositives, FalseNegatives] = testDrugMetabolism(model, microbeID, 
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % read drug metabolism table

@@ -74,7 +74,7 @@ secretionFluxes(1,2:length(allExch)+1) = allExch;
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 solver = CBT_LP_SOLVER;
 

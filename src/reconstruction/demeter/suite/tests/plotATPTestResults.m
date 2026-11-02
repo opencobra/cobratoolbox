@@ -59,7 +59,7 @@ cnt=1;
 % initialize COBRA Toolbox and parallel pool
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 solver = CBT_LP_SOLVER;
 

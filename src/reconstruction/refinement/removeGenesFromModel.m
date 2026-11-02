@@ -100,7 +100,7 @@ end
 % convert the literals to strings
 geneLiterals = arrayfun(@num2str, pos(pres),'uniform',0);
 
-fp = FormulaParser;
+fp = FormulaParser();
 % Now, update the rules field.
 for i = 1:numel(relreacs)
     head = fp.parseFormula(model.rules{relreacs(i)});

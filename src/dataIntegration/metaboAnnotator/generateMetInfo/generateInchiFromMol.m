@@ -88,7 +88,7 @@ for i = 1 :length(files)
         if isempty(metabolite_structure.(match{1}).inchiString) || length(find(isnan(metabolite_structure.(match{1}).inchiString)))>0
             if ismac
                 [status, result]=system(strcat('/usr/local/bin/obabel',[space folder filesep files(i).name],' -o inchi -h' ));
-            elseif ispc % pc
+            elseif ispc() % pc
                 [status, result]=system(strcat('obabel',[space folder filesep files(i).name],' -o inchi -h' ));
             elseif isunix
                 [status, result]=system(strcat('obabel',[space folder filesep files(i).name],' -o inchi -h' ));

@@ -776,7 +776,7 @@ function fig = createHistogram(metrics, taxon)
 fig = figure('Position',[571,171,809,682]);
 tiledlayout(2,1);
 % Initialise figure 1
-ax1 = nexttile;
+ax1 = nexttile();
 
 % Plot the histogram
 % Adjust coverage of 1 by removing 0.005 so it can be properly be displayed
@@ -795,7 +795,7 @@ xlabel('Fraction')
 axes(1) = ax1;
 
 % Initialise figure 2
-ax2 = nexttile;
+ax2 = nexttile();
 % Adjust coverage of 1 by removing 0.005 so it can be properly be displayed
 % on the histogram
 toplot = metrics{"Coverage mapped / Processed",:};

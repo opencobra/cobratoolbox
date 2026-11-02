@@ -114,7 +114,7 @@ isChemaxonInstalled = false; % Change varibale to "true" if ChemAxon is installe
 %% 
 % Now, let's obtain the atom map using |obtainAtomMappingsRDT|: 
 
-if ispc
+if ispc()
     error('Error: atom mapping function should be run on Linux or MAC.')
 else
     tic

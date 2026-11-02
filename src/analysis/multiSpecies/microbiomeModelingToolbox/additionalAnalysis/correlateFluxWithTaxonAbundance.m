@@ -65,7 +65,7 @@ end
 mkdir('Taxon_Flux_Correlations')
 
 % load database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
 fluxes(:,1)=strrep(fluxes(:,1),'(e)','');

@@ -67,7 +67,7 @@ end
 n=1;
 for i=1:length(inputNames)
     %https://nl.mathworks.com/help/matlab/ref/alphanumericspattern.html
-    patternStr = asManyOfPattern(alphanumericsPattern | "_", 1);
+    patternStr = asManyOfPattern(alphanumericsPattern() | "_", 1);
     pat = pattern([sprintf(inputNames{i})]) + '.' + patternStr;
     inputInds = find(contains(C,pat));
     if isempty(inputInds)

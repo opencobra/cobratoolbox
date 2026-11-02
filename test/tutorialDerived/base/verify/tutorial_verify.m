@@ -14,7 +14,7 @@
 % selected by for LP and MILP problems and QPNG is selected for QP problems. Check 
 % the currently selected solvers with:
 
-changeCobraSolver
+changeCobraSolver()
 %% ANTICIPATED RESULTS 
 % A list of solvers assigned to solve each class of optimisation solver is returned. 				
 %% CRITICAL STEP

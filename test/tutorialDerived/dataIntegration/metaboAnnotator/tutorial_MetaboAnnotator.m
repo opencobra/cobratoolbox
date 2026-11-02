@@ -45,7 +45,7 @@ websave([directory  ],url);
 if strfind('main.zip')
     if ismac
         system(['zip -d ' directory]);
-    elseif ispc
+    elseif ispc()
         unzip(directory) % creates a directory called ctf-main
     end
 end

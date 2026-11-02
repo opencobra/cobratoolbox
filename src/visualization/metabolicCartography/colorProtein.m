@@ -33,7 +33,7 @@ function [newMap] = colorProtein(map, protList, color)
     end
 
     newMap = map;
-    colors = createColorsMap;
+    colors = createColorsMap();
 
     id = find(ismember(newMap.specName, protList));
     ID = newMap.specMetaID(id, 1);

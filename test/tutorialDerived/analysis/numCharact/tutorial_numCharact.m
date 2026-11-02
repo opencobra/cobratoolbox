@@ -158,7 +158,7 @@ set(gca, 'fontsize', 14);
 % is a measurement of how many reactions and metabolites are linearly independent. 
 
 % determine the rank of the stoichiometric matrix
-if ispc
+if ispc()
     rankS = rank(full(S))
 else
     rankS = getRankLUSOL(S) % calculated using either the LUSOL solver [3]

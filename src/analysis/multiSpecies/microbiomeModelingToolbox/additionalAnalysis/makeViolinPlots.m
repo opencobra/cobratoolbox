@@ -46,7 +46,7 @@ plottedFeature = parser.Results.plottedFeature;
 unit = parser.Results.unit;
 
 % read metabolite database
-database = loadVMHDatabase;
+database = loadVMHDatabase();
 
 % find the column with the sample information to split the samples by
 if ~isempty(stratification)

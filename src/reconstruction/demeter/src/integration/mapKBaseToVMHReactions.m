@@ -29,7 +29,7 @@ sameReactions={'KBase_reaction','VMH_reaction','KBase_Formula','VMH_Formula'};
 similarReactions={'KBase_reaction','VMH_reaction','KBase_Formula','VMH_Formula'};
 
 % get VMH reaction database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 parsedVMHFormulas={};
 cnt=1;

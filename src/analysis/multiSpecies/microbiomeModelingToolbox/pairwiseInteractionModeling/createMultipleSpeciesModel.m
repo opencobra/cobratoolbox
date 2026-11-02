@@ -148,7 +148,7 @@ modelHost.mets(metIndices) = strrep(modelHost.mets(metIndices), '[e0]', '[e]');
 end
 %% Remove futile cycles that may appear after joining (optional)
 if remCyclesFlag
-    database = loadVMHDatabase;
+    database = loadVMHDatabase();
 
     unionRxns={};
     for i = 1:modelNumber

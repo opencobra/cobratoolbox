@@ -15,7 +15,7 @@ function [installedVersion, installedVersionNum] = getGitBashVersion()
     % define the name of the temporary folder
     tmpFolder = '.tmp';
 
-    if ispc
+    if ispc()
         installedVersion = [];
         installedVersionNum = 0;
 

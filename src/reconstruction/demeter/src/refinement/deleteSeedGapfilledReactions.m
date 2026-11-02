@@ -25,7 +25,7 @@ function [model, deletedSEEDRxns] = deleteSeedGapfilledReactions(model, biomassR
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 solver = CBT_LP_SOLVER;
 

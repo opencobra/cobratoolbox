@@ -37,7 +37,7 @@ function [TruePositives, FalseNegatives] = testAromaticAADegradation(model, micr
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % read aromatic amino acid degradation product table

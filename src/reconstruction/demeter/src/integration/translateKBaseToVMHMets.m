@@ -36,7 +36,7 @@ toTranslate={'KBase_ID','KBase_name','KBase_formula','KBase_charge','VMH_ID','VM
 toTranslate(2:size(toTranslateMets,1)+1,1)=toTranslateMets;
 
 % load the VMH metabolite database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 % get the KBase/Model SEED metabolite database on ModelSEED GitHub
 system('curl -LJO https://raw.githubusercontent.com/ModelSEED/ModelSEEDDatabase/master/Biochemistry/compounds.tsv');

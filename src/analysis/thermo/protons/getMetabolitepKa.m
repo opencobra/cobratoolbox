@@ -33,7 +33,7 @@ for n = 1:nMet
 
         if any(strcmp(molfilelist,mets{n}(1:(end-3))))
 
-            if ispc
+            if ispc()
                 system(['cxcalc -o ', pkadir, filesep, model.mets{n}(1:(end-3)), '_pkas.txt pka -M true -a 20 -b 20 ', molfiledir, filesep, model.mets{n}(1:(end-3)) '.mol']);
             end
 

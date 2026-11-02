@@ -49,7 +49,7 @@ constraints=table2cell(constraints);
 constraints=cellstr(string(constraints));
 
 % Load reaction and metabolite database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 % translate model if not specified otherwise
 if nargin < 5

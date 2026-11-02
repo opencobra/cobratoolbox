@@ -38,7 +38,7 @@ end
 
 showprogress(0,'Exchange reaction list ...');
 
-ExchangeRxnMatrix = createModel;
+ExchangeRxnMatrix = createModel();
 if isfield(ExchangeRxnMatrix,'grRules')
     ExchangeRxnMatrix = rmfield(ExchangeRxnMatrix,'grRules');
 end

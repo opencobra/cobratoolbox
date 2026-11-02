@@ -409,7 +409,7 @@ global CMODEL TMODEL SCORE
 CMODEL = Cmodel ;
 TMODEL = Tmodel ;
 SCORE = score ;
-Stats = optimalScores ;
+Stats = optimalScores() ;
 
 
 %% Graph data.

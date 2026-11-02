@@ -59,7 +59,7 @@ end
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 solver = CBT_LP_SOLVER;
 environment = getEnvironment();
@@ -74,7 +74,7 @@ else
 end
 
 % get the reaction and metabolite database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 % List all species in the AGORA resource
 findTaxCol = find(strcmp(infoFile(1, :), taxonLevel));

@@ -193,7 +193,7 @@ for j = init:fl
 end
 
 % export metabolite names and subsystems
-database = loadVMHDatabase;
+database = loadVMHDatabase();
 metNames = netSecretionFluxes(:,1);
 metNames(1,2:3) = {'Metabolite name','Subsystem'};
 for i=2:size(metNames,1)

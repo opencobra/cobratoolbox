@@ -19,7 +19,7 @@ function subsystemAbundance = calculateSubsystemAbundance(reactionAbundancePath)
 %       - Almut Heinken, 08/2020
 
 % load database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 reactionAbundance = readInputTableForPipeline(reactionAbundancePath);
 

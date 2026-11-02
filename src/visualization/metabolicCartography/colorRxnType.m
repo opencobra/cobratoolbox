@@ -39,7 +39,7 @@ function [newMap] = colorRxnType(map, type, color, width)
     end
 
     % Create a Color map with corresponding colors names and their HTML code
-    colors = createColorsMap;
+    colors = createColorsMap();
 
     % Getting reactions list based on the needed type
     rxnIndexList = find(ismember(newMap.rxnType, type));

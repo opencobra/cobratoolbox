@@ -13,7 +13,7 @@ currentDir = pwd;
 fileDir = fileparts(which('testGenerateSystemConfigReport'));
 cd(fileDir);
 
-generateSystemConfigReport;
+generateSystemConfigReport();
 
 delete([CBTDIR filesep 'COBRAconfigReport.log']);
 

@@ -1,0 +1,156 @@
+name	matlab_exist	resolves_to	files_reported	decision	reason
+alphanumericsPattern	5	built-in (/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/strfun/pattern/alphanumericsPattern)	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+changeCobraSolver	2	src/base/solvers/getSetSolver/changeCobraSolver.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+checkChemoinformaticDependencies	2	src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m	2	candidate	function, class or built-in; rewritten where the file never makes it a variable
+CobraSolverState	2	src/base/solvers/getSetSolver/CobraSolverState.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+conda	2	external/base/utilities/condalab/conda.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+configCMatrix	2	papers/2023_BarrierRound/2logBarrier/CMatrix/configCMatrix.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+configPolytopeSimplifier	2	papers/2023_BarrierRound/2logBarrier/PolytopeSimplifier/configPolytopeSimplifier.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+createColorsMap	2	src/visualization/metabolicCartography/createColorsMap.m	7	candidate	function, class or built-in; rewritten where the file never makes it a variable
+createModel	2	src/reconstruction/refinement/createModel.m	4	candidate	function, class or built-in; rewritten where the file never makes it a variable
+createToyModelForMDFBA	2	test/verifiedTests/analysis/testMDFBA/createToyModelForMDFBA.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+FormulaParser	2	src/reconstruction/refinement/GPRLogic/FormulaParser.m	2	candidate	function, class or built-in; rewritten where the file never makes it a variable
+generateMexFastFVA	2	src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+generateSystemConfigReport	2	src/base/generateSystemConfigReport.m	2	candidate	function, class or built-in; rewritten where the file never makes it a variable
+getAvailableGAMSSolvers	2	src/base/solvers/gams/getAvailableGAMSSolvers.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+initCobraToolbox	2	initCobraToolbox.m	40	candidate	function, class or built-in; rewritten where the file never makes it a variable
+ispc	5	built-in (/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/oss/ispc)	29	candidate	function, class or built-in; rewritten where the file never makes it a variable
+loadTrainingData	2	src/analysis/thermo/trainingModel/new/loadTrainingData.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+loadVMHDatabase	2	src/reconstruction/demeter/src/integration/loadVMHDatabase.m	18	candidate	function, class or built-in; rewritten where the file never makes it a variable
+lusolSet	2	external/base/solvers/lusolMex32bit/lusolSet.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+nexttile	6	/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/graphics/graphics/nexttile.p	3	candidate	function, class or built-in; rewritten where the file never makes it a variable
+optimalScores	2	src/reconstruction/comparison/modelBorgifier/optimalScores.m	3	candidate	function, class or built-in; rewritten where the file never makes it a variable
+parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements	2	src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+pdcoSet	2	external/base/solvers/pdco/code/pdcoSet.m	3	candidate	function, class or built-in; rewritten where the file never makes it a variable
+plottools	2	/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/graphics/plottools/plottools.m	2	candidate	function, class or built-in; rewritten where the file never makes it a variable
+surfNet	2	src/analysis/exploration/surfNet.m	1	candidate	function, class or built-in; rewritten where the file never makes it a variable
+TmodelFields	2	src/reconstruction/comparison/modelBorgifier/TmodelFields.m	5	candidate	function, class or built-in; rewritten where the file never makes it a variable
+uiresume	2	/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/uitools/uitools/uiresume.m	6	candidate	function, class or built-in; rewritten where the file never makes it a variable
+uiwait	2	/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/uitools/uitools/uiwait.m	2	candidate	function, class or built-in; rewritten where the file never makes it a variable
+A	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+AAStorage	2	src/analysis/wholeBody/PSCMToolbox/setConstraints/AAStorage.m	1	exclude	a script: name() would be an error in MATLAB
+addGrRulesLinked	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+adj	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+assignMetaboliteIDs	2	src/dataIntegration/metaboAnnotator/analyseMetStruct/assignMetaboliteIDs.m	1	exclude	a script: name() would be an error in MATLAB
+ax	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+base_colors	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+changeTol	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+comDist	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+component	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+con3A2	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+confF	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+config	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+coreMetAbbr	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+cplexoptimset	0		3	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+currentDir	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+currentvalue	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+ddataByFeature	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+dGfGCforwardReversibleBool_byConc_No_dGt0ErrorLHS	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+dGPredictorPath	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+dGt0Min	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+directions	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+directory	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+driver_initConservedMoietyPaths	2	tutorials/analysis/conservedMoieties/driver_initConservedMoietyPaths.mlx	2	exclude	resolves only to a live script (.mlx) in the tutorials submodule
+driver_loadBenchmarkWBMsolvers	2	tutorials/base/benchmarkSolvers/driver_loadBenchmarkWBMsolvers.m	1	exclude	a script: name() would be an error in MATLAB
+driver_singleModel	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+driver_thermoModelLoad	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+e_coli_core	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+EUAverageDietNew	2	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/EUAverageDietNew.m	3	exclude	a script: name() would be an error in MATLAB
+exOrgaRxns	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+F	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+FBAsolution_maxATP_forceH	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+fdTable	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+fe	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+female	7		2	exclude	MATLAB exist is 7: not a function on the COBRA path (variable, local name or missing)
+fid	1	variable	1	exclude	MATLAB exist is 1: not a function on the COBRA path (variable, local name or missing)
+fileNameOut	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+filenameSuffix	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+fluxConsistentBool	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+getOrganWeightFraction	2	src/analysis/wholeBody/PSCMToolbox/setConstraints/organWeight/getOrganWeightFraction.m	3	exclude	a script: name() would be an error in MATLAB
+GS	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+iAF1	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+id1	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+identifier	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+idNew	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+initVonBertalanffy	2	src/analysis/thermo/vonBertalanffy/initVonBertalanffy.m	6	exclude	a script: name() would be an error in MATLAB
+java	2	/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/general/java.m	5	exclude	namespace use (java.*); RunMat defect, no COBRA fix
+javax	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+LeakTestRecon	2	src/analysis/wholeBody/PSCMToolbox/LeakTestRecon.m	1	exclude	a script: name() would be an error in MATLAB
+list_M	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+LS_MIN	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+makeLoopToyModel	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+mapGly	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+mapping	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+matchinmets	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+matrixS_BBF	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+maxCardConsParams	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+ME	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+measuredFluxes	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+merged	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+metAbbr	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+metabolite_structure	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+metaboliteStructureFieldNames	2	src/dataIntegration/metaboAnnotator/buildMetStruct/metaboliteStructureFieldNames.m	2	exclude	a script: name() would be an error in MATLAB
+Mets	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+metsR	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+metStruct	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+minNormWBM	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+MIRIAM	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+model	7		1	exclude	MATLAB exist is 7: not a function on the COBRA path (variable, local name or missing)
+modelBoundsFlag	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+modelClosed	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+modelName	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+names	1	variable	1	exclude	MATLAB exist is 1: not a function on the COBRA path (variable, local name or missing)
+nhxk	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+nnz_z	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+nonZeroThermoFluxBool	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+nRxn	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+objectiveAbbr	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+off	0		7	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+options	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+OrganLists	2	src/analysis/wholeBody/PSCMToolbox/io/OrganLists.m	6	exclude	a script: name() would be an error in MATLAB
+out	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+outputfile	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+p	1	variable	2	exclude	MATLAB exist is 1: not a function on the COBRA path (variable, local name or missing)
+P	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+parallel	2	/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/shared/controllib/general/parallel.m	5	exclude	namespace use (parallel.*); RunMat defect, no COBRA fix
+Param	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+params	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+parseRecon2_species	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+pHr	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+postions	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+printLevel	0		4	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+psi_opt	0		10	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+py	2	/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/external/interfaces/python/py.m	3	exclude	namespace use (py.*); RunMat defect, no COBRA fix
+R1_missing	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+rankS	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+ReactionPresence	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+recon2	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+redbluecmap	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+returnedLink	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+rootDir	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+rxnBool	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+RXNfileName	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+S	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+ScoresOverall	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+selMets	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+setup	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+sex	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+solNE	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+solution	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+solverPkgs	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+standardPhysiolDefaultParameters	2	src/analysis/wholeBody/PSCMToolbox/setConstraints/standardPhysiolDefaultParameters.m	1	exclude	a script: name() would be an error in MATLAB
+SUCCESS	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+summary	2	external/analysis/PolytopeSamplerMatlab/code/diagnostics/summary.m	1	exclude	a variable created inside an evalc string in the reporting file, not a function call
+T	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+TestRunner	2	/home/rfleming/drive/sbgCloud/code/MATLAB/R2026a/toolbox/matlab/testframework/unittest/core/testrunner.m	2	exclude	imported class used as TestRunner.*; RunMat defect, no COBRA fix
+threshold	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+tline	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+translateMetStr2COBRAmodel	2	src/dataIntegration/metaboAnnotator/buildMetStruct/translateMetStr2COBRAmodel.m	2	exclude	a script: name() would be an error in MATLAB
+tutorial_initConservedMoietyPaths	0		2	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+tutorialpath	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+ununknownSConsistencyRxnBool	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+useSolversIfAvailable	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+varargin	0		3	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+verbFlag	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+VMHIDS	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)
+x1	0		1	exclude	MATLAB exist is 0: not a function on the COBRA path (variable, local name or missing)

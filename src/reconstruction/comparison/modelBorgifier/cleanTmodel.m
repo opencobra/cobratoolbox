@@ -44,7 +44,7 @@ if ~isempty(varargin)
 end
 
 % Grab fields names.
-fields = TmodelFields ;
+fields = TmodelFields() ;
 
 % Reaction related cell field names.
 rxnFields = fields{1} ;

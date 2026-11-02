@@ -188,9 +188,9 @@ surfNet(model2, [], [], fluxMatrix);
 fprintf('Test error messages ...\n')
 % error messages
 % no initialized model exists
-clear surfNet
+clear surfNet()
 try
-    surfNet;
+    surfNet();
     assert(false)
 catch ME
     assert(strcmp(ME.message, 'The persistent variable modelLocal in surfNet is empty. Please supply a COBRA model.'))

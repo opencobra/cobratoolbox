@@ -32,7 +32,7 @@ function [outputFile] = reportPDF(model, microbeID, biomassReaction, inputDataFo
 %       - Almut Heinken, Sep 2018-adapted nomenclature
 
 % load database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 % switch directory to create the LaTex file
 currentDir = pwd;

@@ -294,7 +294,7 @@ annotationTable.Description = cell(size(annotationTable,1),1);
 annotationTable.Subsystem = cell(size(annotationTable,1),1);
 
 % Load VMH database
-database = loadVMHDatabase;
+database = loadVMHDatabase();
 
 % If the investigated reactions are demand or sink reactions, annotate the
 % associated metabolite

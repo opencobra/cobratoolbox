@@ -65,7 +65,7 @@ cxcalcInstalled = ~cxcalcInstalled;
 if cxcalcInstalled == 0
     cxcalcInstalled = false;
 end
-if isunix || ispc 
+if isunix || ispc() 
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';
