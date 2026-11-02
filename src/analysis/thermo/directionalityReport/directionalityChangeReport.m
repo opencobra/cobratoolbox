@@ -264,6 +264,7 @@ if printLevel<1
         fclose(fid);
     end
 end
+end
 
 
 % %finds the qualitatively forward reactions that are now reversible

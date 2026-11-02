@@ -52,3 +52,4 @@ end
 
 % close the .gitignore file
 fclose(fid);
+end

@@ -32,6 +32,7 @@ function [out] = Combination(n, k)
        out.all(:,i) = getCombination(n,k,i-1);
    end
 return;
+end
 
 function [m] = getNumberCombinations(n,k)
    % find number of combinations by choose k items from n
@@ -46,6 +47,7 @@ function [m] = getNumberCombinations(n,k)
     end
 
 return;
+end
 
 function [c] = getCombination(n,k,index)
     c(1) = 1;
@@ -68,3 +70,4 @@ function [c] = getCombination(n,k,index)
         end
     end
 return;
+end

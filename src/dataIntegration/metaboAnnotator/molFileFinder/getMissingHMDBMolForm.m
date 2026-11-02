@@ -95,3 +95,4 @@ for i = startSearch : endSearch
     end
 end
 [metabolite_structure] = addMetFormulaCharge(metabolite_structure,startSearch,endSearch);
+end

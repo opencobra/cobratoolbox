@@ -1830,3 +1830,4 @@ reacting.selectedReactionNames = model.rxns(selectedReactions);
 reacting.ReactMoietyMatrix = RM;
 reacting.ReactMoietySets = RM_sets;
 reacting.ReactMoietyGraphs = RM_graph;
+end

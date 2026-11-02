@@ -62,9 +62,11 @@ if isempty(subSystems)
 end
 
 model.subSystems(reactions) = cellfun(@(x) addSubSystem(x,subSystems),model.subSystems(reactions),'UniformOutput',0);
+end
 
 
 
 function newSubSystems = addSubSystem(subSystemVector,newSubSystems)
 subSystemVector = setdiff(subSystemVector,{''});
 newSubSystems = union(subSystemVector,newSubSystems);
+end

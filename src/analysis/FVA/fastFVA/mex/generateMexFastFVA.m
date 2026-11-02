@@ -175,3 +175,4 @@ else
 
     error('CPLEX is not installed. Please follow the instructions here: https://opencobra.github.io/cobratoolbox/docs/solvers.html');
 end
+end

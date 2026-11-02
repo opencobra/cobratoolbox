@@ -214,6 +214,7 @@ while ~isempty(J)
 
     flux = v;
 end
+end
 
 function [v,fOpt,conv] = easyLP(c,A,b,lb,ub,csense)
 %easyLP
@@ -244,3 +245,4 @@ solution = solveCobraLP(model);
 v = solution.full;
 fOpt = solution.obj;
 conv = solution.stat == 1;
+end

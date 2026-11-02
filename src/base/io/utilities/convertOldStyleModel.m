@@ -412,4 +412,5 @@ if isfield(model,'grRules') && isfield(model, 'rules')
 end
 
 model = orderfields(model);
+end
 

@@ -59,3 +59,4 @@ if ~isempty(FBAsolution.x)
 %printFluxVector(model,FBAsolution.x);
 else display('zero flux in network')
 end
+end

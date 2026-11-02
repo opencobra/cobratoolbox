@@ -58,4 +58,5 @@ end
 metabolite_structure= addField2MetStructure(metabolite_structure);
 % clean up known, potential issues with the input data
 [metabolite_structure] = cleanUpMetabolite_structure(metabolite_structure);
+end
 % check for known, potentially remaining issues with the metabolite IDs

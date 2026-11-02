@@ -44,3 +44,4 @@ model = addExchangeRxn(model,ExchangedMets,-1000*ones(numel(ExchangedMets),1),10
 model = changeObjective(model,'EX_E',1);
 model = addCOBRAConstraints(model,{'R3','R7'},5, 'c',[1,1],'dsense','G','ConstraintID','R3_and_R7_above_5');
 model = addCOBRAConstraints(model,{'R4','R6'},30, 'c',[1,1],'dsense','L','ConstraintID','R4_and_R6_lowerthan_30');
+end

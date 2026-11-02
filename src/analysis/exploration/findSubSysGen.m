@@ -16,3 +16,4 @@ function [GenSubSystem]  = findSubSysGen(model)
 % .. Author: - Ines Thiele 10/09
 
 [~,GenSubSystem] = findSubSystemsFromGenes(model,'onlyOneSub',true);
+end

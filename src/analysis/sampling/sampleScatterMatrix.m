@@ -127,6 +127,7 @@ for i = 1:nRxns
     end
 
 end
+end
 
 
 function sampleScatterPlot(sample, id1, id2, nPoints, fontSize, dispRFlag)
@@ -148,6 +149,7 @@ if dispRFlag
     h = text(minx + 0.66 * (maxx-minx), miny + 0.2 * (maxy - miny), num2str(round(100 * r(1, 2)) / 100));
     set(h, 'FontSize', fontSize - 5);
 end
+end
 
 function sampleHistInternal(sample , id, fontSize)
 
@@ -164,3 +166,4 @@ set(gca, 'XTickLabel', round(10 * linspace(minx, maxx, 4)) / 10);
 set(gca, 'YTickLabel', []);
 set(gca, 'FontSize', fontSize - 5);
 axis tight
+end

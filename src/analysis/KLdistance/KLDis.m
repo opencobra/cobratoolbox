@@ -43,3 +43,4 @@ elseif size(Q,1)==size(P,1)
     temp(isnan(temp))=0;  % resolving the case when P(i)==0
     dist = sum(temp,2);
 end
+end

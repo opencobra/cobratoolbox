@@ -14,6 +14,8 @@
 #      - catch: parseTreeEquivalence in 'catch' mode, the tree may differ only by added catch nodes;
 #      - calls: no parse-tree check (the tree changes by design; research.md R5);
 #      - all: analyzerSnapshot before and after, the file must gain no analyzer message (FR-011);
+#   A file whose original MATLAB cannot parse (a one-node error tree) is rejected, because its
+#   parse-tree comparison would be vacuous.
 #   4. restore every rejected file from the before-tree.
 # Writes $F/reports/accepted-CATEGORY.txt, $F/reports/rejected-CATEGORY.txt (path and reason) and
 # $F/reports/tool-CATEGORY.log.
@@ -73,14 +75,18 @@ def idlist(ids):
         return []
     return [ids] if isinstance(ids, str) else list(ids)
 
-tree = {r["file"]: r["equal"] for r in load(f"tree-{cat}.json")} if mode != "none" else {}
+tree = {r["file"]: r for r in load(f"tree-{cat}.json")} if mode != "none" else {}
 before = {r["file"]: idlist(r["ids"]) for r in load(f"analyzer-before-{cat}.json")}
 after = {r["file"]: idlist(r["ids"]) for r in load(f"analyzer-after-{cat}.json")}
 acc, rej = [], []
 for f in files:
     reasons = []
-    if mode != "none" and not tree.get(f, False):
-        reasons.append("parse tree changed")
+    if mode != "none":
+        entry = tree.get(f, {})
+        if entry.get("nodesBefore", 0) <= 1:
+            reasons.append("MATLAB cannot parse the original")
+        elif not entry.get("equal", False):
+            reasons.append("parse tree changed")
     gained = collections.Counter(after.get(f, [])) - collections.Counter(before.get(f, []))
     if gained:
         reasons.append("analyzer gained " + ",".join(sorted(gained.elements())))

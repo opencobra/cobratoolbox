@@ -28,3 +28,4 @@ if nargin < 3
 end
 
 flux = metConc/(cellConc*cellWeight*t*1000);
+end

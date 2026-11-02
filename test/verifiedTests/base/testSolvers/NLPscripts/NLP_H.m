@@ -10,3 +10,4 @@ end
 
 H = [12 * alpha * x(1) ^ 2 - 4 * alpha * x(2) + 2, -4 * alpha * x(1);
      -4 * alpha * x(1),    2 * alpha];
+end

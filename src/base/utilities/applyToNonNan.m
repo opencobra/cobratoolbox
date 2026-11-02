@@ -22,3 +22,4 @@ result = zeros(1,size(data,2));
 for i = 1:size(data,2)
     result(i) = func(data(~isnan(data(:,i)),i));
 end
+end

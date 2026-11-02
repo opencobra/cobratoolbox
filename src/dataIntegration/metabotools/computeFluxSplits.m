@@ -45,3 +45,4 @@ vP = max(W,0); % net production
 vC = -min(W,0); % net consumption
 P = vP*diag(1./sum(vP)); % relative production
 C = vC*diag(1./sum(vC)); % relative consumption
+end

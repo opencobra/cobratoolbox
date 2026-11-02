@@ -70,3 +70,4 @@ else
     end
     connectedColsFRVBool=pB(1:m);
 end
+end

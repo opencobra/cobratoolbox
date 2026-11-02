@@ -85,3 +85,4 @@ end
 if size(inchi,1) > size(inchi,2)
     inchi = inchi';
 end
+end

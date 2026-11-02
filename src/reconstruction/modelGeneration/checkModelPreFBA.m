@@ -160,5 +160,6 @@ else
     fprintf('%s\n',['i.e. model in ' modelName ' may not be suitable for flux balance analysis.']);
     fprintf('%s\n',['see https://opencobra.github.io/cobratoolbox/stable/tutorials/tutorialReconToFBAmodel.html']);
 end
+end
 
 

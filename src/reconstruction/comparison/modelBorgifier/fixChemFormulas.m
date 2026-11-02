@@ -36,3 +36,4 @@ function formulaList = fixChemFormulas(formulaList)
 
 searchString = '(?<=(C|H|N|O|P|S))1(?!\d)' ; % Find 1's and replace with nothing.
 formulaList = regexprep(formulaList,searchString,'') ;
+end

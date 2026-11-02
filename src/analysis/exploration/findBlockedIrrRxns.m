@@ -64,6 +64,7 @@ if sol.stat ~= 1
 end
 
 blockedIrrRxns = model.rxns((abs(sol.full(1:n)) < tol * (1 - cobraParams.LP.optTol)) & (model.lb >= 0 | model.ub <= 0));
+end
 
 
     

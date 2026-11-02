@@ -46,3 +46,4 @@ rxnID = logical(sum(rxn2subSystemMat, 2));
 
 reactionNames = model.rxns(rxnID);
 rxnPos = find(rxnID);
+end

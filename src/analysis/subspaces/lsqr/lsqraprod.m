@@ -44,6 +44,7 @@ else
    if m >= n,   y = y1(1:n);
    else         y = [y1; zeros(n-m,1)];   end
 end
+end
 %===================
 % End of lsqraprod.m
 %===================

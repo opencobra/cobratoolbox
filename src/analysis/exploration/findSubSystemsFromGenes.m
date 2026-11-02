@@ -110,6 +110,7 @@ if parser.Results.structResult
 else
     singleList = cellList;
 end
+end
  
 
     

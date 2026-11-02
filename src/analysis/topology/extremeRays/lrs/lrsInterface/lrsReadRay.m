@@ -162,3 +162,4 @@ R = R(:, IX);
 Q = [V, R];
 vertexBool = false(size(Q,2),1);
 vertexBool(1:size(V,2))=1;
+end

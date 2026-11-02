@@ -43,3 +43,4 @@ for i=1:numel(model.rules)
         end
     end
 end
+end

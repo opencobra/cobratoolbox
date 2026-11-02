@@ -126,6 +126,7 @@ if printLevel && any(g~=1)
     fprintf('%s\n','Reactions integerised: ');
     printRxnFormula(modelOut,modelOut.rxns(g~=1));
 end
+end
 
 
             

@@ -59,5 +59,6 @@ end
 
 diffmets = setdiff(model.mets, model.mets(a));
 [Involved_mets, Dead_ends] = draw_by_rxn(model, rxngz, 'true', 'struc', {''}, diffmets, fvamax);
+end
 
 

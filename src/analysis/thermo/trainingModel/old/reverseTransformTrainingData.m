@@ -95,3 +95,4 @@ for i = 1:size(training_data.S, 2) % for each reaction in S
 end
 
 training_data.dG0 = training_data.dG0_prime - reverse_ddG0;
+end

@@ -30,5 +30,6 @@ if isfield(model, 'evars')
 end
 
 emptyConstraints = model.ctrs(emptyConstraints);
+end
 
     

@@ -110,3 +110,4 @@ for i = 1:size(trainingModel.S, 2) % for each reaction in S
 end
 
 trainingModel.DrG0 = trainingModel.DrGt0 - reverse_ddG0;
+end

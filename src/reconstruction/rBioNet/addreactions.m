@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -104,6 +105,7 @@ handles.data = {};
 handles.check = 0; % 0 if check has not been done, 1 if it has.
 
 guidata(hObject, handles);
+end
 
 %There was something similar in addmetabolites,
 % if ~isempty(varargin{4})
@@ -137,6 +139,7 @@ function varargout = addreactions_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+end
 
 
 
@@ -240,6 +243,7 @@ set(handles.uitable2,'data','');
 handles.check = 0;
 
 guidata(hObject,handles)
+end
 
 
 % --- Executes on button press in act_remove.
@@ -282,6 +286,7 @@ set(handles.uitable1,'data',data);                  %New reactions
 
 
 guidata(hObject,handles);
+end
 
 % --- Executes on button press in act_check.
 function act_check_Callback(hObject, eventdata, handles)
@@ -335,6 +340,7 @@ set(handles.uitable1,'data',newrxns);
 set(handles.uitable2,'data',dispdata);
 
 guidata(hObject,handles)
+end
 
 
 % --- Executes on button press in act_cancel.
@@ -343,6 +349,7 @@ function act_cancel_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf)
+end
 
 % --- Executes when user attempts to close figure1.
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
@@ -352,6 +359,7 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 
 % Hint: delete(hObject) closes the figure
 delete(gcf)
+end
 
 % --- Executes when selected cell(s) is changed in uitable1.
 function uitable1_CellSelectionCallback(hObject, eventdata, handles)
@@ -361,6 +369,7 @@ function uitable1_CellSelectionCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.CellSelection = eventdata.Indices;
 guidata(hObject, handles)
+end
 
 
 
@@ -385,6 +394,7 @@ end
 
 set(handles.uitable2,'data',dispdata);
 guidata(hObject,handles)
+end
 
 % --- Executes during object creation, after setting all properties.
 function listbox1_CreateFcn(hObject, eventdata, handles)
@@ -396,6 +406,7 @@ function listbox1_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end
 
 
@@ -452,6 +463,7 @@ handles.output = handles.rxn;
 guidata(hObject,handles)
 disp([num2str(S(1)) ' reactions added to database.'])
 delete(gcf)
+end
 
 
 
@@ -465,6 +477,7 @@ msgbox(['Add text file with same order as table 1. It is recommended to'...
     ' be divided by taps if reactions are written directly in notepad.'...
     ' Perform the database check and finish if similarities are acceptable.']...
     ,'Info','help');
+end
 
 
 
@@ -481,3 +494,4 @@ function uitable1_CellEditCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.check = 0;
 guidata(hObject,handles);
+end

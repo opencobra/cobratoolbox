@@ -129,3 +129,4 @@ end
 if isempty(results)
     warning('Your gene was not associated with any reactions!')
 end
+end

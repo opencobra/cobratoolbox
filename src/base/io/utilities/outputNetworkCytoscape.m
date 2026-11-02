@@ -263,3 +263,4 @@ if (~isempty(rxnData))
     end
     fclose(fidData);
 end
+end

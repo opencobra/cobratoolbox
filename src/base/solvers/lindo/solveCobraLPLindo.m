@@ -274,3 +274,4 @@ else % Old Lindo
     delStatus = mxlindo('LSdeleteEnv',iEnv);
 
 end
+end

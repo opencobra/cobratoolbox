@@ -162,5 +162,6 @@ else
     fprintf('%s\n','No external reaction lower bounds relaxed');
 end
 fprintf('\n');
+end
 
 

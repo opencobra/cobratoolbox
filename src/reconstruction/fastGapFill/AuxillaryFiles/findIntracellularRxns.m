@@ -26,3 +26,4 @@ for i = 1 : length(RL)
     end
 end
 intracellRxnList = model.rxns(find(intracellRxnList));
+end

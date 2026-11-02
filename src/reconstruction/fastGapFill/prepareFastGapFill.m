@@ -189,6 +189,7 @@ C1 = find(C1);
 MatricesSUX.C1 = C1;
 consistMatricesSUX = MatricesSUX;
 clear MatricesSUX;
+end
 
 %%
 % next step will be to run fastGapFill.m

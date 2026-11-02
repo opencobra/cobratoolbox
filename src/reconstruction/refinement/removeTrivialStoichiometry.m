@@ -22,3 +22,4 @@ zeroRowBool = ~any(model.S,2);
 
 removeRxnFlag=1;
 modelOut = removeMetabolites(model,model.mets(zeroRowBool),removeRxnFlag);
+end

@@ -25,3 +25,4 @@ try
 catch
     inchiString =[];
 end
+end

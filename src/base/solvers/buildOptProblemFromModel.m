@@ -378,3 +378,4 @@ if isfield(param,'debug') && param.debug
 else
     optProblem.names=[];
 end
+end

@@ -149,6 +149,7 @@ for i = 2 : size(TableInchiKeys,1)
     [TableInchiStrings] = fillTable(TableInchiKeys,i,InchiStringList_Kegg,name,maxCol);
 end
 save Results
+end
 
 function [Table] = fillTable(Table,i,List,name,maxCol)
 if ~exist('maxCol','var')
@@ -169,5 +170,6 @@ for j = 1 : length(row)
         col
         Table(i,col) = List(row(j),3);
     end
+end
 end
 

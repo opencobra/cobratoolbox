@@ -304,3 +304,4 @@ loc = find(ismember(origModel.rxns, model.rxns));
 for i = 1:size(vectors, 2)
     finalVectors(loc, i) = vectors(:, i);
 end
+end

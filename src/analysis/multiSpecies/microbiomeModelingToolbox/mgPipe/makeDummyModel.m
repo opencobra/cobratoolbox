@@ -46,3 +46,4 @@ dummy.metPubChemID = cell(numMets, 1);
 dummy.description.organism = {}; dummy.description.author = {}; dummy.description.name = {};
 dummy.description.geneindex = {}; dummy.description.genedate = {}; dummy.description.genesource = {}; dummy.description.notes = {};
 dummy.disabled = {};
+end

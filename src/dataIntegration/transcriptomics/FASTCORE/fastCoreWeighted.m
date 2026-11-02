@@ -86,3 +86,4 @@ end
 fprintf('|A|=%d\n', length(A));
 
 toc
+end

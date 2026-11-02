@@ -87,4 +87,5 @@ for field = 1:size(fluxConsistencyFields,1)
         end
     end
 end
+end
 

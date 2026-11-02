@@ -88,10 +88,12 @@ model.rules = columnVector(model.rules);
 if nGenes > nGenesInit
     model = extendModelFieldsForType(model,'genes','originalSize', nGenesInit, 'targetSize',nGenes);
 end
+end
 
 
 function geneID = convertGeneID(geneID, systNameList, geneNameList)
 presence = ismember(geneNameList,geneID);
 if any(presence)
     geneID = systNameList(presence);
+end
 end

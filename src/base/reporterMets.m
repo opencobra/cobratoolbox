@@ -176,3 +176,4 @@ if (~isempty(nRand))
 else
     normScore = rawScore;
 end
+end

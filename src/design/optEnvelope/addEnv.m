@@ -126,4 +126,5 @@ hold on
 line = plot(controlFlux1, Max1, 'color', colour, 'LineWidth', 2);
 plot(controlFlux1, Min1, 'color', colour, 'LineWidth', 2)
 hold off
+end
 

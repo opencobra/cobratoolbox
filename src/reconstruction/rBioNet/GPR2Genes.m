@@ -40,3 +40,4 @@ for i = 1:S(1)
     Gen = [Gen split];
 end
 Genes = unique(Gen);
+end

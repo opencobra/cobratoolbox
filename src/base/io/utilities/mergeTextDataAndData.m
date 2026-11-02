@@ -111,6 +111,7 @@ if dataCol<size(data,2)+1
         dataCol=dataCol+1;
     end
 end
+end
 
 
 % for x=1:137 gMW{x,1}=iCore.genes{x}; for y=1:5300 if

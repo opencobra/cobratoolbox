@@ -185,4 +185,5 @@ end
 if overRideDefaults
     varargout{length(paramNames)+1}=paramStructureOut;
 end
+end
 

@@ -51,4 +51,5 @@ for i = 1:nMols
     bool = isKey(fragmentedMol(i).smilesCounts,keySet);
     model.G(i,bool)=cell2mat(values(fragmentedMol(i).smilesCounts));
 end
+end
 

@@ -265,3 +265,4 @@ modelOut = modelOrig;
 if param.printLevel>0
     fprintf('%s\n','--- findSignedCyclicFluxConsistentSubset END ----')
 end
+end

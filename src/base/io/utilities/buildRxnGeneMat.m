@@ -45,3 +45,4 @@ if isfield(model,'rules')
         end
     end
 end
+end

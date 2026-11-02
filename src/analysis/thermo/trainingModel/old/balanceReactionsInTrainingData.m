@@ -63,3 +63,4 @@ end
 
 fprintf('Successfully created balanced training-data structure: %d compounds and %d reactions\n',...
         size(training_data.S, 1), size(training_data.S, 2));
+end

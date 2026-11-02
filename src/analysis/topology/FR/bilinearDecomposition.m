@@ -325,3 +325,4 @@ if decompsitionCheck
     disp(decompsitionCheck)
     error('Decomposition incorrect');
 end
+end

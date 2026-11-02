@@ -493,3 +493,4 @@ modelResultsTable=cell2table(modelResultsTable);
 if exist('tableFilename','var')
     writetable(modelResultsTable,tableFilename,'Delimiter','\t')
 end
+end

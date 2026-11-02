@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -72,6 +73,7 @@ handles.output = hObject;
 set(handles.uitable1,'data',varargin{1});
 % Update handles structure
 guidata(hObject, handles);
+end
 
 % UIWAIT makes GenesAndReactions wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -86,6 +88,7 @@ function varargout = GenesAndReactions_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+end
 
 
 % --- Executes on button press in pushbutton1.
@@ -94,3 +97,4 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf);
+end

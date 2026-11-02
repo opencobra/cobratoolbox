@@ -144,3 +144,4 @@ for n=1:nRxn
         error([model.rxns{n} ' :Maximum flux bound is not finite'])
     end
 end
+end

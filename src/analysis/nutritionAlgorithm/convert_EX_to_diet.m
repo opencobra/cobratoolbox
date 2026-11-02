@@ -58,5 +58,6 @@ model.ub(exRxns)=model.lb(exRxns);
 %with a lb of 0 and a ub of 100000
 exitRxns= strcat('Exit_EX_',envMets);
 model=addMultipleReactions(model,exitRxns,envMets,-1*eye(length(envMets)),'lb',zeros(1,length(exMets)), 'ub', 100000*ones(1,length(exMets)));
+end
 
 

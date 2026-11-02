@@ -60,3 +60,4 @@ rxn_name = rxn_name{1};
 
 %augment the objective
 model.c(OMtransRxnID,1)= epsilon;
+end

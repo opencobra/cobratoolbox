@@ -126,3 +126,4 @@ if toSave && ~isempty(newFormat)
 % elseif isempty(newFormat)
 %     error(['The format ' origFormat ' couldn''t be converted'])
 end
+end

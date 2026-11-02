@@ -45,6 +45,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -76,38 +77,47 @@ guidata(hObject, handles);
 
 % UIWAIT makes addMetInfo wait for user response (see UIRESUME)
 uiwait(handles.figure1);
+end
 
 
 function varargout = addMetInfo_OutputFcn(hObject, eventdata, handles)
+end
 % varargout{1} = handles.output;
 
 
 % --- Executes on selection change in popupmenu_propertylist.
 function popupmenu_propertylist_Callback(hObject, eventdata, handles)
 updateeditfield(handles)
+end
 
 function popupmenu_propertylist_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 function edit_prop_Callback(hObject, eventdata, handles)
+end
 
 function edit_prop_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject, 'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 function pushbutton_done_Callback(hObject, eventdata, handles)
 close(handles.figure1)
+end
 
 function popupmenu_metab_Callback(hObject, eventdata, handles)
 updateeditfield(handles)
+end
 
 function popupmenu_metab_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end
 
 function updateeditfield(handles)
@@ -127,6 +137,7 @@ elseif isnumeric(nowval)
 end
 
 set(handles.edit_prop,'String',nowval)
+end
 
 function pushbutton_change_Callback(hObject, eventdata, handles)
 global CMODEL
@@ -144,3 +155,4 @@ elseif isnumeric(CMODEL.(nowfield)(strcmp(CMODEL.mets,nowmet)))
 end
 
 CMODEL.(nowfield)(strcmp(CMODEL.mets,nowmet)) = nowval;
+end

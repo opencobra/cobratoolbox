@@ -214,3 +214,4 @@ elseif strcmp(feedingStatus,'fasting')
 end
 
 model.SetupInfo.FeedingStatus = feedingStatus;
+end

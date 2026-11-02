@@ -26,3 +26,4 @@ ratiod = Prob.user.ratiod;
 out = ((ratiod'*x)*ration - (ration'*x)*ratiod)/(ratiod'*x)^2;
 
 return;
+end

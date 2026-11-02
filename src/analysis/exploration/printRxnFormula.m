@@ -248,6 +248,7 @@ for i = 1:length(rxnAbbrList)
         fprintf(fid, '\n');
     end
 end
+end
 
 % %pass out a character string if only one reaction in the abbreviation list
 % if length(rxnAbbrList)==1

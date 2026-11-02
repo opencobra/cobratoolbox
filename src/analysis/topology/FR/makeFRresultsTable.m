@@ -326,3 +326,4 @@ FRresultsTable=cell2table(FRresultsTable);
 if exist('tableFilename','var')
     writetable(FRresultsTable,tableFilename,'Delimiter','\t')
 end
+end

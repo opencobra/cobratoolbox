@@ -808,3 +808,4 @@ if sum(minNorm)~=0
     fprintf('%s%d%s\n','The largest weighting for minimising the norm was ',max(abs(minNorm)),'.');
     fprintf('%s\n','Check that the objective is the same without minimising the norm.');
 end
+end

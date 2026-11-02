@@ -108,4 +108,5 @@ end
 
 %Extend the remaining fields, to keep the fields in sync
 newmodel = extendModelFieldsForType(model,'mets','originalSize',nMets);
+end
     

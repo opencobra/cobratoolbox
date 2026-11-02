@@ -80,3 +80,4 @@ if isfield(modelRev, 'match')
     modelRev = rmfield(modelRev,'match');
 end
 modelRev.reversibleModel = true;
+end

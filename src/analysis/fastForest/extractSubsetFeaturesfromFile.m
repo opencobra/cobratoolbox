@@ -61,3 +61,4 @@ fid =fopen([fileName '_subset' '.txt'], 'w');
 for j = 1 : length(keep)-1
     fprintf(fid,strcat(keep{j},'\n'));
 end
+end

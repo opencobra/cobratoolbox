@@ -1217,3 +1217,4 @@ arm.M2M = M2M; % Matrix to map each metabolite to one or more moieties
 arm.M2R = M2R; % Matrix to map moiety transitions to reactions. Multiple moiety transitions can map to multiple reactions.
 
 arm.L =  L;    % Matrix to map isomorphism classes to metabolites. L = I2M*M2M'; Multiple isomorphism classes can map to multiple metabolites.
+end

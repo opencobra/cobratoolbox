@@ -71,3 +71,4 @@ plot(isAll(1:1000),lambda','LineWidth',2)
 ylabel('Activity Coefficient, \gamma','FontSize',16)
 xlabel('Ionic strength (mol/L)','FontSize',16)
 set(gca,'FontSize',14)
+end

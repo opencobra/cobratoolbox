@@ -93,4 +93,5 @@ while 1
     PrevFW = solMILP.full(1:nRxns) > tol;
     solution.fluxes(:,end+1) = solMILP.full(1:nRxns);   
 end
+end
 

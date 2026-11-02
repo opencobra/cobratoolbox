@@ -272,3 +272,4 @@ end
 
 newmodel = extendModelFieldsForType(newmodel,'rxns','originalSize',orignRxns,'targetSize',numel(newmodel.rxns));
 newmodel = extendModelFieldsForType(newmodel,'mets','originalSize',orignMets,'targetSize',numel(newmodel.mets));
+end

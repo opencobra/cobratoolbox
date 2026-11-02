@@ -215,6 +215,7 @@ end
 
 % Put scoreTotal in Stats for output.
 Stats.scoreTotal = scoreTotal ;
+end
 
 %% Subfunctions
 % Colapse matrix and normalize scores.
@@ -255,3 +256,4 @@ scoreTotal = scoreTotal ./ max(max(scoreTotal)) ;
 [bestMatch, bestMatchIndex] = max(scoreTotal, [], 2) ;
 Stats.bestMatch = bestMatch ;
 Stats.bestMatchIndex = bestMatchIndex ;
+end

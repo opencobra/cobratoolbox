@@ -34,3 +34,4 @@ for i = 1:nCommon
     A(nCommon + i, nRxns1 + ind2(i)) = -1;
     A(nCommon + i, nRxns1 + nRxns2 + nCommon + i) = 1;
 end
+end

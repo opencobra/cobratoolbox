@@ -153,3 +153,4 @@ for i=1:length(compounds)
 
     showprogress(i/length(compounds));
 end
+end

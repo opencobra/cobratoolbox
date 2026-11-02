@@ -37,3 +37,4 @@ else
         fprintf('Parallel computation initialized\n')
     end
 end
+end

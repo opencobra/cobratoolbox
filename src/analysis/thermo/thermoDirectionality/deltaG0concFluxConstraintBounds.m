@@ -671,3 +671,4 @@ model.dGtMin = columnVector(model.dGtMin);
 
 model.dGtMax = dGtMax;
 model.dGtMin = dGtMin;
+end

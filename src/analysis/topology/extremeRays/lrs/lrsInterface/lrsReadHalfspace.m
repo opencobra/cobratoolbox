@@ -187,3 +187,4 @@ if nRows ~= nCols || 1
 else
     b = zeros(size(A,1),1);
 end
+end

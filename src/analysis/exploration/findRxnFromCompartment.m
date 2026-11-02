@@ -29,3 +29,4 @@ compartmentMets = ~cellfun(@isempty, strfind(model.mets, compartment));
 % Find reactions that involve the above mets
 compartmentRxns = model.rxns(any(model.S(compartmentMets, :)));
 compartmentReactions = [compartmentRxns, printRxnFormula(model, 'rxnAbbrList', compartmentRxns, 'printFlag', false)];
+end

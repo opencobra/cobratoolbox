@@ -126,3 +126,4 @@ else
         error('Formula must be given by a variable of class char')
     end
 end
+end

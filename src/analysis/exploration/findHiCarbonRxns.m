@@ -53,3 +53,4 @@ selectMetsZero = (nCarbon == 0) & ~ismember(columnVector(baseMetNames),columnVec
 selectRxnsZero = sum(model.S ~= 0 & repmat(selectMetsZero,1,size(model.S,2))) == sum(model.S ~= 0);
 
 zeroCarbonRxns = columnVector(model.rxns(selectRxnsZero));
+end

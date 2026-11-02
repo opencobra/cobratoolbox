@@ -18,3 +18,4 @@ function [fieldNames, firstDim, secondDim] = getMultiDimensionFields(fieldDefini
 
 relfieldDefs = fieldDefinitions(cellfun(@ischar, fieldDefinitions(:,2)) & cellfun(@ischar, fieldDefinitions(:,3)),:);
 [fieldNames,firstDim,secondDim] = deal(relfieldDefs(:,1),relfieldDefs(:,2),relfieldDefs(:,3));
+end

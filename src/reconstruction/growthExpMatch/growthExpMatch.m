@@ -197,6 +197,7 @@ for i = 1: iterations
     end
 end
 printSolutionGEM(MatricesSUX, solution);
+end
 
 function importedRxns = findImportedReactions(solInt, MatricesSUX)
 importedRxns= {};
@@ -207,5 +208,6 @@ for i = 1: size(solInt,2)-1
         importedRxns{i, j} = MatricesSUX.rxns(stopModel + x(j));
         MatricesSUX.rxns(stopModel + x(j));
     end
+end
 end
 

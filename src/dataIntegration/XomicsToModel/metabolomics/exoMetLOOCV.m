@@ -153,3 +153,4 @@ V = addvars(V,model.rxns,modelOrig.lb,modelOrig.ub,'NewVariableNames',{'rxns','l
 % V = V(LIBkey,:);
 
 compareFluxes = mapAontoB('rxns','rxns',V,measuredFluxes);
+end

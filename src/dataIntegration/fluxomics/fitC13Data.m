@@ -100,3 +100,4 @@ for k = 1:numpoints
     rout{k} = NLPsolution;
 end
 return
+end

@@ -92,3 +92,4 @@ switch archstr
             C=U(:,1:rankS)';
             L=U(:,rankS+1:m)';
 end
+end

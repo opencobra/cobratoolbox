@@ -28,3 +28,4 @@ Rsqr = 1 - sum((y - yCalc2).^2)/sum((y - mean(y)).^2);
 a0 = b(1);
 a1 = b(2);
 Residuals = (y - yCalc2);
+end

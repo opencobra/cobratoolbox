@@ -108,3 +108,4 @@ if nargin == 4
         writetable(duplicateTable, fileName, 'Sheet', 'duplicatedReactions')
     end
 end
+end

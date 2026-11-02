@@ -69,4 +69,5 @@ end
 %(K) yet minimises the activity of any non-core reaction(P).
 v = LP10(K, P, v, LPproblem, epsilon, adaptiveScalingFlag, nonPen);
 Supp = find(abs(v) >= 0.99*epsilon);
+end
 

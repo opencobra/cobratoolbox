@@ -132,3 +132,4 @@ xlabel('Connectivity','FontSize',14);
 set(gca,'FontSize',9);
 title('Mole fraction statistics: connectivity')
 saveas(gcf,'moleFraction95connectivity','fig');
+end

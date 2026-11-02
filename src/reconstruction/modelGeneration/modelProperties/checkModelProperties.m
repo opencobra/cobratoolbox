@@ -789,3 +789,4 @@ k=1;
 %maximum and minimim magnitude stoichiometric coefficient
 model.maxSij=norm(model.S,inf);
 model.minSij=min(min(abs(model.S)));
+end

@@ -94,6 +94,7 @@ if (nargin > 1)
     model.grRules = columnVector(model.grRules);
     gpraModel = model;
 end
+end
 
 %     geneString = geneStrings{i};
 %     geneList = {};

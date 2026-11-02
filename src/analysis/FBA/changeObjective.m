@@ -44,4 +44,5 @@ if (isempty(rxnID) | rxnID == 0)
 else
     model.c(rxnID) = objectiveCoeff;
 end
+end
 

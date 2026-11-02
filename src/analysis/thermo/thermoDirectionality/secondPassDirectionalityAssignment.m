@@ -51,3 +51,4 @@ switch model.description
     otherwise
         fprintf('No manually generated .m file second pass directionality assignment is available for this model.')
 end
+end

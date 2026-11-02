@@ -184,3 +184,4 @@ ATN.atrans=cell(nAtransInstances,1);
 for i=1:nAtransInstances
     ATN.atrans{i,1}=[ATN.rxns{i}  '#' ATN.atoms{ah(i)} '#' ATN.atoms{at(i)}];
 end
+end

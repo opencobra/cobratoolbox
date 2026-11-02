@@ -77,4 +77,5 @@ end
 
 ResultsMaleFemale.MaleOnlyBiofluid = ResultsMaleFemale.MaleOnly(find(~cellfun(@isempty,strfind(ResultsMaleFemale.MaleOnly,'_EX_'))));
 ResultsMaleFemale.FemaleOnlyBiofluid = ResultsMaleFemale.FemaleOnly(find(~cellfun(@isempty,strfind(ResultsMaleFemale.FemaleOnly,'_EX_'))));
+end
 

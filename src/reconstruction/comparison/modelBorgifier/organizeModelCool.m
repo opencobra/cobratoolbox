@@ -163,3 +163,4 @@ end
 % Reorder S matrix.
 Model.S = Model.S(:, rxnIndex) ;
 Model.S = Model.S(metIndex, :) ;
+end

@@ -188,3 +188,4 @@ if isfield(model,'metSmile')
     model.metSmile = cellfun(@num2str, model.metSmile,'UniformOutput',false);
     model.metSmile  =  model.metSmile (cellfun('isclass',  model.metSmile , 'char'));
 end
+end

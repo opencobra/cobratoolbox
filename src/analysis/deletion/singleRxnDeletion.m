@@ -89,3 +89,4 @@ for i = 1:nDelRxns
 end
 
 grRatio = grRateKO/grRateWT;
+end

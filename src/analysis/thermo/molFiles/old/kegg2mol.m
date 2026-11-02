@@ -159,3 +159,4 @@ delete('tmp.mol'); % Delete temporary file
 if ~isempty(nomol)
     fprintf(['Could not retreive molfiles from KEGG for metabolites:\n' sprintf('%s\n', nomol{:})]);
 end
+end

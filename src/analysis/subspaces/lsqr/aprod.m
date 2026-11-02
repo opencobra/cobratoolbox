@@ -23,3 +23,4 @@ if mode == 1,
 else
    y = rw'*x;
 end
+end

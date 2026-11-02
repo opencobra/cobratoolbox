@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -85,6 +86,7 @@ guidata(hObject, handles);
 
 % UIWAIT makes CreateGPR wait for user response (see UIRESUME)
  uiwait(handles.figure1);
+end
 
 
 % --- Outputs from this function are returned to the command line.
@@ -97,6 +99,7 @@ function varargout = CreateGPR_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 delete(gcf)
+end
 
 % --- Executes on button press in group_and.
 function group_and_Callback(hObject, eventdata, handles)
@@ -143,6 +146,7 @@ handles.data2 = data2;
 set(handles.uitable2,'data',handles.data2);
 
 guidata(hObject,handles)
+end
 
 % --- Executes on button press in group_or.
 function group_or_Callback(hObject, eventdata, handles)
@@ -189,6 +193,7 @@ handles.data2 = data2;
 set(handles.uitable2,'data',handles.data2);
 
 guidata(hObject,handles)
+end
 
 % --- Executes on button press in group_scatter.
 function group_scatter_Callback(hObject, eventdata, handles)
@@ -210,6 +215,7 @@ else
 end
 
 guidata(hObject,handles)
+end
 
 % --- Executes on button press in group_finished.
 function group_finished_Callback(hObject, eventdata, handles)
@@ -228,6 +234,7 @@ end
 guidata(hObject,handles)
 
 uiresume
+end
 
 % --- Executes on button press in group_addgene.
 function group_addgene_Callback(hObject, eventdata, handles)
@@ -249,6 +256,7 @@ else
 end
 
 guidata(hObject,handles)
+end
 
 
 
@@ -260,6 +268,7 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 
 % Hint: delete(hObject) closes the figure
 uiresume
+end
 
 
 % --- Executes when selected cell(s) is changed in uitable1.
@@ -270,6 +279,7 @@ function uitable1_CellSelectionCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.selection1 = eventdata.Indices;
 guidata(hObject,handles)
+end
 
 % --- Executes when selected cell(s) is changed in uitable2.
 function uitable2_CellSelectionCallback(hObject, eventdata, handles)
@@ -279,6 +289,7 @@ function uitable2_CellSelectionCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.selection2 = eventdata.Indices;
 guidata(hObject,handles)
+end
 
 
 % --- Executes on button press in group_removegene.
@@ -301,3 +312,4 @@ end
 handles.data2 = data2;
 set(handles.uitable2,'data',handles.data2);
 guidata(hObject,handles)
+end

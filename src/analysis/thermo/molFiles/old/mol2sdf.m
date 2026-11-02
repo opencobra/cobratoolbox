@@ -132,6 +132,7 @@ metList = reshape(metList,length(metList),1);
 if isnumeric(omets)
     metList = str2double(metList);
 end
+end
 
 
 

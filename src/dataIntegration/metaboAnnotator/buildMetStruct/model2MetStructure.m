@@ -174,4 +174,5 @@ TableIDs = TableEnd;
 clear IDs* i inchi* mol* progress smiles start* TableS* tableE* retrieve* Inchi* annota* F endSearch IDc* stop 
 clear VMH2IDmappingMissing VMH2IDmappingPresent tableStartOverview tableEndOverview TableEnd
 save([outputFileName '.mat']);
+end
 

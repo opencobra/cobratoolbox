@@ -48,3 +48,4 @@ a = printRxnFormula(dummy);
 for i = 1 : length(a)
     model = addReaction(model, dummy.rxns{i},a{i});
 end
+end

@@ -58,4 +58,5 @@ else
     fprintf('%s\n',['Warning: getGroupVectorFromInchi did not succeed for: ' inchi])
     group_def = [];
 end
+end
 

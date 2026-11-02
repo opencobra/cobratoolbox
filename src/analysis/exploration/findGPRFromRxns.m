@@ -18,6 +18,7 @@ function gprs = findGPRFromRxns(model, rxnIDs)
 %    Thomas Pfau Dec 2017
 
 gprs = printGPRForRxns(model,rxnIDs, 0);
+end
 
 
 

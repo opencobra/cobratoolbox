@@ -166,3 +166,4 @@ else
 end
 
 grRatio = grRateKO/grRateWT;
+end

@@ -86,3 +86,4 @@ for x=1:p-1
         pKa(x) =  -(gpfnsp(x+1,1)-gpfnsp(x,1))/(log(10)* 8.31451 * .29815);
     end
 end
+end

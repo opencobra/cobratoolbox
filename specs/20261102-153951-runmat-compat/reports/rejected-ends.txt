@@ -1,0 +1,2 @@
+src/analysis/exploration/surfNet.m	parse tree changed; analyzer gained SYNER (already terminated; RunMat reads a %{ line with text as a block comment, defect D3)
+src/visualization/cellDesigner/intergrate.m	MATLAB cannot parse the original (analyzer SYNER before the change)

@@ -79,6 +79,7 @@ for i = 1:length(model.regulatoryRules)
 end
 
 finalState = geneStates;
+end
 
 
 %% parseRegulatoryRules
@@ -115,4 +116,5 @@ for i = 1:length(model.regulatoryRules)
         newRule = strrep(newRule,fields{j},newFields{j});
     end
     ruleList{i} = newRule;
+end
 end

@@ -239,3 +239,4 @@ if printLevel
     fprintf('\nnull(S) is represented by L, permutation p, and column scaling Cinv\n\n')
 end
 return
+end

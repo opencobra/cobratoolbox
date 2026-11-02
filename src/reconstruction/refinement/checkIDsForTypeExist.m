@@ -57,3 +57,4 @@ bool = any(presence);
 if nargout == 2
     existing = unique(existingIDs(presence));
 end
+end

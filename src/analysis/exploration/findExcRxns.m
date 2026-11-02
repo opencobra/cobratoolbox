@@ -77,3 +77,4 @@ else
     selUpt = full((sum(model.S==1,1) ==1) & (sum(model.S~=0) == 1))';
 
 end
+end

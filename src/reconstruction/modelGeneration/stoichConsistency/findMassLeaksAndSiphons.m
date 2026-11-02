@@ -394,3 +394,4 @@ if printLevel>0 && any(siphonMetBool)
         fprintf('%s\n',model.rxns{ind(k)});
     end
 end
+end

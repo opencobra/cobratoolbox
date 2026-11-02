@@ -42,3 +42,4 @@ catch
     class(value)
     error('extendIndicesInDimenion: Input class must be the same as value class')
 end
+end

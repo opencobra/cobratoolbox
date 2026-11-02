@@ -11,3 +11,4 @@ addpath(fullfile(path, '..'));
 config;
 
 addpath(fullfile(path, 'include'));
+end

@@ -139,3 +139,4 @@ end
 for ir = 1:length(rxnfields)
     Tmodel.(rxnfields{ir})(nowRemoveRxns) = [] ;
 end
+end

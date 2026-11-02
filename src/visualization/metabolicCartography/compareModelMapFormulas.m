@@ -185,4 +185,5 @@ if nargin == 3
         writetable(duplicateTable, fileName, 'Sheet', 'duplicatedReactions')
     end
 end
+end
 

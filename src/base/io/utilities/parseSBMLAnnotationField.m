@@ -100,3 +100,4 @@ if isempty(fieldList) % if the keywords do not exist anymore
     end
 
 end
+end

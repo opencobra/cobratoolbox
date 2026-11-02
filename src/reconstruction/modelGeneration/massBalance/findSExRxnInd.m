@@ -266,3 +266,4 @@ model.SExMetBool = getCorrespondingRows(model.S,boolMet,~model.SIntRxnBool,'incl
 if nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool) ~= nnz(model.SIntMetBool)+nnz(model.SOnlyExMetBool)
     error('Inconsistency in metabolite counts')
 end
+end

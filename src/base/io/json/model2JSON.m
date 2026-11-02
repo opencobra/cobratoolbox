@@ -322,3 +322,4 @@ end
 
 fprintf(fid, '}\n'); % close file
 fclose(fid);
+end

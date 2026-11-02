@@ -239,6 +239,7 @@ modelHM.A=modelHM.S;
 %modelHM = rmfield(modelHM,'rules');
 % modelHM = rmfield(modelHM,'grRules');
 modelHM = convertOldStyleModel(modelHM);
+end
 % 
 % for i = 1 : length(modelHM.rxns)
 %     modelHM.rules(i,1) = {''};

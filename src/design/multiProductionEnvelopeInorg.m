@@ -122,3 +122,4 @@ if plotTools
 end
 biomassValues = biomassValues';
 targetValues = [targetLowerBound' targetUpperBound'];
+end

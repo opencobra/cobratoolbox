@@ -253,3 +253,4 @@ pseudoisomers = repmat(pseudoisomers,length(inchi),1);
 
 % Map pKa to input cell array
 pseudoisomers(bool) = upKa(crossj);
+end

@@ -109,3 +109,4 @@ if     k == kmax,       info = 2; end
 if    indefinite,       info = 3; end
 if shrink <= sqrt(tol), info = 4; end
 return;
+end

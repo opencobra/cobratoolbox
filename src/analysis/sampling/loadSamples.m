@@ -53,3 +53,4 @@ for i = 1:numFiles
         showprogress((i-numSkipped)/(numFiles-numSkipped));
     end
 end
+end

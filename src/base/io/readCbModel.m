@@ -280,6 +280,7 @@ model.description = modelDescription;
 model = createDefaultFields(model);
 
 model = orderModelFields(model);
+end
 
 
 function model = createDefaultFields(model,fileName)
@@ -306,6 +307,7 @@ end
 
 if ~isfield(model,'rules')
     model.rules = repmat({''},size(model.rxns));
+end
 end
 
 
@@ -394,6 +396,7 @@ for i = 1:numel(structFields)
             % not a model.            
         end
     end
+end
 end
 
 
@@ -551,6 +554,7 @@ model.S = sparse(S);
 
 % Delete the temporary file
 delete('load_simpheny.tmp');
+end
 
 
 function list = removeDeletedTags(list)
@@ -566,6 +570,7 @@ for i = 1:length(list)
     if (~isempty(ind))
         list{i} = item(1:(ind - 1));
     end
+end
 end
 
 
@@ -627,3 +632,4 @@ model.rules = columnVector(rules);
 model.grRules = columnVector(grRules);
 model.genes = columnVector(allGenes);
 model.metFormulas = columnVector(metFormulas);
+end

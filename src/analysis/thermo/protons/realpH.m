@@ -29,3 +29,4 @@ pHAdjustment = ( (gibbscoeff*(is^(0.5))) / (log(10)*(1+1.6*(is^(0.5)))) );
 
 % fprintf('%s\t%f\n','pH adjustment',phAdjustment);
 pHr = pHa - pHAdjustment;
+end

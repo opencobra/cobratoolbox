@@ -59,3 +59,4 @@ end
 
 ylabel('Counts (log scale)','FontSize',12)
 xlabel('ThermoKernel Weights','FontSize',12)
+end

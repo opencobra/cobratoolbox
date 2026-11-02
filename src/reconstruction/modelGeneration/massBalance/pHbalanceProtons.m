@@ -411,3 +411,4 @@ end
 if any(any(isnan(model.S)))
     error('NaN in S matrix after proton balancing.')
 end
+end

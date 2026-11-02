@@ -76,3 +76,4 @@ rxnAbbrevs=model.rxns(rxnInds);
 transRxnsBool = isNonexchTrans==1 | isExc==1;
 transRxns = rxnAbbrevs(transRxnsBool);
 nonTransRxns = setdiff(rxnAbbrevs, transRxns);
+end

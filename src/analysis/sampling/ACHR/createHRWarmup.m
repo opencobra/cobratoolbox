@@ -170,6 +170,7 @@ if isempty(bias)
 else
     warmupPts = warmupPts*.99 + .01*centerPoint*ones(1,nPoints);
 end
+end
 
 % % Create orthogonal warmup points
 % warmupPts1= createHRWarmupOrth(model,true,verbFlag);

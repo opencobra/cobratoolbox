@@ -127,3 +127,4 @@ if ~isscalar(isotopeAbundance) || isotopeAbundance
 end
 
 elementalWeightMatrix = [symbols, num2cell(elementWeights)];
+end

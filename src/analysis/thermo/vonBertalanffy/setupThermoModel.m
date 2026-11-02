@@ -108,3 +108,4 @@ model = estimateDfGt0(model,confidenceLevel);
 %% Estimate standard transformed reaction Gibbs energies
 fprintf('\nEstimating bounds on transformed Gibbs energies.\n');
 model = estimateDrGt0(model,confidenceLevel);
+end

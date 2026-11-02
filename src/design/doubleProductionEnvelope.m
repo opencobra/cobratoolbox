@@ -80,3 +80,4 @@ alpha(.4);
 xlabel([strrep(prod1,'_','\_'),' (mmol/gDW h)']);
 ylabel([strrep(prod2,'_','\_'),' (mmol/gDW h)']);
 zlabel('Growth Rate (1/h)');
+end

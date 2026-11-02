@@ -840,6 +840,7 @@ if figure345 && any(dGfGCforwardReversibleBool_bydGt0)
 end
 
 changedDirections = directions;
+end
 % old code
 %         %reactions that are qualitatively forward but quantitatively reverse
 %         X=1:nnz(changedDirections.forwardReversible);

@@ -33,3 +33,4 @@ for i = 1:length(model.rxns)
 end
 
 model.subSystems = model.subSystems';
+end

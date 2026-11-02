@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -195,11 +196,13 @@ xlabel('Reactions');
 title('Sparsity Pattern Of S');
 
 guidata(hObject,handles);
+end
 
 
 
 % --- Outputs from this function are returned to the command line.
 function varargout = model_stats_OutputFcn(hObject, eventdata, handles)
+end
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -213,6 +216,7 @@ function act_close_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf)
+end
 
 
 % --- Executes on button press in act_out.
@@ -283,6 +287,7 @@ handles.model = model;
 ReconstructionCreator(handles.model);
 model_stats(handles.model);
 guidata(hObject,handles)
+end
 
 
 
@@ -307,6 +312,7 @@ end
 handles.listbox1_select = contents{get(hObject,'Value')};
 
 guidata(hObject,handles);
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -319,6 +325,7 @@ function listbox1_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end
 
 
@@ -360,6 +367,7 @@ set(handles.listbox2,'string',listbox2);
 
 
 guidata(hObject,handles)
+end
 
 
 % --- Executes on button press in pushbutton5.
@@ -379,6 +387,7 @@ else
 end
 
 guidata(hObject,handles);
+end
 
 
 % --- Executes on button press in act_plot.
@@ -395,6 +404,7 @@ ylabel('Connectivity');
 xlabel('Metabolites');
 set(handles.text_esc,'string','');
 guidata(hObject,handles);
+end
 
 
 
@@ -438,6 +448,7 @@ set(handles.listbox1,'string',listbox1);
 set(handles.listbox2,'string',listbox2');
 
 guidata(hObject,handles);
+end
 
 
 % --- Executes on selection change in listbox2.
@@ -452,6 +463,7 @@ contents = cellstr(get(hObject,'String'));
 
 handles.listbox2_select = contents{get(hObject,'Value')};
 guidata(hObject,handles);
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -465,6 +477,7 @@ function listbox2_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 % --- Executes when user attempts to close figure1.
@@ -475,6 +488,7 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 
 % Hint: delete(hObject) closes the figure
 delete(gcf);
+end
 
 
 % --- Executes on selection change in listbox_rxns.
@@ -489,6 +503,7 @@ function listbox_rxns_Callback(hObject, eventdata, handles)
 
 set(handles.rxn_text,'String',printRxnFormula(handles.model,handles.model.rxns{get(hObject,'Value')}));
 guidata(hObject,handles)
+end
 
 % --- Executes during object creation, after setting all properties.
 function listbox_rxns_CreateFcn(hObject, eventdata, handles)
@@ -500,6 +515,7 @@ function listbox_rxns_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end
 
 
@@ -519,6 +535,7 @@ else
 end
 
 guidata(hObject,handles)
+end
 
 
 % --------------------------------------------------------------------
@@ -535,6 +552,7 @@ data = get(handles.rxn_table,'data');
 str = data{handles.rxn_selection(1),5};
 
 webKeggMapper('ec',str);
+end
 
 % --------------------------------------------------------------------
 function keggmapper_kegg_Callback(hObject, eventdata, handles)
@@ -550,6 +568,7 @@ data = get(handles.rxn_table,'data');
 str = data{handles.rxn_selection(1),6};
 
 webKeggMapper('kegg',str);
+end
 
 
 % --------------------------------------------------------------------
@@ -565,6 +584,7 @@ end
 data = get(handles.rxn_table,'data');
 str = data{handles.rxn_selection(1),5};
 webDatabases('ec',str);
+end
 
 
 % --------------------------------------------------------------------
@@ -580,6 +600,7 @@ end
 data = get(handles.rxn_table,'data');
 str = data{handles.rxn_selection(1),6};
 webDatabases('kegg',str,1);
+end
 
 
 % --- Executes when selected cell(s) is changed in rxn_table.
@@ -590,6 +611,7 @@ function rxn_table_CellSelectionCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.rxn_selection = eventdata.Indices;
 guidata(hObject,handles);
+end
 
 
 % --- Executes on button press in pushbutton9.
@@ -605,3 +627,4 @@ data = neighborRxn2data(handles.model,get(handles.listbox_rxns,'Value'));
 set(handles.rxn_table,'data',data);
 %set(handles.figure1,'Pointer','arrow');
 guidata(hObject,handles)
+end

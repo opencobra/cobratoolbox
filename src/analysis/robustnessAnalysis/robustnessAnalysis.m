@@ -68,3 +68,4 @@ if (plotResFlag)
     ylabel('Objective');
     axis tight;
 end
+end

@@ -237,3 +237,4 @@ for fileNo = 1:nFiles
 end % Files
 
 fclose(fidErr);
+end

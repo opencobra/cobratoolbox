@@ -46,3 +46,4 @@ end
 % Remove empty elements from sub-system name list
 nonEmptyIndices = ~cellfun('isempty', subSystems);
 subSystems = subSystems(nonEmptyIndices);
+end

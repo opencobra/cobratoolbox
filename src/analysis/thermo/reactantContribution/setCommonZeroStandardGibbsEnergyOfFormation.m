@@ -347,6 +347,7 @@ for x=1:length(leftAll)
             model.met(strcmp(model.mets,abbrL)).dGft0-model.met(strcmp(model.mets,abbrR)).dGft0);
     end
 end
+end
 
 
 %OLD CODE -may still be usefull for looking at nullspace of internal

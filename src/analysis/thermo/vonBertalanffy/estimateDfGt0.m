@@ -211,6 +211,7 @@ end
 if any(isnan(model.DfGtMax))
     error([int2str(nnz(isnan(model.DfGtMax(model.SIntRxnBool)))) ' DfGtMax are NaN.']);
 end
+end
 
 % % Estimate standard transformed reaction Gibbs energies
 % St = model.S;

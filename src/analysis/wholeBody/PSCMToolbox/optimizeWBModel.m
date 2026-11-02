@@ -408,4 +408,5 @@ if 1 %this may not be very backward compatible
         solution = rmfield(solution,'slack');
     end
 end
+end
 

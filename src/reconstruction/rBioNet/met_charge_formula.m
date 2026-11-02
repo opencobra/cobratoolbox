@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -81,6 +82,7 @@ guidata(hObject, handles);
 
 % UIWAIT makes met_charge_formula wait for user response (see UIRESUME)
  uiwait(handles.figure1);
+end
 
 
 % --- Outputs from this function are returned to the command line.
@@ -93,6 +95,7 @@ function varargout = met_charge_formula_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 delete(gcf)
+end
 
 
 % --- Executes on button press in act_continue.
@@ -103,6 +106,7 @@ function act_continue_Callback(hObject, eventdata, handles)
 handles.output = 'Continue';
 guidata(hObject,handles)
 uiresume
+end
 
 % --- Executes on button press in act_cancel.
 function act_cancel_Callback(hObject, eventdata, handles)
@@ -110,6 +114,7 @@ function act_cancel_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 uiresume
+end
 
 % --- Executes when user attempts to close figure1.
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
@@ -119,3 +124,4 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 
 % Hint: delete(hObject) closes the figure
 uiresume
+end

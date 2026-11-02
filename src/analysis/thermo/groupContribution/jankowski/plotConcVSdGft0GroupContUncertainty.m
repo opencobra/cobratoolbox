@@ -94,3 +94,4 @@ xlim([0, 100])
 set(gca,'XTick',0:10:100,'TickDir','out')
 ylabel('# Reactants','FontSize',14)
 xlabel('Standard Error in {\Delta_{f}G_{est}^{0}} (kJ/mol)','FontSize',14)
+end

@@ -37,3 +37,4 @@ if ~isempty(ruleString)
         end
     end
 end
+end

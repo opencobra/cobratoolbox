@@ -32,3 +32,4 @@ for i=1:size(compartmentMets,1);
         compartmentMetabolites(i,:)=metabolites(num,:);
     end
 end
+end

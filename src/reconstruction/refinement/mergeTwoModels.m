@@ -197,6 +197,7 @@ if(isfield(modelNew, 'comps'))
 end
 showprogress(1.0, 'Finished merging models ...');
 fprintf('\n');
+end
 
 
 
@@ -254,10 +255,12 @@ for i = 1:numel(fields2)
     modelNew.(fields2{i})(nType1+1:end) = model2.(fields2{i});
     modelNew.(fields2{i})(1:nType1) = default;
 end
+end
 %These are all non stoichiometry fields done.
 
 
 function rule = updateRule(rule,oldpos,newpos)
 for i = 1:numel(oldpos)
     rule = strrep(rule,['x(' num2str(oldpos(i)) ')'],['x(' num2str(newpos(i)) ')']);
+end
 end

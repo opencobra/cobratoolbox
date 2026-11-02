@@ -894,3 +894,4 @@ end
 if param.printLevel>0
     fprintf('%s\n','--- thermoKernel END ----')
 end
+end

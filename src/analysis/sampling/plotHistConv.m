@@ -54,3 +54,4 @@ for rxnID = 1:nPlotRxn
     axis([minx maxx 0 maxy]);
     title(rxnNames{rxnID});
 end
+end

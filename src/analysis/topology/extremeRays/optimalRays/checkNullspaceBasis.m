@@ -176,3 +176,4 @@ report.message = message;
 if param.printLevel > 0
     fprintf('checkNullspaceBasis: %s\n', message);
 end
+end

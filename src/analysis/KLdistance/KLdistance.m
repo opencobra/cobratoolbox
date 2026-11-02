@@ -60,3 +60,4 @@ for jj = 1: size(data, 2) - 1
     title(parameters{(jj)})
     box off
 end
+end

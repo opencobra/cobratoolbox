@@ -236,6 +236,7 @@ if isempty(confidenceLevel)
     fprintf('\nSetting confidence level to %.2f.\n',confidenceLevel);
 end
 model.confidenceLevel = confidenceLevel;
+end
 
 % %all possible compartments
 % p=1;

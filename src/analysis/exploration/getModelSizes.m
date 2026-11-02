@@ -41,3 +41,4 @@ end
 if isfield(model,'genes')
     nGenes = size(model.genes,1);
 end
+end

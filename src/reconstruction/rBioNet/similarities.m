@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -83,6 +84,7 @@ handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
+end
 
 % UIWAIT makes similarities wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -97,6 +99,7 @@ function varargout = similarities_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+end
 
 
 % --- Executes on button press in close.
@@ -105,3 +108,4 @@ function close_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf)
+end

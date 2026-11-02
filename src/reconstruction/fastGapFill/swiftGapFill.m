@@ -75,3 +75,4 @@ fprintf('number of solved LPs: %d\n', LP);
 % added reactions
 AddedRxns.rxns = setdiff(consistMatricesSUX.rxns(reconInd), consistMatricesSUX.rxns(consistMatricesSUX.C1));
 AddedRxns.rxnFormula = printRxnFormula(consistMatricesSUX, AddedRxns.rxns,false);
+end

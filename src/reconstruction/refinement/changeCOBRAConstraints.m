@@ -132,3 +132,4 @@ if ~isempty(name)
     end
     model.ctrNames{constraintID} = name;
 end
+end

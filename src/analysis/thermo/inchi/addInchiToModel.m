@@ -85,3 +85,4 @@ if printLevel>0
     fprintf('%u%s\n',nnz(~model.inchiBool),' ... without nonstandard inchi')
     fprintf('%u%s\n',nnz(model.compositeInchiBool),' ... compositie inchi removed')
 end
+end

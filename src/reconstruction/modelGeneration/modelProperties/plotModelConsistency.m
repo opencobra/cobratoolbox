@@ -334,3 +334,4 @@ if exist('figureFileName','var')
     saveas(fig,[resultsDirectory filesep figureFileName]);
     print(fig,[resultsDirectory filesep figureFileName],'-dpng');
 end
+end

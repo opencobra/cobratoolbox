@@ -26,3 +26,4 @@ S.subs = repmat({':'},1,inputDimensions);
 S.subs{dimension} = indices;
 S.type = '()';
 removed = subsref(input,S);
+end

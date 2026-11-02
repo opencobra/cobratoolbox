@@ -188,3 +188,4 @@ title('Matching scores')
 xlabel('Template met')
 ylabel('Compared met')
 hold off
+end

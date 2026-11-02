@@ -42,3 +42,4 @@ if isfield(model,'comps')
     model = updateFieldOrderForType(model,'comps',iComps);
 end
 abcModel = model;
+end

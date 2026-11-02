@@ -96,3 +96,4 @@ for i = cycleStart:(length(states)-1)
     DRgenes{k} = genes;
     constrainedRxns{k} = rxns;
 end
+end

@@ -155,3 +155,4 @@ end
 delRes.maxProd = maxProd;
 delRes.minProd = minProd;
 delRes.growth = growthRate;
+end

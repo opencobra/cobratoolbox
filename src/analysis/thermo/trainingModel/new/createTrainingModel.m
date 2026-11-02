@@ -184,3 +184,4 @@ end
 
 trainingModel.DrGt0 = trainingModel.dG0_prime;
 trainingModel = rmfield(trainingModel,'dG0_prime');
+end

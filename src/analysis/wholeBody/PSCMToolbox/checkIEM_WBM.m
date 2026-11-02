@@ -347,3 +347,4 @@ if solution.stat == 1 || solution.stat == 3 %only proceed if the wild type was o
         end
     end
 end
+end

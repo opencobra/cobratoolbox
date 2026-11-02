@@ -90,3 +90,4 @@ InfoBall.S = CMODEL.S ;
 
 % Launch GUI.
 [rxnList, metList, Stats] = reactionCompareGUI(InfoBall) ;
+end

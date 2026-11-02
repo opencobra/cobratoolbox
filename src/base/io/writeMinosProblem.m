@@ -170,3 +170,4 @@ if printLevel > 0
     toc;
     fprintf('%s\n', ['In ' num2str(toc) ' sec, file written to ' longfname]);
 end
+end

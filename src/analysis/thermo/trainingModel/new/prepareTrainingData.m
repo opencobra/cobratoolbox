@@ -88,3 +88,4 @@ training_data = createGroupIncidenceMatrix(model, training_data);
 % apply the reverse Legendre transform for the relevant training observations (typically
 % apparent reaction Keq from TECRDB)
 training_data = reverseTransformTrainingData(model, training_data, use_model_pKas_by_default);
+end

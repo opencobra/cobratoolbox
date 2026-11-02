@@ -181,3 +181,4 @@ if exist('NullRxns','var')
     KEGG.grRules(NullRxns==1)=[];
     KEGG.c(NullRxns==1)=[];
 end
+end

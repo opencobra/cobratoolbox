@@ -554,5 +554,6 @@ boolMet=~any(combinedModel.G,2);
 if any(boolMet)
     error([int2str(nnz(boolMet)) ' metabolites without any corresponding group'])
 end
+end
 
 

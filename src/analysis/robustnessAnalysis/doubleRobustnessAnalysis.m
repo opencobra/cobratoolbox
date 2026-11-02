@@ -82,3 +82,4 @@ if (plotResFlag)
     ylabel(strrep(controlRxn2,'_','-'));
     axis tight
 end
+end

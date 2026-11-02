@@ -20,3 +20,4 @@ function subSysModel = extractSubSysModel(model, subSysNames)
 rxnList = model.rxns(cellfun(@(x) any(ismember(x,subSysNames)), model.subSystems));
 
 subSysModel = extractSubNetwork(model,rxnList);
+end

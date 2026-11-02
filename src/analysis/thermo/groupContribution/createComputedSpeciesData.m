@@ -220,3 +220,4 @@ for n = 1:length(computedSpeciesData)
     computedSpeciesData(n).gcmSpecies = newGcmSpecies;
     computedSpeciesData(n).mmspH7Bool = newMmspH7Bool;
 end
+end

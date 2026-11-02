@@ -57,6 +57,7 @@ if printLevel
     whos S Z SZ
     fprintf('norm(S*Z,inf) = %8.1e\n', normSZ)
 end
+end
 
 
 %  20 Jan 2015: Updated to use Nick Henderson's 64 bit LUSOL interface

@@ -47,3 +47,4 @@ else
     end
     out = sum(results)/npoints;
 end
+end

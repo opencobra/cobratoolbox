@@ -19,3 +19,4 @@ end
 
 T = idv2cdv(n-1);
 out = [T,T;zeros(size(T)),T];
+end

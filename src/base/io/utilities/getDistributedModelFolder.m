@@ -36,3 +36,4 @@ if exist([modelDir filesep modelName], 'file')
 else    
     warning('Requested Model not present in the model directory.\n This is either due to the model not being downloaded, or not being part of the distributed models.')
 end
+end

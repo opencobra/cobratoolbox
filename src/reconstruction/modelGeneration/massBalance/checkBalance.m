@@ -96,3 +96,4 @@ E(missingFormulaeBool) = NaN;
 if exist('fid','var')
     fclose(fid);
 end
+end

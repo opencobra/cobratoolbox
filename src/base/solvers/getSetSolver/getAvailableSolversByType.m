@@ -38,3 +38,4 @@ for i = 1:numel(solverNames)
 end
 
 solvers.ALL = allSolvers;
+end

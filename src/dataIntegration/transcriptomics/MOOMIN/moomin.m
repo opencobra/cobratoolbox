@@ -369,4 +369,5 @@ function [model, MILPsolutions, MILPproblem] = moomin(model, expression, varargi
 		end
 		model.combined = combined;
 	end
+end
     

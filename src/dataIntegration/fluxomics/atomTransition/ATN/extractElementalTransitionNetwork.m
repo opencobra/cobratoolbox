@@ -28,3 +28,4 @@ ETN.elements = ATN.elements(abool);
 ETN.inputBool = ATN.inputBool(abool);
 ETN.outputBool = ATN.outputBool(abool);
 ETN.reverseBool = ATN.reverseBool(tbool);
+end

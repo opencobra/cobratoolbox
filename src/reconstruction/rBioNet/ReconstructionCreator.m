@@ -55,6 +55,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -169,6 +170,7 @@ if ~isempty(varargin)
 end
 
 guidata(hObject, handles);
+end
 
 % UIWAIT makes ReconstructionCreator wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -183,11 +185,13 @@ function varargout = ReconstructionCreator_OutputFcn(hObject, eventdata, handles
 
 % Get default command line output from handles structure
 varargout{1} = [];
+end
 
 
 
 
 function addrxn_gpr_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to addrxn_gpr (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -207,10 +211,12 @@ function addrxn_gpr_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 
 function addrxn_genes_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to addrxn_genes (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -230,10 +236,12 @@ function addrxn_genes_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 
 function addrxn_subsystem_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to addrxn_subsystem (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -253,10 +261,12 @@ function addrxn_subsystem_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 
 function addrxn_notes_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to addrxn_notes (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -276,10 +286,12 @@ function addrxn_notes_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 
 function addrxn_lb_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to addrxn_lb (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -299,10 +311,12 @@ function addrxn_lb_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 
 function addrxn_ub_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to addrxn_ub (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -322,10 +336,12 @@ function addrxn_ub_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 
 function addrxn_cs_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to addrxn_cs (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -345,10 +361,12 @@ function addrxn_cs_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+end
 
 
 
 function addrxn_references_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to addrxn_references (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -367,6 +385,7 @@ function addrxn_references_CreateFcn(hObject, eventdata, handles)
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end
 
 %-------------------------------------------------------------------------Search
@@ -414,6 +433,7 @@ set(handles.addrxn_lb,'String',lb);
 set(handles.addrxn_ub,'String','1000'); %ub default 1000.
 
 guidata(hObject,handles);
+end
 
 
 
@@ -427,6 +447,7 @@ set(handles.group1,'String','')
 
 
 guidata(hObject,handles)
+end
 
 % --- Executes on button press in addrxn_add.
 function addrxn_add_Callback(hObject, eventdata, handles)
@@ -508,11 +529,13 @@ end
 
 
 guidata(hObject,handles)
+end
 
 
 
 % --------------------------------------------------------------------
 function file_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to file (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -520,6 +543,7 @@ function file_Callback(hObject, eventdata, handles)
 
 % --------------------------------------------------------------------
 function help_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to help (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -531,6 +555,7 @@ function file_open_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 ReconstructionTool;
+end
 
 
 % --------------------------------------------------------------------
@@ -539,6 +564,7 @@ function file_exit_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf)
+end
 
 
 
@@ -583,6 +609,7 @@ set(handles.new_rxns,'data',handles.newrxns);
 
 
 guidata(hObject,handles)
+end
 
 % --- Executes when selected cell(s) is changed in new_rxns.
 function new_rxns_CellSelectionCallback(hObject, eventdata, handles)
@@ -592,6 +619,7 @@ function new_rxns_CellSelectionCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.newrxns_selection = eventdata.Indices;
 guidata(hObject,handles)
+end
 
 
 
@@ -608,6 +636,7 @@ else
         ,'Load Gene index.','help');
 end
 guidata(hObject,handles)
+end
 
 
 % --- Executes on button press in addrxn_more.
@@ -626,6 +655,7 @@ else
     set(handles.group3,'Visible','on');
 end
 guidata(hObject,handles);
+end
 
 
 
@@ -680,6 +710,7 @@ GenesAndReactions(geneindex);
 
 
 guidata(hObject,handles)
+end
 
 
 % --- Executes on button press in model_description.
@@ -700,6 +731,7 @@ if ~isempty(description)
 end
 
 guidata(hObject,handles)
+end
 
 
 % --- Executes on button press in newrxns_edit.
@@ -744,6 +776,7 @@ set(handles.addrxn_subsystem,'String',rxnline{10});
 
 
 guidata(hObject,handles);
+end
 
 
 
@@ -807,6 +840,7 @@ handles.last_path = pathname;
 handles.model = model;
 
 guidata(hObject,handles)
+end
 
 
 
@@ -841,6 +875,7 @@ save(fullfile(pathname, filename),name);
 
 
 guidata(hObject,handles)
+end
 
 
 % --------------------------------------------------------------------
@@ -1007,6 +1042,7 @@ end
 
 
 guidata(hObject,handles);
+end
 
 % --------------------------------------------------------------------
 function file_open_mat_Callback(hObject, eventdata, handles)
@@ -1110,6 +1146,7 @@ end
 
 handles.model = '';
 guidata(hObject,handles)
+end
 
 
 % --------------------------------------------------------------------
@@ -1140,6 +1177,7 @@ set(handles.new_rxns,'data',handles.newrxns);
 
 
 guidata(hObject,handles)
+end
 
 
 % --------------------------------------------------------------------
@@ -1171,10 +1209,12 @@ data = getgenelist([pathname input_file]);
 set(handles.gene_index,'String',['Gene Index: ' input_file]);
 handles.genes_info = data;
 guidata(hObject,handles)
+end
 
 
 % --------------------------------------------------------------------
 function stats_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to stats (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1195,6 +1235,7 @@ else
     %rxn is loaded in model_stats
     model_stats(handles.model); %met not used at the moment
 end
+end
 
 
 
@@ -1212,6 +1253,7 @@ end
 % data = get(handles.new_rxns,'data');
 str = handles.newrxns{handles.newrxns_selection(1),13};
 webDatabases('ec',str);
+end
 
 
 % --------------------------------------------------------------------
@@ -1227,6 +1269,7 @@ end
 % data = get(handles.new_rxns,'data');
 str = handles.newrxns{handles.newrxns_selection(1),14};
 webDatabases('kegg',str,1);
+end
 
 
 % --------------------------------------------------------------------
@@ -1243,6 +1286,7 @@ end
 str = handles.newrxns{handles.newrxns_selection(1),13};
 
 webKeggMapper('ec',str);
+end
 
 
 % --------------------------------------------------------------------
@@ -1258,10 +1302,12 @@ end
 % data = get(handles.new_rxns,'data');
 str = handles.newrxns{handles.newrxns_selection(1),14};
 webKeggMapper('kegg',str);
+end
 
 
 % --- Executes when uipanel4 is resized.
 function uipanel4_ResizeFcn(hObject, eventdata, handles)
+end
 % hObject    handle to uipanel4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1273,10 +1319,12 @@ function help_about_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 rBioNetAbout;
+end
 
 
 % --------------------------------------------------------------------
 function file_save_text_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to file_save_text (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1284,6 +1332,7 @@ function file_save_text_Callback(hObject, eventdata, handles)
 
 % --------------------------------------------------------------------
 function file_open_text_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to file_open_text (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1311,6 +1360,7 @@ set(handles.new_rxns,'Data',rBioNet_search(handles.newrxns,column,str,exact));
 
 handles.output = hObject;
 guidata(hObject, handles);
+end
 
 % --- Executes on button press in search_refresh.
 function search_refresh_Callback(hObject, eventdata, handles)
@@ -1319,6 +1369,7 @@ function search_refresh_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 set(handles.new_rxns,'Data',handles.newrxns);
 guidata(hObject,handles);
+end
 
 
 
@@ -1330,3 +1381,4 @@ function search_str_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of search_str as text
 %        str2double(get(hObject,'String')) returns contents of search_str as a double
 search_Callback(hObject, eventdata, handles)
+end

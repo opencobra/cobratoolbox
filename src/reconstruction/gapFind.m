@@ -205,3 +205,4 @@ metsProduced = solution.full((n_v+n_wij_IR+n_wij_R+1):(n_v+n_wij_IR+n_wij_R+n_xn
 allGaps = model.mets(~metsProduced);
 rootGaps = findRootNPmets(model,findNCgaps); %identify root gaps using findRootNPmets
 downstreamGaps = allGaps(~ismember(allGaps,rootGaps));
+end

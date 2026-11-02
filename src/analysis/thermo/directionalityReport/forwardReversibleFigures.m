@@ -718,3 +718,4 @@ if figure345 && any(forward2Reversible_bydGt0)
     set(get(AX(2),'Ylabel'),'FontSize',16)
     xlabel('Reactions, sorted by P(\Delta_{r}G^{\primem}<0)');
 end
+end

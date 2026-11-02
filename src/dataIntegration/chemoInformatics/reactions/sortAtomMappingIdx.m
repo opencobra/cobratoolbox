@@ -64,3 +64,4 @@ end
 if sum(oldMapNum) ~=0; ascendingRxnFile = false; end
 
 ascendingRxnFile = rxnFileData;
+end

@@ -91,3 +91,4 @@ probpos = strfind(out, '�') ;
 if ~isempty(probpos) ; out = [out(1:probpos - 1) 'ss' out(probpos + 1:end)] ; end
 probpos = strfind(out, '�') ;
 if ~isempty(probpos) ; out = [out(1:probpos - 1) 'mu' out(probpos + 1:end)] ; end
+end

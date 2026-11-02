@@ -82,3 +82,4 @@ for i = 1 : length(model.rxns)
 end
 
 model.rxnSBOTerms = columnVector(model.rxnSBOTerms);
+end

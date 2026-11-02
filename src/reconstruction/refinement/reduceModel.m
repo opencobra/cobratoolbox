@@ -221,6 +221,7 @@ else
         modelOK = checkConsistency(model,modelRed,tol);
     end
 end
+end
 
 %%
 function modelRed = expandBounds(model,modelRed,tol)
@@ -242,6 +243,7 @@ while (~modelOK)
     modelRed.ub(narrowInd) = tempModel.ub(narrowInd);
     cushion = cushion*2;
     modelOK = checkConsistency(model,tempModel,tol);
+end
 end
 
 %%
@@ -273,4 +275,5 @@ if (sum(model.c ~= 0) > 0)
 
 else
     modelOK = true;
+end
 end

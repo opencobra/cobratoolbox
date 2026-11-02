@@ -171,4 +171,5 @@ if ~isempty(vr)
     vrN(colBool)=PN*vr(colBool);
     vrR(colBool)=PR*vr(colBool);
 end
+end
 

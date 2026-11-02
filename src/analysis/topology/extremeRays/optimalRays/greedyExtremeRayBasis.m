@@ -808,6 +808,7 @@ switch param.leftRight
         Z= Z';
         Zpos= Zpos';
 end
+end
 
 
 function [x, sol, rows] = compareSolversAtState(model, obj, param, positive, ...
@@ -896,6 +897,7 @@ end
 
 % restore the solver the caller had active, so the comparison leaves no trace
 changeCobraSolver(nominated, 'LP', 0);
+end
 
 
 function x = untruncatedRay(sol, nVar)
@@ -910,6 +912,7 @@ if isfield(sol, 'full') && numel(sol.full) == nVar
     x = sol.full;
     x(x < 0) = 0;
 end
+end
 
 
 function [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscalations)
@@ -918,6 +921,7 @@ function [nfail, nStallEscalations] = countFailure(nfail, nfailMax, nStallEscala
 nfail = nfail + 1;
 if nfail == nfailMax
     nStallEscalations = nStallEscalations + 1;
+end
 end
 
 
@@ -962,6 +966,7 @@ end
 obj = obj/norm(obj);
 if numel(obj) ~= nVar
     obj = [];
+end
 end
 
 
@@ -1031,3 +1036,4 @@ end
 attainable = nnz(supportBool) - getRankLUSOL(S(supportBool, :));
 attainable = max(attainable, 0);
 known = true;
+end

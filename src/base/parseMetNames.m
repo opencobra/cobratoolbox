@@ -42,3 +42,4 @@ baseMetNames = columnVector({data.metNames});
 compSymbols = columnVector({data.compSymbols});
 uniqueCompSymbols = unique(compSymbols);
 uniqueMetNames = unique(baseMetNames);
+end

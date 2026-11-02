@@ -35,6 +35,7 @@ else
 end
 
 fields = columnVector(fields);
+end
 
 
 function fields = splitOneString(string, delimiter)
@@ -73,3 +74,4 @@ for i = 1:length(fields)
     end
 end
 fields = fieldsOut;
+end

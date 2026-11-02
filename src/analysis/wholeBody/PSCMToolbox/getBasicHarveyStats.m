@@ -185,3 +185,4 @@ Fe_mets_male = setdiff(Fe_mets,SL_male);
 
 TableHHStats{c , 2} = num2str(length(Fe_mets_female));
 TableHHStats{c , 3} = num2str(length(Fe_mets_male)); c = c+1;
+end

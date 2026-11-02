@@ -27,3 +27,4 @@ overallOrder = [columnVector(order);columnVector(remainingOrder)];
 % array SNEW has field names in the same order as that in the array of
 % field names in C. S1 and C must have the same field names.
 orderedModel = orderfields(model,overallOrder);
+end

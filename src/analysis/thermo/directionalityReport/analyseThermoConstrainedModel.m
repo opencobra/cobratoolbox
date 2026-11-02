@@ -131,3 +131,4 @@ fwdProbReverse=model.directions.forwardReversible_bydGt0RHS | ...
 if any(fwdProbReverse) && 0
     forwardProbablyReverseFigures(model,directions)
 end
+end

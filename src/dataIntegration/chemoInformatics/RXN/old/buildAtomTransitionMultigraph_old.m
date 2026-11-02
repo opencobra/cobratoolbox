@@ -442,5 +442,6 @@ if sanityChecks
         clear G D La;
     end
 end
+end
 
 

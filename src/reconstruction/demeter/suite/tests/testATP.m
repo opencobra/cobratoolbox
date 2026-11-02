@@ -67,3 +67,4 @@ FBA = optimizeCbModel(model, 'max');
 % store result
 atpFluxAnaerobic = FBA.f;
 fprintf('Anaerobic ATP flux on complex medium: %d mmol/gDW/h\n', FBA.f)
+end

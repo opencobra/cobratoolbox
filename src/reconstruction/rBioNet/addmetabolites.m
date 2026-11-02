@@ -55,6 +55,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -136,6 +137,7 @@ else
     handles.reactions = [];
 end
 guidata(hObject, handles);
+end
 
 
 
@@ -149,6 +151,7 @@ function varargout = addmetabolites_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+end
 
 
 % --- Executes on button press in act_load.
@@ -261,6 +264,7 @@ end
 set(handles.uitable1,'data',data);
 
 guidata(hObject,handles)
+end
 
 % --- Executes on button press in act_continue.
 function act_continue_Callback(hObject, eventdata, handles)
@@ -419,6 +423,7 @@ switch answer
     otherwise
         return
 end
+end
 %handles.output = metab;
 %guidata(hObject,handles)
 
@@ -445,6 +450,7 @@ end
 
 set(handles.uitable1,'data',data);
 guidata(hObject,handles);
+end
 
 % --- Executes on button press in act_cancel.
 function act_cancel_Callback(hObject, eventdata, handles)
@@ -454,6 +460,7 @@ function act_cancel_Callback(hObject, eventdata, handles)
 handles.output = [];
 guidata(hObject,handles)
 delete(gcf)
+end
 
 % --- Executes when selected cell(s) is changed in uitable1.
 function uitable1_CellSelectionCallback(hObject, eventdata, handles)
@@ -463,6 +470,7 @@ function uitable1_CellSelectionCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.CellSelection = eventdata.Indices;
 guidata(hObject,handles)
+end
 
 
 % --- Executes when user attempts to close figure1.
@@ -475,3 +483,4 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 handles.output = [];
 guidata(hObject,handles)
 delete(gcf)
+end

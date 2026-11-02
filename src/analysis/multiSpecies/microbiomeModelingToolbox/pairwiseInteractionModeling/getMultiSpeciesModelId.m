@@ -167,3 +167,4 @@ names.metSps = cell(nMets, 1);
 names.metSps(metSps > 0) = names.spAbbr(metSps(metSps > 0));
 names.metSps(metSps == 0) = {'com'};
 ids.metSps = metSps;
+end

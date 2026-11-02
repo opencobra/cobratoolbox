@@ -32,3 +32,4 @@ model.lb(find(model.lb>0))=0;
 if ~isempty(leakingMets)
     warning(['Model leaks ', num2str(length(unique(leakingMets(:, 1)))), ' metabolites.'])
 end
+end

@@ -116,3 +116,4 @@ end
 % Elementary moiety vectors
 EMV = sparse(nM, size(N, 2));
 EMV(metCM, :) = N;
+end

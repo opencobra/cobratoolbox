@@ -117,3 +117,4 @@ end
 if any((A * R) ~= 0)
     warning('pathway not in nullspace of stoichiometric matrix')
 end
+end

@@ -168,3 +168,4 @@ end
 if formula
     [metabolite_structure] = addMetFormulaCharge(metabolite_structure,startSearch,endSearch);
 end
+end

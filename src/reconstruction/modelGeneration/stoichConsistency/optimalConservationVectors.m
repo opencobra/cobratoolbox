@@ -41,6 +41,7 @@ prob.csense(1:mlt,1)='E';
 params.lamda=lambda;
 params.delta=delta;
 solution = optimizeCardinality(prob,params);
+end
 % DC programming for solving the cardinality optimization problem
 % The l0 norm is approximated by capped-l1 function.
 % min       c'(x,y,z) + lambda*||x||_0 - delta*||y||_0

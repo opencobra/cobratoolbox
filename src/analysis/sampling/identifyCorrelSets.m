@@ -78,3 +78,4 @@ for i = 1:length(sortInd)
 end
 setSize = flipud(setSize);
 setsSorted = setsSorted';
+end

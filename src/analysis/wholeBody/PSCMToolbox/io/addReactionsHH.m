@@ -103,3 +103,4 @@ if isfield(model,'A')
     % remove model.A
     model = rmfield(model,'A');
 end
+end

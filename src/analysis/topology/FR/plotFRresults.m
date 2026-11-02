@@ -232,6 +232,7 @@ end
 if nRows*nCols<nReconstructions
     warning('not all results could be plotted with the nRows and nCols given')
 end
+end
 
 %legend('Original','Stoichiometrically consistent','+ Flux consistent','+ non-zero','+ unique','full rank([F R])');
 %legend('Reconstruction','Stoich. consistent','Nontrivial, stoich. & flux consistent','[F R] full row rank');

@@ -57,4 +57,5 @@ if numel(subSystems) > 1
 end
 
 model.subSystems(reactions) = {subSystems};
+end
 

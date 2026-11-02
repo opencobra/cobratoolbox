@@ -282,3 +282,4 @@ end
 %nonzero rows corresponding to completely mass balanced reactions
 balancedMetBool = getCorrespondingRows(model.S,true(nMet,1),~imBalancedRxnBool,'exclusive');
 massImbalance = sparse(massImbalance);
+end

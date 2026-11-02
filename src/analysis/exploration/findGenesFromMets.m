@@ -85,5 +85,6 @@ geneBool = getCorrespondingCols(model.rxnGeneMat, rxnIndex, colBool, mode);
 % totals = solution.x ~=0;
 
 geneList = model.genes(geneBool);
+end
 
 

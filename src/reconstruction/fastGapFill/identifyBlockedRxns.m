@@ -32,3 +32,4 @@ consistModel = extractSubNetwork(model,consistRxnsModel);
 inconsistRxns = setdiff(model.rxns,consistRxnsModel);
 BlockedRxns.allRxns = inconsistRxns;
 BlockedRxns.allFormula = printRxnFormula(model,inconsistRxns,false);
+end

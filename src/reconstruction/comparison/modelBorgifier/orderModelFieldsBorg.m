@@ -60,3 +60,4 @@ fieldOrder(fieldOrder == 0) = [] ;
 
 % Organize
 Model = orderfields(Model, fieldOrder) ;
+end

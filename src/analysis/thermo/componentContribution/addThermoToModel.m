@@ -93,6 +93,7 @@ DfG0NaNBool=isnan(model.DfG0);
 if any(DfG0NaNBool)
     warning([int2str(nnz(DfG0NaNBool)) ' DfG0 are NaN']);
 end
+end
 
 % model.DrGt0_Uncertainty = sqrt(diag(model.S'*model.covf*model.S));
 % model.DrGt0_Uncertainty(model.DrGt0_Uncertainty >= 1e3) = 1e10; % Set large uncertainty in reaction energies to inf

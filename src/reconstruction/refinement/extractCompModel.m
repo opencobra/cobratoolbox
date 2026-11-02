@@ -62,3 +62,4 @@ compModel = extractSubNetwork(model,rxnList,{},updateGenes);
 if (isfield(compModel,'description'))
     compModel.description = [compModel.description ' Compartment:' compSymbol'];
 end
+end

@@ -130,3 +130,4 @@ if printLevel>0
     fprintf('%u%s\n',nnz(nonphysicalMetBool),' = number of nonphysical model metabolites')
     fprintf('%u%s\n',nnz(pKaErrorMetBool),' = number of model metabolites with pKa error')
 end
+end

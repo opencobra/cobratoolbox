@@ -284,3 +284,4 @@ bilevelMILPproblem.ub = ub_bl;
 bilevelMILPproblem.vartype = vartype_bl;
 bilevelMILPproblem.contSolInd = sel_cont_sol;
 bilevelMILPproblem.intSolInd = sel_int_sol;
+end

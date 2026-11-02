@@ -136,3 +136,4 @@ if FBA.origStat == 1 %problem is feasible
 else
     fprintf('Problem is infeasible.\n');
 end
+end

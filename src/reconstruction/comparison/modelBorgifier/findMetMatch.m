@@ -219,6 +219,7 @@ end
 
 varargout = cell(1) ;
 varargout{1} = hit ;
+end
 
 function score = stringSimilarityForward(input1, input2, wordsize)
 % compares the similarity of two strings and returns a score between 0 (not
@@ -239,3 +240,4 @@ end
 score = mean(score ./ max(score)) ;
 
 score(isnan(score)) = 0 ;
+end

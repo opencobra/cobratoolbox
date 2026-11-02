@@ -22,3 +22,4 @@ function metabolites = formula2mets(formula)
 % .. rbionet@systemsbiology.is
 mets = parseRxnFormula(formula);
 metabolites = regexprep(mets, '\[.+\]', '');
+end

@@ -106,3 +106,4 @@ for i = 1:numel(firstColumn)
     end
 end
 geneWeight = secondColumn;
+end

@@ -38,3 +38,4 @@ for i = 1:length(rxnInd)
 end
 
 geneList = columnVector(geneList);
+end

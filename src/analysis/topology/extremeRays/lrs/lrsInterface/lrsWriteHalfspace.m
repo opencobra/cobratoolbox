@@ -326,3 +326,4 @@ if param.sh == 1
     fprintf(fid, '%s\n', ['(time lrs ' filenameSuffix '.ine > /nas/rfleming/' filenameSuffix '.ext) 2> ' filenameSuffix '.time']);
     fclose(fid);
 end
+end

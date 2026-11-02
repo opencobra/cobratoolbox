@@ -48,4 +48,5 @@ else
 end
     
 StepNumber = Meter/(Stride/100);
+end
 

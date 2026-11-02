@@ -41,4 +41,5 @@ select1 = randi(nSample1, 1, nPts);
 select2 = randi(nSample2, 1, nPts);
 sampleDiff = sample2(:, select2) - sample1(:, select1);
 sampleRatio = sample2(:, select2) ./ sample1(:, select1);
+end
 

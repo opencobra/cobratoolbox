@@ -357,6 +357,7 @@ end
 
 elapsed_time = etime(clock, t_start)
 return;
+end
 
 
 
@@ -394,6 +395,7 @@ point = point +1; % remap to 1..NUMPOINTS
 direction = direction*2-1; % remap to -1,1
 rxn = rxn+1; % remap to 1 .. number of rxns;
 return;
+end
 
 % function that returns the proper objective coefficient for each reaction
 % takes into account the reversibility of reactinos etc.
@@ -405,3 +407,4 @@ if (model.match(i))
 end
 d = (d'*model.N)'; % transform to null space;
 return
+end

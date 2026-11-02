@@ -36,3 +36,4 @@ for i = 1:length(Component)
     fprintf('%e', full(Fraction(i)));
     fprintf('\n');
 end
+end

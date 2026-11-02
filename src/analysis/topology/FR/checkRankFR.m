@@ -690,3 +690,4 @@ if model.FRcolRankDeficiency>0
     % figure; spy(VW0)
     % figure; spy(abs(VW0) > 1e-3)  % say
 end
+end

@@ -309,4 +309,5 @@ Nzero2=mrdivide(Q(rankS+1:nlt,1:rankS),Q(1:rankS,1:rankS));
 if max(max(Nzero-(Nzero2')))>tol
     fprintf('%s\n','Nzero: QR check failed');
 end
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

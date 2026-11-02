@@ -62,5 +62,6 @@ for i=1:N
 end
 
 duplicateBool = any(M,1)';
+end
 
 

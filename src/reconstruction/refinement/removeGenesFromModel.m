@@ -122,4 +122,5 @@ if ~keepReactions
 end
 
 model = removeFieldEntriesForType(model,pos(pres),'genes',numel(model.genes));
+end
 

@@ -94,3 +94,4 @@ if nargout == 2
     lptol = getCobraSolverParams('LP','feasTol');
     newActives = model.rxns(abs(sol2.x <= lptol) & ~abs(sol.full <= milptol));
 end
+end

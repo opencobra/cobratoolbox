@@ -65,6 +65,7 @@ if printLevel > 0
         fprintf(['%-' maxRxnLength 's:\t%s\n'],rxnNames{i},gprs{i});
     end
 end
+end
 
 
 

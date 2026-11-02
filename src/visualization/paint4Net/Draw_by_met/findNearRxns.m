@@ -279,3 +279,4 @@ if ~strcmp(Direction_Rxns{1},'-1') %if list of reactions is not empty
     end
     
 end
+end

@@ -24,3 +24,4 @@ for j = 1:n
     end
 end
 mu = max(max(Q));
+end

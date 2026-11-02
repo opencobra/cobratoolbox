@@ -52,4 +52,5 @@ if isempty(regexp(command_out, 'Invalid credentials'))
 else
     response = 'Invalid credentials. Please make sure your login and password are correct.';
 end
+end
 

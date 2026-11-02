@@ -540,4 +540,5 @@ if param.saveFigures
     savefig(['measured_vs_predicted_exchanges_' names '_' param.labelType zoomed])
     saveas(gcf,['measured_vs_predicted_exchanges_' names '_' param.labelType zoomed],'png')
 end
+end
 

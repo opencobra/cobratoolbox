@@ -73,3 +73,4 @@ rxnData=cell(size(modelPlane.S,2),1);
 for n=1:size(modelPlane.S,2)
     rxnData{n}=rxnColor;
 end
+end
