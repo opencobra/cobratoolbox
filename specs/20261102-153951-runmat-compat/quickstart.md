@@ -37,3 +37,19 @@ and the root `initCobraToolbox.m`, excluding `.gitmodules` paths, `external/` an
 Run with `COBRA_CI=1 matlab -batch "cd test; testAll"` before and after, and keep each `resultTable` as
 `$F/baseline/testAll-before.csv` and `$F/reports/testAll-after.csv`. The two must list the same tests with the
 same `Passed`/`Failed`/`Skipped` values.
+
+## testAll under RunMat (T019)
+Use a full clone with submodules, not a git worktree (`initCobraToolbox` fails where `.git` is a file):
+
+```bash
+git clone --no-checkout <cobra main checkout> CLONE && git -C CLONE checkout <branch>
+# point each submodule.<name>.url at a local copy in CLONE/.git/config, then
+git -C CLONE -c protocol.file.allow=always submodule update --init
+RUNMAT=<runmat binary> RUNMAT_LIBS=<HDF5 lib folder> $F/tools/runmat_testall.sh CLONE $F/reports/runmat-testAll.txt
+```
+
+The tool copies CLONE, sets aside every file RunMat cannot compile (except the entry points `test/testAll.m` and
+`initCobraToolbox.m`), runs `COBRA_CI=1 runmat run test/testAll.m` with a time limit (`TIME_LIMIT`, default 4h),
+and writes the summary to OUT: the files set aside by reason, then either the per-test results (also as `OUT.csv`)
+or the stopping point. `COBRA_TESTS` selects tests as under MATLAB. `SHIMS=<folder>` supplies functions RunMat
+lacks; such a run is not a measurement of COBRA under RunMat alone, and its summary names the shims.

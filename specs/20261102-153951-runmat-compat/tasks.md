@@ -52,7 +52,7 @@ excluding `.gitmodules` paths, `external/` and `deprecated/`.
 
 - [ ] T017 [US2] FR-005: in `test/testAll.m`, rewrite the `PERFORMANCE_REPORT_ON` expression so that no undefined variable is named outside the `exist` guard, keeping its value in MATLAB, e.g. `PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1'); if ~PERFORMANCE_REPORT_ON && exist('PERFORMANCE_REPORT', 'var') && ~isempty(PERFORMANCE_REPORT), PERFORMANCE_REPORT_ON = PERFORMANCE_REPORT; end`. Verify that `checkcode` gains no message, and run the four combinations (env var set or not × variable present or absent) in MATLAB to confirm the same value.
 - [ ] T018 [US2] FR-004/FR-008 in `test/testAll.m` and `initCobraToolbox.m`: write bare calls such as `initCobraToolbox`, `exit` and `prefdir` as `name()` (T013 tool); analyzer check; commit with T017
-- [ ] T019 [US2] FR-014: build the measurement copy outside the repository (failing `external/` and submodule folders off the path, T016 residual files set aside), run `testAll` under RunMat with `COBRA_CI=1` and a time limit, and save the log and stopping point to `$F/reports/runmat-testAll.txt`
+- [X] T019 [US2] FR-014: build the measurement copy outside the repository (failing `external/` and submodule folders off the path, T016 residual files set aside), run `testAll` under RunMat with `COBRA_CI=1` and a time limit, and save the log and stopping point to `$F/reports/runmat-testAll.txt`
 
 ## Phase 5: User Story 3 - Measurement and report (P3)
 

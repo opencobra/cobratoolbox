@@ -29,6 +29,7 @@
 | 2026-11-02 | Scope after research | "Bounded mechanical slice (Recommended)" | Spec updated: only machine-verifiable rewrites; testAll under RunMat is measured, not promised. |
 | 2026-11-02 | Gate 2 | "Approve first slice (Recommended)"; path "/speckit-implement (Recommended)" | Slice T001–T016 + T030 approved; awaiting the explicit `/speckit-implement` invocation (constitution VI). |
 | 2026-11-02 | Implementation invocation | `/speckit-implement` | Slice implemented; receipt written. |
+| 2026-11-02 | After slice 1 | "/speckit-git-commit then actually run testall using runmat in a manner that is reusable in future" | Hook: nothing to commit. T019 done with a reusable runner (tools/runmat_testall.sh, no source change); testAll stops at start-up (reports/runmat-testAll.txt). T017–T018 still need /speckit-implement. |
 
 ## Approved Implementation Scope
 - Approved: yes (2026-11-02); invoked with `/speckit-implement`
