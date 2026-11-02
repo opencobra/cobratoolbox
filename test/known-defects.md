@@ -3,12 +3,15 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-33 known defects in 28 functions (17 wrong-result, 5 error, 2 unusable-option, 2 cosmetic, 7 limitation).
+48 known defects in 34 functions (21 wrong-result, 8 error, 3 unusable-option, 4 cosmetic, 12 limitation).
 
 ## Summary
 
 | Function | Severity | Problem | Test file |
 |----------|----------|---------|-----------|
+| `src/analysis/exploration/findMetFromCompartment.m` | limitation | A compartment letter without brackets matches every identifier with that letter | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
+| `src/analysis/exploration/findMetFromCompartment.m` | error | A compartment without metabolites stops with an error | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
+| `src/analysis/exploration/findRxnFromCompartment.m` | wrong-result | A compartment with a single metabolite returns the first reaction of the model | `test/verifiedTests/analysis/testExploration/testFindRxnFromCompartment.m` |
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
 | `src/analysis/sampling/ACHR/convRevSamples.m` | wrong-result | Bounds of a reverse-only reaction are not exchanged correctly | `test/verifiedTests/analysis/testSampling/testConvRevSamples.m` |
@@ -20,6 +23,9 @@
 | `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | error | Reactions missing from a model are collected in a character matrix, which fails for names of different lengths | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | wrong-result | Mixed matching and non-matching resources return nothing | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | error | Third output unassigned when nothing matches | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
+| `src/base/io/utilities/createEmptyFields.m` | limitation | A cell field with a computed default fills only its first column | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
+| `src/base/io/utilities/createEmptyFields.m` | error | A field whose default refers to another field the model lacks cannot be created | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
+| `src/base/io/utilities/createEmptyFields.m` | error | The default of comps cannot be evaluated | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
 | `src/base/parseMetNames.m` | limitation | Mixed or longer compartment notations are not parsed | `test/verifiedTests/base/testTools/testParseMetNames.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | cosmetic | Documented defaults for the concentration unit and the maximum concentration differ from the code | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | unusable-option | The case dxReplacement always stops with an error | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
@@ -37,13 +43,53 @@
 | `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
+| `src/reconstruction/modelGeneration/removeCompartments.m` | limitation | All MATLAB warnings are switched off and never switched back on | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
+| `src/reconstruction/modelGeneration/removeCompartments.m` | cosmetic | An empty rev field is left when no reaction is removed | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
+| `src/reconstruction/modelGeneration/removeCompartments.m` | limitation | Annotation and constraint fields of the input model are dropped | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
+| `src/reconstruction/modelGeneration/removeCompartments.m` | wrong-result | Reactions that become duplicates are not removed | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
+| `src/reconstruction/modelGeneration/removeCompartments.m` | cosmetic | The default compartment and every reaction index are printed | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
+| `src/reconstruction/modelGeneration/removeCompartments.m` | wrong-result | metNames is a row and holds the metabolite identifiers | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
 | `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m` | wrong-result | Reactions with names of one or two characters get the wrong sign | `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
+| `src/reconstruction/refinement/extractSubSysModel.m` | wrong-result | A single subsystem name given as text selects almost every reaction | `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m` |
 | `src/reconstruction/refinement/removeFieldEntriesForType.m` | error | removing genes from a model that has grRules but no rules field fails | `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m` |
+| `src/reconstruction/refinement/updateFieldOrderForType.m` | limitation | An order that repeats indices is accepted | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
+| `src/reconstruction/refinement/updateFieldOrderForType.m` | unusable-option | The type proteins is accepted but always stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
 
 ## Details
+
+### `src/analysis/exploration/findMetFromCompartment.m`
+
+#### A compartment letter without brackets matches every identifier with that letter
+
+- **Severity**: limitation
+- **Trigger**: findMetFromCompartment(model, 'e')
+- **Observed**: the text is searched anywhere in the identifiers, so 23 metabolites of ecoli_core_model are returned: the 20 of [e] and 3 of [c] whose identifier contains the letter e (for example pep[c]); findRxnFromCompartment puts a single letter in brackets first
+- **Expected**: the 20 metabolites of [e], as for '[e]'
+- **Source lines**: 24
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m`
+
+#### A compartment without metabolites stops with an error
+
+- **Severity**: error
+- **Trigger**: a compartment that no metabolite identifier contains, for example findMetFromCompartment(model, '[x]') on ecoli_core_model
+- **Observed**: the output is only assigned inside the loop over the matches, so the call stops with Output argument "compartmentMetabolites" (and possibly others) not assigned a value
+- **Expected**: an empty list
+- **Source lines**: 29-34
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m`
+
+### `src/analysis/exploration/findRxnFromCompartment.m`
+
+#### A compartment with a single metabolite returns the first reaction of the model
+
+- **Severity**: wrong-result
+- **Trigger**: a compartment that holds exactly one metabolite, for example ecoli_core_model with o2[e] renamed to o2[p] and findRxnFromCompartment(model, '[p]')
+- **Observed**: any() of the single selected row of S is one scalar instead of one value per reaction, so only the first reaction of the model (ACALD) is returned
+- **Expected**: the reactions that use the metabolite (EX_o2(e) and O2t)
+- **Source lines**: 30
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testFindRxnFromCompartment.m`
 
 ### `src/analysis/persephone/calculateMetrics.m`
 
@@ -163,6 +209,35 @@
 - **Expected**: an empty qualifiers output
 - **Source lines**: 46
 - **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m`
+
+### `src/base/io/utilities/createEmptyFields.m`
+
+#### A cell field with a computed default fills only its first column
+
+- **Severity**: limitation
+- **Trigger**: fieldDefinitions for a cell field with two dimensions above 1 and a default other than '', for example {'rxnGeneLabels', 'rxns', 'genes', '', '''x''', false, 'cell', false}
+- **Observed**: the default is assigned to the first xdim linear entries only, so 95 of the 95 x 137 entries are 'x' and the rest stay empty; a default of '' fills every entry
+- **Expected**: every entry set to the default
+- **Source lines**: 85-88
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m`
+
+#### A field whose default refers to another field the model lacks cannot be created
+
+- **Severity**: error
+- **Trigger**: createEmptyFields(model, 'proteinNames') on a model with genes but without proteins, for example ecoli_core_model
+- **Observed**: the default model.proteins{i} is evaluated and the call stops with Unrecognized field name "proteins"
+- **Expected**: the field created, as the help text states for every field defined in the toolbox (for example with empty entries, or after creating proteins first)
+- **Source lines**: 82, 86
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m`
+
+#### The default of comps cannot be evaluated
+
+- **Severity**: error
+- **Trigger**: createEmptyFields(model, 'comps') on a model that has comps
+- **Observed**: the default ['C' num2str{i}] of the field definitions brace-indexes a function call and the call stops with a MATLAB error; without comps in the model the dimension is 0 and the default is never evaluated
+- **Expected**: identifiers C1, C2, ... as for the other identifier fields
+- **Source lines**: 82, 86
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m`
 
 ### `src/base/parseMetNames.m`
 
@@ -343,6 +418,62 @@
 - **Source lines**: 64-72
 - **Documented in**: `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m`
 
+### `src/reconstruction/modelGeneration/removeCompartments.m`
+
+#### All MATLAB warnings are switched off and never switched back on
+
+- **Severity**: limitation
+- **Trigger**: any call, for example removeCompartments(model, {'e'})
+- **Observed**: warning('OFF') at the start disables every warning for the rest of the MATLAB session; warnings of addReaction (repeated metabolites) and of all later code are hidden
+- **Expected**: warnings stay visible, or the previous warning state is restored before return
+- **Source lines**: 36
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m`
+
+#### An empty rev field is left when no reaction is removed
+
+- **Severity**: cosmetic
+- **Trigger**: a call in which no reaction column becomes empty, for example removeCompartments(model, {'e'}, '[x]')
+- **Observed**: the result has a field rev of size 0 x 0 next to 95 reactions; the field is only removed when a reaction is removed
+- **Expected**: no rev field, or one entry per reaction
+- **Source lines**: 53, 74, 107
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m`
+
+#### Annotation and constraint fields of the input model are dropped
+
+- **Severity**: limitation
+- **Trigger**: any call
+- **Observed**: the result keeps only genes, rxns, mets, metNames, S, subSystems, lb, ub, c, rules, grRules and b; rxnGeneMat, rxnNames, metFormulas, csense, osenseStr, description and modelID of the input model are lost
+- **Expected**: the reaction, metabolite and model fields of the input model carried over to the merged entries
+- **Source lines**: 46-55
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m`
+
+#### Reactions that become duplicates are not removed
+
+- **Severity**: wrong-result
+- **Trigger**: removeCompartments(model, {'e'}) on ecoli_core_model
+- **Observed**: ATPM and GLNabc have the same column of S after the merge (gln[e] and gln[c] cancel in GLNabc) and both are kept; only reactions whose column is empty are removed
+- **Expected**: duplicate and empty entries removed, as the help text states
+- **Source lines**: 79-89
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m`
+
+#### The default compartment and every reaction index are printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call; the default compartment is printed when newComp is not given
+- **Observed**: the assignment of newComp and the loop variable i are not terminated by a semicolon, so newComp = '[c]' and one line per reaction (95 for ecoli_core_model) are printed
+- **Expected**: no output, or output gated behind a printLevel
+- **Source lines**: 38, 57
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m`
+
+#### metNames is a row and holds the metabolite identifiers
+
+- **Severity**: wrong-result
+- **Trigger**: any call
+- **Observed**: metNames is 1 x m while mets is m x 1, and it holds the new metabolite identifiers (for example acald[c]) instead of the metabolite names of the input model
+- **Expected**: an m x 1 metNames with the names of the input model
+- **Source lines**: 50, 70
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m`
+
 ### `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m`
 
 #### Reactions with names of one or two characters get the wrong sign
@@ -365,6 +496,17 @@
 - **Source lines**: 53-63
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m`
 
+### `src/reconstruction/refinement/extractSubSysModel.m`
+
+#### A single subsystem name given as text selects almost every reaction
+
+- **Severity**: wrong-result
+- **Trigger**: subSysNames given as a character vector, for example extractSubSysModel(model, 'Exchange')
+- **Observed**: ismember compares the characters of the name with the characters of each subsystem, so every reaction whose subsystem shares one letter with the name is kept (94 of the 95 reactions of ecoli_core_model instead of the 20 exchange reactions)
+- **Expected**: the reactions annotated with that subsystem only, as for {'Exchange'}
+- **Source lines**: 20
+- **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m`
+
 ### `src/reconstruction/refinement/removeFieldEntriesForType.m`
 
 #### removing genes from a model that has grRules but no rules field fails
@@ -375,6 +517,26 @@
 - **Expected**: the gene reaction rules are rewritten and the model has no rules field
 - **Source lines**: 86-87, 173, 190-196
 - **Documented in**: `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m`
+
+### `src/reconstruction/refinement/updateFieldOrderForType.m`
+
+#### An order that repeats indices is accepted
+
+- **Severity**: limitation
+- **Trigger**: a newOrder of the right size whose entries are valid indices but not a permutation, for example ones(numel(model.rxns), 1) for rxns
+- **Observed**: the input check only tests that every entry is a valid index, so the call returns a model whose reactions are all copies of the first reaction
+- **Expected**: an error, because newOrder is documented as a new order of the field
+- **Source lines**: 31
+- **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m`
+
+#### The type proteins is accepted but always stops with an error
+
+- **Severity**: unusable-option
+- **Trigger**: updateFieldOrderForType(model, 'proteins', newOrder) on a model with a proteins field
+- **Observed**: the input check accepts proteins, but getModelFieldsForType does not know the type and stops with "The value of 'type' is invalid"
+- **Expected**: the protein fields reordered, or proteins rejected by the input check of this function (the help text lists only rxns, mets, comps and genes)
+- **Source lines**: 30, 35
+- **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m`
 
 ### `src/visualization/maps/ReconMap/makeColorGradient.m`
 

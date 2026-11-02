@@ -41,37 +41,37 @@ description: "Tasks for the Tier-2 test pilot"
 
 ## Phase 1: Setup
 
-- [ ] T001 Confirm the branch is stacked on 20261102-140321-tier1-safe-defect-fixes and `getDistributedModel('ecoli_core_model.mat')` loads
-- [ ] T002 Confirm none of the ten test files exists yet (III-Naming)
+- [X] T001 Confirm the branch is stacked on 20261102-140321-tier1-safe-defect-fixes and `getDistributedModel('ecoli_core_model.mat')` loads
+- [X] T002 Confirm none of the ten test files exists yet (III-Naming)
 
 ## Phase 2: User Story 1 — ten functions pinned (P1)
 
 **Independent Test**: each test passes with full or documented coverage.
 
-- [ ] T003 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m for src/reconstruction/refinement/extractSubSysModel.m (one and several subsystems; a subsystem name not in the model)
-- [ ] T004 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testExtractCompModel.m for src/reconstruction/refinement/extractCompModel.m (compartments c and e; intOnlyFlag true/false; updateGenes true/false; unknown compartment symbol → warning and empty)
-- [ ] T005 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testKeepCompartment.m for src/reconstruction/refinement/keepCompartment.m (keep c; keep c and e; check removed reactions are exactly those with a metabolite outside the kept compartments)
-- [ ] T006 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testOrderModelFields.m for src/reconstruction/refinement/orderModelFields.m (field order follows the field definitions; values unchanged; a non-standard field is kept)
-- [ ] T007 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m for src/reconstruction/refinement/updateFieldOrderForType.m (permute rxns, mets, genes; every field of that type permuted consistently, S columns/rows and rxnGeneMat permuted; invalid order size errors if documented)
-- [ ] T008 [P] [US1] Write test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m for src/reconstruction/modelGeneration/removeCompartments.m (remove e into default [c]; explicit newComp; merged metabolites have summed stoichiometry; structural consistency)
-- [ ] T009 [P] [US1] Write test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m for src/base/io/utilities/createEmptyFields.m (standard rxns/mets/genes fields get the documented default and size; explicit fieldDefinitions; existing field behaviour per header)
-- [ ] T010 [P] [US1] Write test/verifiedTests/base/testIO/testUtilities/testConvertOldCouplingFormat.m for src/base/io/utilities/convertOldCouplingFormat.m (model without coupling unchanged; model with old A/b coupling rows built from the loaded model converted to C/d/dsense and S/mets/b reduced; printLevel 0 and 1)
-- [ ] T011 [P] [US1] Write test/verifiedTests/analysis/testExploration/testFindRxnFromCompartment.m for src/analysis/exploration/findRxnFromCompartment.m (compartment [e] and [c]; output pairs reaction IDs and formulas; unknown compartment)
-- [ ] T012 [P] [US1] Write test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m for src/analysis/exploration/findMetFromCompartment.m (compartment [e] and [c]; output pairs metabolite IDs and names; unknown compartment)
+- [X] T003 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m for src/reconstruction/refinement/extractSubSysModel.m (one and several subsystems; a subsystem name not in the model)
+- [X] T004 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testExtractCompModel.m for src/reconstruction/refinement/extractCompModel.m (compartments c and e; intOnlyFlag true/false; updateGenes true/false; unknown compartment symbol → warning and empty)
+- [X] T005 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testKeepCompartment.m for src/reconstruction/refinement/keepCompartment.m (keep c; keep c and e; check removed reactions are exactly those with a metabolite outside the kept compartments)
+- [X] T006 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testOrderModelFields.m for src/reconstruction/refinement/orderModelFields.m (field order follows the field definitions; values unchanged; a non-standard field is kept)
+- [X] T007 [P] [US1] Write test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m for src/reconstruction/refinement/updateFieldOrderForType.m (permute rxns, mets, genes; every field of that type permuted consistently, S columns/rows and rxnGeneMat permuted; invalid order size errors if documented)
+- [X] T008 [P] [US1] Write test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m for src/reconstruction/modelGeneration/removeCompartments.m (remove e into default [c]; explicit newComp; merged metabolites have summed stoichiometry; structural consistency)
+- [X] T009 [P] [US1] Write test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m for src/base/io/utilities/createEmptyFields.m (standard rxns/mets/genes fields get the documented default and size; explicit fieldDefinitions; existing field behaviour per header)
+- [X] T010 [P] [US1] Write test/verifiedTests/base/testIO/testUtilities/testConvertOldCouplingFormat.m for src/base/io/utilities/convertOldCouplingFormat.m (model without coupling unchanged; model with old A/b coupling rows built from the loaded model converted to C/d/dsense and S/mets/b reduced; printLevel 0 and 1)
+- [X] T011 [P] [US1] Write test/verifiedTests/analysis/testExploration/testFindRxnFromCompartment.m for src/analysis/exploration/findRxnFromCompartment.m (compartment [e] and [c]; output pairs reaction IDs and formulas; unknown compartment)
+- [X] T012 [P] [US1] Write test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m for src/analysis/exploration/findMetFromCompartment.m (compartment [e] and [c]; output pairs metabolite IDs and names; unknown compartment)
 
 ## Phase 3: User Story 2 — style review (P1)
 
-- [ ] T013 [US2] Write specs/20261102-142225-tier2-test-pilot/style-note.md: assertion pattern, model choice, runtime per test, memory, defects found, open questions for the maintainer; stop after this pilot (FR-010)
+- [X] T013 [US2] Write specs/20261102-142225-tier2-test-pilot/style-note.md: assertion pattern, model choice, runtime per test, memory, defects found, open questions for the maintainer; stop after this pilot (FR-010)
 
 ## Phase 4: User Story 3 — registry (P2)
 
-- [ ] T014 [US3] Run `python3 .github/scripts/known_defects.py` to regenerate test/known-defects.md; it exits 0
+- [X] T014 [US3] Run `python3 .github/scripts/known_defects.py` to regenerate test/known-defects.md; it exits 0
 
 ## Phase 5: Polish
 
-- [ ] T015 Run the ten tests in one MATLAB session through `runScriptFile`; `git diff --name-only -- src` is empty
-- [ ] T016 Write specs/20261102-142225-tier2-test-pilot/agent-runs/<UTC>-implement/implementation-receipt.md
-- [ ] T017 Commit with the maintainer identity (no co-author line), only this feature's files, and push the branch to `origin` with upstream tracking
+- [X] T015 Run the ten tests in one MATLAB session through `runScriptFile`; `git diff --name-only -- src` is empty
+- [X] T016 Write specs/20261102-142225-tier2-test-pilot/agent-runs/<UTC>-implement/implementation-receipt.md
+- [X] T017 Commit with the maintainer identity (no co-author line), only this feature's files, and push the branch to `origin` with upstream tracking
 
 ## Dependencies
 
