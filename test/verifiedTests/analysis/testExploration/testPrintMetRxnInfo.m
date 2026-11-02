@@ -6,6 +6,9 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Matrix values are
+%       separated by a comma without a space; Other value types print as an unreadable character
+%       or error.
 %
 % Function under test:
 %     src/analysis/exploration/surfNetSubfunctions/printMetRxnInfo.m
@@ -14,25 +17,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 43 of printMetRxnInfo.m (a value that is not text, a list of text or a number, for
-%     example a logical) is uncovered because of the second defect below.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Matrix values are separated by a comma without a space
-%       SEVERITY: cosmetic
-%       TRIGGER: a numeric matrix value
-%       OBSERVED: strcat drops the trailing space of the separator, so rows print as 1.5,2; 3,4
-%       EXPECTED: 1.5, 2; 3, 4
-%       LINES: 38
-%     - DEFECT: Other value types print as an unreadable character or error
-%       SEVERITY: limitation
-%       TRIGGER: a value that is a logical, or a nested cell
-%       OBSERVED: a logical is printed as a control character and a nested cell makes fprintf error
-%       EXPECTED: a readable text for such values or a clear error
-%       LINES: 42-45
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -79,8 +71,33 @@ assert(strcmp(printedText, sprintf(', abc, size: 3\n')));
 %% a numeric matrix: rows are joined with ;
 
 printedText = evalc('printMetRxnInfo({''m''; [1.5 2; 3 4]}, 1, true, {}, -6, 8, 8)');
-% (the exact separator inside a row is not checked, see the header)
+% (the exact separator inside a row is checked in the next section)
 assert(startsWith(printedText, ', m: 1.5') && contains(printedText, '; 3') && contains(printedText, '4'));
+
+%% a numeric matrix: values in a row are separated by a comma and a space
+
+printedText = evalc('printMetRxnInfo({''m''; [1.5 2; 3 4]}, 1, true, {}, -6, 8, 8)');
+assert(strcmp(printedText, sprintf(', m: 1.5, 2; 3, 4\n')));
+
+%% logical values are printed as 1 or 0
+
+printedText = evalc('printMetRxnInfo({''flag''; true}, 1, true, {}, -6, 8, 8)');
+assert(strcmp(printedText, sprintf(', flag: 1\n')));
+printedText = evalc('printMetRxnInfo({''flags''; [true false]}, 1, true, {}, -6, 8, 8)');
+assert(strcmp(printedText, sprintf(', flags: 1, 0\n')));
+
+%% values of other classes that convert to text are printed as before (else branch)
+
+printedText = evalc('printMetRxnInfo({''c''; categorical({''x''})}, 1, true, {}, -6, 8, 8)');
+assert(strcmp(printedText, sprintf(', c: x\n')));
+
+%% a nested cell array or a structure stops with a clear error
+
+% firstFieldWtComma = 2 and no field names, so nothing is printed before the error
+assert(verifyCobraFunctionError('printMetRxnInfo', 'inputs', {{'nested'; {'a', 1}}, 2, false, {}, -6, 8, 8}, ...
+    'testMessage', 'printMetRxnInfo: the value of field 1 is of class cell and cannot be printed. Use text, a cell array of text, a number or a logical.'));
+assert(verifyCobraFunctionError('printMetRxnInfo', 'inputs', {{'s'; struct('a', 1)}, 2, false, {}, -6, 8, 8}, ...
+    'testMessage', 'printMetRxnInfo: the value of field 1 is of class struct and cannot be printed. Use text, a cell array of text, a number or a logical.'));
 
 % change the directory
 cd(currentDir)

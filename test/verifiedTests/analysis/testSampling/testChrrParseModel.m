@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Extra constraints with
+%       a less-than or equality sense cannot be used.
 %
 % Function under test:
 %     src/analysis/sampling/CHRR/chrrParseModel.m
@@ -15,24 +17,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Lines 53-54, the branch for a sense other than G (see the known defect below): every input
-%     that reaches it stops with an error.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Extra constraints with a less-than or equality sense cannot be used
-%       SEVERITY: error
-%       TRIGGER: model.C, model.d and model.dsense with an L or E entry, or with dsense given as a
-%         cell array
-%       OBSERVED: the sense is read with parentheses for G and with braces for E, so a character
-%         dsense with an L entry (or any E entry) stops with "Brace indexing is not supported" and a
-%         cell dsense stops with an invalid data type error; only a character dsense made of G
-%         entries works
-%       EXPECTED: L entries are kept, G entries are negated, and E entries raise the documented "not
-%         supported" error
-%       LINES: 49-56
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -71,6 +63,37 @@ withC.dsense = 'GG';
 assert(isequal(P.A(5:6, :), [-1 -1; -1 1]));
 assert(isequal(P.b(5:6), [-3; -1]));
 assert(isequal(newModel.C, [-1 -1; -1 1]) && isequal(newModel.d, [-3; -1]));
+
+%% extra constraints with sense L are kept, also when the sense is a cell array
+
+withL = model;
+withL.C = [1 1; 1 -1];
+withL.d = [3; 1];
+withL.dsense = 'LG';
+[P, newModel] = chrrParseModel(withL);
+% the L row is appended unchanged, the G row is negated
+assert(isequal(P.A(5:6, :), [1 1; -1 1]));
+assert(isequal(P.b(5:6), [3; -1]));
+assert(isequal(newModel.C, [1 1; -1 1]) && isequal(newModel.d, [3; -1]));
+
+% the same senses given as a cell array give the same result
+withCell = withL;
+withCell.dsense = {'L'; 'G'};
+[PCell, newModelCell] = chrrParseModel(withCell);
+assert(isequal(PCell, P));
+assert(isequal(newModelCell.C, newModel.C) && isequal(newModelCell.d, newModel.d));
+
+%% extra constraints with sense E raise the documented error
+
+withE = model;
+withE.C = [1 1; 1 -1];
+withE.d = [3; 1];
+withE.dsense = 'GE';
+assert(verifyCobraFunctionError('chrrParseModel', 'inputs', {withE}, ...
+    'testMessage', 'Equality constraints not supported in C,d fields.'));
+withE.dsense = {'G'; 'E'};
+assert(verifyCobraFunctionError('chrrParseModel', 'inputs', {withE}, ...
+    'testMessage', 'Equality constraints not supported in C,d fields.'));
 
 % change the directory
 cd(currentDir)

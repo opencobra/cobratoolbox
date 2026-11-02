@@ -2,6 +2,7 @@ function [metAbbr, uniqueMetAbbrs] = getMetAbbr(mets)
 % Gets the abbreviation for each metabolite, and the unique abbreviations,
 % from metabolite abbreviation(s), each of which must have compartment
 % symbol concatentated on the right hand side (i.e. `metAbbr[*]`).
+% An abbreviation without a compartment symbol is returned unchanged.
 %
 % USAGE:
 %
@@ -33,6 +34,9 @@ end
 
 pat = '(?<abbr>[^\[]+)\[(?<compartment>[^\]]+)\]';
 metStruct = regexp(mets,pat,'names'); % m x 1 cell array with fields abbr and compartment in each cell
+% an ID without [compartment] is kept as its own abbreviation
+noCompartment = cellfun(@isempty, metStruct);
+metStruct(noCompartment) = cellfun(@(id) struct('abbr', id, 'compartment', ''), mets(noCompartment), 'UniformOutput', false);
 metStruct = [metStruct{:}]'; % Convert from cell array to double
 metAbbr = {metStruct.abbr}; % Concatenate compartment fields
 metAbbr = reshape(metAbbr,length(metAbbr),1);

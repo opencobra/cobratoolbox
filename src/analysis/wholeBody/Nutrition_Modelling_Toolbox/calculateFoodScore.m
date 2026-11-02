@@ -25,7 +25,9 @@ function [outputMacros] = calculateFoodScore(originalFood, vmhLabelMacros, vmhMe
 %    translation:             Cell array translating original food names to
 %                             their alias (the field names in vmhLabelMacros),
 %                             used to match the correct original food values.
-%                             Defaults to NaN when not provided
+%                             Defaults to empty when not provided; the original
+%                             food rows are then found by their row names, which
+%                             must equal the field names of vmhLabelMacros
 %
 % OUTPUT:
 %    outputMacros:            Updated structure where, for each food item, the
@@ -41,9 +43,10 @@ function [outputMacros] = calculateFoodScore(originalFood, vmhLabelMacros, vmhMe
 %
 % .. Author: - Bram Nap, 05-2024
 
-% If translation table is not given set it to NaN
-if nargin<3
-    translation = NaN;
+% If translation table is not given set it to empty, so that the original
+% food rows are found by row name
+if ~exist('translation', 'var')
+    translation = [];
 end
 
 % Obtain the macro values and food nameas for original food items.

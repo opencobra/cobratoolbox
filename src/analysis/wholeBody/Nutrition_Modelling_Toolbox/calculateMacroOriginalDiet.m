@@ -21,7 +21,8 @@ function orgMacroDiet = calculateMacroOriginalDiet(diet, originalMacroTable)
 %                          diet based on the original food item macros:
 %
 %                            * .macroNames - names of the macronutrients
-%                            * .values_g - total amount of each macro (grams)
+%                            * .values_g - total amount of each macro (grams);
+%                              zero for every macro when no food is eaten
 %
 % NOTE:
 %    It is important that the template file base structure is not altered as
@@ -41,8 +42,13 @@ valuesNorm = values./originalMacroTable.("WeightEaten (g)")(2:end);
 [~,~,idx] = intersect(diet(:,1), originalMacroTable.OriginalFoodName(2:end), 'stable');
 
 % Calculate the normalised original food macros with the amount eaten in
-% the diet
-valuesDiet = valuesNorm(idx,:) .* cell2mat(diet(:,2));
+% the diet; a diet without any food eaten keeps a column of amounts so that
+% every macro sums to zero
+amounts = cell2mat(diet(:,2));
+if isempty(amounts)
+    amounts = zeros(0, 1);
+end
+valuesDiet = valuesNorm(idx,:) .* amounts;
 
 % Sum all macros of the diet
 macroDiet = sum(valuesDiet,1)';

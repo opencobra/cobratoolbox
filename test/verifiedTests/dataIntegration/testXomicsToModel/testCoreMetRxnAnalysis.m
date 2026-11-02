@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The deleted reactions
+%       are not computed when the old model is empty and no deletion lists are given.
 %
 % Function under test:
 %     src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m
@@ -15,23 +17,23 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 51, the assignment that is part of the known defect below: reaching it stops the function
-%     with an error, so it cannot be covered by a passing test.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The deleted reactions are not computed when the old model is empty and no deletion
-%         lists are given
-%       SEVERITY: error
-%       TRIGGER: an empty old model and no deletedRxns (and no deletedMets), for example
-%         coreMetRxnAnalysis([], model, coreMets, coreRxns)
-%       OBSERVED: when deletedRxns is missing and the old model is empty, the code sets deletedMets
-%         to empty instead of deletedRxns, so the reaction analysis later reads an undefined
-%         variable and stops with an error
-%       EXPECTED: an empty list of deleted reactions
-%       LINES: 48-52
+%     - DEFECT: A given list of deleted metabolites is discarded when the old model is empty and no
+%         deleted reactions are given
+%       SEVERITY: wrong-result
+%       TRIGGER: an empty old model, a non-empty deletedMets and an empty deletedRxns, for example
+%         coreMetRxnAnalysis([], model, coreMets, coreRxns, {'c'}, [])
+%       OBSERVED: the branch that fills the missing deletedRxns also sets deletedMets to empty, so
+%         the given deleted metabolites are not counted as deleted and core metabolites among them
+%         are reported as missing from the old model instead
+%       EXPECTED: the given deletedMets is kept
+%       LINES: 52
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -116,6 +118,14 @@ assert(isequal(coreMets, {'a'}) && isequal(coreRxns, {'r1'}));
 text = evalc("coreMetRxnAnalysis([], rowModel, {'a'}, {'r1'}, {'c'}, {'r2'}, struct('printLevel', 3));");
 assert(contains(text, '1 deleted non-core reactions'));
 assert(contains(text, '0 deleted core metabolites') && contains(text, '0 deleted core reactions'));
+
+% no old model and no deletion lists: nothing is deleted, the core sets are kept
+[coreMets, coreRxns] = coreMetRxnAnalysis([], rowModel, {'a'}, {'r1'});
+assert(isequal(coreMets, {'a'}) && isequal(coreRxns, {'r1'}));
+% with the empty lists passed explicitly (needed to give a print level) the printed counts show
+% that the list of deleted reactions is empty
+text =evalc("coreMetRxnAnalysis([], rowModel, {'a'}, {'r1'}, [], [], struct('printLevel', 1));");
+assert(contains(text, '0 deleted non-core reactions') && contains(text, '0 deleted core reactions'));
 
 %% no metabolites deleted
 

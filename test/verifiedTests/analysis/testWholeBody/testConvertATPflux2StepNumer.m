@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The function name
+%       inside the file differs from the file name.
 %
 % Function under test:
 %     src/analysis/wholeBody/PSCMToolbox/convertATPflux2StepNumer.m
@@ -17,17 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The function name inside the file differs from the file name
-%       SEVERITY: cosmetic
-%       TRIGGER: any call
-%       OBSERVED: the file is named convertATPflux2StepNumer.m but declares
-%         convertATPflux2StepNumber, so MATLAB resolves calls through the file name and the declared
-%         name is ignored
-%       EXPECTED: the declared name equal to the file name
-%       LINES: 1
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -65,6 +61,14 @@ assert(stepNumberOther == stepNumber);
 
 [energyKJ, ~, meter, stepNumber] = convertATPflux2StepNumer(0, 'male', 70, 175);
 assert(energyKJ == 0 && meter == 0 && stepNumber == 0);
+
+%% the function declared in the file has the name of the file
+
+% the first line of the file declares convertATPflux2StepNumer
+sourceFile = which('convertATPflux2StepNumer');
+sourceLines = strsplit(fileread(sourceFile), newline);
+declaredName = regexp(sourceLines{1}, '=\s*(\w+)\s*\(', 'tokens', 'once');
+assert(isequal(declaredName, {'convertATPflux2StepNumer'}));
 
 % change the directory
 cd(currentDir)

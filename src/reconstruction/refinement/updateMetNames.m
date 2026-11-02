@@ -20,7 +20,7 @@ function [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExis
 % OPTIONAL INPUTS:
 %    wipeExisting:       true: remove all existing model.metNames in
 %                        modelToUpdate, especially when model.metNames is
-%                        wrong.
+%                        wrong (default: false).
 %
 % OUTPUT:
 %    updatedModel:       COBRA model structure with corrected metNames
@@ -28,7 +28,7 @@ function [updatedModel] = updateMetNames(referenceModel, modelToUpdate, wipeExis
 % .. Authors:
 %       - written by Diana El Assal & Thomas Pfau 27/06/2017
 
-if ~exist('wipeExistening','var')
+if ~exist('wipeExisting','var') || isempty(wipeExisting)
   wipeExisting = false;
 end
 

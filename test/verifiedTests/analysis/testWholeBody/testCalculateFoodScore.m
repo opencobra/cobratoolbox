@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Default translation
+%       assigned when nargin < 3.
 %
 % Function under test:
 %     src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateFoodScore.m
@@ -13,24 +15,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 46 of calculateFoodScore.m (translation = NaN, the default translation) is
-%     uncovered: it only runs when fewer than three inputs are given, and that call
-%     fails (see the defect below), so it is skipped.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Default translation assigned when nargin < 3
-%       SEVERITY: error
-%       TRIGGER: fewer than four inputs, for example calculateFoodScore(originalFood, labelMacros,
-%         measuredMacros)
-%       OBSERVED: translation = NaN is only assigned when nargin < 3, so with three inputs
-%         translation is undefined and the call errors; with NaN the following lines index it and
-%         fail too
-%       EXPECTED: a default translation that works with three inputs (the check should be nargin <
-%         4)
-%       LINES: 45-46
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -99,6 +91,18 @@ assert(contains(lastwarn, 'No translation array is given'));
 % same numbers as with the translation array
 assert(isequal(outputNoTranslation.shadowA.Protein, ["10"; "50%"; "100%"]));
 assert(norm(outputNoTranslation.shadowB.similarityScore - [0; 0; 3]) < tol);
+
+%% no translation argument: the default (empty) translation finds the food rows by row name
+
+% three inputs give the same result and the same warning as an empty translation
+originalFoodRowNames = originalFood;
+originalFoodRowNames.Properties.RowNames = {'shadowA', 'shadowB'};
+outputNoTranslation = calculateFoodScore(originalFoodRowNames, labelMacros, measuredMacros, []);
+lastwarn('');
+outputDefaultTranslation = calculateFoodScore(originalFoodRowNames, labelMacros, measuredMacros);
+assert(contains(lastwarn, 'No translation array is given'));
+% isequaln: the original Fat value of food B is a missing string, which isequal never matches
+assert(isequaln(outputDefaultTranslation, outputNoTranslation));
 
 % change the directory
 cd(currentDir)

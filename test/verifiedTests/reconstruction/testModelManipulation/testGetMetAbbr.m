@@ -7,6 +7,8 @@
 %       The function previously had no test (feature 025-tier1-test-pilot). It
 %       asserts EXISTING behaviour (Constitution Principle III, characterization
 %       mode) and must not change getMetAbbr.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: IDs without brackets are
+%       silently dropped.
 %
 % Function under test:
 %     src/reconstruction/refinement/getMetAbbr.m
@@ -19,16 +21,11 @@
 %     None. Every executable line of getMetAbbr is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: IDs without brackets are silently dropped
-%       SEVERITY: wrong-result
-%       TRIGGER: a metabolite list containing an ID without [compartment]
-%       OBSERVED: the output has fewer entries than the input (3 IDs give 2 abbreviations), so
-%         positions no longer line up
-%       EXPECTED: an entry or an error for every input
-%       LINES: 35-37
+%     None found.
 %
 % Authors:
 %     - Generated for feature 025-tier1-test-pilot, 2026-10-06.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -70,6 +67,17 @@ assert(isequal(metAbbrFromRow, {'atp'; 'adp'}));
 [metAbbr, uniqueMetAbbrs] = getMetAbbr({'glc_D[e]'});
 assert(iscell(metAbbr) && isequal(metAbbr, {'glc_D'}));
 assert(iscell(uniqueMetAbbrs) && isequal(uniqueMetAbbrs, {'glc_D'}));
+
+%% an ID without [compartment] is kept as its own abbreviation
+
+% (formerly a known defect: such IDs were dropped, so the output was shorter than the input)
+[metAbbr, uniqueMetAbbrs] = getMetAbbr({'atp[c]'; 'h2o'; 'adp[m]'});
+assert(isequal(metAbbr, {'atp'; 'h2o'; 'adp'}));
+assert(isequal(uniqueMetAbbrs, {'adp'; 'atp'; 'h2o'}));
+% a single char ID without compartment
+[metAbbr, uniqueMetAbbrs] = getMetAbbr('h2o');
+assert(ischar(metAbbr) && strcmp(metAbbr, 'h2o'));
+assert(ischar(uniqueMetAbbrs) && strcmp(uniqueMetAbbrs, 'h2o'));
 
 % change the directory
 cd(currentDir)

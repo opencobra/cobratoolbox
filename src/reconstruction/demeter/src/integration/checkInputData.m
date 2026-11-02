@@ -24,9 +24,10 @@ function [checkedData, addedStrains, removedStrains, duplicateStrains] = checkIn
 % delete strains no longer in input data because name changed or it was
 % removed
 
-[C,IA] = setdiff(inputData(1:end,1),strainInformation(1:end,1),'stable');
+% (the header rows are not compared)
+[C,IA] = setdiff(inputData(2:end,1),strainInformation(2:end,1),'stable');
 removedStrains=C;
-inputData(IA(2:end),:)=[];
+inputData(IA+1,:)=[];
 
 % find and remove duplicate rows
 [C,IA,IB]  = unique(inputData(:,1));

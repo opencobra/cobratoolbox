@@ -5,6 +5,7 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Direction false errors.
 %
 % Function under test:
 %     src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDiets.m
@@ -13,19 +14,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 74 of compareDiets.m (the line that flips the sign of the result (fluxChanges = fluxChanges*-1, used when the direction argument is false) is uncovered because of the defect below.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Direction false errors
-%       SEVERITY: error
-%       TRIGGER: direction argument one2Two = false
-%       OBSERVED: fluxChanges is a cell array and cannot be multiplied by -1: error
-%         MATLAB:math:mustBeNumericCharOrLogical
-%       EXPECTED: the signs of the flux changes reversed (diet 1 minus diet 2)
-%       LINES: 73-74
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -53,6 +49,15 @@ assert(isequal(fluxChanges, expectedChanges));
 % 'b' is only in diet 1, 'c' is only in diet 2
 assert(isequal(uniqueDiet1, {'b'}));
 assert(isequal(uniqueDiet2, {'c'}));
+
+%% direction diet 2 -> diet 1 (false): the signs of the flux changes are reversed
+
+[fluxChangesReversed, uniqueDiet1Reversed, uniqueDiet2Reversed] = compareDiets(diet1, diet2, false);
+% change = diet1 - diet2; the values are small integers, so the comparison is exact
+assert(isequal(fluxChangesReversed, {'a', -2; 'b', 2; 'c', -4; 'e', -2}));
+% the unique metabolites do not depend on the direction
+assert(isequal(uniqueDiet1Reversed, {'b'}));
+assert(isequal(uniqueDiet2Reversed, {'c'}));
 
 %% an empty direction argument defaults to true
 

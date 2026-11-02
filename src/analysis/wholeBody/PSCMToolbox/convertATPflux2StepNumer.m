@@ -1,4 +1,4 @@
-function [Energy_kJ, Energy_kcal, Meter, StepNumber] = convertATPflux2StepNumber(ATP_hydrolysis_flux, sex, weight, height)
+function [Energy_kJ, Energy_kcal, Meter, StepNumber] = convertATPflux2StepNumer(ATP_hydrolysis_flux, sex, weight, height)
 % Convert an ATP hydrolysis flux into distance walked and step number
 %
 % This function converts an ATP hydrolysis flux (e.g. through
@@ -7,7 +7,7 @@ function [Energy_kJ, Energy_kcal, Meter, StepNumber] = convertATPflux2StepNumber
 %
 % USAGE:
 %
-%    [Energy_kJ, Energy_kcal, Meter, StepNumber] = convertATPflux2StepNumber(ATP_hydrolysis_flux, sex, weight, height)
+%    [Energy_kJ, Energy_kcal, Meter, StepNumber] = convertATPflux2StepNumer(ATP_hydrolysis_flux, sex, weight, height)
 %
 % INPUTS:
 %    ATP_hydrolysis_flux:    Flux value through the Muscle_DM_atp_c_ reaction (mmol/person/day)

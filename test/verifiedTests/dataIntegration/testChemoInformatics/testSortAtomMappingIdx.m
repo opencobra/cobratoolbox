@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The flag for a
+%       non-ascending file is overwritten and the function always returns the file text.
 %
 % Function under test:
 %     src/dataIntegration/chemoInformatics/reactions/sortAtomMappingIdx.m
@@ -18,18 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The flag for a non-ascending file is overwritten and the function always returns the
-%         file text
-%       SEVERITY: cosmetic
-%       TRIGGER: any call, including product atoms whose mapping number has no substrate partner
-%       OBSERVED: the output ascendingRxnFile is set to false for unmapped product atoms and
-%         non-zero sums, but the last statement replaces it by the renumbered file text, so the
-%         false value is never returned
-%       EXPECTED: the documented flag or text, not a mix of both
-%       LINES: 36-45
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -86,6 +81,18 @@ sorted = sortAtomMappingIdx(rxnFile);
 assert(isequal(mapsOf(sorted, 10, 1), 1) && isequal(mapsOf(sorted, 17, 1), 2));
 % the product atoms follow their partners: 6 became 2 and 8 became 1
 assert(isequal(mapsOf(sorted, 24, 2), [2 1]));
+
+%% unmatched atoms: the output is always the documented renumbered file text
+
+% the help text documents one output, the renumbered RXN file; a product atom without a substrate
+% partner (9) and a substrate atom without a product partner (5) used to set a false flag that
+% was then overwritten, so the output is the file text with the same number of lines
+rxnFile = [header; {'  1  1'}; molBlock([7 5]); molBlock([7 9])];
+sorted = sortAtomMappingIdx(rxnFile);
+assert(iscell(sorted) && isequal(size(sorted), size(rxnFile)));
+assert(isequal(mapsOf(sorted, 10, 2), [1 2]));
+% 7 follows its partner (1); 9 has no partner and gets the next free number (3)
+assert(isequal(mapsOf(sorted, 18, 2), [1 3]));
 
 % change the directory
 cd(currentDir)

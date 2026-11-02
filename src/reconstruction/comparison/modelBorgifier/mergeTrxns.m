@@ -13,7 +13,8 @@ function Tmodel = mergeTrxns(Tmodel, mergerxns, mergerxnsratio)
 %    mergerxnsratio:    Ratio of reactions to be merged
 %
 % OUTPUTS:
-%    Tmodel:            `Tmodel` with reduced number of reactions.
+%    Tmodel:            `Tmodel` with reduced number of reactions (unchanged
+%                       when `mergerxns` is empty).
 %
 % Please cite:
 % `Sauls, J. T., & Buescher, J. M. (2014). Assimilating genome-scale
@@ -35,6 +36,10 @@ function Tmodel = mergeTrxns(Tmodel, mergerxns, mergerxnsratio)
 %    Darmstaeter Str. 34-36
 %    64673 Zwingenberg, Germany
 %    www.brain-biotech.de
+
+if isempty(mergerxns) % nothing to merge: return the model unchanged
+    return
+end
 
 nowRemoveRxns = [] ;
 rxnfields = fieldnames(Tmodel) ;

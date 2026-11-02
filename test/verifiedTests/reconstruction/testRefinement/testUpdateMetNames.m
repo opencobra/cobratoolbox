@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The wipe option is
+%       always overwritten with false.
 %
 % Function under test:
 %     src/reconstruction/refinement/updateMetNames.m
@@ -18,18 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The wipe option is always overwritten with false
-%       SEVERITY: unusable-option
-%       TRIGGER: a call with the third argument true, for example updateMetNames(referenceModel,
-%         modelToUpdate, true)
-%       OBSERVED: the default is applied when a variable called wipeExistening does not exist, which
-%         is always the case, so the value passed for wipeExisting is replaced by false and the
-%         existing names are never wiped
-%       EXPECTED: the existing metabolite names removed when wipeExisting is true
-%       LINES: 27-29
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -66,6 +61,19 @@ wrong = target;
 wrong.metNames = {'only one'};
 updated = updateMetNames(reference, wrong, false);
 assert(isequal(updated.metNames, {'Alpha'; ''; 'Beta'}));
+
+%% wipeExisting true removes the existing names
+
+% (formerly a known defect: the third argument was always replaced by false)
+updated = updateMetNames(reference, target, true);
+assert(isequal(updated.metNames, {'Alpha'; ''; 'Beta'}));
+
+%% without the third argument (or with it empty) the existing names are kept
+
+updated = updateMetNames(reference, target);
+assert(isequal(updated.metNames, {'Alpha'; 'old c'; 'Beta'}));
+updated = updateMetNames(reference, target, []);
+assert(isequal(updated.metNames, {'Alpha'; 'old c'; 'Beta'}));
 
 % change the directory
 cd(currentDir)

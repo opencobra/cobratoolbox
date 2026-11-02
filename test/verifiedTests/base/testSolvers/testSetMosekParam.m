@@ -9,6 +9,8 @@
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test. MOSEK itself is not needed: the function
 %       only builds structures.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The SCLP profiles
+%       fail when feasTol or numTol is not supplied.
 %
 % Function under test:
 %     src/base/solvers/mosek/setMosekParam.m
@@ -17,12 +19,12 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Lines 620-621, the error for an unsupported SCLP profile inside applySCLPMosekPortfolio:
+%     Lines 629-630, the error for an unsupported SCLP profile inside applySCLPMosekPortfolio:
 %     that local function is only called with one of the four ordinary SCLP profile names, so
 %     the error cannot be triggered through setMosekParam.
 %     Line 547, the free solve form of the strict block, which is never reached (see the
-%     first defect below).
-%     Line 775, the early return of localMosekParamStrip for a non-structure input: the
+%     defect below).
+%     Line 784, the early return of localMosekParamStrip for a non-structure input: the
 %     function is only called with a structure.
 %
 % Known defects documented (NOT tested, NOT fixed here):
@@ -34,17 +36,10 @@
 %         true and MSK_SOLVE_FREE is never set
 %       EXPECTED: a strict solve uses MSK_SOLVE_FREE, as the header of the function states
 %       LINES: 541-549
-%     - DEFECT: The SCLP profiles fail when feasTol or numTol is not supplied
-%       SEVERITY: error
-%       TRIGGER: param.mosekParam set to an SCLP_* profile (other than SCLP_default) without
-%         param.feasTol or without param.numTol
-%       OBSERVED: the missing field is read directly, which raises an error
-%         (Unrecognized field name "feasTol" or "numTol"), although the header states that all fields are optional
-%       EXPECTED: documented defaults used for the absent tolerances
-%       LINES: 596-601, 640-644
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -471,6 +466,39 @@ in.MSK_DPAR_INTPNT_CO_TOL_PFEAS = 1;
 [~, p] = setMosekParam(in);
 assert(~isfield(p, 'MSK_DPAR_INTPNT_CO_TOL_PFEAS') && ~isfield(p, 'MSK_IPAR_PRESOLVE_USE'));
 assert(p.MSK_IPAR_LOG == 0);
+
+%% SCLP profiles: absent feasTol and numTol take the cobra-profile defaults 1e-8 and 1e-12
+
+% neither tolerance given: inner tolerance max(1e-3 * 1e-8, 10 * 1e-12) = 1e-11, mu tolerance
+% max(1e-5 * 1e-8, 1e-12) = 1e-12, presolve tolerances 100 * 1e-12 and data tolerance 1e-12
+[~, p] = setMosekParam(struct('mosekParam', 'SCLP_normalPresolve'));
+assertValue(p, 'MSK_DPAR_INTPNT_CO_TOL_PFEAS', 1e-11, tol);
+assertValue(p, 'MSK_DPAR_INTPNT_CO_TOL_DFEAS', 1e-11, tol);
+assertValue(p, 'MSK_DPAR_INTPNT_CO_TOL_REL_GAP', 1e-11, tol);
+assertValue(p, 'MSK_DPAR_INTPNT_CO_TOL_MU_RED', 1e-12, tol);
+assertValue(p, 'MSK_DPAR_PRESOLVE_TOL_X', 1e-10, tol);
+assertValue(p, 'MSK_DPAR_PRESOLVE_TOL_S', 1e-10, tol);
+assertValue(p, 'MSK_DPAR_DATA_TOL_X', 1e-12, tol);
+
+% only feasTol given: inner tolerance max(1e-3 * 1e-6, 10 * 1e-12) = 1e-9, mu tolerance
+% max(1e-5 * 1e-6, 1e-12) = 1e-11
+[~, p] = setMosekParam(struct('mosekParam', 'SCLP_noPresolve', 'feasTol', 1e-6));
+assertValue(p, 'MSK_DPAR_INTPNT_CO_TOL_PFEAS', 1e-9, tol);
+assertValue(p, 'MSK_DPAR_INTPNT_CO_TOL_MU_RED', 1e-11, tol);
+assertValue(p, 'MSK_DPAR_PRESOLVE_TOL_X', 1e-10, tol);
+
+% only numTol given: inner tolerance max(1e-3 * 1e-8, 10 * 1e-9) = 1e-8, mu tolerance
+% max(1e-5 * 1e-8, 1e-9) = 1e-9, presolve tolerance 100 * 1e-9
+[~, p] = setMosekParam(struct('mosekParam', 'SCLP_verbose', 'numTol', 1e-9));
+assertValue(p, 'MSK_DPAR_INTPNT_CO_TOL_PFEAS', 1e-8, tol);
+assertValue(p, 'MSK_DPAR_INTPNT_CO_TOL_MU_RED', 1e-9, tol);
+assertValue(p, 'MSK_DPAR_PRESOLVE_TOL_X', 1e-7, tol);
+
+% the tight start profiles inherit the defaults and then set their own accuracy
+for name = {'SCLP_startTight', 'SCLP_startTightNoPresolve', 'SCLP_noPresolveVerbose'}
+    [~, p] = setMosekParam(struct('mosekParam', name{1}));
+    assertValue(p, 'MSK_DPAR_DATA_TOL_X', 1e-12, tol);
+end
 
 %% SCLP profiles: factors, time limit and caller values
 

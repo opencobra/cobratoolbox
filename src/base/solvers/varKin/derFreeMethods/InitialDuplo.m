@@ -118,7 +118,7 @@ else
     lambda_max = 1;
 end
 
-if isfield(options,'flag_`x_error`')
+if isfield(options,'flag_x_error')
     flag_x_error = options.flag_x_error;
 else
     flag_x_error = 0;

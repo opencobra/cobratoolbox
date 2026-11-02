@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Backward-only reactions
+%       list the substrate on both sides.
 %
 % Function under test:
 %     src/reconstruction/comparison/modelBorgifier/buildRxnEquationsFromName.m
@@ -16,15 +18,11 @@
 %     Line 63 of buildRxnEquationsFromName.m (the line printing "do not understand directionality" for lower bound > 0 and upper bound <= 0) is uncovered: that input has no defined arrow.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Backward-only reactions list the substrate on both sides
-%       SEVERITY: wrong-result
-%       TRIGGER: a reaction with lower bound < 0 and upper bound <= 0
-%       OBSERVED: products is overwritten with educts, for example (2) A <-- (-2) A
-%       EXPECTED: (2) A <-- C
-%       LINES: 59
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -38,7 +36,7 @@ cd(fileDir);
 % of a COBRA test and the place where a requirement would be added later
 prepareTest();
 
-% small model: R1 reversible, R2 forward, R3 backward only (see the header), R4 empty, R5 blocked
+% small model: R1 reversible, R2 forward, R3 backward only, R4 empty, R5 blocked
 model.rxns = {'R1'; 'R2'; 'R3'; 'R4'; 'R5'; 'R6'};
 model.mets = {'a_c'; 'b_c'; 'c_c'; 'd_c'};
 model.metNames = {'A'; 'B'; 'C'; 'D'};
@@ -54,7 +52,9 @@ model.ub = [ 1; 1;  0; 0; 0; 1];
 plainModel = buildRxnEquationsFromName(model);
 assert(strcmp(plainModel.rxnEquations{1}, 'A <==> B'));
 assert(strcmp(plainModel.rxnEquations{2}, 'B --> (2) C'));
-% (the equation of R3, the backward reaction, is not tested, see the header)
+% the backward-only reaction keeps substrate and product on their sides; the arrow gives the
+% direction (formerly a known defect: the substrate was listed on both sides)
+assert(strcmp(plainModel.rxnEquations{3}, '(2) A <-- C'));
 assert(isempty(plainModel.rxnEquations{4}));
 assert(strcmp(plainModel.rxnEquations{5}, 'A ||| B'));
 assert(strcmp(plainModel.rxnEquations{6}, 'C --> D'));
@@ -68,6 +68,7 @@ mergedModel.Models = struct('modelA', 1, 'modelB', 2);
 mergedModel = buildRxnEquationsFromName(mergedModel);
 assert(strcmp(mergedModel.rxnEquations{1}, 'A <==> B'));
 assert(strcmp(mergedModel.rxnEquations{2}, 'B --> (2) C'));
+assert(strcmp(mergedModel.rxnEquations{3}, '(2) A <-- C'));
 assert(strcmp(mergedModel.rxnEquations{6}, 'C --> D'));
 
 % change the directory

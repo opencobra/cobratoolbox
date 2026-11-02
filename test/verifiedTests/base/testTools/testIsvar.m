@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Index is 1 for a
+%       structure even when the field is missing.
 %
 % Function under test:
 %     src/base/utilities/isvar.m
@@ -16,15 +18,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Index is 1 for a structure even when the field is missing
-%       SEVERITY: limitation
-%       TRIGGER: a structure and a name that is not one of its fields
-%       OBSERVED: the third output (ind) is always 1 for structures
-%       EXPECTED: an empty index when the field does not exist
-%       LINES: 24-27
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -41,12 +39,19 @@ prepareTest();
 exampleStruct = struct('a', 1);
 exampleTable = table([1; 2], [3; 4], 'VariableNames', {'x', 'y'});
 
-%% structures: the field is present or not (the index output is not checked, see the header)
+%% structures: the field is present or not (the index output is checked in the next section)
 
 [tf, bool] = isvar(exampleStruct, 'a');
 assert(tf == true && bool == true);
 [tf, bool] = isvar(exampleStruct, 'z');
 assert(tf == false && bool == false);
+
+%% structures: the index is 1 for a present field and empty for a missing one
+
+[tf, ~, ind] = isvar(exampleStruct, 'a');
+assert(tf == true && isequal(ind, 1));
+[tf, ~, ind] = isvar(exampleStruct, 'z');
+assert(tf == false && isempty(ind));
 
 %% tables: logical position vector and index of the variable
 

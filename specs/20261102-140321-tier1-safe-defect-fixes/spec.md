@@ -294,3 +294,21 @@ only through CNF conversion, which no manipulation function performs).
 | FR-002 / SC-006 | `git diff --stat` against the base, checked for table-B files | — (no source function) |
 | FR-010 / SC-004 | harness runner with line coverage per function | the 52 table-A functions |
 | FR-011 | `git log` author and message check | — (no source function) |
+
+## Implementation outcome (2026-11-02)
+
+- 61 of the 62 table-A defects are resolved: 59 by a source fix in 50 functions, 2 already fixed
+  upstream before this feature (`createBIGraph` by feature 029, `compareModels` by commit
+  231b9f548b), whose stale entries were removed and whose triggers are now asserted.
+- 1 defect moved to table B under FR-007: `compareBounds2Models`, "Reactions missing from a model
+  are collected in a character matrix…" (a cell-array result would change the output type for
+  calls that work today).
+- 1 new defect found and registered: `coreMetRxnAnalysis`, "A given list of deleted metabolites is
+  discarded when the old model is empty and no deleted reactions are given".
+- Two test headers of feature 20261021-112509-recon-ci-scalability (`testCheckDuplicateRxn.m`,
+  `testRemoveFieldEntriesForType.m`) were not in the registry format, which made the registry
+  generator fail on the base; their format was repaired (content unchanged), adding three
+  existing defects to the registry.
+- Registry after regeneration: 33 defects in 28 functions = 28 (table B) + 1 (moved) + 1 (new) +
+  3 (repaired headers). SC-003 is read with this count.
+- All 54 changed test files pass in one MATLAB session; no line coverage decreased.

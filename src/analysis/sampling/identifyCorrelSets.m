@@ -16,10 +16,11 @@ function [setsSorted, setNoSorted, setSize] = identifyCorrelSets(model, sample, 
 %    R:            Correlation coefficient
 %
 % OUTPUTS:
-%    setsSorted:     Sorted cell array of sets (largest first)
+%    setsSorted:     Sorted cell array of sets (largest first; empty when no
+%                    reactions are correlated)
 %    setNoSorted:    List of set numbers for each reaction in model (0 indicates
 %                    that there is no set)
-%    setSize:        List of set sizes
+%    setSize:        List of set sizes (empty when no reactions are correlated)
 %
 % .. Author: - Markus Herrgard 9/15/06
 
@@ -61,8 +62,11 @@ setNo = zeros(size(model.rxns));
 [tmp, index1, index2] = intersect(model.rxns, rxnList);
 setNo(index1) = setNoTmp(index2);
 
-% Construct list of sets
-for i = 1:max(setNo)
+% Construct list of sets (empty when no reactions are correlated)
+nSets = max(setNo);
+sets = cell(1, nSets);
+setSize = zeros(1, nSets);
+for i = 1:nSets
     sets{i}.set = find(setNo == i);
     sets{i}.names = model.rxns(sets{i}.set);
     setSize(i) = length(sets{i}.set);

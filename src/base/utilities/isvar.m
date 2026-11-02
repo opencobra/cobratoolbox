@@ -18,13 +18,17 @@ function [tf, bool, ind] = isvar(T, varName)
 %    tf:         true if `varName` is present in `T`
 %    bool:       logical (vector for a table, scalar for a struct)
 %                indicating which entries of `T` match `varName`
-%    ind:        index of the match (1 for a struct; the column index/indices
-%                for a table)
+%    ind:        index of the match (1 for a struct that has the field, empty
+%                when it does not; the column index/indices for a table)
 
 if isstruct(T)
     tf = isfield(T,varName);
     bool = tf;
-    ind = 1;
+    if any(tf)
+        ind = 1;
+    else
+        ind = [];
+    end
 else
     bool = ismember(T.Properties.VariableNames,varName);
     tf = any(bool);

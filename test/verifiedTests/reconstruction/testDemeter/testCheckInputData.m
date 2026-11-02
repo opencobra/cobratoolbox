@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Header name listed in
+%       removedStrains; Unknown strain row not removed when the headers are equal.
 %
 % Function under test:
 %     src/reconstruction/demeter/src/integration/checkInputData.m
@@ -16,22 +18,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Header name listed in removedStrains
-%       SEVERITY: cosmetic
-%       TRIGGER: the first-column header of the data differs from that of the strain information
-%       OBSERVED: removedStrains also contains the header cell
-%       EXPECTED: only strain names
-%       LINES: 27-28
-%     - DEFECT: Unknown strain row not removed when the headers are equal
-%       SEVERITY: wrong-result
-%       TRIGGER: data and strain information with the same first-column header
-%       OBSERVED: the first removed index is skipped (IA(2:end)), so the row of an unknown strain
-%         stays in the checked data
-%       EXPECTED: the row removed
-%       LINES: 29
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -78,6 +69,23 @@ assert(isequal(checkedData, {'Taxon', 'a', 'Ref1', 'Ref2'; 's1', '1', 'p2', ''})
 [checkedData, addedStrains] = checkInputData({'Taxon', 'a'; 's1', '1'}, {'Strain'; 's1'; 's2'});
 assert(isequal(addedStrains, {'s2'}));
 assert(isequal(checkedData, {'Taxon', 'a'; 's1', '1'; 's2', '0'}));
+
+%% only strain names are listed as removed when the first-column headers differ
+
+% (formerly a known defect: the header of the data was listed as well)
+inputData = {'Taxon', 'a'; 's1', '1'; 's4', '2'};
+[checkedData, ~, removedStrains] = checkInputData(inputData, strainInformation);
+assert(isequal(removedStrains, {'s4'}));
+assert(isequal(checkedData, {'Taxon', 'a'; 's1', '1'; 's2', '0'; 's3', '0'}));
+
+%% an unknown strain is removed when the first-column headers are equal
+
+% (formerly a known defect: the row of the first unknown strain stayed in the data)
+inputData = {'Strain', 'a'; 's1', '1'; 's4', '2'; 's2', '3'; 's3', '4'};
+[checkedData, addedStrains, removedStrains] = checkInputData(inputData, strainInformation);
+assert(isequal(removedStrains, {'s4'}));
+assert(isempty(addedStrains));
+assert(isequal(checkedData, {'Strain', 'a'; 's1', '1'; 's2', '3'; 's3', '4'}));
 
 % change the directory
 cd(currentDir)

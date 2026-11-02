@@ -3,7 +3,8 @@ function [model] = setSimulationConstraints(model)
 %
 % This function sets the remaining simulation constraints identified during
 % debugging. It needs to be applied to GF and MyWB models that were created
-% with GF before Dec 2017.
+% with GF before Dec 2017. Warnings are switched off while the constraints
+% are set; the warning state of the caller is restored on return.
 %
 % USAGE:
 %
@@ -19,6 +20,9 @@ function [model] = setSimulationConstraints(model)
 %
 % .. Author: - Ines Thiele, Dec 2017
 
+% restore the warning state of the caller on return
+previousWarnings = warning;
+restoreWarnings = onCleanup(@() warning(previousWarnings));
 warning off;
 model = changeRxnBounds(model,'Liver_EX_4abut[bdL]_[bd]',0,'u');
 model = changeRxnBounds(model,'Liver_EX_tym[bdL]_[bd]',0,'u');
