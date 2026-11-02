@@ -148,7 +148,7 @@ data-model.md.
 - [X] T058 Scope check: `git diff --name-only upstream/develop -- src` lists only table-A files and none of the table-B files (SC-006)
 - [X] T059 Run all 52 changed tests once more in one MATLAB session through `runScriptFile`; record pass/fail
 - [X] T060 Write specs/20261102-140321-tier1-safe-defect-fixes/agent-runs/<UTC>-implement/implementation-receipt.md (Prompt, Final response, Diff summary, Tests, Unresolved issues)
-- [ ] T061 Commit with the maintainer identity (no co-author line), staging only this feature's files, and push the branch to `origin` with upstream tracking
+- [X] T061 Commit with the maintainer identity (no co-author line), staging only this feature's files, and push the branch to `origin` with upstream tracking
 
 ## Dependencies & execution order
 
