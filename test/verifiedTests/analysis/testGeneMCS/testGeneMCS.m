@@ -39,8 +39,8 @@ end
 % expected solution
 true_gmcs = cell(3,1);
 true_gmcs{1} = {'g5'}';
-true_gmcs{2} = {'g1' 'g4'}';
-true_gmcs{3} = {'g2' 'g3' 'g4'}';
+true_gmcs{2} = {'g1', 'g4'}';
+true_gmcs{3} = {'g2', 'g3', 'g4'}';
 
 for k = 1:length(solverPkgs)
     fprintf(' -- Running testGeneMCS using the solver interface: %s ... ', solverPkgs{k});

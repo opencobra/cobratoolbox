@@ -99,3 +99,4 @@ end
 
 modelOut.subSystemNames = subSystemNames;
 modelOut.rxn2subSystem = rxn2subSystem;
+end

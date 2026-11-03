@@ -129,6 +129,7 @@ for i = 1:popsize
 end
 
 return;
+end
 
 
 
@@ -153,4 +154,5 @@ else
     HTABLE.put(hashkey, value);
     value = [];
     return;
+end
 end

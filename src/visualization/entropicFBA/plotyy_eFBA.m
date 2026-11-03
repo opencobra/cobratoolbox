@@ -36,7 +36,7 @@ function plotyy_eFBA(model, objective, C_max, N, d)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-initCobraToolbox
+initCobraToolbox()
 model = changeObjective(model,objective);
 FBAsolution = optimizeCbModel(model,'max');
 

@@ -61,7 +61,7 @@ cnt=1;
 % initialize COBRA Toolbox and parallel pool
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 solver = CBT_LP_SOLVER;
 
@@ -77,7 +77,7 @@ environment = getEnvironment();
 if ~isempty(translatedDraftsFolder)
     % test draft and refined reconstructions
     folders={
-        translatedDraftsFolder
+        translatedDraftsFolder;
         refinedFolder
         };
 else
@@ -167,6 +167,7 @@ if ~isempty(translatedDraftsFolder)
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'Growth_rates_complex_medium_' reconVersion],'-dpng','-r300')
         
+    catch
     end
     
     % report draft models that are unable to grow
@@ -254,6 +255,7 @@ else
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'Growth_rates_Rich_medium_' reconVersion],'-dpng','-r300')
+    catch
     end
     
     data=[];

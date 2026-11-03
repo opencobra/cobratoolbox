@@ -534,3 +534,4 @@ if isfield(model,'C')
     sparseRxnBool=sparseRxnBool(1:nRxns,1);
     essentialRxnBool=essentialRxnBool(1:nRxns,1);
 end
+end

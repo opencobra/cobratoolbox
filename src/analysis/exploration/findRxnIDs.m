@@ -27,3 +27,4 @@ catch
     [~,rxnID] = ismember(rxnList,model.rxns);
     warning('Some model.rxns are double rather than char. Had to convert model.rxns to a cell array of character vectors.')
 end
+end

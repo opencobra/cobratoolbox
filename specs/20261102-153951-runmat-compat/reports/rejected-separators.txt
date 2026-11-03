@@ -1,0 +1,9 @@
+src/analysis/FVA/fluxVariability.m	parse tree changed; analyzer gained NOPRT,NOPRT,NOPRT,NOPRT,NOPRT,NOPRT,NOPRT,NOPRT,NOPRT,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER
+src/analysis/exploration/surfNet.m	parse tree changed; analyzer gained NODEF,NOPRT,NOPRT,NOPRT,NOPRT,NOPRT,SYNER,SYNER,SYNER,USENS
+src/reconstruction/modelGeneration/massBalance/computeMetFormulae.m	parse tree changed; analyzer gained NOPRT,NOPRT,NOPRT,NOPRT,NOPRT,NOPRT,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER,SYNER,USENS
+src/reconstruction/refinement/mergeModelFieldPositions.m	parse tree changed; analyzer gained NOPRT,SYNER,SYNER,SYNER,USENS,VUNUS
+test/verifiedTests/base/testParseCobraVarargin/testParseCobraVarargin.m	parse tree changed; analyzer gained NOPTS,SYNER,SYNER,SYNER
+test/verifiedTests/design/testOptForce/validateOptForceSol.m	parse tree changed; analyzer gained ASGLU,NODEF,NOPRT,NOPRT,SYNER,SYNER,SYNER,SYNER,USENS
+src/base/solvers/cardOpt/sparseLP/evalObj.m	lexer skip: unterminated string (not changed)
+src/base/solvers/cardOpt/sparseLP/updateObj.m	lexer skip: unterminated string (not changed)
+src/reconstruction/rBioNet/ReconstructionCreator.m	lexer skip: unterminated string (not changed)

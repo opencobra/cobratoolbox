@@ -637,3 +637,4 @@ if sum(minNorm)~=0
     fprintf('%s%d%s\n','The weighting for minimising the norm was ',minNorm,'.');
     fprintf('%s\n','Check that the objective is the same without minimising the norm.');
 end
+end

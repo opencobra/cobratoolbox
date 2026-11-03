@@ -30,53 +30,53 @@ end
 if 1
     % add fields
     field2Add={
-        'phenolExplorer'
-        'neutralFormula'
-        'chembl'
-        'miriam'
-        'hepatonetId'
-        'iupac'
-        'echa_id'
-        'fda_id'
-        'iuphar_id'
-        'mesh_id'
-        'chodb_id'
-        'gtopdb'
-        'inchiKey'
-        'avgmolweight'
-        'monoisotopicweight'
-        'keggId'
-        'inchiString'
-        'pubChemId'
-        'cheBIId'
-        'hmdb'
-        'pdmapName'
-        'reconMap'
-        'reconMap3'
-        'food_db'
-        'chemspider'
-        'biocyc'
-        'biggId'
-        'wikipedia'
-        'drugbank'
-        'seed'
-        'metanetx'
-        'knapsack'
-        'metlin'
-        'casRegistry'
-        'epa_id'
-        'inchiKey'
-        'smile'
-        'lipidmaps'
-        'reactome'
-        'GNPS'
-        'Recon3D'
-        'Agora2'
-        'massbank'
-        'MoNa'
-        'bindingdb'
-        'metabolights'
-        'rhea'
+        'phenolExplorer';
+        'neutralFormula';
+        'chembl';
+        'miriam';
+        'hepatonetId';
+        'iupac';
+        'echa_id';
+        'fda_id';
+        'iuphar_id';
+        'mesh_id';
+        'chodb_id';
+        'gtopdb';
+        'inchiKey';
+        'avgmolweight';
+        'monoisotopicweight';
+        'keggId';
+        'inchiString';
+        'pubChemId';
+        'cheBIId';
+        'hmdb';
+        'pdmapName';
+        'reconMap';
+        'reconMap3';
+        'food_db';
+        'chemspider';
+        'biocyc';
+        'biggId';
+        'wikipedia';
+        'drugbank';
+        'seed';
+        'metanetx';
+        'knapsack';
+        'metlin';
+        'casRegistry';
+        'epa_id';
+        'inchiKey';
+        'smile';
+        'lipidmaps';
+        'reactome';
+        'GNPS';
+        'Recon3D';
+        'Agora2';
+        'massbank';
+        'MoNa';
+        'bindingdb';
+        'metabolights';
+        'rhea';
         'swisslipids'};
   %  field2Add = unique(field2Add);
     Mets = fieldnames(metabolite_structure);
@@ -112,19 +112,19 @@ vmhIdCheck = 0;
 [metabolite_structure,IDsAdded] = getMetIdsFromUniChem(metabolite_structure,vmhIdCheck,cheBIIdCheck,drugBankCheck, pubChemIdCheck,keggIdCheck,hmdbCheck, inchiKeyCheck, inchiStringCheck,inchiKeyAltCheck );
 [IDs,IDcountD,Table] = getStats(metabolite_structure);
 save vmh_met_anno
-translation = {'keggId' 'kegg'
-    'inchiKey'  'inchikey'
-    'hmdb'  'Human%20Metabolome%20Database'
-    'cheBIId'   'chebi'
-    'pubChemId' 'PubChem%20CID'
-    'inchiString'   'inchi%20code'
-    'bindingdb' 'bindingdb'
-    'drugbank'  'drugbank'
-    'biocyc'    'biocyc'
-    'chemspider'    'chemspider'
-    'casRegistry'   'cas'
-    'lipidmaps' 'lipidmaps'
-    'epa_id'    'epa%20dsstox'
+translation = {'keggId', 'kegg';
+    'inchiKey',  'inchikey';
+    'hmdb',  'Human%20Metabolome%20Database';
+    'cheBIId',   'chebi';
+    'pubChemId', 'PubChem%20CID';
+    'inchiString',   'inchi%20code';
+    'bindingdb', 'bindingdb';
+    'drugbank',  'drugbank';
+    'biocyc',    'biocyc';
+    'chemspider',    'chemspider';
+    'casRegistry',   'cas';
+    'lipidmaps', 'lipidmaps';
+    'epa_id',    'epa%20dsstox'
     };
 for i = 1 : 5%size(translation,1)
     for j = 1:size(translation,1)

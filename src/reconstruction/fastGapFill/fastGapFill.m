@@ -70,3 +70,4 @@ A2 = fastCoreWeighted(consistMatricesSUX.C1, consistMatricesSUX,consistMatricesS
 % added reactions
 AddedRxns.rxns=setdiff(consistMatricesSUX.rxns(A2),consistMatricesSUX.rxns(consistMatricesSUX.C1));
 AddedRxns.rxnFormula = printRxnFormula(consistMatricesSUX,AddedRxns.rxns,false);
+end

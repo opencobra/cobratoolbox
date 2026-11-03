@@ -24,7 +24,7 @@ function portableGitSetup(gitBashVersion, removeFlag)
         removeFlag = 0;
     end
 
-    if ispc
+    if ispc()
         % define the name of the temporary folder
         tmpFolder = '.tmp';
 

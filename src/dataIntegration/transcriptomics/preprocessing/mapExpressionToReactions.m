@@ -70,3 +70,4 @@ else
     [expressionRxns,  gene_used, signifRxns] = selectGeneFromGPR(model, gene_id, gene_expr, parsedGPR, minSum, gene_sig);
     
 end
+end

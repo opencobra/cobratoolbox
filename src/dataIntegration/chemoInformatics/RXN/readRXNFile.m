@@ -154,3 +154,4 @@ if ~all(atomTransitionNrs==0)
         fprintf('%s%s%s%s%u%s\n',rxnfileName,' ',rxnFormulaFull,' contains ', nnz(~matchingElementBool), ' atom transitions violating elemental conservation.');
     end
 end
+end

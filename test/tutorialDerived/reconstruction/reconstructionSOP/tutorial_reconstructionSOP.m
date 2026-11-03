@@ -105,7 +105,7 @@ modelEcore.newField = B
 %% 
 % * Create a list of strings:
 
-ListStrings = {'A' 'B' 'C'}
+ListStrings = {'A', 'B', 'C'}
 %% 
 % * Create a list of numbers: 
 
@@ -435,7 +435,7 @@ modelEcore_New = changeRxnBounds(modelEcore, 'EX_ac(e)', 2, 'l');
 % *68.*  Set the constraints to the desired medium condition (e.g., minimal 
 % medium + carbon source). For changing the constraints use the following function:
 
-modelEcore_New = changeRxnBounds(modelEcore, {'EX_glc(e)' 'EX_o2(e)'}, [-10 -18.5], 'l');
+modelEcore_New = changeRxnBounds(modelEcore, {'EX_glc(e)', 'EX_o2(e)'}, [-10 -18.5], 'l');
 %% 
 % * If the model is required to grow in addition to producing the by-product, 
 % set the lower bound of the biomass reaction to the corresponding value required 
@@ -492,7 +492,7 @@ FBAsolution = optimizeCbModel(modelEcoreFor, 'max')
 %% 
 % *73.*  Add a row to the S matrix to couple the by-product secretion reactions:
 
-modelEcore_NEW = addRatioReaction(modelEcore, {'EX_ac(e)' 'EX_for(e)'}, [1 1]);
+modelEcore_NEW = addRatioReaction(modelEcore, {'EX_ac(e)', 'EX_for(e)'}, [1 1]);
 %% 
 % * Acetate and Formate secretion are coupled to a ratio of 1:1.
 %% 

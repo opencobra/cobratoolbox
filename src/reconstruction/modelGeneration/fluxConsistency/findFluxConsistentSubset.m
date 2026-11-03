@@ -306,3 +306,4 @@ end
 if printLevel>0
     fprintf('%s\n','--- findFluxConsistentSubset END ----')
 end
+end

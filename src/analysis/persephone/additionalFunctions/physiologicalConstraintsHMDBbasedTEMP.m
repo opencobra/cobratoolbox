@@ -406,13 +406,13 @@ if strcmp( Biofluid, 'bc') || strcmp( Biofluid, 'all')
                                 
                                 %  UPPER BOUND
                                 MSecretRateKidney = 1*(MConMin/1000)*GlomerularFiltrationRate*60*24/1000; % in mmol/day/person
-                                R = {'Kidney_EX_na1(e)_[bc]'
-                                    'Kidney_EX_hco3(e)_[bc]'
-                                    'Kidney_EX_urea(e)_[bc]'
-                                    'Kidney_EX_k(e)_[bc]'
-                                    'Kidney_EX_cl(e)_[bc]'
-                                    'Kidney_EX_ca2(e)_[bc]'
-                                    'Kidney_EX_HC02172(e)_[bc]'
+                                R = {'Kidney_EX_na1(e)_[bc]';
+                                    'Kidney_EX_hco3(e)_[bc]';
+                                    'Kidney_EX_urea(e)_[bc]';
+                                    'Kidney_EX_k(e)_[bc]';
+                                    'Kidney_EX_cl(e)_[bc]';
+                                    'Kidney_EX_ca2(e)_[bc]';
+                                    'Kidney_EX_HC02172(e)_[bc]';
                                     'Kidney_EX_avite1(e)_[bc]'
                                     };
                                 R = unique([R;ExclList]);
@@ -546,12 +546,12 @@ if strcmp( Biofluid, 'csf') || strcmp( Biofluid, 'all')
                             % flux will be positive as reaction is written as
                             % csf --> bc
                             MSecretRateCSF = (MConMin/1000)*CSFBloodFlowRate*60*24/1000; % in mmol/day/person
-                            R = { 'na1[csf]'
-                                'cl[csf]'
-                                'k[csf]'
-                                'h2o[csf]'
-                                'sucsal[csf]'
-                                'ca2[csf]'
+                            R = { 'na1[csf]';
+                                'cl[csf]';
+                                'k[csf]';
+                                'h2o[csf]';
+                                'sucsal[csf]';
+                                'ca2[csf]';
                                 'ser_D[csf]'};
                             if setLB == 1
                                 modelConstraint.lb(ExR(j)) = MSecretRateCSF; % maximal possible secretion rate
@@ -628,10 +628,10 @@ if strcmp( Biofluid, 'u') || strcmp( Biofluid, 'all')
                         MSecrRateUrLB = (MConMin/1000)*MConDefaultUrCreatinineMin*UrFlowRate/1000; % in mmol/day/person
                         % upper bound based on max concentration
                         MSecrRateUrUB = (MConMax/1000)*MConDefaultUrCreatinineMax*UrFlowRate/1000; % in mmol/day/person
-                        R = { 'EX_na1[u]'
-                            'EX_cl[u]'
-                            'EX_k[u]'
-                            'EX_ca2[u]'
+                        R = { 'EX_na1[u]';
+                            'EX_cl[u]';
+                            'EX_k[u]';
+                            'EX_ca2[u]';
                             % non-unique list!
                             %'EX_aldstrn[u]'
                             %         'EX_tststerone[u]'
@@ -654,60 +654,60 @@ if strcmp( Biofluid, 'u') || strcmp( Biofluid, 'all')
                             % metabolites with lower bound that is non-zero
                             % in data but should be not set as lb
                             % constraints
-                            'EX_C05767[u]' %Uroporphyrin I
-                            'EX_C05770[u]' %Coproporphyrin III
-                            'EX_C05302[u]'% 2-Methoxyestradiol (2ME2) is a drug that prevents the formation of new blood vessels
-                            'EX_trypta[u]'%Tryptamine is a monoamine compound that is common precursor molecule to many hormones and neurotransmitters
-                            'EX_ppbng[u]'% porphobilinogen is produced in excess and excreted in the urine in acute intermittent porphyria and several other porphyrias.
-                            'EX_13dampp[u]'%  It is a catabolic byproduct of spermidine. "The excretion of these  substances is usually very small compared to the respective amino acids. "http://www.sciencedirect.com/science/article/pii/0009898171904426
-                            'EX_mhista[u]' %The primary application of urinary N-methylhistamine (NMH) testing is in the diagnosis and monitoring of mast-cell disorders, including mastocytosis, anaphylaxis, and other severe systemic allergic reactions.[1, 2, 3, 4, 5, 6, 7]. The reference range for urinary NMH varies according to subject age, as follows: Age 0-5 years - 120-510 �g/g creatinine; Age 6-16 years - 70-330 �g/g creatinine, Older than16 years - 30-200 �g/g creatinine
-                            'EX_tym[u]' %Tyramine and its conjugates occur in normal and abnormal urines, although the biological role of tyramine, if any, is obscure. However, it has recently become of interest because severe Parkinsonians excrete raised amounts of tyraminel-R
-                            'EX_2hyoxplac[u]'%2-Hydroxyphenylacetate
-                            'EX_pmtcrn[u]'
-                            'EX_dheas[u]'
-                            'EX_34dhphe[u]' %L-dopa
-                            'EX_srtn[u]'
-                            'EX_gthrd[u]'
-                            'EX_pcholhep_hs[u]'
-                            'EX_pcholste_hs[u]'
-                            'EX_pcholn204_hs[u]'
-                            'EX_3moxtyr[u]'
-                            'EX_aldstrn[u]'
-                            'EX_tststerone[u]'
-                            'EX_pydxn[u]'
-                            'EX_sphgn[u]' % i dont think that this metabolite is routinely secreted
-                            'EX_sphings[u]'
-                            'EX_csn[u]'
-                            'EX_arab_L[u]'
-                            'EX_tststerone[u]'
-                            'EX_tststerone[u]'
-                            'EX_pydxn[u]'
-                            'EX_mma[u]'%Methylamine occurs endogenously from amine catabolism and its tissue levels increase in some pathological conditions, including diabetes.
-                            'EX_tsul[u]'%Thiosulfate occurs naturally in hot springs and geysers, and is produced by certain biochemical processes. In the body, thiosulfate converts small amounts of cyanide ion into harmless products and plays a role in the biosynthesis of cysteine, a sulfur-containing amino acid that locks proteins into their correct three-dimensional shapes. Thiosulfate is not found in large quantities in nature.
-                            'EX_5htrp[u]'
-                            'EX_7dhchsterol'
-                            'EX_etoh[u]'
-                            'EX_gsn[u]'
-                            'EX_5aop[u]'
+                            'EX_C05767[u]'; %Uroporphyrin I
+                            'EX_C05770[u]'; %Coproporphyrin III
+                            'EX_C05302[u]';% 2-Methoxyestradiol (2ME2) is a drug that prevents the formation of new blood vessels
+                            'EX_trypta[u]';%Tryptamine is a monoamine compound that is common precursor molecule to many hormones and neurotransmitters
+                            'EX_ppbng[u]';% porphobilinogen is produced in excess and excreted in the urine in acute intermittent porphyria and several other porphyrias.
+                            'EX_13dampp[u]';%  It is a catabolic byproduct of spermidine. "The excretion of these  substances is usually very small compared to the respective amino acids. "http://www.sciencedirect.com/science/article/pii/0009898171904426
+                            'EX_mhista[u]'; %The primary application of urinary N-methylhistamine (NMH) testing is in the diagnosis and monitoring of mast-cell disorders, including mastocytosis, anaphylaxis, and other severe systemic allergic reactions.[1, 2, 3, 4, 5, 6, 7]. The reference range for urinary NMH varies according to subject age, as follows: Age 0-5 years - 120-510 �g/g creatinine; Age 6-16 years - 70-330 �g/g creatinine, Older than16 years - 30-200 �g/g creatinine
+                            'EX_tym[u]'; %Tyramine and its conjugates occur in normal and abnormal urines, although the biological role of tyramine, if any, is obscure. However, it has recently become of interest because severe Parkinsonians excrete raised amounts of tyraminel-R
+                            'EX_2hyoxplac[u]';%2-Hydroxyphenylacetate
+                            'EX_pmtcrn[u]';
+                            'EX_dheas[u]';
+                            'EX_34dhphe[u]'; %L-dopa
+                            'EX_srtn[u]';
+                            'EX_gthrd[u]';
+                            'EX_pcholhep_hs[u]';
+                            'EX_pcholste_hs[u]';
+                            'EX_pcholn204_hs[u]';
+                            'EX_3moxtyr[u]';
+                            'EX_aldstrn[u]';
+                            'EX_tststerone[u]';
+                            'EX_pydxn[u]';
+                            'EX_sphgn[u]'; % i dont think that this metabolite is routinely secreted
+                            'EX_sphings[u]';
+                            'EX_csn[u]';
+                            'EX_arab_L[u]';
+                            'EX_tststerone[u]';
+                            'EX_tststerone[u]';
+                            'EX_pydxn[u]';
+                            'EX_mma[u]';%Methylamine occurs endogenously from amine catabolism and its tissue levels increase in some pathological conditions, including diabetes.
+                            'EX_tsul[u]';%Thiosulfate occurs naturally in hot springs and geysers, and is produced by certain biochemical processes. In the body, thiosulfate converts small amounts of cyanide ion into harmless products and plays a role in the biosynthesis of cysteine, a sulfur-containing amino acid that locks proteins into their correct three-dimensional shapes. Thiosulfate is not found in large quantities in nature.
+                            'EX_5htrp[u]';
+                            'EX_7dhchsterol';
+                            'EX_etoh[u]';
+                            'EX_gsn[u]';
+                            'EX_5aop[u]';
                             'EX_uri[u]';
-                            'EX_dad_2[u]'
-                            'EX_ocdca[u]'
-                            'EX_gua[u]'
-                            'EX_dcyt[u]'
-                            'EX_glyleu[u]'
-                            'EX_acald[u]'
+                            'EX_dad_2[u]';
+                            'EX_ocdca[u]';
+                            'EX_gua[u]';
+                            'EX_dcyt[u]';
+                            'EX_glyleu[u]';
+                            'EX_acald[u]';
                             'EX_HC02191[u]'
                             %%
                             % 'EX_ethamp[u]'
                             };
                         R = unique([R;ExclList]);
                         MustSecrete = {
-                            'EX_urea[u]'
-                            'EX_nh4[u]'
-                            'EX_etha[u]'
+                            'EX_urea[u]';
+                            'EX_nh4[u]';
+                            'EX_etha[u]';
                             %   'EX_na1
-                            'EX_lcts[u]'
-                            'EX_3hmp[u]'
+                            'EX_lcts[u]';
+                            'EX_3hmp[u]';
                             'EX_acnam[u]'
                             };
                         
@@ -873,9 +873,11 @@ if ~strcmp(Type,'direct')
          elseif iscell(muscle_weight)
              try
                      muscle_weight =str2num((muscle_weight{1})) ;
+             catch
              end
              try
                  muscle_weight =muscle_weight{1} ;
+             catch
              end
          else
              muscle_weight =muscle_weight{1} ;
@@ -911,9 +913,11 @@ if ~strcmp(Type,'direct')
          elseif iscell(brain_weight)
              try
              brain_weight =str2num((brain_weight{1})) ;
+             catch
              end
              try
              brain_weight =brain_weight{1} ;
+             catch
              end
          else
              brain_weight =brain_weight{1} ;
@@ -1041,4 +1045,5 @@ if ~strcmp(Type,'direct')
     % men: assumed 5.5M/ul and  female: assumed 4.5M/ul
     % if strcmp(sex,'male')
     %     RBC = 5.5*10^6*
+end
 end

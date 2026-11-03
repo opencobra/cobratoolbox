@@ -99,3 +99,4 @@ U = LPProblem.ub;
 %        OK == 0 otherwise
 filename = [name '.mps'];
 OK = SaveMPS(filename, Contain);
+end

@@ -9,3 +9,4 @@ else
 end
 
 g = [-4 * alpha * x(1) * (x(2) - x(1) ^ 2) - 2 * (1 - x(1)); 2 * alpha * (x(2) - x(1) ^ 2)];
+end

@@ -47,3 +47,4 @@ end
 
 fclose(fid);
 fprintf('%s\n',['Network saved as ' filename ' in current directory'])
+end

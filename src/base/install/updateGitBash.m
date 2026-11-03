@@ -16,7 +16,7 @@ function updateGitBash(fetchAndCheckOnly)
         fetchAndCheckOnly = false;
     end
 
-    if ispc
+    if ispc()
         % define the name of the temporary folder
         tmpFolder = '.tmp';
 

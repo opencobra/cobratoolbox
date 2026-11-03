@@ -24,35 +24,35 @@ function testResults = runTestsOnModel(model, microbeID, inputDataFolder)
 
 
 fields = {
-    'Mass_imbalanced'
-    'Charge_imbalanced'
-    'Mets_without_formulas'
-    'Leaking_metabolites'
-    'ATP_from_O2'
-    'Blocked_reactions'
-    'RefinedReactionsCarryingFlux'
-    'BlockedRefinedReactions'
-    'Incorrect_Gene_Rules'
-    'Incorrect_Compartments'
-    'Carbon_sources_TruePositives'
-    'Carbon_sources_FalseNegatives'
-    'Fermentation_products_TruePositives'
-    'Fermentation_products_FalseNegatives'
-    'growsOnDefinedMedium'
-    'growthOnKnownCarbonSources'
-    'Biomass_precursor_biosynthesis_TruePositives'
-    'Biomass_precursor_biosynthesis_FalseNegatives'
-    'Metabolite_uptake_TruePositives'
-    'Metabolite_uptake_FalseNegatives'
-    'Secretion_products_TruePositives'
-    'Secretion_products_FalseNegatives'
-    'Bile_acid_biosynthesis_TruePositives'
-    'Bile_acid_biosynthesis_FalseNegatives'
-    'Drug_metabolism_TruePositives'
-    'Drug_metabolism_FalseNegatives'
-    'PutrefactionPathways_TruePositives'
-    'PutrefactionPathways_FalseNegatives'
-    'AromaticAminoAcidDegradation_TruePositives'
+    'Mass_imbalanced';
+    'Charge_imbalanced';
+    'Mets_without_formulas';
+    'Leaking_metabolites';
+    'ATP_from_O2';
+    'Blocked_reactions';
+    'RefinedReactionsCarryingFlux';
+    'BlockedRefinedReactions';
+    'Incorrect_Gene_Rules';
+    'Incorrect_Compartments';
+    'Carbon_sources_TruePositives';
+    'Carbon_sources_FalseNegatives';
+    'Fermentation_products_TruePositives';
+    'Fermentation_products_FalseNegatives';
+    'growsOnDefinedMedium';
+    'growthOnKnownCarbonSources';
+    'Biomass_precursor_biosynthesis_TruePositives';
+    'Biomass_precursor_biosynthesis_FalseNegatives';
+    'Metabolite_uptake_TruePositives';
+    'Metabolite_uptake_FalseNegatives';
+    'Secretion_products_TruePositives';
+    'Secretion_products_FalseNegatives';
+    'Bile_acid_biosynthesis_TruePositives';
+    'Bile_acid_biosynthesis_FalseNegatives';
+    'Drug_metabolism_TruePositives';
+    'Drug_metabolism_FalseNegatives';
+    'PutrefactionPathways_TruePositives';
+    'PutrefactionPathways_FalseNegatives';
+    'AromaticAminoAcidDegradation_TruePositives';
     'AromaticAminoAcidDegradation_FalseNegatives'
     };
 
@@ -63,7 +63,7 @@ for k=1:length(fields)
 end
 
 % Load reaction and metabolite database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 try
 biomassReaction = model.rxns{strncmp('bio', model.rxns, 3)};
 
@@ -137,10 +137,10 @@ testResults.Leaking_metabolites(1, 2:length(leakingMets)+1) = leakingMets;
 % phosphate, and oxygen without an energy source. This is
 % thermodynamically infeasible and should not happen.
 basicCompounds={
-    'EX_h2o(e)' '-100'
-    'EX_h(e)' '-100'
-    'EX_pi(e)' '-10'
-    'EX_o2(e)' '-10'
+    'EX_h2o(e)', '-100';
+    'EX_h(e)', '-100';
+    'EX_pi(e)', '-10';
+    'EX_o2(e)', '-10'
     };
 modelTest = useDiet(model,basicCompounds);
 modelTest.lb(find(strncmp(modelTest.rxns,'sink_',5)))=0;
@@ -303,5 +303,6 @@ testResults.PutrefactionPathways_FalseNegatives(1, 2:length(FalseNegatives)+1) =
 [TruePositives, FalseNegatives] = testAromaticAADegradation(model, microbeID, biomassReaction, database);
 testResults.AromaticAminoAcidDegradation_TruePositives(1, 2:length(TruePositives)+1) = TruePositives;
 testResults.AromaticAminoAcidDegradation_FalseNegatives(1, 2:length(FalseNegatives)+1) = FalseNegatives;
+catch
 end
 end

@@ -27,10 +27,10 @@ function [metabolite_structure] = assignClassyFire(metabolite_structure, startSe
 annotationSource = 'ClassyFire search based on inchiKey';
 annotationType = 'automatic';
 
-taxLevel = {'Kingdom'
-    'Superclass'
-    'Class'
-    'Subclass'
+taxLevel = {'Kingdom';
+    'Superclass';
+    'Class';
+    'Subclass';
     'Level 5'
     };
 
@@ -55,8 +55,10 @@ for i = startSearch : endSearch
                 metabolite_structure.(F{i}).(['classyFire_' regexprep(taxLevel{k},' ','')]) = levelOut;
                 metabolite_structure.(F{i}).(['classyFire_' regexprep(taxLevel{k},' ','') '_source']) = [annotationSource,':',annotationType,':',datestr(now)];
             end
+        catch
         end
     end
+end
 end
 function [levelOut] = getData(syst,levelIn)
 tok0 = split(syst,'Taxonomic Classification');
@@ -65,3 +67,4 @@ tok2 = split(tok{2},'<abbr title=');
 tok3 = split(tok2{2},'">');
 tok4 = split(tok3{2},'</');
 levelOut = tok4{1};
+end

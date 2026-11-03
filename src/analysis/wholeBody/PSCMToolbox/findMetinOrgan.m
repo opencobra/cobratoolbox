@@ -21,3 +21,4 @@ function [OrganListLong, OrganListOnly] = findMetinOrgan(WBModel, metabolite)
 metList = WBModel.mets;
 OrganListLong= WBModel.mets(find(~cellfun(@isempty,strfind(WBModel.mets,strcat('_',metabolite)))));
 OrganListOnly = unique(strtok(OrganListLong,'_'));
+end

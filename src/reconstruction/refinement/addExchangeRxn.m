@@ -82,4 +82,5 @@ stoich = -speye(numel(metList));
 subSystems = repmat({{'Exchange'}},numel(metList),1);
 %Add all Exchangers
 newModel = addMultipleReactions(newModel,AddedExchRxn,metList,stoich,'lb',lb,'ub',ub,'subSystems',subSystems);
+end
 

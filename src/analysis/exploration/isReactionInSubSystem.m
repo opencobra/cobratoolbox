@@ -61,3 +61,4 @@ rxn2subSystemMat = model.rxn2subSystem(rxnID, subSystemID);
 
 % Find existing reaction IDs
 present(rxnExists) = logical(sum(rxn2subSystemMat, 2));
+end

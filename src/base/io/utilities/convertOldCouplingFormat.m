@@ -73,4 +73,5 @@ if isfield(model,'A') && isfield(model,'S')
     %remove the legacy fields
     model = rmfield(model,'A');
 end
+end
  

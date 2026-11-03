@@ -21,3 +21,4 @@ for m=1:nMet
     fprintf(fid,'%20s%20s\t%20s\n',modelT.mets{m},modelT.metFormulas{m},modelT.met(m).formulaMarvin);
 end
 fclose(fid);
+end

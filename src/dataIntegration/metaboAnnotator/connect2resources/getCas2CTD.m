@@ -59,3 +59,4 @@ for i = 1 : size(Cas,1)
     end
 end
 [metabolite_structure] = cleanUpMetabolite_structure(metabolite_structure);
+end

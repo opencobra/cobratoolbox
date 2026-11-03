@@ -186,6 +186,7 @@ gap.options = options;
 [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, geneok, saveFile, outputFolder); % in case of genes
 
 return;
+end
 
 
 %% Creation Function
@@ -205,6 +206,7 @@ end
 % Create remaining population
 Population(initPopProvided+1:end,:) = logical(1/GenomeLength > rand(individualsToCreate,GenomeLength));
 return;
+end
 
 %% Mutation Function
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -242,6 +244,7 @@ for i=1:length(parents)
     mutationChildren(i,:) = child;
 end
 return;
+end
 
 %% Crossover Function
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -288,6 +291,7 @@ end
 % also apply mutations to crossover kids...
 xoverKids = mutationUniformEqual(1:size(xoverKids,1) ,[],GenomeLength,[],[],[],xoverKids,mutationRate);
 return;
+end
 
 
 function state = gaplotmutationdiversity(options,state,flag,p1)
@@ -340,4 +344,5 @@ switch flag
         else % else plot all score
             hist(sum(state.Population,2),p1);
         end
+end
 end

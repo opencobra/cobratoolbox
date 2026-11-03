@@ -59,6 +59,7 @@ activeInactiveRxn=[];
 presentAbsentMet=[];
 [thermoModel, thermoModelMetBool, thermoModelRxnBool] = ...
     thermoKernel(model, activeInactiveRxn, rxnWeights, presentAbsentMet, metWeights, param);
+end
 
 % function [thermoModel, thermoModelMetBool, thermoModelRxnBool] = thermoKernel(model, activeInactiveRxn, rxnWeights, presentAbsentMet, metWeights, param)
 % From a cobra model, extract a thermodynamically flux consistent submodel

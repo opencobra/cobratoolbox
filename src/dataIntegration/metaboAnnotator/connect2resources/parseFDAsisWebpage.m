@@ -44,7 +44,7 @@ a = 1;
 IDsAdded = '';
 
 mapping ={
-    'pubchemId' 'https://pubchem.ncbi.nlm.nih.gov/compound'
+    'pubchemId', 'https://pubchem.ncbi.nlm.nih.gov/compound'
     };
 
 for i = startSearch : endSearch
@@ -99,6 +99,7 @@ for i = startSearch : endSearch
         end
     end
 end
+end
 
 
 
@@ -113,4 +114,6 @@ try
     idNew = regexprep(tok,'https://pubchem.ncbi.nlm.nih.gov/compound/','');
     idNew = regexprep(idNew,'\W$','');
     
+catch
+end
 end

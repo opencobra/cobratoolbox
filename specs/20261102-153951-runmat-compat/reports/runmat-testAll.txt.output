@@ -1,0 +1,7 @@
+[2026-11-02T22:35:00.141222970Z  WARN wgpu_hal::gles::egl] No config found!
+[2026-11-02T22:35:00.141283557Z  WARN wgpu_hal::gles::egl] EGL says it can present to the window but not natively
+error: undefined variable 'initCobraToolbox'
+id: RunMat:UndefinedVariable
+--> test/testAll.m:73:5
+73 |     initCobraToolbox;
+  |     ^^^^^^^^^^^^^^^^

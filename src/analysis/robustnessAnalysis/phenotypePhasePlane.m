@@ -67,6 +67,7 @@ for i = 1:nPts %ind1
         try % calculate shadow prices
             shadowPrices1(j,i) = fbasol.y(metID1(1));
             shadowPrices2(j,i) = fbasol.y(metID2(1));
+        catch
         end
     end
 end
@@ -87,3 +88,4 @@ xlabel(strrep(strcat(controlRxn1,' (mmol/g DW-hr)'),'_','\_')), ylabel(strrep(st
 figure(1);
 surfl(ind1,ind2,growthRates);
 xlabel(strrep(strcat(controlRxn1,' (mmol/g DW-hr)'),'_','\_')), ylabel(strrep(strcat(controlRxn2,' (mmol/g DW-hr)'),'_','\_')), zlabel('growth rate (1/hr)');
+end

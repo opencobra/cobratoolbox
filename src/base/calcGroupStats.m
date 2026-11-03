@@ -80,6 +80,7 @@ if randStat
         end
     end
 end
+end
 
 function groupStat = calcStatInternal(groupCnt, data, statName, nSets)
 
@@ -113,6 +114,7 @@ if groupCnt > 0
 
 else
     groupStat = ones(1, nSets) * NaN;
+end
 end
 
 

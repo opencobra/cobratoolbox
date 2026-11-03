@@ -22,7 +22,7 @@ if ~exist('KEGGBlackList','var') || isempty(KEGGBlackList)
 end
 
 KEGGReactionList = importdata(KEGGFilename);
-KEGG = createModel;
+KEGG = createModel();
 cnt=1;
 cnti=1;
 
@@ -112,6 +112,7 @@ KEGG.S=spalloc(length(KEGG.mets), length(KEGG.rxns), floor(4.5 * length(KEGG.rxn
 KEGG.csense = repmat('E',size(KEGG.mets));
 KEGG.b = zeros(size(KEGG.mets));
 [KEGG] = addReactionGEM(KEGG,KEGG.rxns,KEGG.rxns,KEGG.rxnFormulas,ones(length(KEGG.rxns),1),-10000*ones(length(KEGG.rxns),1),10000*ones(length(KEGG.rxns),1),1);
+end
 %a=length(KEGG.mets);
 %b=length(KEGG.rxns);
 %KEGG.S(a+1:end,:)=[];

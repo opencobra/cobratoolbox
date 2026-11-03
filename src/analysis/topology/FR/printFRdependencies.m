@@ -142,6 +142,7 @@ else
         disp(FRdisplay(length(wR)+1:end,:))
     end
 end
+end
 
 
 %old code

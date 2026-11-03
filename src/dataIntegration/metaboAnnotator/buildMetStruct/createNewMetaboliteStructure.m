@@ -136,3 +136,4 @@ metabolite_structure= addField2MetStructure(metabolite_structure);
 % any errors will be removed.
 removeErrors = 1;
 [metabolite_structure,errorFlag] = sanityCheckMetIds(metabolite_structure,removeErrors);
+end

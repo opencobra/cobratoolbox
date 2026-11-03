@@ -76,4 +76,5 @@ xmlStruct.sbml.model.annotation.celldesigner_colon_extension.celldesigner_colon_
 
 %write out the reduced xml file
 struct2xml(xmlStruct, [fileName(1:end-4) '_subset.xml']);
+end
 

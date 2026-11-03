@@ -58,7 +58,7 @@ nMets = length(Model.mets);
 fieldNames = fieldnames(Model);
 
 % Get desired field names.
-fields = TmodelFields ;
+fields = TmodelFields() ;
 Field.rxn = fields{1};
 Field.rNum = fields{2};
 Field.met = fields{3};
@@ -278,7 +278,7 @@ Model.metFormulas = fixChemFormulas(Model.metFormulas);
 Model = buildRxnEquations(Model);
 
 %% Ensure all vectors are column vectors.
-colFields = {'rxn' 'rNum' 'met' 'mNum'};
+colFields = {'rxn', 'rNum', 'met', 'mNum'};
 for iName = 1:length(colFields)
     for iField = 1:length(Field.(colFields{iName}))
         Model.(Field.(colFields{iName}){iField}) = ...
@@ -324,3 +324,4 @@ end
 %% Reorder fields and organize model based on most common mets.
 Model = orderModelFieldsBorg(Model);
 Model = organizeModelCool(Model);
+end

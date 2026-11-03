@@ -194,6 +194,7 @@ if isfield(model, 'grRules') && exist('modifiedRules','var')
     currentrules = regexprep(currentrules,'x\(([0-9]+)\)','${getGeneName($1)}');
     model.grRules(modifiedRules) = currentrules;
 end
+end
 
 
 
@@ -214,6 +215,7 @@ model.rules(rxns) = regexprep(model.rules(rxns),'\( *(x\([0-9]+\)) *\)','$1');
 while ~all(strcmp(origrules,model.rules(rxns)))
     origrules = model.rules(rxns);
     model.rules(rxns) = regexprep(model.rules(rxns),'\( *(x\([0-9]+\)) *\)','$1');
+end
 end
 
 function relrules = findRulesWithGenes(rules, genePosStr)
@@ -242,4 +244,5 @@ for r = 1:numel(rules)
             relrules{r}(positionOfGene(gene)) = true;
         end
     end
+end
 end

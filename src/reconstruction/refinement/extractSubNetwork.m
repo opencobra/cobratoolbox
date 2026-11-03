@@ -61,3 +61,4 @@ if updateGenes
     genesToRemove = ~any(rxnGeneMat);
     subModel = removeFieldEntriesForType(subModel,genesToRemove,'genes',numel(model.genes));
 end
+end

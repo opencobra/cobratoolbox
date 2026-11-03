@@ -357,7 +357,7 @@ end
 
 if isfield(solution,'x') 
     T2 = table(model.xl,solution.x,model.xu,z_x,model.x0l,x0,model.x0u,z_x0,model.dxl,dx,model.dxu,z_dx,...
-        'VariableNames',{'xl' 'x' 'xu' 'z_x' 'x0l' 'x0' 'x0u' 'z_x0' 'dxl' 'dx' 'dxu' 'z_dx'});
+        'VariableNames',{'xl', 'x', 'xu', 'z_x', 'x0l', 'x0', 'x0u', 'z_x0', 'dxl', 'dx', 'dxu', 'z_dx'});
     if length(solution.x)<=10
         disp(T2)
     end

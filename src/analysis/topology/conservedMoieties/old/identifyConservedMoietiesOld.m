@@ -215,3 +215,4 @@ for i = 1:length(mh)
     inRxn = atrans2rxns == mtrans2rxns(i);
     atrans2mtrans((inHead & inTail) & inRxn) = i;
 end
+end

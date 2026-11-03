@@ -102,12 +102,12 @@ bar_handle6=barh(X1,PreversibleBar_byConcRHS(xip),1,'BaseValue',minX,'FaceColor'
 %      H(3) = handle to errorbar x if error y specified
 % LineSpec=[''LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r'']
 LineSpec='r.';
-hE = ploterr(Y(xip),X1,{model.dGtMin(xip) model.dGtMax(xip)},[],LineSpec,'hhxy',0);
+hE = ploterr(Y(xip),X1,{model.dGtMin(xip), model.dGtMax(xip)},[],LineSpec,'hhxy',0);
 set(hE(2),'LineWidth',10);
 % hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r');
 %dGrt0 errorbar on top and inside dGrt
 LineSpec='b.';
-hE = ploterr(Y0(xip),X1,{model.dGt0Min(xip) model.dGt0Max(xip)},[],LineSpec,'hhxy',0);
+hE = ploterr(Y0(xip),X1,{model.dGt0Min(xip), model.dGt0Max(xip)},[],LineSpec,'hhxy',0);
 set(hE(2),'LineWidth',10);
 % hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','b');
 
@@ -291,4 +291,5 @@ if horizontal
         model.dGt0Min=dGt0Min;
         model.dGt0Max=dGt0Max;
     end
+end
 end

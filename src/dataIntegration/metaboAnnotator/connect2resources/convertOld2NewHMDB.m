@@ -26,3 +26,4 @@ if length(HMDBId) < 12 % old style
     end
     HMDBId_new = ['HMDB' z id];
 end
+end

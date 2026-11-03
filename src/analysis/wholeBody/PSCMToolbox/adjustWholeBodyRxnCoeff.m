@@ -55,3 +55,4 @@ model.S = model.A;
 if removeA == 1
     model = rmfield(model,'A');
 end
+end

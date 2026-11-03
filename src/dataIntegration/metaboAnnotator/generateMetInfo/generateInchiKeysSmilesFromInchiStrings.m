@@ -68,3 +68,4 @@ for i = 1 : length(Mets)
 end
 
 [metabolite_structure] = cleanUpMetabolite_structure(metabolite_structure);
+end

@@ -45,3 +45,4 @@ if wipeExisting || ~isfield(updatedModel,'metNames') || ~(length(updatedModel.me
 end
 
 updatedModel.metNames(metsToUpdate) = referenceModel.metNames(positionsToUpdateFrom(metsToUpdate));
+end

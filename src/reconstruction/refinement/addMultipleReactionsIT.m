@@ -250,3 +250,4 @@ if printLevel > 0
     fprintf('addMultipleReactions: Adding the following reactions to the model:\n');
     printRxnFormula(newmodel,rxnIDs);
 end
+end

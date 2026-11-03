@@ -34,3 +34,4 @@ for i = 1:size(grads,2)
     semilogy(interval, abs(grads(:,i)));
     hold on;
 end
+end

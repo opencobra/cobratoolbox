@@ -35,7 +35,7 @@ function [TruePositives, FalseNegatives] = testPutrefactionPathways(model, micro
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % read putrefaction product tables

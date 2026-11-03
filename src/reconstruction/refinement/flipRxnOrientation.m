@@ -43,3 +43,4 @@ if any(notInModel)
         fprintf('Reaction %s not present in model!', rxnsNotInModel{i});
     end
 end
+end

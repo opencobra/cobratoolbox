@@ -45,19 +45,19 @@ annotationType = 'automatic';
 
 % translation key between metabolite field name and Fiehnlab naming
 
-translation = {'keggId' 'kegg'
-    'inchiKey'  'inchikey'
-    'bindingdb' 'bindingdb'
-    'drugbank'  'drugbank'
-    'biocyc'    'biocyc'
-    'chemspider'    'chemspider'
-    'casRegistry'   'cas'
-    'pubChemId' 'PubChem%20CID'
-    'hmdb'  'Human%20Metabolome%20Database'
-    'cheBIId'   'chebi'
-    'inchiString'   'inchi%20code'
-    'lipidmaps' 'lipidmaps'
-    'epa_id'    'epa%20dsstox'
+translation = {'keggId', 'kegg';
+    'inchiKey',  'inchikey';
+    'bindingdb', 'bindingdb';
+    'drugbank',  'drugbank';
+    'biocyc',    'biocyc';
+    'chemspider',    'chemspider';
+    'casRegistry',   'cas';
+    'pubChemId', 'PubChem%20CID';
+    'hmdb',  'Human%20Metabolome%20Database';
+    'cheBIId',   'chebi';
+    'inchiString',   'inchi%20code';
+    'lipidmaps', 'lipidmaps';
+    'epa_id',    'epa%20dsstox'
     };
 
 
@@ -95,7 +95,9 @@ for i = startSearch : endSearch
                         
                         a = a + 1;
                     end
+            catch
                 end
             end
     end
+end
 end

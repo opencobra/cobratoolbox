@@ -132,3 +132,4 @@ solution.v = cardSol.xyz;
 solution.stat = cardSol.stat;
 sparseRxnBool = abs(solution.v)>=getCobraSolverParams('LP', 'feasTol');
 solution.v(~sparseRxnBool)=0;
+end

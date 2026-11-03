@@ -84,3 +84,4 @@ if ~isempty(x)
 else
     V=ones(n,1)*NaN;
 end
+end

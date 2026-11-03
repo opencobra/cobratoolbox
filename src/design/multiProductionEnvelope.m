@@ -138,8 +138,9 @@ legend off;
 ylabel('Production Rate (mmol/gDW h)');
 xlabel('Growth Rate (1/h)');
 if plotTools
-    plottools, plotbrowser('on'), figurepalette('hide'), propertyeditor('off');
+    plottools(), plotbrowser('on'), figurepalette('hide'), propertyeditor('off');
 end
 biomassValues = biomassValues';
 targetLowerBounds = targetLowerBounds';
 targetUpperBounds = targetUpperBounds';
+end

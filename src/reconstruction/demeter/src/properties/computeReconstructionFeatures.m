@@ -19,12 +19,12 @@ function computeReconstructionFeatures(translDraftsFolder, refinedFolder, proper
 
 if ~isempty(translDraftsFolder)
 toCompare={
-    'Draft' translDraftsFolder
-    'Refined' refinedFolder
+    'Draft', translDraftsFolder;
+    'Refined', refinedFolder
     };
 else
     toCompare={
-    'Refined' refinedFolder
+    'Refined', refinedFolder
     };
 end
 

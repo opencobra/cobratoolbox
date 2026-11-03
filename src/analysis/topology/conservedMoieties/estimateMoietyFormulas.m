@@ -40,3 +40,4 @@ for k = 1:r
 
     moietyFormulas{k} = sprintf('%s%s',F{:});
 end
+end

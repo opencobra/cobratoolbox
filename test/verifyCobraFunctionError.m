@@ -63,3 +63,4 @@ end
 %If we reach this point, the function did not throw an error. i.e. the
 %verification is unsuccessful.
 success = false;
+end

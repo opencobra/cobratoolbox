@@ -302,8 +302,8 @@ if isempty(KO)
                 return;
             end
         end
-        try save('tmp.mat', 'mcs', 'mcs_time'); end
-        try largest_mcs = max(cellfun(@length, mcs)); end
+        try save('tmp.mat', 'mcs', 'mcs_time'); catch, end
+        try largest_mcs = max(cellfun(@length, mcs)); catch, end
     end
 else
 % CALCULATE MCSs WITH A GIVEN KNOCKOUT
@@ -518,8 +518,8 @@ else
                 return;
             end
         end
-        try save('tmp.mat', 'mcs', 'mcs_time'); end
-        try largest_mcs = max(cellfun(@length, mcs)); end
+        try save('tmp.mat', 'mcs', 'mcs_time'); catch, end
+        try largest_mcs = max(cellfun(@length, mcs)); catch, end
     end
 end
 n_time = size(mcs_time, 1);

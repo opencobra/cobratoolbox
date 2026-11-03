@@ -64,3 +64,4 @@ for j = 1:nRxns
   axis([0 length(traj) currLB currUB]);
   %text((currUB+currLB)/2,max(max(counts))+20,rxnNameList{j});
 end
+end

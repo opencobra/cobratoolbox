@@ -58,7 +58,7 @@ end
 % 
 % 2| Check the currently selected solvers with |changeCobraSolver|
 
-changeCobraSolver
+changeCobraSolver()
 %% ANTICIPATED RESULTS 
 % A list of solvers assigned to solve each class of optimisation solver is returned. 				
 %% CRITICAL STEP

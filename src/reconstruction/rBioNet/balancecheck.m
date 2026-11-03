@@ -64,3 +64,4 @@ elseif output == 1
 else
     error('wrong input');
 end
+end

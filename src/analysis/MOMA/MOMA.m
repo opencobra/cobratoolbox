@@ -250,3 +250,4 @@ if (solutionWT.stat > 0)
 else
     warning('Wild type FBA problem is infeasible or unconstrained');
 end
+end

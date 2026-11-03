@@ -91,3 +91,4 @@ end
 if printLevel > 0
     disp(coupledRxnReport)
 end
+end

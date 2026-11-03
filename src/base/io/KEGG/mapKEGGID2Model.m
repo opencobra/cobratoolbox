@@ -56,3 +56,4 @@ for i = 1 : length(model.mets)
     end
     clear MetTmp KEGGTmp
 end
+end

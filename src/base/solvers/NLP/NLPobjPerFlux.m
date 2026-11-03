@@ -21,3 +21,4 @@ function value = NLPobjPerFlux(fluxVector, Prob)
 c = Prob.user.model.c;
 
 value = sum(c.*fluxVector)/sum(fluxVector.^2);
+end

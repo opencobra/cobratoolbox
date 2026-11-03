@@ -44,7 +44,7 @@ end
 
 %find the available solver available in GAMS to solve a problem of type
 %"problemType"
-[~,numTable,problemTypes,solvers]=getAvailableGAMSSolvers;
+[~,numTable,problemTypes,solvers]=getAvailableGAMSSolvers();
 [~,posProblemType]=ismember(problemType,problemTypes);
 if ~isempty(posProblemType)
     solvers=solvers((numTable(:,posProblemType))==1);

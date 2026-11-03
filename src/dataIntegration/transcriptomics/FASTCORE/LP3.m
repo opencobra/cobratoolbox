@@ -83,5 +83,6 @@ v=solution.full(1:n);
 
 %flip back the direction of reactions irreversible in the reverse direction
 v(Ir)=-v(Ir);
+end
 
 

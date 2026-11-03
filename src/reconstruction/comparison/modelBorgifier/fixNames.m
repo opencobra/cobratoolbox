@@ -52,3 +52,4 @@ nameList = regexprep(nameList, '_____|____|___|__', '_') ;
 
 % Delete ones at beginning and end of names.
 nameList = regexprep(nameList, '^_|\|_|_\||_$|_(?=\[\w\]$)', '') ;
+end

@@ -17,14 +17,14 @@ function [modelIDsMissingInTable, incorrectIDsInTable] = testInputFiles
 models=infoFile(2:end,1);
 
 inputTables = {
-    'AromaticAATable'
-    'BileAcidTable'
-    'CarbonSourcesTable'
-    'FermentationTable'
-    'GenomeAnnotation'
-    'GrowthRequirementsTable'
-    'PutrefactionTable'
-    'uptakeTable'
+    'AromaticAATable';
+    'BileAcidTable';
+    'CarbonSourcesTable';
+    'FermentationTable';
+    'GenomeAnnotation';
+    'GrowthRequirementsTable';
+    'PutrefactionTable';
+    'uptakeTable';
     'secretionProductTable'
     };
 

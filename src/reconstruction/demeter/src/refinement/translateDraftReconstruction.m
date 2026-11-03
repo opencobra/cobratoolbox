@@ -31,7 +31,7 @@ function [translatedModel] = translateDraftReconstruction(model)
 tol=0.0000001;
 
 % Load metabolite and reaction translation tables
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 translateRxns = readtable('ReactionTranslationTable.txt', 'Delimiter', '\t');
 translateRxns = [translateRxns.Properties.VariableDescriptions;table2cell(translateRxns)];

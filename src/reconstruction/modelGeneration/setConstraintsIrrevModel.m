@@ -154,3 +154,4 @@ constrOptIrrev.rxnList = columnVector(modelIrrev.rxns(constrIndIrrev));
 constrOptIrrev.rxnInd = columnVector(constrIndIrrev);
 constrOptIrrev.values = columnVector(constrValIrrev);
 constrOptIrrev.sense = columnVector(constrSenseIrrev);
+end

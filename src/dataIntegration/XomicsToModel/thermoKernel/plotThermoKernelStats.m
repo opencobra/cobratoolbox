@@ -53,7 +53,7 @@ if 1
     %    CM = CONFUSIONMAT(G,GHAT) returns the confusion matrix CM determined
     %    by the known group labels G and the predicted group labels GHAT.
     C = confusionmat(P,T,'order',labels);
-    ax1 = nexttile;
+    ax1 = nexttile();
     plotConfMat(C,labels,'FontSize',12);
     accuracy = sum(diag(C),1)/sum(sum(C,1));
     title(ax1,'Reactions','FontSize',12)
@@ -64,7 +64,7 @@ if 1
     %     histogram(presentAbsentMet)
     %     title('Absent(-1) and Present(+1) metabolites')
     
-    ax2 = nexttile;
+    ax2 = nexttile();
     P = cell(nMet,1);
     P(thermoModelMetBool==1)={'Active'};
     P(thermoModelMetBool==0)={'Inactive'};
@@ -129,4 +129,5 @@ else
         accuracy = sum(diag(C),1)/sum(sum(C,1));
         title(['Metabolite confusion matrix, accuracy = ' num2str(accuracy)])
     end
+end
 end

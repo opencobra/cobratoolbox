@@ -22,3 +22,4 @@ function [cyclicRxnBool, rankS] = findCyclicRxns(model, printLevel)
 
 %check the support of the nullspace basis vectors
 cyclicRxnBool=Z'*ones(size(Z,1),1);
+end

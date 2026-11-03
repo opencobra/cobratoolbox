@@ -158,7 +158,7 @@ analyseGF = parser.Results.analyseGF;
 % Initialise cobratoolbox if needed
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % Set solver

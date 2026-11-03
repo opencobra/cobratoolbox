@@ -55,3 +55,4 @@ FileString = strjoin({FileString,sprintf(['### Model Specific Fields\n',...
 fileID = fopen(FileName,'w');
 fprintf(fileID,FileString);
 fclose(fileID);
+end

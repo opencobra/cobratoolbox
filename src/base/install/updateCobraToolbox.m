@@ -16,7 +16,7 @@ end
 fprintf(' > Checking for available updates ...\n');
 
 % check if there is a new version of gitBash
-if ispc
+if ispc()
     updateGitBash(fetchAndCheckOnly);
 end
 

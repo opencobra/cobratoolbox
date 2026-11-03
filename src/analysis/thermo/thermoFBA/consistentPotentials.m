@@ -109,3 +109,4 @@ solution = solveCobraQP(QPproblem,'printLevel',printLevel);
 %           -1  No solution reported (timelimit, numerical problem etc)
 
 y0=solution.full;
+end

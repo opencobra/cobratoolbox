@@ -55,3 +55,4 @@ currentrules = strrep(currentrules,'&','and');
 currentrules = strrep(currentrules,'|','or');
 currentrules = regexprep(currentrules,'x\(([0-9]+)\)','${model.genes{str2num($1)}}');
 model.grRules(pos,1) = currentrules;
+end

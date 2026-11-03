@@ -94,3 +94,4 @@ for iRxn = 1:length(Model.rxns)
     Model.rxnEquations{iRxn, 1} = rxnCode ;
     clear educts ; clear products; clear ie ; clear ip ; clear rxcode ;
 end
+end

@@ -60,3 +60,4 @@ for n = 1:length(model.mets)
         mappingScore(n, ismember(trainingModel.metKEGGID,fixedCid{training_data_idx})) = 4;
     end
 end
+end

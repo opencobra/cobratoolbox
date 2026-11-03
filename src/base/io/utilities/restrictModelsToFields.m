@@ -38,3 +38,4 @@ end
 if structin
     restrictedModels = restrictedModels{1};
 end
+end

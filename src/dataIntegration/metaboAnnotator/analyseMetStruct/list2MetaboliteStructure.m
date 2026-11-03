@@ -220,6 +220,7 @@ try % does not work on linux due to the xlsx file that is loaded
     fprintf('Collecting information from GNPS \n')
     [NUM,TXT,RAW2]=xlsread('GNPSMetabolites.xlsx','Extract');
     [metabolite_structure] = map2GNPS(metabolite_structure,Table,RAW2);
+catch
 end
 
 % check again whether the VMHId's are novel and also whether the metabolite
@@ -279,3 +280,4 @@ if xlsProvided == 1
 end
 %  save collectedMetStruct metabolite_structure
 save(fileNameOutput)
+end

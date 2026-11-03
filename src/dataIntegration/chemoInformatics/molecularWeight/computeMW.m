@@ -109,3 +109,4 @@ else
     % elements' MWs in a vector
     [MW, knownWeights, unknownElements, Ematrix, elements] = getMolecularMass(model.metFormulas(metIDs), isotopeAbundance, 1);
 end
+end

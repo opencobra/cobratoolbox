@@ -11,3 +11,4 @@ addpath(fullfile(path, '..'));
 config;
 
 loadModular('CMatrix');
+end

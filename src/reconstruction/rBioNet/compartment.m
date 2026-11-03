@@ -57,6 +57,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -80,7 +81,8 @@ handles.output = [];
 guidata(hObject, handles);
 
 % UIWAIT makes compartment wait for user response (see UIRESUME)
-uiwait
+uiwait()
+end
 
 
 % --- Outputs from this function are returned to the command line.
@@ -97,6 +99,7 @@ else
     varargout{1} = handles.output;
 end
 delete(gcf)
+end
 
 
 % --- Executes on button press in cmp_save.
@@ -146,7 +149,8 @@ end
 
 handles.output= [name ' ' abbs];
 guidata(hObject, handles);
-uiresume
+uiresume()
+end
 
 
 
@@ -157,7 +161,8 @@ function cmp_cancel_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-uiresume;
+uiresume();
+end
 
 
 function cmp_name_Callback(hObject, eventdata, handles)
@@ -168,6 +173,7 @@ function cmp_name_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of cmp_name as text
 %        str2double(get(hObject,'String')) returns contents of cmp_name as a double
 guidata(hObject, handles);
+end
 
 % --- Executes during object creation, after setting all properties.
 function cmp_name_CreateFcn(hObject, eventdata, handles)
@@ -177,13 +183,15 @@ function cmp_name_CreateFcn(hObject, eventdata, handles)
 
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+if ispc() && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end
 
 
 
 function cmp_abbreviation_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to cmp_abbreviation (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -200,13 +208,15 @@ function cmp_abbreviation_CreateFcn(hObject, eventdata, handles)
 
 % Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+if ispc() && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end
 
 
 % --- Executes on selection change in cmp_compartments.
 function cmp_compartments_Callback(hObject, eventdata, handles)
+end
 % hObject    handle to cmp_compartments (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -223,8 +233,9 @@ function cmp_compartments_CreateFcn(hObject, eventdata, handles)
 
 % Hint: popupmenu controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+if ispc() && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end
 
 
@@ -235,7 +246,8 @@ function cmp_remove_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = get(handles.cmp_compartments,'Value');
 guidata(hObject, handles);
-uiresume
+uiresume()
+end
 
 
 % --- Executes when user attempts to close figure1.
@@ -245,4 +257,5 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume
+uiresume()
+end

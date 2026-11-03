@@ -44,11 +44,11 @@ end
 % I am not going to collect pubchemId's as kegg has deposited its own id's
 % to pubchem in the past and I prefer the "real" pubchem id's
 mapping ={
-   'casRegistry'   '<nobr>CAS:'
-   'cheBIId' 'https://www.ebi.ac.uk/chebi/'
+   'casRegistry',   '<nobr>CAS:';
+   'cheBIId', 'https://www.ebi.ac.uk/chebi/';
   %  'pubchemId' 'https://pubchem.ncbi.nlm.nih.gov/'
-    'chembl'    'https://www.ebi.ac.uk/chembldb'
-   'knapsack'  'http://kanaya.naist.jp/knapsack_jsp'
+    'chembl',    'https://www.ebi.ac.uk/chembldb';
+   'knapsack',  'http://kanaya.naist.jp/knapsack_jsp'
     };
 
 for i = startSearch : endSearch%size(Mets,1)
@@ -81,6 +81,7 @@ for i = startSearch : endSearch%size(Mets,1)
         end
     end
 end
+end
 
 
 function [metabolite_structure,idNew] = getData(metabolite_structure,syst,met, map,IDsAdded)
@@ -112,4 +113,6 @@ try
         
     end
     
+catch
+end
 end

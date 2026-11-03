@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -88,6 +89,7 @@ guidata(hObject, handles);
 
 % UIWAIT makes load_reaction wait for user response (see UIRESUME)
 uiwait(handles.figure1);
+end
 
 
 % --- Outputs from this function are returned to the command line.
@@ -100,6 +102,7 @@ function varargout = load_reaction_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 delete(gcf)
+end
 
 
 
@@ -119,6 +122,7 @@ set(handles.rxn_view_table,'data',handles.dispdata); %display rxn in rxntable
 
 
 guidata(hObject, handles);
+end
 
 
 
@@ -147,6 +151,7 @@ set(handles.rxn_view_table,'Data',handles.dispdata);
 
 handles.output = hObject;
 guidata(hObject, handles);
+end
 
 % rxn = handles.rxn;
 %
@@ -199,6 +204,7 @@ function rxn_view_table_CellSelectionCallback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.rxn_selection = eventdata.Indices;
 guidata(hObject,handles)
+end
 
 
 % --- Executes when user attempts to close figure1.
@@ -208,7 +214,8 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume;
+uiresume();
+end
 
 
 % --- Executes on button press in act_load.
@@ -222,7 +229,8 @@ if S(1) == 1
 
     handles.output = rxnline;
     guidata(hObject,handles)
-    uiresume;
+    uiresume();
+end
 end
 
 
@@ -234,7 +242,8 @@ function act_cancel_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = [];
 guidata(hObject,handles);
-uiresume;
+uiresume();
+end
 
 
 % --------------------------------------------------------------------
@@ -247,6 +256,7 @@ if isempty(handles.rxn_selection)
     return;
 end
 webKeggMapper('ec',handles.dispdata{handles.rxn_selection(1),8});
+end
 
 
 % --------------------------------------------------------------------
@@ -259,6 +269,7 @@ if isempty(handles.rxn_selection)
     return;
 end
 webKeggMapper('kegg',handles.dispdata{handles.rxn_selection(1),9});
+end
 
 
 
@@ -272,6 +283,7 @@ if isempty(handles.rxn_selection)
     return;
 end
 webDatabases('ec',handles.dispdata{handles.rxn_selection(1),8});
+end
 
 
 % --------------------------------------------------------------------
@@ -284,6 +296,7 @@ if isempty(handles.rxn_selection)
     return;
 end
 webDatabases('kegg',handles.dispdata{handles.rxn_selection(1),9});
+end
 
 
 
@@ -295,3 +308,4 @@ function search_tag_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of search_tag as text
 %        str2double(get(hObject,'String')) returns contents of search_tag as a double
  search_search_Callback(hObject, eventdata, handles);
+end

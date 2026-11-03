@@ -36,6 +36,7 @@ else
     PL=eye(m) - U1*U1';%projection matrix onto null(A')
     inv_A=pinv(A,1e-12);
 end
+end
     % Michael Saunders code
     % [U1,D1,V1,r] = subspaceSVD(A);
     % PR=U1*U1';%projection matrix onto the range(A)

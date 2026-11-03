@@ -82,6 +82,7 @@ set(gca, 'YTickLabelMode', 'auto');
 set(gca, 'YTickMode', 'auto');
 set(gca, 'YTick', 1:1:length(Nr));
 set(gca, 'YTickLabel', uComp4plot);
+end
 
 function B = convertMyCell2List(A, dimSense)
 
@@ -106,6 +107,7 @@ for i = 1:length(A)
             B{cnt, 1} = A{i, 1}{j, 1};
         end
     end
+end
 end
 
 function [constrRxns, invRxns, rxns] = findRxnsConstrained(model, genes, verbFlag)
@@ -152,4 +154,5 @@ end
 for i = 1:length(invRxns)
     rxns.inv(i, 1) = length(invRxns{i, 1});
     rxns.constr(i, 1) = length(constrRxns{i, 1});
+end
 end

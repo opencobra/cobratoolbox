@@ -44,7 +44,7 @@ if ~isempty(varargin)
 end
 
 % Grab fields names.
-fields = TmodelFields ;
+fields = TmodelFields() ;
 
 % Reaction related cell field names.
 rxnFields = fields{1} ;
@@ -324,8 +324,8 @@ Tmodel.S = Tmodel.S(metI, :) ;
 
 %% Share information between the same metabolite in different compartments.
 % Metabolite fields to share information between
-share = {'metNames' 'metFormulas' 'metKEGGID' 'metSEEDID' 'metChEBIID' ...
-         'metPubChemID' 'metInChIString'} ;
+share = {'metNames', 'metFormulas', 'metKEGGID', 'metSEEDID', 'metChEBIID' ...
+         'metPubChemID', 'metInChIString'} ;
 
 metsNoComp = cell(nMets,1) ;
 for iMet = 1:nMets
@@ -382,7 +382,7 @@ Tmodel.rxnNames = removeDuplicateNames(Tmodel.rxnNames) ;
 Tmodel.rxnID = removeDuplicateNames(Tmodel.rxnID) ;
 
 %% Clear leftover fields from the matching process
-deleteFields = {'rxnNamesFix' 'rxnComp' 'metNums' 'rxnMetNames'} ;
+deleteFields = {'rxnNamesFix', 'rxnComp', 'metNums', 'rxnMetNames'} ;
 existFields = isfield(Tmodel, deleteFields) ;
 for iF = 1:length(existFields)
     if existFields(iF)

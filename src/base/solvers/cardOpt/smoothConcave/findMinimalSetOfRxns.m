@@ -48,3 +48,4 @@ polyhedron=struct('Aeq',model.S,'beq',model.b,'Ain',Ain,'bin',bin,'lb',model.lb,
 result_tab
 
 precision=max(norm(Aeq*sol-beq,2),max(max(lb-sol),max(sol-ub)))
+end

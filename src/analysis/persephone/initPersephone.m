@@ -175,7 +175,7 @@ end
 % Initialise cobratoolbox
 global CBTDIR
 if isempty(CBTDIR)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % Initialisation was successful!

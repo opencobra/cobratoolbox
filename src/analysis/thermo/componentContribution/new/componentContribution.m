@@ -399,3 +399,4 @@ end
 
 %note the component contribution reaction estimates that are partially unconstrained by the group fitting process
 model.unconstrainedDrG0_cc = (model.S'*model.unconstrainedDfG0_cc)~=0;
+end

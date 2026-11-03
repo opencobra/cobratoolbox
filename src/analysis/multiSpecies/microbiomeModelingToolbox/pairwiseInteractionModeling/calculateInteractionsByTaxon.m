@@ -49,24 +49,24 @@ taxonSubset = taxonInformation(subArray, :);
 
 % define the nine possible outcomes for one microbe
 outcomes = {
-    'Competition'
-    'Parasitism_Taker'
-    'Parasitism_Giver'
-    'Amensalism_Affected'
-    'Amensalism_Unaffected'
-    'Neutralism'
-    'Commensalism_Taker'
-    'Commensalism_Giver'
+    'Competition';
+    'Parasitism_Taker';
+    'Parasitism_Giver';
+    'Amensalism_Affected';
+    'Amensalism_Unaffected';
+    'Neutralism';
+    'Commensalism_Taker';
+    'Commensalism_Giver';
     'Mutualism'
 };
 
 % define the taxonomical levels on which the computed interactions will be
 % analyzed
 TaxonomyLevels = {
-    'Phylum'
-    'Class'
-    'Order'
-    'Family'
+    'Phylum';
+    'Class';
+    'Order';
+    'Family';
     'Genus'
 };
 
@@ -114,4 +114,5 @@ for t = 1:length(TaxonomyLevels)
     end
     % save the table in the output structure
     interactionsByTaxon.(TaxonomyLevels{t}) = interactions;
+end
 end

@@ -37,4 +37,5 @@ end
 
 
 MMN.moi = addvars(MMN.moi,minimalMassMetabolite,fractMinimalMass,numMinimalMassMetabolites, 'NewVariableNames',{'MinimalMassMol','minimalMassFraction','NumMinimalMassMol'});
+end
 

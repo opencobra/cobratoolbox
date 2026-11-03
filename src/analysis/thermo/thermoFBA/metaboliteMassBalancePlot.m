@@ -90,3 +90,4 @@ else
     ylim([0.5 NProduce+0.5])
 end
 xlabel(['Producer of ' metAbbr],'FontSize',12)
+end

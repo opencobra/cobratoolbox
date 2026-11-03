@@ -80,3 +80,4 @@ for field = 1:2:numel(varargin)
 end
 %Extend the remaining fields, to keep the fields in sync
 newmodel = extendModelFieldsForType(model,'genes','originalSize',nGenes);
+end

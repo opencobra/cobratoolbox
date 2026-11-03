@@ -34,4 +34,5 @@ for i = 1:size(posOptForceSets,1)
         return
     end    
 end
+end
 

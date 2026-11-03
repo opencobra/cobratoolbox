@@ -47,3 +47,4 @@ end
 
 out = data;
 fclose(fid);
+end

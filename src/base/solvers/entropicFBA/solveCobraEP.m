@@ -368,7 +368,7 @@ switch param.solver
         end
         
         %TODO - still have no idea what the best parameters for pdco are
-        options = pdcoSet;
+        options = pdcoSet();
         %options.mu0       = 1; %very small only for entropy function
         options.mu0       = 0; %pdco chooses its own
         options.FeaTol    = param.feasTol;
@@ -406,7 +406,7 @@ switch param.solver
             d1    = 0;                 % gamma. 1e-3 is normal.  0 seems fine for entropy
             d2    = 1e-3;              % delta
             
-            options = pdcoSet;
+            options = pdcoSet();
             options.MaxIter      =    50;
             options.FeaTol       =  1e-6;
             options.OptTol       =  1e-6;

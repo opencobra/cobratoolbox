@@ -51,7 +51,7 @@ constraints=table2cell(constraints);
 constraints=cellstr(string(constraints));
 
 % Load reaction and metabolite database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 % create a temporary summary file of the performed refinement
 summary=struct;

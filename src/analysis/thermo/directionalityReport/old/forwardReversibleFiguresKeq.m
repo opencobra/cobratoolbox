@@ -98,7 +98,7 @@ maxX=max(model.dGtMax(fwdPossiblyReverseKeq));
 %      H(3) = handle to errorbar x if error y specified
 % LineSpec=[''LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r'']
 LineSpec='r.'; 
-hE = ploterr(Y(xip),X1,{model.dGtMin(xip) model.dGtMax(xip)},[],LineSpec,'hhxy',0);
+hE = ploterr(Y(xip),X1,{model.dGtMin(xip), model.dGtMax(xip)},[],LineSpec,'hhxy',0);
 set(gca,'XTick',[]);
 set(hE(2),'LineWidth',10);
 
@@ -143,4 +143,5 @@ saveas(figure1 ,'fwdReversibleKeq_nonTransport','fig');
 if thorStandard
     model.dGt0Min=dGt0Min;
     model.dGt0Max=dGt0Max;
+end
 end

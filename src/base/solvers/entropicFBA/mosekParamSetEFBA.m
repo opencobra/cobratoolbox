@@ -192,3 +192,4 @@ param.MSK_IPAR_INFEAS_REPORT_AUTO='MSK_OFF';
 % Default value: 1
 %Higher values imply more information.
 param.MSK_IPAR_INFEAS_REPORT_LEVEL=100; 
+end

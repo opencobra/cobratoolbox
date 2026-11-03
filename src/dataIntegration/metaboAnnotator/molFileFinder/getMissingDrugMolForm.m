@@ -50,3 +50,4 @@ for i = startSearch : endSearch
 end
 % calculate metabolite formula and charge 
 [metabolite_structure] = addMetFormulaCharge(metabolite_structure,startSearch,endSearch);
+end

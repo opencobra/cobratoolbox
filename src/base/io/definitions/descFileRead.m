@@ -49,3 +49,4 @@ end
 raw = struct(data{:});
     
 fclose(f);
+end

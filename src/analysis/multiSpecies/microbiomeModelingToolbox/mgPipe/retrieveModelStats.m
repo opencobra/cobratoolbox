@@ -79,10 +79,10 @@ end
 statistics={};
 
 % save the summary as a summary
-summary={'','Reactions','Metabolites','Microbes'
-    'Mean','','',''
-    'Median','','',''
-    'Min','','',''
+summary={'','Reactions','Metabolites','Microbes';
+    'Mean','','','';
+    'Median','','','';
+    'Min','','','';
     'Max','','',''
     };
 

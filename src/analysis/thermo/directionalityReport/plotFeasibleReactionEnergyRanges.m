@@ -99,3 +99,4 @@ set(h(3), 'Marker', 's', 'MarkerEdgeColor', [0.3412 0.7961 0.1922], 'MarkerFaceC
 l = legend(h, '\Delta_{r}G_{k}^{\prime}', '\Delta_{r}G_{k}^{\prime0} \pm u_{r}', '\Delta_{r}G_{k}^{\prime0}', 'Location', 'south', 'Orientation', 'horizontal');
 legend(gca, 'boxoff')
 set(l,'FontSize', 16, 'fontname', 'Arial')
+end

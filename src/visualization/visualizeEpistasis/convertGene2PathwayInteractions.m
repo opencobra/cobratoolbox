@@ -51,6 +51,7 @@ for i = 1:length(uSys)
         zer(i, j) = sum(sum(zerE(index1, index2)));
     end
 end
+end
 
 function B = convertMyCell2List(A, dimSense)
 
@@ -75,4 +76,5 @@ for i = 1:length(A)
             B{cnt, 1} = A{i, 1}{j, 1};
         end
     end
+end
 end

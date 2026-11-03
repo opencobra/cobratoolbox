@@ -281,6 +281,7 @@ switch(Inform)
     otherwise % Other Inform values
         ExitFlag = -1;
 end
+end
 
 % MODIFICATION LOG:
 %

@@ -71,3 +71,4 @@ for iInfo = 1:length(infoList) % Get rid of those duplicates!
     % Replace the information the updated string.
     infoList{iInfo} = newInfo ;
 end
+end

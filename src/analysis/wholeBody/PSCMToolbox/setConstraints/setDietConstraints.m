@@ -96,7 +96,7 @@ if 1
     model.lb(ismember(model.rxns,MissingDietCompounds))=-50;
     MissingDietCompounds={
         % 'Diet_EX_uri[d]'
-        'Diet_EX_cytd[d]'
+        'Diet_EX_cytd[d]';
         % 'Diet_EX_gam[d]'
         %'Diet_EX_gal[d]'
         'Diet_EX_so4[d]'
@@ -116,33 +116,33 @@ end
 micronutrients ={%'Diet_EX_adpcbl[d]'
     % I changed the exchange ID since it was generated based on the
     % metabolite (ID adocbl). AH 16/12/01
-    'Diet_EX_adocbl[d]'
-    'Diet_EX_vitd2[d]'
-    'Diet_EX_vitd3[d]'
-    'Diet_EX_psyl[d]'
-    'Diet_EX_gum[d]'
-    'Diet_EX_bglc[d]'
-    'Diet_EX_phyQ[d]'
-    'Diet_EX_fol[d]'
-    'Diet_EX_5mthf[d]'
-    'Diet_EX_q10[d]'
-    'Diet_EX_retinol_9_cis[d]'
-    'Diet_EX_pydxn[d]'
-    'Diet_EX_pydam[d]'
-    'Diet_EX_pydx[d]'
-    'Diet_EX_pheme[d]'
-    'Diet_EX_ribflv[d]'
-    'Diet_EX_thm[d]'
+    'Diet_EX_adocbl[d]';
+    'Diet_EX_vitd2[d]';
+    'Diet_EX_vitd3[d]';
+    'Diet_EX_psyl[d]';
+    'Diet_EX_gum[d]';
+    'Diet_EX_bglc[d]';
+    'Diet_EX_phyQ[d]';
+    'Diet_EX_fol[d]';
+    'Diet_EX_5mthf[d]';
+    'Diet_EX_q10[d]';
+    'Diet_EX_retinol_9_cis[d]';
+    'Diet_EX_pydxn[d]';
+    'Diet_EX_pydam[d]';
+    'Diet_EX_pydx[d]';
+    'Diet_EX_pheme[d]';
+    'Diet_EX_ribflv[d]';
+    'Diet_EX_thm[d]';
     % added 24.08.2016
-    'Diet_EX_avite1[d]'
+    'Diet_EX_avite1[d]';
     'Diet_EX_pnto_R[d]'
     };
 %no uptake enforced but max uptake rate
-ions={    'Diet_EX_na1[d]'	%'0.056546816'
-    'Diet_EX_cl[d]'	%'0.056412715'
-    'Diet_EX_k[d]'	%'0.12020983'
-    'Diet_EX_pi[d]'	%'0.007143207'
-    'Diet_EX_zn2[d]'
+ions={    'Diet_EX_na1[d]';	%'0.056546816'
+    'Diet_EX_cl[d]';	%'0.056412715'
+    'Diet_EX_k[d]';	%'0.12020983'
+    'Diet_EX_pi[d]';	%'0.007143207'
+    'Diet_EX_zn2[d]';
     'Diet_EX_cu2[d]'
     };
 so4={
@@ -181,4 +181,5 @@ if 1
 end
 
 model.SetupInfo.DietComposition = Diet;
+end
 

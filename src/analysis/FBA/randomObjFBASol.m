@@ -39,3 +39,4 @@ nRxns = length(model.rxns);
 model.c = rand(nRxns,1)-0.5;
 sol = optimizeCbModel(model,osenseStr);
 x0 = sol.x;
+end

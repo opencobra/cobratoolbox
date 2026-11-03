@@ -32,3 +32,4 @@ DietNames = regexprep(DietNames,'\(e\)','\[d\]');
 Diets = cellstr(num2str((Numbers(:,ColFlux))));
 
 DietFormulation = [DietNames  Diets];
+end

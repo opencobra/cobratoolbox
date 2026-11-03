@@ -86,3 +86,4 @@ for n = 1:nInchis
 end
 
 delete([outputdir '\inchi.inchi'])
+end

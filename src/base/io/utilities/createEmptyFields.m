@@ -95,3 +95,4 @@ for field = 1:length(fieldNames)
             model.(fieldNames{field}) = repmat(defaultValue,xdim,ydim);            
     end
 end
+end

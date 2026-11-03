@@ -332,3 +332,4 @@ switch samplerName
     otherwise
         error(['Unknown sampler: ' samplerName]);
 end
+end

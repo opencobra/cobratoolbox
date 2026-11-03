@@ -88,3 +88,4 @@ rxnNames = model.rxns(selRxns);
 metNames = model.mets(selMets);
 
 metabModel = extractSubNetwork(model,rxnNames,metNames);
+end

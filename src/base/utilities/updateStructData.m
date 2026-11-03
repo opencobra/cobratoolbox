@@ -30,3 +30,4 @@ for i = 1:numel(updateFieldNames)
         end
     end
 end
+end

@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -92,6 +93,7 @@ end
 
 % Update handles structure
 guidata(hObject, handles);
+end
 
 % UIWAIT makes addmissing wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -106,6 +108,7 @@ function varargout = addmissing_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+end
 
 
 % --- Executes on button press in act_next.
@@ -151,6 +154,7 @@ else
 end
 
 guidata(hObject,handles)
+end
 
 % --- Executes on button press in act_cancel.
 function act_cancel_Callback(hObject, eventdata, handles)
@@ -158,6 +162,7 @@ function act_cancel_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf);
+end
 
 % --- Executes on button press in act_finish.
 function act_finish_Callback(hObject, eventdata, handles)
@@ -165,6 +170,7 @@ function act_finish_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf);
+end
 
 % --- Executes when user attempts to close figure1.
 function figure1_CloseRequestFcn(hObject, eventdata, handles)
@@ -174,3 +180,4 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 
 % Hint: delete(hObject) closes the figure
 delete(hObject);
+end

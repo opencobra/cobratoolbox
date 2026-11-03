@@ -48,3 +48,4 @@ for i = 1 : length(model.genes)
 end
 grR = unique(grR);
 listIsozymes = grR;
+end

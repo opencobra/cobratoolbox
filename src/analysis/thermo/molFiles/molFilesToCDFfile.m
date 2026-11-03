@@ -76,3 +76,4 @@ for m=1:nMet
 end
 fprintf('%s\n',['Percentage of metabolites without mol files: ' num2str(noMolFileCount/nMet)]);
 fclose(fid0);
+end

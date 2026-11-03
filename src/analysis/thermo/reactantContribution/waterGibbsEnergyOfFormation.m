@@ -44,4 +44,5 @@ S = A*log(t) + B*t + C*(t^2)/2 + D*(t^3)/3 - E/(2*t^2) + G;
 TS = (T*S)/1000;
 
 dGf0 = H - TS;
+end
    

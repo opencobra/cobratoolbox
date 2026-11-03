@@ -131,7 +131,7 @@ else
     % instead using setDietConstraints -Anna Sheehy Jan 2025
     global CBT_LP_SOLVER
     if isempty(CBT_LP_SOLVER)
-        initCobraToolbox
+        initCobraToolbox()
     end
 end
 

@@ -71,3 +71,4 @@ if exist('WeightsPerRxn','var') && isfield(WeightsPerRxn,'rxns')
         end
     end
 end
+end

@@ -38,7 +38,7 @@ end
 
 showprogress(0,'Exchange reaction list ...');
 
-ExchangeRxnMatrix = createModel;
+ExchangeRxnMatrix = createModel();
 if isfield(ExchangeRxnMatrix,'grRules')
     ExchangeRxnMatrix = rmfield(ExchangeRxnMatrix,'grRules');
 end
@@ -183,4 +183,5 @@ for i=1:length(compounds)
 end
 %Currently we are likely to have a largely blown up S matrix.
 ExchangeRxnMatrix.S = ExchangeRxnMatrix.S(1:numel(ExchangeRxnMatrix.mets),1:numel(ExchangeRxnMatrix.rxns));
+end
 

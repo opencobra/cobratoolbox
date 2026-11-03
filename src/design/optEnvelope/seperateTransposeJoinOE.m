@@ -89,5 +89,6 @@ B_w=[
     ];
 lb_w=zeros(wSize+zSize+ySize, 1);
 ub_w=[highNum*ones(wSize+zSize, 1); yMax*ones(ySize,1)];
+end
 
 

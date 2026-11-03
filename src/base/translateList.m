@@ -31,3 +31,4 @@ function list = translateList(list, trList1, trList2)
 [isInList, listInd] = ismember(list, trList1);
 
 list(isInList) = trList2(listInd(listInd ~= 0));
+end

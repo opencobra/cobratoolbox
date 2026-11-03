@@ -21,7 +21,7 @@ libnames = {libdirs.name};
 bindirs = [{binaryDir},binnames([bindirs.isdir])]; %Add all subdirectories and the top level
 libdirs = [{libDir},libnames([libdirs.isdir])];
 
-if ispc
+if ispc()
     setenv('Path', [getenv('Path') ';' strjoin(union(bindirs,libdirs),';')  ]);
 else
     setenv('PATH', [getenv('PATH') ':' strjoin(bindirs,':')]);

@@ -39,17 +39,17 @@ a = 1;
 % function but may not be present in the structure yet
 fields = fieldnames(metabolite_structure.(Mets{301}));
 IDsAdded = '';
-ids = {'cheBIId'    'http://www.ebi.ac.uk/chebi/searchId.do?chebiId'
-    'pubChemId' 'http://pubchem.ncbi.nlm.nih.gov/compound'
-    'metabolights'  'http://www.ebi.ac.uk/metabolights/'
-    'rhea'  'http://www.rhea-db.org/searchresults'
-    'swisslipids'  'http://www.swisslipids.org/#/entity/'
-    'bindingdb' 'http://www.bindingdb.org/bind/chemsearch/marvin'
-    'drugbank'  'http://www.drugbank.ca/drugs/'
-    'keggId'    'http://www.genome.jp/dbget-bin'
-    'hmdb'  'http://www.hmdb.ca/metabolites'
-    'epa_id'    'https://comptox.epa.gov/dashboard/'
-    'lipidmaps'  'http://www.lipidmaps.org/data/LMSDRecord'
+ids = {'cheBIId',    'http://www.ebi.ac.uk/chebi/searchId.do?chebiId';
+    'pubChemId', 'http://pubchem.ncbi.nlm.nih.gov/compound';
+    'metabolights',  'http://www.ebi.ac.uk/metabolights/';
+    'rhea',  'http://www.rhea-db.org/searchresults';
+    'swisslipids',  'http://www.swisslipids.org/#/entity/';
+    'bindingdb', 'http://www.bindingdb.org/bind/chemsearch/marvin';
+    'drugbank',  'http://www.drugbank.ca/drugs/';
+    'keggId',    'http://www.genome.jp/dbget-bin';
+    'hmdb',  'http://www.hmdb.ca/metabolites';
+    'epa_id',    'https://comptox.epa.gov/dashboard/';
+    'lipidmaps',  'http://www.lipidmaps.org/data/LMSDRecord'
     };
 [missingfields,map] = setdiff(ids(:,1),fields);
 for i = 1 : length(Mets)
@@ -156,4 +156,5 @@ for i = 3001 : 4000%length(Mets)
             end
         end
     end
+end
 end

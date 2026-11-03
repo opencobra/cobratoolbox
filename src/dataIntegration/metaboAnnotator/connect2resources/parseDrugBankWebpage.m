@@ -40,29 +40,29 @@ annotationSource = 'Drugbank website';
 annotationType = 'automatic';
 
 mapping={
-    'chemspider'        'http://www.chemspider.com'
-    'food_db'   'http://foodb.ca/compounds'
-    'wikipedia' 'http://en.wikipedia.org/wiki'
-    'metlin'    'http://metlin.scripps.edu'
-    'pubChemId'   'http://pubchem.ncbi.nlm.nih.gov/'
-    'cheBIId'   'ChEBI ID'
-    'keggId'  'http://www.genome.jp/dbget-bin'
-    'inchiKey'   'InChI Key'
-    'inchiString' 'InChI=1S'
+    'chemspider',        'http://www.chemspider.com';
+    'food_db',   'http://foodb.ca/compounds';
+    'wikipedia', 'http://en.wikipedia.org/wiki';
+    'metlin',    'http://metlin.scripps.edu';
+    'pubChemId',   'http://pubchem.ncbi.nlm.nih.gov/';
+    'cheBIId',   'ChEBI ID';
+    'keggId',  'http://www.genome.jp/dbget-bin';
+    'inchiKey',   'InChI Key';
+    'inchiString', 'InChI=1S';
  %   'smile'   'SMILES'
-    'avgmolweight' 'Average Molecular Weight'
-    'monoisotopicweight' 'Monoisotopic Molecular Weight'
-    'iupac'    'IUPAC Name'
-    'description'  'met-desc'
-    'biocyc'   'http://biocyc.org/META/'
-    'phenolExplorer'    'http://www.phenol-explorer.eu'
-    'casRegistry'   'CAS Registry Number'
-    'knapsack'     'http://kanaya.naist.jp/knapsack_core'
-    'rxnav' 'https://mor.nlm.nih.gov/RxNav/'
-    'zinc' 'https://zinc.docking.org/substances/'
-    'pharmgkb'  'http://www.pharmgkb.org/drug'
-    'pdbeLigand'   'http://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/'
-    'drugs_com'    'http://www.drugs.com/'
+    'avgmolweight', 'Average Molecular Weight';
+    'monoisotopicweight', 'Monoisotopic Molecular Weight';
+    'iupac',    'IUPAC Name';
+    'description',  'met-desc';
+    'biocyc',   'http://biocyc.org/META/';
+    'phenolExplorer',    'http://www.phenol-explorer.eu';
+    'casRegistry',   'CAS Registry Number';
+    'knapsack',     'http://kanaya.naist.jp/knapsack_core';
+    'rxnav', 'https://mor.nlm.nih.gov/RxNav/';
+    'zinc', 'https://zinc.docking.org/substances/';
+    'pharmgkb',  'http://www.pharmgkb.org/drug';
+    'pdbeLigand',   'http://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/';
+    'drugs_com',    'http://www.drugs.com/'
     };
 IDsAdded = ''; a=1;
 IDsMismatch = '';b=1;
@@ -109,8 +109,10 @@ for i = startSearch : endSearch
                     end
                 end
             end
+        catch
         end
     end
+end
 end
 
 function [metabolite_structure,idNew] = getData(metabolite_structure,syst,met, map,IDsAdded)
@@ -164,4 +166,6 @@ try
     if contains(idNew,'Not Available')
         idNew = NaN;
     end
+catch
+end
 end

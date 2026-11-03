@@ -127,3 +127,4 @@ switch archstr
             PL=eye(nMet)-A*M;
         end
 end
+end

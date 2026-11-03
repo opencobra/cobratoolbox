@@ -148,3 +148,4 @@ deltaPH = model.S' * diag(model_nHs) * metCompartmentBool * -(R * T * log(10) * 
 model_zs = double(model.metCharges);
 deltaCHI = model.S' * diag(model_zs) * metCompartmentBool * F * model.chi/1000; % Adjustment due to compartmental differences in electrical potential
 model.DrGt0 = model.DrGt0 + deltaPH + deltaCHI;
+end

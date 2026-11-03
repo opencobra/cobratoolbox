@@ -58,3 +58,4 @@ for n = 1:nMets;
 end
 
 noDocMets = model.mets(~dbBool, 1);
+end

@@ -41,12 +41,12 @@ function [modelUpdated] = populateModelwithRxnIDs(model)
 
 %  model field reactionList column header
 translate={
-    'rxnECNumbers' 'ecnumber'
-    'rxnKEGGID' 'keggId'
-    'rxnMetaNetXID' 'metanetx'
-    'rxnSEEDID' 'seed'
-    'rxnRheaID' 'rhea'
-    'rxnBRENDAID' 'ecnumber' % brenda id is the same as the ec number
+    'rxnECNumbers', 'ecnumber';
+    'rxnKEGGID', 'keggId';
+    'rxnMetaNetXID', 'metanetx';
+    'rxnSEEDID', 'seed';
+    'rxnRheaID', 'rhea';
+    'rxnBRENDAID', 'ecnumber' % brenda id is the same as the ec number
     };
 modelUpdated = model;
 
@@ -71,4 +71,5 @@ for i = 1 : length(modelUpdated.rxns)
             modelUpdated.(translate{j,1}){i,1} = '';
         end
     end
+end
 end

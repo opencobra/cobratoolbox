@@ -198,3 +198,4 @@ for i = 1:length(regModel.tars.name)
     end
     regModel.tars.ruleParsed{i} = strrep(newRule,'_TMP_','');
 end
+end

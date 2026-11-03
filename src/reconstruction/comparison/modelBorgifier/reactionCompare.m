@@ -60,7 +60,7 @@ SCORE = scoreIn ;
 % Need scoreTotal now to create rxnList if Stats is not provided.
 if nargin <= 5
 %     Stats = optimalScores(CMODEL,TMODEL,SCORE) ;
-    Stats = optimalScores ;
+    Stats = optimalScores() ;
 else
     Stats = varargin{3} ;
 end
@@ -90,3 +90,4 @@ InfoBall.S = CMODEL.S ;
 
 % Launch GUI.
 [rxnList, metList, Stats] = reactionCompareGUI(InfoBall) ;
+end

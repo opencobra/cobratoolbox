@@ -81,3 +81,4 @@ switch approximation
     otherwise
         error('Approximation is not valid');
 end
+end

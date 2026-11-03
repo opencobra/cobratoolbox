@@ -341,10 +341,10 @@ end
 % Metabolite ID/name/formula/KEGG/SEED match.
 tic
 % Type of information used for matching arrays (stack).
-metType = {'I' 'N' 'F' 'K' 'S'} ;
+metType = {'I', 'N', 'F', 'K', 'S'} ;
 % Metabolite information category
-metCatH = {'metNameH' 'metNameH' 'metFormH' 'metKEGGH' 'metSEEDH'} ;
-metCatM = {'metNameM' 'metNameM' 'metFormM' 'metKEGGM' 'metSEEDM'} ;
+metCatH = {'metNameH', 'metNameH', 'metFormH', 'metKEGGH', 'metSEEDH'} ;
+metCatM = {'metNameM', 'metNameM', 'metFormM', 'metKEGGM', 'metSEEDM'} ;
 h = waitbar(0,'Processing metabolites.') ;
 for i = compCrxns
     % Allocate scoring arrays in a structure
@@ -398,7 +398,7 @@ for i = compCrxns
         disp(i)
     end
 end
-try close(h) ; end
+try close(h) ; catch, end
 if verbose
     fprintf('Met name match time = %d.\n', toc)
 end
@@ -409,7 +409,7 @@ global CMODEL TMODEL SCORE
 CMODEL = Cmodel ;
 TMODEL = Tmodel ;
 SCORE = score ;
-Stats = optimalScores ;
+Stats = optimalScores() ;
 
 
 %% Graph data.

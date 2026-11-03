@@ -55,3 +55,4 @@ modelNew.S=sparse(S);
 if isfield(modelNew, 'rxnGeneMat')
     modelNew.rxnGeneMat=sparse(rxnGeneMat');
 end
+end

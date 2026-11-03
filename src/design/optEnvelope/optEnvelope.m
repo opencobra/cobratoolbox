@@ -290,3 +290,4 @@ if ~isempty(midKnockouts)
     mid.peak.x = mem(:,1);
     mid.peak.y = mem(:,2);
 end
+end

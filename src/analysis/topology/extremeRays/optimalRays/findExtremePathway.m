@@ -55,3 +55,4 @@ x = result.full(1:nrxn);
 x(revRxns) = x(revRxns) - result.full(nrxn+1:end);
 
 output.objval = result.obj;
+end

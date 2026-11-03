@@ -57,5 +57,6 @@ if strcmp(type,'genes')
         model.rules = strrep(model.rules,'$','');
     end
 end
+end
 
     

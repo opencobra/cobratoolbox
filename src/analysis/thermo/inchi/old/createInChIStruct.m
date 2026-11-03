@@ -62,4 +62,5 @@ for i = 1:length(metList1)
     inchiStruct.standardWithStereoAndCharge(ismember(mets,metList1{i})) = standardWithStereoAndCharge(i);
     inchiStruct.nonstandard(ismember(mets,metList1{i})) = nonstandard(i);
 end
+end
 

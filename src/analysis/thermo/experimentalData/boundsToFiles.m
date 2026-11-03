@@ -29,3 +29,4 @@ for m=1:nRxn
     fprintf(fid,'%s\t%g\t%g\n',model.rxn(m).abbreviation,model.lb(m),model.ub(m));
 end
 fclose(fid);
+end

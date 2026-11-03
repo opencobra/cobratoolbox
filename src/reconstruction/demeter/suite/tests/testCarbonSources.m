@@ -40,7 +40,7 @@ function [TruePositives, FalseNegatives] = testCarbonSources(model, microbeID, b
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % read carbon source table

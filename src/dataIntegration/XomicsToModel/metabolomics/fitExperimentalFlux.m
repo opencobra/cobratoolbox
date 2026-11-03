@@ -405,4 +405,5 @@ switch param.method
         disp(sol.obj - sol.full' * prob.F * sol.full)
         obj = + sol.full' * prob.F * sol.full;
 end
+end
 

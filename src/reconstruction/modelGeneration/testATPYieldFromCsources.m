@@ -869,3 +869,4 @@ Table_csources=Table_csources';
 TestedRxns = unique(TestedRxns);
 TestedRxns = intersect(model.rxns,TestedRxns); % only those reactions that are also in modelOri not those that have been added to the network
 PercTestedRxns = length(TestedRxns)*100/length(model.rxns);
+end

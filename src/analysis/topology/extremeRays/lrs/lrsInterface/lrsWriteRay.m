@@ -155,4 +155,5 @@ if param.redund==0
     fprintf(fid,'%s\n',redundCmd);
 end
 fclose(fid);
+end
                 

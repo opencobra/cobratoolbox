@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -149,6 +150,7 @@ set(handles.text_comp,'TooltipString',handles.comp);
 
 % Update handles structure
 guidata(hObject, handles);
+end
 
 % UIWAIT makes rBioNetSettings wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -163,6 +165,7 @@ function varargout = rBioNetSettings_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+end
 
 
 % --- Executes on button press in act_save.
@@ -175,6 +178,7 @@ met_path = handles.met;
 comp_path = handles.comp;
 save(handles.path,'rxn_path','met_path','comp_path');
 delete(gcf)
+end
 
 
 
@@ -184,6 +188,7 @@ function act_cancel_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf)
+end
 
 % --- Executes on button press in act_rxn.
 function act_rxn_Callback(hObject, eventdata, handles)
@@ -205,6 +210,7 @@ handles.rxn = fullfile(pathname,input_file);
 set(handles.text_rxn,'string',input_file);
 set(handles.text_rxn,'TooltipString',handles.rxn);
 guidata(hObject,handles)
+end
 
 
 
@@ -226,6 +232,7 @@ handles.met = fullfile(pathname,input_file);
 set(handles.text_met,'string',input_file);
 set(handles.text_met,'TooltipString',handles.met);
 guidata(hObject,handles)
+end
 
 
 
@@ -248,3 +255,4 @@ handles.comp = fullfile(pathname,input_file);
 set(handles.text_comp,'string',input_file);
 set(handles.text_comp,'TooltipString',handles.comp);
 guidata(hObject,handles)
+end

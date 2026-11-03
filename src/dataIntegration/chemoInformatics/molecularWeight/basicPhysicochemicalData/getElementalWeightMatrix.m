@@ -23,7 +23,7 @@ if nargin == 0 || isempty(isotopeAbundance)
     isotopeAbundance = false;
 end
 
-atomicWeights = parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements;
+atomicWeights = parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements();
 [symbols, ia] = unique([atomicWeights.data.AtomicSymbol]);
 % remove XYZ (non-existing element) from the symbol list
 elementRemove = strcmp(symbols, 'D') | strcmp(symbols, 'T') | strncmp(symbols, 'XYZ', 3);
@@ -127,3 +127,4 @@ if ~isscalar(isotopeAbundance) || isotopeAbundance
 end
 
 elementalWeightMatrix = [symbols, num2cell(elementWeights)];
+end

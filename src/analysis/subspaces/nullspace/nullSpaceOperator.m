@@ -98,7 +98,7 @@ switch archstr
     case {'glnxa86'}
         % REQUIRED: lusolSet.m and lusolFactor.m (which calls the LUSOL mex-file).
         % 02 May 2008: (MAS) First version of nullspaceLUSOLform.m.
-        options = lusolSet;
+        options = lusolSet();
         options.Pivoting  = 'TRP';
         options.FactorTol = 1.5;
         options.nzinit = 1e7;
@@ -239,3 +239,4 @@ if printLevel
     fprintf('\nnull(S) is represented by L, permutation p, and column scaling Cinv\n\n')
 end
 return
+end

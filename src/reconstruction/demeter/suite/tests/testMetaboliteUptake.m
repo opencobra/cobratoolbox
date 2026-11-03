@@ -41,7 +41,7 @@ function [TruePositives, FalseNegatives] = testMetaboliteUptake(model, microbeID
 
 global CBT_LP_SOLVER additionalUptakeRxns
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % read uptake product tables

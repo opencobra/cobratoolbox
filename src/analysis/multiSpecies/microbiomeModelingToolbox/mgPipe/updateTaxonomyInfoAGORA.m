@@ -24,14 +24,14 @@ phylumCol = find(strcmp(infoFile(1,:),'Phylum'));
 kingdomCol = find(strcmp(infoFile(1,:),'Kingdom'));
 
 taxa = {
-    strainCol 'strain'
-    speciesCol 'species'
-    genusCol 'genus'
-    familyCol 'family'
-    orderCol 'order'
-    classCol 'class'
-    phylumCol 'phylum'
-    kingdomCol 'superkingdom'
+    strainCol, 'strain';
+    speciesCol, 'species';
+    genusCol, 'genus';
+    familyCol, 'family';
+    orderCol, 'order';
+    classCol, 'class';
+    phylumCol, 'phylum';
+    kingdomCol, 'superkingdom'
     };
 
 for i=2:size(infoFile,1)
@@ -73,14 +73,14 @@ phylumCol = find(strcmp(infoFile(1,:),'Phylum'));
 kingdomCol = find(strcmp(infoFile(1,:),'Kingdom'));
 
 taxa = {
-    strainCol 'strain'
-    speciesCol 'species'
-    genusCol 'genus'
-    familyCol 'family'
-    orderCol 'order'
-    classCol 'class'
-    phylumCol 'phylum'
-    kingdomCol 'superkingdom'
+    strainCol, 'strain';
+    speciesCol, 'species';
+    genusCol, 'genus';
+    familyCol, 'family';
+    orderCol, 'order';
+    classCol, 'class';
+    phylumCol, 'phylum';
+    kingdomCol, 'superkingdom'
     };
 
 for i=2:size(infoFile,1)

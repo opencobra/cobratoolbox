@@ -123,3 +123,4 @@ else
         y = m + log(sum(exwp, dim));
     end
 end
+end

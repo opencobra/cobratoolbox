@@ -208,3 +208,4 @@ for iRxn = 1:length(autoMatchedRxns)
 end
 
 close(h)
+end

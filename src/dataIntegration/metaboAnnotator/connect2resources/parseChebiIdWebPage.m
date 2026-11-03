@@ -90,6 +90,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'smile';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if isempty(metabolite_structure.(Mets{i}).inchiKey) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).inchiKey),1))
@@ -110,6 +111,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'inchiKey';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if isempty(metabolite_structure.(Mets{i}).inchiString) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).inchiString),1))
@@ -127,6 +129,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'inchiString';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             
@@ -149,6 +152,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'wikipedia';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if isempty(metabolite_structure.(Mets{i}).knapsack) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).knapsack),1))
@@ -166,6 +170,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'knapsack';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if isempty(metabolite_structure.(Mets{i}).keggId) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).keggId),1))
@@ -183,6 +188,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'keggId';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if isempty(metabolite_structure.(Mets{i}).biocyc) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).biocyc),1))
@@ -200,6 +206,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'biocyc';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if isempty(metabolite_structure.(Mets{i}).hmdb) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).hmdb),1))
@@ -217,6 +224,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'hmdb';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if isempty(metabolite_structure.(Mets{i}).casRegistry) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).casRegistry),1))
@@ -234,6 +242,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'casRegistry';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if isempty(metabolite_structure.(Mets{i}).lipidmaps) || ~isempty(find(isnan(metabolite_structure.(Mets{i}).lipidmaps),1))
@@ -251,6 +260,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     IDsAdded{a,2} = 'lipidmaps';
                     IDsAdded{a,3} = char(idNew);
                     a=a+1;
+                catch
                 end
             end
             if printInchis
@@ -272,6 +282,7 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     InchiKeyList{c,3} = idNew;
                     InchiKeyList{c,4} = [annotationSource,':',annotationType,':',datestr(now)];
                     c = c + 1;
+                catch
                 end
                 % get Inchistring (again)
                 startvalue=strfind(syst,'td>InChI=');
@@ -289,9 +300,11 @@ metabolite_structure.(Mets{i}).cheBIId = num2str(isnumeric(metabolite_structure.
                     InchiStringList{d,3} = idNew;
                     InchiStringList{d,4} = [annotationSource,':',annotationType,':',datestr(now)];
                     d=d+1;
+                catch
                 end
                 
             end
         end
     end
+end
 end

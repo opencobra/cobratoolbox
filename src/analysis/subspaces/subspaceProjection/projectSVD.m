@@ -30,3 +30,4 @@ function [u1, u2] = projectSVD(U1, u)
 
   u1 = U1*(U1'*u);
   u2 = u - u1;
+end

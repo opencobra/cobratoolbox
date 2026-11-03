@@ -45,7 +45,7 @@ websave([directory  ],url);
 if strfind('main.zip')
     if ismac
         system(['zip -d ' directory]);
-    elseif ispc
+    elseif ispc()
         unzip(directory) % creates a directory called ctf-main
     end
 end
@@ -136,32 +136,32 @@ molDirectory = 'molFiles'; % directory where downloaded mol files should be down
 % will be attributed to the metabolites in the metabolite_structure.
 
 met={ % Nicotine & Cotidine pathway
-     'VMH ID' 'metabolite_name' 'HMDB' 'inchistring' 'neutral_formula' 'charged_formula' 'charge'
-    'cot' 'Cotinine' 'HMDB0001046'  '' '' '' ''
-    'coto' 'Cotinine n-oxide' 'HMDB0001411'  '' '' '' ''
-    'nnct' 'Nornicotine' 'HMDB0001126'  '' '' '' ''
-    '2hnct' '2-hydroxynicotine' 'HMDB0001329'   '' '' '' ''
-    'ncot' 'Norcotinine' 'HMDB0001297'  '' '' '' ''
-    'hmcot' 'N-hydroxymethylnorcotinine' 'HMDB0001324'  '' '' '' ''
-    '5hcot' '5-hydroxycotinine' 'HMDB0001427'   '' '' '' ''
-    'thcot' 'Trans-hydroxycotinine' 'HMDB0001390'  '' '' '' ''
-    'thcotg' 'Trans-3-hydroxycotinine glucuronide' 'HMDB0001204'  '' '' '' ''
-    'cotg' 'cotinine glucuronide' 'HMDB0001013' '' '' '' ''
-    'nct' 'Nicotine' 'HMDB0001934' '' '' '' ''
-    'nctim'  'Nicotine imine' 'HMDB0001010'  '' '' '' ''
-    'nctg' 'Nicotine glucuronide' 'HMDB0001272'  '' '' '' ''
-    'nct1o' 'Nicotine-1-N-oxide' 'HMDB0001497'  '' '' '' ''
-    'ninct' 'N-nitrosonornicotine' 'HMDB0041940'  '' '' '' ''
-    'mnct' 'N-methylnicotinium' 'HMDB0001009' '' '' '' ''
-    '4hpbuta'  '4-hydroxy-4-(3-pyridyl)-butanoic acid' 'HMDB0001119' '' '' '' ''
-    '4opbuta'  '4-oxo-4-(3-pyridyl)butanoic acid' 'HMDB0000992' '' '' '' ''
-    '4opmbutam'   '4-oxo-4-(3-pyridyl)-N-methylbutanamide' 'HMDB0001004' '' '' '' ''
-    '4opbutam' '4-oxo-4-(3-pyridyl)-butanamide' 'HMDB0001267' '' '' '' ''
-    '4mapbutone' '4-(methylamino)-1-(3-pyridyl)-1-butanone' 'HMDB0001240' '' '' '' ''
-    'cotmi' 'Cotinine methonium ion' 'HMDB0001365' '' '' '' ''
-    '4pbute' '4-(3-pyridyl)-3-butenoic acid' 'HMDB0001424' '' '' '' ''
-    '4pbuta' '4-(3-pyridyl)-butanoic acid' 'HMDB0001007' '' '' '' ''
-    '3pac' '3-pyridylacetic acid' 'HMDB0001538' '' '' '' ''
+     'VMH ID', 'metabolite_name', 'HMDB', 'inchistring', 'neutral_formula', 'charged_formula', 'charge';
+    'cot', 'Cotinine', 'HMDB0001046',  '', '', '', '';
+    'coto', 'Cotinine n-oxide', 'HMDB0001411',  '', '', '', '';
+    'nnct', 'Nornicotine', 'HMDB0001126',  '', '', '', '';
+    '2hnct', '2-hydroxynicotine', 'HMDB0001329',   '', '', '', '';
+    'ncot', 'Norcotinine', 'HMDB0001297',  '', '', '', '';
+    'hmcot', 'N-hydroxymethylnorcotinine', 'HMDB0001324',  '', '', '', '';
+    '5hcot', '5-hydroxycotinine', 'HMDB0001427',   '', '', '', '';
+    'thcot', 'Trans-hydroxycotinine', 'HMDB0001390',  '', '', '', '';
+    'thcotg', 'Trans-3-hydroxycotinine glucuronide', 'HMDB0001204',  '', '', '', '';
+    'cotg', 'cotinine glucuronide', 'HMDB0001013', '', '', '', '';
+    'nct', 'Nicotine', 'HMDB0001934', '', '', '', '';
+    'nctim',  'Nicotine imine', 'HMDB0001010',  '', '', '', '';
+    'nctg', 'Nicotine glucuronide', 'HMDB0001272',  '', '', '', '';
+    'nct1o', 'Nicotine-1-N-oxide', 'HMDB0001497',  '', '', '', '';
+    'ninct', 'N-nitrosonornicotine', 'HMDB0041940',  '', '', '', '';
+    'mnct', 'N-methylnicotinium', 'HMDB0001009', '', '', '', '';
+    '4hpbuta',  '4-hydroxy-4-(3-pyridyl)-butanoic acid', 'HMDB0001119', '', '', '', '';
+    '4opbuta',  '4-oxo-4-(3-pyridyl)butanoic acid', 'HMDB0000992', '', '', '', '';
+    '4opmbutam',   '4-oxo-4-(3-pyridyl)-N-methylbutanamide', 'HMDB0001004', '', '', '', '';
+    '4opbutam', '4-oxo-4-(3-pyridyl)-butanamide', 'HMDB0001267', '', '', '', '';
+    '4mapbutone', '4-(methylamino)-1-(3-pyridyl)-1-butanone', 'HMDB0001240', '', '', '', '';
+    'cotmi', 'Cotinine methonium ion', 'HMDB0001365', '', '', '', '';
+    '4pbute', '4-(3-pyridyl)-3-butenoic acid', 'HMDB0001424', '', '', '', '';
+    '4pbuta', '4-(3-pyridyl)-butanoic acid', 'HMDB0001007', '', '', '', '';
+    '3pac', '3-pyridylacetic acid', 'HMDB0001538', '', '', '', ''
     };
 
 %% 
@@ -193,15 +193,15 @@ molDirectory = 'molFiles'; % directory where downloaded mol files should be down
 % It is important that the first line contains 'name' as the script parses for 
 % this tag in the first line.
 
-  metList = {'name'
-      'N-Acetyl-5-Aminosalicylic Acid'
-      '5-Fluorocytosine'
-      '5-Fluorouracil'
-      '5-Fluorouridine'
-      '5-Fluorouridine Monophosphate'
-      'Alpha-Fluoro-Beta-Ureidopropionate'
-      'N-Carboxy-Alpha-Fluoro-Beta-Alanine'
-      '5,6-Dihydro 5-Fluoro Uracil'
+  metList = {'name';
+      'N-Acetyl-5-Aminosalicylic Acid';
+      '5-Fluorocytosine';
+      '5-Fluorouracil';
+      '5-Fluorouridine';
+      '5-Fluorouridine Monophosphate';
+      'Alpha-Fluoro-Beta-Ureidopropionate';
+      'N-Carboxy-Alpha-Fluoro-Beta-Alanine';
+      '5,6-Dihydro 5-Fluoro Uracil';
       'Amantadine'
       };
   
@@ -224,13 +224,13 @@ molDirectory = 'molFiles'; % directory where downloaded mol files should be down
 % * *Check that the new VMH IDs do not exist in the VMH and rBioNet.*
 
 met={ % Nicotine & Cotidine pathway
-     'VMH ID' 'metabolite_name' 'HMDB' 'inchistring' 'neutral_formula' 'charged_formula' 'charge'
-    'cot' 'Cotinine' 'HMDB0001046'  '' '' '' ''
-    'coto' 'Cotinine n-oxide' 'HMDB0001411'  '' '' '' ''
-    'nnct' 'Nornicotine' 'HMDB0001126'  '' '' '' ''
-    '2hnct' '2-hydroxynicotine' 'HMDB0001329'   '' '' '' ''
-    'ncot' 'Norcotinine' 'HMDB0001297'  '' '' '' ''
-    'hmcot' 'N-hydroxymethylnorcotinine' 'HMDB0001324'  '' '' '' ''
+     'VMH ID', 'metabolite_name', 'HMDB', 'inchistring', 'neutral_formula', 'charged_formula', 'charge';
+    'cot', 'Cotinine', 'HMDB0001046',  '', '', '', '';
+    'coto', 'Cotinine n-oxide', 'HMDB0001411',  '', '', '', '';
+    'nnct', 'Nornicotine', 'HMDB0001126',  '', '', '', '';
+    '2hnct', '2-hydroxynicotine', 'HMDB0001329',   '', '', '', '';
+    'ncot', 'Norcotinine', 'HMDB0001297',  '', '', '', '';
+    'hmcot', 'N-hydroxymethylnorcotinine', 'HMDB0001324',  '', '', '', ''
     };
   [VMH_existance,rBioNet_existance] = checkAbbrExists(met(:,1));
 %% 
@@ -271,14 +271,14 @@ met={ % Nicotine & Cotidine pathway
 % use case 3b). Note that this function does only search for the metabolite in 
 % HMDB.
 
- metList = {'N-Acetyl-5-Aminosalicylic Acid'
-      '5-Fluorocytosine'
-      '5-Fluorouracil'
-      '5-Fluorouridine'
-      '5-Fluorouridine Monophosphate'
-      'Alpha-Fluoro-Beta-Ureidopropionate'
-      'N-Carboxy-Alpha-Fluoro-Beta-Alanine'
-      '5,6-Dihydro 5-Fluoro Uracil'
+ metList = {'N-Acetyl-5-Aminosalicylic Acid';
+      '5-Fluorocytosine';
+      '5-Fluorouracil';
+      '5-Fluorouridine';
+      '5-Fluorouridine Monophosphate';
+      'Alpha-Fluoro-Beta-Ureidopropionate';
+      'N-Carboxy-Alpha-Fluoro-Beta-Alanine';
+      '5,6-Dihydro 5-Fluoro Uracil';
       'Amantadine'
       };  
  for i = 1 : length(metList)

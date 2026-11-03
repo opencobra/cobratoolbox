@@ -33,3 +33,4 @@ for i = 0:(2^n-1)
     i2 = bin2dec(t2);
     out(i+1,i2+1) = 1;
 end
+end

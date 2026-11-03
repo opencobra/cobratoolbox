@@ -98,4 +98,5 @@ if printLevel > 0
     display('New reaction formulas')
     problemRxnFormulae = printRxnFormula(model, fixedRxnList);    
 end
+end
 

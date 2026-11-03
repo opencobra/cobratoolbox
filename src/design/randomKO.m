@@ -59,3 +59,4 @@ catch
     %no FBA solution was found, do another random KO
     [products,productRates,KOrxns,BOF] = randomKO(modelRed,selectedRxns,N);
 end
+end

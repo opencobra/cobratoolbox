@@ -64,4 +64,5 @@ else
     metList(rxnNotInModel) = {{}};
     stoichiometries(~rxnNotInModel) = relStoichiometries;
 end
+end
 

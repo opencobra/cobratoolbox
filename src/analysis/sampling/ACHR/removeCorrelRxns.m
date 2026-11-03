@@ -73,3 +73,4 @@ for i = 1:length(rxnSets)
 end
 
 rxnList = columnVector(rxnList);
+end

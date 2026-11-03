@@ -46,7 +46,7 @@ plottedFeature = parser.Results.plottedFeature;
 unit = parser.Results.unit;
 
 % read metabolite database
-database = loadVMHDatabase;
+database = loadVMHDatabase();
 
 % find the column with the sample information to split the samples by
 if ~isempty(stratification)
@@ -149,11 +149,11 @@ else
     if strcmp(plotType,'Boxplot')
         groups = unique(sampleStratification);
         if length(groups)==2
-            cols =[1 0 0
+            cols =[1 0 0;
                 0 0 1];
         elseif length(groups)==3
-            cols =[0 1 0
-                1 0 0
+            cols =[0 1 0;
+                1 0 0;
                 0 0 1];
         else
             cols = [];

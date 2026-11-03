@@ -35,3 +35,4 @@ end
 
 scores2 = scores .*(1-exp(-weights/lambda));
 out = -sum(scores2);
+end

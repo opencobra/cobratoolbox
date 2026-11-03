@@ -138,3 +138,4 @@ end
 
 % extend other fields as necessary.
 model = extendModelFieldsForType(model,'evars','originalSize',nVars);
+end

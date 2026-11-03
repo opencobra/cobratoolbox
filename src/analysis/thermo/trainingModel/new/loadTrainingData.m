@@ -315,3 +315,4 @@ trainingModel.pH = trainingModel.pH(~boolRemove);
 trainingModel.pMg = trainingModel.pMg(~boolRemove);
 trainingModel.weights = trainingModel.weights(~boolRemove);
 trainingModel.balance = trainingModel.balance(~boolRemove);
+end

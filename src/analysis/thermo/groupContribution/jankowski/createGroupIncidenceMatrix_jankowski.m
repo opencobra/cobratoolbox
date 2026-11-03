@@ -69,3 +69,4 @@ while 1
 end
 
 fclose(fidin);
+end

@@ -1427,7 +1427,7 @@ switch solver
         % d1,d2,options,x0,y0,z0,xsize,zsize
         
         % generate set of default parameters for this solver
-        options = pdcoSet;
+        options = pdcoSet();
         options.Method = 2;
         
         % set the printLevel

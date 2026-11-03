@@ -59,3 +59,4 @@ E = E(:,any(E,1));
 % Sort elements in alphabetical order
 [elements,xi] = sort(elements);
 E = E(:,xi);
+end

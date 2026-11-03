@@ -45,3 +45,4 @@ end
 
 mets = columnVector(mets);
 fclose(fid);
+end

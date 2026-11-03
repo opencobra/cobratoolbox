@@ -136,6 +136,7 @@ for jTest = 1:2
         cont = 0;
         try
             cont = changeCobraSolver('ibm_cplex', 'LP');
+        catch
         end
     else  % test any one of the other LP solvers
         solverPrefer = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'}; %Minos cannot be run using parfor!

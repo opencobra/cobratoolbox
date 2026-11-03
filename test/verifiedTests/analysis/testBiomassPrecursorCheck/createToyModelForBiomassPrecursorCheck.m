@@ -35,3 +35,4 @@ lbs(2) = -1000;
 model = addMultipleMetabolites(model,mets);
 model = addMultipleReactions(model,reacIDs,mets,stoich,'lb',lbs);
 model = changeObjective(model,'Biomass',1);
+end

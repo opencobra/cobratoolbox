@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -81,7 +82,8 @@ set(handles.uitable1,'data',handles.data(1:3,:));
 
 % Update handles structure
 guidata(hObject, handles);
-uiwait
+uiwait()
+end
 % UIWAIT makes unbalanced wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
@@ -96,6 +98,7 @@ function varargout = unbalanced_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 delete(hObject)
+end
 
 
 
@@ -104,7 +107,8 @@ function unbal_close_Callback(hObject, eventdata, handles)
 % hObject    handle to unbal_close (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-uiresume
+uiresume()
+end
 
 
 % --- Executes on button press in button_continue.
@@ -114,7 +118,8 @@ function button_continue_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = 1;
 guidata(hObject,handles)
-uiresume
+uiresume()
+end
 
 
 % --- Executes when user attempts to close figure1.
@@ -124,7 +129,8 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume
+uiresume()
+end
 %delete(hObject);
 
 
@@ -141,6 +147,7 @@ val = get(hObject,'Value');
 set(handles.uitable1,'data',handles.data(3*val-2:3*val,:));
 
 guidata(hObject,handles)
+end
 
 % --- Executes during object creation, after setting all properties.
 function listbox1_CreateFcn(hObject, eventdata, handles)
@@ -150,6 +157,7 @@ function listbox1_CreateFcn(hObject, eventdata, handles)
 
 % Hint: listbox controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+if ispc() && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
+end
 end

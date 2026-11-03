@@ -57,8 +57,8 @@ if ~isempty(hmdb)
     % metabolite
     % I still need an abbr
     metInput={
-        'VMH ID' 'metabolite_name' 'HMDB' };
-    metInput = [metInput; {VMHId met hmdb}];
+        'VMH ID', 'metabolite_name', 'HMDB' };
+    metInput = [metInput; {VMHId, met, hmdb}];
     source = 'metabolite searched in HMDB by name';
     populate = 'true';
     molFileDirectory = 'molFiles';
@@ -72,11 +72,11 @@ end
 
 % no hit found - try alternative spellings
 altSpell = {
-    ' ',''
-    ' ','-'
-    ' (\d+)','-$1'
-    'oxy'   'oxi'
-    'oxi'   'oxy'
+    ' ','';
+    ' ','-';
+    ' (\d+)','-$1';
+    'oxy',   'oxi';
+    'oxi',   'oxy'
     };
 metOri = met;
 for i = 1 : size(altSpell)
@@ -93,8 +93,8 @@ for i = 1 : size(altSpell)
             % metabolite
             % I still need an abbr
             metInput={
-                'VMH ID' 'metabolite_name' 'HMDB' };
-            metInput = [metInput; {VMHId met hmdb}];
+                'VMH ID', 'metabolite_name', 'HMDB' };
+            metInput = [metInput; {VMHId, met, hmdb}];
             source = 'metabolite searched in HMDB by name';
             [metabolite_structure_tmp] = createNewMetEntryFromArray(metInput,source,populate,molFileDirectory,metab_rBioNet_online,rxn_rBioNet_online,metabolite_structure_rBioNet);
             if exist('metabolite_structure','var') && ~isempty(metabolite_structure)
@@ -110,10 +110,11 @@ end
 % the compound
 if ~exist('metabolite_structure','var')
     metInput={
-        'VMH ID' 'metabolite_name' 'HMDB' };
-    metInput = [metInput; {VMHId met NaN}];
+        'VMH ID', 'metabolite_name', 'HMDB' };
+    metInput = [metInput; {VMHId, met, NaN}];
     source = 'Manual entry';
     [metabolite_structure] = createNewMetEntryFromArray(metInput,source,populate,molFileDirectory,metab_rBioNet_online,rxn_rBioNet_online,metabolite_structure_rBioNet);
     
+end
 end
 

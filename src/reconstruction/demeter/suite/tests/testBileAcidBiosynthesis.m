@@ -36,7 +36,7 @@ function [TruePositives, FalseNegatives] = testBileAcidBiosynthesis(model, micro
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % read bile acid product table

@@ -214,6 +214,7 @@ end
 sampleStructOut = sampleStruct;
 
 return;
+end
 
 
 
@@ -362,6 +363,7 @@ end
 %     warmupPts = warmupPts(:,randperm(nPoints));
 % end
 return;
+end
 
 %% post processing for better warmup point generation.
 % function out = postprocess(LPproblem, sol1, sol2)

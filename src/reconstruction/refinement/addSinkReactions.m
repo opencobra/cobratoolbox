@@ -61,3 +61,4 @@ for i = 1 : nMets
     end
     model.rxnNames(strcmp(model.rxns,rxnName)) = {rxnName};
 end
+end

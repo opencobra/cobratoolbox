@@ -32,3 +32,4 @@ for i = 1:length(vIrrev)
 end
 
 vRev = columnVector(vRev);
+end

@@ -49,3 +49,4 @@ else
     maxProd = 0;
     minProd = 0;
 end
+end

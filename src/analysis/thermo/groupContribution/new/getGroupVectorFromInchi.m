@@ -41,7 +41,7 @@ else
     cmd = ['python2 ' fullpath inchi2gv '.py -i '];
 end
 
-if ~ispc
+if ~ispc()
     [rval, group_def] = system([cmd, '"', inchi, '"']);
 else
     [rval, group_def] = system([cmd, inchi]);
@@ -62,4 +62,5 @@ else
         fprintf('%s\n',['getGroupVectorFromInchi did not decompose: ' inchi])
     end
     group_def = [];
+end
 end

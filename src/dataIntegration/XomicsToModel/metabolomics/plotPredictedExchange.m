@@ -421,4 +421,5 @@ if param.saveFigures
     savefig(['predicted_exchanges_' names '_' param.labelType zoomed])
     saveas(gcf,['predicted_exchanges_' names '_' param.labelType zoomed],'png')
 end
+end
 

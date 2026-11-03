@@ -44,16 +44,16 @@ end
 
 queryFields = {'keggId';'seed';'biggId';'cheBIId';'inchiKey'}; %gets all fieldnames for metabolites
 mapping ={
-    'cheBIId' 'https://www.ebi.ac.uk/chebi/'
-    'keggId'    'https://www.kegg.jp/entry'
-    'seed'  'https://modelseed.org/biochem/compounds/'
-    'biocyc'   'https://metacyc.org/compound?org'
-    'inchiKey'  'InChIKey'
-    'inchiString'   '\>InChI\>'
-    'lipidmaps' 'https://www.lipidmaps.org/data/'
-    'biggId'    'http://bigg.ucsd.edu/universal/metabolites/'
-    'hmdb'     'https://hmdb.ca/metabolites/'
-    'swisslipids'   'https://www.swisslipids.org/#/entity/'
+    'cheBIId', 'https://www.ebi.ac.uk/chebi/';
+    'keggId',    'https://www.kegg.jp/entry';
+    'seed',  'https://modelseed.org/biochem/compounds/';
+    'biocyc',   'https://metacyc.org/compound?org';
+    'inchiKey',  'InChIKey';
+    'inchiString',   '\>InChI\>';
+    'lipidmaps', 'https://www.lipidmaps.org/data/';
+    'biggId',    'http://bigg.ucsd.edu/universal/metabolites/';
+    'hmdb',     'https://hmdb.ca/metabolites/';
+    'swisslipids',   'https://www.swisslipids.org/#/entity/'
     };
 
 a = 1;
@@ -117,6 +117,7 @@ for i = startSearch : endSearch
                             b = b + 1;
                         end
                     end
+                catch
                 end
             end
         end
@@ -198,9 +199,11 @@ for i = startSearch : endSearch
                 end
                 
             end
+        catch
         end
         %  end
     end
+end
 end
 
 
@@ -266,4 +269,6 @@ try
         idNew = regexprep(tok,'/\W$','');
     end
     
+catch
+end
 end

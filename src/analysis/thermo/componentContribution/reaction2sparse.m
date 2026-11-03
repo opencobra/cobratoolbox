@@ -58,3 +58,4 @@ for i = 1:length(d)
         res(cid) = res(cid) + coeff;
     end
 end
+end

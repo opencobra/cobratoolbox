@@ -140,6 +140,7 @@ switch outputFormat
             disp(command)
         end
 end
+end
 
 % ------------------------------------------------------------
 % EscherConverter version 1.2.1

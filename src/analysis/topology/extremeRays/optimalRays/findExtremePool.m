@@ -80,3 +80,4 @@ end
 sol = solveCobraLP(LPProblem, solverArgs{:});
 x=sol.full;
 x(abs(x)<epsilon)=0;
+end

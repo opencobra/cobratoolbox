@@ -82,3 +82,4 @@ for i=1:length(tests)
             fprintf('%s is not a valid option', tests{i});
     end
 end
+end

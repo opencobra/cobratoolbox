@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -72,6 +73,7 @@ handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
+end
 
 % UIWAIT makes rBioNetAbout wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -86,10 +88,12 @@ function varargout = rBioNetAbout_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+end
 
 
 % --- Executes during object creation, after setting all properties.
 function axes1_CreateFcn(hObject, eventdata, handles)
+end
 % hObject    handle to axes1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -103,6 +107,7 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 delete(gcf)
+end
 
 
 % --- Executes during object creation, after setting all properties.
@@ -115,3 +120,4 @@ function image1_CreateFcn(hObject, eventdata, handles)
 axes(hObject);
 
 imshow('hilogo.png');
+end

@@ -54,6 +54,7 @@ result = check(formula_empty,abbreviation);
 if result == false
     return
 end
+end
 
 function result = check(results,fields)
 
@@ -70,4 +71,5 @@ if(results)
     result = false;
 else
     result = true;
+end
 end

@@ -49,3 +49,4 @@ else
     fprintf('%6u\t%s\n',nnz(minRxnBool), 'inconsistent reactions...');
     formulas = printRxnFormula(model,model.rxns(minRxnBool));
 end
+end

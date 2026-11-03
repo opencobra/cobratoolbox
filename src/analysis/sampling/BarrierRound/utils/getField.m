@@ -19,3 +19,4 @@ if isfield(o, field)
 else
    x = default;
 end
+end

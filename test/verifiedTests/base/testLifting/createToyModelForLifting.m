@@ -33,3 +33,4 @@ end
 model = addExchangeRxn(model,ExchangedMets,-1e6*ones(numel(ExchangedMets),1),1e6*ones(numel(ExchangedMets),1));
 
 model = changeObjective(model,'EX_E',1);
+end

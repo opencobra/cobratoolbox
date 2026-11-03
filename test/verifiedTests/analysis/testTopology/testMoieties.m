@@ -102,8 +102,8 @@ for i=1:size(ATN.A,2)
         s(i)=find(ATN.A(:,i)==-1);
         t(i)=find(ATN.A(:,i)==1);
 end
-EdgeTable = table([s t],ATN.atrans,ATN.rxns,'VariableNames',{'EndNodes' 'Trans' 'rxns'});
-NodeTable = table(ATN.atoms,ATN.mets,ATN.atns,ATN.elements,'VariableNames',{'Atom' 'mets' 'AtomNumber' 'Element'});
+EdgeTable = table([s t],ATN.atrans,ATN.rxns,'VariableNames',{'EndNodes', 'Trans', 'rxns'});
+NodeTable = table(ATN.atoms,ATN.mets,ATN.atns,ATN.elements,'VariableNames',{'Atom', 'mets', 'AtomNumber', 'Element'});
 GATN=digraph(EdgeTable,NodeTable);
 %p = isomorphism(GATN,dATM); %After testing whether it is isomorphic, it can be used to permute the nodes of the graph
 

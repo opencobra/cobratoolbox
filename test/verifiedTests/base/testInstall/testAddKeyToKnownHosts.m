@@ -20,7 +20,7 @@ assert(verifyCobraFunctionError('addKeyToKnownHostsCT','inputs',{'github123.co'}
 
 if status_keyscan == 1 && contains(result_keyscan, 'usage:')
     % get the user directory
-    if ispc
+    if ispc()
         homeDir = getenv('userprofile');
     else
         homeDir = getenv('HOME');

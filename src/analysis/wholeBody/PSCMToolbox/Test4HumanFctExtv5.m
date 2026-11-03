@@ -92,47 +92,47 @@ model.rxns = regexprep(model.rxns,'\[','\(');
 model.rxns = regexprep(model.rxns,'\]','\)');
 
 % replace reaction names
-new = {'DM_atp_c_'
-    'EX_gln_L(e)'
-    'EX_glu_L(e)'
-    'EX_lac_L(e)'
-    'EX_pro_L(e)'
-    'EX_cys_L(e)'
-    'EX_lys_L(e)'
-    'EX_arg_L(e)'
-    'EX_his_L(e)'
-    'EX_glc_D(e)'
-    'CYOR_u10m'
-    'NADH2_u10m'
-    'EX_4hpro(e)'
+new = {'DM_atp_c_';
+    'EX_gln_L(e)';
+    'EX_glu_L(e)';
+    'EX_lac_L(e)';
+    'EX_pro_L(e)';
+    'EX_cys_L(e)';
+    'EX_lys_L(e)';
+    'EX_arg_L(e)';
+    'EX_his_L(e)';
+    'EX_glc_D(e)';
+    'CYOR_u10m';
+    'NADH2_u10m';
+    'EX_4hpro(e)';
     % due to innermitochondrial membrane representation in recon3
-    'ASPGLUmi'
-    'ATPS4mi'
-    'CYOR_u10mi'
-    'Htmi'
-    'NADH2_u10mi'
-    'CYOOm3i'
+    'ASPGLUmi';
+    'ATPS4mi';
+    'CYOR_u10mi';
+    'Htmi';
+    'NADH2_u10mi';
+    'CYOOm3i';
     'CYOOm2i'};
 
-original = {'DM_atp(c)'
-    'EX_gln-L(e)'
-    'EX_glu-L(e)'
-    'EX_lac-L(e)'
-    'EX_pro-L(e)'
-    'EX_cys-L(e)'
-    'EX_lys-L(e)'
-    'EX_arg-L(e)'
-    'EX_his-L(e)'
-    'EX_glc(e)'
-    'CYOR-u10m'
-    'NADH2-u10m'
-    'EX_4HPRO'
-    'ASPGLUm'
-    'ATPS4m'
-    'CYOR-u10m'
-    'Htm'
-    'NADH2-u10m'
-    'CYOOm3'
+original = {'DM_atp(c)';
+    'EX_gln-L(e)';
+    'EX_glu-L(e)';
+    'EX_lac-L(e)';
+    'EX_pro-L(e)';
+    'EX_cys-L(e)';
+    'EX_lys-L(e)';
+    'EX_arg-L(e)';
+    'EX_his-L(e)';
+    'EX_glc(e)';
+    'CYOR-u10m';
+    'NADH2-u10m';
+    'EX_4HPRO';
+    'ASPGLUm';
+    'ATPS4m';
+    'CYOR-u10m';
+    'Htm';
+    'NADH2-u10m';
+    'CYOOm3';
     'CYOOm2'};
 
 for i=1:length(new)
@@ -142,100 +142,100 @@ end
 
 %replace metabolite names
 
-new_mets = {'Ser-Gly-Ala-X-Gly(r)'
-    'Ser-Thr(g)'
-    'Ser-Thr(l)'
-    'ksii-core2(g)'
-    'ksii-core4(g)'
-    'ksii-core2(l)'
-    'ksii-core4(l)'
-    'cspg-a(l)'
-    'cspg-b(l)'
-    'cspg-c(l)'
-    'cspg-d(l)'
-    'cspg-e(l)'
-    'cspg-a(g)'
-    'cspg-b(g)'
-    'cspg-c(g)'
-    'cspg-d(g)'
-    'cspg-e(g)'
-    'galgluside-hs(g)'
-    'gluside-hs(g)'
-    'galgalgalthcrm-hs(g)'
-    'acgagbside-hs(g)'
-    'acnacngalgbside-hs(g)'
-    'gd1b2-hs(g)'
-    'gd1c-hs(g)'
-    'gq1balpha-hs(g)'
-    'dag-hs(c)'
-    'pe-hs(c)'
-    'tag-hs(c)'
-    'cs-pre(g)'
-    'crmp-hs(c)'
-    'sphmyln-hs(c)'
-    'pail-hs(c)'
-    'pail45p-hs(c)'
-    'pail4p-hs(c)'
-    'dolichol-L(c)'
-    'dolmanp-L(r)'
-    'dolichol-U(c)'
-    'dolmanp-U(r)'
-    'dolichol-L(r)'
-    'dolichol-U(r)'
-    'gpi-prot-hs(r)'
-    'g3m8mpdol-L(r)'
-    'g3m8mpdol-U(r)'
-    'gp1c-hs(g)'
-    'dsTn-antigen(g)'
-    'sTn-antigen(g)'
+new_mets = {'Ser-Gly-Ala-X-Gly(r)';
+    'Ser-Thr(g)';
+    'Ser-Thr(l)';
+    'ksii-core2(g)';
+    'ksii-core4(g)';
+    'ksii-core2(l)';
+    'ksii-core4(l)';
+    'cspg-a(l)';
+    'cspg-b(l)';
+    'cspg-c(l)';
+    'cspg-d(l)';
+    'cspg-e(l)';
+    'cspg-a(g)';
+    'cspg-b(g)';
+    'cspg-c(g)';
+    'cspg-d(g)';
+    'cspg-e(g)';
+    'galgluside-hs(g)';
+    'gluside-hs(g)';
+    'galgalgalthcrm-hs(g)';
+    'acgagbside-hs(g)';
+    'acnacngalgbside-hs(g)';
+    'gd1b2-hs(g)';
+    'gd1c-hs(g)';
+    'gq1balpha-hs(g)';
+    'dag-hs(c)';
+    'pe-hs(c)';
+    'tag-hs(c)';
+    'cs-pre(g)';
+    'crmp-hs(c)';
+    'sphmyln-hs(c)';
+    'pail-hs(c)';
+    'pail45p-hs(c)';
+    'pail4p-hs(c)';
+    'dolichol-L(c)';
+    'dolmanp-L(r)';
+    'dolichol-U(c)';
+    'dolmanp-U(r)';
+    'dolichol-L(r)';
+    'dolichol-U(r)';
+    'gpi-prot-hs(r)';
+    'g3m8mpdol-L(r)';
+    'g3m8mpdol-U(r)';
+    'gp1c-hs(g)';
+    'dsTn-antigen(g)';
+    'sTn-antigen(g)';
     'Tn-antigen(g)'
     };
-original_mets = {'Ser-Gly/Ala-X-Gly(r)'
-    'Ser/Thr(g)'
-    'Ser/Thr(l)'
-    'ksii_core2(g)'
-    'ksii_core4(g)'
-    'ksii_core2(l)'
-    'ksii_core4(l)'
-    'cspg_a(l)'
-    'cspg_b(l)'
-    'cspg_c(l)'
-    'cspg_d(l)'
-    'cspg_e(l)'
-    'cspg_a(g)'
-    'cspg_b(g)'
-    'cspg_c(g)'
-    'cspg_d(g)'
-    'cspg_e(g)'
-    'galgluside_hs(g)'
-    'gluside_hs(g)'
-    'galgalgalthcrm_hs(g)'
-    'acgagbside_hs(g)'
-    'acnacngalgbside_hs(g)'
-    'gd1b2_hs(g)'
-    'gd1c_hs(g)'
-    'gq1balpha_hs(g)'
-    'dag_hs(c)'
-    'pe_hs(c)'
-    'tag_hs(c)'
-    'cs_pre(g)'
-    'crmp_hs(c)'
-    'sphmyln_hs(c)'
-    'pail_hs(c)'
-    'pail45p_hs(c)'
-    'pail4p_hs(c)'
-    'dolichol_L(c)'
-    'dolmanp_L(r)'
-    'dolichol_U(c)'
-    'dolmanp_U(r)'
-    'dolichol_L(r)'
-    'dolichol_U(r)'
-    'gpi_prot_hs(r)'
-    'g3m8mpdol_L(r)'
-    'g3m8mpdol_U(r)'
-    'gp1c_hs(g)'
-    'dsTn_antigen(g)'
-    'sTn_antigen(g)'
+original_mets = {'Ser-Gly/Ala-X-Gly(r)';
+    'Ser/Thr(g)';
+    'Ser/Thr(l)';
+    'ksii_core2(g)';
+    'ksii_core4(g)';
+    'ksii_core2(l)';
+    'ksii_core4(l)';
+    'cspg_a(l)';
+    'cspg_b(l)';
+    'cspg_c(l)';
+    'cspg_d(l)';
+    'cspg_e(l)';
+    'cspg_a(g)';
+    'cspg_b(g)';
+    'cspg_c(g)';
+    'cspg_d(g)';
+    'cspg_e(g)';
+    'galgluside_hs(g)';
+    'gluside_hs(g)';
+    'galgalgalthcrm_hs(g)';
+    'acgagbside_hs(g)';
+    'acnacngalgbside_hs(g)';
+    'gd1b2_hs(g)';
+    'gd1c_hs(g)';
+    'gq1balpha_hs(g)';
+    'dag_hs(c)';
+    'pe_hs(c)';
+    'tag_hs(c)';
+    'cs_pre(g)';
+    'crmp_hs(c)';
+    'sphmyln_hs(c)';
+    'pail_hs(c)';
+    'pail45p_hs(c)';
+    'pail4p_hs(c)';
+    'dolichol_L(c)';
+    'dolmanp_L(r)';
+    'dolichol_U(c)';
+    'dolmanp_U(r)';
+    'dolichol_L(r)';
+    'dolichol_U(r)';
+    'gpi_prot_hs(r)';
+    'g3m8mpdol_L(r)';
+    'g3m8mpdol_U(r)';
+    'gp1c_hs(g)';
+    'dsTn_antigen(g)';
+    'sTn_antigen(g)';
     'Tn_antigen(g)'
     };
 for i=1:length(new_mets)
@@ -7733,4 +7733,5 @@ TestedRxns = intersect(modelOri.rxns,TestedRxns); % only those reactions that ar
 PercTestedRxns = length(TestedRxns)*100/length(modelOri.rxns);
 if saveDiary
     diary off
+end
 end

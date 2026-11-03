@@ -176,4 +176,5 @@ for i=1:length(param.group)
     end
     summaryConc.(strcat('avr_',param.group(i))) = tempConc;
 end
+end
 

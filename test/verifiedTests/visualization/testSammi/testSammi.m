@@ -157,15 +157,15 @@ mettbl(randsample(length(model.mets)*n,floor(0.5*length(model.mets)))) = NaN;
 mettbl = array2table(mettbl,'VariableNames',sprintfc('condition_%d',1:n),...
     'RowNames',model.mets);
 %Make struct
-dat(1).type = {'rxns' 'color'};
+dat(1).type = {'rxns', 'color'};
 dat(1).data = rxntbl;
-dat(2).type = {'rxns' 'size'};
+dat(2).type = {'rxns', 'size'};
 dat(2).data = rxntbl;
-dat(3).type = {'mets' 'color'};
+dat(3).type = {'mets', 'color'};
 dat(3).data = mettbl;
-dat(4).type = {'mets' 'size'};
+dat(4).type = {'mets', 'size'};
 dat(4).data = mettbl;
-dat(5).type = {'links' 'size'};
+dat(5).type = {'links', 'size'};
 dat(5).data = rxntbl;
 %Define secondaries
 secondaries = {'^h\[.\]$','^h20\[.\]$','^o2\[.\]$','^co2\[.\]$',...
@@ -187,7 +187,7 @@ rxntbl(randsample(length(model.rxns)*n,floor(n*length(model.rxns)/10))) = NaN;
 rxntbl = array2table(rxntbl,'VariableNames',sprintfc('condition_%d',1:n),...
     'RowNames',model.rxns);
 %Make struct
-dat(1).type = {'rxns' 'color'};
+dat(1).type = {'rxns', 'color'};
 dat(1).data = rxntbl;
 %Define secondaries
 secondaries = {'^h\[.\]$','^h20\[.\]$','^o2\[.\]$','^co2\[.\]$',...

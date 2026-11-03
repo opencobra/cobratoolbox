@@ -35,3 +35,4 @@ for i = 1:length(idxs)
 end
 
 model.mets = regexprep(model.mets, '\[(\w+)\]', '_$1');
+end

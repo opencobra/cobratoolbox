@@ -140,6 +140,7 @@ disp('--------------------------------------------------------------')
 disp(['Number of metabolites in the dataset: ' num2str(numel(metToKeepSummary.compound))])
 disp(['Number of metabolites left after quality check: ' num2str(sum(metToKeepSummary.keep))])
 disp(' ')
+end
 
 
 

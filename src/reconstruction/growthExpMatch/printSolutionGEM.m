@@ -59,3 +59,4 @@ fprintf(fid,'\n');
 if nargin >2
     fclose(fid);
 end
+end

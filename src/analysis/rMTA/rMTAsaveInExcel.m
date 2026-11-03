@@ -160,14 +160,14 @@ if ~isempty(differ_genes) &&  ~isempty(RankingGeneID)
             k = table_aux_ranking.Properties.RowNames{j};
             T = sortrows(T,k,'descend');
             T2 = sortrows(T2,k,'descend');
-            try RankingGeneID = num2str(RankingGeneID); end
+            try RankingGeneID = num2str(RankingGeneID); catch, end
             table_aux_ranking{k,i} = find(strcmp(T.gene,RankingGeneID));
-            try table_aux_ranking_FC_pos{k,i} = find(strcmp(T2.gene,RankingGeneID)); end
+            try table_aux_ranking_FC_pos{k,i} = find(strcmp(T2.gene,RankingGeneID)); catch, end
         end
         T = sortrows(T,'wTS','ascend');
         T2 = sortrows(T2,'wTS','ascend');
         table_aux_ranking{'wTS',i} = find(strcmp(T.gene,RankingGeneID));
-        try table_aux_ranking_FC_pos{'wTS',i} = find(strcmp(T2.gene,RankingGeneID)); end
+        try table_aux_ranking_FC_pos{'wTS',i} = find(strcmp(T2.gene,RankingGeneID)); catch, end
         aux = sign(T{RankingGeneID,table_aux_sign.Properties.RowNames})';
         aux2 = char(aux);
         aux2(:) = '+';

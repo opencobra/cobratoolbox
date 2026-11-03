@@ -31,7 +31,7 @@ d1=1e-4;
 d2=1;
 
 %pdco parameters
-options = pdcoSet;
+options = pdcoSet();
 % options.FeaTol    = 1e-6; %6 March 2010 medium FeaTol
 % options.OptTol    = 1e-6; %6 March 2010 medium OptTol
 % options.MaxIter   = 200;

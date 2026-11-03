@@ -41,9 +41,9 @@ function [VMH_existance, rBioNet_existance, metab_rBioNet_online, rxn_rBioNet_on
 mkdir('data');
 
 check4 = {
-    'keggId'
+    'keggId';
     %     'biocyc'
-    'hmdb'
+    'hmdb';
     %     'cheBIId'
     %     'chembl'
     %    % 'chemspider'
@@ -51,7 +51,7 @@ check4 = {
     %     'lipidmaps'
     % %    'pubChemId'
     %     'seed'
-    'inchiString'
+    'inchiString';
     'inchiKey'
     };
 
@@ -206,6 +206,7 @@ if ~isempty(find(contains(rBioNet_existance(:,3),'1')))
     fprintf('At least one abbrevation exists already in rBioNet.\n');
 else
     fprintf('All  abbreviations are new to rBioNet.\n ');
+end
 end
 
 % remove temporary folder for the rBioNetDB

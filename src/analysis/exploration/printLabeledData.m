@@ -107,3 +107,4 @@ end
 if (printToFileFlag)
     fclose(fid);
 end
+end

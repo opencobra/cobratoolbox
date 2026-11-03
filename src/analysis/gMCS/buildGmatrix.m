@@ -236,15 +236,15 @@ if printLevel >=1
     disp('G MATRIX - Delete Repeats');
 end
 tmp_G = [];
-try tmp_G = [tmp_G; G_1]; end
-try tmp_G = [tmp_G; G_2]; end
-try tmp_G = [tmp_G; G_3]; end
-try tmp_G = [tmp_G; G_4]; end
+try tmp_G = [tmp_G; G_1]; catch, end
+try tmp_G = [tmp_G; G_2]; catch, end
+try tmp_G = [tmp_G; G_3]; catch, end
+try tmp_G = [tmp_G; G_4]; catch, end
 tmp_G_ind = [];
-try tmp_G_ind = [tmp_G_ind; G_ind_1]; end
-try tmp_G_ind = [tmp_G_ind; G_ind_2]; end
-try tmp_G_ind = [tmp_G_ind; G_ind_3]; end
-try tmp_G_ind = [tmp_G_ind; G_ind_4]; end
+try tmp_G_ind = [tmp_G_ind; G_ind_1]; catch, end
+try tmp_G_ind = [tmp_G_ind; G_ind_2]; catch, end
+try tmp_G_ind = [tmp_G_ind; G_ind_3]; catch, end
+try tmp_G_ind = [tmp_G_ind; G_ind_4]; catch, end
 n_tmp_G_ind = length(tmp_G_ind);
 
 k = 0;

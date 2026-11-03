@@ -48,6 +48,7 @@ rxn=cell(reactionDatabase);
 try
     load('compartments.mat');
     save([rBioNetDBFolder filesep 'compartments.mat'],'compartments');
+catch
 end
 save([rBioNetDBFolder filesep 'rxn.mat'],'rxn');
 save([rBioNetDBFolder filesep 'metab.mat'],'metab');

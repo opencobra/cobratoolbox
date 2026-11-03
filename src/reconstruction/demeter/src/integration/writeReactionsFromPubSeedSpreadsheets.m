@@ -30,7 +30,7 @@ reactions = readInputTableForPipeline('InReactions.txt');
 exchanges=reactions(find(strcmp(reactions(:,1),'Exchange')),2);
 
 % load database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 for i=1:length(exchanges)
     exchanges{i,2}=database.reactions{ismember(database.reactions(:, 1), exchanges{i,1}), 3};
 end

@@ -51,3 +51,4 @@ modelUpdated.ub(ismember(model.rxns,BlockedRxns.allRxns))=0;
 
 RxnsInModelMin = setdiff(model.rxns,BlockedRxns.allRxns); % all reactions that are not blocked
 modelPruned = extractSubNetwork(model,RxnsInModelMin);
+end

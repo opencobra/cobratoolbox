@@ -51,7 +51,7 @@ numWorkers = parser.Results.numWorkers;
 % Initialise cobratoolbox if needed
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 elseif isempty(CBT_LP_SOLVER)&& isempty(solver) 
     solver = glpk;
 else 

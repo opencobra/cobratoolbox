@@ -30,6 +30,7 @@ inv_S = diag(1 ./ S(abs(S) > epsilon));
 inv_A = V(:, 1:r) * inv_S(1:r, 1:r) * U(:, 1:r)';
 P_R = U(:, 1:r)       * U(:, 1:r)';
 P_N = U(:, (r+1):end) * U(:, (r+1):end)';
+end
 
 % Michael Saunders code
 % [U1,D1,V1,r] = subspaceSVD(A);

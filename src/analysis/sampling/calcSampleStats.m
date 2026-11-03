@@ -42,3 +42,4 @@ for i = 1:length(samples)
     sampleStats.skew(:, i) = skewness(samples{i}')';
     sampleStats.kurt(:, i) = kurtosis(samples{i}')';
 end
+end

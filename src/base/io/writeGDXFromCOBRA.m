@@ -109,3 +109,4 @@ if(exist('wgdx','file') ~= 0)
 else
     fprintf('wgdx() not found. Is the GAMS system directory in the MatLab Path?\n');
 end
+end

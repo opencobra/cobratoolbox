@@ -56,6 +56,7 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
+end
 % End initialization code - DO NOT EDIT
 
 
@@ -76,6 +77,7 @@ guidata(hObject, handles);
 
 % UIWAIT makes Keep_reactions wait for user response (see UIRESUME)
  uiwait(handles.figure1);
+end
 
 
 % --- Outputs from this function are returned to the command line.
@@ -88,6 +90,7 @@ function varargout = Keep_reactions_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 delete(gcf)
+end
 
 
 % --- Executes on button press in Yes.
@@ -97,7 +100,8 @@ function Yes_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = 1;
 guidata(hObject,handles)
-uiresume
+uiresume()
+end
 
 % --- Executes on button press in No.
 function No_Callback(hObject, eventdata, handles)
@@ -106,7 +110,8 @@ function No_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = 2;
 guidata(hObject,handles)
-uiresume
+uiresume()
+end
 
 % --- Executes on button press in Cancel.
 function Cancel_Callback(hObject, eventdata, handles)
@@ -115,7 +120,8 @@ function Cancel_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.output = 0;
 guidata(hObject,handles)
-uiresume
+uiresume()
+end
 
 
 % --- Executes when user attempts to close figure1.
@@ -125,4 +131,5 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: delete(hObject) closes the figure
-uiresume
+uiresume()
+end

@@ -86,6 +86,7 @@ fprintf('Collecting information from HMDB - 2 \n')
 tic;[metabolite_structure,IDsAddedHMDB2,IDsMismatch,InchiKeyList,InchiStringList ] = parseHmdbWebPage(metabolite_structure,startSearch,endSearch);toc
 fprintf('Collecting information from BridgeDB \n')
 [metabolite_structure,IDsAddedBridge2,IdsMismatch] = parseBridgeDb(metabolite_structure,startSearch,endSearch);
+end
 
 % for the next round
 %fprintf('Find Lipid Maps IDs \n')

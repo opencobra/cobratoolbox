@@ -44,7 +44,7 @@ else
 end
 
 % Check openbabel installation
-if isunix || ispc
+if isunix || ispc()
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';
@@ -125,4 +125,5 @@ if toSave && ~isempty(newFormat)
     fclose(fid2);
 % elseif isempty(newFormat)
 %     error(['The format ' origFormat ' couldn''t be converted'])
+end
 end

@@ -39,8 +39,8 @@ metsToAnalyze = parser.Results.metsToAnalyze;
 metCategory = parser.Results.metCategory;
 
 files={
-    [propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion '.txt']
-    [propertiesFolder filesep 'ComputedFluxes' filesep 'secretionFluxes_' reconVersion '.txt']
+    [propertiesFolder filesep 'ComputedFluxes' filesep 'uptakeFluxes_' reconVersion '.txt'];
+    [propertiesFolder filesep 'ComputedFluxes' filesep 'secretionFluxes_' reconVersion '.txt'];
     [propertiesFolder filesep 'ComputedFluxes' filesep 'internalProduction_' reconVersion '.txt']
     };
 

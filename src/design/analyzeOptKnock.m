@@ -75,3 +75,4 @@ elseif (maxProd - minProd) > .1 %growth coupled non unique
 else %growth coupled
     type = 'growth coupled';
 end
+end

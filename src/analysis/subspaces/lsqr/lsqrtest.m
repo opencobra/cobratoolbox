@@ -39,6 +39,7 @@ aprodfunc  = @(mode, m, n, x) lsqraprod(mode,m,n,x,iw,rw)
 disp(' ');   j1 = min(n,5);   j2 = max(n-4,1);
 disp('First elements of x:');  disp(x(1:j1)');
 disp('Last  elements of x:');  disp(x(j2:n)');
+end
 %===================
 % End of lsqrtest.m
 %===================

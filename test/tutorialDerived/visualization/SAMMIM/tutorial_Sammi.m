@@ -142,15 +142,15 @@ mettbl = array2table(mettbl,'VariableNames',sprintfc('condition_%d',1:n),...
 
 %Make struct
 dat = struct;
-dat(1).type = {'rxns' 'color'}; %Reaction nodes and edge color
+dat(1).type = {'rxns', 'color'}; %Reaction nodes and edge color
 dat(1).data = rxntbl;
-dat(2).type = {'rxns' 'size'};  %Reaction nodes size
+dat(2).type = {'rxns', 'size'};  %Reaction nodes size
 dat(2).data = rxntbl;
-dat(3).type = {'mets' 'color'}; %Metabolite nodes color
+dat(3).type = {'mets', 'color'}; %Metabolite nodes color
 dat(3).data = mettbl;
-dat(4).type = {'mets' 'size'};  %Metabolite nodes size
+dat(4).type = {'mets', 'size'};  %Metabolite nodes size
 dat(4).data = mettbl;
-dat(5).type = {'links' 'size'}; %Edge thickness
+dat(5).type = {'links', 'size'}; %Edge thickness
 dat(5).data = rxntbl;
 %% 
 % In addition, in order to make the network less convoluted, we can shelve (temporarly 

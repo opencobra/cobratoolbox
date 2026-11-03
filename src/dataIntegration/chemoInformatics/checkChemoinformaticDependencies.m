@@ -21,7 +21,7 @@ else
 end
 
 % Check if openBabel is installed
-if isunix || ispc 
+if isunix || ispc() 
     obabelCommand = 'obabel';
 else
     obabelCommand = 'openbabel.obabel';

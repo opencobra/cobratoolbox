@@ -61,3 +61,4 @@ PercentageConstraintRxns_model = (minConstraints + maxConstraints)*100/length(mo
 %percentage of all reactions
 OfAll = (OnLB+OnUB)/length(model.rxns);
 OfConstraint = (OnLB+OnUB)/(minConstraints + maxConstraints);
+end

@@ -225,7 +225,7 @@ options.targetedDietRxns={'Diet_EX_FM_e',1;'Diet_EX_SBM_e',1;'Diet_EX_BSF_e',1; 
 
 clear options
 options.roiWeights=[50 10];
-options.targetedDietRxns={'Diet_EX_FM_e',0.1;'Diet_EX_SBM_e',0.1;'Diet_EX_BSF_e',0.1; 'All' 15};
+options.targetedDietRxns={'Diet_EX_FM_e',0.1;'Diet_EX_SBM_e',0.1;'Diet_EX_BSF_e',0.1; 'All', 15};
 [newDietModel,pointsModel,roiFlux,pointsModelSln,menuChanges,detailedAnalysis]=nutritionAlgorithm(mainSalmon,{'Biomass','N_Track'},{'max','min'},options);
 %% 
 % The solution specifies removal of choline, soybean meal and fish meal. But 

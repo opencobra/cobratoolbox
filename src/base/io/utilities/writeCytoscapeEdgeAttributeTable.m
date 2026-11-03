@@ -154,3 +154,4 @@ for n=1:nRxn
     end
 end
 fclose(fid);
+end

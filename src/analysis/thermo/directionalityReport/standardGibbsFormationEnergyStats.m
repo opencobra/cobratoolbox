@@ -56,3 +56,4 @@ if figures
 end
 
 fprintf('%s\n',['Number of unique reactants without dGf0: ' int2str(length(unique(noneAbbr))) ]);
+end

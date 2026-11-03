@@ -65,7 +65,7 @@ end
 mkdir('Taxon_Flux_Correlations')
 
 % load database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
 fluxes(:,1)=strrep(fluxes(:,1),'(e)','');
@@ -87,11 +87,11 @@ end
 
 % Calculate the abundance in each sample on all taxon levels
 TaxonomyLevels = {
-    'Phylum'
-    'Class'
-    'Order'
-    'Family'
-    'Genus'
+    'Phylum';
+    'Class';
+    'Order';
+    'Family';
+    'Genus';
     'Species'
 };
 % extract the list of entries on each taxonomical level and prepare the

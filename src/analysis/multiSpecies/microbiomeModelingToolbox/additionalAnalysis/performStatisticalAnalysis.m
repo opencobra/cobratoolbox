@@ -214,7 +214,7 @@ significantFeatures=sampleData;
 significantFeatures(ia,:)=[];
 
 %% add reaction/metabolite annotations if possible
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 for i=2:size(Statistics,1)
     feat=Statistics{i,1};

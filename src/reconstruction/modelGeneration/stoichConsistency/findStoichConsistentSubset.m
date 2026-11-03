@@ -858,4 +858,5 @@ if any(~model.SConsistentMetBool) || any(~model.SConsistentRxnBool)
 else
     stoichConsistModel = model;
 end
+end
 

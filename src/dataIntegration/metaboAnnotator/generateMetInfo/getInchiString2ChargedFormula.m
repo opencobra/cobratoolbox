@@ -64,3 +64,4 @@ for i = 1 : length(metList)
     % delete sdf file generated above as not needed anymore
       delete([metList{i,1} '[c].sdf']);
 end
+end

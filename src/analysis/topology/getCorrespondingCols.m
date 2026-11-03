@@ -91,3 +91,4 @@ switch mode
     otherwise
         error(['Did not recognise mode: ' mode])
 end
+end

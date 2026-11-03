@@ -80,3 +80,4 @@ charge_l = sum(charge_left);
 charge_r = sum(charge_right);
 
 output = {leftside,rightside,charge_l,charge_r};
+end

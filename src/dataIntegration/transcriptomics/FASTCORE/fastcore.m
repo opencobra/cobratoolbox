@@ -199,4 +199,5 @@ end
 
 %coreGeneBool
 tissueModel = removeUnusedGenes(tissueModel);
+end
 

@@ -38,7 +38,7 @@ else
     cmd = ['python2 ' fullpath 'inchi2gv.py -i '];
 end
 
-if ~ispc
+if ~ispc()
     [rval, group_def] = system([cmd, '"', inchi, '"']);
 else
     [rval, group_def] = system([cmd, inchi]);
@@ -57,5 +57,6 @@ if rval == 0 % && ~strcmp('Traceback', group_def(1:9))
 else
     fprintf('%s\n',['Warning: getGroupVectorFromInchi did not succeed for: ' inchi])
     group_def = [];
+end
 end
 

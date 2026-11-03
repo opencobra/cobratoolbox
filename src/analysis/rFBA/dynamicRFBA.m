@@ -198,3 +198,4 @@ subplot(1,2,2);
 plot(timeVec,concentrationMatrix(selPlot,:),'LineWidth',2);
 axis tight
 legend(strrep(excRxnNames(selPlot),'EX_',''));
+end

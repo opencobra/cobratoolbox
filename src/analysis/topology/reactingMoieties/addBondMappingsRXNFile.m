@@ -208,6 +208,7 @@ end
 nTotalBondTransitions=size(bondMappings,1);
 
 bondMappings= sortrows(bondMappings,'bondTransitionNrs');
+end
 %Map reacting bond to the energy node
 %bondMappingsEnergy=bondMappings;
 

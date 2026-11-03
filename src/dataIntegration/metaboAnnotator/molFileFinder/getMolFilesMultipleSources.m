@@ -101,9 +101,9 @@ end
 % add mol file info to the metabolite_structure
 
 % possible locations based on obtainMetStructures.m
-location = {'chebi'
-    'hmdb'
-    'kegg'
+location = {'chebi';
+    'hmdb';
+    'kegg';
     'pubchem'
     };
 for j = 1 : length(location)
@@ -131,6 +131,7 @@ for j = 1 : length(location)
 end
 
  cd(currentPath)
+end
 % try
 %     rmdir([molFileDirectory filesep 'metabolites'],'s');
 % end

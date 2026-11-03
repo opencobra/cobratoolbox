@@ -46,3 +46,4 @@ returnedmappings = mappings(strcmp(field,mappings(:,4)),:);
 if ~isequal(qualifiers,'all')
     returnedmappings = returnedmappings(ismember(returnedmappings(:,2),qualifiers),:);
 end
+end

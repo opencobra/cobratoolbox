@@ -99,3 +99,4 @@ end
 
 Rxns=  model.rxns(find(assoR));
 grRules= model.grRules(find(assoR));
+end

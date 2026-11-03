@@ -255,3 +255,4 @@ elseif fordb == 1
 else %input incorrect
     error('fordb is supposed to be 0 or 1.');
 end
+end

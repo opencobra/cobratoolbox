@@ -61,7 +61,7 @@
 % 
 % % Start DEMETER by initializing the COBRA Toolbox.
 
-initCobraToolbox
+initCobraToolbox()
 %% 
 % Please ensure that the COBRA/papers folder is up to date and in the MATLAB 
 % path as DEMETER depends on files located in COBRA/papers/demeter.
@@ -432,6 +432,7 @@ computeModelProperties(refinedFolder, infoFilePath, reconVersion, 'numWorkers', 
 system('curl -LJO https://github.com/VirtualMetabolicHuman/AGORA/archive/master.zip')
 try
     unzip('AGORA-master')
+catch
 end
 modPath = [pwd filesep 'AGORA-master' filesep 'CurrentVersion' filesep 'AGORA_1_03' filesep' 'AGORA_1_03_mat'];
 %% 

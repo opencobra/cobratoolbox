@@ -55,3 +55,4 @@ function [charge, chargeWithoutProtons] = getChargeFromInChI(InChI)
     %The overall Charge is the combination of charge from protons and base
     %charge
     charge = proton_charges + chargeWithoutProtons;
+end

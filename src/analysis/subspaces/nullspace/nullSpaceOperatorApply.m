@@ -40,10 +40,11 @@ rankS   = nullS.rank; % rank(S)
 [n ,n ] = size(L);
 [mV,nV] = size(V);
 
-B       = [sparse(rankS,nV)
+B       = [sparse(rankS,nV);
            V        ];
 Z       = (L')\B;
 W       = Z;
 W(p,:)  = Z;
 W       = Cinv*W;
 return
+end

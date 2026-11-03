@@ -103,6 +103,7 @@ if ~stopFlag
         end
     end
 end
+end
 
 %% Subfunctions
 % Fills in RxnInfo to be passed to metCompare GUI.
@@ -147,6 +148,7 @@ for iMet = 1:RxnInfo.nMets
    if ~hit
        RxnInfo.matches(iMet) = 0 ;
    end
+end
 end
 
 function RxnInfo = autoMatchMets(RxnInfo)
@@ -265,3 +267,4 @@ else
 end
 RxnInfo.goodMatch = goodMatch ;
 RxnInfo.defNew = defNew ;
+end

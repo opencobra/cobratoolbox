@@ -127,7 +127,7 @@ secretionTable(:,find(strncmp(secretionTable(1,:),'Ref',3)))=[];
 
 secretionGapfillAddConditional = {
     % secretion products, condition, add reaction(s)
-    'Sulfide', '~any(ismember(model.rxns, {''CYSDS'',''CYSTS_H2S''}))', {'CYSDS'}
+    'Sulfide', '~any(ismember(model.rxns, {''CYSDS'',''CYSTS_H2S''}))', {'CYSDS'};
     'Trimethylamine', '~any(ismember(model.rxns, {''TMAOR1e'',''TMAOR2e''}))', {'TMAOt2r','TMAt2r','TMAOR1','TMAOR2'}
     };
 

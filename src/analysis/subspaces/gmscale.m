@@ -139,5 +139,6 @@ function [cscale, rscale] = gmscale(A, iprint, scltol)
     fprintf('\n  Row %6g %9.1e    Row %6g %9.1e'  , imin, rmin, imax, rmax)
     fprintf('\n  Col %6g %9.1e    Col %6g %9.1e\n', jmin, cmin, jmax, cmax)
   end
+end
 
 % end of gmscale

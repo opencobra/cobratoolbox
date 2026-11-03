@@ -610,3 +610,4 @@ if  sol.stat ~=1
         disp('Both original and relaxed model are INFEASIBLE! Please see the report for more information about constraints.')
     end
 end
+end

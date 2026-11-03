@@ -115,3 +115,4 @@ for i = 1:size(sources, 2)
 end
 
 newModel = model;
+end

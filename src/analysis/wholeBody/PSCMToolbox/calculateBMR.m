@@ -60,4 +60,5 @@ else % female
     % Women	BMR = (10 � weight in kg) + (6.25 � height in cm) - (5 � age in years) - 161
     BMR(3,1) = (10 * weight ) + (6.25 * height ) - (5 * age ) -161;
 end
+end
 

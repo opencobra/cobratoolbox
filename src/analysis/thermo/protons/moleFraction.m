@@ -72,3 +72,4 @@ Legendre     = 1;
 LegendreCHI  = 1;
 
 [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(Alberty2006(n).basicData(1:p,1),Alberty2006(n).basicData(1:p,2),Alberty2006(n).basicData(1:p,3),Alberty2006(n).basicData(1:p,4),pHr,is,temp,chi,Legendre,LegendreCHI);
+end

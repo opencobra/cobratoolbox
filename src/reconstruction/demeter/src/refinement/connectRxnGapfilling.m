@@ -28,7 +28,7 @@ function [resolveBlocked, model] = connectRxnGapfilling(model, database)
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 solver = CBT_LP_SOLVER;
 
@@ -52,37 +52,37 @@ end
 % Reactions that can unblock the potentially blocked reaction in the
 % first column. The solutions were determined manually.
 rxns2Unblock={
-    'N2OFO','EX_n2(e)','N2t','EX_n2o(e)','N2Ot',[],[],[],[],[]
-    'NIT_n1p4','EX_n2(e)','N2t','EX_h2(e)','H2td','EX_nh4(e)','NH4tb',[],[],[]
-    'N2OO','EX_no(e)','EX_n2o(e)',[],[],[],[],[],[],[]
-    'NHFRBOr','EX_no(e)','NOt','EX_n2o(e)','N2Ot',[],[],[],[],[]
-    'NHFRBO','EX_no(e)','NOt','EX_n2o(e)','N2Ot',[],[],[],[],[]
-    'CRNCBCT','CRNBTCT','BBTCOAOX','EX_gbbtn(e)','GBBTNt','EX_ctbt(e)','CTBTt','EX_crn(e)','CRNabc',[]
-    '3HACPR1','DM_btn',[],[],[],[],[],[],[],[]
-    'BTS4','DM_dad_5','sink_s','DM_btn',[],[],[],[],[],[]
-    'AMAOTr','DM_AMOB',[],[],[],[],[],[],[],[]
-    'DEXTRINASE','EX_dextrin(e)','DEXTRINabc',[],[],[],[],[],[],[]
-    'MANA4','EX_mantr(e)','MANTRabc',[],[],[],[],[],[],[]
-    'STYSGH','EX_stys(e)','STYSabc',[],[],[],[],[],[],[]
-    'AHEXASE3','EX_chtbs(e)','CHTBSabc',[],[],[],[],[],[],[]
-    'GLXO1','EX_oxa(e)','OXAte',[],[],[],[],[],[],[]
-    'DHNPA','EX_gcald(e)','GCALDt',[],[],[],[],[],[],[]
-    'AHMMPS','EX_gcald(e)','GCALDt',[],[],[],[],[],[],[]
-    'AB6PGH','DM_HQN',[],[],[],[],[],[],[],[]
-    'MTAN','DM_5MTR',[],[],[],[],[],[],[],[]
-    'THZPSN','DM_4HBA',[],[],[],[],[],[],[],[]
-    'GCDCHOLBHSe','EX_dgchol(e)','EX_gly(e)','EX_C02528(e)',[],[],[],[],[],[]
-    'GCHOLBHSe','EX_gchola(e)','EX_gly(e)','EX_cholate(e)',[],[],[],[],[],[]
-    'TCHOLBHSe','EX_tchola(e)','EX_taur(e)','EX_cholate(e)',[],[],[],[],[],[]
-    'TCDCHOLBHSe','EX_tdchola(e)','EX_taur(e)','EX_C02528(e)',[],[],[],[],[],[]
-    'TDCABSHe','EX_tdechola(e)','EX_dchac(e)','EX_taur(e)',[],[],[],[],[],[]
-    'PDHbr','PDHa',[],[],[],[],[],[],[],[]
-    'PMACPME','EACPR2','3HACPR2','3OAACPR2','GACPCD','EACPR1','3HACPR1','3OAACPR1','MALCOACD','MALCOAMT'
-    'PLACOR','EX_plac(e)','PLACt2r',[],[],[],[],[],[],[]
+    'N2OFO','EX_n2(e)','N2t','EX_n2o(e)','N2Ot',[],[],[],[],[];
+    'NIT_n1p4','EX_n2(e)','N2t','EX_h2(e)','H2td','EX_nh4(e)','NH4tb',[],[],[];
+    'N2OO','EX_no(e)','EX_n2o(e)',[],[],[],[],[],[],[];
+    'NHFRBOr','EX_no(e)','NOt','EX_n2o(e)','N2Ot',[],[],[],[],[];
+    'NHFRBO','EX_no(e)','NOt','EX_n2o(e)','N2Ot',[],[],[],[],[];
+    'CRNCBCT','CRNBTCT','BBTCOAOX','EX_gbbtn(e)','GBBTNt','EX_ctbt(e)','CTBTt','EX_crn(e)','CRNabc',[];
+    '3HACPR1','DM_btn',[],[],[],[],[],[],[],[];
+    'BTS4','DM_dad_5','sink_s','DM_btn',[],[],[],[],[],[];
+    'AMAOTr','DM_AMOB',[],[],[],[],[],[],[],[];
+    'DEXTRINASE','EX_dextrin(e)','DEXTRINabc',[],[],[],[],[],[],[];
+    'MANA4','EX_mantr(e)','MANTRabc',[],[],[],[],[],[],[];
+    'STYSGH','EX_stys(e)','STYSabc',[],[],[],[],[],[],[];
+    'AHEXASE3','EX_chtbs(e)','CHTBSabc',[],[],[],[],[],[],[];
+    'GLXO1','EX_oxa(e)','OXAte',[],[],[],[],[],[],[];
+    'DHNPA','EX_gcald(e)','GCALDt',[],[],[],[],[],[],[];
+    'AHMMPS','EX_gcald(e)','GCALDt',[],[],[],[],[],[],[];
+    'AB6PGH','DM_HQN',[],[],[],[],[],[],[],[];
+    'MTAN','DM_5MTR',[],[],[],[],[],[],[],[];
+    'THZPSN','DM_4HBA',[],[],[],[],[],[],[],[];
+    'GCDCHOLBHSe','EX_dgchol(e)','EX_gly(e)','EX_C02528(e)',[],[],[],[],[],[];
+    'GCHOLBHSe','EX_gchola(e)','EX_gly(e)','EX_cholate(e)',[],[],[],[],[],[];
+    'TCHOLBHSe','EX_tchola(e)','EX_taur(e)','EX_cholate(e)',[],[],[],[],[],[];
+    'TCDCHOLBHSe','EX_tdchola(e)','EX_taur(e)','EX_C02528(e)',[],[],[],[],[],[];
+    'TDCABSHe','EX_tdechola(e)','EX_dchac(e)','EX_taur(e)',[],[],[],[],[],[];
+    'PDHbr','PDHa',[],[],[],[],[],[],[],[];
+    'PMACPME','EACPR2','3HACPR2','3OAACPR2','GACPCD','EACPR1','3HACPR1','3OAACPR1','MALCOACD','MALCOAMT';
+    'PLACOR','EX_plac(e)','PLACt2r',[],[],[],[],[],[],[];
     % connect benzoate metabolism
-    'MNDLMDH','EX_rmndlmd(e)','RMNDLMDt2r','EX_bz(e)','BZte',[],[],[],[],[]
-    'TFDXNOR','EX_tln(e)','TLNt2r','EX_bz(e)','BZte',[],[],[],[],[]
-    'BZAMAH','EX_bzam(e)','BZAMt2r','EX_bz(e)','BZte',[],[],[],[],[]
+    'MNDLMDH','EX_rmndlmd(e)','RMNDLMDt2r','EX_bz(e)','BZte',[],[],[],[],[];
+    'TFDXNOR','EX_tln(e)','TLNt2r','EX_bz(e)','BZte',[],[],[],[],[];
+    'BZAMAH','EX_bzam(e)','BZAMt2r','EX_bz(e)','BZte',[],[],[],[],[];
     'BOCLUH','EX_bocbnleu(e)','BOCBNLEUt2r','EX_bz(e)','BZte',[],[],[],[],[]
     };
 

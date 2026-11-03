@@ -45,7 +45,7 @@ if launchTestSuite
         COVERAGE = false;
     end
 
-    initCobraToolbox;
+    initCobraToolbox();
 
     % initialize the cleanup
     currentDir = cd('test');

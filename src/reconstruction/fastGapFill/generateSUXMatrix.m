@@ -101,6 +101,7 @@ tmp=find(model.lb < 0);
 MatricesSUX.MatrixPart(1:length(model.rxns)+length(tmp),1)=1; % model reactions
 MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.MatrixPart)+length(KEGG.rxns)+length(find(KEGG.lb < 0)),1)=2;%KEGG DB reactions
 MatricesSUX.MatrixPart(length(MatricesSUX.MatrixPart)+1:length(MatricesSUX.rxns),1)=3; %exchange and transport reactions
+end
 
 function model = CheckMetName(model)
 % checks if model.mets has () or [] for compartment
@@ -117,3 +118,4 @@ end
             model.mets{i} = strcat(model.mets{i},'[c]');
         end
     end
+end

@@ -52,3 +52,4 @@ for i = 1:n
     t2 = t2/sum(t2);
     out(:,i) = xs*t2;
 end
+end

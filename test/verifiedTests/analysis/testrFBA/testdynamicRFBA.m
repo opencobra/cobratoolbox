@@ -40,7 +40,7 @@ for k =1:length(solverPkgs)
         solverQPOK = changeCobraSolver(QPsolverPkgs{j}, 'QP', 0);
 
         if solverLPOK && solverQPOK
-            substrateRxns ={'EX_glc(e)' 'EX_ac(e)'};
+            substrateRxns ={'EX_glc(e)', 'EX_ac(e)'};
             initConcentrations = [10.8; 1];
             initBiomass = 0.001;
             timeStep = 1/100;

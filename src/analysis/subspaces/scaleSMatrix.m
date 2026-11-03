@@ -24,3 +24,4 @@ while (numNonZero > 0)
 end
 
 S = round(S*10^(pow-1));
+end

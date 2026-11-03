@@ -31,3 +31,4 @@ isIntegrative = ~(isTransitive | isInternal); % All other moieties are Integrati
 types(isTransitive) = {'Transitive'};
 types(isIntegrative) = {'Integrative'};
 types(isInternal) = {'Internal'};
+end

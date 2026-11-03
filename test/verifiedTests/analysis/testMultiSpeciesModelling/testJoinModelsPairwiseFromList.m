@@ -25,10 +25,10 @@ fprintf('   Testing joinModelsPairwiseFromList.m ...\n');
 if ~exist('pairedModelInfo', 'var')
     % run the script to build the pairwise models
     modelList={
-        'Abiotrophia_defectiva_ATCC_49176'
-        'Acidaminococcus_fermentans_DSM_20731'
-        'Acidaminococcus_intestini_RyC_MR95'
-        'Acinetobacter_calcoaceticus_PHEA_2'
+        'Abiotrophia_defectiva_ATCC_49176';
+        'Acidaminococcus_fermentans_DSM_20731';
+        'Acidaminococcus_intestini_RyC_MR95';
+        'Acinetobacter_calcoaceticus_PHEA_2';
         'Acinetobacter_baumannii_AB0057'
         };
     for i=1:length(modelList)

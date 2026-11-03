@@ -47,3 +47,4 @@ end
 allGenes = unique(allGenes);
 rxns = columnVector(rxns);
 fclose(fid);
+end

@@ -108,5 +108,6 @@ function sol = readMinosSolution(fname)
     sol.s = s;
     sol.rc = rc;
     sol.y = y;
+end
 
 % end function readMinosSolution

@@ -137,3 +137,4 @@ else
     assert(all(sort(rxnNrs(~isSubstrate)) == (1:sum(~isSubstrate))'), '%s.rxn',rxnfileName)
     assert(all(sort(rxnNrs(isSubstrate)) == sort(rxnNrs(~isSubstrate))), '%s.rxn',rxnfileName)
 end
+end

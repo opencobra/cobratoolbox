@@ -260,6 +260,7 @@ classdef CMatrixTest < matlab.unittest.TestCase
             A = sparse(A) * NaN;
             Z = chol(type(A));
             Z'\randn(5,1);
+         catch
          end
          
          A = sprandn(30,30,0.3);
@@ -315,6 +316,7 @@ classdef CMatrixTest < matlab.unittest.TestCase
          
          try
             o.factorize(diag(sparse(rand(12,1))));
+         catch
          end
       end
    end

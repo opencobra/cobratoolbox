@@ -33,3 +33,4 @@ for i=1:length(tmpFields)
             warning('Unrecognized field %s with value %s in reaction!', fieldStr, fieldValue);
     end
 end
+end

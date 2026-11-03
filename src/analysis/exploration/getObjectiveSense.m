@@ -60,3 +60,4 @@ end
 % if neither osenseStr and osense is provided, set to default
 osense = -1;
 osenseStr = 'max';
+end

@@ -50,3 +50,4 @@ eq2 = sample2 == LPproblem * ones(1, size(sample1, 2));
 eqtotal = eq1 | eq2;
 
 mix = sum(sum((l1 == l2) & ~eqtotal))/(numel(l1)-sum(sum(eqtotal)));
+end

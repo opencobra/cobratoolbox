@@ -39,4 +39,5 @@ for i=1:nMoieties
         warning(['Mass is NaN for metabolites related to moiety ' moietyFormulae{i}])
     end
 end
+end
 

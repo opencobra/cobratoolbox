@@ -51,4 +51,5 @@ end
 %dependent fields).
 [~,sortedOrder] = sort(modelNew.genes);
 modelNew = updateFieldOrderForType(modelNew,'genes',sortedOrder);
+end
 

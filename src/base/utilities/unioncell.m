@@ -41,3 +41,4 @@ for r = 1:rlt
         fprintf('%s\n', ['No match:  ' int2str(r) ' ' A{r, colA}]);
     end
 end
+end

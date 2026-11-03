@@ -1,0 +1,44 @@
+# testAll under RunMat
+
+- Started: 2026-11-02T22:09:43Z
+- Source: /tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-matlab-interface-spec/1a66df61-8617-464a-b587-ebd470eb7b17/scratchpad/cobra-after @ a06606fda
+- RunMat: RunMat v0.6.2 (/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-matlab-interface-spec/1a66df61-8617-464a-b587-ebd470eb7b17/scratchpad/runmat-target/release/runmat)
+- Command: COBRA_CI=1 timeout 4h runmat run test/testAll.m, in a copy of SOURCE
+- Shims: none
+- Exit status: 1, after 1s
+
+## Files set aside (1093)
+
+```
+   1066 discovery round 1
+     17 runmat check panics (D7)
+     10 not UTF-8 (D11)
+test files among them (not run): 35
+```
+
+## Entry points that fail discovery (kept, not set aside)
+
+```
+initCobraToolbox.m	undefined variable 'prefdir' (RunMat:UndefinedVariable)
+test/testAll.m	undefined variable 'initCobraToolbox' (RunMat:UndefinedVariable)
+```
+
+## Stopping point (no JUnit report was written)
+
+```
+1:error: undefined variable 'initCobraToolbox'
+2-id: RunMat:UndefinedVariable
+3---> test/testAll.m:73:5
+4-73 |     initCobraToolbox;
+5-  |     ^^^^^^^^^^^^^^^^
+```
+
+Last lines of the output:
+
+```
+error: undefined variable 'initCobraToolbox'
+id: RunMat:UndefinedVariable
+--> test/testAll.m:73:5
+73 |     initCobraToolbox;
+  |     ^^^^^^^^^^^^^^^^
+```

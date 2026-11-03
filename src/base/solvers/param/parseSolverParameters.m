@@ -101,3 +101,4 @@ for i = 1:numel(defaultParams(:,1))
         param.(defaultParams{i,1}) = defaultParams{i,2};
     end
 end
+end

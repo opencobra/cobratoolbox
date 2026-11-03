@@ -137,19 +137,19 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
   S3(lrgrow,:) = Slrg(i1,j2);
   S4 = Slrg(i2,j2);
 
-  A      = [[S1 S3
+  A      = [[S1 S3;
              S2 S4];
             [A(~storow,:) sparse(nnz(~storow),ndum)]];
-  b      = [b(storow)
-            zeros(ndum,1)
+  b      = [b(storow);
+            zeros(ndum,1);
             b(~storow)];
-  c      = [c
+  c      = [c;
             zeros(ndum,1)];
-  x_L    = [x_L
+  x_L    = [x_L;
            -Inf(ndum,1)];
-  x_U    = [x_U
+  x_U    = [x_U;
             Inf(ndum,1)];
-  csense = [repmat('E',nnz(storow)+ndum,1)
+  csense = [repmat('E',nnz(storow)+ndum,1);
             csense(~storow)];
 
 % find badly scaled coupling constraints
@@ -209,23 +209,23 @@ function [LPproblem] = reformulate(LPproblem, BIG, printLevel)
       [m,n] = size(C);
       ndum  = ndum+dum;
 
-      newcon = [newcon
+      newcon = [newcon;
                 repmat(cupcon(i),dum,1)];
   end
 
   A      = [[A(ncuprow,:) sparse(nnz(ncuprow),ndum)];
              C ];
-  b      = [b(ncuprow)
-            b(cuprow)
+  b      = [b(ncuprow);
+            b(cuprow);
             zeros(ndum,1)];
-  c      = [c
+  c      = [c;
             zeros(ndum,1)];
-  x_L    = [x_L
+  x_L    = [x_L;
            -Inf(ndum,1)];
-  x_U    = [x_U
+  x_U    = [x_U;
             Inf(ndum,1)];
-  csense = [csense(ncuprow)
-            cupcon
+  csense = [csense(ncuprow);
+            cupcon;
             newcon];
 
 % dump tranformed LPproblem into struct

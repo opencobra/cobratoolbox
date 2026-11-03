@@ -92,10 +92,10 @@ end
 %% propagate experimental data from the input files to new strains
 
 inputDataToCheck={
-    'CarbonSourcesTable'
-    'FermentationTable'
-    'GrowthRequirementsTable'
-    'secretionProductTable'
+    'CarbonSourcesTable';
+    'FermentationTable';
+    'GrowthRequirementsTable';
+    'secretionProductTable';
     'uptakeTable'
     };
 

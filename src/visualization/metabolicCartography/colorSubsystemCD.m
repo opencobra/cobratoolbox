@@ -43,7 +43,7 @@ function [newMap] = colorSubsystemCD(map, model, subsystem, color, areaWidth)
 
     newMap = map;
     rxnList = model.rxns(ismember([model.subSystems{:}]', subsystem));
-    colors = createColorsMap;
+    colors = createColorsMap();
 
     index = find(ismember(newMap.rxnName, rxnList));
     for j = index'

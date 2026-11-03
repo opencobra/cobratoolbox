@@ -72,3 +72,4 @@ while rp > 0 % Iterate since decomposed moiety vectors might themselves be decom
     rp = size(Lp,2);
 end
 D = unique(D','rows','stable')'; % Eliminate duplicates
+end

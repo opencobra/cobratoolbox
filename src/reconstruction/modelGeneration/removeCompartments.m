@@ -119,3 +119,4 @@ end
 if isfield(modelDecomp,'rules')
     modelDecomp.rules=columnVector(modelDecomp.rules);
 end
+end

@@ -135,12 +135,12 @@ bar_handle6=barh(X1,Y1,1,'BaseValue',minX,'FaceColor',[0.86 0.86 0.86],'EdgeColo
 %      H(3) = handle to errorbar x if error y specified
 % LineSpec=[''LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r'']
 LineSpec='r.';
-hE = ploterr(Y(xip),X1,{model.DrGtMin(xip) model.DrGtMax(xip)},[],LineSpec,'hhxy',0);
+hE = ploterr(Y(xip),X1,{model.DrGtMin(xip), model.DrGtMax(xip)},[],LineSpec,'hhxy',0);
 set(hE(2),'LineWidth',5);
 % hE=errorbar(X1,Y(xip),L(xip),U(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','r');
 %dGrt0 errorbar on top and inside dGrt
 LineSpec='b.';
-hE = ploterr(Y0(xip),X1,{model.DrGt0Min(xip) model.DrGt0Max(xip)},[],LineSpec,'hhxy',0);
+hE = ploterr(Y0(xip),X1,{model.DrGt0Min(xip), model.DrGt0Max(xip)},[],LineSpec,'hhxy',0);
 set(hE(2),'LineWidth',5);
 % hE2=errorbar(X1,Y0(xip),L0(xip),U0(xip),'LineStyle','none','LineWidth',2,'DisplayName','forwardReversible','Color','b');
 
@@ -192,3 +192,4 @@ for n=1:length(xip)
 end
 set(AX(2),'YTickLabel',YTickLabel,'FontSize',10);
 saveas(figure1 ,'forwardTransportQuantReverseBoolSetToForward','fig');
+end

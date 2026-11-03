@@ -23,3 +23,4 @@ function weight = weightFunction(PPDE, alpha, beta, pThresh)
 		weight = min(beta * (-log(1 - PPDE) + log(1 - pThresh)),...
 			-alpha * beta * log(1 - pThresh));
 	end
+end

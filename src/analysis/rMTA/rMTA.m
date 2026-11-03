@@ -231,7 +231,7 @@ else
                     break;
                 end
             end
-            try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); end
+            try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); catch, end
         end
         clear cplex_model
         if printLevel >0
@@ -246,7 +246,7 @@ time_best = toc(timerVal);
 if printLevel >0
     fprintf('\tStep 1 time: %4.2f seconds = %4.2f minutes\n',time_best,time_best/60);
 end
-try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); end
+try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); catch, end
 fprintf('-------------------\n');
 
 
@@ -308,7 +308,7 @@ else
                 break;
             end
         end
-        try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); end
+        try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); catch, end
     end
     clear cplex_model cplex_moma
     if printLevel >0
@@ -321,7 +321,7 @@ time_moma = toc(timerVal);
 if printLevel >0
     fprintf('\tStep 2 time: %4.2f seconds = %4.2f minutes\n',time_moma,time_moma/60);
 end
-try save('temp_rMTA.mat', 'i','j','k','best','moma','worst','score_best','score_moma','score_worst','Vres'); end
+try save('temp_rMTA.mat', 'i','j','k','best','moma','worst','score_best','score_moma','score_worst','Vres'); catch, end
 fprintf('-------------------\n');
 
 
@@ -379,7 +379,7 @@ else
                     break;
                 end
             end
-            try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); end
+            try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); catch, end
         end
         clear cplex_model
         fprintf('\tAll MIQP problems performed\n');
@@ -392,7 +392,7 @@ time_worst = toc(timerVal);
 if printLevel >0
     fprintf('\tStep 3 time: %4.2f seconds = %4.2f minutes\n',time_worst,time_worst/60);
 end
-try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); end
+try save('temp_rMTA.mat', 'i','j','k','i_alpha','k_alpha','best','moma','worst','score_best','score_moma','score_worst','Vres'); catch, end
 fprintf('-------------------\n');
 
 

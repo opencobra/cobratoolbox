@@ -33,7 +33,7 @@ function Model = orderModelFieldsBorg(Model)
 %    64673 Zwingenberg, Germany
 %    www.brain-biotech.de
 
-fields = TmodelFields ;  % Order fields. Get correct order.
+fields = TmodelFields() ;  % Order fields. Get correct order.
 correctOrder = fields{5} ;
 
 % Current Field names in the model.
@@ -60,3 +60,4 @@ fieldOrder(fieldOrder == 0) = [] ;
 
 % Organize
 Model = orderfields(Model, fieldOrder) ;
+end

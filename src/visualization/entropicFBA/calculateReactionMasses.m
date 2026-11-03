@@ -279,3 +279,4 @@ CF = Cf';
 CR = Cr';
 substratesMass = CF;
 productsMass = CR;
+end

@@ -216,3 +216,4 @@ else
     optKnockSol.rxnList = {};
     optKnockSol.fluxes = [];
 end
+end

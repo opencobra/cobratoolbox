@@ -195,6 +195,7 @@ else
         modelOut=model;
     end
 end
+end
 
 function groups = findDuplicateGroups(ic)
 % Members of every group that has more than one member, as row vectors of increasing indices,
@@ -207,4 +208,5 @@ duplicateGroups = find(counts > 1);
 groups = cell(numel(duplicateGroups), 1);
 for k = 1:numel(duplicateGroups)
     groups{k} = order(first(duplicateGroups(k)):last(duplicateGroups(k)))';
+end
 end

@@ -38,7 +38,7 @@ for n = 1:nMet
             for m = 1:length(phs)
                 ph = phs(m);
 
-                if ispc
+                if ispc()
                     system(['cxcalc -o ', msdistrdir, filesep, model.mets{n}(1:(end-3)), '_msdistr_ph', num2str(ph), '.sdf msdistr -H ', num2str(ph), ' -M true ', molfiledir, filesep, model.mets{n}(1:(end-3)), '.mol']);
                 end
 
@@ -48,4 +48,5 @@ for n = 1:nMet
 
     end
 
+end
 end

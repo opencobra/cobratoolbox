@@ -219,3 +219,4 @@ end
 save ACHR_last_point.mat curPoint
 
 fclose(fidErr);
+end

@@ -358,7 +358,9 @@ if parallel
 end
 
 fclose(fidErr);
+end
 
 function out = subparts(nPoints, n, k)
     out = (floor(nPoints*k/n)+1) : (floor(nPoints*(k+1)/n));
 return
+end

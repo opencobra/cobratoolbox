@@ -377,3 +377,4 @@ if sum(minNorm)~=0 && printLevel>0
     end
     fprintf('%s\n','Check that the objective is the same without minimising the norm.');
 end
+end

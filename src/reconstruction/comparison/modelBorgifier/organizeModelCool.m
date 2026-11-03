@@ -103,7 +103,7 @@ rxnIndex(rxnIndex == 0) = setdiff(1:nRxns, rxnIndex) ;
 
 %% Reorder everything.
 % Grab fields names.
-fields = TmodelFields ;
+fields = TmodelFields() ;
 
 % Reaction related cell field names.
 rxnFields = fields{1} ;
@@ -163,3 +163,4 @@ end
 % Reorder S matrix.
 Model.S = Model.S(:, rxnIndex) ;
 Model.S = Model.S(metIndex, :) ;
+end

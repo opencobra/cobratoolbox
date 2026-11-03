@@ -54,3 +54,4 @@ else
     %omit columns
     connectedColsFRVBool=connectedColsFRVBool(:,sumComponent~=0);
 end
+end

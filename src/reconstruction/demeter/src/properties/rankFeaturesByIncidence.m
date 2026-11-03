@@ -15,16 +15,16 @@ function rankFeaturesByIncidence(propertiesFolder, reconVersion)
 
 tol=0.0000001;
 analyzedFiles={
-    'Reaction presence' ['ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion]
-    'Metabolite presence' ['ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion]
-    'Uptake and secretion potential' ['ComputedFluxes' filesep 'UptakeSecretion_' reconVersion]
-    'Internal metabolite production' ['ComputedFluxes' filesep 'InternalProduction_' reconVersion]
+    'Reaction presence', ['ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion];
+    'Metabolite presence', ['ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion];
+    'Uptake and secretion potential', ['ComputedFluxes' filesep 'UptakeSecretion_' reconVersion];
+    'Internal metabolite production', ['ComputedFluxes' filesep 'InternalProduction_' reconVersion]
     };
 
 mkdir([propertiesFolder filesep 'Ranked_features'])
 
 % load database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 for i=1:length(analyzedFiles)
     data = readInputTableForPipeline([propertiesFolder filesep analyzedFiles{i,2}]);

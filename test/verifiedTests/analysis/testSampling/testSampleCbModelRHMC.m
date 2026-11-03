@@ -17,6 +17,7 @@ try
    S = load('iDopaNeuro1.mat');
    names = fieldnames(S);
    models{4} = S.(names{1});
+catch
 end
 
 fprintf('   Testing sampleCbModel with RHMC ... \n' );

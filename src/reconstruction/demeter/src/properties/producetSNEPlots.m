@@ -52,10 +52,10 @@ end
 
 % define files to analyze
 analyzedFiles={
-    'Reaction presence' ['ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion]
-    'Metabolite presence' ['ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion]
-    'Uptake and secretion potential' ['ComputedFluxes' filesep 'UptakeSecretion_' reconVersion]
-    'Internal metabolite production' ['ComputedFluxes' filesep 'InternalProduction_' reconVersion]
+    'Reaction presence', ['ReactionMetabolitePresence' filesep 'ReactionPresence_' reconVersion];
+    'Metabolite presence', ['ReactionMetabolitePresence' filesep 'MetabolitePresence_' reconVersion];
+    'Uptake and secretion potential', ['ComputedFluxes' filesep 'UptakeSecretion_' reconVersion];
+    'Internal metabolite production', ['ComputedFluxes' filesep 'InternalProduction_' reconVersion]
     };
 
 for k=1:size(analyzedFiles,1)
@@ -77,11 +77,11 @@ for k=1:size(analyzedFiles,1)
             orgs=DataToAnalyze(1,2:end)';
             
             taxonlevels={
-                'Phylum'
-                'Class'
-                'Order'
-                'Family'
-                'Genus'
+                'Phylum';
+                'Class';
+                'Order';
+                'Family';
+                'Genus';
                 'Species'
                 };
             

@@ -31,10 +31,10 @@ Mets = fieldnames(metabolite_structure);
 
 matching = {
     % id    col in input file
-    'seed'  '3'
-    'keggId'    '5'
-    'biocyc'    '6'
-    'biggId'    '18'
+    'seed',  '3';
+    'keggId',    '5';
+    'biocyc',    '6';
+    'biggId',    '18'
     };
 
 a = 1;
@@ -109,7 +109,9 @@ for i = 1 : length(Mets)
                         end
                     end
                 end
+            catch
             end
         end
     end
+end
 end

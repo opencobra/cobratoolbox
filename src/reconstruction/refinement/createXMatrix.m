@@ -40,7 +40,7 @@ compoundsIn = columnVector(compoundsIn);
 
 showprogress(0,'Exchange reaction list ...');
 
-ExchangeRxnMatrix = createModel;
+ExchangeRxnMatrix = createModel();
 
 cnt=1;
 HTABLE = java.util.Hashtable;
@@ -152,4 +152,5 @@ for i=1:length(compounds)
     end
 
     showprogress(i/length(compounds));
+end
 end

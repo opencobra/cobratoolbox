@@ -64,6 +64,7 @@ model = changeRxnBounds(model,'BileDuct_EX_thyochol[bd]_[luSI]',1000,'u');
 
 model = changeRxnBounds(model,'Scord_EX_glc_D(e)_[csf]',0,'u');
 model = changeRxnBounds(model,'Brain_EX_glc_D(e)_[csf]',-400,'u');
+end
 % 
 % % set upper bound to 0
 % U = {'Liver_sink_hdca(c)'

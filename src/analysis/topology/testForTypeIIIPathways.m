@@ -73,3 +73,4 @@ else
     % clean up files
     dos(['del ' strcat(filename,'_myPaths.txt') ' ' strcat(filename,'_myPaths_sparse.txt')]);
 end
+end

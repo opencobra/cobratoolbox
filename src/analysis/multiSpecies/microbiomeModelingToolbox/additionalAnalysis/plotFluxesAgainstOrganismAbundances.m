@@ -39,7 +39,7 @@ if ~isempty(setdiff(fluxes(1,2:end),abundance(1,2:end)))
 end
 
 % load database
-database=loadVMHDatabase;
+database=loadVMHDatabase();
 
 fluxes(:,1)=strrep(fluxes(:,1),'EX_','');
 fluxes(:,1)=strrep(fluxes(:,1),'(e)','');

@@ -61,3 +61,4 @@ end
 MW = Ematrix * weights';
 electrons = Ematrix(:, 1:length(protons)) * protons' - charges;
 Ematrix = [Ematrix(:, [1:length(protons)]), electrons];
+end

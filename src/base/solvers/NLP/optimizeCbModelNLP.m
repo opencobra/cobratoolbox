@@ -143,3 +143,4 @@ for i = 1:nOpt
        currentSol.stat = solNLP.stat;
     end
 end
+end

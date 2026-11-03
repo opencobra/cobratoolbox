@@ -17,7 +17,7 @@ function drawSecPot(dietPath, rxnmax, startMet, levels, cutoff)
 
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 microbiota_model=load(dietPath);
@@ -59,5 +59,6 @@ end
 
 diffmets = setdiff(model.mets, model.mets(a));
 [Involved_mets, Dead_ends] = draw_by_rxn(model, rxngz, 'true', 'struc', {''}, diffmets, fvamax);
+end
 
 

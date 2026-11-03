@@ -73,7 +73,7 @@ filename_onmics = 'GSE93425_Recon1_discret_iMAT_07_100.txt';
 onmic_data = readtable(['Data',filesep,filename_onmics],'ReadVariableNames',true);
 
 % Traduce onmic data from gene level to reaction level
-aux_table = table(strtok(model.genes,transcript_separator),model.genes,'VariableNames',{'ENTREZ_ID' 'transcript'});
+aux_table = table(strtok(model.genes,transcript_separator),model.genes,'VariableNames',{'ENTREZ_ID', 'transcript'});
 onmic_data = outerjoin(aux_table, onmic_data, 'Keys','ENTREZ_ID');
 head(onmic_data)
 % prepare data for iMAT algorithm
@@ -261,7 +261,7 @@ rMTAsaveInExcel(['Results' filesep 'H929_siRRM1_case.xlsx'], TSscore, deletedGen
 % revert disrupted metabolism and its application to ageing." _Nature communications_ 
 % 4.1 (2013): 1-11.
 % 
-% _2. _Valc·rcel, Luis V., et al. "rMTA: robust metabolic transformation 
+% _2. _Valc√°rcel, Luis V., et al. "rMTA: robust metabolic transformation 
 % analysis." _Bioinformatics_ 35.21 (2019): 4350-4355.
 % 
 % _3. _Sagawa, Morihiko, et al. "Ribonucleotide reductase catalytic subunit 

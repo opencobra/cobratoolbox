@@ -46,7 +46,7 @@ annotationType = 'automatic';
 if ~exist('metabolite_structure_rBioNet','var')
     fprintf('Create metabolite structure \n');
     % create metabolite structure out of metab
-    metab2={'VMHId' 'metNames' 'neutralFormula' 'chargedFormula' 'charge' 'keggId' 'pubChemID' 'cheBIId' 'inchiKey' 'smiles' 'hmdb','subsystem'};
+    metab2={'VMHId', 'metNames', 'neutralFormula', 'chargedFormula', 'charge', 'keggId', 'pubChemID', 'cheBIId', 'inchiKey', 'smiles', 'hmdb','subsystem'};
     metab(:,end-1)=[];%remove date
     metab2 = [metab2;metab];
     [metabolite_structure_rBioNet] =createNewMetaboliteStructure(metab2,'rBioNet');
@@ -171,3 +171,4 @@ end
 [IDsEnd2,IDcountEnd2,TableEnd2] = getStatsMetStruct(metabolite_structure_rBioNet);
 save met_strc_rBioNet_new_07_10_2021
 writecell(TableEnd2,'rbionetMetStructure.xls');
+end

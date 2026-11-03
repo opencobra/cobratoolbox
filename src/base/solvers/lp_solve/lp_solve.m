@@ -98,3 +98,4 @@ end
 if nargin < 9
   mxlpsolve('delete_lp', lp);
 end
+end

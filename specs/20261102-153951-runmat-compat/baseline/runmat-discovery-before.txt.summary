@@ -1,0 +1,30 @@
+files measured: 2302
+files set aside: 3
+files with a discovery error: 1184
+
+errors by message (the name in an undefined-name error replaced by '_'):
+    735 expected 'end' (RunMat:TestDiscovery:ParseError)
+    195 undefined variable '_' (RunMat:UndefinedVariable)
+    127 expected '}' to close cell literal (RunMat:TestDiscovery:ParseError)
+     30 expected ']' (RunMat:TestDiscovery:ParseError)
+     24 expected 'catch' after try (RunMat:TestDiscovery:ParseError)
+     13 Unexpected adjacency: interpret as function call? Use parentheses (e.g., foo(b(1))). (RunMat:TestDiscovery:ParseError)
+     13 expected identifier or '~' (RunMat:TestDiscovery:ParseError)
+      8 expected '(' (RunMat:TestDiscovery:ParseError)
+      6 unexpected token: Minus (RunMat:TestDiscovery:ParseError)
+      6 expected identifier (RunMat:TestDiscovery:ParseError)
+      5 unexpected token: Newline (RunMat:TestDiscovery:ParseError)
+      4 unexpected token: RBracket (RunMat:TestDiscovery:ParseError)
+      3 unexpected token: Semicolon (RunMat:TestDiscovery:ParseError)
+      3 unexpected token: Methods (RunMat:TestDiscovery:ParseError)
+      2 'format' command syntax accepts only one argument (RunMat:TestDiscovery:ParseError)
+      1 unsupported arguments validator 'mustBeCobraModel' (RunMat:FunctionArgumentValidationUnknownValidator)
+      1 unexpected token: RBrace (RunMat:TestDiscovery:ParseError)
+      1 unexpected token: Properties (RunMat:TestDiscovery:ParseError)
+      1 unexpected token: And (RunMat:TestDiscovery:ParseError)
+      1 Syntax error at position 4094: unexpected token: Minus (found: '-') (RunMat:TestDiscovery:ParseError)
+      1 Syntax error at position 1732: expected member name after '.' (found: 'function') (expected: identifier) (RunMat:TestDiscovery:ParseError)
+      1 Invalid token: '!' (RunMat:TestDiscovery:ParseError)
+      1 expected ')' to close parentheses (RunMat:TestDiscovery:ParseError)
+      1 expected ']' to close matrix literal (RunMat:TestDiscovery:ParseError)
+      1 'axis' command syntax accepts only one argument (RunMat:TestDiscovery:ParseError)

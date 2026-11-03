@@ -200,7 +200,7 @@ else
    options.dirNames = {'VMH'};
 end
 
-[cxcalcInstalled,oBabelInstalled,javaInstalled ] = checkChemoinformaticDependencies;
+[cxcalcInstalled,oBabelInstalled,javaInstalled ] = checkChemoinformaticDependencies();
 
 if cxcalcInstalled == 0
     cxcalcInstalled = false;
@@ -330,7 +330,7 @@ for i = 1:size(directories, 1)
         name = [metList{j} '.mol'];
         
         if oBabelInstalled
-            if isunix || ispc
+            if isunix || ispc()
                 obabelCommand = 'obabel';
             else
                 obabelCommand = 'openbabel.obabel';

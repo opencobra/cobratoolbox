@@ -42,3 +42,4 @@ model.modelID=modelName;
 if isempty(strmatch(model.modelID, filename))
     warning('fileName.mat and modelStructureName.mat did not match')
 end
+end

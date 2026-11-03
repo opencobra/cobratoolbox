@@ -233,7 +233,7 @@ if ~isfield(param,'sanityChecks')
     param.sanityChecks=1;
 end
 
-[cxcalcInstalled,oBabelInstalled,javaInstalled ] = checkChemoinformaticDependencies;
+[cxcalcInstalled,oBabelInstalled,javaInstalled ] = checkChemoinformaticDependencies();
 if ~cxcalcInstalled || ~oBabelInstalled || ~javaInstalled
     cxcalcInstalled
     oBabelInstalled

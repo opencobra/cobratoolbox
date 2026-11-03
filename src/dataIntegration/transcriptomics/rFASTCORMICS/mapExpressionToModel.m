@@ -116,3 +116,4 @@ match = find(~strcmp(rules, ''));
 for k = 1:numel(rules(match))       
     mapping(match(k),:) = GPRrulesMapper(cell2mat(rules(match(k))), mappedToGenes);
 end
+end

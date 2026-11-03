@@ -48,30 +48,30 @@ annotationSource = 'HMDB website';
 annotationType = 'automatic';
 
 mapping={
-    'chemspider'        'http://www.chemspider.com' 'external'
-    'food_db'   'http://foodb.ca/compounds' 'external'
-    'wikipedia' 'http://en.wikipedia.org/wiki' 'external'
-    'metlin'    'http://metlin.scripps.edu' 'external'
-    'pubChemId'   'http://pubchem.ncbi.nlm.nih.gov/' 'external'
-    'cheBIId'   'ChEBI ID' 'external'
-    'keggId'  'http://www.genome.jp/dbget-bin' 'external'
-    'inchiKey'   'InChI Key' 'internal'
-    'inchiString' 'InChI=1S'    'internal'
+    'chemspider',        'http://www.chemspider.com', 'external';
+    'food_db',   'http://foodb.ca/compounds', 'external';
+    'wikipedia', 'http://en.wikipedia.org/wiki', 'external';
+    'metlin',    'http://metlin.scripps.edu', 'external';
+    'pubChemId',   'http://pubchem.ncbi.nlm.nih.gov/', 'external';
+    'cheBIId',   'ChEBI ID', 'external';
+    'keggId',  'http://www.genome.jp/dbget-bin', 'external';
+    'inchiKey',   'InChI Key', 'internal';
+    'inchiString', 'InChI=1S',    'internal';
  %   'smile'   'SMILES'  'internal'
-    'avgmolweight' 'Average Molecular Weight'   'internal'
-    'monoisotopicweight' 'Monoisotopic Molecular Weight'    'internal'
-    'iupac'    'IUPAC Name' 'internal'
-    'description'  'met-desc'   'internal'
-    'biocyc'   'http://biocyc.org/META/' 'external'
-    'phenolExplorer'    'http://www.phenol-explorer.eu' 'external'
-    'casRegistry'   'CAS Registry Number' 'external'
-    'knapsack'     'http://kanaya.naist.jp/knapsack_core' 'external'
-    'drugbank'  'http://www.drugbank.ca/drugs/' 'external'
-    'rxnav' 'https://mor.nlm.nih.gov/RxNav/' 'external'
-    'zinc' 'https://zinc.docking.org/substances/' 'external'
-    'pharmgkb'  'http://www.pharmgkb.org/drug' 'external'
-    'pdbeLigand'   'http://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/' 'external'
-    'drugs_com'    'http://www.drugs.com/' 'external'
+    'avgmolweight', 'Average Molecular Weight',   'internal';
+    'monoisotopicweight', 'Monoisotopic Molecular Weight',    'internal';
+    'iupac',    'IUPAC Name', 'internal';
+    'description',  'met-desc',   'internal';
+    'biocyc',   'http://biocyc.org/META/', 'external';
+    'phenolExplorer',    'http://www.phenol-explorer.eu', 'external';
+    'casRegistry',   'CAS Registry Number', 'external';
+    'knapsack',     'http://kanaya.naist.jp/knapsack_core', 'external';
+    'drugbank',  'http://www.drugbank.ca/drugs/', 'external';
+    'rxnav', 'https://mor.nlm.nih.gov/RxNav/', 'external';
+    'zinc', 'https://zinc.docking.org/substances/', 'external';
+    'pharmgkb',  'http://www.pharmgkb.org/drug', 'external';
+    'pdbeLigand',   'http://www.ebi.ac.uk/pdbe-srv/pdbechem/chemicalCompound/', 'external';
+    'drugs_com',    'http://www.drugs.com/', 'external'
     };
 IDsAdded = ''; a=1;
 IDsMismatch = '';b=1;
@@ -154,8 +154,10 @@ for i = startSearch : endSearch
                     end
                 end
             end
+        catch
         end
     end
+end
 end
 
 function [metabolite_structure,idNew] = getData(metabolite_structure,syst,met, map,IDsAdded)
@@ -216,4 +218,6 @@ try
     if contains(idNew,'Not Available')
         idNew = NaN;
     end
+catch
+end
 end

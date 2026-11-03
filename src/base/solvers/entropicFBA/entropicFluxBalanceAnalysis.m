@@ -1602,7 +1602,7 @@ switch param.entropicFBAMethod
                 zsize=1e2;
                 
                 %TODO - still have no idea what the best parameters for pdco are
-                options = pdcoSet;
+                options = pdcoSet();
                 %options.mu0       = 1; %very small only for entropy function
                 options.mu0       = 0; %pdco chooses its own
                 options.FeaTol    = 1e-6;

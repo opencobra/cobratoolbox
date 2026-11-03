@@ -37,3 +37,4 @@ letterpos = false(size(instr)) ;
 for i = 1:length(instr)
     letterpos(i) = isnan(str2double(instr(i))) ;
 end
+end

@@ -107,3 +107,4 @@ if (all(isInModel))
 else
     error(['Gene',' ',geneList{~isInModel}, ' not in model!']);
 end
+end

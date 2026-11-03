@@ -298,3 +298,4 @@ oldvariables = bonds.Properties.VariableNames;
 newvariables = {'mets','headAtoms','tailAtoms','bTypes','headAtomElements','tailAtomElements','headAtomTransitionNrs','tailAtomTransitionNrs','isSubstrate','instances'};
 [~,idx] = ismember(newvariables,oldvariables);
 bonds = bonds(:,idx);
+end

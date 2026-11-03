@@ -29,3 +29,4 @@ for i = 1:length(innames)
     fprintf(fid,'%s',filetxt);
     fclose(fid);
 end
+end

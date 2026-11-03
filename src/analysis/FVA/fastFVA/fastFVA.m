@@ -694,6 +694,7 @@ addpath(originalUserPath);
 
 % change back to the original directory
 cd(currentDir);
+end
 
 
 function [newestCplexBin, throwBinGenerationError] = checkFastFVAbin(cplexVersion)
@@ -778,4 +779,5 @@ if throwBinGenerationError
             'However, you have installed version ', cplexVersion, '. If you experience an error using fastFVA, you need to run: ', ...
             '>> generateMexFastFVA() in order to generate a new cplexFVA binary file that matches cplex version' cplexVersion]);
     end
+end
 end

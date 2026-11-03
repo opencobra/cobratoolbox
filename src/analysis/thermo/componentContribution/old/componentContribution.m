@@ -141,6 +141,7 @@ model.DrGt0_Uncertainty(~model.SIntRxnBool)=NaN;
 
 %TODO, this is a temporary fix
 model.DrG0_Uncertainty = model.DrGt0_Uncertainty;
+end
 
 % Debug
 % model.G = trainingData.G(trainingData.Model2TrainingMap,:);

@@ -61,3 +61,4 @@ if findNCmets
 else
     gaps = model.mets(isRootNPmet==1);
 end
+end

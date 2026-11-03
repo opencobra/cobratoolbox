@@ -58,7 +58,9 @@ for i = startSearch : endSearch
                     IDsAdded{a,3} = char(idNew);
                     a = a + 1;
                 end
+            catch
             end
         end
     end
+end
 end

@@ -97,6 +97,7 @@ else
     
     molBool = ismember(mets,metList1);
 end
+end
 
 % for i=1:length(inchiStruct.standard)
 %     inchiStruct.standard = erase(inchiStruct.standard{i,1},'''');

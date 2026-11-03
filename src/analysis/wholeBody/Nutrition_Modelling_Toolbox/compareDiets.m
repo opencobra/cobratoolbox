@@ -74,3 +74,4 @@ for i = 1:length(allMets)
        fluxChanges = fluxChanges*-1;
    end
 end
+end

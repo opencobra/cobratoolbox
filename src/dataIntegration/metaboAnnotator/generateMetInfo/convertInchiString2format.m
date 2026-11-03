@@ -41,3 +41,4 @@ elseif  strcmp(format,'smiles')
         result = NaN;
     end
 end
+end

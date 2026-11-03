@@ -43,16 +43,16 @@ a = 1;
 IDsAdded = '';
 
 mapping ={
-    'iuphar_id'   'http://www.guidetopharmacology.org/GRAC/'
-    'chemspider'    'http://www.chemspider.com/Chemical-Structure'
-    'echa_id'   'https://echa.europa.eu/substance-information/-/substanceinfo/'
-    'chembl'    'https://www.ebi.ac.uk/chembldb'
-    'casRegistry'   'http://www.commonchemistry.org/ChemicalDetail'
-    'pubChemId' 'https://pubchem.ncbi.nlm.nih.gov/'
-    'unii' 'https://fdasis.nlm.nih.gov/srs/'
-    'epa_id'   'https://comptox.epa.gov/dashboard/'
-    'keggId'    'https://www.kegg.jp/entry/'
-    'drugbank'  'https://www.drugbank.ca/drugs/'
+    'iuphar_id',   'http://www.guidetopharmacology.org/GRAC/';
+    'chemspider',    'http://www.chemspider.com/Chemical-Structure';
+    'echa_id',   'https://echa.europa.eu/substance-information/-/substanceinfo/';
+    'chembl',    'https://www.ebi.ac.uk/chembldb';
+    'casRegistry',   'http://www.commonchemistry.org/ChemicalDetail';
+    'pubChemId', 'https://pubchem.ncbi.nlm.nih.gov/';
+    'unii', 'https://fdasis.nlm.nih.gov/srs/';
+    'epa_id',   'https://comptox.epa.gov/dashboard/';
+    'keggId',    'https://www.kegg.jp/entry/';
+    'drugbank',  'https://www.drugbank.ca/drugs/'
     };
 
 
@@ -96,6 +96,7 @@ for i = startSearch : endSearch
         end
     end
 end
+end
 
 function [metabolite_structure,idNew] = getData(metabolite_structure,syst,met, map,IDsAdded)
 a = size(IDsAdded,1)+1;
@@ -113,4 +114,6 @@ try
         [tok2,rem2] = strtok(rem,'<');
         idNew = regexprep(tok2,'>','');
     end
+catch
+end
 end

@@ -200,6 +200,7 @@ if any(bool)
     ind=(1:length(bool))';
     q=[q;ind(bool)];
 end
+end
 
 function warnLusolFallback(cause)
 % warns once per MATLAB session that LUSOL is unavailable, whatever the printLevel, so
@@ -209,4 +210,5 @@ if isempty(warned)
     warning('getRankLUSOL:lusolFallback', ...
         'getRankLUSOL: LUSOL unavailable, using MATLAB LU instead (shown once per session). Cause: %s', cause);
     warned = true;
+end
 end

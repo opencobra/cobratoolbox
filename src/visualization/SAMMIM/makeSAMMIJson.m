@@ -26,7 +26,7 @@ function jsonstr = makeSAMMIJson(model)
     if isrow(model.rxns); model.rxns = model.rxns'; end
     %Get fields
     fds = fieldnames(model);
-    fds = fds(~ismember(fds,{'rxns' 'mets'}));
+    fds = fds(~ismember(fds,{'rxns', 'mets'}));
     rxnfds = {};
     metfds = {};
     for i = 1:length(fds)

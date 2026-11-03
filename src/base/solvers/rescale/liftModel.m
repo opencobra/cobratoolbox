@@ -78,3 +78,4 @@ LPproblem = reformulate(LPproblem, BIG, printLevel);
 if exist('fileName','var') && exist('directory','var')
     save([directory filesep 'L_' fileName '.mat'],'LPproblem');
 end
+end

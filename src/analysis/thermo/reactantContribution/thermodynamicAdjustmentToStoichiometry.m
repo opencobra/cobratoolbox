@@ -290,3 +290,4 @@ model.oldS = [model.oldS, zeros(size(model.oldS,1),(size(model.S,2) - size(model
 model.SIntRxnBool(length(model.SIntRxnBool)+1:size(model.S,2))=1;
 model.SExRxnBool(length(model.SIntRxnBool)+1:size(model.S,2))=0;
 pause(eps)
+end

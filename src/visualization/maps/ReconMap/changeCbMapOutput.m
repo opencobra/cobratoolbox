@@ -34,3 +34,4 @@ else
     warning([outputFormat ' is not a supported render format.']);
     outputFormatOK = 0;
 end
+end

@@ -39,3 +39,4 @@ if dim(1) > dim(2)
 else
     out = in ;
 end
+end

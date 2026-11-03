@@ -456,5 +456,6 @@ if max(max(abs(res)))~=0
     end
     warning('Inconsistent directed atom transition multigraph')
 end
+end
 
 

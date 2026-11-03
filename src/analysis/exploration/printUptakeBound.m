@@ -18,3 +18,4 @@ function upInd = printUptakeBound(model)
 printLabeledData(model.rxns(selUptake), model.lb(selUptake));
 
 upInd = find(selUptake);
+end

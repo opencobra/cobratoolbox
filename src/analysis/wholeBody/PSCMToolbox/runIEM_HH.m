@@ -205,16 +205,16 @@ if 1
             end
         end
         
-        BiomarkerRxns ={'EX_hista[u]'	'Increased (blood/urine)'
-            'DM_hista[bc]'	'Increased (blood/urine)'
-            'EX_im4ac[u]'	'Increased (urine)'
-            'EX_his_L[u]'	'Increased (blood/urine)'
-            'DM_his_L[bc]'	'Increased (blood/urine)'
+        BiomarkerRxns ={'EX_hista[u]',	'Increased (blood/urine)';
+            'DM_hista[bc]',	'Increased (blood/urine)';
+            'EX_im4ac[u]',	'Increased (urine)';
+            'EX_his_L[u]',	'Increased (blood/urine)';
+            'DM_his_L[bc]',	'Increased (blood/urine)'
             };
     else
-        BiomarkerRxns ={'EX_hista[u]'	'Increased (blood/urine)'
-            'EX_im4ac[u]'	'Increased (urine)'
-            'EX_his_L[u]'	'Increased (blood/urine)'
+        BiomarkerRxns ={'EX_hista[u]',	'Increased (blood/urine)';
+            'EX_im4ac[u]',	'Increased (urine)';
+            'EX_his_L[u]',	'Increased (blood/urine)'
             };
     end
     [IEMSol_HIS] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -231,8 +231,8 @@ if 1
     model.lb(ismember(model.rxns,X)) = 0;
     
     
-    BiomarkerRxns = {'EX_creat[u]' 'Decreased (urine)'
-        'EX_gudac[u]' 'Decreased (urine)' %
+    BiomarkerRxns = {'EX_creat[u]', 'Decreased (urine)';
+        'EX_gudac[u]', 'Decreased (urine)' %
         };
     
     [IEMSol_AGAT] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -264,21 +264,21 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'EX_argsuc[u]' 'Increased (urine)'
-                'EX_orot[u]' 'Increased (urine)'
-                'EX_ura[u]' 'Increased  (urine)'
-                'DM_creat[bc]' 'Increased (blood)'
-                'DM_arg_L[bc]' 'Increased (blood)'
-                'DM_gudac[bc]' 'Increased (blood)'
+                'EX_argsuc[u]', 'Increased (urine)';
+                'EX_orot[u]', 'Increased (urine)';
+                'EX_ura[u]', 'Increased  (urine)';
+                'DM_creat[bc]', 'Increased (blood)';
+                'DM_arg_L[bc]', 'Increased (blood)';
+                'DM_gudac[bc]', 'Increased (blood)'
                 };
         else
             BiomarkerRxns = {
-                'EX_argsuc[u]' 'Increased (urine)'
-                'EX_orot[u]' 'Increased (urine)'
-                'EX_ura[u]' 'Increased  (urine)'
-                'EX_creat[u]' 'Increased (blood)'
-                'EX_arg_L[u]' 'Increased (blood)'
-                'EX_gudac[u]' 'Increased (blood)'
+                'EX_argsuc[u]', 'Increased (urine)';
+                'EX_orot[u]', 'Increased (urine)';
+                'EX_ura[u]', 'Increased  (urine)';
+                'EX_creat[u]', 'Increased (blood)';
+                'EX_arg_L[u]', 'Increased (blood)';
+                'EX_gudac[u]', 'Increased (blood)'
                 };
         end
         [IEMSol_ARG] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -304,21 +304,21 @@ if 1
                 model = rmfield(model,'A');
             end
         end
-        BiomarkerRxns = {'EX_lys_L[u]' 'Increased (urine)'
-            'EX_gly[u]' 'Increased (urine)'
-            'EX_ura[u]' 'Increased (urine)'
-            'EX_5oxpro[u]' 'Increased (urine)'
-            'DM_citr_L[bc]' 'Decreased (blood)'
-            'DM_gln_L[bc]' 'Increased (blood)'
+        BiomarkerRxns = {'EX_lys_L[u]', 'Increased (urine)';
+            'EX_gly[u]', 'Increased (urine)';
+            'EX_ura[u]', 'Increased (urine)';
+            'EX_5oxpro[u]', 'Increased (urine)';
+            'DM_citr_L[bc]', 'Decreased (blood)';
+            'DM_gln_L[bc]', 'Increased (blood)'
             };
     else
         
-        BiomarkerRxns = {'EX_lys_L[u]' 'Increased (urine)'
-            'EX_gly[u]' 'Increased (urine)'
-            'EX_ura[u]' 'Increased (urine)'
-            'EX_5oxpro[u]' 'Increased (urine)'
-            'EX_citr_L[u]' 'Decreased (blood)'
-            'EX_gln_L[u]' 'Increased (blood)'
+        BiomarkerRxns = {'EX_lys_L[u]', 'Increased (urine)';
+            'EX_gly[u]', 'Increased (urine)';
+            'EX_ura[u]', 'Increased (urine)';
+            'EX_5oxpro[u]', 'Increased (urine)';
+            'EX_citr_L[u]', 'Decreased (blood)';
+            'EX_gln_L[u]', 'Increased (blood)'
             };
     end
     [IEMSol_CPS1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -330,7 +330,7 @@ if 1
     IEMRxns = model.rxns(~cellfun(@isempty,strfind(model.rxns,R{1})));
     RxnMic = model.rxns(~cellfun(@isempty,strfind(model.rxns,'Micro_'))) ;
     IEMRxns = setdiff(IEMRxns,RxnMic);
-    BiomarkerRxns = {'EX_3ivcrn[u]' 'Increased (urine)'
+    BiomarkerRxns = {'EX_3ivcrn[u]', 'Increased (urine)'
         % 'EX_3mglutac[u]' 'Increased (urine)'
         % 'EX_3mglutr[u]' 'Increased (urine)' % cannot be produced in healthy
         % stae
@@ -348,8 +348,8 @@ if 1
     IEMRxns = setdiff(IEMRxns,RxnMic);
     
     BiomarkerRxns = {
-        'EX_acglu[u]'	'Increased (urine)'
-        'EX_acgly[u]'	'Increased (urine)'
+        'EX_acglu[u]',	'Increased (urine)';
+        'EX_acgly[u]',	'Increased (urine)'
         };
     [IEMSol_AMA1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
     
@@ -379,26 +379,26 @@ if 1
                 model = rmfield(model,'A');
             end
         end
-        BiomarkerRxns = {'EX_34dhphe[u]'	'Increased (urine/blood)'
-            'DM_34dhphe[bc]'	'Increased (urine/blood)'
-            'EX_5htrp[u]'	'Increased (urine/blood)'
-            'DM_5htrp[bc]'	'Increased (urine/blood)'
-            'DM_adrnl[bc]'	'Decreased (blood)'
-            'EX_dopa[u]'	'Increased (urine)'
-            'EX_CE2176[u]'	'Increased (urine/blood)'
-            'DM_CE2176[bc]'	'Increased (urine/blood)'
-            'DM_nrpphr[bc]'	'Decreased (blood)'
-            'EX_3moxtyr[u]'	'Increased (urine)'
+        BiomarkerRxns = {'EX_34dhphe[u]',	'Increased (urine/blood)';
+            'DM_34dhphe[bc]',	'Increased (urine/blood)';
+            'EX_5htrp[u]',	'Increased (urine/blood)';
+            'DM_5htrp[bc]',	'Increased (urine/blood)';
+            'DM_adrnl[bc]',	'Decreased (blood)';
+            'EX_dopa[u]',	'Increased (urine)';
+            'EX_CE2176[u]',	'Increased (urine/blood)';
+            'DM_CE2176[bc]',	'Increased (urine/blood)';
+            'DM_nrpphr[bc]',	'Decreased (blood)';
+            'EX_3moxtyr[u]',	'Increased (urine)'
             };
     else
         
-        BiomarkerRxns = {'EX_34dhphe[u]'	'Increased (urine/blood)'
-            'EX_5htrp[u]'	'Increased (urine/blood)'
-            'EX_adrnl[u]'	'Decreased (blood)'
-            'EX_dopa[u]'	'Increased (urine)'
-            'EX_CE2176[u]'	'Increased (urine/blood)'
-            'EX_nrpphr[u]'	'Decreased (blood)'
-            'EX_3moxtyr[u]'	'Increased (urine)'
+        BiomarkerRxns = {'EX_34dhphe[u]',	'Increased (urine/blood)';
+            'EX_5htrp[u]',	'Increased (urine/blood)';
+            'EX_adrnl[u]',	'Decreased (blood)';
+            'EX_dopa[u]',	'Increased (urine)';
+            'EX_CE2176[u]',	'Increased (urine/blood)';
+            'EX_nrpphr[u]',	'Decreased (blood)';
+            'EX_3moxtyr[u]',	'Increased (urine)'
             };
     end
     
@@ -417,13 +417,13 @@ if 1
     RxnMic = model.rxns(~cellfun(@isempty,strfind(model.rxns,'Micro_'))) ;
     IEMRxns = setdiff(IEMRxns,RxnMic);
     
-    BiomarkerRxns = {'EX_3ivcrn[u]'	'Increased (urine)'
+    BiomarkerRxns = {'EX_3ivcrn[u]',	'Increased (urine)';
         %   'EX_acac[u]'	'Increased (urine)' % ketone bodies were not mentioned
         %   here: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1182108/
         %  'EX_acetone[u]'	'Increased (urine)'
         % 'EX_bhb[u]'	'Increased (urine)'
-        'EX_CE2026[u]'	'Increased (urine)' % 3-methylcrotonylglycine
-        'EX_3hivac[u]'	'Increased (urine)'
+        'EX_CE2026[u]',	'Increased (urine)'; % 3-methylcrotonylglycine
+        'EX_3hivac[u]',	'Increased (urine)'
         };
     [IEMSol_3MCC] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
     
@@ -461,20 +461,20 @@ if 1
                     model = rmfield(model,'A');
                 end
             end
-            BiomarkerRxns = {'DM_aldstrn[bc]'	'Increased (blood)'%17-Ketotestosterone
-                'DM_crtsl[bc]'	'Decreased (blood)' %cortisol
-                'DM_prgstrn[bc]'	'Increased (blood)'  %Progesterone
-                'DM_andrstndn[bc]'	'Increased (blood)' %17-Ketotestosterone
-                'DM_andrstrn[bc]' 'Increased (blood)' % Androsterone,in male
-                'DM_dhea[bc]'	'Increased (blood)' %Dehydroepiandrosterone unchanged in this study: PMID: 28472487
+            BiomarkerRxns = {'DM_aldstrn[bc]',	'Increased (blood)';%17-Ketotestosterone
+                'DM_crtsl[bc]',	'Decreased (blood)'; %cortisol
+                'DM_prgstrn[bc]',	'Increased (blood)';  %Progesterone
+                'DM_andrstndn[bc]',	'Increased (blood)'; %17-Ketotestosterone
+                'DM_andrstrn[bc]', 'Increased (blood)'; % Androsterone,in male
+                'DM_dhea[bc]',	'Increased (blood)' %Dehydroepiandrosterone unchanged in this study: PMID: 28472487
                 };
         else
-            BiomarkerRxns = {'EX_aldstrn[u]'	'Increased (blood)'%17-Ketotestosterone
-                'EX_crtsl[u]'	'Decreased (blood)' %cortisol
-                'EX_prgstrn[u]'	'Increased (blood)'  %Progesterone
-                'EX_andrstndn[u]'	'Increased (blood)' %17-Ketotestosterone
-                'EX_andrstrn[u]' 'Increased (blood)' % Androsterone,in male
-                'EX_dhea[u]'	'Increased (blood)' %Dehydroepiandrosterone unchanged in this study: PMID: 28472487
+            BiomarkerRxns = {'EX_aldstrn[u]',	'Increased (blood)';%17-Ketotestosterone
+                'EX_crtsl[u]',	'Decreased (blood)'; %cortisol
+                'EX_prgstrn[u]',	'Increased (blood)';  %Progesterone
+                'EX_andrstndn[u]',	'Increased (blood)'; %17-Ketotestosterone
+                'EX_andrstrn[u]', 'Increased (blood)'; % Androsterone,in male
+                'EX_dhea[u]',	'Increased (blood)' %Dehydroepiandrosterone unchanged in this study: PMID: 28472487
                 };
         end
         [IEMSol_CYP21D] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -502,10 +502,10 @@ if 1
                 model = rmfield(model,'A');
             end
         end
-        BiomarkerRxns = {'DM_caro[bc]'	'Increased (blood)'
+        BiomarkerRxns = {'DM_caro[bc]',	'Increased (blood)'
             };
     else
-        BiomarkerRxns = {'EX_caro[u]'	'Increased (blood)'
+        BiomarkerRxns = {'EX_caro[u]',	'Increased (blood)'
             };
     end
     [IEMSol_HYCARO] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -549,25 +549,25 @@ if 1
                 end
             end
             BiomarkerRxns = {%'DM_3ivcrn[bc]'	'Increased (blood)' %https://www.nature.com/articles/gim201784
-               'DM_acac[bc]'	'Increased (blood)'
-               'DM_acetone[bc]'	'Increased (blood)'
-                'DM_bhb[bc]'	'Increased (blood)'
-                'EX_lac_L[u]'	'Increased (urine)'
-                'EX_nh4[u]'	'Increased (urine)'
-                'EX_3hpp[u]'	'Increased (urine)'
-                'EX_CE2026[u]'	'Increased (urine)'
-                'EX_2mcit[u]'	'Increased (urine)'
+               'DM_acac[bc]',	'Increased (blood)';
+               'DM_acetone[bc]',	'Increased (blood)';
+                'DM_bhb[bc]',	'Increased (blood)';
+                'EX_lac_L[u]',	'Increased (urine)';
+                'EX_nh4[u]',	'Increased (urine)';
+                'EX_3hpp[u]',	'Increased (urine)';
+                'EX_CE2026[u]',	'Increased (urine)';
+                'EX_2mcit[u]',	'Increased (urine)'
                 };
         else
-            BiomarkerRxns = {'EX_3ivcrn[u]'	'Increased (urine)'
-                'EX_acac[u]'	'Increased (blood)'
-                'EX_acetone[u]'	'Increased (blood)'
-                'EX_bhb[u]'	'Increased (blood)'
-                'EX_lac_L[u]'	'Increased (urine)'
-                'EX_nh4[u]'	'Increased (urine)'
-                'EX_3hpp[u]'	'Increased (urine)'
-                'EX_CE2026[u]'	'Increased (urine)'
-                'EX_2mcit[u]'	'Increased (urine)'
+            BiomarkerRxns = {'EX_3ivcrn[u]',	'Increased (urine)';
+                'EX_acac[u]',	'Increased (blood)';
+                'EX_acetone[u]',	'Increased (blood)';
+                'EX_bhb[u]',	'Increased (blood)';
+                'EX_lac_L[u]',	'Increased (urine)';
+                'EX_nh4[u]',	'Increased (urine)';
+                'EX_3hpp[u]',	'Increased (urine)';
+                'EX_CE2026[u]',	'Increased (urine)';
+                'EX_2mcit[u]',	'Increased (urine)'
                 };
         end
         
@@ -597,12 +597,12 @@ if 1
                     model = rmfield(model,'A');
                 end
             end
-            BiomarkerRxns = {'DM_phyt[bc]'   'Increased (blood)'
-                'DM_prist[bc]'   'Decreased (blood)'
+            BiomarkerRxns = {'DM_phyt[bc]',   'Increased (blood)';
+                'DM_prist[bc]',   'Decreased (blood)'
                 };
         else
-            BiomarkerRxns = {'EX_phyt[u]'   'Increased (blood)'
-                'EX_prist[u]'   'Decreased (blood)'
+            BiomarkerRxns = {'EX_phyt[u]',   'Increased (blood)';
+                'EX_prist[u]',   'Decreased (blood)'
                 };
         end
         [IEMSol_CRFD] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -636,18 +636,18 @@ if 1
                 model = rmfield(model,'A');
             end
         end
-        BiomarkerRxns = {'DM_crtsl[bc]'	'Decreased (blood)'
-            'DM_crtstrn[bc]'	'Decreased (blood)'
-            'DM_andrstndn[bc]'	'Decreased (blood)'
-            'DM_dhea[bc]'	'Decreased (blood)'
-            'DM_11docrtstrn[bc]'	'Decreased (blood)'
+        BiomarkerRxns = {'DM_crtsl[bc]',	'Decreased (blood)';
+            'DM_crtstrn[bc]',	'Decreased (blood)';
+            'DM_andrstndn[bc]',	'Decreased (blood)';
+            'DM_dhea[bc]',	'Decreased (blood)';
+            'DM_11docrtstrn[bc]',	'Decreased (blood)'
             };
     else
-        BiomarkerRxns = {'EX_crtsl[u]'	'Decreased (blood)'
-            'EX_crtstrn[u]'	'Decreased (blood)'
-            'EX_andrstndn[u]'	'Decreased (blood)'
-            'EX_dhea[u]'	'Decreased (blood)'
-            'EX_11docrtstrn[u]'	'Decreased (blood)'
+        BiomarkerRxns = {'EX_crtsl[u]',	'Decreased (blood)';
+            'EX_crtstrn[u]',	'Decreased (blood)';
+            'EX_andrstndn[u]',	'Decreased (blood)';
+            'EX_dhea[u]',	'Decreased (blood)';
+            'EX_11docrtstrn[u]',	'Decreased (blood)'
             };
     end
     
@@ -677,10 +677,10 @@ if 1
                 model = rmfield(model,'A');
             end
         end
-        BiomarkerRxns = {'DM_aldstrn[bc]'	'Decreased (Not detectable, blood)'
+        BiomarkerRxns = {'DM_aldstrn[bc]',	'Decreased (Not detectable, blood)'
             };
     else
-        BiomarkerRxns = {'EX_aldstrn[u]'	'Decreased (Not detectable, blood)'
+        BiomarkerRxns = {'EX_aldstrn[u]',	'Decreased (Not detectable, blood)'
             };
     end
     [IEMSol_CMO1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -710,11 +710,11 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'DM_lac_L[bc]'	'Increased (blood)'
+                'DM_lac_L[bc]',	'Increased (blood)'
                 };
         else
             BiomarkerRxns = {
-                'EX_lac_L[u]'	'Increased (blood)'
+                'EX_lac_L[u]',	'Increased (blood)'
                 };
         end
         [IEMSol_DGK] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -733,10 +733,10 @@ if 1
     IEMRxns = setdiff(IEMRxns,RxnMic);
     
     BiomarkerRxns = {
-        'EX_thym[u]'	'Increased (urine)'
-        'EX_ura[u]'	'Increased (urine)'
-        'EX_56dura[u]'	'Increased (urine)'
-        'EX_56dthm[u]'	'Increased (urine)'
+        'EX_thym[u]',	'Increased (urine)';
+        'EX_ura[u]',	'Increased (urine)';
+        'EX_56dura[u]',	'Increased (urine)';
+        'EX_56dthm[u]',	'Increased (urine)'
         };
     [IEMSol_DPYR] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
     
@@ -770,13 +770,13 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'DM_chsterol[bc]'	'Decreased (blood)' %PMID: 8675648: "showed a highly significant reduction of HDL-cholesterol"
-                'DM_tag_hs[bc]'	'Increased (blood)' % PMID: 3141686: "They had fasting hypertriglyceridaemia." We are not modeling fasting condition
+                'DM_chsterol[bc]',	'Decreased (blood)'; %PMID: 8675648: "showed a highly significant reduction of HDL-cholesterol"
+                'DM_tag_hs[bc]',	'Increased (blood)' % PMID: 3141686: "They had fasting hypertriglyceridaemia." We are not modeling fasting condition
                 };
         else
             BiomarkerRxns = {
-                'EX_chsterol[u]'	'Decreased (blood)' %PMID: 8675648: "showed a highly significant reduction of HDL-cholesterol"
-                'EX_tag_hs[u]'	'Increased (blood)' % PMID: 3141686: "They had fasting hypertriglyceridaemia." We are not modeling fasting condition
+                'EX_chsterol[u]',	'Decreased (blood)'; %PMID: 8675648: "showed a highly significant reduction of HDL-cholesterol"
+                'EX_tag_hs[u]',	'Increased (blood)' % PMID: 3141686: "They had fasting hypertriglyceridaemia." We are not modeling fasting condition
                 };
         end
         [IEMSol_FED] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -795,7 +795,7 @@ if 1
     IEMRxns = setdiff(IEMRxns,RxnMic);
     
     BiomarkerRxns = {
-        'EX_fru[u]'	'Increased (urine)'
+        'EX_fru[u]',	'Increased (urine)'
         };
     [IEMSol_EF] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
     
@@ -813,7 +813,7 @@ if 1
     IEMRxns = setdiff(IEMRxns,RxnMic);
     
     BiomarkerRxns = {
-        'EX_forglu[u]'  'Increased (urine)'
+        'EX_forglu[u]',  'Increased (urine)'
         };
     [IEMSol_FIGLU] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
     
@@ -841,12 +841,12 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_c5dc[u]'	'Increased (blood/urine)'
-            'DM_c5dc[bc]'	'Increased (blood/urine)'
+            'EX_c5dc[u]',	'Increased (blood/urine)';
+            'DM_c5dc[bc]',	'Increased (blood/urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_c5dc[u]'	'Increased (blood/urine)'
+            'EX_c5dc[u]',	'Increased (blood/urine)'
             };
     end
     [IEMSol_GA1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -879,39 +879,39 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_c10crn[bc]'	'Increased (blood)'
-            'DM_c4crn[bc]'	'Increased (blood)'
-            'DM_ddeccrn[bc]'	'Increased (blood)'
-            'DM_ttdcrn[bc]'	'Increased (blood)'
-            'DM_pmtcrn[bc]'	'Increased (blood)'
-            'EX_4hpro_LT[u]'	'Increased (urine)'
-            'EX_3hivac[u]'	'Increased (urine)'
-            'EX_CE4970[u]'	'Increased (urine)'
-            'EX_CE4969[u]'	'Increased (urine)'
-            'EX_CE4968[u]'	'Increased (urine)'
-            'EX_ethmalac[u]'	'Increased (urine)'
-            'EX_adpac[u]'	'Increased (urine)'
-            'EX_subeac[u]'	'Increased (urine)'
-            'EX_sebacid[u]'	'Increased (urine)'
-            'EX_pro_L[u]'	'Increased (urine)'
+            'DM_c10crn[bc]',	'Increased (blood)';
+            'DM_c4crn[bc]',	'Increased (blood)';
+            'DM_ddeccrn[bc]',	'Increased (blood)';
+            'DM_ttdcrn[bc]',	'Increased (blood)';
+            'DM_pmtcrn[bc]',	'Increased (blood)';
+            'EX_4hpro_LT[u]',	'Increased (urine)';
+            'EX_3hivac[u]',	'Increased (urine)';
+            'EX_CE4970[u]',	'Increased (urine)';
+            'EX_CE4969[u]',	'Increased (urine)';
+            'EX_CE4968[u]',	'Increased (urine)';
+            'EX_ethmalac[u]',	'Increased (urine)';
+            'EX_adpac[u]',	'Increased (urine)';
+            'EX_subeac[u]',	'Increased (urine)';
+            'EX_sebacid[u]',	'Increased (urine)';
+            'EX_pro_L[u]',	'Increased (urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_c10crn[u]'	'Increased (blood)'
-            'EX_c4crn[u]'	'Increased (blood)'
-            'EX_ddeccrn[u]'	'Increased (blood)'
-            'EX_ttdcrn[u]'	'Increased (blood)'
-            'EX_pmtcrn[u]'	'Increased (blood)'
-            'EX_4hpro_LT[u]'	'Increased (urine)'
-            'EX_pro_L[u]'	'Increased (urine)'
-            'EX_3hivac[u]'	'Increased (urine)'
-            'EX_CE4970[u]'	'Increased (urine)'
-            'EX_CE4969[u]'	'Increased (urine)'
-            'EX_CE4968[u]'	'Increased (urine)'
-            'EX_ethmalac[u]'	'Increased (urine)'
-            'EX_adpac[u]'	'Increased (urine)'
-            'EX_subeac[u]'	'Increased (urine)'
-            'EX_sebacid[u]'	'Increased (urine)'
+            'EX_c10crn[u]',	'Increased (blood)';
+            'EX_c4crn[u]',	'Increased (blood)';
+            'EX_ddeccrn[u]',	'Increased (blood)';
+            'EX_ttdcrn[u]',	'Increased (blood)';
+            'EX_pmtcrn[u]',	'Increased (blood)';
+            'EX_4hpro_LT[u]',	'Increased (urine)';
+            'EX_pro_L[u]',	'Increased (urine)';
+            'EX_3hivac[u]',	'Increased (urine)';
+            'EX_CE4970[u]',	'Increased (urine)';
+            'EX_CE4969[u]',	'Increased (urine)';
+            'EX_CE4968[u]',	'Increased (urine)';
+            'EX_ethmalac[u]',	'Increased (urine)';
+            'EX_adpac[u]',	'Increased (urine)';
+            'EX_subeac[u]',	'Increased (urine)';
+            'EX_sebacid[u]',	'Increased (urine)'
             };
     end
     [IEMSol_GA2] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -944,23 +944,23 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_5oxpro[u]'	'Increased (urine)'
-            'EX_leuktrE4[u]'	'Increased (urine/blood)'
-            'EX_leuktrC4[u]'	'Increased (urine/blood)'
-            'DM_5oxpro[bc]'	'Decreased (blood)'
-            'DM_leuktrE4[bc]'	'Increased (urine/blood)'
-            'DM_leuktrC4[bc]'	'Increased (urine/blood)'
-            'DM_leuktrD4[bc]'	'Increased (urine/blood)'
-            'DM_pro_L[bc]'	'Increased (blood)'
+            'EX_5oxpro[u]',	'Increased (urine)';
+            'EX_leuktrE4[u]',	'Increased (urine/blood)';
+            'EX_leuktrC4[u]',	'Increased (urine/blood)';
+            'DM_5oxpro[bc]',	'Decreased (blood)';
+            'DM_leuktrE4[bc]',	'Increased (urine/blood)';
+            'DM_leuktrC4[bc]',	'Increased (urine/blood)';
+            'DM_leuktrD4[bc]',	'Increased (urine/blood)';
+            'DM_pro_L[bc]',	'Increased (blood)'
             };
     else
         
         BiomarkerRxns = {
-            'EX_5oxpro[u]'	'Increased (urine)/ Decreased (blood)'
-            'EX_leuktrE4[u]'	'Increased (urine/blood)'
-            'EX_leuktrC4[u]'	'Increased (urine/blood)'
-            'EX_leuktrD4[u]'	'Increased (urine/blood)'
-            'EX_pro_L[u]'	'Increased (blood)'
+            'EX_5oxpro[u]',	'Increased (urine)/ Decreased (blood)';
+            'EX_leuktrE4[u]',	'Increased (urine/blood)';
+            'EX_leuktrC4[u]',	'Increased (urine/blood)';
+            'EX_leuktrD4[u]',	'Increased (urine/blood)';
+            'EX_pro_L[u]',	'Increased (blood)'
             };
     end
     [IEMSol_OXOP] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -992,21 +992,21 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'EX_acac[u]'	'Increased (urine)'
-                'EX_acetone[u]'	'Increased (urine)'
-                'EX_bhb[u]'	'Increased (urine)'
-                'DM_chsterol[bc]'	'Increased (blood)'
-                'DM_glc_D[bc]'	'Increased (blood)'
-                'DM_lac_L[bc]'	'Increased (blood)'
+                'EX_acac[u]',	'Increased (urine)';
+                'EX_acetone[u]',	'Increased (urine)';
+                'EX_bhb[u]',	'Increased (urine)';
+                'DM_chsterol[bc]',	'Increased (blood)';
+                'DM_glc_D[bc]',	'Increased (blood)';
+                'DM_lac_L[bc]',	'Increased (blood)'
                 };
         else
             BiomarkerRxns = {
-                'EX_acac[u]'	'Increased (urine)'
-                'EX_acetone[u]'	'Increased (urine)'
-                'EX_bhb[u]'	'Increased (urine)'
-                'EX_chsterol[u]'	'Increased (blood)'
-                'EX_glc_D[u]'	'Increased (blood)'
-                'EX_lac_L[u]'	'Increased (blood)'
+                'EX_acac[u]',	'Increased (urine)';
+                'EX_acetone[u]',	'Increased (urine)';
+                'EX_bhb[u]',	'Increased (urine)';
+                'EX_chsterol[u]',	'Increased (blood)';
+                'EX_glc_D[u]',	'Increased (blood)';
+                'EX_lac_L[u]',	'Increased (blood)'
                 };
         end
         [IEMSol_GSD6] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1037,18 +1037,18 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_creat[u]'	'Decreased (urine/blood)'
-            'DM_creat[bc]'	'Decreased (urine/blood)'
-            'DM_crtn[bc]'	'Increased (blood)'
-            'EX_urate[u]'	'Increased (urine)'
-            'EX_gudac[u]'	'Increased (urine)'
+            'EX_creat[u]',	'Decreased (urine/blood)';
+            'DM_creat[bc]',	'Decreased (urine/blood)';
+            'DM_crtn[bc]',	'Increased (blood)';
+            'EX_urate[u]',	'Increased (urine)';
+            'EX_gudac[u]',	'Increased (urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_creat[u]'	'Decreased (urine/blood)'
-            'EX_crtn[u]'	'Increased (blood)'
-            'EX_urate[u]'	'Increased (urine)'
-            'EX_gudac[u]'	'Increased (urine)'
+            'EX_creat[u]',	'Decreased (urine/blood)';
+            'EX_crtn[u]',	'Increased (blood)';
+            'EX_urate[u]',	'Increased (urine)';
+            'EX_gudac[u]',	'Increased (urine)'
             };
     end
     [IEMSol_GMT] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1079,22 +1079,22 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_arg_L[u]'	'Increased (urine)'
-            'DM_gln_L[bc]'	'Decreased (blood)'
-            'EX_glu_L[u]'	'Decreased (blood)'
-            'EX_lys_L[u]'	'Decreased (urine/blood)'
-            'DM_lys_L[bc]'	'Decreased (urine/blood)'
-            'EX_orn[u]'	'Increased (urine/blood/CSF)'
-            'DM_orn[bc]'	'Increased (urine/blood/CSF)'
-            'DM_orn[csf]'	'Increased (CSF)'
+            'EX_arg_L[u]',	'Increased (urine)';
+            'DM_gln_L[bc]',	'Decreased (blood)';
+            'EX_glu_L[u]',	'Decreased (blood)';
+            'EX_lys_L[u]',	'Decreased (urine/blood)';
+            'DM_lys_L[bc]',	'Decreased (urine/blood)';
+            'EX_orn[u]',	'Increased (urine/blood/CSF)';
+            'DM_orn[bc]',	'Increased (urine/blood/CSF)';
+            'DM_orn[csf]',	'Increased (CSF)'
             };
     else
         BiomarkerRxns = {
-            'EX_arg_L[u]'	'Increased'
-            'EX_gln_L[u]'	'Decreased (blood)'
-            'EX_glu_L[u]'	'Decreased (blood)'
-            'EX_lys_L[u]'	'Decreased (urine/blood)'
-            'EX_orn[u]'	'Increased (urine/blood/CSF)'
+            'EX_arg_L[u]',	'Increased';
+            'EX_gln_L[u]',	'Decreased (blood)';
+            'EX_glu_L[u]',	'Decreased (blood)';
+            'EX_lys_L[u]',	'Decreased (urine/blood)';
+            'EX_orn[u]',	'Increased (urine/blood/CSF)'
             };
     end
     [IEMSol_GACR] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1124,12 +1124,12 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'EX_fru[u]'	'Increased (urine/blood)'
-                'DM_fru[bc]'	'Increased (urine/blood)'
+                'EX_fru[u]',	'Increased (urine/blood)';
+                'DM_fru[bc]',	'Increased (urine/blood)'
                 };
         else
             BiomarkerRxns = {
-                'EX_fru[u]'	'Increased (urine/blood)'
+                'EX_fru[u]',	'Increased (urine/blood)'
                 };
         end
         [IEMSol_HFI] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1158,13 +1158,13 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_c6dc[bc]'	'Increased (blood)'
-            'EX_adpac[u]'	'Increased (urine)'
+            'DM_c6dc[bc]',	'Increased (blood)';
+            'EX_adpac[u]',	'Increased (urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_c6dc[u]'	'Increased (blood)'
-            'EX_adpac[u]'	'Increased (urine)'
+            'EX_c6dc[u]',	'Increased (blood)';
+            'EX_adpac[u]',	'Increased (urine)'
             };
     end
     [IEMSol_HMG] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1198,21 +1198,21 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_met_L[bc]'	'Increased (blood)'%
-            'DM_orn[bc]'	'Increased (blood)' % % not mentioned in 27778219
-            'EX_Lhcystin[u]'	'Increased (urine/blood)' % difficult to detect - only in higher concentrations
-            'DM_Lhcystin[bc]'	'Increased (urine/blood)' % difficult to detect - only in higher concentrations
-            'EX_hcys_L[u]'	'Increased (urine/blood)' % only total hcys (not necessarily free hcys) is Increased
-            'DM_hcys_L[bc]'	'Increased (urine/blood)' % only total hcys (not necessarily free hcys) is Increased
-            'EX_cyst_L[u]'	'Decreased (urine)' % PMID: 27778219
+            'DM_met_L[bc]',	'Increased (blood)';%
+            'DM_orn[bc]',	'Increased (blood)'; % % not mentioned in 27778219
+            'EX_Lhcystin[u]',	'Increased (urine/blood)'; % difficult to detect - only in higher concentrations
+            'DM_Lhcystin[bc]',	'Increased (urine/blood)'; % difficult to detect - only in higher concentrations
+            'EX_hcys_L[u]',	'Increased (urine/blood)'; % only total hcys (not necessarily free hcys) is Increased
+            'DM_hcys_L[bc]',	'Increased (urine/blood)'; % only total hcys (not necessarily free hcys) is Increased
+            'EX_cyst_L[u]',	'Decreased (urine)' % PMID: 27778219
             };
     else
         BiomarkerRxns = {
-            'EX_met_L[u]'	'Increased (blood)'%
-            'EX_orn[u]'	'Increased (blood)' % not mentioned in 27778219
-            'EX_Lhcystin[u]'	'Increased (urine/blood)' % difficult to detect - only in higher concentrations
-            'EX_hcys_L[u]'	'Increased (urine/blood)' % only total hcys (not necessarily free hcys) is Increased
-            'EX_cyst_L[u]'	'Decreased (urine)' % PMID: 27778219
+            'EX_met_L[u]',	'Increased (blood)';%
+            'EX_orn[u]',	'Increased (blood)'; % not mentioned in 27778219
+            'EX_Lhcystin[u]',	'Increased (urine/blood)'; % difficult to detect - only in higher concentrations
+            'EX_hcys_L[u]',	'Increased (urine/blood)'; % only total hcys (not necessarily free hcys) is Increased
+            'EX_cyst_L[u]',	'Decreased (urine)' % PMID: 27778219
             };
     end
     [IEMSol_HCYS] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1240,14 +1240,14 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_lys_L[u]'	'Increased (urine/blood)'
-            'DM_lys_L[bc]'	'Increased (urine/blood)'
-            'DM_Lpipecol[bc]'	'Increased (blood)'
+            'EX_lys_L[u]',	'Increased (urine/blood)';
+            'DM_lys_L[bc]',	'Increased (urine/blood)';
+            'DM_Lpipecol[bc]',	'Increased (blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_lys_L[u]'	'Increased (urine/blood)'
-            'EX_Lpipecol[u]'	'Increased (blood)'
+            'EX_lys_L[u]',	'Increased (urine/blood)';
+            'EX_Lpipecol[u]',	'Increased (blood)'
             };
     end
     [IEMSol_HLYS1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1277,16 +1277,16 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_citr_L[u]'	'Increased (urine/blood)'
-            'EX_lys_L[u]'	'Increased (urine/blood)'
-            'DM_citr_L[bc]'	'Increased (urine/blood)'
-            'DM_lys_L[bc]'	'Increased (urine/blood)'
+            'EX_citr_L[u]',	'Increased (urine/blood)';
+            'EX_lys_L[u]',	'Increased (urine/blood)';
+            'DM_citr_L[bc]',	'Increased (urine/blood)';
+            'DM_lys_L[bc]',	'Increased (urine/blood)'
             };
     else
         
         BiomarkerRxns = {
-            'EX_citr_L[u]'	'Increased (urine/blood)'
-            'EX_lys_L[u]'	'Increased (urine/blood)'
+            'EX_citr_L[u]',	'Increased (urine/blood)';
+            'EX_lys_L[u]',	'Increased (urine/blood)'
             };
     end
     [IEMSol_HLYS2] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1315,16 +1315,16 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_4hpro_LT[u]'	'Increased (urine)'
-            'EX_gly[u]'	'Increased (urine)'
-            'EX_pro_L[u]'	'Increased (urine/blood)'
-            'DM_pro_L[bc]'	'Increased (urine/blood)'
+            'EX_4hpro_LT[u]',	'Increased (urine)';
+            'EX_gly[u]',	'Increased (urine)';
+            'EX_pro_L[u]',	'Increased (urine/blood)';
+            'DM_pro_L[bc]',	'Increased (urine/blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_4hpro_LT[u]'	'Increased (urine)'
-            'EX_gly[u]'	'Increased (urine)'
-            'EX_pro_L[u]'	'Increased (urine/blood)'
+            'EX_4hpro_LT[u]',	'Increased (urine)';
+            'EX_gly[u]',	'Increased (urine)';
+            'EX_pro_L[u]',	'Increased (urine/blood)'
             };
     end
     
@@ -1355,19 +1355,19 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_4hpro_LT[u]'	'Increased (urine)'
-            'EX_gly[u]'	'Increased (urine)'
-            'EX_orn[u]'	'Increased (urine/blood)'
-            'EX_pro_L[u]'	'Increased (urine/blood)'
-            'DM_orn[bc]'	'Increased (urine/blood)'
-            'DM_pro_L[bc]'	'Increased (urine/blood)'
+            'EX_4hpro_LT[u]',	'Increased (urine)';
+            'EX_gly[u]',	'Increased (urine)';
+            'EX_orn[u]',	'Increased (urine/blood)';
+            'EX_pro_L[u]',	'Increased (urine/blood)';
+            'DM_orn[bc]',	'Increased (urine/blood)';
+            'DM_pro_L[bc]',	'Increased (urine/blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_4hpro_LT[u]'	'Increased'
-            'EX_gly[u]'	'Increased (urine)'
-            'EX_orn[u]'	'Increased (urine/blood)'
-            'EX_pro_L[u]'	'Increased (urine/blood)'
+            'EX_4hpro_LT[u]',	'Increased';
+            'EX_gly[u]',	'Increased (urine)';
+            'EX_orn[u]',	'Increased (urine/blood)';
+            'EX_pro_L[u]',	'Increased (urine/blood)'
             };
     end
     [IEMSol_HPII] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1397,16 +1397,16 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_3bcrn[u]'	'Increased (urine)'%
-            'EX_3ivcrn[u]'	'Increased (urine)'
-            'DM_ivcrn[bc]'	'Increased (blood)'
+            'EX_3bcrn[u]',	'Increased (urine)';%
+            'EX_3ivcrn[u]',	'Increased (urine)';
+            'DM_ivcrn[bc]',	'Increased (blood)'
             };
     else
         
         BiomarkerRxns = {
-            'EX_3bcrn[u]'	'Increased (urine)'
-            'EX_3ivcrn[u]'	'Increased (urine)'
-            'EX_ivcrn[u]'	'Increased (blood)'
+            'EX_3bcrn[u]',	'Increased (urine)';
+            'EX_3ivcrn[u]',	'Increased (urine)';
+            'EX_ivcrn[u]',	'Increased (blood)'
             };
     end
     [IEMSol_IVA] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1436,14 +1436,14 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_fol[bc]'	'Decreased (blood)'
-            'EX_urate[u]'	'Increased (urine/blood)'
-            'DM_urate[bc]'	'Increased (urine/blood)'
+            'DM_fol[bc]',	'Decreased (blood)';
+            'EX_urate[u]',	'Increased (urine/blood)';
+            'DM_urate[bc]',	'Increased (urine/blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_fol[u]'	'Decreased (blood)'
-            'EX_urate[u]'	'Increased (urine/blood)'
+            'EX_fol[u]',	'Decreased (blood)';
+            'EX_urate[u]',	'Increased (urine/blood)'
             };
     end
     [IEMSol_LNS] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1477,18 +1477,18 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_leuktrE4[u]'	'Decreased (urine/blood/CSF)'
-            'EX_leuktrC4[u]'	'Decreased (urine/blood/CSF)'
-            'DM_leuktrE4[bc]'	'Decreased (urine/blood/CSF)'
-            'DM_leuktrC4[bc]'	'Decreased (urine/blood/CSF)'
-            'DM_leuktrD4[bc]'	'Decreased (urine/blood/CSF)'
-            'DM_leuktrE4[csf]'	'Decreased (urine/blood/CSF)'
+            'EX_leuktrE4[u]',	'Decreased (urine/blood/CSF)';
+            'EX_leuktrC4[u]',	'Decreased (urine/blood/CSF)';
+            'DM_leuktrE4[bc]',	'Decreased (urine/blood/CSF)';
+            'DM_leuktrC4[bc]',	'Decreased (urine/blood/CSF)';
+            'DM_leuktrD4[bc]',	'Decreased (urine/blood/CSF)';
+            'DM_leuktrE4[csf]',	'Decreased (urine/blood/CSF)'
             };
     else
         BiomarkerRxns = {
-            'EX_leuktrE4[u]'	'Decreased (urine/blood/CSF)'
-            'EX_leuktrC4[u]'	'Decreased (urine/blood/CSF)'
-            'EX_leuktrD4[u]'	'Decreased (urine/blood/CSF)'
+            'EX_leuktrE4[u]',	'Decreased (urine/blood/CSF)';
+            'EX_leuktrC4[u]',	'Decreased (urine/blood/CSF)';
+            'EX_leuktrD4[u]',	'Decreased (urine/blood/CSF)'
             };
     end
     
@@ -1521,19 +1521,19 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_ile_L[u]'	'Increased (urine/blood)'
-            'EX_3mop[u]'	'Increased (urine/blood)'
-            'DM_ile_L[bc]'	'Increased (urine/blood)'
-            'DM_leu_L[bc]'	'Increased (blood)'
-            'DM_val_L[bc]'	'Increased (blood)'
-            'DM_3mop[bc]'	'Increased (urine/blood)'
+            'EX_ile_L[u]',	'Increased (urine/blood)';
+            'EX_3mop[u]',	'Increased (urine/blood)';
+            'DM_ile_L[bc]',	'Increased (urine/blood)';
+            'DM_leu_L[bc]',	'Increased (blood)';
+            'DM_val_L[bc]',	'Increased (blood)';
+            'DM_3mop[bc]',	'Increased (urine/blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_ile_L[u]'	'Increased (urine/blood)'
-            'EX_leu_L[u]'	'Increased (blood)'
-            'EX_val_L[u]'	'Increased (blood)'
-            'EX_3mop[u]'	'Increased (urine/blood)'
+            'EX_ile_L[u]',	'Increased (urine/blood)';
+            'EX_leu_L[u]',	'Increased (blood)';
+            'EX_val_L[u]',	'Increased (blood)';
+            'EX_3mop[u]',	'Increased (urine/blood)'
             };
     end
     [IEMSol_MSUD] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1567,23 +1567,23 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'EX_3aib[u]'	'Increased (urine)' %
-                'DM_c4dc[bc]'	'Increased (blood)' %
-                'DM_crn[bc]'	'Decreased (blood)' %
-                'DM_HC00900[bc]'	'Increased (blood)' %
-                'DM_3hpp[bc]'	'Increased (blood)' %
-                'DM_pcrn[bc]'	'Increased (blood)'
-                'DM_3hdececrn[bc]'	'Increased (blood)'
+                'EX_3aib[u]',	'Increased (urine)'; %
+                'DM_c4dc[bc]',	'Increased (blood)'; %
+                'DM_crn[bc]',	'Decreased (blood)'; %
+                'DM_HC00900[bc]',	'Increased (blood)'; %
+                'DM_3hpp[bc]',	'Increased (blood)'; %
+                'DM_pcrn[bc]',	'Increased (blood)';
+                'DM_3hdececrn[bc]',	'Increased (blood)'
                 };
         else
             BiomarkerRxns = {
-                'EX_3aib[u]'	'Increased (urine)' %
-                'EX_c4dc[u]'	'Increased (blood)' %
-                'EX_crn[u]'	'Decreased (blood)' %
-                'EX_HC00900[u]'	'Increased (blood)' %
-                'EX_3hpp[u]'	'Increased (blood)' %
-                'EX_pcrn[u]'	'Increased (blood)'
-                'EX_3hdececrn[u]'	'Increased (blood)'
+                'EX_3aib[u]',	'Increased (urine)'; %
+                'EX_c4dc[u]',	'Increased (blood)'; %
+                'EX_crn[u]',	'Decreased (blood)'; %
+                'EX_HC00900[u]',	'Increased (blood)'; %
+                'EX_3hpp[u]',	'Increased (blood)'; %
+                'EX_pcrn[u]',	'Increased (blood)';
+                'EX_3hdececrn[u]',	'Increased (blood)'
                 
                 };
         end
@@ -1616,21 +1616,21 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_ala_L[bc]'	'Increased (blood)'
-            'DM_citr_L[bc]'	'Decreased (blood)'
-            'DM_gln_L[bc]'	'Increased (blood)'
-            'DM_nh4[bc]'	'Increased (blood)'
-            'DM_orn[bc]'	'Increased (blood)'
-            'EX_orot[u]'	'Decreased (urine)'
+            'DM_ala_L[bc]',	'Increased (blood)';
+            'DM_citr_L[bc]',	'Decreased (blood)';
+            'DM_gln_L[bc]',	'Increased (blood)';
+            'DM_nh4[bc]',	'Increased (blood)';
+            'DM_orn[bc]',	'Increased (blood)';
+            'EX_orot[u]',	'Decreased (urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_ala_L[u]'	'Increased (blood)'
-            'EX_citr_L[u]'	'Decreased (blood)'
-            'EX_gln_L[u]'	'Increased (blood)'
-            'EX_nh4[u]'	'Increased (blood)'
-            'EX_orn[u]'	'Increased (blood)'
-            'EX_orot[u]'	'Decreased (urine)'
+            'EX_ala_L[u]',	'Increased (blood)';
+            'EX_citr_L[u]',	'Decreased (blood)';
+            'EX_gln_L[u]',	'Increased (blood)';
+            'EX_nh4[u]',	'Increased (blood)';
+            'EX_orn[u]',	'Increased (blood)';
+            'EX_orot[u]',	'Decreased (urine)'
             };
     end
     [IEMSol_NAGS] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1661,50 +1661,50 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_5oxpro[u]'	'Increased (transient, urine)'
-            'EX_gly[u]'	'Increased (urine)'
-            'EX_lys_L[u]'	'Increased (urine)'
-            'EX_orot[u]'	'Increased (urine)'
-            'DM_citr_L[bc]'	'Decreased (blood)'
-            'DM_gln_L[bc]'	'Increased (blood)'
-            'DM_ura[bc]'	'Increased (urine)'
-            'DM_nh4[bc]'	'Increased (blood)'
-            'DM_orn[bc]'	'Increased (blood)'
+            'EX_5oxpro[u]',	'Increased (transient, urine)';
+            'EX_gly[u]',	'Increased (urine)';
+            'EX_lys_L[u]',	'Increased (urine)';
+            'EX_orot[u]',	'Increased (urine)';
+            'DM_citr_L[bc]',	'Decreased (blood)';
+            'DM_gln_L[bc]',	'Increased (blood)';
+            'DM_ura[bc]',	'Increased (urine)';
+            'DM_nh4[bc]',	'Increased (blood)';
+            'DM_orn[bc]',	'Increased (blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_5oxpro[u]'	'Increased (transient, urine)'
-            'EX_citr_L[u]'	'Decreased (blood)'
-            'EX_gln_L[u]'	'Increased (blood)'
-            'EX_gly[u]'	'Increased (urine)'
-            'EX_lys_L[u]'	'Increased (urine)'
-            'EX_orot[u]'	'Increased (urine)'
-            'EX_ura[u]'	'Increased (urine)'
-            'EX_nh4[u]'	'Increased (blood)'
-            'EX_orn[u]'	'Increased (blood)'
-            'EX_cyst_L[u]'	'Unknown (urine)'
-            'EX_23dhmb[u]'	'Unknown (urine)'
-            'EX_3hanthrn[u]'	'Unknown (urine)'
-            'EX_3mob[u]'	'Unknown (urine)'
-            'EX_3mop[u]'	'Unknown (urine)'
-            'EX_im4ac[u]'	'Unknown (urine)'
-            'EX_anth[u]'	'Unknown (urine)'
-            'EX_3hivac[u]'	'Unknown (urine)'
-            'EX_dopa[u]'	'Unknown (urine)'
-            'EX_peamn[u]'	'Unknown (urine)'
-            'EX_saccrp_L[u]'	'Unknown (urine)'
-            'EX_trypta[u]'	'Unknown (urine)'
-            'EX_tyr_L[u]'	'Unknown (urine)'
-            'EX_val_L[u]'	'Unknown (urine)'
-            'EX_cgly[u]'	'Unknown (urine)'
-            'EX_Lcystin[u]'	'Unknown (urine)'
-            'EX_hmcr[u]'	'Unknown (urine)'
-            'EX_ddeccrn[u]'	'Unknown (urine)'
-            'EX_CE1310[u]'	'Unknown (urine)'
-            'EX_pheacgly[u]'	'Unknown (urine)'
-            'EX_phacgly[u]'	'Unknown (urine)'
-            'EX_M02723[u]'	'Unknown (urine)'
-            'EX_leuval[u]'	'Unknown (urine)'
+            'EX_5oxpro[u]',	'Increased (transient, urine)';
+            'EX_citr_L[u]',	'Decreased (blood)';
+            'EX_gln_L[u]',	'Increased (blood)';
+            'EX_gly[u]',	'Increased (urine)';
+            'EX_lys_L[u]',	'Increased (urine)';
+            'EX_orot[u]',	'Increased (urine)';
+            'EX_ura[u]',	'Increased (urine)';
+            'EX_nh4[u]',	'Increased (blood)';
+            'EX_orn[u]',	'Increased (blood)';
+            'EX_cyst_L[u]',	'Unknown (urine)';
+            'EX_23dhmb[u]',	'Unknown (urine)';
+            'EX_3hanthrn[u]',	'Unknown (urine)';
+            'EX_3mob[u]',	'Unknown (urine)';
+            'EX_3mop[u]',	'Unknown (urine)';
+            'EX_im4ac[u]',	'Unknown (urine)';
+            'EX_anth[u]',	'Unknown (urine)';
+            'EX_3hivac[u]',	'Unknown (urine)';
+            'EX_dopa[u]',	'Unknown (urine)';
+            'EX_peamn[u]',	'Unknown (urine)';
+            'EX_saccrp_L[u]',	'Unknown (urine)';
+            'EX_trypta[u]',	'Unknown (urine)';
+            'EX_tyr_L[u]',	'Unknown (urine)';
+            'EX_val_L[u]',	'Unknown (urine)';
+            'EX_cgly[u]',	'Unknown (urine)';
+            'EX_Lcystin[u]',	'Unknown (urine)';
+            'EX_hmcr[u]',	'Unknown (urine)';
+            'EX_ddeccrn[u]',	'Unknown (urine)';
+            'EX_CE1310[u]',	'Unknown (urine)';
+            'EX_pheacgly[u]',	'Unknown (urine)';
+            'EX_phacgly[u]',	'Unknown (urine)';
+            'EX_M02723[u]',	'Unknown (urine)';
+            'EX_leuval[u]',	'Unknown (urine)'
             };
     end
     [IEMSol_OTC] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1734,12 +1734,12 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'EX_orot[u]'	'Increased (urine/blood)'
-                'DM_orot[bc]'	'Increased (urine/blood)'
+                'EX_orot[u]',	'Increased (urine/blood)';
+                'DM_orot[bc]',	'Increased (urine/blood)'
                 };
         else
             BiomarkerRxns = {
-                'EX_orot[u]'	'Increased (urine/blood)'
+                'EX_orot[u]',	'Increased (urine/blood)'
                 };
         end
         [IEMSol_OROA] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1768,15 +1768,15 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_phe_L[bc]'	'Increased (blood)'
-            'EX_2hyoxplac[u]'	'Increased (urine)'
-            'EX_phpyr[u]'	'Increased (urine)'
+            'DM_phe_L[bc]',	'Increased (blood)';
+            'EX_2hyoxplac[u]',	'Increased (urine)';
+            'EX_phpyr[u]',	'Increased (urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_phe_L[u]'	'Increased (blood)'
-            'EX_2hyoxplac[u]'	'Increased (urine)'
-            'EX_phpyr[u]'	'Increased (urine)'
+            'EX_phe_L[u]',	'Increased (blood)';
+            'EX_2hyoxplac[u]',	'Increased (urine)';
+            'EX_phpyr[u]',	'Increased (urine)'
             };
     end
     [IEMSol_PKU] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1806,13 +1806,13 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'DM_duri[bc]'	'Increased (blood)'
-                'DM_thymd[bc]'	'Increased (blood)'
+                'DM_duri[bc]',	'Increased (blood)';
+                'DM_thymd[bc]',	'Increased (blood)'
                 };
         else
             BiomarkerRxns = {
-                'EX_duri[u]'	'Increased (blood)'
-                'EX_thymd[u]'	'Increased (blood)'
+                'EX_duri[u]',	'Increased (blood)';
+                'EX_thymd[u]',	'Increased (blood)'
                 };
         end
         [IEMSol_MNGIE] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1842,13 +1842,13 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_lac_L[bc]'	'Increased (blood)'
-            'DM_pyr[bc]'	'Increased (blood)'
+            'DM_lac_L[bc]',	'Increased (blood)';
+            'DM_pyr[bc]',	'Increased (blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_lac_L[u]'	'Increased (blood)'
-            'EX_pyr[u]'	'Increased (blood)'
+            'EX_lac_L[u]',	'Increased (blood)';
+            'EX_pyr[u]',	'Increased (blood)'
             };
     end
     [IEMSol_SUCLA] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1880,17 +1880,17 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_gly[u]'	'Increased (urine/blood)'
-            'EX_sucsal[u]'	'Increased (urine/blood)'
-            'DM_gly[bc]'	'Increased (urine/blood)'
-            'DM_sucsal[bc]'	'Increased (urine/blood)'
-            'DM_4abut[csf]'	'Increased (CSF)'
+            'EX_gly[u]',	'Increased (urine/blood)';
+            'EX_sucsal[u]',	'Increased (urine/blood)';
+            'DM_gly[bc]',	'Increased (urine/blood)';
+            'DM_sucsal[bc]',	'Increased (urine/blood)';
+            'DM_4abut[csf]',	'Increased (CSF)'
             };
     else
         BiomarkerRxns = {
-            'EX_gly[u]'	'Increased (urine/blood)'
-            'EX_sucsal[u]'	'Increased (urine/blood)'
-            'EX_4abut[u]'	'Increased (CSF)'
+            'EX_gly[u]',	'Increased (urine/blood)';
+            'EX_sucsal[u]',	'Increased (urine/blood)';
+            'EX_4abut[u]',	'Increased (CSF)'
             };
     end
     [IEMSol_SSADHD] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1924,11 +1924,11 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_phe_L[bc]'	'Increased (blood)'
+            'DM_phe_L[bc]',	'Increased (blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_phe_L[u]'	'Increased (blood)'
+            'EX_phe_L[u]',	'Increased (blood)'
             };
     end
     [IEMSol_TETB] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -1959,20 +1959,20 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_citr_L[bc]'	'Increased (urine/blood)'
-            'DM_gly[bc]'	'Increased (urine/blood)'
-            'DM_nh4[bc]'	'Increased (blood)'
-            'EX_orot[u]'	'Increased (urine)'
-            'EX_citr_L[u]'	'Increased (urine/blood)'
-            'EX_gly[u]'	'Increased (urine/blood)'
+            'DM_citr_L[bc]',	'Increased (urine/blood)';
+            'DM_gly[bc]',	'Increased (urine/blood)';
+            'DM_nh4[bc]',	'Increased (blood)';
+            'EX_orot[u]',	'Increased (urine)';
+            'EX_citr_L[u]',	'Increased (urine/blood)';
+            'EX_gly[u]',	'Increased (urine/blood)'
             };
     else
         
         BiomarkerRxns = {
-            'EX_citr_L[u]'	'Increased (urine/blood)'
-            'EX_gly[u]'	'Increased (urine/blood)'
-            'EX_nh4[u]'	'Increased (blood)'
-            'EX_orot[u]'	'Increased (urine)'
+            'EX_citr_L[u]',	'Increased (urine/blood)';
+            'EX_gly[u]',	'Increased (urine/blood)';
+            'EX_nh4[u]',	'Increased (blood)';
+            'EX_orot[u]',	'Increased (urine)'
             };
     end
     [IEMSol_CIT1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2002,17 +2002,17 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_met_L[bc]'	'Increased (blood)'
-            'DM_tyr_L[bc]'	'Increased (blood)'
-            'EX_34hpl[u]'	'Increased (urine)'
-            'EX_34hpp[u]'	'Increased (urine)'
+            'DM_met_L[bc]',	'Increased (blood)';
+            'DM_tyr_L[bc]',	'Increased (blood)';
+            'EX_34hpl[u]',	'Increased (urine)';
+            'EX_34hpp[u]',	'Increased (urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_met_L[u]'	'Increased (blood)'
-            'EX_tyr_L[u]'	'Increased (blood)'
-            'EX_34hpl[u]'	'Increased (urine)'
-            'EX_34hpp[u]'	'Increased (urine)'
+            'EX_met_L[u]',	'Increased (blood)';
+            'EX_tyr_L[u]',	'Increased (blood)';
+            'EX_34hpl[u]',	'Increased (urine)';
+            'EX_34hpp[u]',	'Increased (urine)'
             };
     end
     [IEMSol_TYR1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2040,15 +2040,15 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_tyr_L[bc]'	'Increased (blood)'
-            'EX_34hpl[u]'	'Increased (urine)'
-            'EX_34hpp[u]'	'Increased (urine)'
+            'DM_tyr_L[bc]',	'Increased (blood)';
+            'EX_34hpl[u]',	'Increased (urine)';
+            'EX_34hpp[u]',	'Increased (urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_tyr_L[u]'	'Increased (blood)'
-            'EX_34hpl[u]'	'Increased (urine)'
-            'EX_34hpp[u]'	'Increased (urine)'
+            'EX_tyr_L[u]',	'Increased (blood)';
+            'EX_34hpl[u]',	'Increased (urine)';
+            'EX_34hpp[u]',	'Increased (urine)'
             };
     end
     [IEMSol_TYR3] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2077,17 +2077,17 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_hxan[u]'	'Increased (urine)'
-            'EX_xan[u]'	'Increased (blood/urine)'
-            'EX_urate[u]'	'Decreased (blood/urine)'
-            'DM_xan[bc]'	'Increased (blood/urine)'
-            'DM_urate[bc]'	'Decreased (blood/urine)'
+            'EX_hxan[u]',	'Increased (urine)';
+            'EX_xan[u]',	'Increased (blood/urine)';
+            'EX_urate[u]',	'Decreased (blood/urine)';
+            'DM_xan[bc]',	'Increased (blood/urine)';
+            'DM_urate[bc]',	'Decreased (blood/urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_hxan[u]'	'Increased (urine)'
-            'EX_xan[u]'	'Increased (blood/urine)'
-            'EX_urate[u]'	'Decreased (blood/urine)'
+            'EX_hxan[u]',	'Increased (urine)';
+            'EX_xan[u]',	'Increased (blood/urine)';
+            'EX_urate[u]',	'Decreased (blood/urine)'
             };
     end
     [IEMSol_XAN1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2117,18 +2117,18 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_akg[u]'	'Increased (urine)'
-            'EX_lac_L[u]'	'Increased (blood/urine)'
-            'DM_lac_L[bc]'	'Increased (blood/urine)'
-            'DM_glu_L[bc]'	'Increased (blood)'
-            'DM_gln_L[bc]'	'Increased (blood)'
+            'EX_akg[u]',	'Increased (urine)';
+            'EX_lac_L[u]',	'Increased (blood/urine)';
+            'DM_lac_L[bc]',	'Increased (blood/urine)';
+            'DM_glu_L[bc]',	'Increased (blood)';
+            'DM_gln_L[bc]',	'Increased (blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_akg[u]'	'Increased (urine)'
-            'EX_lac_L[u]'	'Increased (blood/urine)'
-            'EX_glu_L[u]'	'Increased (blood)'
-            'EX_gln_L[u]'	'Increased (blood)'
+            'EX_akg[u]',	'Increased (urine)';
+            'EX_lac_L[u]',	'Increased (blood/urine)';
+            'EX_glu_L[u]',	'Increased (blood)';
+            'EX_gln_L[u]',	'Increased (blood)'
             };
     end
     [IEMSol_AKGD] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2172,11 +2172,11 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'EX_xylu_L[u]'	'Increased (urine)'
+                'EX_xylu_L[u]',	'Increased (urine)'
                 };
         else
             BiomarkerRxns = {
-                'EX_xylu_L[u]'	'Increased (urine)'
+                'EX_xylu_L[u]',	'Increased (urine)'
                 };
         end
         [IEMSol_EP] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2208,14 +2208,14 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'DM_val_L[bc]'	'Increased (blood/urine)'
-                'EX_val_L[u]'	'Increased (blood/urine)'
-                'EX_leu_L[u]'	'Increased (blood/urine)'
+                'DM_val_L[bc]',	'Increased (blood/urine)';
+                'EX_val_L[u]',	'Increased (blood/urine)';
+                'EX_leu_L[u]',	'Increased (blood/urine)'
                 };
         else
             BiomarkerRxns = {
-                'EX_val_L[u]'	'Increased (blood/urine)'
-                'EX_leu_L[u]'	'Increased (blood/urine)'
+                'EX_val_L[u]',	'Increased (blood/urine)';
+                'EX_leu_L[u]',	'Increased (blood/urine)'
                 };
         end
         [IEMSol_HYPVLI] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2251,15 +2251,15 @@ if 1
                 end
             end
             BiomarkerRxns = {
-                'DM_asn_L[bc]'	'Decreased (blood/csf)'
-                'DM_asn_L[csf]'	'Decreased (blood/csf)'
-                'DM_gln_L[bc]'	'Increased (blood/csf)'
-                'DM_gln_L[csf]'	'Increased (blood/csf)'
+                'DM_asn_L[bc]',	'Decreased (blood/csf)';
+                'DM_asn_L[csf]',	'Decreased (blood/csf)';
+                'DM_gln_L[bc]',	'Increased (blood/csf)';
+                'DM_gln_L[csf]',	'Increased (blood/csf)'
                 };
         else
             BiomarkerRxns = {
-                'EX_asn_L[u]'	'Decreased (blood/urine)'
-                'EX_gln_L[u]'	'Increased (blood/urine)'
+                'EX_asn_L[u]',	'Decreased (blood/urine)';
+                'EX_gln_L[u]',	'Increased (blood/urine)'
                 };
         end
         [IEMSol_ASNSD] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2289,23 +2289,23 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_argsuc[u]'	'Increased (urine)'
-            'EX_gly[u]'	'Increased (urine)'
-            'EX_orot[u]'	'Increased (urine)'
-            'EX_lys_L[u]'	'Increased (urine)'
-            'EX_ura[u]'	'Increased (urine)'
-            'DM_gln_L[bc]'	'Increased (blood)'
-            'DM_citr_L[bc]'	'Increased (blood)'
+            'EX_argsuc[u]',	'Increased (urine)';
+            'EX_gly[u]',	'Increased (urine)';
+            'EX_orot[u]',	'Increased (urine)';
+            'EX_lys_L[u]',	'Increased (urine)';
+            'EX_ura[u]',	'Increased (urine)';
+            'DM_gln_L[bc]',	'Increased (blood)';
+            'DM_citr_L[bc]',	'Increased (blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_argsuc[u]'	'Increased (urine)'
-            'EX_gly[u]'	'Increased (urine)'
-            'EX_orot[u]'	'Increased (urine)'
-            'EX_lys_L[u]'	'Increased (urine)'
-            'EX_ura[u]'	'Increased (urine)'
-            'EX_gln_L[u]'	'Increased (blood)'
-            'EX_citr_L[u]'	'Increased (blood)'
+            'EX_argsuc[u]',	'Increased (urine)';
+            'EX_gly[u]',	'Increased (urine)';
+            'EX_orot[u]',	'Increased (urine)';
+            'EX_lys_L[u]',	'Increased (urine)';
+            'EX_ura[u]',	'Increased (urine)';
+            'EX_gln_L[u]',	'Increased (blood)';
+            'EX_citr_L[u]',	'Increased (blood)'
             };
     end
     [IEMSol_ASA] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2339,19 +2339,19 @@ if 0
             end
         end
         BiomarkerRxns = {
-            'EX_3aib[u]'	'Increased (urine)'
-            'DM_c4dc[bc]'	'Increased (blood)'
-            'DM_crn[bc]'	'Decreased (blood)'
-            'DM_HC00900[bc]'	'Increased (blood)'
-            'DM_3hpp[bc]'	'Increased (blood)'
+            'EX_3aib[u]',	'Increased (urine)';
+            'DM_c4dc[bc]',	'Increased (blood)';
+            'DM_crn[bc]',	'Decreased (blood)';
+            'DM_HC00900[bc]',	'Increased (blood)';
+            'DM_3hpp[bc]',	'Increased (blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_3aib[u]'	'Increased (urine)'
-            'EX_c4dc[u]'	'Increased (blood)'
-            'EX_crn[u]'	'Decreased (blood)'
-            'EX_HC00900[u]'	'Increased (blood)'
-            'EX_3hpp[u]'	'Increased (blood)'
+            'EX_3aib[u]',	'Increased (urine)';
+            'EX_c4dc[u]',	'Increased (blood)';
+            'EX_crn[u]',	'Decreased (blood)';
+            'EX_HC00900[u]',	'Increased (blood)';
+            'EX_3hpp[u]',	'Increased (blood)'
             };
     end
     [IEMSol_MMA] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2388,38 +2388,38 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_acac[bc]'	'Increased (urine/blood)'
-            'DM_ala_L[bc]'	'Increased (blood)'
-            'DM_bhb[bc]'	'Increased (urine/blood)'
-            'DM_citr_L[bc]'	'Increased (blood)'
-            'DM_lys_L[bc]'	'Increased (blood)'
-            'DM_pro_L[bc]'	'Increased (blood)'
-            'DM_lac_L[bc]'	'Increased (blood)' % after 12hrs of fasting,
-            'DM_nh4[bc]'	'Increased (blood)' % after 12hrs of fasting,
-            'DM_glc_D[bc]'	'Decreased (blood)' % after 12hrs of fasting,
-            'EX_fum[u]'	'Increased (urine)'
-            'EX_succ[u]'	'Increased (urine)'
-            'EX_acetone[u]'	'Increased (urine)'
-            'EX_akg[u]'	'Increased (urine)'
-            'EX_acac[u]'	'Increased (urine/blood)'
-            'EX_bhb[u]'	'Increased (urine/blood)'
+            'DM_acac[bc]',	'Increased (urine/blood)';
+            'DM_ala_L[bc]',	'Increased (blood)';
+            'DM_bhb[bc]',	'Increased (urine/blood)';
+            'DM_citr_L[bc]',	'Increased (blood)';
+            'DM_lys_L[bc]',	'Increased (blood)';
+            'DM_pro_L[bc]',	'Increased (blood)';
+            'DM_lac_L[bc]',	'Increased (blood)'; % after 12hrs of fasting,
+            'DM_nh4[bc]',	'Increased (blood)'; % after 12hrs of fasting,
+            'DM_glc_D[bc]',	'Decreased (blood)'; % after 12hrs of fasting,
+            'EX_fum[u]',	'Increased (urine)';
+            'EX_succ[u]',	'Increased (urine)';
+            'EX_acetone[u]',	'Increased (urine)';
+            'EX_akg[u]',	'Increased (urine)';
+            'EX_acac[u]',	'Increased (urine/blood)';
+            'EX_bhb[u]',	'Increased (urine/blood)'
             };
     else
         
         BiomarkerRxns = {
-            'EX_acac[u]'	'Increased (urine/blood)'
-            'EX_acetone[u]'	'Increased (urine)'
-            'EX_akg[u]'	'Increased (urine)'
-            'EX_ala_L[u]'	'Increased (blood)'
-            'EX_bhb[u]'	'Increased (urine/blood)'
-            'EX_citr_L[u]'	'Increased (blood)'
-            'EX_lys_L[u]'	'Increased (blood)'
-            'EX_pro_L[u]'	'Increased (blood)'
-            'EX_succ[u]'	'Increased (urine)'
-            'EX_lac_L[u]'	'Increased (blood)' % after 12hrs of fasting,
-            'EX_nh4[u]'	'Increased (blood)' % after 12hrs of fasting,
-            'EX_glc_D[u]'	'Decreased (blood)' % after 12hrs of fasting,
-            'EX_fum[u]'	'Increased (urine)'
+            'EX_acac[u]',	'Increased (urine/blood)';
+            'EX_acetone[u]',	'Increased (urine)';
+            'EX_akg[u]',	'Increased (urine)';
+            'EX_ala_L[u]',	'Increased (blood)';
+            'EX_bhb[u]',	'Increased (urine/blood)';
+            'EX_citr_L[u]',	'Increased (blood)';
+            'EX_lys_L[u]',	'Increased (blood)';
+            'EX_pro_L[u]',	'Increased (blood)';
+            'EX_succ[u]',	'Increased (urine)';
+            'EX_lac_L[u]',	'Increased (blood)'; % after 12hrs of fasting,
+            'EX_nh4[u]',	'Increased (blood)'; % after 12hrs of fasting,
+            'EX_glc_D[u]',	'Decreased (blood)'; % after 12hrs of fasting,
+            'EX_fum[u]',	'Increased (urine)'
             };
     end
     [IEMSol_PC] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2439,9 +2439,9 @@ if 1
     IEMRxns = setdiff(IEMRxns,RxnMic);
     
     BiomarkerRxns = {
-        'EX_oxa[u]'	'Increased (urine)'
-        'EX_glyclt[u]'	'Increased (urine)'
-        'EX_glx[u]'	'Increased (urine)'
+        'EX_oxa[u]',	'Increased (urine)';
+        'EX_glyclt[u]',	'Increased (urine)';
+        'EX_glx[u]',	'Increased (urine)'
         };
     [IEMSol_PHOX1] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
 end
@@ -2471,7 +2471,7 @@ if 1
         end
         BiomarkerRxns = {
             % 'EX_25aics[u]'	'Increased (urine/csf)' % not in HH
-            'DM_Brain_25aics[c]'	'Increased (urine/csf)' % cannot be produced by HH
+            'DM_Brain_25aics[c]',	'Increased (urine/csf)' % cannot be produced by HH
             };
     else
         BiomarkerRxns = {
@@ -2508,13 +2508,13 @@ if 1
         end
         BiomarkerRxns = {
             % 'EX_25aics[u]'	'Increased (urine/csf)' % not in HH
-            'EX_Nacasp[u]'	'Increased (urine/csf/blood)' % cannot be produced by HH
-            'DM_Nacasp[bc]'	'Increased (urine/csf/blood)'
-            'DM_Nacasp[csf]'	'Increased (urine/csf/blood)'
+            'EX_Nacasp[u]',	'Increased (urine/csf/blood)'; % cannot be produced by HH
+            'DM_Nacasp[bc]',	'Increased (urine/csf/blood)';
+            'DM_Nacasp[csf]',	'Increased (urine/csf/blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_Nacasp[u]'	'Increased (urine/csf/blood)'
+            'EX_Nacasp[u]',	'Increased (urine/csf/blood)'
             };
     end
     [IEMSol_CD] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2544,14 +2544,14 @@ if 1 %Rxn obj is 0
             end
         end
         BiomarkerRxns = {
-            'EX_25aics[u]'	'Increased (urine/csf)' % not in HH
-            'EX_C05770[u]'	'Increased (urine/csf/blood)'
-            'DM_C05770[bc]'	'Increased (urine/csf/blood)'
-            'DM_C05770[csf]'	'Increased (urine/csf/blood)'
+            'EX_25aics[u]',	'Increased (urine/csf)'; % not in HH
+            'EX_C05770[u]',	'Increased (urine/csf/blood)';
+            'DM_C05770[bc]',	'Increased (urine/csf/blood)';
+            'DM_C05770[csf]',	'Increased (urine/csf/blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_C05770[u]'	'Increased (urine/csf/blood)'
+            'EX_C05770[u]',	'Increased (urine/csf/blood)'
             };
     end
     [IEMSol_HPC] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2583,15 +2583,15 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'EX_met_L[u]'	'Increased (urine/blood)' %
-            'EX_hcys_L[u]'	'Increased (urine/blood)'
-            'DM_hcys_L[bc]'	'Increased (urine/blood)'
-            'DM_met_L[bc]'	'Increased (urine/blood)'
+            'EX_met_L[u]',	'Increased (urine/blood)'; %
+            'EX_hcys_L[u]',	'Increased (urine/blood)';
+            'DM_hcys_L[bc]',	'Increased (urine/blood)';
+            'DM_met_L[bc]',	'Increased (urine/blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_met_L[u]'	'Increased (urine/blood)'
-            'EX_hcys_L[u]'	'Increased (urine/blood)'
+            'EX_met_L[u]',	'Increased (urine/blood)';
+            'EX_hcys_L[u]',	'Increased (urine/blood)'
             };
     end
     [IEMSol_HMET] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2633,11 +2633,11 @@ if 1
             end
         end
         BiomarkerRxns = {
-            'DM_dsmsterol[bc]'	'Increased (blood)'
+            'DM_dsmsterol[bc]',	'Increased (blood)'
             };
     else
         BiomarkerRxns = {
-            'EX_dsmsterol[u]'	'Increased (blood)'
+            'EX_dsmsterol[u]',	'Increased (blood)'
             };
     end
     [IEMSol_DESMO] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);
@@ -2670,14 +2670,14 @@ if 1 % not well studied - inconsistent biomarkers between reports
             end
         end
         BiomarkerRxns = {
-            'DM_L2aadp[bc]'	'Increased (blood)'
-            'EX_2oxoadp[u]'	'Increased (urine)'
-            'EX_adpoh[u]'	'Increased (urine)'
+            'DM_L2aadp[bc]',	'Increased (blood)';
+            'EX_2oxoadp[u]',	'Increased (urine)';
+            'EX_adpoh[u]',	'Increased (urine)'
             };
     else
         BiomarkerRxns = {
-            'EX_2oxoadp[u]'	'Increased (urine)'
-            'EX_adpoh[u]'	'Increased (urine)'
+            'EX_2oxoadp[u]',	'Increased (urine)';
+            'EX_adpoh[u]',	'Increased (urine)'
             };
     end
     [IEMSol_2OAA] = checkIEM_WBM(model,IEMRxns, BiomarkerRxns,minRxnsFluxHealthy);

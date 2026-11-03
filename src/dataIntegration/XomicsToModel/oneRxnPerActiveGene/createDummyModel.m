@@ -434,3 +434,4 @@ model.dummyMetBool = contains(model.mets,'dummy_Met_');
 model.dummyRxnBool = contains(model.rxns,'dummy_Rxn_');
 
 dummyModel = model;
+end

@@ -176,6 +176,7 @@ set(get(AX(1),'Ylabel'),'String','# metabolites without Standard Gibbs energies 
 set(get(AX(2),'Ylabel'),'String','Reaction:Metabolite ratio')
 title('Standard Gibbs energies of formation from experimental Equilibrium constants')
 xlabel('# iterations')
+end
 
 % function createfigure(X1, Y1, Y2)
 % %CREATEFIGURE(X1,Y1,Y2)

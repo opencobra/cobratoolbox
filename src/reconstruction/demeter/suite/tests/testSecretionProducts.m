@@ -40,7 +40,7 @@ function [TruePositives, FalseNegatives] = testSecretionProducts(model, microbeI
 
 global CBT_LP_SOLVER additionalSecretionRxns
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 
 % read secretion product tables

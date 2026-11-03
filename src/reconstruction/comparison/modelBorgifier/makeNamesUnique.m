@@ -127,3 +127,4 @@ end
 if length(unique(nameList)) ~= length(nameList)
     fprintf('ERROR: Duplicate names still exist!\n')
 end
+end

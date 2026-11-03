@@ -88,3 +88,4 @@ for i = startSearch : endSearch
         metabolite_structure.(Mets{i}).pubChemId = NaN;
     end
 end
+end

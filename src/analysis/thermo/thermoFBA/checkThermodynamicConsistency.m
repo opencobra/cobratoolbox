@@ -98,3 +98,4 @@ if norm(v)>0
 else
     fprintf('%s\n','For this Q, no thermodynamically consistent production of biomass exists.')
 end
+end

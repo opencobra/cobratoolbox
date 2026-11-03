@@ -53,3 +53,4 @@ for n = 1:length(model.mets)
         mappingScore(n, training_data.cids == fixedMappings{1}(training_data_idx)) = 4;
     end
 end
+end

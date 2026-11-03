@@ -1,0 +1,3 @@
+src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifierTest.m	RunMat compiler panic (D7)
+src/analysis/sampling/BarrierRound/CMatrix/include/AdaptiveChol.m	RunMat compiler panic (D7)
+src/analysis/sampling/BarrierRound/CMatrix/coverage/CMatrixTest.m	RunMat compiler panic (D7), surfaced after the empty catch was added

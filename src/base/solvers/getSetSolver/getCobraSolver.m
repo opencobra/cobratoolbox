@@ -54,3 +54,4 @@ if validate
         [solverOK, ~] = changeCobraSolver(solverName, solverType, 1, 1);
     end
 end
+end

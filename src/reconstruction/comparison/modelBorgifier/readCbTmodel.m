@@ -80,7 +80,7 @@ Model.description = modelName ;
 otherModels = find(cellfun(@isempty, (strfind(TmodelNames, modelName)))) ;
 
 % Get field names.
-fields = TmodelFields ;
+fields = TmodelFields() ;
 % Reaction related cell field names.
 rxnFields = fields{1} ;
 % Reaction related double Fields (which are kept model specific).
@@ -267,3 +267,4 @@ end
 %% Order model.
 Model = orderModelFieldsBorg(Model) ;
 Model = organizeModelCool(Model) ;
+end

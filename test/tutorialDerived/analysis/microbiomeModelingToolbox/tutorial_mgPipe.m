@@ -34,7 +34,7 @@
 % and Statistics and Machine Learning Toolbox add-ons in MATLAB.
 %% Initialize the COBRA Toolbox
 
-initCobraToolbox
+initCobraToolbox()
 %% 
 % Set a solver (recommended: ibm_cplex)
 
@@ -48,6 +48,7 @@ solverOK=changeCobraSolver('ibm_cplex','LP');
 websave('AGORA-master.zip','https://github.com/VirtualMetabolicHuman/AGORA/archive/master.zip')
 try
     unzip('AGORA-master')
+catch
 end
 modPath = [pwd filesep 'AGORA-master' filesep 'CurrentVersion' filesep 'AGORA_1_03' filesep' 'AGORA_1_03_mat'];
 %% Preparing the input file with normalized abundances
@@ -414,7 +415,7 @@ analyzeMgPipeResults(infoFilePath,contPath, 'sampleGroupHeaders', sampleGroupHea
 % We will compute the shadow prices for acetate and formate as an example.
 
 objectiveList={
-    'EX_ac[fe]'
+    'EX_ac[fe]';
     'EX_for[fe]'
     };
 %% 

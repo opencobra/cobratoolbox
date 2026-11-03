@@ -26,9 +26,9 @@ function summarizeFeaturesOnTaxonLevels(propertiesFolder, infoFilePath, reconVer
 
 % define the files to load
 files = {
-    'ReactionPresence_',['Refined' filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '_refined.txt']
-    'MetabolitePresence_',['Refined' filesep 'ReactionMetabolitePresence' filesep 'metabolitePresence_' reconVersion '_refined.txt']
-    'UptakeSecretion_',['Refined' filesep 'ComputedFluxes' filesep 'UptakeSecretion_' reconVersion '_refined_qualitative.txt']
+    'ReactionPresence_',['Refined' filesep 'ReactionMetabolitePresence' filesep 'reactionPresence_' reconVersion '_refined.txt'];
+    'MetabolitePresence_',['Refined' filesep 'ReactionMetabolitePresence' filesep 'metabolitePresence_' reconVersion '_refined.txt'];
+    'UptakeSecretion_',['Refined' filesep 'ComputedFluxes' filesep 'UptakeSecretion_' reconVersion '_refined_qualitative.txt'];
     'InternalProduction_',['Refined' filesep 'ComputedFluxes' filesep 'InternalProduction_' reconVersion '_refined_qualitative.txt']
     };
 

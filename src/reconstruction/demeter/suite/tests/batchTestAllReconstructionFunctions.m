@@ -44,33 +44,33 @@ modelList=modelList';
 modelList(~contains(modelList(:,1),'.mat'),:)=[];
 
 fields = {
-    'Mass_imbalanced'
-    'Charge_imbalanced'
-    'Mets_without_formulas'
-    'Leaking_metabolites'
-    'ATP_from_O2'
-    'Blocked_reactions'
-    'RefinedReactionsCarryingFlux'
-    'BlockedRefinedReactions'
-    'Incorrect_Gene_Rules'
-    'Incorrect_Compartments'
-    'Carbon_sources_TruePositives'
-    'Carbon_sources_FalseNegatives'
-    'Fermentation_products_TruePositives'
-    'Fermentation_products_FalseNegatives'
-    'growsOnDefinedMedium'
-    'growthOnKnownCarbonSources'
-    'Biomass_precursor_biosynthesis_TruePositives'
-    'Biomass_precursor_biosynthesis_FalseNegatives'
-    'Metabolite_uptake_TruePositives'
-    'Metabolite_uptake_FalseNegatives'
-    'Secretion_products_TruePositives'
-    'Secretion_products_FalseNegatives'
-    'Bile_acid_biosynthesis_TruePositives'
-    'Bile_acid_biosynthesis_FalseNegatives'
-    'Drug_metabolism_TruePositives'
-    'Drug_metabolism_FalseNegatives'
-    'PutrefactionPathways_TruePositives'
+    'Mass_imbalanced';
+    'Charge_imbalanced';
+    'Mets_without_formulas';
+    'Leaking_metabolites';
+    'ATP_from_O2';
+    'Blocked_reactions';
+    'RefinedReactionsCarryingFlux';
+    'BlockedRefinedReactions';
+    'Incorrect_Gene_Rules';
+    'Incorrect_Compartments';
+    'Carbon_sources_TruePositives';
+    'Carbon_sources_FalseNegatives';
+    'Fermentation_products_TruePositives';
+    'Fermentation_products_FalseNegatives';
+    'growsOnDefinedMedium';
+    'growthOnKnownCarbonSources';
+    'Biomass_precursor_biosynthesis_TruePositives';
+    'Biomass_precursor_biosynthesis_FalseNegatives';
+    'Metabolite_uptake_TruePositives';
+    'Metabolite_uptake_FalseNegatives';
+    'Secretion_products_TruePositives';
+    'Secretion_products_FalseNegatives';
+    'Bile_acid_biosynthesis_TruePositives';
+    'Bile_acid_biosynthesis_FalseNegatives';
+    'Drug_metabolism_TruePositives';
+    'Drug_metabolism_FalseNegatives';
+    'PutrefactionPathways_TruePositives';
     'PutrefactionPathways_FalseNegatives'
     };
 

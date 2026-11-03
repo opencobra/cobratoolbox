@@ -165,3 +165,4 @@ else
     disp(solutionRelax)
     error('solve for minimum cardinality of conservation relaxation vector failed')
 end
+end

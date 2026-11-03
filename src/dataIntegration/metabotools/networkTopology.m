@@ -28,3 +28,4 @@ for i = 1: c
    % RxnLength(i,1)=length(find(model.S(:,c)));
      RxnLength(i,1)=length(find(model.S(:,i)));
 end
+end

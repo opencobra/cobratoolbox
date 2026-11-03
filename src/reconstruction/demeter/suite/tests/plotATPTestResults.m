@@ -59,7 +59,7 @@ cnt=1;
 % initialize COBRA Toolbox and parallel pool
 global CBT_LP_SOLVER
 if isempty(CBT_LP_SOLVER)
-    initCobraToolbox
+    initCobraToolbox()
 end
 solver = CBT_LP_SOLVER;
 
@@ -75,7 +75,7 @@ environment = getEnvironment();
 if ~isempty(translatedDraftsFolder)
     % test draft and refined reconstructions
     folders={
-        translatedDraftsFolder
+        translatedDraftsFolder;
         refinedFolder
         };
 else
@@ -134,6 +134,7 @@ if ~isempty(translatedDraftsFolder)
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'ATP_complex_medium_' reconVersion],'-dpng','-r300')
         
+    catch
     end
     
     % report draft models that produce too much ATP
@@ -194,6 +195,7 @@ else
         set(h,'interpreter','none')
         set(gca,'TickLabelInterpreter','none')
         print([testResultsFolder filesep 'ATP_complex_medium_' reconVersion],'-dpng','-r300')
+    catch
     end
     
     % report refined models that produce too much ATP

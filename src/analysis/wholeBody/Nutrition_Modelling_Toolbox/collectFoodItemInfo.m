@@ -103,7 +103,7 @@ if strcmp(macroType, 'metabolites')
             fluxMets = [fluxMets; t{1}.VMHID]; %#ok<AGROW>
         end
     end
-    vmhDatabase = loadVMHDatabase;
+    vmhDatabase = loadVMHDatabase();
     vmhMets = vmhDatabase.metabolites;
     vmhMets = vmhMets(ismember(vmhMets(:,1), fluxMets), :);
     metaboliteWeights = table(vmhMets(:,1), vmhMets(:,4), getMolecularMass(vmhMets(:,4)), ...
