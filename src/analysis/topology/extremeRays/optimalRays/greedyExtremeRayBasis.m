@@ -481,6 +481,12 @@ seedZpos = Zpos;
 checkpointState = containers.Map('KeyType', 'char', 'ValueType', 'any');
 checkpointState('Zpos') = Zpos(1:nBases, :);
 checkpointState('done') = false;
+% 'dirty' marks accepted rays not yet on disk. It is checked at the TOP of the loop, so a
+% search that stalls after accepting rays still writes them within checkpointInterval;
+% writing only on acceptance left the last rays before a long stall unsaved (feature
+% 089 T016c: 53 accepted rays lost when the stalled process was stopped by signal,
+% which skips onCleanup).
+checkpointState('dirty') = false;
 tCheckpoint = tic;
 if ~isempty(param.checkpointFile)
     checkpointMeta = struct('raysExpected', nVar - rankS, 'acceptanceTarget', acceptanceTarget, ...
@@ -518,6 +524,12 @@ bestZpos = Zpos;
 bestNBases = nBases;
 nRestarts = 0;
 while nBases < (nVar-rankS)
+    if ~isempty(param.checkpointFile) && checkpointState('dirty') && ...
+            toc(tCheckpoint) >= param.checkpointInterval
+        writeCheckpoint(param.checkpointFile, checkpointState('Zpos'), checkpointMeta, false);
+        checkpointState('dirty') = false;
+        tCheckpoint = tic;
+    end
     % Budgets are checked at the TOP of the loop so they govern every iteration,
     % including those that reject a candidate. Checking only after a candidate is
     % accepted means a run that rejects every candidate never consults its budget at
@@ -660,10 +672,14 @@ while nBases < (nVar-rankS)
     if rankB==(nBases+1)
         t2 = tic;
         nBases=nBases+1;
-        if ~isempty(param.checkpointFile)
+        % After a restart the search rebuilds from the seed, so the checkpoint keeps the
+        % LARGEST basis accepted so far rather than the current, possibly smaller, one.
+        if ~isempty(param.checkpointFile) && nBases >= size(checkpointState('Zpos'), 1)
             checkpointState('Zpos') = Zpos(1:nBases, :);
+            checkpointState('dirty') = true;
             if toc(tCheckpoint) >= param.checkpointInterval
                 writeCheckpoint(param.checkpointFile, Zpos(1:nBases, :), checkpointMeta, false);
+                checkpointState('dirty') = false;
                 tCheckpoint = tic;
             end
         end
