@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-33 known defects in 28 functions (17 wrong-result, 5 error, 2 unusable-option, 2 cosmetic, 7 limitation).
+36 known defects in 29 functions (19 wrong-result, 5 error, 2 unusable-option, 3 cosmetic, 7 limitation).
 
 ## Summary
 
@@ -37,6 +37,9 @@
 | `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
+| `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | wrong-result | minSij is zero for every model with a zero in S | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
+| `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | wrong-result | the sanity checks after the rank computation never fire | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
+| `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | cosmetic | the thermodynamic consistency counts vary between runs | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
 | `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m` | wrong-result | Reactions with names of one or two characters get the wrong sign | `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
 | `src/reconstruction/refinement/removeFieldEntriesForType.m` | error | removing genes from a model that has grRules but no rules field fails | `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m` |
@@ -342,6 +345,35 @@
 - **Expected**: removedRxnInd holds the repeated occurrences only
 - **Source lines**: 64-72
 - **Documented in**: `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m`
+
+### `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m`
+
+#### minSij is zero for every model with a zero in S
+
+- **Severity**: wrong-result
+- **Trigger**: any model with a sparse S (min(min(abs(S))) includes the structural zeros)
+- **Observed**: model.minSij = 0, although the documentation says minimum NONZERO magnitude
+- **Expected**: the smallest nonzero magnitude
+- **Source lines**: 791
+- **Documented in**: `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m`
+
+#### the sanity checks after the rank computation never fire
+
+- **Severity**: wrong-result
+- **Trigger**: always
+- **Observed**: (silent) error('') with an empty message is a no-op in MATLAB, so the checks at lines 706-711 test nothing
+- **Expected**: an error when a row or column used for the rank analysis is not classified
+- **Source lines**: 706-711
+- **Documented in**: `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m`
+
+#### the thermodynamic consistency counts vary between runs
+
+- **Severity**: cosmetic
+- **Trigger**: findThermoConsistentFluxSubset uses randomised passes
+- **Observed**: the numbers of thermodynamically consistent reactions on a stored model may differ by a few reactions; this test therefore pins only quantities that do not depend on those counts (ranks of the whole matrix, the booleans of the small model)
+- **Expected**: a deterministic result
+- **Source lines**: 431
+- **Documented in**: `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m`
 
 ### `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m`
 

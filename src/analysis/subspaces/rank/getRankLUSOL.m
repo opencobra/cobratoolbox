@@ -12,7 +12,8 @@ function [rankA, p, q] = getRankLUSOL(A, printLevel)
 %    A:             `m x n` rectangular matrix
 %
 % OPTIONAL INPUT:
-%    printLevel:    default = 0
+%    printLevel:    default = 0, prints nothing (but see NOTE on the fallback warning);
+%                   > 0 explains the LUSOL outcome and any fallback to MATLAB's LU
 %
 % OUTPUTS:
 %    rankA:         rank of `A`
@@ -34,6 +35,17 @@ function [rankA, p, q] = getRankLUSOL(A, printLevel)
 %
 %    Requires a 64 bit implementation of lusol, available from
 %    https://github.com/nwh/lusol
+%
+%    When LUSOL fails, or `lusol_obj.m` is not on the path, the rank is computed with
+%    MATLAB's LU and `rank` instead, and the warning `getRankLUSOL:lusolFallback` (with
+%    the cause, and the file and line where the error was raised) is shown once per
+%    MATLAB session (until `clear getRankLUSOL`, `clear functions` or `clear all`).
+%
+%    CHANGE OF DEFAULT DIAGNOSTIC OUTPUT, October 2026, feature
+%    20261026-220121-fix-ci-test-failures: at printLevel 0 the fallback messages and the
+%    LUSOL error-code explanations are no longer printed; before, they were printed at
+%    every printLevel and the fallback warning was repeated on every call. The returned
+%    rank and permutations are unchanged.
 
 if ~exist('printLevel','var')
     printLevel=0;
@@ -115,7 +127,8 @@ if ~isempty(which('lusol_obj'))
                 %return the rank of the matrix
                 rankA=mylu.rank();
                 
-                %    lu.factorize inform codes:
+                %    lu.factorize inform codes, explained only when printLevel > 0
+                if printLevel>0
                 switch stats.inform
                     case 0
                         if printLevel>0
@@ -139,6 +152,7 @@ if ~isempty(which('lusol_obj'))
                         fprintf('%s\n','getRankLUSOL: No diagonal pivot could be found with TSP or TDP.');
                         fprintf('%s\n','getRankLUSOL: The matrix must not be sufficiently definite or quasi-definite.');
                 end
+                end
                 
                 if stats.inform~=0 && stats.inform~=1
                     % solve Ax=b
@@ -147,22 +161,34 @@ if ~isempty(which('lusol_obj'))
                     % multiply Ax
                     b2 = mylu.mulA(x);
                     % check the result
-                    fprintf('%s\t%g\n','getRankLUSOL: Check norm(b-b2) : ', norm(b-b2))
+                    if printLevel>0
+                        fprintf('%s\t%g\n','getRankLUSOL: Check norm(b-b2) : ', norm(b-b2))
+                    end
                 end
                 
         end
         
         
     catch ME
-        warning(ME.message)
-        fprintf('%s\n','Caught error using lusol interface. Proceeding with matlab LU implementation (slower)')
+        if isempty(ME.stack)
+            errorLocation = '(no stack)';
+        else
+            errorLocation = sprintf('(%s line %d)', ME.stack(1).file, ME.stack(1).line);
+        end
+        warnLusolFallback(sprintf('%s %s', ME.message, errorLocation));
+        if printLevel>0
+            fprintf('%s\n','Caught error using lusol interface. Proceeding with matlab LU implementation (slower)')
+        end
         [L,U,p,q] = lu(sparse(A),'vector');
         p=p';
         q=q';
         rankA=rank(full(A));
     end
 else
-    fprintf('%s\n','Cannot find lusol_obj.m from lusol interface, calling matlab LU implementation (slower)')
+    warnLusolFallback('lusol_obj.m not found on the MATLAB path');
+    if printLevel>0
+        fprintf('%s\n','Cannot find lusol_obj.m from lusol interface, calling matlab LU implementation (slower)')
+    end
     [L,U,p,q] = lu(sparse(A),'vector');
     p=p';
     q=q';
@@ -173,4 +199,14 @@ end
 if any(bool)
     ind=(1:length(bool))';
     q=[q;ind(bool)];
+end
+
+function warnLusolFallback(cause)
+% warns once per MATLAB session that LUSOL is unavailable, whatever the printLevel, so
+% that a broken LUSOL stays visible without repeating the warning on every call
+persistent warned
+if isempty(warned)
+    warning('getRankLUSOL:lusolFallback', ...
+        'getRankLUSOL: LUSOL unavailable, using MATLAB LU instead (shown once per session). Cause: %s', cause);
+    warned = true;
 end
