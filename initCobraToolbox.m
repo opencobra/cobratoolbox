@@ -101,7 +101,7 @@ end
 % not on the search path; a pathdef.m in ~ is read at startup by any session
 % launched from the home directory, breaking releases whose toolbox folder
 % layout differs from the one that saved it.
-defaultSavePathLocation = fullfile(prefdir, 'pathdef.m');
+defaultSavePathLocation = fullfile(prefdir(), 'pathdef.m');
 
 % retrieve the current directory
 currentDir = pwd;
@@ -695,7 +695,7 @@ if ~agentMode
         if ENV_VARS.printLevel
             fprintf(' > Saving the MATLAB path ...');
         end
-        if ispc || ismac
+        if ispc() || ismac
             savepath;
             if ENV_VARS.printLevel
                 fprintf(' Done.\n');
@@ -730,7 +730,7 @@ if ENV_VARS.printLevel
     colFormat = '\t%-12s \t%-13s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
     sep = '\t------------------------------------------------------------------------------\n';
     fprintf('\n > Summary of available solvers and solver interfaces\n\n');
-    if ispc
+    if ispc()
         topLineFormat = '\t\t\t\t\tSupport        %5s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
     else
         topLineFormat = '\t\t\tSupport \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s \t%5s\n';
@@ -905,7 +905,7 @@ if status_gitVersion == 0 && ~isempty(index)
         fprintf([' Done (version: ' versionGitStr ').\n']);
     end
 else
-    if ispc
+    if ispc()
         fprintf('(git is not installed, attempting to install GitBash).\n');
         installGitBash();
     else
@@ -976,7 +976,7 @@ elseif ((status_curl == 127 || status_curl == 48) && isunix)
     end
 else
     if throwError
-        if ispc
+        if ispc()
             fprintf('(not installed).\n');
             installGitBash();
         else

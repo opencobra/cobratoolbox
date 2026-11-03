@@ -70,7 +70,7 @@ if launchTestSuite
         COVERAGE = false;
     end
 
-    initCobraToolbox;
+    initCobraToolbox();
 
     % initialize the cleanup
     currentDir = cd('test');
@@ -280,8 +280,10 @@ try
         % runTestSuite already collects plus profiler hotspots. Best-effort:
         % a failure here MUST NOT fail the (already reported) test run and does
         % not change any test's pass/fail/skip outcome.
-        PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1') || ...
-            (exist('PERFORMANCE_REPORT', 'var') && ~isempty(PERFORMANCE_REPORT) && PERFORMANCE_REPORT);
+        PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1');
+        if ~PERFORMANCE_REPORT_ON && exist('PERFORMANCE_REPORT', 'var')
+            PERFORMANCE_REPORT_ON = ~isempty(PERFORMANCE_REPORT) && PERFORMANCE_REPORT;
+        end
         if PERFORMANCE_REPORT_ON
             try
                 perfDir = [CBTDIR filesep 'test' filesep 'performance'];
@@ -446,7 +448,7 @@ cd(origDir)
 if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins') ...
         || strcmp(getenv('COBRA_CI'), '1')
     fprintf('Running test in CI environment\n');
-    exit
+    exit()
 end
 
 %% Local helper function to escape XML special characters.
