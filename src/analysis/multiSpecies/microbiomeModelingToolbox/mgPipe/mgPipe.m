@@ -195,9 +195,9 @@ end
 
 % set parallel pool
 if numWorkers > 1
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkers)
+        openParallelPool(numWorkers)
     end
 end
 

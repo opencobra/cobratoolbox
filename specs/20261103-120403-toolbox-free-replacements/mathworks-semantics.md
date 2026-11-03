@@ -284,6 +284,16 @@ The doc says only "exact permutation distributions (for small sample sizes) or l
 - **Diagonal p-values:** with exact distributions, the diagonal p-values of corr(X) are **not 0** for Spearman and Kendall (R14 help text, [R14:corr.m]).
 - **n < 2:** all outputs NaN [R14:corr.m].
 
+**Newer source (corr.m, Copyright 1984-2010)** [CORR-2010: public mirror https://gomatlab.de/download,id,14420.html, read for semantics only, never copied; added 2026-11-03 after review]
+
+- Thresholds and formulas are the same as R14: Spearman exact for n < 10, AS 89 for n >= 10 without ties, t approximation with ties; Kendall exact without ties for n < 50, exact over midrank permutations with ties for n < 10, normal approximation with continuity correction otherwise; two-sided p = `min(2*smaller tail, 1)`.
+- **Spearman ties are decided over all columns** (Rows 'all'/'complete'): if any column of X or Y has ties, every pair uses the tie rules (exact over midrank permutations for n < 10, t approximation for n >= 10). This matches the "applied to all columns" part of the 2018 Answers post, but not its claim that ties lead to Edgeworth. **Kendall ties are still decided per column pair.**
+- **Diagonal p-values of `[rho,pval] = corr(X)` are `sign(diag(rho))`** for Pearson, Spearman and Kendall (1, or NaN for a NaN column): "Pr{coef(i,i) as/more extreme than 1} == 1". The diagonal rho is set to exactly 1 (Pearson, Spearman; Kendall without ties, and with ties it is 1 by construction).
+- Off-diagonal |rho| > 1 is set to ±1 (NaN preserved).
+- A constant column gives NaN rho and NaN p-value (the exact distributions are not used for it).
+- Type and Rows names accept unique prefixes (e.g. 's' for Spearman).
+- Whether releases after 2010 changed any of this is UNCONFIRMED. cobraCorr follows this source.
+
 ## 11. skewness and kurtosis
 
 Docs: https://www.mathworks.com/help/stats/skewness.html and https://www.mathworks.com/help/stats/kurtosis.html
@@ -378,6 +388,14 @@ Doc: https://www.mathworks.com/help/stats/regress.html
 - Leave-one-out studentized intervals: `sigma_i = sqrt(max(0, nu*s2/(nu-1) - r.^2./((nu-1)(1-h))))`, `ser = sqrt(1-h).*sigma_i`, `rint = r ± tval*ser`.
 - Where `1-h <= sqrt(eps)`, ser = Inf.
 
+**Newer source (regress.m, Copyright 1993-2014; only a snippet was available)** [added 2026-11-03 after review]
+
+- rint for nu > 1 uses `tinv(1-alpha/2, nu-1)` ("see eq 2.26 Belsley et al. 1980"), i.e. the leave-one-out studentized residual has nu - 1 degrees of freedom; R14 used nu.
+- nu == 1 is handled separately (R14 code): `ser = sqrt(1-h)*rmse`, Inf where `1-h <= sqrt(eps)`. Which t quantile the 2014 code uses there is UNCONFIRMED (cobraRegress uses `tinv(1-alpha/2, 1)`).
+- nu == 0: rmse is NaN, so rint is NaN (R14).
+- No complete row: the rank is 0, so b and bint are zeros, r and rint NaN, stats NaN, with the rank-deficiency warning (consequence of the R14 algorithm; not an error).
+- NoConst test (R14): first `any(all(X==1,1))`; otherwise fit a constant on the kept columns, `b0 = R\(Q'*ones(n,1))`, and warn if `sum(abs(1 - X(:,perm)*b0)) > n*sqrt(eps)`.
+
 ## 14. tdfread
 
 Doc: https://www.mathworks.com/help/stats/tdfread.html
@@ -408,6 +426,11 @@ Doc: https://www.mathworks.com/help/stats/tdfread.html
 
 - **UNCONFIRMED**. In R14, an empty field becomes a blank row in the char block, so str2num can drop it and misalign the column (or the column falls back to char). The current behaviour (NaN?) could not be confirmed.
 - **Recommendation:** treat this as an edge case to test against a real MATLAB with the Statistics Toolbox.
+
+**Newer behaviour (about R2012)** [added 2026-11-03 after review; MathWorks Answers 65244]
+
+- Field names come from `genvarname(varnames)` over all header entries at once (valid and unique). In R2025a `genvarname` still ships: it removes blanks and capitalizes the next letter ('my value' -> 'myValue'), prefixes a leading digit with 'x', hex-encodes other invalid characters ('a-b' -> 'a0x2Db') and numbers repeats ('A', 'A1'). Whether current tdfread still calls genvarname is UNCONFIRMED.
+- Blank lines: cobraTdfread skips empty lines (and lines of spaces unless the delimiter is a space); a line of delimiters is a data row of empty fields. The MathWorks rule is UNCONFIRMED.
 
 ## 15. smooth (Curve Fitting Toolbox)
 

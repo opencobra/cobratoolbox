@@ -72,7 +72,7 @@ for i=1:length(tests)
                 tmpStat(isnan(tmpStat)) = 0;
                 stats.chisquare(j, 1) = sum(tmpStat);
             end
-            pVals.chisquare = chi2cdf([stats.chisquare], nBin-1);
+            pVals.chisquare = cobraChi2cdf([stats.chisquare], nBin-1);
         case 'ttest'
             for j = 1:nVar
                 [~, pVals.ttest(j, 1), tmp, tmpstats] = ttest2(sample1(j, :), sample2(j, :));

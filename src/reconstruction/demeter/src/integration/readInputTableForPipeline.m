@@ -33,7 +33,7 @@ else % if the table is not a text file
     if contains(version,'(R202') % for versions of MATLAB R2020a and newer
         if contains(tablePath,'.tsv')
             % need workaround to read in tsv file
-            gettab=tdfread(tablePath);
+            gettab=cobraTdfread(tablePath);
             getcols=fieldnames(gettab);
             formattedTable={};
             for j=1:length(getcols)

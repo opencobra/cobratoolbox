@@ -180,7 +180,7 @@ switch plotType
         zerobool = (exoMet.mean-exoMet.SD)<=0 & (exoMet.mean+exoMet.SD)>=0;
         posbool = sign(exoMet.mean)==1 & ~zerobool;
         negbool = sign(exoMet.mean)==-1 & ~zerobool;
-        exoMet.uptakeProbability = normcdf(0,exoMet.mean,exoMet.SD);
+        exoMet.uptakeProbability = cobraNormcdf(0,exoMet.mean,exoMet.SD);
         
         toRankOrder = zeros(length(exoMet.mean),1);
         toRankOrder(zerobool) = exoMet.uptakeProbability(zerobool);
@@ -276,7 +276,7 @@ switch plotType
         
         %predicted fluxes
         plot(v(bool),1:length(v(bool)),'dk','MarkerSize',12, 'MarkerEdgeColor', [0 0.4470 0.7410])%,'MarkerFaceColor',[1 1 1])
-        [spearman, pval] = corr(x(isfinite(v)),v(isfinite(v)),'Type','Spearman');
+        [spearman, pval] = cobraCorr(x(isfinite(v)),v(isfinite(v)),'Type','Spearman');
         fprintf('%s%g%s%g\n',['Objective ' objective ', Spearman correlation = '],spearman, ', Spearman pval = ', pval);
 %         spearman = corr(x(isfinite(v) & negbool),v(isfinite(v) & negbool),'Type','Spearman');
 %         fprintf('%s%g\n',['Objective ' objective ' uptakes, Spearman correlation = '],spearman);

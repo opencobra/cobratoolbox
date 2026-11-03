@@ -268,7 +268,7 @@ for i=1:length(species)
         [C,IA,IB] = intersect(inputData(:,1),strains);
         % find the strain with the most data available
         for j=1:length(C)
-            sumData(j,1)=abs(nansum(nonzeros(cell2mat(inputData(IA(j),2:find(strncmp(inputData(1,:),'Ref',3))-1)))));
+            sumData(j,1)=abs(sum(nonzeros(cell2mat(inputData(IA(j),2:find(strncmp(inputData(1,:),'Ref',3))-1))), 'omitnan'));
         end
         if any(sumData>0)
             % if there is any data, propagate the experimental data from

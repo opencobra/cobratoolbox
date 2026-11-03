@@ -111,7 +111,7 @@ geneincoexnet = modelIrrev.genes(~TF);
 
 % Construct co-expression network 
 
-cor = corr((exp1)');
+cor = cobraCorr((exp1)');
 cor1 = cor >= threshold;
 
 % Find gene pairs that have a high correlation in the co-expression network.

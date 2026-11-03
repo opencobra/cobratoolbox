@@ -133,7 +133,7 @@ if isnan(comparisonStats.wEuclidNorm)
 end
 
 %spearman rank
-[comparisonStats.Spearman,comparisonStats.SpearmanPval] = corr(fullReport.mean(isfinite(fullReport.mean)),fullReport.v(isfinite(fullReport.v)),'Type','Spearman');
+[comparisonStats.Spearman,comparisonStats.SpearmanPval] = cobraCorr(fullReport.mean(isfinite(fullReport.mean)),fullReport.v(isfinite(fullReport.v)),'Type','Spearman');
 
 comparisonData.fullReport = fullReport;
 comparisonData.comparisonStats = comparisonStats;

@@ -207,7 +207,7 @@ for i = 2:size(fluxes, 1)
             dataTaxa(find(isnan(dataTaxa(:,1))),:)=[];
             dataTaxa(find(isnan(dataTaxa(:,2))),:)=[];
             % calculate the correlation with the given correlation coefficient method
-            [RHO, PVAL] = corr(dataTaxa(:, 1), dataTaxa(:, 2), 'type', corrMethod);
+            [RHO, PVAL] = cobraCorr(dataTaxa(:, 1), dataTaxa(:, 2), 'type', corrMethod);
             if isnan(RHO)
                 RHO = 0;
             end

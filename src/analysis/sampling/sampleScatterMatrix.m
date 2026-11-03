@@ -152,11 +152,7 @@ end
 function sampleHistInternal(sample , id, fontSize)
 
 [n, bins] = hist(sample(id , :), 30);
-if exist('smooth')
-    plot(bins, smooth(bins, n') / sum(n'));
-else
-    plot(bins, n' / sum(n'));
-end
+plot(bins, cobraSmooth(bins, n') / sum(n'));
 maxx = max(bins);
 minx = min(bins);
 set(gca, 'XTick', linspace(minx, maxx, 4));

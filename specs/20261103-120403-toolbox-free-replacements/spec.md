@@ -114,7 +114,11 @@ note; each finding is fixed or answered in `review.md`.
   message), so the test passes on base MATLAB.
 - **FR-006**: Line coverage 100% or every uncovered line listed with its reason.
 - **FR-007**: The Codex CLI reviews each new function (read-only) and the call-site changes;
-  findings and their resolution are recorded in `review.md`.
+  findings and their resolution are recorded in `review.md`. If Codex cannot run (2026-11-03:
+  the ChatGPT account of this machine rejects every model, "model is not supported when using
+  Codex with a ChatGPT account"), independent reviewer agents that receive only the code, the
+  tests and the semantics note perform the same review, and `review.md` says so; the Codex
+  review is repeated when the account works again.
 - **FR-008**: Existing tests of the functions whose call sites change still pass on this machine
   (base MATLAB plus Gurobi), where they ran before.
 - **FR-009**: No change to public interfaces of existing functions (Principle II).
@@ -145,8 +149,11 @@ note; each finding is fixed or answered in `review.md`.
   the MathWorks documentation is the authority for semantics. Statistics parity sections
   therefore skip here and run on any installation that has the toolbox.
 - The parallel helpers decide availability through one small function; the test of the
-  "no toolbox" behaviour shadows that function with a fixture placed beside the test, on the
-  path only for that section, so both branches are tested on this machine.
+  "no toolbox" behaviour writes a stand-in for that function to a temporary folder at run time,
+  puts it first on the path for that section only and removes it afterwards (a committed
+  fixture would be on the path in every session, because `initCobraToolbox` adds `test/`
+  recursively, and would silently disable parallel computing), so both branches are tested on
+  this machine.
 - `old/` folders are legacy and left unchanged.
 
 ## Traceability

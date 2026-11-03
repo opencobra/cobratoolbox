@@ -40,7 +40,7 @@ parse(p, samples, rxnFBS, varargin{:});
 
 % initialize array with epsilons for each reaction
 n = size(samples,2);
-epsilon = tinv(0.95,n-1) * std(samples,0,2) / sqrt(n);
+epsilon = cobraTinv(0.95,n-1) * std(samples,0,2) / sqrt(n);
 epsilon(rxnFBS==0) = 0;
 
 % if unique, we calculate the unique epsilon

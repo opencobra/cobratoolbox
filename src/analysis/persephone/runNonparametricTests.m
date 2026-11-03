@@ -64,7 +64,7 @@ metadata.Response = categorical(metadata.(string(response)));
 
 if ~isnumeric(metadata.Response)
 % Convert response variable data to numerical data
-    metadata.Response = grp2idx(metadata.Response)-1;
+    metadata.Response = cobraGrp2idx(metadata.Response)-1;
 end
 
 % Check number of groups in response variable
@@ -170,7 +170,7 @@ for i = 1:length(groupnames)
         % ran sum tests be calculated by r = Z / sqrt(n). r, where r is the
         % rank correlation.
 
-        Z =  norminv(p/2);  % Get z-value
+        Z =  cobraNorminv(p/2);  % Get z-value
         r = abs(Z) / sqrt(length(group1Data) + length(group2Data)); % Calculate effect size
         resultTable.r_effectSize(i) = r;
 
