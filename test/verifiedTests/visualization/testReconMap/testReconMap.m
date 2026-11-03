@@ -4,13 +4,17 @@
 %     - tests the functionality of ReconMap to submit a minerva layout.
 %       This is done using a test account, that only has 1 layout available
 %       the responsewill always be that a layout with that name already exists.
+%     - The test is skipped (missing requirement) when the MINERVA server at
+%       vmh.life is unreachable, or when it refuses the test account ("Access
+%       denied" in its reply to the first upload).
 %
 % Authors:
 %     - Original file: Alberto Noronha 21/03/2017
+%     - Skip on refused test account: feature 20261026-220121-fix-ci-test-failures, October 2026
 %
 
-%TODO, this needs to be fixed
-if 1
+global CBT_MISSING_REQUIREMENTS_ERROR_ID
+
 % save the current path
 currentDir = pwd;
 
@@ -39,8 +43,32 @@ minerva.googleLicenseConsent = 'true';
 changeCobraSolver('glpk', 'LP');
 FBAsolution = optimizeCbModel(model, 'max');
 
-% Send the flux distribution to MINERVA
+% Send the flux distribution to MINERVA. The server's own reply is only printed (the
+% returned response is generic), so the console is captured with diary (not evalc, so
+% that the reply still reaches the console) to recognise a refused test account.
+previousDiaryFile = get(0, 'DiaryFile');
+previousDiaryState = get(0, 'Diary');
+diary('off');
+captureFile = [tempname '.txt'];
+diary(captureFile);
 response = buildFluxDistLayout(minerva, model, FBAsolution, 'Test - Flux distribution 1');
+diary('off');
+set(0, 'DiaryFile', previousDiaryFile);
+if strcmp(previousDiaryState, 'on')
+    diary('on');
+end
+serverReply = fileread(captureFile);
+delete(captureFile);
+if ~strcmp(response, 'Overlay generated successfully.') && ...
+        (contains(serverReply, 'Access denied') || contains(serverReply, 'Access is denied'))
+    minerva.login = oldLogin;
+    minerva.password = oldPassword;
+    cd(currentDir)
+    replyLines = strtrim(splitlines(serverReply));
+    replyLine = replyLines{find(contains(replyLines, 'Access'), 1)};
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, ...
+        'The vmh.life MINERVA server refused the test account %s: %s', 'cobratoolbox-test', replyLine);
+end
 
 % 2 Correct responses, either successful or layout exists already
 %assert(~isempty(regexp(response, strcat('"creator":"', minerva.login, '"'))) | ~isempty(regexp(response, 'ERROR. Layout with given identifier ("Pyruvate metabolism") already exists.')));
@@ -58,42 +86,3 @@ minerva.password = oldPassword;
 
 % change the directory
 cd(currentDir)
-else
-    assert(1==1)
-    load('Recon3DModel_301.mat')
-    load('minerva.mat')
-    minerva.minervaURL = 'http://www.vmh.life/minerva/index.xhtml';
-    minerva.map = 'ReconMap-3';
-    minerva.login = 'ronan.fleming';
-    minerva.password = 'ronan.fleming1';
-    minerva.googleLicenseConsent = 'true';
-    
-    organID2= (find(~cellfun(@isempty,strfind(model.subSystems,'Glycolysis/gluconeogenesis'))));
-    
-    V = sign(rand(length(organID2),1)-0.5);
-    
-    R = model.rxns(organID2);
-    R = strcat('R_',R);
-
-    clear content
-    
-    Color1 = '#EB254C'; % red
-    
-    Color2 = '#3825EB'; % blue
-    
-    content = 'name%09reactionIdentifier%09lineWidth%09color%0D';
-    
-    thickness = 3;
-
-    for i = 1: length(V)   
-        if V(i) == -1
-            line = strcat('%09', R{i}, '%09', num2str(thickness), '%09', Color2, '%0D');
-            content = strcat(content, line);
-        elseif V(i) == 1
-            line = strcat('%09', R{i}, '%09', num2str(thickness), '%09', Color1, '%0D');
-            content = strcat(content, line);
-        end
-    end
-    
-    serverResponse = buildFluxDistLayout(minerva, model, 0, 'Glycolysis/gluconeogenesis','#EB254C',5,content)
-end

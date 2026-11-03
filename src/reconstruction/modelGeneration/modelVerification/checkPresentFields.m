@@ -1,4 +1,4 @@
-function results = checkPresentFields(fieldProperties, model, results)
+function results = checkPresentFields(fieldProperties, model, results, maxLinesPrinted)
 % Check the model fields for consistency with the given fieldProperties and
 % update the results struct.
 % The desired properties of each field are described here:
@@ -17,6 +17,11 @@ function results = checkPresentFields(fieldProperties, model, results)
 %
 %                        * .Errors - struct of accumulated error information (created if absent)
 %
+% OPTIONAL INPUTS:
+%    maxLinesPrinted:  Number of reaction indices printed in case a field 
+%                      does not match the required properties. Set to -1 to
+%                      print all lines (default: 10)
+%
 % OUTPUT:
 %
 %    results:          The updated results struct.
@@ -25,6 +30,9 @@ function results = checkPresentFields(fieldProperties, model, results)
 %       - Thomas Pfau, May 2017
 
 presentFields = find(ismember(fieldProperties(:,1),fieldnames(model)));
+if ~exist('maxLinesPrinted','var')
+    maxLinesPrinted = 10;
+end
 
 %Check all Field Sizes
 for i = 1:numel(presentFields)
@@ -125,7 +133,12 @@ for i = 1:numel(presentFields)
             end
         end
         invalidPos = find(~valid);
-        invalidPosString = strjoin(arrayfun(@(y) num2str(y), invalidPos, 'Uniform', false),',\n');
+        if maxLinesPrinted >= 0 && length(invalidPos) > maxLinesPrinted + 1
+            invalidPosString = [strjoin(arrayfun(@(y) num2str(y), invalidPos(1:maxLinesPrinted), 'Uniform', false),',\n'), ...
+                                ', ...', newline, '(', num2str(length(invalidPos) - maxLinesPrinted), ' left out)', newline];
+        else
+            invalidPosString = strjoin(arrayfun(@(y) num2str(y), invalidPos, 'Uniform', false),',\n');
+        end
         fieldIndent = repmat(' ',1,length(testedField)+2);
         results.Errors.propertiesNotMatched.(testedField) = sprintf('Field does not match the required properties at the following positions: \n%s%s', fieldIndent, invalidPosString);
     end 

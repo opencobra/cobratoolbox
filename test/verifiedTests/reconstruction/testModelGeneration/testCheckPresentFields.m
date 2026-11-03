@@ -17,7 +17,7 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 33, the debugging display (if 0) that never runs.
+%     Line 41, the debugging display (if 0) that never runs.
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     None found.
