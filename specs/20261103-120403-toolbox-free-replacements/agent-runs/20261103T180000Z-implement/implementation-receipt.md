@@ -62,3 +62,21 @@ were fixed or answered (`review.md`).
   cleanup fails when no LP branch runs; out-of-scope toolbox functions remain (fitglm, fitglme,
   fitlm, ksdensity, ranksum, ttest2, kruskalwallis, anova1, mafdr, randsample, boxplot, Optimization
   Toolbox calls).
+
+## Addendum (2026-11-03): test requirements
+
+Prompt: "For the functions that you've updated you should modify the tests because the tests mention
+paid toolboxes and dependencies and that is what makes the CI skip them. so if we replaced the paid
+functions we have to remove the mentioned dependency that we give as input to the prepareTest
+function".
+
+Done (tasks T018-T020): direct calls to gcp/parpool/tinv/regress in 16 test files and the two
+test-suite runners now use the helpers and cobra* functions; requirements removed from testuFBA,
+testFastFVA, testCreatePanModels (Parallel only) and testFastGapFill, and testMgPipe now declares
+Statistics instead of Parallel Computing. Run on this machine: testuFBA, testFVA, testpFBA,
+testMinSpan, testFindBlockedReaction, testCycleFreeFlux, testOptForce,
+testExtractConditionSpecificModel, testWriteSBML pass; testFitC13Data skipped for its other
+requirements. Requirements kept where the test still needs the toolbox (see tasks.md T020), with
+two follow-ups: testBiomassPrecursorCheck fails at line 91 when run without the requirement
+(pre-existing; no changed code reaches that call), and testSteadyCom loses its save folder at
+cleanup under parallel workers.

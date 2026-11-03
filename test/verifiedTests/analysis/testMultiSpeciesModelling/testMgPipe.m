@@ -11,7 +11,7 @@
 global CBTDIR
 
 % define the features required to run the test
-requiredToolboxes = { 'distrib_computing_toolbox' };
+requiredToolboxes = { 'statistics_toolbox' };
 
 % test Requirements
 prepareTest('requiredToolboxes',requiredToolboxes, 'requiredSolvers', {'ibm_cplex'});

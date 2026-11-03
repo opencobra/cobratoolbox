@@ -29,9 +29,9 @@ try
     myCluster = parcluster(parallel.defaultClusterProfile);
     % no parallel pool
     if myCluster.NumWorkers >= minWorkers
-        poolobj = gcp('nocreate');  % if no pool, do not create new one.
+        poolobj = getParallelPool();  % if no pool, do not create new one.
         if isempty(poolobj)
-            parpool(minWorkers);  % launch minWorkers workers
+            openParallelPool(minWorkers);  % launch minWorkers workers
         end
     end
 catch

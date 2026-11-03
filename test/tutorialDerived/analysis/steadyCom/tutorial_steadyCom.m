@@ -524,8 +524,8 @@ options.verbFlag = 0;  % no verbose output
 tic;
 [minF1, maxF1] = SteadyComFVA(EcCom, options);  
 t1 = toc;
-if isempty(gcp('nocreate'))
-    parpool(2);  % start a parallel pool
+if isempty(getParallelPool())
+    openParallelPool(2);  % start a parallel pool
 end
 options.threads = 2;  % two threads (0 to use all available workers)
 tic;

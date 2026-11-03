@@ -52,8 +52,7 @@ for i = 1:numel(testFileNames)
     % Shut down any existing parallel pool.
     try
         % Test if there is a parallel pool that we should shut down before the next test.
-        p = gcp('nocreate');
-        delete(p);
+        closeParallelPool();
     catch
         % Do nothing if there's no parallel pool.
     end

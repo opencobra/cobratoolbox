@@ -63,6 +63,15 @@ mathworks-semantics.md, quickstart)
 - [X] T016 Write agent-runs/<UTC>-implement/implementation-receipt.md
 - [X] T017 Commit (maintainer identity, no co-author line, only this feature's files) and push the branch with upstream tracking
 
+## Phase 7: Test requirements (maintainer request, 2026-11-03)
+
+"For the functions that you've updated you should modify the tests because the tests mention paid
+toolboxes and dependencies and that is what makes the CI skip them."
+
+- [X] T018 Scan every test for declared Statistics / Curve Fitting / Parallel Computing requirements (13 tests) and for direct calls to replaced functions in test code (16 test files, 2 test-suite runners)
+- [X] T019 Switch direct calls in tests to the helpers / cobra* functions (gcp, parpool, tinv, regress) in testFVA, testpFBA, testMinSpan, testFindBlockedReaction, testCycleFreeFlux, testOptForce, testExtractConditionSpecificModel, testFitC13Data, testWriteSBML, testSampleCbModel, testSteadyCom, testuFBA, tutorialDerived steadyCom and uFBA, runTestSuite, runTestSuite_Actions
+- [X] T020 Remove requirements no longer needed, verified by running the test on base MATLAB where possible: testuFBA (Statistics); testFastFVA, testCreatePanModels (Parallel Computing); testFastGapFill (Statistics; needs CPLEX, verified statically); testMgPipe declares Statistics instead of Parallel Computing (it reaches ksdensity, kruskalwallis). Kept, with reason: testRFASTCORMICS (Curve Fitting), testSampleCbModel (exprnd), testSampleCbModelRHMC (distribution_test), testFEA (mafdr), testSWIFTCORE and testSammi (randsample), testBiomassPrecursorCheck (pre-existing assertion failure at line 91, hidden by the skip; follow-up), testSteadyCom (save folder lost under parallel workers at cleanup; follow-up)
+
 ## Dependencies & parallelism
 
 T003, T005, T006 in parallel; T007 after T005; call-site tasks after their functions; review
