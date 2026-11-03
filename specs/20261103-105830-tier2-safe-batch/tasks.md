@@ -29,8 +29,8 @@ description: "Tasks for the Tier-2 safe batch"
 
 ## Phase 1: Setup
 
-- [ ] T001 Confirm branch stacked on 20261102-142225-tier2-test-pilot; spies and coverage helper present
-- [ ] T002 Confirm none of the 30 test files exists
+- [X] T001 Confirm branch stacked on 20261102-142225-tier2-test-pilot; spies and coverage helper present
+- [X] T002 Confirm none of the 30 test files exists
 
 ## Phase 2: User Stories 1 and 2 — probe and write (≤150 lines first; US2 = larger)
 
@@ -78,6 +78,38 @@ description: "Tasks for the Tier-2 safe batch"
 - [ ] T030 [P] [US2] Probe src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m (371 code lines) and, if kept, write test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m
 - [ ] T031 [P] [US2] Probe src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m (240 code lines) and, if kept, write test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m
 - [ ] T032 [P] [US2] Probe src/reconstruction/refinement/addReactionGEM.m (164 code lines) and, if kept, write test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m
+
+## Phase 2b: Scope extension (spec section "Scope extension")
+
+### Group F (scope extension)
+
+- [ ] T038 [P] [US1] Probe src/analysis/ecosystem/constrainEcosystemPoint.m (36 code lines) and, if kept, write test/verifiedTests/analysis/testWholeBody/testConstrainEcosystemPoint.m (Tier 1 if the function takes no model)
+- [ ] T039 [P] [US1] Probe src/analysis/persephone/performRegressions.m (135 code lines) and, if kept, write test/verifiedTests/analysis/testPersephone/testPerformRegressions.m (Tier 1 if the function takes no model)
+- [ ] T040 [P] [US1] Probe src/analysis/persephone/validatePersephoneInputs.m (74 code lines) and, if kept, write test/verifiedTests/analysis/testPersephone/testValidatePersephoneInputs.m (Tier 1 if the function takes no model)
+- [ ] T041 [P] [US1] Probe src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m (101 code lines) and, if kept, write test/verifiedTests/analysis/testSampling/testTwoSidedBarrier.m (Tier 1 if the function takes no model)
+- [ ] T042 [P] [US1] Probe src/analysis/sampling/BarrierRound/utils/TableDisplay.m (84 code lines) and, if kept, write test/verifiedTests/analysis/testSampling/testTableDisplay.m (Tier 1 if the function takes no model)
+- [ ] T043 [P] [US1] Probe src/analysis/subspaces/lsqr/lsqrtest.m (17 code lines) and, if kept, write test/verifiedTests/analysis/testSubspaces/testLsqrtest.m (Tier 1 if the function takes no model)
+- [ ] T044 [P] [US1] Probe src/analysis/thermo/experimentalData/alberty2006/adjustBaselinesInAlberty2006.m (185 code lines) and, if kept, write test/verifiedTests/analysis/testAdjustBaselinesInAlberty2006.m (Tier 1 if the function takes no model)
+- [ ] T045 [P] [US1] Probe src/analysis/thermo/groupContribution/createComputedSpeciesData.m (163 code lines) and, if kept, write test/verifiedTests/analysis/testThermo/testCreateComputedSpeciesData.m (Tier 1 if the function takes no model)
+- [ ] T046 [P] [US1] Probe src/analysis/topology/FR/connectedFR.m (30 code lines) and, if kept, write test/verifiedTests/analysis/testTopology/testConnectedFR.m (Tier 1 if the function takes no model)
+- [ ] T047 [P] [US1] Probe src/analysis/topology/FR/largestConnectedFR.m (45 code lines) and, if kept, write test/verifiedTests/analysis/testTopology/testLargestConnectedFR.m (Tier 1 if the function takes no model)
+- [ ] T048 [P] [US1] Probe src/base/io/definitions/descFileRead.m (22 code lines) and, if kept, write test/verifiedTests/base/testIO/testDescFileRead.m (Tier 1 if the function takes no model)
+
+### Group G (scope extension)
+
+- [ ] T049 [P] [US1] Probe src/base/utilities/issueConfirmationWarning.m (12 code lines) and, if kept, write test/verifiedTests/base/testTools/testIssueConfirmationWarning.m (Tier 1 if the function takes no model)
+- [ ] T050 [P] [US1] Probe src/base/utilities/removeIndicesInDimenion.m (6 code lines) and, if kept, write test/verifiedTests/base/testTools/testRemoveIndicesInDimenion.m (Tier 1 if the function takes no model)
+- [ ] T051 [P] [US1] Probe src/dataIntegration/chemoInformatics/RXN/readRXNFile.m (104 code lines) and, if kept, write test/verifiedTests/dataIntegration/testChemoInformatics/testReadRXNFile.m (Tier 1 if the function takes no model)
+- [ ] T052 [P] [US1] Probe src/dataIntegration/fluxomics/getBinsOfFluxes.m (92 code lines) and, if kept, write test/verifiedTests/dataIntegration/testFitC13Data/testGetBinsOfFluxes.m (Tier 1 if the function takes no model)
+- [ ] T053 [P] [US1] Probe src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m (9 code lines) and, if kept, write test/verifiedTests/dataIntegration/testRFASTCORMICS/testCreateFitL.m (Tier 1 if the function takes no model)
+- [ ] T054 [P] [US1] Probe src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m (9 code lines) and, if kept, write test/verifiedTests/dataIntegration/testRFASTCORMICS/testCreateFitR.m (Tier 1 if the function takes no model)
+- [ ] T055 [P] [US1] Probe src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m (75 code lines) and, if kept, write test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m (Tier 1 if the function takes no model)
+- [ ] T056 [P] [US1] Probe src/reconstruction/modelGeneration/massBalance/ispolymer.m (8 code lines) and, if kept, write test/verifiedTests/reconstruction/testModelGeneration/testIspolymer.m (Tier 1 if the function takes no model)
+- [ ] T057 [P] [US1] Probe src/visualization/cellDesigner/readCD.m (22 code lines) and, if kept, write test/verifiedTests/visualization/testCellDesigner/testReadCD.m (Tier 1 if the function takes no model)
+- [ ] T058 [P] [US1] Probe src/visualization/cellDesigner/updateCD.m (89 code lines) and, if kept, write test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m (Tier 1 if the function takes no model)
+- [ ] T059 [P] [US1] Probe src/visualization/metabolicCartography/removeMapMol.m (62 code lines) and, if kept, write test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m (Tier 1 if the function takes no model)
+
+The Phase 3 and Phase 4 tasks run after Phase 2b.
 
 ## Phase 3: User Story 3 — registry and summary
 

@@ -155,6 +155,53 @@ dropped with reasons, defects found and runtimes.
 | 29 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | `testRebuildBiomassReaction.m` | `test/verifiedTests/reconstruction/testDemeter/` | 240 |
 | 30 | `src/reconstruction/refinement/addReactionGEM.m` | `testAddReactionGEM.m` | `test/verifiedTests/reconstruction/testModelManipulation/` | 164 |
 
+
+## Scope extension (2026-11-03, maintainer: "make as much tests as possible as long as they are not dependent on defect functions")
+
+Widening the scan to every untested function with at least one input (any argument name, model
+or not), under the same safety rule (no solver, file, plot, GUI, network or toolbox in the static
+closure; no reachable silent defect), adds 30 functions and no further model-taking function:
+every other model-taking function reaches a solver, file or toolbox (Tier 3 or later) or a silent
+defect (`addToTmodel`, `cleanTmodel` via `charpos`; `applyEFluxConstraints`;
+`findMetabolicJunctions`, `findNeighborRxns`). Eight are excluded before probing:
+
+- `getCobraSolverVersion`: queries installed solvers
+- `compile`: builds MEX files
+- `py_addpath`: changes the Python path
+- `py_rmpath`: changes the Python path
+- `resolvePickleProxies`: needs Python pickle objects
+- `loadModular`: changes the MATLAB path (dropped in batch 4 for a sibling)
+- `printFunctionIO`: scans the repository source files
+- `Rate_function`: two files share the name; one test file cannot address both
+
+The remaining 22 are probed and written with the same procedure; a function that takes no model
+gets a Tier-1 test (hand-built inputs, no model) instead of a Tier-2 test.
+
+| # | Source function | Test file | Test folder | Code lines |
+|---|-----------------|-----------|-------------|-----------:|
+| X1 | `src/analysis/ecosystem/constrainEcosystemPoint.m` | `testConstrainEcosystemPoint.m` | `test/verifiedTests/analysis/testWholeBody/` | 36 |
+| X2 | `src/analysis/persephone/performRegressions.m` | `testPerformRegressions.m` | `test/verifiedTests/analysis/testPersephone/` | 135 |
+| X3 | `src/analysis/persephone/validatePersephoneInputs.m` | `testValidatePersephoneInputs.m` | `test/verifiedTests/analysis/testPersephone/` | 74 |
+| X4 | `src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m` | `testTwoSidedBarrier.m` | `test/verifiedTests/analysis/testSampling/` | 101 |
+| X5 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | `testTableDisplay.m` | `test/verifiedTests/analysis/testSampling/` | 84 |
+| X6 | `src/analysis/subspaces/lsqr/lsqrtest.m` | `testLsqrtest.m` | `test/verifiedTests/analysis/testSubspaces/` | 17 |
+| X7 | `src/analysis/thermo/experimentalData/alberty2006/adjustBaselinesInAlberty2006.m` | `testAdjustBaselinesInAlberty2006.m` | `test/verifiedTests/analysis/` | 185 |
+| X8 | `src/analysis/thermo/groupContribution/createComputedSpeciesData.m` | `testCreateComputedSpeciesData.m` | `test/verifiedTests/analysis/testThermo/` | 163 |
+| X9 | `src/analysis/topology/FR/connectedFR.m` | `testConnectedFR.m` | `test/verifiedTests/analysis/testTopology/` | 30 |
+| X10 | `src/analysis/topology/FR/largestConnectedFR.m` | `testLargestConnectedFR.m` | `test/verifiedTests/analysis/testTopology/` | 45 |
+| X11 | `src/base/io/definitions/descFileRead.m` | `testDescFileRead.m` | `test/verifiedTests/base/testIO/` | 22 |
+| X12 | `src/base/utilities/issueConfirmationWarning.m` | `testIssueConfirmationWarning.m` | `test/verifiedTests/base/testTools/` | 12 |
+| X13 | `src/base/utilities/removeIndicesInDimenion.m` | `testRemoveIndicesInDimenion.m` | `test/verifiedTests/base/testTools/` | 6 |
+| X14 | `src/dataIntegration/chemoInformatics/RXN/readRXNFile.m` | `testReadRXNFile.m` | `test/verifiedTests/dataIntegration/testChemoInformatics/` | 104 |
+| X15 | `src/dataIntegration/fluxomics/getBinsOfFluxes.m` | `testGetBinsOfFluxes.m` | `test/verifiedTests/dataIntegration/testFitC13Data/` | 92 |
+| X16 | `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m` | `testCreateFitL.m` | `test/verifiedTests/dataIntegration/testRFASTCORMICS/` | 9 |
+| X17 | `src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m` | `testCreateFitR.m` | `test/verifiedTests/dataIntegration/testRFASTCORMICS/` | 9 |
+| X18 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | `testMakeNamesUnique.m` | `test/verifiedTests/reconstruction/testModelBorgifier/` | 75 |
+| X19 | `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | `testIspolymer.m` | `test/verifiedTests/reconstruction/testModelGeneration/` | 8 |
+| X20 | `src/visualization/cellDesigner/readCD.m` | `testReadCD.m` | `test/verifiedTests/visualization/testCellDesigner/` | 22 |
+| X21 | `src/visualization/cellDesigner/updateCD.m` | `testUpdateCD.m` | `test/verifiedTests/visualization/testCellDesigner/` | 89 |
+| X22 | `src/visualization/metabolicCartography/removeMapMol.m` | `testRemoveMapMol.m` | `test/verifiedTests/visualization/testMetabolicCartography/` | 62 |
+
 ## Success Criteria *(mandatory)*
 
 - **SC-001**: Every function of the table has a passing test or is reported as dropped with a reason.
