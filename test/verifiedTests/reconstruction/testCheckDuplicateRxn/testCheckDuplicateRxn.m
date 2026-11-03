@@ -22,7 +22,7 @@
 %     calls that the defects describe, which this test does not make.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     DEFECT: the 'rxnAbbr' method returns the unique reactions as the duplicates
+%     - DEFECT: the 'rxnAbbr' method returns the unique reactions as the duplicates
 %       SEVERITY: wrong-result
 %       TRIGGER: checkDuplicateRxn(model, 'rxnAbbr') on any model
 %       OBSERVED: removedRxnInd holds the first occurrence of every reaction abbreviation (all
@@ -30,7 +30,7 @@
 %         model, and removal by name deletes every reaction that has a repeated abbreviation
 %       EXPECTED: removedRxnInd holds the repeated occurrences only
 %       LINES: 64-72
-%     DEFECT: the 'FR' method removes the last reaction of a group after testing the first two
+%     - DEFECT: the 'FR' method removes the last reaction of a group after testing the first two
 %       SEVERITY: wrong-result
 %       TRIGGER: three or more reactions with the same stoichiometry up to scale and direction
 %         (for example A->B, B->A and 2A->2B)

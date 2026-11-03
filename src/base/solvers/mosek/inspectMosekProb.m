@@ -17,12 +17,16 @@ function report = inspectMosekProb(prob)
 %                 * .f   - affine conic constraint matrix
 %                 * .g   - affine conic constraint offset
 %
+%               A field of an integer class is inspected as a double array with
+%               the same values.
+%
 % OUTPUTS:
 %    report:    Structure with fields:
 %
 %                 * .fieldStats    - table of per-field numerical statistics
 %                 * .sizeStats     - table of shape/sparsity information for
-%                   the matrix fields `a` and `f`
+%                   the matrix fields `a` and `f` (the row or column count
+%                   statistics are NaN for a matrix without rows or columns)
 %                 * .problemChecks - struct of higher-level consistency checks
 %
 % EXAMPLE:
@@ -30,6 +34,13 @@ function report = inspectMosekProb(prob)
 %    report = inspectMosekProb(prob);
 
 fields = fieldnames(prob);
+
+% Inspect integer-class fields as double arrays with the same values
+for i = 1:numel(fields)
+    if isinteger(prob.(fields{i}))
+        prob.(fields{i}) = double(prob.(fields{i}));
+    end
+end
 
 % Per-field numerical summary
 statsVarNames = { ...
@@ -118,6 +129,13 @@ for k = 1:numel(matrixFields)
 
     rowNnz = full(sum(M ~= 0, 2));
     colNnz = full(sum(M ~= 0, 1))';
+    % A matrix without rows or columns has no row or column counts
+    if isempty(rowNnz)
+        rowNnz = NaN;
+    end
+    if isempty(colNnz)
+        colNnz = NaN;
+    end
 
     finiteVals = M(isfinite(M));
     if isempty(finiteVals)

@@ -73,14 +73,14 @@ if ~isempty(metPos)
     % If there are more than one mets, add additional info.
     if length(metPos) > 1
         for j = 2:length(metPos)
-            metlist = strcat(metlist, '; ', CMODEL.mets{metPos(j)});
-            names = strcat(names, '; ', CMODEL.metNames{metPos(j)});
-            stoics = strcat(stoics, '; ', ...
-                            num2str(abs(CMODEL.S(metPos(j), cRxn))));
-            forms = strcat(forms, '; ', CMODEL.metFormulas{metPos(j)});
-            charges = strcat(charges, '; ', ...
-                             num2str(CMODEL.metCharge(metPos(j))));
-            keggs = strcat(keggs, '; ', CMODEL.metKEGGID{metPos(j)});
+            metlist = [metlist '; ' CMODEL.mets{metPos(j)}];
+            names = [names '; ' CMODEL.metNames{metPos(j)}];
+            stoics = [stoics '; ' ...
+                            num2str(abs(CMODEL.S(metPos(j), cRxn)))];
+            forms = [forms '; ' CMODEL.metFormulas{metPos(j)}];
+            charges = [charges '; ' ...
+                             num2str(CMODEL.metCharge(metPos(j)))];
+            keggs = [keggs '; ' CMODEL.metKEGGID{metPos(j)}];
         end
     end
 
@@ -112,14 +112,14 @@ if ~isempty(metPos)
     % Additional products.
     if length(metPos) > 1
         for j = 2:length(metPos)
-            metlist = strcat(metlist, '; ', CMODEL.mets{metPos(j)});
-            names = strcat(names, '; ', CMODEL.metNames{metPos(j)});
-            stoics = strcat(stoics, '; ', ...
-                            num2str(abs(CMODEL.S(metPos(j), cRxn))));
-            forms = strcat(forms, '; ', CMODEL.metFormulas{metPos(j)});
-            charges = strcat(charges, '; ', ...
-                             num2str(CMODEL.metCharge(metPos(j))));
-            keggs = strcat(keggs, '; ', CMODEL.metKEGGID{metPos(j)});
+            metlist = [metlist '; ' CMODEL.mets{metPos(j)}];
+            names = [names '; ' CMODEL.metNames{metPos(j)}];
+            stoics = [stoics '; ' ...
+                            num2str(abs(CMODEL.S(metPos(j), cRxn)))];
+            forms = [forms '; ' CMODEL.metFormulas{metPos(j)}];
+            charges = [charges '; ' ...
+                             num2str(CMODEL.metCharge(metPos(j)))];
+            keggs = [keggs '; ' CMODEL.metKEGGID{metPos(j)}];
         end
     end
 
@@ -142,7 +142,7 @@ Data.tRxnTable(:) = {''};
 [y, I] = sort(scoreTotal(cRxn, :), 'descend');
 
 for i = 1:nMatch
-    Data.tRxnTable{1, i} = strcat(num2str(y(i)), '; ', num2str(I(i)));
+    Data.tRxnTable{1, i} = [num2str(y(i)) '; ' num2str(I(i))];
     Data.tRxnTable{2, i} = TMODEL.rxns{I(i)} ;
     Data.tRxnTable{3, i} = TMODEL.rxnNames{I(i)} ;
     Data.tRxnTable{4, i} = TMODEL.rxnEquations{I(i)} ;
@@ -174,14 +174,14 @@ for i = 1:nMatch
         % Additioanl Reactants.
         if length(metPos) > 1
             for j = 2:length(metPos)
-                metlist = strcat(metlist, '; ', TMODEL.mets{metPos(j)});
-                names = strcat(names, '; ', TMODEL.metNames{metPos(j)});
-                stoics = strcat(stoics, '; ', ...
-                                num2str(abs(TMODEL.S(metPos(j), I(i)))));
-                forms = strcat(forms, '; ', TMODEL.metFormulas{metPos(j)});
-                charges = strcat(charges, '; ', ...
-                                 num2str(TMODEL.metCharge(metPos(j))));
-                keggs = strcat(keggs, '; ', TMODEL.metKEGGID{metPos(j)});
+                metlist = [metlist '; ' TMODEL.mets{metPos(j)}];
+                names = [names '; ' TMODEL.metNames{metPos(j)}];
+                stoics = [stoics '; ' ...
+                                num2str(abs(TMODEL.S(metPos(j), I(i))))];
+                forms = [forms '; ' TMODEL.metFormulas{metPos(j)}];
+                charges = [charges '; ' ...
+                                 num2str(TMODEL.metCharge(metPos(j)))];
+                keggs = [keggs '; ' TMODEL.metKEGGID{metPos(j)}];
             end
         end
 
@@ -211,14 +211,14 @@ for i = 1:nMatch
         % Additional products.
         if length(metPos) > 1
             for j = 2:length(metPos)
-                metlist = strcat(metlist, '; ', TMODEL.mets{metPos(j)});
-                names = strcat(names, '; ', TMODEL.metNames{metPos(j)});
-                stoics = strcat(stoics, '; ', ...
-                                num2str(abs(TMODEL.S(metPos(j), I(i)))));
-                forms = strcat(forms, '; ', TMODEL.metFormulas{metPos(j)});
-                charges = strcat(charges, '; ', ...
-                                 num2str(TMODEL.metCharge(metPos(j))));
-                keggs = strcat(keggs, '; ', TMODEL.metKEGGID{metPos(j)});
+                metlist = [metlist '; ' TMODEL.mets{metPos(j)}];
+                names = [names '; ' TMODEL.metNames{metPos(j)}];
+                stoics = [stoics '; ' ...
+                                num2str(abs(TMODEL.S(metPos(j), I(i))))];
+                forms = [forms '; ' TMODEL.metFormulas{metPos(j)}];
+                charges = [charges '; ' ...
+                                 num2str(TMODEL.metCharge(metPos(j)))];
+                keggs = [keggs '; ' TMODEL.metKEGGID{metPos(j)}];
             end
         end
 

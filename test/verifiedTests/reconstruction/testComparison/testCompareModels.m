@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Two arguments with the
+%       same variable name make the function stop.
 %
 % Function under test:
 %     src/reconstruction/comparison/compareModels.m
@@ -15,23 +17,18 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 67, the removal of a leading parent name from dotted field paths: the comparison reports
+%     Line 71, the removal of a leading parent name from dotted field paths: the comparison reports
 %     differences in nested structures under the name of the top-level field, so no dotted path
-%     occurred. Lines 89 and 95-101, the local functions valueSize2str and sizeVec2str: nothing in
-%     the file calls them.
+%     occurred. Line 93, the local function valueSize2str: nothing in the file calls it. Lines
+%     100-101, the empty-size branch of the local function sizeVec2str: it is called only with the
+%     result of size, which is never empty.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Two arguments with the same variable name make the function stop
-%       SEVERITY: limitation
-%       TRIGGER: compareModels called with arguments that have the same variable name, for example
-%         compareModels(A, A)
-%       OBSERVED: the names of the input variables are used as table column names and two columns
-%         named alike make the table construction fail with "Duplicate table variable name"
-%       EXPECTED: a table with distinct column names
-%       LINES: 16-19
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -89,6 +86,25 @@ first.x = 1;
 second.x = 2;
 [~, diffTable, ~] = compareModels(first, second);
 assert(isequal(diffTable.Properties.VariableNames, {'field', 'first', 'second', 'first_size', 'second_size', 'reason'}));
+
+%% the same variable passed twice gives distinct column names
+
+% (formerly a known defect: the coinciding variable names stopped the table construction)
+same.x = 1;
+[isSameModel, diffTable, why] = compareModels(same, same);
+assert(isSameModel && height(diffTable) == 0 && isempty(why));
+assert(isequal(diffTable.Properties.VariableNames, {'field', 'same_A', 'same_B', 'same_A_size', 'same_B_size', 'reason'}));
+
+%% values of other types are summarised as text
+
+typedA = struct('s', "one", 'f', @sin, 'cs', {{'p', 'q'}}, 'sp', sparse(eye(4)));
+typedB = struct('s', "two", 'f', @cos, 'cs', {{'p', 'r'}}, 'sp', sparse(2 * eye(4)));
+[~, diffTable, ~] = compareModels(typedA, typedB);
+% a string scalar, a function handle, a short list of names, and a large sparse matrix by size and class
+assert(isequal(diffTable.typedA(strcmp(diffTable.field, 's')), {'one'}));
+assert(isequal(diffTable.typedA(strcmp(diffTable.field, 'f')), {'sin'}));
+assert(isequal(diffTable.typedA(strcmp(diffTable.field, 'cs')), {'{p, q}'}));
+assert(isequal(diffTable.typedA(strcmp(diffTable.field, 'sp')), {'[4x4 sparse double]'}));
 
 % change the directory
 cd(currentDir)

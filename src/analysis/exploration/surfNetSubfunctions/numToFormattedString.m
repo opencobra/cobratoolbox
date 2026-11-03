@@ -45,7 +45,7 @@ end
 if ~isscalar(num)
     str = cell(size(num));
     for jD = 1:numel(num)
-        str{jD} = numToFormattedString(num(jD), ordMagMin, ordMagMax, false);
+        str{jD} = numToFormattedString(num(jD), ordMagMin, ordMagMax, nChar, false);
     end
     return
 end

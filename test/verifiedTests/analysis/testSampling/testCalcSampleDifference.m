@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Default number of
+%       difference profiles does not match the documentation.
 %
 % Function under test:
 %     src/analysis/sampling/calcSampleDifference.m
@@ -17,15 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Default number of difference profiles does not match the documentation
-%       SEVERITY: cosmetic
-%       TRIGGER: calcSampleDifference called without nPts
-%       OBSERVED: the number of profiles is 25 times the number of samples in the first sample set
-%       EXPECTED: the header states that the default is 10% of the samples
-%       LINES: 30-32
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -61,6 +59,12 @@ assert(size(sampleDiff, 2) == size(sampleRatio, 2));
 
 verifyCobraFunctionError('calcSampleDifference', 'inputs', {sample1, sample2(1:2, :)}, ...
     'testMessage', 'Samples have different numbers of rxns.');
+
+%% without nPts the default is 25 times the number of samples in sample1 (as documented)
+
+% sample1 has 4 samples, so 100 profiles are returned
+[sampleDiff, sampleRatio] = calcSampleDifference(sample1, sample2);
+assert(isequal(size(sampleDiff), [3 100]) && isequal(size(sampleRatio), [3 100]));
 
 % change the directory
 cd(currentDir)

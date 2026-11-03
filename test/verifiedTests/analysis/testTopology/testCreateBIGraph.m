@@ -5,6 +5,9 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: No edges left after
+%       removing the energy node errors. (The source change was already made by commit 1080f0be5,
+%       feature 029-vectorize-atm-loops; this feature asserts the formerly skipped input.)
 %
 % Function under test:
 %     src/analysis/topology/reactingMoieties/createBIGraph.m
@@ -16,16 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: No edges left after removing the energy node errors
-%       SEVERITY: error
-%       TRIGGER: a bond graph whose edges all touch the energy node E
-%       OBSERVED: assigning an empty edge property to the new graph fails inside MATLAB (Weight must
-%         be a column vector with as many entries as there are edges)
-%       EXPECTED: an edgeless bond-instance graph
-%       LINES: 81
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -60,6 +58,17 @@ assert(isequal(bondInstanceGraph.Edges.Weight, [1; 1; 1]));
 assert(isequal(bondInstanceGraph.Edges.Bond, [10; 10; 20]));
 % instances are numbered consecutively
 assert(isequal(bondInstanceGraph.Edges.EdgeIndex, [1; 2; 3]));
+
+%% every edge touches the energy node: an edgeless bond-instance graph
+
+% bond graph: C1 - E3 (single bond) and O2 = E3 (double bond); removing E leaves no edge
+energyOnlyGraph = graph([1 2], [3 3], [1 2]);
+energyOnlyGraph.Nodes.Element = {'C'; 'O'; 'E'};
+edgelessGraph = createBIGraph(energyOnlyGraph);
+assert(isa(edgelessGraph, 'digraph'));
+assert(numnodes(edgelessGraph) == 2);
+assert(isequal(edgelessGraph.Nodes.Element, {'C'; 'O'}));
+assert(numedges(edgelessGraph) == 0);
 
 % change the directory
 cd(currentDir)

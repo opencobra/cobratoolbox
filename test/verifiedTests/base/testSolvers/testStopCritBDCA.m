@@ -1,10 +1,12 @@
 % The COBRAToolbox: testStopCritBDCA.m
 %
 % Purpose:
-%     - StopCritBDCA decides whether the BDCA kinetic solver should stop and returns a status text, for stopping criteria 2 to 5.
+%     - StopCritBDCA decides whether the BDCA kinetic solver should stop and returns a status text, for stopping criteria 1 to 5.
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Stopping criterion
+%       1 uses an undefined variable; Outputs unassigned for a criterion outside 1 to 5.
 %
 % Function under test:
 %     src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m
@@ -13,25 +15,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Lines 34-36, 38 and 39 of StopCritBDCA.m (inside "case 1" of the switch) are uncovered because of the defect below; the line that evaluates the undefined variable is reached only by an erroring call, which is not tested.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Stopping criterion 1 uses an undefined variable
-%       SEVERITY: error
-%       TRIGGER: Stopping_Crit = 1
-%       OBSERVED: the variable nhxk is undefined: error MATLAB:UndefinedFunction
-%       EXPECTED: the residual nfxk compared with epsilon
-%       LINES: 33-41
-%     - DEFECT: Outputs unassigned for a criterion outside 1 to 5
-%       SEVERITY: error
-%       TRIGGER: Stopping_Crit not in 1..5
-%       OBSERVED: the switch has no otherwise branch, so StopFlag and Status are not assigned (error
-%         MATLAB:unassignedOutputs)
-%       EXPECTED: defined outputs or a clear error message
-%       LINES: 31-82
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -51,6 +42,13 @@ epsilon = 1e-3;
 maxNumIter = 100;
 maxNumMapEval = 200;
 timeLimit = 60;
+
+%% criterion 1: the residual nfxk compared with epsilon
+
+[stopFlag, status] = StopCritBDCA(1e-3, 10, 10, 1, maxNumIter, maxNumMapEval, timeLimit, epsilon, 1);
+assert(stopFlag == 1 && strcmp(status, 'A solution of nonlinear system is found.'));
+[stopFlag, status] = StopCritBDCA(2e-3, 10, 10, 1, maxNumIter, maxNumMapEval, timeLimit, epsilon, 1);
+assert(stopFlag == 0 && isempty(status));
 
 %% criterion 2: maximum number of iterations
 
@@ -84,6 +82,14 @@ assert(stopFlag == 1 && strcmp(status, 'Maximum number of iterations is reached.
 % neither -> continue
 [stopFlag, status] = StopCritBDCA(1, 10, 10, 1, maxNumIter, maxNumMapEval, timeLimit, epsilon, 5);
 assert(stopFlag == 0 && isempty(status));
+
+%% a criterion outside 1 to 5 raises an error
+
+for badCriterion = [0, 6]
+    assert(verifyCobraFunctionError('StopCritBDCA', 'inputs', ...
+        {1, 10, 10, 1, maxNumIter, maxNumMapEval, timeLimit, epsilon, badCriterion}, ...
+        'testMessage', 'Stopping_Crit must be 1, 2, 3, 4 or 5.'));
+end
 
 % change the directory
 cd(currentDir)

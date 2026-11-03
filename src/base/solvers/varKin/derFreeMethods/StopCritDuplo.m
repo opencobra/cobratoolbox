@@ -23,6 +23,8 @@ function [StopFlag, Status] = StopCritDuplo(nfxk, Niter, Nmap, T, MaxNumIter, Ma
 %                        3. stop if `MaxNumMapEval` is reached
 %                        4. stop if `TimeLimit` is reached
 %                        5. stop if (default) :math:`||hxk|| \leq \epsilon` or `MaxNumIter` is reached
+%
+%                      Any other value raises an error.
 % OUTPUTS:
 %    StopFlag:         1: if one of the stopping criteria holds, 0: if none of the stopping criteria holds
 %    Status:           the reason of the scheme termination
@@ -30,7 +32,7 @@ function [StopFlag, Status] = StopCritDuplo(nfxk, Niter, Nmap, T, MaxNumIter, Ma
 switch Stopping_Crit
 
   case 1
-    if nhxk <= epsilon
+    if nfxk <= epsilon
       StopFlag = 1;
       Status   = 'A solution of nonlinear system is found.';
     else
@@ -77,6 +79,9 @@ switch Stopping_Crit
       StopFlag = 0;
       Status   = [];
     end
+
+  otherwise
+    error('Stopping_Crit must be 1, 2, 3, 4 or 5.')
 
 end
 

@@ -9,6 +9,9 @@
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test. MOSEK itself is not needed: the problem
 %       structures are built by hand and the printed output is captured with evalc.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: A constraint
+%       matrix without rows or columns stops the inspection with an error; A matrix field of an
+%       integer class stops the inspection with an error.
 %
 % Function under test:
 %     src/base/solvers/mosek/inspectMosekProb.m
@@ -17,29 +20,18 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Lines 244-245, 250-251, 263-264 and 269-270, the catch handlers around sprank and condest
-%     for the matrices a and f. Any numeric matrix those functions reject (for example an
-%     integer class) has already stopped the inspection at the norm call of the matrix
-%     statistics, so the handlers cannot be reached.
+%     Lines 262-263, 268-269, 281-282 and 287-288, the catch handlers around sprank and condest
+%     for the matrices a and f. Integer-class fields are converted to double first, so a and f
+%     reach sprank and condest as double or single matrices, which both accept; any other
+%     numeric array they would reject (an N-D array) has already stopped the inspection in the
+%     matrix statistics (the transpose of line 131), so the handlers cannot be reached.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: A constraint matrix without rows or columns stops the inspection with an error
-%       SEVERITY: error
-%       TRIGGER: prob.a or prob.f with zero rows or zero columns, for example zeros(0, 2)
-%       OBSERVED: min and max of the empty row count vector are empty, so building the table of
-%         matrix statistics fails with "All table variables must have the same number of rows"
-%       EXPECTED: a report for the empty matrix, with NaN statistics
-%       LINES: 137-153
-%     - DEFECT: A matrix field of an integer class stops the inspection with an error
-%       SEVERITY: limitation
-%       TRIGGER: prob.a or prob.f of class int8 (or another integer class)
-%       OBSERVED: norm(M, 1) rejects integer input with "Invalid data type. First input argument
-%         must be single or double."
-%       EXPECTED: a report, as for a double matrix with the same values
-%       LINES: 144
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -230,6 +222,40 @@ assert(report.fieldStats{'a', 'nFinite'} == 3);
 assert(report.problemChecks.a_sprank == 2);
 % the structural rank is 2 but the numerical rank is 1: the 1-norm condition estimate is infinite
 assert(isinf(report.problemChecks.a_condest));
+
+%% a matrix without rows or columns: NaN statistics where no row or column exists
+
+[report, ~] = inspectQuietly(struct('a', zeros(0, 2), 'f', zeros(2, 0)));
+ss = report.sizeStats;
+assert(isequal(ss.Properties.RowNames, {'a'; 'f'}));
+% a has no rows: its row counts are NaN, its two columns hold no nonzero
+assert(ss{'a', 'nRows'} == 0 && ss{'a', 'nCols'} == 2 && ss{'a', 'nnz'} == 0 && isnan(ss{'a', 'density'}));
+assert(isnan(ss{'a', 'minRowNnz'}) && isnan(ss{'a', 'maxRowNnz'}) && isnan(ss{'a', 'meanRowNnz'}));
+assert(ss{'a', 'minColNnz'} == 0 && ss{'a', 'maxColNnz'} == 0 && ss{'a', 'meanColNnz'} == 0);
+assert(ss{'a', 'norm1'} == 0 && ss{'a', 'normInf'} == 0);
+assert(isnan(ss{'a', 'minAbsNonzero'}) && isnan(ss{'a', 'maxAbs'}));
+% f has no columns: its column counts are NaN, its two rows hold no nonzero
+assert(ss{'f', 'nRows'} == 2 && ss{'f', 'nCols'} == 0);
+assert(ss{'f', 'minRowNnz'} == 0 && ss{'f', 'maxRowNnz'} == 0 && ss{'f', 'meanRowNnz'} == 0);
+assert(isnan(ss{'f', 'minColNnz'}) && isnan(ss{'f', 'maxColNnz'}) && isnan(ss{'f', 'meanColNnz'}));
+% the consistency checks are still computed
+assert(~report.problemChecks.a_is_square && report.problemChecks.a_sprank == 0);
+assert(~report.problemChecks.f_is_square && report.problemChecks.f_sprank == 0);
+
+% a 0-by-0 matrix: neither row nor column counts exist
+[report, ~] = inspectQuietly(struct('a', zeros(0, 0)));
+ss = report.sizeStats;
+assert(isnan(ss{'a', 'minRowNnz'}) && isnan(ss{'a', 'minColNnz'}) && isnan(ss{'a', 'meanColNnz'}));
+
+%% integer-class fields give the same report as double fields with the same values
+
+probInteger = struct('a', int8([-2 1; 1 3]), 'f', int16([1 0; 0 1; 1 1]), 'c', int32([1; 2]));
+probDouble = struct('a', [-2 1; 1 3], 'f', [1 0; 0 1; 1 1], 'c', [1; 2]);
+[reportInteger, ~] = inspectQuietly(probInteger);
+[reportDouble, ~] = inspectQuietly(probDouble);
+% every statistic, table and check is identical (isequaln because some statistics are NaN)
+assert(isequaln(reportInteger, reportDouble));
+assert(reportInteger.sizeStats{'a', 'norm1'} == 4 && reportInteger.fieldStats{'a', 'min'} == -2);
 
 %% a square f matrix gets a condition estimate
 

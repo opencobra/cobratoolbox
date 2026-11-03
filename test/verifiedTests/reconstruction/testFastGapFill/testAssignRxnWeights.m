@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The NoWeight argument
+%       never has an effect.
 %
 % Function under test:
 %     src/reconstruction/fastGapFill/AuxillaryFiles/assignRxnWeights.m
@@ -18,17 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The NoWeight argument never has an effect
-%       SEVERITY: unusable-option
-%       TRIGGER: the optional argument NoWeight (or its default 1000) for reactions that are neither
-%         metabolic, exchange nor transport
-%       OBSERVED: the weight vector is filled with NoWeight and then replaced by zeros a few lines
-%         later, so such reactions get 0
-%       EXPECTED: NoWeight for those reactions
-%       LINES: 45, 54
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -43,7 +39,7 @@ cd(fileDir);
 prepareTest();
 
 % matrix parts: 2 = metabolic reactions, 3 = exchange and transport reactions
-% (reactions of other parts are not used here, see the header)
+% (model reactions, part 1, are added in the last section)
 model.rxns = {'a'; 'EX_b'; 't1'; 'm1'};
 model.MatrixPart = [2; 3; 3; 2];
 
@@ -71,6 +67,22 @@ result = assignRxnWeights(model, [], struct('rxns', {{}}, 'weights', {{}}));
 assert(isequal(result.weights, [10; 10; 10; 10]));
 result = assignRxnWeights(model, [], struct('other', 1));
 assert(isequal(result.weights, [10; 10; 10; 10]));
+
+%% reactions that are neither metabolic, exchange nor transport get NoWeight
+
+% (formerly a known defect: NoWeight was replaced by 0 for these reactions)
+withModelRxns.rxns = {'core1'; 'a'; 'EX_b'; 't1'};
+withModelRxns.MatrixPart = [1; 2; 3; 3];
+% default NoWeight 1000
+result = assignRxnWeights(withModelRxns);
+assert(isequal(result.weights, [1000; 10; 10; 10]));
+% a given NoWeight
+typeWeights = struct('MetabolicRxns', 1, 'ExchangeRxns', 2, 'TransportRxns', 3);
+result = assignRxnWeights(withModelRxns, typeWeights, [], 500);
+assert(isequal(result.weights, [500; 1; 2; 3]));
+% a weight for a single reaction still overrides NoWeight
+result = assignRxnWeights(withModelRxns, [], struct('rxns', {{'core1'}}, 'weights', {{4}}), 500);
+assert(isequal(result.weights, [4; 10; 10; 10]));
 
 % change the directory
 cd(currentDir)

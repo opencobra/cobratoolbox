@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: A numeric size
+%       requirement stops the function with an error.
 %
 % Function under test:
 %     src/reconstruction/modelGeneration/modelVerification/checkPresentFields.m
@@ -15,21 +17,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 33, the debugging display (if 0) that never runs. Lines 53-55, the numeric branch for the
-%     first dimension, which always stops with an error (see the known defect).
+%     Line 41, the debugging display (if 0) that never runs.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: A numeric size requirement stops the function with an error
-%       SEVERITY: error
-%       TRIGGER: a field property row whose second or third column is a number instead of a field
-%         name
-%       OBSERVED: the error message for the first dimension uses the variable x_pres before it is
-%         assigned, so the call stops with "Unrecognized function or variable x_pres"
-%       EXPECTED: the expected size compared with the actual size
-%       LINES: 53-56
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -97,6 +92,18 @@ out = checkPresentFields({'lb', NaN, 1, 'isnumeric(x)'}, model, results);
 assert(isempty(fieldnames(out.Errors)));
 out = checkPresentFields({'lb', NaN, 2, 'isnumeric(x)'}, model, results);
 assert(contains(out.Errors.inconsistentFields.lb, 'Y Size of lb was 1. Expected 2'));
+
+%% the first dimension given as a number
+
+% (formerly a known defect: the error message used the expected size before it was assigned,
+% so the call stopped with an error)
+% model.lb has 2 rows here: a matching number gives no error
+out = checkPresentFields({'lb', 2, NaN, 'isnumeric(x)'}, model, results);
+assert(isempty(fieldnames(out.Errors)));
+% a different number is reported with the actual and the expected size
+out = checkPresentFields({'lb', 3, NaN, 'isnumeric(x)'}, model, results);
+assert(isfield(out.Errors, 'inconsistentFields') && isfield(out.Errors.inconsistentFields, 'lb'));
+assert(strcmp(out.Errors.inconsistentFields.lb, 'X Size of lb was 2. Expected 3'));
 
 %% the positions that break a validity expression are listed
 

@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: A reaction whose own
+%       correlation is below the cutoff gets an empty group and no name.
 %
 % Function under test:
 %     src/analysis/sampling/ACHR/removeCorrelRxns.m
@@ -15,20 +17,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Lines 69-70, the catch branch for an empty group (see the known defect below).
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: A reaction whose own correlation is below the cutoff gets an empty group and no name
-%       SEVERITY: wrong-result
-%       TRIGGER: a correlation matrix whose diagonal entry for a reaction is below the cutoff (for
-%         example 0.5) and that is not selected with any other reaction
-%       OBSERVED: the group of the reaction is empty, the function prints the empty group to the
-%         command window and its entry in the name list is an empty array instead of a reaction name
-%       EXPECTED: the reaction is listed as its own group with its identifier as name
-%       LINES: 67-70
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -68,6 +64,16 @@ R2 = [1 -1; -1 1];
 [selRxns, rxnSets, rxnList] = removeCorrelRxns(struct('rxns', {{'a'; 'b'}}), R2);
 assert(isequal(selRxns, [true; false]));
 assert(isequal(rxnSets, {{'a'; 'b'}}) && isequal(rxnList, {'a/b'}));
+
+%% a reaction whose own correlation is below the cutoff forms its own group
+
+% the diagonal entry of b (0.5) is below the cutoff and b is not correlated with a or c
+R3 = [1 0.1 0.2; 0.1 0.5 0.3; 0.2 0.3 1];
+[selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns(struct('rxns', {{'a'; 'b'; 'c'}}), R3);
+assert(isequal(selRxns, [true; true; true]));
+assert(isequal(rxnSets, {{'a'}; {'b'}; {'c'}}));
+assert(isequal(rxnList, {'a'; 'b'; 'c'}));
+assert(isequal(Rfilt, R3));
 
 % change the directory
 cd(currentDir)

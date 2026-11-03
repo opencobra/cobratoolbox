@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Warnings stay switched
+%       off after the call.
 %
 % Function under test:
 %     src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/setSimulationConstraints.m
@@ -18,16 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Warnings stay switched off after the call
-%       SEVERITY: cosmetic
-%       TRIGGER: any call
-%       OBSERVED: the function runs warning off and does not restore the previous state, so every
-%         later warning in the session is silenced
-%       EXPECTED: the warning state is restored before returning
-%       LINES: 2
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -69,6 +66,14 @@ assert(newModel.ub(4) == -400);
 % reactions not mentioned keep their bounds
 assert(newModel.lb(6) == -5 && newModel.ub(6) == 5);
 assert(newModel.lb(1) == -5 && newModel.lb(4) == -5);
+
+%% the warning state of the caller is restored after the call
+
+% switch one warning off so that the state before the call is not the default state
+warning('off', 'MATLAB:singularMatrix');
+warningsBefore = warning;
+setSimulationConstraints(model);
+assert(isequal(warning, warningsBefore));
 
 % change the directory
 cd(currentDir)

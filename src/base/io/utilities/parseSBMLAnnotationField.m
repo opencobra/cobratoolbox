@@ -34,7 +34,7 @@ for i = 1:length(fieldList)
     fieldTmp = regexp(fieldList{i},['<rdf:li rdf:resource="urn:miriam:(.*)"/>'],'tokens');
     fieldStr = fieldTmp{1}{1};
     if (regexp(fieldStr,'obo.chebi'))
-        metCHEBI = strrep(fieldStr,'obo.chebi:CHEBI%','');
+        metCHEBI = strrep(strrep(fieldStr,'obo.chebi:CHEBI%3A',''),'obo.chebi:CHEBI%','');
     elseif (regexp(fieldStr,'kegg.compound'))
         metKEGG = strrep(fieldStr,'kegg.compound:','');
     elseif (regexp(fieldStr,'pubchem.substance'))

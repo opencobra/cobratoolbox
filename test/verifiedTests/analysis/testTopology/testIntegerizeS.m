@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: A reaction with a single
+%       non-integer coefficient stops the function with an error.
 %
 % Function under test:
 %     src/analysis/topology/integerizeS.m
@@ -18,18 +20,11 @@
 %     Lines 73-88, the disabled branch (if 0) that scales by powers of ten: it can never run.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: A reaction with a single non-integer coefficient stops the function with an error
-%       SEVERITY: error
-%       TRIGGER: a reaction with exactly one non-zero stoichiometric coefficient that is not an
-%         integer, among the reactions to be integerised (for example an exchange reaction 0.5 A ->,
-%         with internalRxnsOnly = 0)
-%       OBSERVED: the least common multiple starts from the first two denominators, so a reaction
-%         with one coefficient makes the function stop with an index error
-%       EXPECTED: the factor is the denominator of the single coefficient
-%       LINES: 105
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -85,6 +80,23 @@ assert(isequal(g, [2; 2]));
 
 [modelOut, g] = integerizeS(intModel, 0, 0);
 assert(isequal(g, [1; 1]) && isequal(modelOut.S, intModel.S));
+
+%% a reaction with a single non-integer coefficient
+
+% exchange reaction r1: 0.5 a ->, integerised with all reactions (internalRxnsOnly = 0): the factor
+% is the denominator of its only coefficient (2); r2 (b -> a) is integer and keeps factor 1
+exchangeModel.S = [-0.5  1; ...
+                    0   -1];
+exchangeModel.rxns = {'r1'; 'r2'};
+exchangeModel.mets = {'a[c]'; 'b[c]'};
+[modelOut, g] = integerizeS(exchangeModel, 0, 0);
+assert(isequal(g, [2; 1]));
+assert(isequal(modelOut.S, [-1 1; 0 -1]));
+% a third of a metabolite gives the factor 3
+exchangeModel.S = [-1/3; 0];
+exchangeModel.rxns = {'r1'};
+[modelOut, g] = integerizeS(exchangeModel, 0, 0);
+assert(g == 3 && isequal(modelOut.S, [-1; 0]));
 
 %% printing of the integerised reactions
 

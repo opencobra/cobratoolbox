@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Warnings are printed
+%       without a line break.
 %
 % Function under test:
 %     src/analysis/thermo/inchi/getMolecularWeight.m
@@ -27,16 +29,10 @@
 %         16 and 0 hydrogens
 %       EXPECTED: a molecular weight of 18 and 2 hydrogens for water
 %       LINES: 41-61
-%     - DEFECT: Warnings are printed without a line break
-%       SEVERITY: cosmetic
-%       TRIGGER: an empty InChI or an element that is not in the table, with warnings switched on
-%       OBSERVED: the warning text is printed with fprintf and no trailing newline, so consecutive
-%         warnings run together on one line
-%       EXPECTED: each warning on its own line
-%       LINES: 37, 54
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -73,13 +69,23 @@ assert(isequal(E(3, :), [0 0 0 0 0 0 -2]));
 
 %% warnings
 
-% the empty InChI warning (printed without a line break) and the unknown element warning
+% the empty InChI warning and the unknown element warning
 text = evalc('[MW, E] = getMolecularWeight(inchis);');
 assert(contains(text, 'Warning: InChI no. 2 is empty'));
 assert(contains(text, 'Warning: C2H5Br, Br'));
 % the unknown element (Br) is ignored in the weight: 5 H + 2 C
 assert(MW(3) == 5 + 24);
 assert(isequal(E(3, 1:2), [5 2]));
+
+%% each warning is printed on its own line
+
+% two empty InChI strings: the two warnings are separate lines, each ended by a line break
+% (evalc only captures the printed text so that it can be compared; nothing is suppressed)
+warningText = evalc('getMolecularWeight({''''; ''''});');
+assert(isequal(warningText, sprintf('Warning: InChI no. 1 is empty\nWarning: InChI no. 2 is empty\n')));
+% the unknown element warning also ends with a line break
+warningText = evalc('getMolecularWeight({ethylBromide});');
+assert(contains(warningText, sprintf('Warning: C2H5Br, Br\n')));
 
 %% warnings can be switched off
 

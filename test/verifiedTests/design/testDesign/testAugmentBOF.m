@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The outputs are not
+%       assigned when the function cannot augment the objective.
 %
 % Function under test:
 %     src/design/augmentBOF.m
@@ -18,17 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The outputs are not assigned when the function cannot augment the objective
-%       SEVERITY: error
-%       TRIGGER: a target reaction whose metabolite takes part in three or more reactions, called
-%         with output arguments
-%       OBSERVED: the function returns early without assigning model or rxn_name, so a call that
-%         requests the outputs stops with "Output argument rxn_name ... not assigned"
-%       EXPECTED: the unchanged model and an empty reaction name
-%       LINES: 41-47
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -72,6 +68,13 @@ assert(contains(text, 'augmentBOF will not work.'));
 % without print level there is no message
 text = evalc("augmentBOF(busy, 'bio');");
 assert(isempty(text));
+
+%% three or more reactions on the metabolite, with outputs: the model is unchanged
+
+% (formerly a known defect: the outputs were not assigned and the call stopped with an error)
+[busyModel, busyRxnName] = augmentBOF(busy, 'bio');
+assert(isequal(busyModel, busy));
+assert(isempty(busyRxnName) && ischar(busyRxnName));
 
 % change the directory
 cd(currentDir)

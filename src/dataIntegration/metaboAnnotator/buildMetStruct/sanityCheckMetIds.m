@@ -32,7 +32,7 @@ Mets = fieldnames(metabolite_structure);
 cnt = 1;
 for i = 1 : length(Mets)
     % charge must be numeric
-    if ~isnumeric(metabolite_structure.(Mets{i}).charge)
+    if isfield(metabolite_structure.(Mets{i}),'charge') && ~isnumeric(metabolite_structure.(Mets{i}).charge)
         errorFlag{cnt,1} = Mets{i};
         errorFlag{cnt,2} = metabolite_structure.(Mets{i}).charge;
         errorFlag{cnt,3} = 'charge is not numeric';

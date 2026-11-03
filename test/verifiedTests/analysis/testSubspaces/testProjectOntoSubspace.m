@@ -7,6 +7,9 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The forward flux is
+%       not projected onto the row space; Omitting the row or column selection makes the call fail;
+%       The two consistency checks only catch one direction.
 %
 % Function under test:
 %     src/analysis/subspaces/subspaceProjection/projectOntoSubspace.m
@@ -20,32 +23,11 @@
 %     so a call that omits them errors first. All other lines are reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The forward flux is not projected onto the row space
-%       SEVERITY: wrong-result
-%       TRIGGER: any call with a non-empty forward flux vf
-%       OBSERVED: the line that should set vfR sets vrR again, so the output vfR is the unchanged vf
-%         instead of the row-space part (vfN is correct)
-%       EXPECTED: vfR = PR*vf, so that vfN + vfR = vf
-%       LINES: 166-169
-%     - DEFECT: Omitting the row or column selection makes the call fail
-%       SEVERITY: error
-%       TRIGGER: a call without rowBool and colBool, or without colBool, together with a non-empty
-%         vf
-%       OBSERVED: the sanity check on line 67 uses colBool before its default is created on line 88,
-%         so the call errors (not enough input arguments)
-%       EXPECTED: the defaults (all rows, all columns) used
-%       LINES: 67, 88-90
-%     - DEFECT: The two consistency checks only catch one direction
-%       SEVERITY: limitation
-%       TRIGGER: a net flux that is smaller than vf - vr, or a potential with u - u0 - lnx below
-%         zero
-%       OBSERVED: the checks test only (vnet - vf + vr) > 1e-12 and (u - u0 - lnx) > 1e-12, without
-%         the absolute value, so negative differences pass
-%       EXPECTED: an error for any difference larger than the tolerance in either direction
-%       LINES: 67, 73
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -80,15 +62,17 @@ leftNullSpace = eye(2) - columnSpace;     % onto the left null space
 
 %% fluxes: net flux and reverse flux are split into null-space and row-space parts
 
-[vfN, ~, vrN, vrR, vnetN, vnetR] = projectOntoSubspace(A, vf, vr, vnet, u, u0, lnx, 0, allRows, allColumns);
+[vfN, vfR, vrN, vrR, vnetN, vnetR] = projectOntoSubspace(A, vf, vr, vnet, u, u0, lnx, 0, allRows, allColumns);
 assert(norm(vnetN - nullSpace * vnet) < tol);
 assert(norm(vnetR - rowSpace * vnet) < tol);
 assert(norm(vnetN + vnetR - vnet) < tol);
 assert(norm(A * vnetN) < tol);              % the null-space part is in the null space
 assert(norm(vrN - nullSpace * vr) < tol);
 assert(norm(vrR - rowSpace * vr) < tol);
-% the null-space part of the forward flux (the row-space part is not checked, see the header)
+% the forward flux is split in the same way: vfR = PR*vf and vfN + vfR = vf
 assert(norm(vfN - nullSpace * vf) < tol);
+assert(norm(vfR - rowSpace * vf) < tol);
+assert(norm(vfN + vfR - vf) < tol);
 
 %% potentials and log concentrations: column-space and left-null-space parts
 
@@ -110,6 +94,17 @@ assert(all(isnan(vfN)) && all(isnan(vrN)));
 [~, ~, ~, ~, vnetN, vnetR] = projectOntoSubspace(A, [], [], vnet, u, u0, []);
 assert(norm(vnetN - nullSpace * vnet) < tol && norm(vnetR - rowSpace * vnet) < tol);
 
+%% the defaults of the row and column selection are used with a non-empty forward flux
+
+% without rowBool and colBool: every row and column is projected
+[vfN, vfR, ~, ~, vnetN, vnetR, uL, uC] = projectOntoSubspace(A, vf, vr, vnet, u, u0, lnx);
+assert(norm(vfN - nullSpace * vf) < tol && norm(vfR - rowSpace * vf) < tol);
+assert(norm(vnetN - nullSpace * vnet) < tol && norm(vnetR - rowSpace * vnet) < tol);
+assert(norm(uC - columnSpace * u) < tol && norm(uL - leftNullSpace * u) < tol);
+% with rowBool but without colBool
+[vfN, vfR] = projectOntoSubspace(A, vf, vr, vnet, u, u0, lnx, 0, allRows);
+assert(norm(vfN - nullSpace * vf) < tol && norm(vfR - rowSpace * vf) < tol);
+
 %% inconsistent inputs are rejected
 
 % net flux different from forward minus reverse flux
@@ -128,6 +123,12 @@ catch exception
     errorCaught = contains(exception.message, 'Chemical potential does not equal');
 end
 assert(errorCaught);
+% a negative difference is rejected as well: the net flux is smaller than forward minus reverse
+assert(verifyCobraFunctionError('projectOntoSubspace', 'inputs', {A, vf, vr, vnet - 1, u, u0, lnx, 0, allRows, allColumns}, ...
+    'testMessage', 'Net flux does not equal the difference between forward and reverse flux'));
+% and so is u - u0 - lnx below zero
+assert(verifyCobraFunctionError('projectOntoSubspace', 'inputs', {A, vf, vr, vnet, u, u0, lnx + 1, 0, allRows, allColumns}, ...
+    'testMessage', 'Chemical potential does not equal standard chemical potential plus logarithmic conc.'));
 
 % change the directory
 cd(currentDir)

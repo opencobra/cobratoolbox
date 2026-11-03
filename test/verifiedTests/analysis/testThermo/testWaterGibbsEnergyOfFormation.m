@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The Gibbs energy of
+%       formation uses the absolute entropy of water instead of the entropy of formation.
 %
 % Function under test:
 %     src/analysis/thermo/reactantContribution/waterGibbsEnergyOfFormation.m
@@ -17,19 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The Gibbs energy of formation uses the absolute entropy of water instead of the
-%         entropy of formation
-%       SEVERITY: wrong-result
-%       TRIGGER: any temperature, for example T = 298.15 K
-%       OBSERVED: the entropy term uses the absolute entropy of liquid water (about 0.07 kJ/(mol K))
-%         and not the entropy of formation relative to H2 and O2, so the result is about -306.7
-%         kJ/mol at 298.15 K
-%       EXPECTED: about -237.1 kJ/mol at 298.15 K, the tabulated standard Gibbs energy of formation
-%         of liquid water
-%       LINES: 39-46
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -53,6 +47,16 @@ end
 %% the result depends on the temperature
 
 assert(waterGibbsEnergyOfFormation(298.15) ~= waterGibbsEnergyOfFormation(310.15));
+
+%% the standard Gibbs energy of formation of liquid water
+
+% Reference values: dfG = dfH - T*dfS for H2(g) + 1/2 O2(g) -> H2O(l), computed outside this
+% function from the NIST Shomate equations of liquid water, H2 and O2 (research note R3 of feature
+% 20261102-140321-tier1-safe-defect-fixes). At 298.15 K the tabulated standard value is
+% -237.13 kJ/mol (NIST, CODATA); the Shomate coefficients give -237.14. The tolerance of
+% 0.05 kJ/mol covers the rounding of the tabulated coefficients.
+assert(abs(waterGibbsEnergyOfFormation(298.15) - (-237.14)) < 0.05);
+assert(abs(waterGibbsEnergyOfFormation(310.15) - (-235.19)) < 0.05);
 
 % change the directory
 cd(currentDir)

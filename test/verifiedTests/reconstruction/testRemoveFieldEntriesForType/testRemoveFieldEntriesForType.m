@@ -24,7 +24,7 @@
 %     FormulaParser.toString, which no tried input leaves with brackets that need a second pass.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     DEFECT: removing genes from a model that has grRules but no rules field fails
+%     - DEFECT: removing genes from a model that has grRules but no rules field fails
 %       SEVERITY: error
 %       TRIGGER: removeFieldEntriesForType(model, genesToRemove, 'genes', numel(model.genes)) on a
 %         model without model.rules and with model.grRules

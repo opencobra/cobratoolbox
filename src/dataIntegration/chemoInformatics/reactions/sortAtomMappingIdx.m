@@ -50,7 +50,6 @@ for i = substrates + 1 : substrates + products
                     atomMatrixIndex(1))):63) = num2str(atomMatrixIndex(1));
                 atomMatrixIndex(1) = [];
             else
-                ascendingRxnFile = false;
                 noOfAtoms = noOfAtoms + 1;
                 atomMatrixIndex = noOfAtoms;
                 rxnFileData{begmol(i) + j + 4}(61:63) = '   ';
@@ -60,7 +59,5 @@ for i = substrates + 1 : substrates + products
         end
     end
 end
-            
-if sum(oldMapNum) ~=0; ascendingRxnFile = false; end
 
 ascendingRxnFile = rxnFileData;

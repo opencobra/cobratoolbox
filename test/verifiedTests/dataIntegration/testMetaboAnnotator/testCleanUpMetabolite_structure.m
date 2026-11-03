@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Loop index printed to
+%       the console.
 %
 % Function under test:
 %     src/dataIntegration/metaboAnnotator/buildMetStruct/cleanUpMetabolite_structure.m
@@ -13,18 +15,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     None for line coverage; see the console note below.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Loop index printed to the console
-%       SEVERITY: cosmetic
-%       TRIGGER: any call
-%       OBSERVED: the statement i without a semicolon prints i = ... for every metabolite
-%       EXPECTED: no console output
-%       LINES: 38
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -48,7 +46,9 @@ metabolites.m2 = struct('keggId', NaN, 'cheBIId', '456', 'drugbank', NaN, ...
 
 %% all metabolites
 
-cleaned = cleanUpMetabolite_structure(metabolites);
+% captured with evalc (Constitution VII-A): the clean-up prints nothing to the console
+printedText = evalc('cleaned = cleanUpMetabolite_structure(metabolites);');
+assert(isempty(printedText));
 
 % m1: text identifiers are cleaned, text numbers become numbers
 assert(strcmp(cleaned.m1.keggId, 'C001'));

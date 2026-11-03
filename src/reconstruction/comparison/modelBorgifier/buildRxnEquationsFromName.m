@@ -56,7 +56,7 @@ for iRxn = 1:length(Model.rxns)
         arrow = '-->' ;
     elseif lb(iRxn) < 0 && ub(iRxn) <= 0
         arrow = '<--' ;
-        esave = educts ; products = educts ; educts = esave ; clear esave ;
+        % educts and products keep their sides; the arrow gives the direction
     elseif lb(iRxn) == 0 && ub(iRxn) == 0
         arrow = '|||' ;
     else

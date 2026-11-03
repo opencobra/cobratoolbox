@@ -6,7 +6,10 @@ function printMetRxnInfo(metRxnInfo, firstFieldWtComma, printFieldName, fieldNam
 %
 % INPUTS:
 %    metRxnInfo:     2-by-N cell array for N fields to be printed. The first row contains the field names and the second row 
-%                    contains the corresponding information for a particular metabolite/reaction to be printed
+%                    contains the corresponding information for a particular metabolite/reaction to be printed.
+%                    A value can be text, a cell array of text (joined with `|`), a number (a numeric
+%                    matrix is printed with `, ` between columns and `; ` between rows) or a logical
+%                    (printed as 1 or 0); a nested cell array or a structure raises an error
 %    firstFieldWtComma:    a positive integer indicating after which field has been printed, start adding a comma separating each field
 %    printFieldName:    true to print field names, false not to.
 %    fieldNameExcluded:    fields whose field names are not printed (useful only if printFieldName = true)
@@ -28,17 +31,21 @@ for kF = 1:size(metRxnInfo, 2)
     elseif ischar(metRxnInfo{2, kF})
         % strings
         ToPrint = metRxnInfo{2, kF};
-    elseif isnumeric(metRxnInfo{2, kF})
-        % if it is a value, format it properly
+    elseif isnumeric(metRxnInfo{2, kF}) || islogical(metRxnInfo{2, kF})
+        % if it is a value, format it properly (a logical is printed as 1 or 0)
         ToPrint = numToFormattedString(metRxnInfo{2, kF}, ordMagMin, ordMagMax, nCharMax);
         if ~isscalar(metRxnInfo{2, kF})
             % format a string representing the matrix
             str = ToPrint(:, 1);
             for j = 2:size(ToPrint, 2)
-                str = strcat(str, ', ', ToPrint(:, j));
+                str = strcat(str, {', '}, ToPrint(:, j));
             end
             ToPrint = strjoin(str, '; ');
         end
+    elseif iscell(metRxnInfo{2, kF}) || isstruct(metRxnInfo{2, kF})
+        % a nested cell array or a structure cannot be printed as text
+        error('printMetRxnInfo: the value of field %d is of class %s and cannot be printed. Use text, a cell array of text, a number or a logical.', ...
+            kF, class(metRxnInfo{2, kF}));
     else
         ToPrint = metRxnInfo{2, kF};
     end

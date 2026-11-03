@@ -17,8 +17,10 @@ function [model, rxn_name] = augmentBOF(model, targetRxn, epsilon, printLevel)
 %    printLevel:    determine output level. (default: 0)
 %
 % OUTPUTS:
-%    model:        Augmented model structure
-%    rxn_name:     reaction that carries the augmented value
+%    model:        Augmented model structure (unchanged when the objective
+%                  cannot be augmented)
+%    rxn_name:     reaction that carries the augmented value (empty when the
+%                  objective cannot be augmented)
 %
 % .. Author: - Adam Feist 10/16/08
 %
@@ -49,6 +51,8 @@ if n >= 3
     if printLevel > 0
         fprintf 'augmentBOF will not work.'
     end
+    % return the unchanged model and an empty reaction name
+    rxn_name = '';
     return
 end
 %remove the exchange reaction from the variable that held all the reaction

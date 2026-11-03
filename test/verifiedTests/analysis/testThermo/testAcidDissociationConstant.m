@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Ka and pKa are returned
+%       as square matrices with only the first entries filled.
 %
 % Function under test:
 %     src/analysis/thermo/reactantContribution/acidDissociationConstant.m
@@ -19,16 +21,11 @@
 %     never reached: the branch is switched off in the source.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Ka and pKa are returned as square matrices with only the first entries filled
-%       SEVERITY: cosmetic
-%       TRIGGER: a metabolite with p species
-%       OBSERVED: Ka and pKa are (p-1)-by-(p-1) matrices of which only the first p-1 entries (linear
-%         index) are set, the rest are 0
-%       EXPECTED: vectors of length p-1
-%       LINES: 62-63
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -77,10 +74,13 @@ debyeHueckelTerm = gibbsCoefficient * sqrt(ionicStrength) / (1 + 1.6 * sqrt(ioni
 [~, pKaIonic] = acidDissociationConstant('ha[c]', albertyData, metAbbrAlbertyAbbr, temperature, ionicStrength, 0);
 assert(abs(pKaIonic(1) - (expectedPKa - 2 * debyeHueckelTerm / (gasConstant * temperature * logTen))) < tol);
 
-%% three species: one pKa per step (only the first p-1 entries are set, see the header)
+%% three species: one pKa per step, returned as vectors of length p - 1 = 2
 
 threeSpecies = struct('abbreviation', {'h3'}, 'basicData', {[0 0 -2 0; -40 0 -1 1; -60 0 0 2]});
-[~, pKaThree] = acidDissociationConstant('h2a[c]', threeSpecies, {'x', 'h2a[c]', 'h3'});
+[KaThree, pKaThree] = acidDissociationConstant('h2a[c]', threeSpecies, {'x', 'h2a[c]', 'h3'});
+assert(isequal(size(KaThree), [2 1]) && isequal(size(pKaThree), [2 1]));
+% Ka = 10^-pKa entry by entry (relative tolerance: same closed formula, rounding only)
+assert(all(abs(KaThree ./ 10.^(-pKaThree) - 1) < 1e-8));
 assert(abs(pKaThree(1) - 40 / (gasConstant * temperature * logTen)) < tol);
 assert(abs(pKaThree(2) - 20 / (gasConstant * temperature * logTen)) < tol);
 

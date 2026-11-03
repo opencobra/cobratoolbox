@@ -16,7 +16,7 @@ function [out] = cdv2idv(n)
 global CDV2IDVSAV
 
 if ~isempty(CDV2IDVSAV)
-    if length(CDV2IDVSAV) >= n
+    if n >= 1 && length(CDV2IDVSAV) >= n
         if ~isempty(CDV2IDVSAV{n})
             out =  CDV2IDVSAV{n};
             return;

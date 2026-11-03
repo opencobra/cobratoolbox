@@ -7,6 +7,8 @@
 %       test (feature 025-tier1-test-pilot). It asserts EXISTING behaviour
 %       (Constitution Principle III, characterization mode) and must not change
 %       getDefaultValue.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: No default for
+%       struct and function-handle input.
 %
 % Function under test:
 %     src/base/utilities/getDefaultValue.m
@@ -18,15 +20,11 @@
 %     None. Every executable line of getDefaultValue is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: No default for struct and function-handle input
-%       SEVERITY: error
-%       TRIGGER: struct or function handle input
-%       OBSERVED: there is no final else, so defValue is not assigned (MATLAB:unassignedOutputs)
-%       EXPECTED: a default of the same type or a clear error
-%       LINES: 13-29
+%     None found.
 %
 % Authors:
 %     - Generated for feature 025-tier1-test-pilot, 2026-10-06.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -91,6 +89,13 @@ assert(isequaln(defaultCell, {NaN, ''; false, {NaN}}));
 
 % an empty cell has no elements, so the result is an empty cell of the same size
 assert(isequal(getDefaultValue({}), {}));
+
+%% Struct and function-handle inputs: no default exists, a clear error is raised
+
+assert(verifyCobraFunctionError('getDefaultValue', 'inputs', {struct('a', 1)}, 'outputArgCount', 1, ...
+    'testMessage', 'getDefaultValue has no default value for input of class struct.'));
+assert(verifyCobraFunctionError('getDefaultValue', 'inputs', {@sin}, 'outputArgCount', 1, ...
+    'testMessage', 'getDefaultValue has no default value for input of class function_handle.'));
 
 % change the directory
 cd(currentDir)

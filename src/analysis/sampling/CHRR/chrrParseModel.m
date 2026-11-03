@@ -22,7 +22,8 @@ function [P, model] = chrrParseModel(model)
 % OPTIONAL INPUTS:
 %               * .C - 'k x n' matrix of additional inequality constraints
 %               * .d - 'k x 1' rhs of the above constraints
-%               * .dsense - 'k x 1' the sense of the above constraints ('L' or 'G')
+%               * .dsense - 'k x 1' the sense of the above constraints ('L' or 'G'), as a character
+%                 array or a cell array; 'E' (equality) is not supported and raises an error
 %
 % OUTPUTS:
 %    P:        A structure with fields:
@@ -46,11 +47,16 @@ P.b = [model.ub; -model.lb];
 
 if isfield(model,'C') && isfield(model,'d')
    for i=1:size(model.C,1)
-      if model.dsense(i)=='G'
+      % the sense can be given as a character array or as a cell array
+      constraintSense = model.dsense(i);
+      if iscell(constraintSense)
+          constraintSense = constraintSense{1};
+      end
+      if constraintSense=='G'
           % convert constraint to <=
           model.C(i,:) = model.C(i,:)*-1;
           model.d(i) = model.d(i)*-1;
-      elseif model.dsense{i}=='E'
+      elseif constraintSense=='E'
           error('Equality constraints not supported in C,d fields.');
       end
    end

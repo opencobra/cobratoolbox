@@ -74,9 +74,9 @@ function [cmd, mosekParam] = setMosekParam(param)
 %                     * .mosekInnerTol - overrides the MOSEK primal
 %                       interior-point tolerance directly (and the dual
 %                       tolerance too, unless `.mosekInnerMuTol` is given)
-%                     * .feasTol - COBRA feasibility tolerance, used as the
-%                       MOSEK primal tolerance default when
-%                       `.mosekInnerTol` is absent (also scales the
+%                     * .feasTol - COBRA feasibility tolerance (default
+%                       1e-8), used as the MOSEK primal tolerance default
+%                       when `.mosekInnerTol` is absent (also scales the
 %                       solveSCLP inner tolerances)
 %                     * .optTol - COBRA optimality tolerance, used as the
 %                       MOSEK dual tolerance default when `.mosekInnerTol`
@@ -99,9 +99,9 @@ function [cmd, mosekParam] = setMosekParam(param)
 %                       `MSK_DPAR_PRESOLVE_TOL_S` value
 %                     * .mosekDataTolX - overrides the default
 %                       `MSK_DPAR_DATA_TOL_X` value
-%                     * .numTol - COBRA numerical tolerance, the basis
-%                       (times 100 or 1) for the presolve/data tolerance
-%                       defaults above
+%                     * .numTol - COBRA numerical tolerance (default
+%                       1e-12), the basis (times 100 or 1) for the
+%                       presolve/data tolerance defaults above
 %                     * .mosekNearRel - overrides the default
 %                       `MSK_DPAR_INTPNT_CO_TOL_NEAR_REL` value (1.0)
 %                     * .lifted - when 1, disables the MOSEK eliminator
@@ -590,6 +590,15 @@ end
 
 if ~isfield(param, 'innerMosekMuTolFloorFactor') || isempty(param.innerMosekMuTolFloorFactor)
     param.innerMosekMuTolFloorFactor = 1;
+end
+
+% Absent tolerances take the defaults of the cobra profiles.
+if ~isfield(param, 'feasTol')
+    param.feasTol = 1e-8;
+end
+
+if ~isfield(param, 'numTol')
+    param.numTol = 1e-12;
 end
 
 innerTol = max( ...

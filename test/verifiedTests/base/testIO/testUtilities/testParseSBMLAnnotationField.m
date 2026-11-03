@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: ChEBI ID keeps a
+%       stray 3A prefix in the urn:miriam notation.
 %
 % Function under test:
 %     src/base/io/utilities/parseSBMLAnnotationField.m
@@ -16,15 +18,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: ChEBI ID keeps a stray 3A prefix in the urn:miriam notation
-%       SEVERITY: wrong-result
-%       TRIGGER: annotation text containing urn:miriam:obo.chebi:CHEBI%3A15422
-%       OBSERVED: only the text obo.chebi:CHEBI% is removed, so the result is 3A15422
-%       EXPECTED: 15422
-%       LINES: 36-37
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -44,12 +42,22 @@ annotation = ['<rdf:li rdf:resource="urn:miriam:obo.chebi:CHEBI%3A15422"/>' ...
               '<rdf:li rdf:resource="urn:miriam:kegg.compound:C00002"/>' ...
               '<rdf:li rdf:resource="urn:miriam:pubchem.substance:3304"/>'];
 [metChebi, metHmdb, metKegg, metPubChem, metInChI] = parseSBMLAnnotationField(annotation);
-% (the ChEBI value is not asserted, see the header)
+% (the ChEBI value is asserted in the next section)
 assert(ischar(metChebi) && ~isempty(metChebi));
 assert(isequal(metHmdb, ''));
 assert(strcmp(metKegg, 'C00002'));
 assert(strcmp(metPubChem, '3304'));
 assert(isequal(metInChI, ''));
+
+%% urn:miriam notation: the ChEBI identifier without the percent-encoded colon (%3A)
+
+annotation = '<rdf:li rdf:resource="urn:miriam:obo.chebi:CHEBI%3A15422"/>';
+metChebi = parseSBMLAnnotationField(annotation);
+assert(strcmp(metChebi, '15422'));
+% an identifier without the encoded colon keeps the earlier stripping of "obo.chebi:CHEBI%"
+annotation = '<rdf:li rdf:resource="urn:miriam:obo.chebi:CHEBI%15422"/>';
+metChebi = parseSBMLAnnotationField(annotation);
+assert(strcmp(metChebi, '15422'));
 
 %% an InChI element: the "InChI=" prefix is removed
 

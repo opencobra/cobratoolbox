@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The returned null-space
+%       matrix L is built with P instead of its transpose.
 %
 % Function under test:
 %     src/analysis/subspaces/nullspace/echelonNullspace.m
@@ -17,17 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The returned null-space matrix L is built with P instead of its transpose
-%       SEVERITY: wrong-result
-%       TRIGGER: any matrix whose QR pivoting permutes the rows (left) or columns (right), e.g. [1 0
-%         1 2; 0 1 1 3; 1 1 2 5]
-%       OBSERVED: L = [-L0 I]*P does not satisfy L*S = 0 (left) or S*L = 0 (right); the documented
-%         identity holds only with P ([-L0 I]*P*S = 0)
-%       EXPECTED: L*S = 0 for the left and S*L = 0 for the right null space
-%       LINES: 95, 145
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -48,8 +44,8 @@ tol = 1e-10;
 S = [1 0 1 2; 0 1 1 3; 1 1 2 5];          % 3 x 4, rank 2 (row 3 = row 1 + row 2)
 rankS = 2;
 
-% The returned L is not checked (see the header); the parts L0, I, P and p are, with the
-% identity that holds for them: [-L0 I] * P' * S = 0 (left) and S * ([-L0 I] * P')' = 0 (right).
+% The parts L0, I, P and p are checked with the identity that holds for them:
+% [-L0 I] * P' * S = 0 (left) and S * ([-L0 I] * P')' = 0 (right); the returned L is checked below.
 
 %% left null space (default)
 
@@ -81,6 +77,21 @@ assert(norm(full(S * ([-L0 I] * P')'), 'fro') < tol);
 assert(norm(full([-L0 I] * P' * (1e4 * S)), 'fro') < 1e-6);
 [L0, I, P] = echelonNullspace(1e4 * S, 'right');
 assert(norm(full((1e4 * S) * ([-L0 I] * P')'), 'fro') < 1e-6);
+
+%% the returned L is a null-space basis when QR pivoting permutes the rows or columns
+
+% for S the QR pivoting is not the identity (rows of S and columns of S are reordered), so L must
+% be built with P' (L = [-L0 I] * P'): L * S = 0 for the left and S * L' = 0 for the right null space
+[L0, I, P, L] = echelonNullspace(S, 'left');
+assert(~isequal(full(P), eye(3)));
+assert(isequal(size(L), [3 - rankS, 3]));
+assert(norm(full(L * S), 'fro') < tol);
+assert(isequal(full(L), full([-L0 I] * P')));
+[L0, I, P, L] = echelonNullspace(S, 'right');
+assert(~isequal(full(P), eye(4)));
+assert(isequal(size(L), [4 - rankS, 4]));
+assert(norm(full(S * L'), 'fro') < tol);
+assert(isequal(full(L), full([-L0 I] * P')));
 
 %% full row rank: the left null space is empty
 
