@@ -1,0 +1,23 @@
+# testAll under RunMat after T017-T018 (commit 25c3d1fd6)
+
+Measurement tree of T019 (runmat_testall.sh work tree, files already set aside), with test/testAll.m and initCobraToolbox.m replaced by the 25c3d1fd6 versions. RunMat v0.6.2. COBRA_CI=1 runmat run test/testAll.m.
+
+## Run 1: entry points as committed
+```
+error: undefined variable 'PERFORMANCE_REPORT'
+id: RunMat:UndefinedVariable
+--> test/testAll.m:285:46
+285 |             PERFORMANCE_REPORT_ON = ~isempty(PERFORMANCE_REPORT) && PERFORMANCE_REPORT;
+  |                                              ^^^^^^^^^^^^^^^^^^
+```
+
+## Run 2 (measurement only, not committed): the D5 line replaced by PERFORMANCE_REPORT_ON = false in the copy
+```
+error: cell literal rows realize different widths
+id: RunMat:MirAggregateShapeInvalid
+--> test/testAll.m:55:13
+55 |     cd(CBTDIR);
+  |             ^^
+```
+
+Run 2 stops at defect D6: which('initCobraToolbox.m') returns text, so testAll takes the else branch and cd()s to a folder name built from that text.

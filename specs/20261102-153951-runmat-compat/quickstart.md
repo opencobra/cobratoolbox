@@ -53,3 +53,43 @@ The tool copies CLONE, sets aside every file RunMat cannot compile (except the e
 and writes the summary to OUT: the files set aside by reason, then either the per-test results (also as `OUT.csv`)
 or the stopping point. `COBRA_TESTS` selects tests as under MATLAB. `SHIMS=<folder>` supplies functions RunMat
 lacks; such a run is not a measurement of COBRA under RunMat alone, and its summary names the shims.
+
+## RunMat binary and libraries
+The binary links `libhdf5.so.103`. If no system copy exists, link only that library into an empty folder and
+pass it, so that no other conda libraries are loaded:
+
+```bash
+mkdir -p H5 && ln -s ~/anaconda3/lib/libhdf5.so.103* H5/
+RUNMAT=<runmat binary> RUNMAT_LIBS=$PWD/H5 ...
+```
+
+## Analyzer comparison over all changed files (SC-002, T031)
+```bash
+git diff --name-only <feature base> HEAD -- src test initCobraToolbox.m | grep '\.m$' > changed.txt
+```
+```matlab
+addpath([pwd filesep 'specs/20261102-153951-runmat-compat/tools'])
+analyzerSnapshot('changed.txt', 'specs/20261102-153951-runmat-compat/reports/analyzer-after.json')
+```
+Then compare each file's identifiers with `$F/baseline/analyzer-before.json`. A file passes when no identifier
+occurs more often than in the baseline. The feature base is `467094a5d`. A file also changed on another branch
+is compared at its feature-branch version (`git show <feature branch>:<path>`).
+
+## Path check (FR-007, FR-013, T032)
+```bash
+git diff --name-only develop HEAD | grep -E '^(external|deprecated)/'          # must print nothing
+for s in $(git config -f .gitmodules --get-regexp '\.path$' | awk '{print $2}'); do
+  git diff --name-only develop HEAD | grep -E "^$s(/|$)"; done                     # must print nothing
+```
+
+## Entry points under RunMat after US2
+Replace `test/testAll.m` and `initCobraToolbox.m` in an existing `runmat_testall.sh` work tree (`WORK/tree`) and
+run `COBRA_CI=1 runmat run --color never test/testAll.m` there. The result is recorded in
+`$F/reports/runmat-testAll-after-us2.txt`.
+
+## Defect reproducers (SC-005)
+Each `$F/reports/repro/<id>/` is a separate folder. Run it from inside that folder, because RunMat compiles every
+file in the folder:
+`runmat run --color never <id>.m`. For D11, use `runmat test --list --path=. tests` instead.
+In MATLAB, `cd` into the same folder and run `<id>` to see the expected result. The report is
+`$F/reports/runmat-compat-report.md`.

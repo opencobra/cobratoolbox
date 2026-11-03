@@ -50,8 +50,8 @@ excluding `.gitmodules` paths, `external/` and `deprecated/`.
 
 **Independent Test**: run `testAll` under RunMat (T019) and record where it stops.
 
-- [ ] T017 [US2] FR-005: in `test/testAll.m`, rewrite the `PERFORMANCE_REPORT_ON` expression so that no undefined variable is named outside the `exist` guard, keeping its value in MATLAB, e.g. `PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1'); if ~PERFORMANCE_REPORT_ON && exist('PERFORMANCE_REPORT', 'var') && ~isempty(PERFORMANCE_REPORT), PERFORMANCE_REPORT_ON = PERFORMANCE_REPORT; end`. Verify that `checkcode` gains no message, and run the four combinations (env var set or not × variable present or absent) in MATLAB to confirm the same value.
-- [ ] T018 [US2] FR-004/FR-008 in `test/testAll.m` and `initCobraToolbox.m`: write bare calls such as `initCobraToolbox`, `exit` and `prefdir` as `name()` (T013 tool); analyzer check; commit with T017
+- [X] T017 [US2] FR-005: in `test/testAll.m`, rewrite the `PERFORMANCE_REPORT_ON` expression so that no undefined variable is named outside the `exist` guard, keeping its value in MATLAB, e.g. `PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1'); if ~PERFORMANCE_REPORT_ON && exist('PERFORMANCE_REPORT', 'var') && ~isempty(PERFORMANCE_REPORT), PERFORMANCE_REPORT_ON = PERFORMANCE_REPORT; end`. Verify that `checkcode` gains no message, and run the four combinations (env var set or not × variable present or absent) in MATLAB to confirm the same value.
+- [X] T018 [US2] FR-004/FR-008 in `test/testAll.m` and `initCobraToolbox.m`: write bare calls such as `initCobraToolbox`, `exit` and `prefdir` as `name()` (T013 tool); analyzer check; commit with T017
 - [X] T019 [US2] FR-014: build the measurement copy outside the repository (failing `external/` and submodule folders off the path, T016 residual files set aside), run `testAll` under RunMat with `COBRA_CI=1` and a time limit, and save the log and stopping point to `$F/reports/runmat-testAll.txt`
 
 ## Phase 5: User Story 3 - Measurement and report (P3)
@@ -60,7 +60,7 @@ excluding `.gitmodules` paths, `external/` and `deprecated/`.
 
 **Independent Test**: re-running the quickstart commands reproduces the counts.
 
-- [ ] T020 [US3] Write `$F/reports/runmat-compat-report.md`:
+- [X] T020 [US3] Write `$F/reports/runmat-compat-report.md`:
   - discovery counts before and after;
   - files changed per category, with rejects;
   - the `testAll` under RunMat outcome: passed, failed and skipped counts, or the stopping point with its cause;
@@ -69,9 +69,9 @@ excluding `.gitmodules` paths, `external/` and `deprecated/`.
 ## Phase 6: Polish & cross-cutting verification
 
 - [X] T030 Run MATLAB `testAll` (`COBRA_CI=1`) on the finished branch; save `$F/reports/testAll-after.csv`; compare with `$F/baseline/testAll-before.csv` by test name and status (SC-003). Any difference blocks completion and is traced to its category commit.
-- [ ] T031 [P] Run an analyzer snapshot of all changed files and compare it with `$F/baseline/analyzer-before.json` (SC-002)
-- [ ] T032 [P] Check that `git diff --stat develop` touches no path under `external/`, `deprecated/` or a `.gitmodules` path (FR-007, FR-013)
-- [ ] T033 Update the quickstart with the final commands, write the implementation receipt (constitution ledger), and update `human-loop.md`
+- [X] T031 [P] Run an analyzer snapshot of all changed files and compare it with `$F/baseline/analyzer-before.json` (SC-002)
+- [X] T032 [P] Check that `git diff --stat develop` touches no path under `external/`, `deprecated/` or a `.gitmodules` path (FR-007, FR-013)
+- [X] T033 Update the quickstart with the final commands, write the implementation receipt (constitution ledger), and update `human-loop.md`
 
 ## Dependencies & Execution Order
 
