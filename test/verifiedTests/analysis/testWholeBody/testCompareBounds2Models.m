@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The numbers of
+%       mismatched bounds are displayed instead of returned.
 %
 % Function under test:
 %     src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m
@@ -26,16 +28,10 @@
 %         function with "Dimensions of arrays being concatenated are not consistent"
 %       EXPECTED: the missing reactions returned in a cell array
 %       LINES: 48-50
-%     - DEFECT: The numbers of mismatched bounds are displayed instead of returned
-%       SEVERITY: cosmetic
-%       TRIGGER: any call
-%       OBSERVED: the last two statements show mismatch_lb and mismatch_ub in the command window;
-%         they are not outputs
-%       EXPECTED: the counts returned or not displayed
-%       LINES: 84-85
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -68,20 +64,14 @@ assert(isequal(R12_bounds, {'b', 'identical lower bound', -1, -1; ...
                             'c', 'identical upper bound', 5, 5}));
 % the upper bound of b differs (1 against 2)
 assert(isequal(R12_bounds_mismatch, {'b', 'NOT identical upper bound', 1, 2}));
-% the mismatch counts are displayed
-assert(contains(text, 'mismatch_lb') && contains(text, 'mismatch_ub'));
+% nothing is displayed: the mismatch counts are no longer shown in the command window
+assert(isempty(text));
 
 %% different lower bounds are reported as well
 
 model2.lb(2) = -3;
-[~, ~, ~, R12_bounds_mismatch] = compareBounds2Modelsquietly(model1, model2);
+[~, ~, ~, R12_bounds_mismatch] = compareBounds2Models(model1, model2);
 assert(isequal(R12_bounds_mismatch, {'b', 'NOT identical upper bound', 1, 2; 'c', 'NOT identical lower bound', 0, -3}));
-
-
-function [R1_missing, R2_missing, R12_bounds, R12_bounds_mismatch] = compareBounds2Modelsquietly(model1, model2)
-% Call compareBounds2Models and discard the text it displays.
-evalc('[R1_missing, R2_missing, R12_bounds, R12_bounds_mismatch] = compareBounds2Models(model1, model2);');
-end
 
 % change the directory
 cd(currentDir)

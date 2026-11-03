@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Invalid input is
+%       reported by a message and leaves the output unassigned.
 %
 % Function under test:
 %     src/dataIntegration/transcriptomics/rFASTCORMICS/mapExpressionToModel.m
@@ -15,23 +17,16 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Lines 74-78, the fallbacks for dictionary columns that cannot be assigned directly: the
+%     Lines 75-79, the fallbacks for dictionary columns that cannot be assigned directly: the
 %     dictionary is converted to a cell array first, so every column can be assigned and the
 %     fallbacks cannot be reached.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Invalid input is reported by a message and leaves the output unassigned
-%       SEVERITY: error
-%       TRIGGER: a dictionary that is not a table, row names with empty entries, or row names that
-%         match nothing in the dictionary, when the output is requested
-%       OBSERVED: the function prints a message (or nothing for the no-match case) and returns
-%         before assigning mapping, so a call with an output argument stops with "Output argument
-%         mapping not assigned"
-%       EXPECTED: an error with a clear message, or an empty mapping
-%       LINES: 35-50
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -82,28 +77,20 @@ text = evalc('mapping = mapExpressionToModel(model, data, dico2, rownames);');
 assert(contains(text, '2 of 3 genes of the model matched'));
 assert(isequal(mapping(2, :), [-1 1]));
 
-%% invalid input is reported and no output is produced
+%% invalid input raises an error with a clear message
 
 % the dictionary must be a table
 notATable = {'p1'};
-text = evalc('mapExpressionToModel(model, data, notATable, rownames);');
-assert(contains(text, 'dico must be a table'));
+assert(verifyCobraFunctionError('mapExpressionToModel', 'inputs', {model, data, notATable, rownames}, ...
+    'outputArgCount', 1, 'testMessage', 'dico must be a table'));
 % row names must not be empty
 emptyName = {'p1'; ''; 'p3'};
-text = evalc('mapExpressionToModel(model, data, dico, emptyName);');
-assert(contains(text, 'rownames contains empty entries'));
-% requesting the output in these cases stops with an error (see the known defect in the header)
-failed = false;
-try
-    evalc('result = mapExpressionToModel(model, data, notATable, rownames);');
-catch
-    failed = true;
-end
-assert(failed);
-% no match between the row names and the dictionary: nothing is printed
+assert(verifyCobraFunctionError('mapExpressionToModel', 'inputs', {model, data, dico, emptyName}, ...
+    'outputArgCount', 1, 'testMessage', 'rownames contains empty entries, please check'));
+% the row names must match the dictionary
 otherNames = {'q1'; 'q2'; 'q3'};
-text = evalc('mapExpressionToModel(model, data, dico, otherNames);');
-assert(isempty(text));
+assert(verifyCobraFunctionError('mapExpressionToModel', 'inputs', {model, data, dico, otherNames}, ...
+    'outputArgCount', 1, 'testMessage', 'rownames does not match the dataIds in the dico'));
 
 % change the directory
 cd(currentDir)

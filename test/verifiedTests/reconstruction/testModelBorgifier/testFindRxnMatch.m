@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The separators between
+%       joined metabolites lose their blank.
 %
 % Function under test:
 %     src/reconstruction/comparison/modelBorgifier/findRxnMatch.m
@@ -18,17 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The separators between joined metabolites lose their blank
-%       SEVERITY: cosmetic
-%       TRIGGER: a reaction with several reactants or products, or the score and index of a match
-%       OBSERVED: the pieces are joined with strcat and the separator ; followed by a blank, but
-%         strcat removes the trailing blank of character arguments, so the lists read a;b and the
-%         score reads 0.9;2
-%       EXPECTED: the separators written in the code: a; b and 0.9; 2
-%       LINES: 37, 41-47, 91
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -87,7 +83,8 @@ TMODEL = tmodel;
 data = findRxnMatch(1, 2, scoreTotal);
 assert(isequal(data.cRxnTable, {'1'; 'cr1'; 'compared reaction'; 'a + b -> c'; '1.1.1.1'; 'R00001'; 'rxn00001'; 'sub1'}));
 % reactants (number, ids, names, stoichiometries, formulas, charges, KEGG ids), then products
-assert(isequal(data.cMetTable(1:7), {'2'; 'a;b'; 'A;B'; '1;2'; 'CH4;H2O'; '0;0'; 'C1;C2'}));
+% the joined lists use the separator '; ' (formerly a known defect: strcat dropped the blank)
+assert(isequal(data.cMetTable(1:7), {'2'; 'a; b'; 'A; B'; '1; 2'; 'CH4; H2O'; '0; 0'; 'C1; C2'}));
 assert(isequal(data.cMetTable(8:14), {'1'; 'c'; 'C'; '1'; 'CH4O'; '1'; 'C3'}));
 
 %% best matches of the template model, best score first
@@ -98,11 +95,12 @@ TMODEL = tmodel;
 data = findRxnMatch(1, 2, scoreTotal);
 assert(isequal(size(data.tRxnTable), [8 2]) && isequal(size(data.tMetTable), [14 2]));
 % the second template reaction scores 0.9 and comes first
-assert(strcmp(data.tRxnTable{1, 1}, '0.9;2') && strcmp(data.tRxnTable{1, 2}, '0.5;1'));
+% score and index are joined with '; '
+assert(strcmp(data.tRxnTable{1, 1}, '0.9; 2') && strcmp(data.tRxnTable{1, 2}, '0.5; 1'));
 assert(strcmp(data.tRxnTable{2, 1}, 'tr2') && strcmp(data.tRxnTable{2, 2}, 'tr1'));
 assert(strcmp(data.tRxnTable{8, 1}, 'subB'));
 % reactants and products of the first match (tr2: b -> a + c)
-assert(strcmp(data.tMetTable{2, 1}, 'b') && strcmp(data.tMetTable{9, 1}, 'a;c'));
+assert(strcmp(data.tMetTable{2, 1}, 'b') && strcmp(data.tMetTable{9, 1}, 'a; c'));
 assert(strcmp(data.tMetTable{8, 1}, '2'));
 
 %% a template match with two reactants and a compared reaction with two products
@@ -114,8 +112,8 @@ CMODEL.S = [-1; 1; 1];
 CMODEL.metNums = [0 0 1 0 2];
 % the template reaction scoring second is a + b -> c
 data = findRxnMatch(1, 2, scoreTotal);
-assert(strcmp(data.tMetTable{2, 2}, 'a;b') && strcmp(data.tMetTable{4, 2}, '1;1'));
-assert(strcmp(data.cMetTable{9}, 'b;c') && strcmp(data.cMetTable{11}, '1;1'));
+assert(strcmp(data.tMetTable{2, 2}, 'a; b') && strcmp(data.tMetTable{4, 2}, '1; 1'));
+assert(strcmp(data.cMetTable{9}, 'b; c') && strcmp(data.cMetTable{11}, '1; 1'));
 assert(strcmp(data.cMetTable{2}, 'a'));
 
 %% only the best match

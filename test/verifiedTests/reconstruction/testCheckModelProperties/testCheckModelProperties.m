@@ -35,20 +35,20 @@
 %       477-480, 483   metabolites that are consistent in every test and still have a zero row
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     DEFECT: minSij is zero for every model with a zero in S
+%     - DEFECT: minSij is zero for every model with a zero in S
 %       SEVERITY: wrong-result
 %       TRIGGER: any model with a sparse S (min(min(abs(S))) includes the structural zeros)
 %       OBSERVED: model.minSij = 0, although the documentation says minimum NONZERO magnitude
 %       EXPECTED: the smallest nonzero magnitude
 %       LINES: 791
-%     DEFECT: the sanity checks after the rank computation never fire
-%       SEVERITY: wrong-result (silent)
+%     - DEFECT: the sanity checks after the rank computation never fire
+%       SEVERITY: wrong-result
 %       TRIGGER: always
-%       OBSERVED: error('') with an empty message is a no-op in MATLAB, so the checks at lines
+%       OBSERVED: (silent) error('') with an empty message is a no-op in MATLAB, so the checks at lines
 %         706-711 test nothing
 %       EXPECTED: an error when a row or column used for the rank analysis is not classified
 %       LINES: 706-711
-%     DEFECT: the thermodynamic consistency counts vary between runs
+%     - DEFECT: the thermodynamic consistency counts vary between runs
 %       SEVERITY: cosmetic
 %       TRIGGER: findThermoConsistentFluxSubset uses randomised passes
 %       OBSERVED: the numbers of thermodynamically consistent reactions on a stored model may

@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Several layers
+%       containing the letter p error.
 %
 % Function under test:
 %     src/dataIntegration/chemoInformatics/inchi/getInchiData.m
@@ -22,15 +24,10 @@
 %       OBSERVED: only q+ is removed before the conversion to a number, so netCharge is NaN
 %       EXPECTED: netCharge -1
 %       LINES: 69
-%     - DEFECT: Several layers containing the letter p error
-%       SEVERITY: error
-%       TRIGGER: an InChI with two layers that contain the letter p
-%       OBSERVED: regexprep receives several layers at once and fails (Invalid option for regexprep)
-%       EXPECTED: the proton layers added up
-%       LINES: 63
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -88,6 +85,12 @@ assert(data.netCharge == -1);
 assert(strcmp(data.mainLayer, 'InChI=1S/C2H3O2/c1-2(3)4/h1H3,(H,3,4)'));
 % /q+1: one positive charge
 data = getInchiData('InChI=1S/C2H8N/c1-3-2/h3H,1-2H3/q+1');
+assert(data.netCharge == 1);
+
+%% several proton layers are added up
+
+% two layers contain the letter p (/p-1 and /p+2): their proton counts are summed, -1 + 2 = 1
+data = getInchiData('InChI=1S/C2H3O2/c1-2(3)4/h1H3,(H,3,4)/p-1/p+2');
 assert(data.netCharge == 1);
 
 %% non-standard InChI (no "S")

@@ -40,6 +40,6 @@ notInModel = ~ismember(rxnList, model.rxns);
 if any(notInModel)
     rxnsNotInModel = rxnList(notInModel);
     for i = 1:numel(rxnsNotInModel)
-        fprintf('Reaction %s not present in model!', rxnsNotInModel{i});
+        fprintf('Reaction %s not present in model!\n', rxnsNotInModel{i});
     end
 end

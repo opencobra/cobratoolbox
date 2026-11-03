@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Reverse reactions are
+%       reported as forward.
 %
 % Function under test:
 %     src/analysis/thermo/directionalityReport/assignQualDir.m
@@ -17,17 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Reverse reactions are reported as forward
-%       SEVERITY: wrong-result
-%       TRIGGER: a reaction with both bounds negative (for example lb = -5, ub = -1)
-%       OBSERVED: the result vector is created as a logical array, so the value -1 assigned to
-%         reverse reactions is stored as true, which is 1 and identical to the forward value
-%       EXPECTED: qualDir equals -1 for reactions that are irreversible in the reverse direction, as
-%         the header states
-%       LINES: 27-29
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -50,6 +46,17 @@ model.ub = [5; 5; 0; 8];
 model = assignQualDir(model);
 assert(isequal(size(model.qualDir), [4 1]));
 assert(isequal(double(model.qualDir), [1; 0; 1; 1]));
+
+%% reverse reactions: both bounds negative give -1
+
+% the result is numeric, so -1 is stored and differs from the forward value 1
+reverseModel.S = zeros(1, 3);
+% reverse (-5..-1), forward (1..5) and reversible (-2..3)
+reverseModel.lb = [-5; 1; -2];
+reverseModel.ub = [-1; 5; 3];
+reverseModel = assignQualDir(reverseModel);
+assert(isa(reverseModel.qualDir, 'double'));
+assert(isequal(reverseModel.qualDir, [-1; 1; 0]));
 
 %% reactions with a bound of the wrong sign pair are left at zero
 

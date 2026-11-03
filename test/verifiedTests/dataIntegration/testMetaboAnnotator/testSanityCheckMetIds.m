@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Metabolites without a
+%       charge field make the check fail.
 %
 % Function under test:
 %     src/dataIntegration/metaboAnnotator/buildMetStruct/sanityCheckMetIds.m
@@ -18,16 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Metabolites without a charge field make the check fail
-%       SEVERITY: limitation
-%       TRIGGER: a metabolite structure without the field charge
-%       OBSERVED: the charge is read for every metabolite without an isfield test, so a missing
-%         field raises an error
-%       EXPECTED: a missing charge treated like any other optional field
-%       LINES: 35
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -123,6 +120,18 @@ metabolites.y.hmdb = 'bad';
 metabolites.y.seed = 'bad';
 [~, errorFlag] = sanityCheckMetIds(metabolites);
 assert(isequal(errorFlag(:, [1 3]), {'x', 'charge is not numeric'; 'y', 'hmdb does not start with HMDB'; 'y', 'seed does not start with cpd'}));
+
+%% a metabolite without a charge field: the missing charge is skipped like any other optional field
+
+metabolites = struct();
+metabolites.noCharge = rmfield(validMetabolite, 'charge');
+[checked, errorFlag] = sanityCheckMetIds(metabolites);
+assert(isempty(errorFlag));
+assert(isequal(checked, metabolites));
+% the other fields are still checked
+metabolites.noCharge.hmdb = 'bad';
+[~, errorFlag] = sanityCheckMetIds(metabolites);
+assert(isequal(errorFlag, {'noCharge', 'bad', 'hmdb does not start with HMDB'}));
 
 function errorFlag = nonEmptyFlag(metabolites)
 % local helper: only the report of the check

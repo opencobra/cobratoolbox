@@ -11,8 +11,8 @@ function [sampleDiff, sampleRatio] = calcSampleDifference(sample1, sample2, nPts
 %    sample2:        Second flux sample
 %    
 % OPTIONAL INPUTS:
-%    nPts:           Number of flux difference profiles desired (default: 
-%                    10% of the samples)
+%    nPts:           Number of flux difference profiles desired (default:
+%                    25 times the number of samples in `sample1`)
 %
 % OUTPUTS:
 %    sampleDiff:     Difference between the flux vectors

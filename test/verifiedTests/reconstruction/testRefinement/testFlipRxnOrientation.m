@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The message for
+%       reactions that are not in the model has no line break.
 %
 % Function under test:
 %     src/reconstruction/refinement/flipRxnOrientation.m
@@ -18,16 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The message for reactions that are not in the model has no line break
-%       SEVERITY: cosmetic
-%       TRIGGER: a reaction list with identifiers that are not in the model
-%       OBSERVED: the message is printed with fprintf and no newline, so several messages are
-%         printed on one line
-%       EXPECTED: one message per line
-%       LINES: 31
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -70,6 +67,13 @@ assert(isequal(twice.S, model.S) && isequal(twice.lb, model.lb) && isequal(twice
 text = evalc("flipped = flipRxnOrientation(model, {'r1', 'unknown'});");
 assert(contains(text, 'Reaction unknown not present in model!'));
 assert(isequal(flipped.lb(1), -10));
+
+%% each reaction that is not in the model is reported on its own line
+
+% (formerly a known defect: the messages had no line break and ran together on one line)
+text = evalc("flipped = flipRxnOrientation(model, {'u1', 'r2', 'u2'});");
+assert(strcmp(text, sprintf('Reaction u1 not present in model!\nReaction u2 not present in model!\n')));
+assert(isequal(flipped.lb, [0; -5; 1]) && isequal(flipped.ub, [10; 5; 3]));
 
 % change the directory
 cd(currentDir)

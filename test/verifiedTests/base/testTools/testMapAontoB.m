@@ -6,6 +6,9 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The check that Akey
+%       and Bkey have the same class is broken; Without Ain the matched keys of B are returned
+%       wrongly.
 %
 % Function under test:
 %     src/base/utilities/mapAontoB.m
@@ -14,28 +17,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 44 (the class check of the keys) and lines 122-135 (the call without Ain) of
-%     mapAontoB.m are not tested because of the defects below.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The check that Akey and Bkey have the same class is broken
-%       SEVERITY: error
-%       TRIGGER: Akey and Bkey of different classes, for example {'a'} and 1
-%       OBSERVED: the class names are compared with ~=, so classes with names of different length
-%         give an incompatible-sizes error, and classes whose names have the same length are not
-%         detected
-%       EXPECTED: the error: class of Akey and Bkey must be the same
-%       LINES: 43-45
-%     - DEFECT: Without Ain the matched keys of B are returned wrongly
-%       SEVERITY: wrong-result
-%       TRIGGER: a call with only Akey and Bkey
-%       OBSERVED: the matched keys are taken with a logical index that picks the first entries of
-%         Bkey (for Akey {a,b,c} and Bkey {b,z,c} the result is {b,[],z} instead of {b,[],c})
-%       EXPECTED: {b,[],c}
-%       LINES: 121-135
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -96,6 +85,32 @@ lastwarn('');
 mapped = mapAontoB({'a', 'a', 'b'}, {'a', 'b'}, [1; 2; 3]);
 assert(contains(lastwarn, 'Akey is not unique'));
 assert(isequal(full(mapped)', [1 3]));
+
+%% without Ain: the keys of B that are in A, an empty, NaN or false entry otherwise
+
+[mapped, isFound, positionInA] = mapAontoB(keysA, keysB);
+assert(isequal(mapped, {'b'; []; 'c'}));
+assert(isequal(isFound, [true false true]) && isequal(positionInA, [2 0 3]));
+% numeric keys: NaN for the key that is not in A
+assert(isequaln(full(mapAontoB([1 2 3], [3 4 2])), [3; NaN; 2]));
+% int64 keys are returned as numbers, with NaN for the key that is not in A
+assert(isequaln(full(mapAontoB(int64([1 2 3]), int64([3 4]))), [3; NaN]));
+% logical keys: false for the key that is not in A
+assert(isequal(mapAontoB(true, [false true]), [false; true]));
+% a key class that cannot be filled
+assert(verifyCobraFunctionError('mapAontoB', 'inputs', {single([1 2]), single(1)}, ...
+    'testMessage', 'unrecognised class'));
+
+%% keys of different classes raise the documented error
+
+% class names of different lengths (cell and double)
+assert(verifyCobraFunctionError('mapAontoB', 'inputs', {{'a'}, 1}, ...
+    'testMessage', 'class of Akey and Bkey must be the same'));
+% class names of the same length (cell and char, double and single)
+assert(verifyCobraFunctionError('mapAontoB', 'inputs', {{'a'}, 'a', 1, [], 0}, ...
+    'testMessage', 'class of Akey and Bkey must be the same'));
+assert(verifyCobraFunctionError('mapAontoB', 'inputs', {[1 2], single([1 2]), [5; 6], [], 0}, ...
+    'testMessage', 'class of Akey and Bkey must be the same'));
 
 %% invalid input
 

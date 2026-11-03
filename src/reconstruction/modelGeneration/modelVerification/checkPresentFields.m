@@ -59,8 +59,8 @@ for i = 1:numel(presentFields)
             end
             errorMessage = sprintf('%s: Size of %s does not match elements in %s', xFieldMatch,testedField,xFieldMatch);
         elseif isnumeric(xFieldMatch)
-            errorMessage = sprintf('X Size of %s was %i. Expected %i',testedField, x_size,x_pres);
             x_pres = xFieldMatch;
+            errorMessage = sprintf('X Size of %s was %i. Expected %i',testedField, x_size,x_pres);
         end
         if x_pres ~= x_size
             if ~isfield(results.Errors,'inconsistentFields')

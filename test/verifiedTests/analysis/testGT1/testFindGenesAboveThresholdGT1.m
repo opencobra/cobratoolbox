@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Errors when no gene
+%       qualifies.
 %
 % Function under test:
 %     src/analysis/igemRNA/GT1/findGenesAboveThresholdGT1.m
@@ -17,16 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Errors when no gene qualifies
-%       SEVERITY: error
-%       TRIGGER: a threshold that no expression value passes
-%       OBSERVED: the output genes is only assigned inside the loop, so the call errors
-%         (MATLAB:unassignedOutputs)
-%       EXPECTED: an empty list
-%       LINES: 24-33
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -54,6 +51,11 @@ assert(isequal(genes, {'g2', 7, 'High'; 'g3', 9, 'High'}));
 genes = findGenesAboveThresholdGT1(-100, geneNames, expressionValues);
 assert(isequal(size(genes), [3 3]));
 assert(all(strcmp(genes(:, 3), 'High')));
+
+%% no gene passes the threshold: an empty list with three columns
+
+genes = findGenesAboveThresholdGT1(100, geneNames, expressionValues);
+assert(iscell(genes) && isequal(size(genes), [0 3]));
 
 % change the directory
 cd(currentDir)

@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Asking for zero carbons
+%       fails once the cache holds an entry.
 %
 % Function under test:
 %     src/dataIntegration/fluxomics/c13solver/cdv2idv.m
@@ -17,16 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Asking for zero carbons fails once the cache holds an entry
-%       SEVERITY: error
-%       TRIGGER: cdv2idv(0) called after the cache has been filled for any n >= 1
-%       OBSERVED: the cache test reads CDV2IDVSAV{0}, and index 0 is invalid, so the call stops with
-%         "Array indices must be positive integers or logical values"
-%       EXPECTED: the identity for zero carbons, as when the cache is empty
-%       LINES: 5-10
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -73,6 +70,15 @@ assert(~isempty(CDV2IDVSAV{3}) && isequal(CDV2IDVSAV{3}, first));
 % a modified cache entry is returned unchanged
 CDV2IDVSAV{3} = 'cached';
 assert(strcmp(cdv2idv(3), 'cached'));
+
+%% zero carbons after the cache has been filled
+
+global CDV2IDVSAV
+CDV2IDVSAV = [];
+cdv2idv(2);
+% the cache holds an entry, yet zero carbons still give the 1 x 1 identity, as with an empty cache
+zeroCarbons = cdv2idv(0);
+assert(issparse(zeroCarbons) && isequal(full(zeroCarbons), 1));
 
 % change the directory
 cd(currentDir)
