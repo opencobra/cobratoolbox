@@ -15,6 +15,9 @@ The rules for this register, the markers and the re-check are in the constitutio
 
 | Defect | File | Construct | MATLAB behaviour replaced | Removal condition | Reproducer |
 |---|---|---|---|---|---|
+| D6 | `initCobraToolbox.m` | `CBTDIR = fileparts(char(mfilename('fullpath')))` when `runmatMode` | `CBTDIR = fileparts(which('initCobraToolbox'))` | `repro/D6` and `repro/D24` both report removable; then use the `which` line in every mode | `repro/D6/` |
+| D24 | `initCobraToolbox.m` | `char(...)` around `mfilename('fullpath')` in the same line | `mfilename` already returns `char` in MATLAB | removed together with the D6 row | `repro/D24/` |
+| D10 | `initCobraToolbox.m` | `defaultSavePathLocation = ''` when `runmatMode` | `fullfile(prefdir(), 'pathdef.m')`; the value is used only when saving the path, which agent and runmat modes skip | `repro/D10` reports removable | `repro/D10/` |
 
 ## Blocking defects without a workaround
 

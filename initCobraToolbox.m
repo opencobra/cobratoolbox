@@ -33,10 +33,17 @@ function initCobraToolbox(updateToolbox, mode)
 %                         path saving and toolbox updates. Does NOT modify
 %                         global git configuration. Runs silently except for a
 %                         single summary line (time, timestamp).
+%             'runmat'  - as 'agent', for the RunMat runtime. Avoids the MATLAB
+%                         functions that RunMat lacks or implements differently;
+%                         in MATLAB it gives the same result as 'agent'. Cannot be
+%                         combined with updateToolbox = true. Every RunMat-specific
+%                         code path is listed in
+%                         test/runtimeCompatibility/RunMat/debtRegister.md.
 %
 %     EXAMPLES:
 %         initCobraToolbox(false)             % standard init, no update check
 %         initCobraToolbox(false, 'agent')    % fast agent-mode init
+%         initCobraToolbox(false, 'runmat')   % agent-mode init under RunMat
 %
 %     In addition add either of the following into startup.m (generally in MATLAB_DIRECTORY/toolbox/local/startup.m)
 %
@@ -77,14 +84,21 @@ if ~exist('mode', 'var') || isempty(mode)
 end
 if ~(ischar(mode) || isstring(mode))
     error('initCobraToolbox:invalidMode', ...
-        'mode must be a char or string. Accepted values: ''default'', ''agent''.');
+        'mode must be a char or string. Accepted values: ''default'', ''agent'', ''runmat''.');
 end
 mode = char(mode);
-if ~any(strcmpi(mode, {'default', 'agent'}))
+if ~any(strcmpi(mode, {'default', 'agent', 'runmat'}))
     error('initCobraToolbox:invalidMode', ...
-        'Unrecognised mode ''%s''. Accepted values: ''default'', ''agent''.', mode);
+        'Unrecognised mode ''%s''. Accepted values: ''default'', ''agent'', ''runmat''.', mode);
 end
-agentMode = strcmpi(mode, 'agent');
+% 'runmat' follows the 'agent' flow; runmatMode is read only by the RunMat
+% workarounds listed in test/runtimeCompatibility/RunMat/debtRegister.md
+runmatMode = strcmpi(mode, 'runmat');
+agentMode = strcmpi(mode, 'agent') || runmatMode;
+if runmatMode && updateToolbox
+    error('initCobraToolbox:invalidMode', ...
+        'mode ''runmat'' cannot be combined with updateToolbox = true: RunMat mode does not update the toolbox.');
+end
 
 % define a base version of gitBash that is tested
 gitBashVersion = '2.13.3';
@@ -101,13 +115,24 @@ end
 % not on the search path; a pathdef.m in ~ is read at startup by any session
 % launched from the home directory, breaking releases whose toolbox folder
 % layout differs from the one that saved it.
-defaultSavePathLocation = fullfile(prefdir(), 'pathdef.m');
+if runmatMode
+    % RUNTIME-DEBT(RunMat:D10)
+    defaultSavePathLocation = '';  % only used when saving the path, which 'runmat' mode skips
+else
+    defaultSavePathLocation = fullfile(prefdir(), 'pathdef.m');
+end
 
 % retrieve the current directory
 currentDir = pwd;
 
 % define the root path of The COBRA Toolbox.
-CBTDIR = fileparts(which('initCobraToolbox'));
+if runmatMode
+    % RUNTIME-DEBT(RunMat:D6)
+    % RUNTIME-DEBT(RunMat:D24)
+    CBTDIR = fileparts(char(mfilename('fullpath')));
+else
+    CBTDIR = fileparts(which('initCobraToolbox'));
+end
 
 solverRegistryReady = isstruct(SOLVERS) && ~isempty(SOLVERS) && ...
     iscell(OPT_PROB_TYPES) && ~isempty(OPT_PROB_TYPES);
@@ -129,7 +154,7 @@ if ~updateToolbox && ~isempty(CBT_INITIALIZED) && CBT_INITIALIZED && ...
 end
 
 % initialize the cell of solvers
-SOLVERS = {};
+SOLVERS = cell(0, 0);
 
 % declare that the environment variables have not yet been configured
 ENV_VARS.STATUS = 0;
@@ -406,7 +431,10 @@ if ismac
 end
 
 % add the docs/source/notes folder
-addpath(genpath([CBTDIR filesep 'docs' filesep 'source' filesep 'notes']));
+notesDir = [CBTDIR filesep 'docs' filesep 'source' filesep 'notes'];
+if isfolder(notesDir)
+    addpath(genpath(notesDir));
+end
 
 % print a success message
 if ENV_VARS.printLevel
@@ -540,13 +568,13 @@ SOLVERS.tomlab_cplex.categ = 'legacy';
 
 % definition of categories of solvers
 supportedSolversNames = fieldnames(SOLVERS);
-catSolverNames.LP = {};
-catSolverNames.MILP = {};
-catSolverNames.QP = {};
-catSolverNames.MIQP = {};
-catSolverNames.NLP = {};
-catSolverNames.EP = {};
-catSolverNames.CLP = {};
+catSolverNames.LP = cell(0, 0);
+catSolverNames.MILP = cell(0, 0);
+catSolverNames.QP = cell(0, 0);
+catSolverNames.MIQP = cell(0, 0);
+catSolverNames.NLP = cell(0, 0);
+catSolverNames.EP = cell(0, 0);
+catSolverNames.CLP = cell(0, 0);
 for i = 1:length(supportedSolversNames)
     SOLVERS.(supportedSolversNames{i}).installed = false;
     SOLVERS.(supportedSolversNames{i}).working = false;
@@ -672,7 +700,7 @@ if ~agentMode
     solverStatus(end + 1, :) = ones(1, length(OPT_PROB_TYPES) + 1);
     solverStatus(end + 1, 2:end) = solverTypeInstalled';
 
-    statusTable = {};
+    statusTable = cell(0, 0);
     for k = 1:length(OPT_PROB_TYPES)
         statusTable{k} = cellstr(num2str(solverStatus(:, k+1)));
         for p = 1:length(solverStatus(:, k+1))
@@ -840,7 +868,7 @@ end
 
 % in agent mode print a single completion summary line (time + timestamp)
 if agentMode
-    fprintf('initCobraToolbox - no update, agent mode: OK — %.1f s — %s\n', toc(agentModeStartTime), ...
+    fprintf('initCobraToolbox - no update, %s mode: OK — %.1f s — %s\n', lower(mode), toc(agentModeStartTime), ...
         char(datetime('now', 'TimeZone', 'local', 'Format', 'yyyy-MM-dd''T''HH:mm:ssXXX')));
 end
 
