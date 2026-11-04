@@ -32,6 +32,16 @@ COBRA_RUNMAT=1 RUNMAT=$RUNMAT RUNMAT_LIBS=$RUNMAT_LIBS \
 Expected: the stopping point is the first toolbox call in `initCobraToolbox`, with an error listed under
 *Blocking defects* (D27, D28 or D29).
 
+Observed (T019, `$F/reports/runmat-testAll.txt`): v0.6.2 stops **before** `testAll` runs its first statement,
+because the `{}` in `test/verifyCobraFunctionError.m` (D26) stops every script in its folder. SC-002 holds
+under v0.6.2 only after that file's `{}` becomes `cell(0, 0)`, which is outside this feature's file list.
+`initCobraToolbox(false, 'runmat')` called from a driver in the tree root (SC-001, `$F/reports/runmat-init.txt`)
+does reach its first toolbox call.
+
+Driver for SC-001: put `initCobraToolbox(false, 'runmat'); global CBTDIR; fprintf('%s\n', CBTDIR);` in
+`runmatInitDriver.m` in the tree root of a `runmat_testall.sh` work tree, then run
+`runmat run --color never runmatInitDriver.m` from that root.
+
 ## 5. MATLAB: suite unchanged (SC-003)
 `COBRA_CI=1 matlab -batch "cd test; testAll"` on a full clone, before and after. Then compare:
 ```bash

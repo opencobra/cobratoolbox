@@ -176,7 +176,7 @@ passes.
 
 ## Phase 7: Polish & cross-cutting verification
 
-- [ ] T022 Run the MATLAB `testAll` (`COBRA_CI=1`) on a full clone of the finished branch, and save
+- [X] T022 Run the MATLAB `testAll` (`COBRA_CI=1`) on a full clone of the finished branch, and save
   `$F/reports/testAll-after.csv`.
   - Compare it with `$F/baseline/testAll-before.csv` using `$P/tools/compare_testall.py compare` (SC-003).
   - Any difference blocks completion and must be traced to its commit.
@@ -184,7 +184,7 @@ passes.
   `.gitmodules` path (FR-015).
 - [X] T024 [P] Review the help header of `initCobraToolbox.m` against VII-E (FR-013) and run `checkcode` on the
   renamed test file.
-- [ ] T025 Update `$F/quickstart.md` with the final commands. Write the implementation receipt in
+- [X] T025 Update `$F/quickstart.md` with the final commands. Write the implementation receipt in
   `$F/agent-runs/<UTC>-runmat-init-mode/implementation-receipt.md`, and update `$F/human-loop.md`.
 
 ## Dependencies & Execution Order

@@ -1,7 +1,7 @@
 # Human Loop State
 
 ## Current State
-- Status: Gate 3 → continue; T013–T025 approved, awaiting `/speckit-implement`
+- Status: T013–T025 implemented except T019 acceptance (SC-002 not met under v0.6.2); awaiting Gate 3 closeout
 - Active feature directory: specs/20261104-001324-runmat-init-mode
 - Branch: `20261104-001324-runmat-init-mode` (from `089-large-model-solver-speed` @ `87573f1e8`, which contains the
   RunMat-compatibility feature 20261102-153951-runmat-compat)
@@ -19,7 +19,7 @@
 - plan:           done (plan.md, research.md, data-model.md, contracts/, quickstart.md)
 - tasks:          done (25 tasks)
 - analyze:        done (implementation-review.md); re-run after remediation: 0 critical, 0 high, 100% coverage
-- implement:      done for slice T001–T012 (/speckit-implement, 2026-11-04)
+- implement:      done for slice T001–T012 and T013–T025 (/speckit-implement, 2026-11-04); T019 criterion failed
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -33,6 +33,7 @@
 | 2026-11-04 | Gate 2 | "Fix findings, approve slice (Recommended)" | spec/tasks remediated (I1–I3, C1, C2, U1, U2); slice T001–T012 approved; needs /speckit-implement |
 | 2026-11-04 | Gate 3 | "Continue with T013–T025 (Recommended)" | Remaining tasks approved; needs /speckit-implement |
 | 2026-11-04 | Implementation invocation | `/speckit-implement` | Slice T001–T012 implemented; receipt agent-runs/20261104T183608Z-runmat-init-mode |
+| 2026-11-04 | Implementation invocation | `/speckit-implemen` (taken as `/speckit-implement`) | T013–T025 implemented; receipt agent-runs/20261104T215330Z-runmat-init-mode-slice2 |
 | 2026-11-04 | Planning blocker | "Narrow: mode + debt now (Recommended)" | RunMat v0.6.2 D26–D29 block toolbox functions; SC-001/SC-002 narrowed to the stopping point; research.md R2 |
 
 ## Approved Implementation Scope
@@ -47,7 +48,8 @@
 - Implementation path: core implementer (`/speckit-implement`)
 
 ## Pointers
-- Implementation receipt(s): specs/20261104-001324-runmat-init-mode/agent-runs/20261104T183608Z-runmat-init-mode/implementation-receipt.md
+- Implementation receipt(s): specs/20261104-001324-runmat-init-mode/agent-runs/20261104T183608Z-runmat-init-mode/implementation-receipt.md;
+  specs/20261104-001324-runmat-init-mode/agent-runs/20261104T215330Z-runmat-init-mode-slice2/implementation-receipt.md
 - Implementation review: specs/20261104-001324-runmat-init-mode/implementation-review.md
 - Predecessor report: specs/20261102-153951-runmat-compat/reports/runmat-compat-report.md
 
@@ -58,3 +60,5 @@
 - T001 and the full `testAll` runs need full clones with submodules, and each takes more than 60 minutes.
 - A newer RunMat build (parallel RunMat session) clears D5, D10 and D26–D29. It stops `'runmat'` mode on an
   unregistered defect ("dynamic output count is not supported for expanded builtin calls"); see reports/runmat-init.txt.
+- SC-002 under v0.6.2: testAll stops before its first statement on D26 from the uncalled
+  `test/verifyCobraFunctionError.m` (`{}` on line 35), outside the allowed files; see reports/runmat-testAll.txt.
