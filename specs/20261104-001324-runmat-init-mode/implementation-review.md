@@ -32,6 +32,12 @@ the first toolbox call and stopping on a registered defect (human decision "Narr
 | C2, U1, U2 | acceptable | sslVerify check for runmat mode; baseline commit wording; RunMat driver location | tighten in tasks (offered) |
 | G1 | blocking for implementation only | the constitution amendment is not committed (FR-011 gate) | commit at the end of this bundle |
 
+**Re-run after remediation (2026-11-04)**:
+- I1, I2 and I3 fixed in spec.md.
+- C1 folded into T021, C2 into T008, U1 into T001 and U2 into T012.
+- G1 cleared by commit `afe0fac8f`.
+- Result: coverage 100% (15/15 FR, 8/8 SC); 0 critical, 0 high.
+
 ## Proposed Implementation Scope
 - **Tasks proposed**: T001–T025.
 - **First independently testable slice**: Phases 1–3 (T001–T012). That is the `'runmat'` mode in
@@ -64,8 +70,8 @@ the first toolbox call and stopping on a registered defect (human decision "Narr
 - Under v0.6.2, SC-001 and SC-002 are measurements of a stopping point, not of completion.
 
 ## Human Approval
-- Approved: no
-- Approved option:
-- Approved tasks/scope:
-- Required implementation invocation per constitution: `/speckit-implement` or the agent-assign pipeline
-- Date (UTC):
+- Approved: yes, pending the explicit invocation
+- Approved option: "Fix findings, approve slice (Recommended)"
+- Approved tasks/scope: first slice, T001–T012 (Phases 1–3: setup, foundational register/re-check, US1)
+- Required implementation invocation per constitution: `/speckit-implement` (or the agent-assign pipeline)
+- Date (UTC): 2026-11-04

@@ -1,7 +1,7 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 2 complete; at Gate 2
+- Status: Gate 2 passed (slice T001–T012 approved); waiting for `/speckit-implement`
 - Active feature directory: specs/20261104-001324-runmat-init-mode
 - Branch: `20261104-001324-runmat-init-mode` (from `089-large-model-solver-speed` @ `87573f1e8`, which contains the
   RunMat-compatibility feature 20261102-153951-runmat-compat)
@@ -18,7 +18,7 @@
 - checklist:      done (checklists/requirements.md, all items pass)
 - plan:           done (plan.md, research.md, data-model.md, contracts/, quickstart.md)
 - tasks:          done (25 tasks)
-- analyze:        done (implementation-review.md; 0 critical, 2 high should-fix)
+- analyze:        done (implementation-review.md); re-run after remediation: 0 critical, 0 high, 100% coverage
 - implement:
 
 ## Human Decisions
@@ -30,10 +30,18 @@
 | 2026-11-04 | Clarify: debt record | "Constitution amendment too" | FR-008–FR-011: marker + register + re-check; companion /speckit-constitution amendment gates the code |
 | 2026-11-04 | Workflow | "continue with speckit humanloop" | Bundle 1 closed; Gate 1 |
 | 2026-11-04 | Gate 1 | "Amend constitution, then plan (Recommended)" | constitution v1.8.0; then plan, tasks, analyze |
+| 2026-11-04 | Gate 2 | "Fix findings, approve slice (Recommended)" | spec/tasks remediated (I1–I3, C1, C2, U1, U2); slice T001–T012 approved; needs /speckit-implement |
 | 2026-11-04 | Planning blocker | "Narrow: mode + debt now (Recommended)" | RunMat v0.6.2 D26–D29 block toolbox functions; SC-001/SC-002 narrowed to the stopping point; research.md R2 |
 
 ## Approved Implementation Scope
-- Approved: no
+- Approved: yes (2026-11-04), pending the explicit `/speckit-implement`
+- Scope: slice T001–T012 (Phases 1–3)
+- Tasks deferred: T013–T025
+- Files allowed: `initCobraToolbox.m`; `test/verifiedTests/base/testInstall/testInitCobraToolboxAgentMode.m`, renamed
+  to `testInitCobraToolbox.m`; `test/runtimeCompatibility/RunMat/**`; `specs/20261104-001324-runmat-init-mode/**`
+- Files not allowed: `test/testAll.m` (US3, deferred), `external/`, `deprecated/`, submodule paths, any other `src/`
+  file (including the uncommitted `findSExRxnInd.m`/`findStoichConsistentSubset.m` changes from another session)
+- Implementation path: core implementer (`/speckit-implement`)
 
 ## Pointers
 - Implementation receipt(s): none yet
@@ -41,7 +49,7 @@
 - Predecessor report: specs/20261102-153951-runmat-compat/reports/runmat-compat-report.md
 
 ## Open Risks and Ambiguities
-- D5 is a compile-time rejection. Reading `PERFORMANCE_REPORT` in testAll probably needs a name-from-text
-  construct (`evalin`/`eval`). That construct needs a VII-A/VII-C check and a debt entry.
-- RunMat may lack other functions that initCobraToolbox uses (for example `genpath`, `addpath`, `getenv`, `system`).
-  This is unknown until planning research.
+- Another session is active in this checkout: `specs/20261104-134231-runmat-init-exploration/` appeared, and there
+  are uncommitted `src/` changes. Commits from this workflow stage only its own files.
+- Under RunMat v0.6.2, SC-001 and SC-002 measure a stopping point (D27–D29), not completion.
+- T001 and the full `testAll` runs need full clones with submodules, and each takes more than 60 minutes.

@@ -21,8 +21,8 @@ quickstart.md)
 ## Phase 1: Setup
 
 - [ ] T001 Start the MATLAB `testAll` baseline in the background.
-  - Use a full local clone of the branch at its first commit, with submodules, because `initCobraToolbox` fails
-    in a git worktree.
+  - Use a full local clone at commit `afe0fac8f` (the spec and plan commit, with source identical to the branch
+    base `87573f1e8`), with submodules, because `initCobraToolbox` fails in a git worktree.
   - Run `COBRA_CI=1 xvfb-run matlab -batch "cd('<clone>/test'); testAll"`, as in `$P/reports/testAll-after-summary.md`.
   - Save `resultTable` to `$F/baseline/testAll-before.csv`.
 - [ ] T002 [P] Save the analyzer snapshot of `initCobraToolbox.m` and `test/testAll.m` to
@@ -73,7 +73,8 @@ blocking defect. In MATLAB it equals `'agent'` mode.
     `updateToolbox` in the message;
   - after `initCobraToolbox(false, 'agent')` and after `initCobraToolbox(false, 'runmat')`, `CBTDIR` is equal and
     the sets of `strsplit(path, pathsep)` entries under `CBTDIR` are equal (SC-004);
-  - `SOLVERS` and `OPT_PROB_TYPES` are set after `'runmat'` mode.
+  - `SOLVERS` and `OPT_PROB_TYPES` are set after `'runmat'` mode;
+  - global git `http.sslVerify` is unchanged after `'runmat'` mode, reusing the file's existing check.
 
   Clear `CBT_INITIALIZED` between calls, so that the idempotency guard does not skip the second call.
 - [ ] T009 [US1] In `initCobraToolbox.m`, change the argument handling:
@@ -95,8 +96,9 @@ blocking defect. In MATLAB it equals `'agent'` mode.
 - [ ] T012 [US1] Add one *Workarounds* row per T010 marker to `$RC/debtRegister.md`, then run `$RC/recheckRunMat.sh`,
   which must exit 0.
   - Run `COBRA_TESTS=testInitCobraToolbox` in MATLAB; T008 must pass.
-  - Under RunMat, run a driver that calls `initCobraToolbox(false, 'runmat')`. Run it in the T019 work tree
-    (`$P` quickstart) with the new `initCobraToolbox.m` copied in.
+  - Under RunMat, run a driver that calls `initCobraToolbox(false, 'runmat')`. Run it in a work tree that
+    `$P/tools/runmat_testall.sh` builds from a full clone of this branch (`WORK=<dir>`, then run the driver in
+    `$WORK/tree`).
   - Save the stopping point to `$F/reports/runmat-init.txt`. It must be a *Blocking defects* entry (SC-001).
   - Commit US1.
 
@@ -168,6 +170,8 @@ passes.
   - the "D6 at `testAll.m:55`" stop was the misreported D26 (`{}`);
   - point to `$F/research.md` R2;
   - list the new defects D23–D29 (SC-008).
+  - Add a note to `$P/spec.md` FR-008 that feature `20261104-001324-runmat-init-mode` supersedes it for
+    `initCobraToolbox.m` and `test/testAll.m` (FR-012).
   - Commit.
 
 ## Phase 7: Polish & cross-cutting verification

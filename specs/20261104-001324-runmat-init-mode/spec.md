@@ -92,7 +92,9 @@ before.
 **Acceptance Scenarios**:
 
 1. **Given** MATLAB, **When** `initCobraToolbox` is called with no mode or with `'default'` or `'agent'`, **Then**
-   it takes the same code paths as before this feature. No RunMat-specific code runs.
+   it takes the same code paths as before this feature. The only RunMat-related code that runs is the
+   MATLAB-equivalent rewrites (`cell(0, 0)` for `{}`, the `isfolder` guard) and the registered compile-time
+   entry D5, which constitution VIII-Runtime allows without an opt-in.
 2. **Given** MATLAB and `testAll` without the RunMat opt-in, **When** the suite runs, **Then** every test has the
    same status as in the baseline run.
 
@@ -162,8 +164,10 @@ register's re-check command reports each entry as still needed or now removable.
 
 - **FR-001**: `initCobraToolbox` MUST accept `'runmat'` as a value of its existing `mode` argument. The default
   mode MUST stay `'default'`, and `'default'` and `'agent'` MUST behave exactly as before (Principle II).
-- **FR-002**: In `'runmat'` mode, `initCobraToolbox` MUST complete under RunMat without calling any function that
-  the previous feature's report lists as missing or divergent in RunMat (D6, D10). It MUST set:
+- **FR-002**: In `'runmat'` mode, `initCobraToolbox`'s own statements MUST NOT call any function that RunMat
+  lacks or implements differently (D6, D10, D24, D25, D26). Under RunMat v0.6.2 every step before its first
+  toolbox-function call MUST complete. A stop at that call MUST be a registered blocking defect (D26–D29). In
+  MATLAB, and under a RunMat that fixes D26–D29, the mode MUST set:
   - the toolbox root;
   - the COBRA source and test folders on the path;
   - the solver registry and the environment variables;
@@ -268,7 +272,7 @@ register's re-check command reports each entry as still needed or now removable.
 |----------------------|------------------|-----------------------------------|
 | US1-1 / FR-001, FR-002, FR-003, SC-001 | RunMat script calling `initCobraToolbox(false, 'runmat')` (measurement, under the feature folder) | `initCobraToolbox.m` |
 | US1-2 / FR-002 | same RunMat script, no external solver installed | `initCobraToolbox.m` |
-| US1-3 / FR-004, SC-004 | new test under `test/verifiedTests/base/testInit/` comparing `'runmat'` and `'agent'` mode in MATLAB | `initCobraToolbox.m` |
+| US1-3 / FR-004, SC-004 | `test/verifiedTests/base/testInstall/testInitCobraToolbox.m` (renamed from `testInitCobraToolboxAgentMode.m`), comparing `'runmat'` and `'agent'` mode in MATLAB | `initCobraToolbox.m` |
 | US2-1 / FR-001, FR-014 | same test: default and `'agent'` modes, banner hyperlink in desktop mode | `initCobraToolbox.m` |
 | US2-2 / FR-007, SC-003 | MATLAB `testAll` before and after (`compare_testall.py`) | `test/testAll.m` |
 | US3-1 / FR-005, FR-006, SC-002 | `runmat_testall.sh` with the RunMat opt-in | `test/testAll.m` |
@@ -276,4 +280,5 @@ register's re-check command reports each entry as still needed or now removable.
 | US4-1 / FR-008, FR-009, SC-005 | marker-versus-register consistency check | — (no source function) |
 | US4-2 / FR-010, SC-006 | debt re-check command over the reproducers | — (no source function) |
 | FR-011 | constitution amendment adopted (`/speckit-constitution`) | — (no source function) |
-| FR-012, FR-013, FR-015, SC-007 | spec note; help header review; path check; analyzer comparison | `initCobraToolbox.m` |
+| FR-012 | note in the previous feature's spec FR-008 and report erratum (T021) | — (no source function) |
+| FR-013, FR-015, SC-007 | help header review; path check; analyzer comparison | `initCobraToolbox.m` |
