@@ -1,5 +1,39 @@
 <!--
 Sync Impact Report
+Version change: 1.7.1 -> 1.8.0
+Modified principles:
+- VIII. Polyglot Interoperability And Cross-Language Fidelity (added sub-clause
+  VIII-Runtime: Alternative MATLAB-Language Runtimes And Compatibility Debt. MATLAB
+  stays the reference runtime. A runtime workaround is allowed only behind a
+  default-off opt-in, carries the marker % RUNTIME-DEBT(<runtime>:<defectId>), has one
+  entry in test/runtimeCompatibility/<runtime>/debtRegister.md with a reproducer of at
+  most 10 lines, and is covered by a re-check command that reports still-needed or
+  removable entries and fails on a marker/register mismatch. A compile-time
+  workaround that MATLAB evaluates identically is exempt from the opt-in but is still
+  registered. No shadowing functions;
+  external/, deprecated/ and submodules untouched; VII-A..VII-C still apply.)
+- IX. Repository File Organization And Artifact Placement (role map: test/ now names
+  test/runtimeCompatibility/<runtime>/ for the register, reproducers and re-check.)
+Modified sections: VIII, IX. Added sections: VIII-Runtime. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/plan-template.md — Constitution Check gains an
+  "Alternative-runtime debt" item that references VIII-Runtime (not restated).
+- ✅ .specify/templates/spec-template.md, tasks-template.md — reviewed; no change.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+- ✅ documentation/source/guides/specDrivenDevelopment.rst — explanatory pointer only;
+  does not enumerate sub-clauses; no change.
+Origin: feature specs/20261104-001324-runmat-init-mode (FR-011), which supersedes
+FR-008 of 20261102-153951-runmat-compat for initCobraToolbox.m and test/testAll.m.
+Rationale for MINOR bump: new sub-clause with binding record format and placement;
+no principle removed or redefined. MATLAB-equivalent rewrites (as in feature
+20261102-153951-runmat-compat) are not debt and remain unaffected.
+Deferred items: none. The first register (RunMat) is created by the originating
+feature.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.7.0 -> 1.7.1
 Modified principles:
 - III-Defects (simplified, no new principle): the enforced staleness check is removed.
@@ -791,6 +825,58 @@ useful only if each language surface computes the same science; a port that keep
 the prose but discards the parameter assignments leaves users unable to tell what
 was actually configured.
 
+#### VIII-Runtime: Alternative MATLAB-Language Runtimes And Compatibility Debt
+
+MATLAB is the reference runtime. An alternative MATLAB-language runtime, for example
+RunMat, is supported only by **MATLAB-equivalent source rewrites**: rewrites under
+which MATLAB parses and evaluates the code identically. A **runtime workaround** is
+any code path that exists only because another runtime lacks or diverges from MATLAB
+behaviour. Each runtime workaround is compatibility debt and MUST satisfy every rule
+below. This clause is the single canonical statement of those rules: specs, plans,
+templates and code comments reference it and MUST NOT restate it (Principle X).
+
+* **Opt-in only.** A workaround MUST run only behind an explicit opt-in that is off
+  by default, such as a documented mode value of a public function or a documented
+  environment switch of a test harness. With the opt-in off, MATLAB behaviour MUST
+  be unchanged (Principle II). Runtime detection that changes behaviour without the
+  opt-in is not permitted. Exception: a workaround needed for the other runtime to
+  *compile* a file cannot sit behind a run-time opt-in. It is permitted without one
+  only when MATLAB evaluates it identically to the code it replaces. It is still a
+  registered debt entry.
+* **Marker.** Every workaround MUST carry, on or directly above the code it changes,
+  the comment `% RUNTIME-DEBT(<runtime>:<defectId>)`, for example
+  `% RUNTIME-DEBT(RunMat:D6)`. One marker names one defect. A path that works around
+  several defects carries one marker per defect.
+* **Register.** Each runtime has one debt register at
+  `test/runtimeCompatibility/<runtime>/debtRegister.md`, hand-maintained, with one
+  entry per marker. Each entry records:
+  * the defect ID;
+  * the file and the code construct;
+  * the MATLAB behaviour it replaces;
+  * the condition for removing it;
+  * the reproducer that shows whether the runtime still has the defect.
+* **Reproducers.** Each defect's reproducer MUST be at most 10 lines and live in
+  `test/runtimeCompatibility/<runtime>/repro/<defectId>/`. In MATLAB it MUST give
+  the result that the register entry records as expected.
+* **Re-check.** A re-check command in `test/runtimeCompatibility/<runtime>/` MUST run
+  every reproducer against a given runtime binary and report each register entry as
+  *still needed* or *removable*. It MUST also fail when marker occurrences and
+  register entries do not match one to one. Every feature that adds, changes or
+  removes a workaround MUST run it. An entry reported removable MUST be removed,
+  together with its workaround, by a spec-driven change (Principle VI).
+* **Containment.** A workaround MUST NOT add a function that shadows a MATLAB or
+  toolbox function on the shared path, and MUST NOT touch `external/`, `deprecated/`
+  or a submodule path (Principles V and IX). A workaround stays in the file whose
+  behaviour it adapts, unless a feature specification approves a dedicated helper.
+* **Standards still apply.** A workaround that needs an otherwise discouraged
+  construct, such as evaluating a name from text, MUST still meet VII-A to VII-C.
+  The register entry records why no MATLAB-equivalent rewrite exists.
+
+Rationale: an unrecorded workaround becomes permanent and silently forks the
+toolbox's behaviour by runtime. An opt-in keeps MATLAB users unaffected. A marker,
+a register and a re-check make the debt visible, keep it bounded, and show when it
+can be paid off.
+
 ### IX. Repository File Organization And Artifact Placement
 
 Every file MUST be placed by its role, honouring the established COBRA Toolbox
@@ -809,6 +895,8 @@ The binding role map for this repository is:
 * `test/` — the test suite: `test/verifiedTests/<category>/test*.m`, run via
   `test/testAll.m` and the CI harness. Small test fixtures/models live with the
   tests that consume them (or under `test/models/`).
+  `test/runtimeCompatibility/<runtime>/` holds an alternative runtime's debt
+  register, its defect reproducers and its re-check command (VIII-Runtime).
 * `tutorials/` — user-facing tutorials and their assets.
 * `documentation/` and `DevelopersDocumentation/` — documentation sources for the
   Sphinx site; generated HTML is not committed to source.
@@ -1051,4 +1139,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.7.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-12
+**Version**: 1.8.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-04

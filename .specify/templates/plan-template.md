@@ -71,6 +71,10 @@
   surfaced as a natural-language translation with the prose that describes it, with
   no blank parameter labels (Principle VIII). Write N/A if the feature renders no
   ported/literate output]
+- **Alternative-runtime debt**: [If the feature adds, changes or removes a code
+  path that exists only for a non-MATLAB runtime, confirm compliance with
+  constitution VIII-Runtime (cite it; do not restate it) and list the register
+  entries affected. Write N/A otherwise]
 - **Artifact placement**: [For every file this feature creates, moves, or emits,
   confirm its destination follows the Principle IX / docs/repository-layout.md
   placement procedure: src/ holds source only, including diagnostic/analysis
