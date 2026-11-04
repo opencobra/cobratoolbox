@@ -1,12 +1,12 @@
 # Human Loop State
 
 ## Current State
-- Status: Gate 2 passed (slice T001–T012 approved); waiting for `/speckit-implement`
+- Status: slice T001–T012 implemented (/speckit-implement); next: Gate 3
 - Active feature directory: specs/20261104-001324-runmat-init-mode
 - Branch: `20261104-001324-runmat-init-mode` (from `089-large-model-solver-speed` @ `87573f1e8`, which contains the
   RunMat-compatibility feature 20261102-153951-runmat-compat)
-- Last completed bundle: 2
-- Source code modified by this workflow: no
+- Last completed bundle: 3
+- Source code modified by this workflow: yes (initCobraToolbox.m, testInitCobraToolbox.m rename, test/runtimeCompatibility/RunMat/; be511edec..39e80441d)
 - Not from this workflow: an uncommitted change to
   `src/reconstruction/modelGeneration/stoichConsistency/findStoichConsistentSubset.m` was already in the working tree. It is
   left alone and kept out of this feature's commits.
@@ -19,7 +19,7 @@
 - plan:           done (plan.md, research.md, data-model.md, contracts/, quickstart.md)
 - tasks:          done (25 tasks)
 - analyze:        done (implementation-review.md); re-run after remediation: 0 critical, 0 high, 100% coverage
-- implement:
+- implement:      done for slice T001–T012 (/speckit-implement, 2026-11-04)
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -31,6 +31,7 @@
 | 2026-11-04 | Workflow | "continue with speckit humanloop" | Bundle 1 closed; Gate 1 |
 | 2026-11-04 | Gate 1 | "Amend constitution, then plan (Recommended)" | constitution v1.8.0; then plan, tasks, analyze |
 | 2026-11-04 | Gate 2 | "Fix findings, approve slice (Recommended)" | spec/tasks remediated (I1–I3, C1, C2, U1, U2); slice T001–T012 approved; needs /speckit-implement |
+| 2026-11-04 | Implementation invocation | `/speckit-implement` | Slice T001–T012 implemented; receipt agent-runs/20261104T183608Z-runmat-init-mode |
 | 2026-11-04 | Planning blocker | "Narrow: mode + debt now (Recommended)" | RunMat v0.6.2 D26–D29 block toolbox functions; SC-001/SC-002 narrowed to the stopping point; research.md R2 |
 
 ## Approved Implementation Scope
@@ -44,7 +45,7 @@
 - Implementation path: core implementer (`/speckit-implement`)
 
 ## Pointers
-- Implementation receipt(s): none yet
+- Implementation receipt(s): specs/20261104-001324-runmat-init-mode/agent-runs/20261104T183608Z-runmat-init-mode/implementation-receipt.md
 - Implementation review: specs/20261104-001324-runmat-init-mode/implementation-review.md
 - Predecessor report: specs/20261102-153951-runmat-compat/reports/runmat-compat-report.md
 
@@ -53,3 +54,5 @@
   are uncommitted `src/` changes. Commits from this workflow stage only its own files.
 - Under RunMat v0.6.2, SC-001 and SC-002 measure a stopping point (D27–D29), not completion.
 - T001 and the full `testAll` runs need full clones with submodules, and each takes more than 60 minutes.
+- A newer RunMat build (parallel RunMat session) clears D5, D10 and D26–D29. It stops `'runmat'` mode on an
+  unregistered defect ("dynamic output count is not supported for expanded builtin calls"); see reports/runmat-init.txt.
