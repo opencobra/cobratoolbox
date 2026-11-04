@@ -25,21 +25,21 @@ quickstart.md)
     base `87573f1e8`), with submodules, because `initCobraToolbox` fails in a git worktree.
   - Run `COBRA_CI=1 xvfb-run matlab -batch "cd('<clone>/test'); testAll"`, as in `$P/reports/testAll-after-summary.md`.
   - Save `resultTable` to `$F/baseline/testAll-before.csv`.
-- [ ] T002 [P] Save the analyzer snapshot of `initCobraToolbox.m` and `test/testAll.m` to
+- [X] T002 [P] Save the analyzer snapshot of `initCobraToolbox.m` and `test/testAll.m` to
   `$F/baseline/analyzer-before.json`, using `$P/tools/analyzerSnapshot.m`.
-- [ ] T003 [P] Create `$RC/debtRegister.md` with:
+- [X] T003 [P] Create `$RC/debtRegister.md` with:
   - a header that cites constitution VIII-Runtime;
   - the two empty tables *Workarounds* and *Blocking defects without a workaround*, with the columns in
     `$F/contracts/debt-register.md`.
 
 ## Phase 2: Foundational (blocks every story)
 
-- [ ] T004 Create the reproducers `$RC/repro/<id>/<id>.m` (at most 10 lines each) for D5, D6, D10, D24, D26, D27,
+- [X] T004 Create the reproducers `$RC/repro/<id>/<id>.m` (at most 10 lines each) for D5, D6, D10, D24, D26, D27,
   D28 and D29.
   - Copy them from `$P/reports/repro/` where they exist, and from `$F/research.md` R1–R2 otherwise.
   - D27 and D28 use a `lib/` subfolder and `addpath`.
   - Run each in MATLAB from its own folder, and write the output to `expected.txt`.
-- [ ] T005 Write `$RC/recheckRunMat.sh RUNMAT [REPO_ROOT]` exactly as in `$F/contracts/debt-register.md`:
+- [X] T005 Write `$RC/recheckRunMat.sh RUNMAT [REPO_ROOT]` exactly as in `$F/contracts/debt-register.md`:
   - copy each reproducer folder to a fresh temporary folder and run it;
   - drop the `WARN` lines and compare the output with `expected.txt`;
   - print `<id>\t(still needed|removable)\t<first differing line>`;
@@ -47,7 +47,7 @@ quickstart.md)
   - exit 1 only when markers and rows do not match.
 
   Run it: every defect must be *still needed* under v0.6.2.
-- [ ] T006 Fill the *Blocking defects without a workaround* table in `$RC/debtRegister.md` for D26 (outside the
+- [X] T006 Fill the *Blocking defects without a workaround* table in `$RC/debtRegister.md` for D26 (outside the
   two files), D27, D28 and D29: effect on COBRA, number of in-scope files affected (`$F/research.md` R2), and
   reproducer path.
 
