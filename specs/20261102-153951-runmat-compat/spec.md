@@ -156,6 +156,9 @@ maintainers.
   (`which` returning text instead of empty), COBRA MUST only make the call explicit (`name()`, FR-004). No
   RunMat-specific fallback or runtime detection MAY be added; the resulting run-time failures are RunMat defects
   for the report.
+  *Superseded (2026-11-04) for `initCobraToolbox.m` and `test/testAll.m` only*: feature
+  `20261104-001324-runmat-init-mode` adds registered RunMat workarounds behind an opt-in in those two files
+  (constitution VIII-Runtime). FR-008 still applies everywhere else.
 - **FR-009**: Of the 8 Latin-1 source files, the one in scope
   (`test/tutorialDerived/analysis/rMTA/tutorial_rMTA.m`) MUST be re-encoded as UTF-8 with identical characters;
   the other 7 are in `external/` or a submodule and are out of scope (FR-007, FR-013).

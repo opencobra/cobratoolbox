@@ -77,6 +77,21 @@ a value-identical guard, and the analyzer accepted it.
 
 ## 3. `testAll` under RunMat (SC-004)
 
+> **Erratum (2026-11-04, feature `20261104-001324-runmat-init-mode`).** The stop recorded at `test/testAll.m:55`
+> (`cd(CBTDIR)`) and attributed to D6 was not D6. RunMat reported the error at the wrong location. Its message,
+> `cell literal rows realize different widths` (`RunMat:MirAggregateShapeInvalid`), comes from the empty cell
+> literal `{}` (`SOLVERS = {};` in `initCobraToolbox`), new defect **D26**. D6 is real but was not the observed
+> stopping point. Further defects found since this report:
+> - D23: `usejava` errors;
+> - D24: `mfilename` returns a string;
+> - D25: `genpath` of a missing folder errors;
+> - D26: `{}` fails;
+> - D27–D29: functions on the path that read `nargin` or a global, or that are called with fewer arguments than
+>   declared, fail.
+>
+> See `specs/20261104-001324-runmat-init-mode/research.md` R1–R2 and
+> `test/runtimeCompatibility/RunMat/debtRegister.md`.
+
 SC-004 is **not met**: `testAll` does not reach the per-test loop.
 
 | Run | Stops at | Cause |

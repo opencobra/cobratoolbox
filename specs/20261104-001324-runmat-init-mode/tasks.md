@@ -166,7 +166,7 @@ passes.
 - [ ] T020 [US4] Run `$RC/recheckRunMat.sh $RUNMAT` and save its output to `$F/reports/recheck.txt`. Then check:
   - the number of markers equals the number of *Workarounds* rows (SC-005);
   - there is one status line per entry (SC-006).
-- [ ] T021 [US4] Add an erratum to `$P/reports/runmat-compat-report.md` §3 and `$P/reports/runmat-testAll-after-us2.txt`:
+- [X] T021 [US4] Add an erratum to `$P/reports/runmat-compat-report.md` §3 and `$P/reports/runmat-testAll-after-us2.txt`:
   - the "D6 at `testAll.m:55`" stop was the misreported D26 (`{}`);
   - point to `$F/research.md` R2;
   - list the new defects D23–D29 (SC-008).
@@ -180,9 +180,9 @@ passes.
   `$F/reports/testAll-after.csv`.
   - Compare it with `$F/baseline/testAll-before.csv` using `$P/tools/compare_testall.py compare` (SC-003).
   - Any difference blocks completion and must be traced to its commit.
-- [ ] T023 [P] Check that `git diff --name-only develop HEAD` lists no path under `external/`, `deprecated/` or a
+- [X] T023 [P] Check that `git diff --name-only develop HEAD` lists no path under `external/`, `deprecated/` or a
   `.gitmodules` path (FR-015).
-- [ ] T024 [P] Review the help header of `initCobraToolbox.m` against VII-E (FR-013) and run `checkcode` on the
+- [X] T024 [P] Review the help header of `initCobraToolbox.m` against VII-E (FR-013) and run `checkcode` on the
   renamed test file.
 - [ ] T025 Update `$F/quickstart.md` with the final commands. Write the implementation receipt in
   `$F/agent-runs/<UTC>-runmat-init-mode/implementation-receipt.md`, and update `$F/human-loop.md`.

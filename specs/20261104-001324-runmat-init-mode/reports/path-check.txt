@@ -1,0 +1,11 @@
+# Path check (T023, FR-015), 2026-11-04
+
+`git diff --name-only develop HEAD` at 5625ee3ef:
+- paths under external/ or deprecated/: none
+- paths under a .gitmodules submodule path: none
+- paths outside src/, test/, specs/ and initCobraToolbox.m:
+  - .specify/feature.json
+  - .specify/memory/constitution.md
+  - .specify/templates/plan-template.md
+  - CLAUDE.md
+  (Spec Kit pointer, constitution v1.8.0 amendment, plan-template check, CLAUDE.md plan pointer)
