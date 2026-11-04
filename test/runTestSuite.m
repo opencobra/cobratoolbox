@@ -52,8 +52,7 @@ for i = 1:numel(testFileNames)
     % shut down any existing parpool.
     try
         % test if there is a parpool that we should shut down before the next test.
-        p = gcp('nocreate');
-        delete(p);
+        closeParallelPool();
     catch
         % do nothing
     end

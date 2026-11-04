@@ -84,7 +84,7 @@ solverMILPOk = changeCobraSolver('gurobi', 'MILP');
 changeSlopes = zeros(length(met_IDs), 1);
 changeIntervals = zeros(length(met_IDs), 1);
 for i = 1:length(met_IDs)
-    [tmp1, tmp2] = regress(met_data(:, i), [time ones(length(time), 1)], 0.05);
+    [tmp1, tmp2] = cobraRegress(met_data(:, i), [time ones(length(time), 1)], 0.05);
     changeSlopes(i, 1) = tmp1(1);
     changeIntervals(i, 1) = abs(changeSlopes(i, 1) - tmp2(1));
 end

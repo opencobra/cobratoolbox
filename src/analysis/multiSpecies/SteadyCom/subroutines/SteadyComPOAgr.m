@@ -129,16 +129,20 @@ if ~isempty(savePOA)
 end
 
 % parallel computation
-if threads ~= 1 && isempty(gcp('nocreate'))
+if threads ~= 1 && isempty(getParallelPool())
     try
         if threads > 1
             %given explicit no. of threads
-            parpool(ceil(threads));
+            openParallelPool(ceil(threads));
         else
             %default max no. of threads (input 0 or -1 etc)
-            parpool;
+            openParallelPool();
         end
     catch
+        threads = 1;
+    end
+    if isempty(getParallelPool())
+        % no Parallel Computing Toolbox: compute serially
         threads = 1;
     end
 end
@@ -533,10 +537,10 @@ if any(undone)
                 POAtableJK = fluxPOAvalue;
                 % simple linear regression to check correlations
                 notNan = ~isnan(fluxPOAvalue(:, 1));
-                [bMin, ~, ~, ~, statMin] = regress(fluxPOAvalue(notNan, 1),...
+                [bMin, ~, ~, ~, statMin] = cobraRegress(fluxPOAvalue(notNan, 1),...
                     [fluxStepJ(notNan) ones(sum(notNan), 1)]);
                 notNan = ~isnan(fluxPOAvalue(:, 2));
-                [bMax, ~, ~, ~, statMax] = regress(fluxPOAvalue(notNan, 2),...
+                [bMax, ~, ~, ~, statMax] = cobraRegress(fluxPOAvalue(notNan, 2),...
                     [fluxStepJ(notNan) ones(sum(notNan), 1)]);
                 StatJK.cor = [bMin(1) bMax(1)];
                 StatJK.r2 = [statMin(1) statMax(1)];
@@ -558,7 +562,7 @@ if any(undone)
         end
         % parallelization using spmd to allow redistribution of jobs upon
         % completion of any of the workers to avoid being idle
-        numPool = gcp;
+        numPool = openParallelPool();
         numPool = numPool.NumWorkers;
         while Npair > 0
             % mannually distribute jobs
@@ -696,9 +700,9 @@ if any(undone)
                         POAtableJK = fluxPOAvalue;
                         %simple linear regression to check correlations
                         notNan = ~isnan(fluxPOAvalue(:, 1));
-                        [bMin, ~, ~, ~, statMin] = regress(fluxPOAvalue(notNan, 1), [fluxStepJ(notNan) ones(sum(notNan), 1)]);
+                        [bMin, ~, ~, ~, statMin] = cobraRegress(fluxPOAvalue(notNan, 1), [fluxStepJ(notNan) ones(sum(notNan), 1)]);
                         notNan = ~isnan(fluxPOAvalue(:, 2));
-                        [bMax, ~, ~, ~, statMax] = regress(fluxPOAvalue(notNan, 2), [fluxStepJ(notNan) ones(sum(notNan), 1)]);
+                        [bMax, ~, ~, ~, statMax] = cobraRegress(fluxPOAvalue(notNan, 2), [fluxStepJ(notNan) ones(sum(notNan), 1)]);
                         StatJK.cor = [bMin(1) bMax(1)];
                         StatJK.r2 = [statMin(1) statMax(1)];
                         if verbFlag  % print results

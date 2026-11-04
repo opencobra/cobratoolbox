@@ -53,10 +53,9 @@ function [arm, moietyFormulae] = identifyConservedMoieties(model, dATM, options)
 %                * .useOpenSourceMoietyTools {(1),0} true (default) to use
 %                the open-source-only implementation (tabulatePlain)
 %                instead of the proprietary Statistics_Toolbox function
-%                tabulate. Set to false to prefer tabulate() for backward
-%                compatibility; automatically falls back to
-%                tabulatePlain (with a warning) if Statistics_Toolbox is
-%                not licensed on this machine.
+%                tabulate. Set to false to use cobraTabulate, the
+%                plain-MATLAB replacement that reproduces tabulate, for
+%                backward compatibility (no toolbox needed).
 %
 % OUTPUTS:
 %    moietyFormulae:    `nIsomorphismClasses x 1` cell array of moiety chemical formulae (Hill notation), one per isomorphism class
@@ -177,9 +176,8 @@ if ~isfield(options,'useOpenSourceMoietyTools')
     % Note: unlike identifyConservedReactingMoieties.m, this function
     % previously had no fallback at all and would error outright on a
     % machine without Statistics_Toolbox licensed. Set this to false to
-    % prefer tabulate() for backward compatibility; falls back
-    % automatically (with a warning) to tabulatePlain if
-    % Statistics_Toolbox is not actually licensed on this machine.
+    % use cobraTabulate (plain-MATLAB replacement reproducing tabulate)
+    % for backward compatibility.
     options.useOpenSourceMoietyTools = true;
 end
 useOpenSourceMoietyTools = options.useOpenSourceMoietyTools;
@@ -723,12 +721,8 @@ moietyFormulae=cell(nIsomorphismClasses,1);
 for i = 1:nIsomorphismClasses
     if useOpenSourceMoietyTools
         elementTable = tabulatePlain(compElements(I2C(i,:)==1)); % elements in moiety i
-    elseif license('test','Statistics_Toolbox')
-        elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
     else
-        warning('identifyConservedMoieties:noStatsToolbox', ...
-            'Statistics_Toolbox not licensed; falling back to tabulatePlain despite options.useOpenSourceMoietyTools=false.');
-        elementTable = tabulatePlain(compElements(I2C(i,:)==1));
+        elementTable = cobraTabulate(compElements(I2C(i,:)==1)); % elements in moiety i
     end
     formula='';
     for j=1:size(elementTable,1)
@@ -919,7 +913,7 @@ if sanityChecks
             if useOpenSourceMoietyTools
                 tabulatePlain(ATG.Nodes.Element(Mo2A(j,:)~=0))
             else
-                tabulate(ATG.Nodes.Element(Mo2A(j,:)~=0))
+                cobraTabulate(ATG.Nodes.Element(Mo2A(j,:)~=0))
             end
         end
         moietyMetIndices=atoms2mets(Mo2A(j,:)~=0);

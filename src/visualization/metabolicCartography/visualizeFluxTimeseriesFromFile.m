@@ -53,9 +53,9 @@ function visualizeFluxTimeseriesFromFile(mapXMLFile, fluxDataFile, outputFileNam
         end
 
         % Start a parallel pool with the specified number of cores.
-        poolobj = gcp('nocreate');
+        poolobj = getParallelPool();
         if isempty(poolobj)
-            parpool('local', numCores);
+            openParallelPool('local', numCores);
         end
 
         % Parallel loop over each time point (starting from the second column).
@@ -87,7 +87,7 @@ function visualizeFluxTimeseriesFromFile(mapXMLFile, fluxDataFile, outputFileNam
         end
 
         % Close the parallel pool after processing is done.
-        delete(gcp('nocreate'));
+        closeParallelPool();
     else
         % If no parallel computing toolbox is available, process sequentially.
         for t = 2:length(varNames)

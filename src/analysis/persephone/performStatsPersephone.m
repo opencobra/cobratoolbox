@@ -212,7 +212,7 @@ end
 
 % Process categorical response variables
 if ~isnumeric(metadata.(response))
-    [crosstabulationTable, ~, ~, labels] = crosstab(metadata.(response), metadata.Sex);
+    [crosstabulationTable, ~, ~, labels] = cobraCrosstab(metadata.(response), metadata.Sex);
     
     % Remove empty labels
     rowNames = labels(:,1);

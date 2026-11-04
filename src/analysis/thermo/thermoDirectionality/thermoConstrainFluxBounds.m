@@ -164,7 +164,7 @@ modelThermo=model;
 forwardProbability=NaN*ones(nRxn,1);
 for n=1:nRxn
     if model.SIntRxnBool(n)
-        forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrG0_Uncertainty(n),tValue*model.DrG0_Uncertainty(n));
+        forwardProbability(n)= cobraNormcdf(0,model.DrGt0(n),tValue*model.DrG0_Uncertainty(n),tValue*model.DrG0_Uncertainty(n));
         if strcmp(model.rxns{n},'ACYP')
             fprintf('%s\n',model.rxns{n})
         end

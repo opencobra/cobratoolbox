@@ -31,9 +31,9 @@ strainData = cell(1, length(strains));
 
 % Start parallel pool on all but two cores
 if feature('numCores') > 5
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(feature('numCores')-2)
+        openParallelPool(feature('numCores')-2)
     end
 end
 

@@ -155,9 +155,9 @@ for i = 2:size(abundance, 2)
     end
     % use parallel pool if workers specified as input
     if exist('numWorkers', 'var') && numWorkers > 0
-        poolobj = gcp('nocreate');
+        poolobj = getParallelPool();
         if isempty(poolobj)
-            parpool(numWorkers)
+            openParallelPool(numWorkers)
         end
     end
     % create tables in which abundances for each individual for

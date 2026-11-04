@@ -11,7 +11,7 @@
 global CBTDIR
 
 %Test presence of required Toolboxes
-requiredToolboxes = {'statistics_toolbox'};
+requiredToolboxes = {};
 requiredSolvers = {'gurobi'}; %This probably should work with any MILP and any LP solver...
 prepareTest('requiredSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
 
@@ -66,7 +66,7 @@ if solverMILPOk & solverLPOk
         [Q, R] = qr([time ones(length(time), 1)], 0);
         yint = R \ (Q' * met_data(:, i));
         rmse = norm(met_data(:, i) - [time ones(length(time), 1)] * yint) / sqrt(78);
-        tval = tinv((1 - 0.05 / 2), 78);
+        tval = cobraTinv((1 - 0.05 / 2), 78);
         err = rmse * sqrt(sum(abs(R \ eye(2)) .^ 2, 2));
         tmp2 = [yint - tval * err, yint + tval * err];
 

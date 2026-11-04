@@ -15,7 +15,7 @@ fileDir = fileparts(which('testCreatePanModels'));
 cd(fileDir);
 
 % ksdensity function in Violin requires Statistics and Machine
-solverPkgs = prepareTest('toolboxes', {'distrib_computing_toolbox'}, 'requiredToolboxes', {'Statistics Toolbox'});
+solverPkgs = prepareTest('requiredToolboxes', {'Statistics Toolbox'});
 
 modelList={
         'Abiotrophia_defectiva_ATCC_49176'

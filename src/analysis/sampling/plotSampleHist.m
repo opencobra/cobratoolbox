@@ -164,7 +164,7 @@ while ~flagQuit
             sampleSign = -1;
         end
         n = hist(sampleSign * samples{i}(id, :), bins);
-        counts(:, i) = smooth(bins, n');
+        counts(:, i) = cobraSmooth(bins, n');
     end
     freq = counts./repmat(sum(counts), size(counts, 1), 1);
     

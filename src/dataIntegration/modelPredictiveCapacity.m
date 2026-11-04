@@ -592,7 +592,7 @@ if ismember({'flux'}, param.tests)
         w  = sparse(1./(1 + (vExp.^2)));
         if any(bool)
             comparisonStats.wEuclidNorm(ind) = sqrt(dv(bool)' * diag(w(bool)) * dv(bool));
-            [Spearman, SpearmanPval]  = corr(v(bool),vExp(bool),'Type','Spearman');
+            [Spearman, SpearmanPval]  = cobraCorr(v(bool),vExp(bool),'Type','Spearman');
             comparisonStats.Spearman(ind) = Spearman;
             comparisonStats.SpearmanPval(ind) = SpearmanPval;
         else
@@ -616,7 +616,7 @@ if ismember({'flux'}, param.tests)
         w  = sparse(1./(1 + (vExp.^2)));
         if any(bool)
             comparisonStats.wEuclidNorm(ind) = sqrt(dv(bool)' * diag(w(bool)) * dv(bool));
-            [Spearman, SpearmanPval]  = corr(v(bool),vExp(bool),'Type','Spearman');
+            [Spearman, SpearmanPval]  = cobraCorr(v(bool),vExp(bool),'Type','Spearman');
             comparisonStats.Spearman(ind) = Spearman;
             comparisonStats.SpearmanPval(ind) = SpearmanPval;
         else
@@ -640,7 +640,7 @@ if ismember({'flux'}, param.tests)
         w  = sparse(1./(1 + (vExp.^2)));
         if any(bool)
             comparisonStats.wEuclidNorm(ind) = sqrt(dv(bool)' * diag(w(bool)) * dv(bool));
-            [Spearman, SpearmanPval]  = corr(v(bool),vExp(bool),'Type','Spearman');
+            [Spearman, SpearmanPval]  = cobraCorr(v(bool),vExp(bool),'Type','Spearman');
             comparisonStats.Spearman(ind) = Spearman;
             comparisonStats.SpearmanPval(ind) = SpearmanPval;
         else

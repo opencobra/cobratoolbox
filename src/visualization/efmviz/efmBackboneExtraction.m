@@ -38,7 +38,7 @@ numEFMs = size(EFMRxns, 1);
 
 % find the number of EFMs each reaction occurs in and sort by occurrence
 allRxns = reshape(EFMRxns, [], 1); 
-rxnDistribution = sortrows(array2table(tabulate(allRxns(allRxns ~= 0))), 2, 'descend');
+rxnDistribution = sortrows(array2table(cobraTabulate(allRxns(allRxns ~= 0))), 2, 'descend');
 rxnDistribution(rxnDistribution.Var2 == 0,:) = [];
 rxnDistribution(:, 3) = [];
 rxnDistribution.Properties.VariableNames = {'rxnID' 'numEFMOccurrence'};

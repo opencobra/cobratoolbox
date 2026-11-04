@@ -199,12 +199,7 @@ if param.debug
 end
 
 % Check for parallel computing toolbox
-try
-    gcp('nocreate');
-    hasPCT = true;
-catch
-    hasPCT = false;
-end
+hasPCT = isParallelToolboxAvailable();
 
 if param.parallelize
     if hasPCT && k > 12

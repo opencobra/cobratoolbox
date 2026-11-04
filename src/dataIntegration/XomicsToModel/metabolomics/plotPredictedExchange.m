@@ -142,7 +142,7 @@ end
 predictedFluxes.zerobool = (predictedFluxes.v-1e-5)<=0 & (predictedFluxes.v+1e-5)>=0;
 predictedFluxes.posbool = sign(predictedFluxes.v)==1 & ~predictedFluxes.zerobool;
 predictedFluxes.negbool = sign(predictedFluxes.v)==-1 & ~predictedFluxes.zerobool;
-predictedFluxes.uptakeProbability = normcdf(0,predictedFluxes.v,abs(predictedFluxes.v)/10);
+predictedFluxes.uptakeProbability = cobraNormcdf(0,predictedFluxes.v,abs(predictedFluxes.v)/10);
 
 toRankOrder = zeros(length(predictedFluxes.v),1);
 toRankOrder(predictedFluxes.zerobool) = predictedFluxes.uptakeProbability(predictedFluxes.zerobool);

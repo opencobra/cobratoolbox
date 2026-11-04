@@ -119,7 +119,7 @@ for j = init:fl
         Y=[];
         disp('Jump plotting')
     else
-        JD = pdist(fSpOld','euclidean');
+        JD = cobraPdist(fSpOld','euclidean');
         [Y, eigvals] = cmdscale(JD);
         P = [eigvals eigvals / max(abs(eigvals))];
         expr = [eigvals/sum(eigvals)];

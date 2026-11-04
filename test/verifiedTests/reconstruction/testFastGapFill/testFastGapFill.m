@@ -7,7 +7,7 @@
 %     - CI: integration: Laurent Heirendt - March 2017
 %     - swift integration: Mojtaba Tefagh, May 2019
 
-solvers = prepareTest('needsLP', true, 'requireOneSolverOf', {'ibm_cplex'},'requiredToolboxes', {'statistics_toolbox'});
+solvers = prepareTest('needsLP', true, 'requireOneSolverOf', {'ibm_cplex'});
 
 % FASTCORE functions must have the CPLEX library included in order to run
 global ILOG_CPLEX_PATH

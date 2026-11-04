@@ -17,9 +17,9 @@ function computeMetabolicDistance(propertiesFolder, reconVersion, numWorkers)
 
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkers)
+        openParallelPool(numWorkers)
     end
 end
 
@@ -36,7 +36,7 @@ for i=1:length(files)
     cnt=2;
     for j=2:100:size(data,1)-1
         parfor k=j:j+99
-            comDistTmp{k}=pdist(str2double(data(k,k+1:end)),'jaccard');
+            comDistTmp{k}=cobraPdist(str2double(data(k,k+1:end)),'jaccard');
         end
         save('comDistTmp','comDistTmp','-v7.3');
     end
