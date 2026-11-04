@@ -129,23 +129,23 @@ blocking defect. In MATLAB it equals `'agent'` mode.
 **Independent Test**: `runmat_testall.sh` with `COBRA_RUNMAT=1` stops where US1 stops. The four-case MATLAB check
 passes.
 
-- [ ] T015 [US3] Write the four-case check, before the code. In MATLAB, evaluate the current
+- [X] T015 [US3] Write the four-case check, before the code. In MATLAB, evaluate the current
   `PERFORMANCE_REPORT_ON` statements and the planned `eval('PERFORMANCE_REPORT')` form in a script workspace, for:
   - `COBRA_PERF` equal to `'1'`, empty or `'0'`;
   - crossed with the variable absent, empty, false or true.
 
   Record the 7+ cases and their results in `$F/reports/performance-report-check.txt`.
-- [ ] T016 [US3] In `test/testAll.m`, read `PERFORMANCE_REPORT` as `eval('PERFORMANCE_REPORT')` inside its existing
+- [X] T016 [US3] In `test/testAll.m`, read `PERFORMANCE_REPORT` as `eval('PERFORMANCE_REPORT')` inside its existing
   `exist('PERFORMANCE_REPORT', 'var')` guard, with marker `% RUNTIME-DEBT(RunMat:D5)`. This applies in every
   mode, as a compile-time entry under the VIII-Runtime exception. T015's cases must give the same values.
-- [ ] T017 [US3] In `test/testAll.m`, add `runmatSwitch = strcmp(getenv('COBRA_RUNMAT'), '1');` near the
+- [X] T017 [US3] In `test/testAll.m`, add `runmatSwitch = strcmp(getenv('COBRA_RUNMAT'), '1');` near the
   `COBRA_CI` read. When it is on:
   - the root comes from `fileparts(char(mfilename('fullpath')))` and `..`, not `which` (markers D6 and D24);
   - the call is `initCobraToolbox(false, 'runmat')`, not `initCobraToolbox()`;
   - the CI `exit()` is skipped (marker D10).
 
   With the switch off, every line runs as before (`$F/contracts/testAll-runmat-switch.md`).
-- [ ] T018 [US3] In `test/testAll.m`, rewrite every `{}` as `cell(0, 0)` (MATLAB-equivalent, not debt).
+- [X] T018 [US3] In `test/testAll.m`, rewrite every `{}` as `cell(0, 0)` (MATLAB-equivalent, not debt).
   - Compare the analyzer snapshot of `test/testAll.m` (`$P/tools/analyzerSnapshot.m`) with
     `$F/baseline/analyzer-before.json`; it must show no new message, except one the register records.
   - Add the *Workarounds* rows for T016–T017 to `$RC/debtRegister.md`.

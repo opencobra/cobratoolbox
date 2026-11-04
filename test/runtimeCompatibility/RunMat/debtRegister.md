@@ -18,6 +18,10 @@ The rules for this register, the markers and the re-check are in the constitutio
 | D6 | `initCobraToolbox.m` | `CBTDIR = fileparts(char(mfilename('fullpath')))` when `runmatMode` | `CBTDIR = fileparts(which('initCobraToolbox'))` | `repro/D6` and `repro/D24` both report removable; then use the `which` line in every mode | `repro/D6/` |
 | D24 | `initCobraToolbox.m` | `char(...)` around `mfilename('fullpath')` in the same line | `mfilename` already returns `char` in MATLAB | removed together with the D6 row | `repro/D24/` |
 | D10 | `initCobraToolbox.m` | `defaultSavePathLocation = ''` when `runmatMode` | `fullfile(prefdir(), 'pathdef.m')`; the value is used only when saving the path, which agent and runmat modes skip | `repro/D10` reports removable | `repro/D10/` |
+| D5 | `test/testAll.m` | `performanceReportValue = eval('PERFORMANCE_REPORT')` inside the `exist('PERFORMANCE_REPORT', 'var')` guard, in every mode (compile-time entry, VIII-Runtime exception); `checkcode` reports EVLCS on this line, left visible | the direct read `PERFORMANCE_REPORT` inside the same guard; identical value in all 12 cases checked (`specs/20261104-001324-runmat-init-mode/reports/performance-report-check.txt`) | `repro/D5` reports removable; then read the variable directly | `repro/D5/` |
+| D6 | `test/testAll.m` | `CBTDIR = fileparts(fileparts(char(mfilename('fullpath'))))` when `COBRA_RUNMAT=1` | the `which('initCobraToolbox.m')` / `which('testAll.m')` root detection | `repro/D6` and `repro/D24` both report removable | `repro/D6/` |
+| D24 | `test/testAll.m` | `char(...)` around `mfilename('fullpath')` in the same line | `mfilename` already returns `char` in MATLAB | removed together with the `test/testAll.m` D6 row | `repro/D24/` |
+| D10 | `test/testAll.m` | the CI `exit()` is skipped when `COBRA_RUNMAT=1` | `exit()` ends MATLAB after the CI run | `repro/D10` reports removable (it checks `prefdir` and `exit`) | `repro/D10/` |
 
 ## Blocking defects without a workaround
 

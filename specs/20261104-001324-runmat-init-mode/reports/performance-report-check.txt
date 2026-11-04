@@ -1,0 +1,61 @@
+# PERFORMANCE_REPORT equivalence check (T015, FR-007)
+
+MATLAB R2026a, 2026-11-04, `matlab -batch`. Each case runs both forms as scripts in one workspace, as `testAll` does.
+
+## Old form (test/testAll.m before T016)
+```matlab
+PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1');
+if ~PERFORMANCE_REPORT_ON && exist('PERFORMANCE_REPORT', 'var')
+    PERFORMANCE_REPORT_ON = ~isempty(PERFORMANCE_REPORT) && PERFORMANCE_REPORT;
+end
+```
+## New form (T016)
+```matlab
+PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1');
+if ~PERFORMANCE_REPORT_ON && exist('PERFORMANCE_REPORT', 'var')
+    % RUNTIME-DEBT(RunMat:D5)
+    performanceReportValue = eval('PERFORMANCE_REPORT');
+    PERFORMANCE_REPORT_ON = ~isempty(performanceReportValue) && performanceReportValue;
+end
+```
+## Driver
+```matlab
+% four-case check: old vs new PERFORMANCE_REPORT_ON, in one script workspace
+envValues = {'1', '', '0'};
+varCases = {'absent', [], false, true};
+varNames = {'absent', 'empty', 'false', 'true'};
+nDiff = 0;
+for iEnv = 1:numel(envValues)
+    for iVar = 1:numel(varCases)
+        setenv('COBRA_PERF', envValues{iEnv});
+        clear PERFORMANCE_REPORT
+        if ~ischar(varCases{iVar}) || ~strcmp(varCases{iVar}, 'absent')
+            PERFORMANCE_REPORT = varCases{iVar};
+        end
+        prOld; oldValue = PERFORMANCE_REPORT_ON;
+        prNew; newValue = PERFORMANCE_REPORT_ON;
+        same = isequal(oldValue, newValue) && strcmp(class(oldValue), class(newValue));
+        nDiff = nDiff + ~same;
+        fprintf('COBRA_PERF=%-2s PERFORMANCE_REPORT=%-6s old=%d (%s) new=%d (%s) %s\n', envValues{iEnv}, ...
+            varNames{iVar}, oldValue, class(oldValue), newValue, class(newValue), ...
+            char(string(same) .replace('true', 'same') .replace('false', 'DIFFERENT')));
+    end
+end
+fprintf('cases: %d, differences: %d\n', numel(envValues) * numel(varCases), nDiff);
+```
+## Result
+```
+COBRA_PERF=1  PERFORMANCE_REPORT=absent old=1 (logical) new=1 (logical) same
+COBRA_PERF=1  PERFORMANCE_REPORT=empty  old=1 (logical) new=1 (logical) same
+COBRA_PERF=1  PERFORMANCE_REPORT=false  old=1 (logical) new=1 (logical) same
+COBRA_PERF=1  PERFORMANCE_REPORT=true   old=1 (logical) new=1 (logical) same
+COBRA_PERF=   PERFORMANCE_REPORT=absent old=0 (logical) new=0 (logical) same
+COBRA_PERF=   PERFORMANCE_REPORT=empty  old=0 (logical) new=0 (logical) same
+COBRA_PERF=   PERFORMANCE_REPORT=false  old=0 (logical) new=0 (logical) same
+COBRA_PERF=   PERFORMANCE_REPORT=true   old=1 (logical) new=1 (logical) same
+COBRA_PERF=0  PERFORMANCE_REPORT=absent old=0 (logical) new=0 (logical) same
+COBRA_PERF=0  PERFORMANCE_REPORT=empty  old=0 (logical) new=0 (logical) same
+COBRA_PERF=0  PERFORMANCE_REPORT=false  old=0 (logical) new=0 (logical) same
+COBRA_PERF=0  PERFORMANCE_REPORT=true   old=1 (logical) new=1 (logical) same
+cases: 12, differences: 0
+```

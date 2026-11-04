@@ -16,6 +16,10 @@ global TOMLAB_PATH
 % Define CI boolean
 CIenv = false;
 
+% RunMat switch (COBRA_RUNMAT=1): opt-in for running under the RunMat runtime.
+% Its code paths are listed in test/runtimeCompatibility/RunMat/debtRegister.md.
+runmatSwitch = strcmp(getenv('COBRA_RUNMAT'), '1');
+
 % Detect CI environment
 if strcmp(getenv('COBRA_CI'), '1')
     fprintf('Running test in COBRA CI environment\n');
@@ -43,8 +47,13 @@ end
 % save the current folder
 origDir = pwd;
 
+if runmatSwitch
+    % RUNTIME-DEBT(RunMat:D6)
+    % RUNTIME-DEBT(RunMat:D24)
+    CBTDIR = fileparts(fileparts(char(mfilename('fullpath'))));
+    cd(CBTDIR);
 % if the location of initCobraToolbox is not yet known
-if isempty(which('initCobraToolbox.m'))
+elseif isempty(which('initCobraToolbox.m'))
     % move back to the root of the repository
     cd([fileparts(which('testAll.m')) filesep '..'])
 
@@ -70,7 +79,11 @@ if launchTestSuite
         COVERAGE = false;
     end
 
-    initCobraToolbox();
+    if runmatSwitch
+        initCobraToolbox(false, 'runmat');
+    else
+        initCobraToolbox();
+    end
 
     % initialize the cleanup
     currentDir = cd('test');
@@ -282,7 +295,9 @@ try
         % not change any test's pass/fail/skip outcome.
         PERFORMANCE_REPORT_ON = strcmp(getenv('COBRA_PERF'), '1');
         if ~PERFORMANCE_REPORT_ON && exist('PERFORMANCE_REPORT', 'var')
-            PERFORMANCE_REPORT_ON = ~isempty(PERFORMANCE_REPORT) && PERFORMANCE_REPORT;
+            % RUNTIME-DEBT(RunMat:D5)
+            performanceReportValue = eval('PERFORMANCE_REPORT');
+            PERFORMANCE_REPORT_ON = ~isempty(performanceReportValue) && performanceReportValue;
         end
         if PERFORMANCE_REPORT_ON
             try
@@ -448,7 +463,11 @@ cd(origDir)
 if contains(getenv('HOME'), 'vmhadmin') || contains(getenv('HOME'), 'jenkins') ...
         || strcmp(getenv('COBRA_CI'), '1')
     fprintf('Running test in CI environment\n');
-    exit()
+    % RUNTIME-DEBT(RunMat:D10)
+    % with the RunMat switch on, exit is not called; runmat run ends with the script
+    if ~runmatSwitch
+        exit()
+    end
 end
 
 %% Local helper function to escape XML special characters.
