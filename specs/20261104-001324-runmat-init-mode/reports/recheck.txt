@@ -1,0 +1,41 @@
+# T020: recheckRunMat.sh at 0a9a941d5
+
+## v0.6.2 (reference)
+```
+RunMat: runmat 0.6.2 (/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-matlab-interface-spec/1a66df61-8617-464a-b587-ebd470eb7b17/scratchpad/runmat-target/release/runmat)
+
+## Reproducers
+D10	still needed	error: Undefined function: prefdir
+D24	still needed	string
+D26	still needed	error: cell literal rows realize different widths
+D27	still needed	error: Could not compile function source '/tmp/tmp.l6UBCA54gC/run/lib/runmatReproNargin.m': local may be read before it 
+D28	still needed	error: Could not compile function source '/tmp/tmp.l6UBCA54gC/run/lib/runmatReproGlobal.m': local may be read before it 
+D29	still needed	error: Not enough input arguments.
+D5	still needed	error: undefined variable 'NOT_DEFINED'
+D6	still needed	0
+
+## Markers versus register
+markers: 7, register rows: 7
+markers and register rows match
+exit=0
+```
+
+## Newer build (informational)
+```
+RunMat: runmat 0.6.2 (/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/runmat-6e0a7df1a)
+
+## Reproducers
+D10	removable	
+D24	still needed	string
+D26	removable	
+D27	removable	
+D28	removable	
+D29	removable	
+D5	removable	
+D6	still needed	0
+
+## Markers versus register
+markers: 7, register rows: 7
+markers and register rows match
+exit=0
+```

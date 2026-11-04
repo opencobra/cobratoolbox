@@ -163,7 +163,7 @@ passes.
 
 **Independent Test**: `recheckRunMat.sh` exits 0 and prints one line per register entry.
 
-- [ ] T020 [US4] Run `$RC/recheckRunMat.sh $RUNMAT` and save its output to `$F/reports/recheck.txt`. Then check:
+- [X] T020 [US4] Run `$RC/recheckRunMat.sh $RUNMAT` and save its output to `$F/reports/recheck.txt`. Then check:
   - the number of markers equals the number of *Workarounds* rows (SC-005);
   - there is one status line per entry (SC-006).
 - [X] T021 [US4] Add an erratum to `$P/reports/runmat-compat-report.md` §3 and `$P/reports/runmat-testAll-after-us2.txt`:

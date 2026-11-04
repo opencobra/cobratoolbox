@@ -1,0 +1,122 @@
+# T019: testAll with COBRA_RUNMAT=1 under RunMat (SC-002)
+
+Tree: full clone at 5625ee3ef, run by runmat_testall.sh (TIME_LIMIT=20m).
+
+## Result: SC-002 is NOT met under RunMat v0.6.2
+
+v0.6.2 stops before the first line of test/testAll.m runs (the banner is not printed), with
+`RunMat:MirAggregateShapeInvalid` ("cell literal rows realize different widths") reported at testAll.m:53:16.
+The location is misreported. Cause, found by bisecting the tree file by file:
+
+- test/verifyCobraFunctionError.m line 35, `parser.addParamValue('inputs',{},@iscell)`: an empty cell literal
+  `{}` (registered blocking defect D26).
+- The file is never called by testAll. Under v0.6.2 a `{}` in ANY .m file in the folder of the script being
+  run stops that script before its first statement. Reproduced with a 3-line script plus a 3-line helper
+  holding `c = {};` in the same folder (the helper is not called): the script prints nothing and fails with
+  the same error at a misreported location.
+- testAll.m on its own in a folder (no other files) gets past its start-up under v0.6.2 and reaches the
+  initCobraToolbox call, so the testAll changes themselves (T015-T017) compile and run.
+- verifyCobraFunctionError.m is the only file directly in test/ that contains `{}`.
+
+Making SC-002 hold under v0.6.2 needs `{}` -> `cell(0, 0)` in test/verifyCobraFunctionError.m, which is outside
+the files this feature may change (plan.md). Recorded as a deviation for the Gate 3 decision.
+
+## Newer RunMat build (informational; ../runmat 6e0a7df1a)
+
+The banner prints and testAll gets past its start-up into initCobraToolbox(false, 'runmat'); the run then stops
+with `Undefined function: changeCbMapOutput` (reported at testAll.m:369:17, misreported; the call is
+initCobraToolbox.m:452). src/visualization/maps/ReconMap/changeCbMapOutput.m is present in the tree and was not
+set aside; deprecated/_maps_old/changeCbMapOutput.m was set aside (parse error). Not registered; left to the
+RunMat exploration inbox, like the "dynamic output count" stop in reports/runmat-init.txt.
+
+## Raw harness output: v0.6.2
+
+# testAll under RunMat
+
+- Started: 2026-11-04T20:45:18Z
+- Source: /tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/cobra-rm @ 5625ee3ef
+- RunMat: RunMat v0.6.2 (/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-matlab-interface-spec/1a66df61-8617-464a-b587-ebd470eb7b17/scratchpad/runmat-target/release/runmat)
+- Command: COBRA_CI=1 timeout 20m runmat run test/testAll.m, in a copy of SOURCE
+- Shims: none
+- Exit status: 1, after 3s
+
+## Files set aside (1095)
+
+```
+   1068 discovery round 1
+     17 runmat check panics (D7)
+     10 not UTF-8 (D11)
+test files among them (not run): 35
+```
+
+## Stopping point (no JUnit report was written)
+
+```
+1:error: cell literal rows realize different widths
+2-id: RunMat:MirAggregateShapeInvalid
+3---> test/testAll.m:53:16
+4-53 |     CBTDIR = fileparts(fileparts(char(mfilename('fullpath'))));
+5-  |                ^^
+```
+
+Last lines of the output:
+
+```
+error: cell literal rows realize different widths
+id: RunMat:MirAggregateShapeInvalid
+--> test/testAll.m:53:16
+53 |     CBTDIR = fileparts(fileparts(char(mfilename('fullpath'))));
+  |                ^^
+```
+
+## Raw harness output: newer build
+
+# testAll under RunMat
+
+- Started: 2026-11-04T21:14:11Z
+- Source: /tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/cobra-rm @ 5625ee3ef
+- RunMat: RunMat v0.6.2 (/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/runmat-6e0a7df1a)
+- Command: COBRA_CI=1 timeout 20m runmat run test/testAll.m, in a copy of SOURCE
+- Shims: none
+- Exit status: 1, after 10s
+
+## Files set aside (775)
+
+```
+    748 discovery round 1
+     17 runmat check panics (D7)
+     10 not UTF-8 (D11)
+test files among them (not run): 8
+```
+
+## Stopping point (no JUnit report was written)
+
+```
+12:error: Undefined function: changeCbMapOutput
+13-id: RunMat:UndefinedFunction
+14---> test/testAll.m:369:17
+15-369 |                 cl = sum(clFiles);
+16-  |                 ^^^^^^^^^^^^^^^^^
+17-callstack:
+18-  test/testAll.m @ test/testAll.m:369:17
+```
+
+Last lines of the output:
+
+```
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2026
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Test Suite
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |
+                                                  | 
+
+Running test in COBRA CI environment
+error: Undefined function: changeCbMapOutput
+id: RunMat:UndefinedFunction
+--> test/testAll.m:369:17
+369 |                 cl = sum(clFiles);
+  |                 ^^^^^^^^^^^^^^^^^
+callstack:
+  test/testAll.m @ test/testAll.m:369:17
+```
