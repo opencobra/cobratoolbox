@@ -1,0 +1,75 @@
+# initCobraToolbox(false, 'runmat') under RunMat (T012, SC-001)
+
+- Source: full clone of branch 20261104-001324-runmat-init-mode @ 9b9cd72a4, with submodules
+- Tree: built by specs/20261102-153951-runmat-compat/tools/runmat_testall.sh (files RunMat cannot compile set aside; 1,095 for v0.6.2), WORK=<scratch>
+- Driver (in the tree root): initCobraToolbox(false, 'runmat'); then print CBTDIR
+- Command: runmat run --color never runmatInitDriver.m
+
+## RunMat v0.6.2 (feature/clean-room-matlab-builtins @ ebc6509f3)
+
+`initCobraToolbox.m` passes RunMat discovery (it failed with `prefdir` before this feature). The run:
+
+```
+error: Could not compile function source '/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/rm-work-v062/tree/src/visualization/maps/ReconMap/changeCbMapOutput.m': local may be read before it is assigned
+id: RunMat:FunctionCompileError
+callstack:
+  runmatInitDriver.m
+```
+
+Stopping point: the first toolbox-function call, `changeCbMapOutput` (`initCobraToolbox.m`, 'Define default CB map output'). Cause: D27 (`nargin`) and D28 (global read) in a function reached through the path, both listed under *Blocking defects* in `test/runtimeCompatibility/RunMat/debtRegister.md`. SC-001: met.
+
+## Newer RunMat build (informational; not the SC-001 reference)
+
+A RunMat build from a parallel session working on RunMat (`../runmat`, branch `feature/clean-room-matlab-builtins`, HEAD `6e0a7df1a` when copied, 2026-11-04). It reports the same version string, 0.6.2. In its tree, 775 files are set aside, against 1,095 for v0.6.2.
+
+`recheckRunMat.sh` with this build: D5, D10 and D26–D29 report *removable*; D6 and D24 are still needed. The driver gets past `changeCbMapOutput`, then stops with a defect that is not in the register:
+
+```
+error: dynamic output count is not supported for expanded builtin calls
+id: RunMat:RuntimeError
+--> runmatInitDriver.m:5:1162
+```
+
+The location is misreported (line 5 of a 4-line driver). The default-mode `testAll` run in the same tree stops with the same message after "Adding all the files of The COBRA Toolbox ... Done". That message comes from a call that asks for a variable number of outputs. This stop is being explored in `specs/20261104-134231-runmat-init-exploration/`, and is left to that inbox and a later feature.
+
+## Re-check outputs
+
+v0.6.2:
+
+```
+RunMat: runmat 0.6.2 (<path>)
+
+## Reproducers
+D10	still needed	error: Undefined function: prefdir
+D24	still needed	string
+D26	still needed	error: cell literal rows realize different widths
+D27	still needed	error: Could not compile function source '/tmp/tmp.MBWLtl3Eis/run/lib/runmatReproNargin.m': local may be read before it 
+D28	still needed	error: Could not compile function source '/tmp/tmp.MBWLtl3Eis/run/lib/runmatReproGlobal.m': local may be read before it 
+D29	still needed	error: Not enough input arguments.
+D5	still needed	error: undefined variable 'NOT_DEFINED'
+D6	still needed	0
+
+## Markers versus register
+markers: 3, register rows: 3
+markers and register rows match
+```
+
+Newer build:
+
+```
+RunMat: runmat 0.6.2 (<scratch>/runmat-6e0a7df1a)
+
+## Reproducers
+D10	removable	
+D24	still needed	string
+D26	removable	
+D27	removable	
+D28	removable	
+D29	removable	
+D5	removable	
+D6	still needed	0
+
+## Markers versus register
+markers: 3, register rows: 3
+markers and register rows match
+```

@@ -20,7 +20,7 @@ quickstart.md)
 
 ## Phase 1: Setup
 
-- [ ] T001 Start the MATLAB `testAll` baseline in the background.
+- [X] T001 Start the MATLAB `testAll` baseline in the background.
   - Use a full local clone at commit `afe0fac8f` (the spec and plan commit, with source identical to the branch
     base `87573f1e8`), with submodules, because `initCobraToolbox` fails in a git worktree.
   - Run `COBRA_CI=1 xvfb-run matlab -batch "cd('<clone>/test'); testAll"`, as in `$P/reports/testAll-after-summary.md`.
@@ -63,10 +63,10 @@ blocking defect. In MATLAB it equals `'agent'` mode.
 - MATLAB: `COBRA_TESTS=testInitCobraToolbox testAll` passes.
 - RunMat: the driver from T012 stops on a registered blocking defect.
 
-- [ ] T007 [US1] Rename `test/verifiedTests/base/testInstall/testInitCobraToolboxAgentMode.m` to
+- [X] T007 [US1] Rename `test/verifiedTests/base/testInstall/testInitCobraToolboxAgentMode.m` to
   `test/verifiedTests/base/testInstall/testInitCobraToolbox.m` with `git mv` (constitution III-Naming). Update its
   header and its error identifiers to the new name. Commit the rename on its own.
-- [ ] T008 [US1] Add tests to `test/verifiedTests/base/testInstall/testInitCobraToolbox.m`, written before the code
+- [X] T008 [US1] Add tests to `test/verifiedTests/base/testInstall/testInitCobraToolbox.m`, written before the code
   (they must fail now):
   - `initCobraToolbox(false, 'nope')` gives a message that lists `'runmat'`;
   - `initCobraToolbox(true, 'runmat')` raises `initCobraToolbox:invalidMode`, with `'runmat'` and
@@ -77,23 +77,23 @@ blocking defect. In MATLAB it equals `'agent'` mode.
   - global git `http.sslVerify` is unchanged after `'runmat'` mode, reusing the file's existing check.
 
   Clear `CBT_INITIALIZED` between calls, so that the idempotency guard does not skip the second call.
-- [ ] T009 [US1] In `initCobraToolbox.m`, change the argument handling:
+- [X] T009 [US1] In `initCobraToolbox.m`, change the argument handling:
   - accept `'runmat'` in the `mode` check, and list it in both `initCobraToolbox:invalidMode` messages;
   - set `runmatMode = strcmpi(mode, 'runmat')` and `agentMode = strcmpi(mode, 'agent') || runmatMode`;
   - raise `initCobraToolbox:invalidMode` when `runmatMode && updateToolbox`, naming the combination;
   - document `'runmat'` in the help header (`mode` list, limits, pointer to `$RC/debtRegister.md`), following
     VII-E.
-- [ ] T010 [US1] In `initCobraToolbox.m`, add the `runmatMode` workarounds, each with its marker
+- [X] T010 [US1] In `initCobraToolbox.m`, add the `runmatMode` workarounds, each with its marker
   (`% RUNTIME-DEBT(RunMat:<id>)`):
   - the root is `CBTDIR = fileparts(char(mfilename('fullpath')))` when `runmatMode`, and
     `fileparts(which('initCobraToolbox'))` otherwise (markers D6 and D24);
   - `defaultSavePathLocation` is computed with `prefdir()` only when `~runmatMode`, and set to `''` otherwise
     (marker D10).
-- [ ] T011 [US1] Make the MATLAB-equivalent rewrites in `initCobraToolbox.m`. These are not debt and carry no
+- [X] T011 [US1] Make the MATLAB-equivalent rewrites in `initCobraToolbox.m`. These are not debt and carry no
   marker:
   - every `{}` becomes `cell(0, 0)` (9 occurrences, D26);
   - `addpath(genpath([CBTDIR ... 'docs' ... 'notes']))` is guarded with `isfolder` (D25).
-- [ ] T012 [US1] Add one *Workarounds* row per T010 marker to `$RC/debtRegister.md`, then run `$RC/recheckRunMat.sh`,
+- [X] T012 [US1] Add one *Workarounds* row per T010 marker to `$RC/debtRegister.md`, then run `$RC/recheckRunMat.sh`,
   which must exit 0.
   - Run `COBRA_TESTS=testInitCobraToolbox` in MATLAB; T008 must pass.
   - Under RunMat, run a driver that calls `initCobraToolbox(false, 'runmat')`. Run it in a work tree that
