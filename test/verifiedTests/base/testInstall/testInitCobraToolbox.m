@@ -1,4 +1,4 @@
-% The COBRAToolbox: testInitCobraToolboxAgentMode.m
+% The COBRAToolbox: testInitCobraToolbox.m
 %
 % Purpose:
 %     - Test the 'agent' fast-path and argument-validation added to
@@ -34,7 +34,7 @@ sslBefore = strtrim(sslBefore);
 fprintf('  Test 3: invalid mode raises initCobraToolbox:invalidMode ... ');
 try
     initCobraToolbox(false, 'nope');
-    error('testInitCobraToolboxAgentMode:noError', ...
+    error('testInitCobraToolbox:noError', ...
         'Expected an error for mode=''nope'' but none was thrown.');
 catch ME
     assert(strcmp(ME.identifier, 'initCobraToolbox:invalidMode'), ...
