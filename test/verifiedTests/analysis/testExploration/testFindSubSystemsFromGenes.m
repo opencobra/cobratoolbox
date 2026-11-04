@@ -3,8 +3,36 @@
 % Purpose:
 %     - Test the findSubSystemsFromGenes and the wrapper findSubSysGen function
 %
+% Function under test:
+%     src/analysis/exploration/findSubSystemsFromGenes.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 2 - model manipulation, no solver; ecoli_core_model loaded through getDistributedModel.
+%
+% Coverage exemptions:
+%     None. Every other executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A model without rxnGeneMat and rules cannot be used
+%       SEVERITY: error
+%       TRIGGER: a model that has grRules but neither rxnGeneMat nor rules
+%       OBSERVED: `regexptranslate y` inside the square brackets calls regexptranslate without
+%         arguments, so the call fails with "Not enough input arguments"
+%       EXPECTED: the gene associations are read from grRules, as the comment in the code says
+%       LINES: 76
+%     - DEFECT: Sub-systems stored as character arrays come back as single letters
+%       SEVERITY: wrong-result
+%       TRIGGER: a model whose subSystems entries are character arrays, the format kept by
+%         getDistributedModel for ecoli_core_model, for example
+%         findSubSystemsFromGenes(model, 'b1779')
+%       OBSERVED: the entries are concatenated into one character array, so unique returns its
+%         letters, '/Gcegilnosuy' instead of 'Glycolysis/Gluconeogenesis'
+%       EXPECTED: the names of the sub-systems
+%       LINES: 87, 92
+%
 % Authors:
 %     - Original file: Thomas Pfau, June 2018
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 global CBTDIR
@@ -15,6 +43,9 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('findSubSystemsFromGenes'));
 cd(fileDir);
+
+% this test needs no solver, toolbox or particular operating system
+prepareTest();
 
 % load model
 model = getDistributedModel('ecoli_core_model.mat');
@@ -87,6 +118,32 @@ assert(isempty(setxor(strcat('gene_',regexprep(checkedGenes,'[^a-zA-Z0-9]','_'))
 assert(isempty(indList.gene_2some_OtherGene)); %it still has no associated subSystems
 %All other genes have the correct subSystems
 assert(all(cellfun(@(x,y) isempty(setxor(indList.(['gene_',x]),y)),genesOfInterest(:,1),genesOfInterest(:,2)))); %All sets match
+
+%The sections below use sub-systems stored as cell arrays, see the known defects in the header.
+modelCells = model;
+modelCells.subSystems = cellfun(@cellstr, model.subSystems, 'UniformOutput', false);
+
+%% Without a gene list, all genes of the model are used
+fprintf('>> Testing the default gene list\n')
+[allSubSystems, allGenes] = findSubSystemsFromGenes(modelCells);
+assert(isequal(allGenes(:, 1), modelCells.genes))
+[emptyListSubSystems, emptyListGenes] = findSubSystemsFromGenes(modelCells, {});
+assert(isequal(emptyListSubSystems, allSubSystems))
+assert(isequal(emptyListGenes, allGenes))
+
+%% Without rxnGeneMat the associations come from the rules and the result stays the same
+fprintf('>> Testing models without rxnGeneMat\n')
+modelRules = rmfield(modelCells, 'rxnGeneMat');
+[rulesSubSystems, rulesGenes] = findSubSystemsFromGenes(modelRules, genesOfInterest(:, 1));
+[matSubSystems, matGenes] = findSubSystemsFromGenes(modelCells, genesOfInterest(:, 1));
+assert(isequal(rulesSubSystems, matSubSystems))
+assert(isequal(rulesGenes, matGenes))
+
+%% Without any field that links genes and reactions the function refuses to run
+modelNoGpr = rmfield(modelRules, {'rules', 'grRules'});
+assert(verifyCobraFunctionError('findSubSystemsFromGenes', 'inputs', {modelNoGpr, 'b1779'}, ...
+    'testMessage', ['No fields to determine Gene - Reaction associations (rxnGeneMat, rules, ' ...
+    'grRules) found in the model!']));
 
 fprintf('>> Done\n');
 

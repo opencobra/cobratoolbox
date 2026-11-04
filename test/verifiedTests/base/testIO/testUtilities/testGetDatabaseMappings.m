@@ -5,6 +5,7 @@
 %
 % Authors:
 %     - Jacek Wachowiak
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;
@@ -39,6 +40,10 @@ assert(any(keggpos));
 
 %Now, we can savely assume, that rxnKEGGID should be the target of a 'is' qualifier for kegg. 
 assert(isequal(returnedmappings{keggpos & isqualifiers,3},'rxnKEGGID'));
+
+%The qualifier 'all' is the same as giving no qualifier, alone or within a list.
+assert(isequal(getDatabaseMappings(field, 'all'), returnedmappings));
+assert(isequal(getDatabaseMappings(field, {'is', 'all'}), returnedmappings));
 
 
 % change to old directory

@@ -3,10 +3,23 @@
 % Purpose:
 %     - tests the basic functionality of createMultipleSpeciesModel
 %
+% Function under test:
+%     src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/createMultipleSpeciesModel.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation; ecoli_core_model loaded through getDistributedModel, LP solver required.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Original file: Almut Heinken - March 2017
 %     - CI integration: Laurent Heirendt - March 2017
 %     - Farid Zare Feb 2024 (Adding biomass input)
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 % Note:
 %     - The solver libraries must be included separately
@@ -20,8 +33,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testCreateMultipleSpeciesModel'));
 cd(fileDir);
 
-% require an LP solver; skip gracefully if none is available
-prepareTest('needsLP', true);
+% require an LP solver; skip gracefully if none is available. Only solvers that work here are
+% tried: changeCobraSolver on a TOMLAB without licence leaves TOMLAB's gurobi.m first on the path
+solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'glpk', 'gurobi', 'tomlab_cplex'});
 
 % load the model
 model = getDistributedModel('ecoli_core_model.mat');
@@ -36,7 +50,7 @@ model = convertOldStyleModel(model);
 host = model;
 
 % define the solver packages to be used to run this test
-solverPkgs = {'glpk', 'gurobi', 'tomlab_cplex'};
+solverPkgs = solvers.LP;
 
 for k = 1:length(solverPkgs)
 
@@ -160,6 +174,36 @@ for k = 1:length(solverPkgs)
 
     % output a success message
     fprintf('Done.\n');
+end
+
+%% wrong inputs are refused
+assert(verifyCobraFunctionError('createMultipleSpeciesModel', 'inputs', {{}, {}}, ...
+    'testMessage', 'Please enter at least one model!'));
+assert(verifyCobraFunctionError('createMultipleSpeciesModel', 'inputs', {{model}, {}, ...
+    'nameTagsModels', {'tag1_'; 'tag2_'}}, ...
+    'testMessage', 'Number of name tags and joint models needs to be identical!'));
+
+%% the KBase biomass metabolite gets a demand reaction before the models are joined
+modelKBase = model;
+modelKBase.mets{1} = 'cpd11416[c0]';
+modelJoint = createMultipleSpeciesModel({modelKBase});
+assert(any(strcmp(modelJoint.rxns, 'model1_DM_cpd11416[c0]')));
+
+%% removal of futile cycles keeps both organisms intact and growing
+% ecoli_core_model holds none of the reaction sets that removeFutileCycles replaces, so the
+% result must have the same reactions as the plain joint model. removeFutileCycles switches all
+% warnings off, so the warning state of the session is restored afterwards.
+biomass = model.rxns(logical(model.c));
+warningState = warning;
+modelJoint = createMultipleSpeciesModel({model; model}, {biomass{1}; biomass{1}}, 'remCyclesFlag', true);
+warning(warningState);
+modelPlain = createMultipleSpeciesModel({model; model}, {biomass{1}; biomass{1}});
+assert(isempty(setxor(modelJoint.rxns, modelPlain.rxns)));
+for i = 1:2
+    tag = sprintf('model%d_', i);
+    modelJoint = changeObjective(modelJoint, [tag biomass{1}]);
+    FBA = optimizeCbModel(modelJoint, 'max');
+    assert(FBA.stat == 1 && FBA.f > tol);
 end
 
 % change the directory

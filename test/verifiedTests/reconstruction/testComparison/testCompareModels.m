@@ -19,9 +19,10 @@
 % Coverage exemptions:
 %     Line 71, the removal of a leading parent name from dotted field paths: the comparison reports
 %     differences in nested structures under the name of the top-level field, so no dotted path
-%     occurred. Line 93, the local function valueSize2str: nothing in the file calls it. Lines
-%     100-101, the empty-size branch of the local function sizeVec2str: it is called only with the
-%     result of size, which is never empty.
+%     occurred.
+%     Line 93, the local function valueSize2str: nothing in the file calls it.
+%     Lines 100-101, the empty-size branch of the local function sizeVec2str: it is called only with
+%     the result of size, which is never empty.
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     None found.
@@ -29,6 +30,7 @@
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
 %     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;
@@ -97,13 +99,15 @@ assert(isequal(diffTable.Properties.VariableNames, {'field', 'same_A', 'same_B',
 
 %% values of other types are summarised as text
 
-typedA = struct('s', "one", 'f', @sin, 'cs', {{'p', 'q'}}, 'sp', sparse(eye(4)));
-typedB = struct('s', "two", 'f', @cos, 'cs', {{'p', 'r'}}, 'sp', sparse(2 * eye(4)));
+typedA = struct('s', "one", 'f', @sin, 'cs', {{'p', 'q'}}, 'sp', sparse(eye(4)), 'ch', 'abc');
+typedB = struct('s', "two", 'f', @cos, 'cs', {{'p', 'r'}}, 'sp', sparse(2 * eye(4)), 'ch', 'abd');
 [~, diffTable, ~] = compareModels(typedA, typedB);
-% a string scalar, a function handle, a short list of names, and a large sparse matrix by size and class
+% a string scalar, a function handle, a short list of names, a short text as it is, and a large
+% sparse matrix by size and class
 assert(isequal(diffTable.typedA(strcmp(diffTable.field, 's')), {'one'}));
 assert(isequal(diffTable.typedA(strcmp(diffTable.field, 'f')), {'sin'}));
 assert(isequal(diffTable.typedA(strcmp(diffTable.field, 'cs')), {'{p, q}'}));
+assert(isequal(diffTable.typedA(strcmp(diffTable.field, 'ch')), {'abc'}));
 assert(isequal(diffTable.typedA(strcmp(diffTable.field, 'sp')), {'[4x4 sparse double]'}));
 
 % change the directory

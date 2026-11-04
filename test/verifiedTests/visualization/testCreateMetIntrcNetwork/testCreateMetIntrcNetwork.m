@@ -3,8 +3,22 @@
 % Purpose:
 %     - tests the basic functionality of createMetIntrcNetwork
 %
+% Function under test:
+%     src/visualization/createMetIntrcNetwork/createMetIntrcNetwork.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 2 - model manipulation, no solver; ecoli_core_model through getDistributedModel and
+%     hand-built toy models.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Author:
 %     - Kadir Kocabas November/2020
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % save the current path
@@ -110,16 +124,56 @@ assert(~any(ismember(GraphObj.Edges.EndNodes(:,2),'A')));
 %the network as a source
 assert(~any(ismember(GraphObj.Edges.EndNodes(:,1),'G')));
 
+%% Invalid scale and degree options are rejected
+assert(verifyCobraFunctionError('createMetIntrcNetwork', 'inputs', {model, model.mets, 'scaleMin', 2, 'scaleMax', 1}, ...
+                                'testMessage', 'scaleMax should bigger than scaleMin'));
+assert(verifyCobraFunctionError('createMetIntrcNetwork', 'inputs', {model, model.mets, 'excNodesWithDeg', [5 1]}, ...
+                                'testMessage', 'maximum degree should bigger or equal to minimum degree'));
+assert(verifyCobraFunctionError('createMetIntrcNetwork', 'inputs', {model, model.mets, 'excNodesWithDeg', [1000 2000]}, ...
+                                'testMessage', 'There is no node with degree in the given range'));
+
+%% Warnings: scales without fluxes, and metabolites that are not in the model
+lastwarn('');
+createMetIntrcNetwork(model, model.mets, 'scaleMin', 0, 'scaleMax', 3);
+assert(contains(lastwarn, 'Scales are given without giving fluxes'));
+delete(findall(0, 'Type', 'figure'));
+
+lastwarn('');
+[GraphUnknownMet] = createMetIntrcNetwork(model, {'A'; 'notInModel'});
+assert(contains(lastwarn, 'These metabolites are not found in model : notInModel'));
+assert(ismember('A', GraphUnknownMet.Nodes.Name));
+assert(~ismember('notInModel', GraphUnknownMet.Nodes.Name));
+delete(findall(0, 'Type', 'figure'));
+
+%% The threshold removes edges from the plot (the returned graph keeps them)
+% A threshold of 0 stands for 1e-5, which removes the edges of the reaction without flux (R9).
+[GraphAllEdges] = createMetIntrcNetwork(model, model.mets, 'fluxes', fluxes, 'threshold', 0);
+plottedGraph = findobj(gca, 'Type', 'GraphPlot');
+nSmallEdges = nnz(GraphAllEdges.Edges.Weight < 1e-5);
+assert(nSmallEdges > 0);
+assert(numel(plottedGraph.LineWidth) == numedges(GraphAllEdges) - nSmallEdges); % one width per edge
+delete(findall(0, 'Type', 'figure'));
+
+% a threshold above every weight leaves a plot without edges and a warning
+lastwarn('');
+createMetIntrcNetwork(model, model.mets, 'fluxes', fluxes, 'threshold', 1e6);
+assert(contains(lastwarn, 'There is no edges in the Network'));
+assert(isempty(get(gca, 'Colorbar'))); % nothing to colour
+delete(findall(0, 'Type', 'figure'));
+
+%% All edges with the same weight: no relative width can be computed, so the width is one
+modelOneRxn = struct();
+modelOneRxn.S = [-1; 1];
+modelOneRxn.mets = {'X'; 'Y'};
+modelOneRxn.rxns = {'R1'};
+createMetIntrcNetwork(modelOneRxn, modelOneRxn.mets, 'fluxes', 2);
+plottedGraph = findobj(gca, 'Type', 'GraphPlot');
+assert(plottedGraph.LineWidth == 1);
+assert(~isempty(get(gca, 'Colorbar')));
+delete(findall(0, 'Type', 'figure'));
+
 % output a success message
 fprintf('Done.\n');
 
-
-
-
-
-
-
-
-
-
-
+% change the directory
+cd(currentDir)

@@ -25,6 +25,7 @@
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
 %     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;
@@ -116,6 +117,30 @@ assert(contains(out.Errors.propertiesNotMatched.lb, '2') && contains(out.Errors.
 
 out = checkPresentFields({'lb', NaN, NaN, 'thisFunctionDoesNotExist(x)'}, model, results);
 assert(isfield(out.Errors, 'propertiesNotMatched') && isfield(out.Errors.propertiesNotMatched, 'lb'));
+
+%% a long list of positions is cut after the limit, and a limit of -1 prints all of them
+
+% 13 invalid positions exceed the default limit of 10 by more than one: 3 are left out
+model.lb = -(1:13)';
+out = checkPresentFields({'lb', NaN, NaN, 'all(x > 0)'}, model, results);
+positions = out.Errors.propertiesNotMatched.lb;
+assert(contains(positions, '(3 left out)') && contains(positions, sprintf('10, ...')));
+assert(~contains(positions, '11') && ~contains(positions, '13'));
+% one position more than the limit is printed rather than replaced by a note about one position
+model.lb = -(1:11)';
+out = checkPresentFields({'lb', NaN, NaN, 'all(x > 0)'}, model, results);
+positions = out.Errors.propertiesNotMatched.lb;
+assert(contains(positions, '11') && ~contains(positions, 'left out'));
+% an explicit limit
+model.lb = -(1:5)';
+out = checkPresentFields({'lb', NaN, NaN, 'all(x > 0)'}, model, results, 2);
+positions = out.Errors.propertiesNotMatched.lb;
+assert(contains(positions, sprintf('1,\n2, ...')) && contains(positions, '(3 left out)'));
+% no limit
+model.lb = -(1:13)';
+out = checkPresentFields({'lb', NaN, NaN, 'all(x > 0)'}, model, results, -1);
+positions = out.Errors.propertiesNotMatched.lb;
+assert(contains(positions, '13') && ~contains(positions, 'left out'));
 
 %% fields that are not in the model are skipped
 

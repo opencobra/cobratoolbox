@@ -7,6 +7,7 @@
 %
 % Authors:
 %     - COBRA Toolbox, feature 002-testall-performance-modes, 2026
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % save the state so it can be restored regardless of test outcome
@@ -62,6 +63,18 @@ try
     end
     assert(threw);
     setenv('COBRA_TEST_MODE', '');
+
+    % 6. a mode that is neither a char nor a string raises the same error and names its source
+    CBT_TEST_MODE = 5;
+    threw = false;
+    try
+        getCobraTestMode();
+    catch ME_invalid
+        threw = strcmp(ME_invalid.identifier, 'COBRA:testMode:invalid') && ...
+            contains(ME_invalid.message, 'global CBT_TEST_MODE must be a string');
+    end
+    assert(threw);
+    CBT_TEST_MODE = [];
 
 catch ME
     % restore state before reporting the failure

@@ -6,6 +6,7 @@
 %
 % Authors:
 %     - Lemmer El Assal February 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % save the current path
@@ -56,6 +57,27 @@ try
 catch ME
     assert(length(ME.message) > 0)
 end
+
+%% a rule that is a single element is replaced as a whole
+[elements, newRule] = parseBoolean('geneA');
+assert(isequal(elements, {'geneA'}))
+assert(strcmp(newRule, 'x(1)'))
+
+%% elements at the very start and the very end of a rule, with the default tokens
+[elements, newRule] = parseBoolean('geneA and geneB');
+assert(isequal(elements, {'geneA', 'geneB'}))
+assert(strcmp(newRule, 'x(1) & x(2)'))
+
+%% an element that is part of a longer element is only replaced where it stands alone
+% at the start: geneA is a prefix of geneAB, inside the rule it must not be replaced
+[elements, newRule] = parseBoolean('geneA and geneAB and geneC');
+assert(isequal(elements, {'geneA', 'geneAB', 'geneC'}))
+assert(strcmp(newRule, 'x(1) & x(2) & x(3)'))
+
+% at the end: geneB is a suffix of xgeneB, at the end of the rule it must not be replaced
+[elements, newRule] = parseBoolean('geneB and xgeneB');
+assert(isequal(elements, {'geneB', 'xgeneB'}))
+assert(strcmp(newRule, 'x(1) & x(2)'))
 
 % change the directory
 cd(currentDir)

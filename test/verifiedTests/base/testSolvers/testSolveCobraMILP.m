@@ -2,10 +2,45 @@
 %
 % Purpose:
 %     - testSolveCobraMILP tests the SolveCobraMILP function and its different methods
+%     - Solver names that the interface refuses or writes to a file (mps, an unknown name) are
+%       selected with validationLevel -1: no solver is imitated, the branch does not call one.
+%       All other branches run with the real gurobi and glpk.
+%
+% Function under test:
+%     src/base/solvers/solveCobraMILP.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - toy MILPs, gurobi and glpk.
+%
+% Coverage exemptions:
+%     Line 134: unreachable, ~find(regexp(...)) is empty or false, so the condition is never true.
+%     Lines 198-236: cplex_direct branch, solver not available.
+%     Lines 245-292: gurobi_mex branch, solver not available.
+%     Lines 297-318: ibm_cplex branch, solver not available.
+%     Lines 351-352: defective input skipped, see the defect on an empty csense below.
+%     Lines 398-463: tomlab_cplex branch, solver not available.
+%     Line 504: unreachable, the nested function redirect has no caller.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: gurobi does not accept an empty csense
+%       SEVERITY: error
+%       TRIGGER: MILPproblem.csense empty, with the solver gurobi
+%       OBSERVED: the default senses go to the local csense, while the problem passed to gurobi
+%         keeps the empty field, so gurobi stops with Incorrect size(model.sense)
+%       EXPECTED: equalities, as with glpk
+%       LINES: 351-352, 375
+%     - DEFECT: The legacy mps interface returns no output
+%       SEVERITY: error
+%       TRIGGER: solution = solveCobraMILP(problem) with the solver mps
+%       OBSERVED: the function returns before solution is assigned, so the call stops with
+%         Output argument solution not assigned, after the file was written
+%       EXPECTED: an empty solution, as in solveCobraLP
+%       LINES: 469
 %
 % Author:
 %     - Original file: Joseph Kang 11/16/09
 %     - CI integration: Laurent Heirendt, March 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 % Note:
 %       test is performed on objective as solution can vary between machines, solver version etc..
@@ -31,6 +66,9 @@ solverPkgs = prepareTest('needsMILP', true, 'useSolversIfAvailable', UseIfAvaila
 
 % set the tolerance
 tol = 1e-8;
+
+% the random problems must be reproducible
+rng(0);
 
 for k = 1:length(solverPkgs.MILP)
     fprintf('   Running solveCobraMILP using %s ... ', solverPkgs.MILP{k});
@@ -193,8 +231,7 @@ for k = 1:length(solverPkgs.MILP)
 end
 
 % test ibm_cplex output to command window
-solverOK = changeCobraSolver('ibm_cplex', 'MILP', 0);
-if solverOK
+if SOLVERS.ibm_cplex.working && changeCobraSolver('ibm_cplex', 'MILP', 0)
     fprintf('Test ibm_cplex output to command window ...\n')
     % solve without logToFile = 1
     diary test_ibm_cplex_output_to_console1.txt
@@ -225,6 +262,114 @@ if solverOK
     fprintf('Test ibm_cplex output to command window ... Done\n')
 end
 
+%% Interface branches: solver state, inputs, the status of each available solver
+coverageState = CobraSolverState.get();
+coverageDir = tempname;
+mkdir(coverageDir);
+coverageError = [];
+try
+    coverageSolvers = prepareTest('needsMILP', true, 'useSolversIfAvailable', {'gurobi', 'glpk'});
+    isAvailable = @(solverName) any(strcmp(coverageSolvers.MILP, solverName));
+
+    % the problem of the first section, with the optimum 554
+    coverageMILP = struct('c', [20; 6; 8], 'A', [0.8, 0.2, 0.3; 0.4, 0.3, 0; 0.2, 0, 0.1], ...
+        'b', [20; 10; 5], 'lb', [0; 0; 0], 'ub', [1000; 1000; 1000], 'osense', -1, ...
+        'csense', ['L'; 'L'; 'L'], 'vartype', ['I'; 'I'; 'I']);
+
+    %% an explicit solver state selects the solver of one call only
+    if isAvailable('gurobi') && isAvailable('glpk')
+        changeCobraSolver('gurobi', 'MILP', 0);
+        explicitState = CobraSolverState.get();
+        explicitState.solver.MILP = 'glpk';
+        solution = solveCobraMILP(coverageMILP, 'cobraSolverState', explicitState);
+        assert(strcmp(solution.solver, 'glpk') && abs(solution.obj - 554) < tol);
+        assert(strcmp(CobraSolverState.getSolver('MILP'), 'gurobi'));
+    end
+
+    changeCobraSolver(coverageSolvers.MILP{1}, 'MILP', 0);
+
+    %% the input is saved on request
+    savedFile = fullfile(coverageDir, 'savedMILP.mat');
+    solveCobraMILP(coverageMILP, 'saveInput', savedFile);
+    savedInput = load(savedFile);
+    assert(isequal(savedInput.MILPproblem.A, coverageMILP.A));
+
+    %% a variable type that is not C, I or B is taken as continuous
+    wrongType = coverageMILP;
+    wrongType.vartype = ['X'; 'I'; 'I'];
+    printedText = evalc('solution = solveCobraMILP(wrongType);');
+    assert(contains(printedText, 'vartype not C or B or I:  Assuming C'));
+    assert(solution.stat == 1 && solution.obj >= 554 - 1e-6 && numel(solution.int) == 2);
+
+    %% the indices of the integer solution are handed over to the solution
+    withIndices = coverageMILP;
+    withIndices.intSolInd = [1; 2; 3];
+    solution = solveCobraMILP(withIndices);
+    assert(isequal(solution.intInd, [1; 2; 3]));
+
+    %% solver names that the interface refuses without calling a solver
+    refusedSolvers = {'', 'There is no solver for MILP problems available'; ...
+                      'nonsense', 'Unknown solver: nonsense'};
+    for i = 1:size(refusedSolvers, 1)
+        changeCobraSolver(refusedSolvers{i, 1}, 'MILP', 0, -1);
+        assertErrorContains(@() solveCobraMILP(coverageMILP), refusedSolvers{i, 2});
+    end
+
+    %% the legacy mps interface writes the problem to a file
+    changeCobraSolver('mps', 'MILP', 0, -1);
+    cd(coverageDir);
+    solveCobraMILP(coverageMILP);
+    assert(exist(fullfile(coverageDir, 'MILP.mps'), 'file') == 2);
+    cd(fileDir);
+
+    %% glpk: an empty csense means equalities
+    noSense = struct('c', [1; 1; 0], 'A', [1, 1, 0], 'b', 2, 'lb', [0; 0; 0], 'ub', [5; 5; 5], ...
+        'osense', 1, 'csense', '', 'vartype', ['I'; 'I'; 'C']);
+    if isAvailable('glpk')
+        changeCobraSolver('glpk', 'MILP', 0);
+        solution = solveCobraMILP(noSense);
+        assert(solution.stat == 1 && abs(solution.obj - 2) < 1e-6);
+    end
+
+    %% gurobi
+    if isAvailable('gurobi')
+        changeCobraSolver('gurobi', 'MILP', 0);
+
+        % printing, a log file and an integrality tolerance above the lower limit of gurobi
+        logFile = fullfile(coverageDir, 'gurobiMILP.log');
+        solution = solveCobraMILP(coverageMILP, 'printLevel', 1, 'logFile', logFile, 'intTol', 1e-6);
+        assert(solution.stat == 1 && abs(solution.obj - 554) < 1e-6);
+        assert(exist(logFile, 'file') == 2);
+
+        % minimisation: the costs are positive and x >= 0
+        minimisation = coverageMILP;
+        minimisation.osense = 1;
+        solution = solveCobraMILP(minimisation);
+        assert(solution.stat == 1 && abs(solution.obj) < 1e-6);
+
+        % a time limit reached with an incumbent: the start point 0 fits this knapsack problem
+        % with 200 binary variables and 60 rows, whose optimum takes far longer than the limit
+        nVariables = 200;
+        nRows = 60;
+        hardA = randi([1, 50], nRows, nVariables);
+        hardMILP = struct('c', randi([1, 100], nVariables, 1), 'A', sparse(hardA), ...
+            'b', floor(sum(hardA, 2) / 2), 'lb', zeros(nVariables, 1), 'ub', ones(nVariables, 1), ...
+            'osense', -1, 'csense', repmat('L', nRows, 1), 'vartype', repmat('B', nVariables, 1), ...
+            'x0', zeros(nVariables, 1));
+        solution = solveCobraMILP(hardMILP, struct('TimeLimit', 1, 'Threads', 1));
+        assert(strcmp(solution.origStat, 'TIME_LIMIT') && solution.stat == 3);
+        assert(contains(lastwarn, 'Time limit reached'));
+        assert(numel(solution.full) == nVariables && all(hardMILP.A * solution.full <= hardMILP.b + 1e-6));
+    end
+catch coverageError
+end
+cd(fileDir);
+CobraSolverState.restore(coverageState);
+rmdir(coverageDir, 's');
+if ~isempty(coverageError)
+    rethrow(coverageError);
+end
+
 % remove the generated file
 fullFileNamePath = [fileparts(which(mfilename)), filesep, 'MILPProblem.mat'];
 if exist(fullFileNamePath, 'file') == 2
@@ -238,3 +383,16 @@ end
 
 % change the directory
 cd(currentDir)
+
+function assertErrorContains(functionHandle, expectedText)
+    % The call has to stop with an error whose message contains expectedText.
+    threw = false;
+    try
+        functionHandle();
+    catch ME
+        threw = true;
+        assert(contains(ME.message, expectedText), 'unexpected error: %s', ME.message);
+    end
+    assert(threw, 'no error was thrown');
+end
+

@@ -6,6 +6,20 @@
 %
 % Authors:
 %     - Initial version: Farid Zare, April 2025
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
+%
+% Function under test:
+%     src/base/buildGrRules.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - no model, no solver, hand-built inputs.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
+% Coverage exemptions:
+%     Line 71: unreachable. It needs a rule without any term, but a rule whose cells are all empty
+%     already returned at line 38, and every other rule keeps at least one non-empty term.
 %
 
 global CBTDIR
@@ -29,6 +43,11 @@ expectedRule2 = '(geneD and geneE)';
 parsedGPR{3} = {};
 expectedRule3 = '';
 
+% Test Case 4: Nested structure with an empty complex
+% Expected: the empty complex is dropped and the others are kept.
+parsedGPR{4} = { {'geneF'}, {}, {'geneG', 'geneH'} };
+expectedRule4 = '(geneF) or (geneG and geneH)';
+
 % Run the function under test
 fprintf(' -- Running testBuildGrRules: ... ');
 rulesOut = buildGrRules(parsedGPR);
@@ -40,6 +59,8 @@ assert(isequal(rulesOut{2}, expectedRule2), ...
     'Test failed: Output for Test Case 2 does not match the expected rule.');
 assert(isequal(rulesOut{3}, expectedRule3), ...
     'Test failed: Output for Test Case 3 should be an empty string.');
+assert(isequal(rulesOut{4}, expectedRule4), ...
+    'Test failed: Output for Test Case 4 does not match the expected rule.');
 
 fprintf('Done\n');
 

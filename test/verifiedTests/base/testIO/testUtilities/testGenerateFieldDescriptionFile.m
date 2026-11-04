@@ -5,6 +5,7 @@
 %
 % Authors:
 %     - Jacek Wachowiak
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 global CBTDIR;
 % save the current path
 currentDir = pwd;
@@ -29,6 +30,18 @@ assert(isequal(testData_FileString, refData_FileString));
 
 % removal of test file
 delete 'testData_generateFieldDescriptionFile.md'
+
+%% an unknown toolbox root is found by initialising the toolbox (without an update)
+savedCBTDIR = CBTDIR;
+CBTDIR = [];
+try
+    initialisedString = generateFieldDescriptionFile();
+catch ME
+    CBTDIR = savedCBTDIR;
+    rethrow(ME);
+end
+assert(strcmp(CBTDIR, savedCBTDIR));
+assert(isequal(initialisedString, refData_FileString));
 
 % remove the default reference file regenerated above as a side effect
 % (it is intentionally not tracked in the repository)

@@ -15,10 +15,8 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Lines 261-278, the statements of the case externalNetFluxBounds = dxReplacement below its
-%     first statement: the case starts with an error call, so they can never run. Lines 374,
-%     379-382, the defaults for the gas constant and the temperature: they sit inside a block that
-%     is only entered when both are present in the model.
+%     Lines 261-278: unreachable, the case externalNetFluxBounds = dxReplacement starts with an error call.
+%     Lines 374, 379-382: unreachable, defaults inside a block only entered when both fields are present.
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: The default row selection indexes the first row repeatedly
@@ -58,6 +56,7 @@
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;

@@ -10,8 +10,21 @@
 %     - Test that a missing or unparsable RXN file raises an error in both
 %       call forms.
 %
+% Function under test:
+%     src/analysis/topology/reactingMoieties/addBondMappingsRXNFile.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - shipped and hand-written RXN files, no model and no solver.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - COBRA Toolbox, feature 20260921-160105-build-function-runtime
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % no solver is needed; declared for the harness convention
 prepareTest();
@@ -81,4 +94,52 @@ assert(verifyCobraFunctionError('addBondMappingsRXNFile', 'inputs', {rxnId, unpa
 assert(verifyCobraFunctionError('addBondMappingsRXNFile', 'inputs', {rxnId, unparsableDir, [], []}), ...
     'An unparsable RXN file must raise an error when empty atoms/bonds are passed.');
 
+%% The directory defaults to the current folder
+cd(rxnFilesDir);
+assert(isequaln(addBondMappingsRXNFile(rxnId), expected.bondMappings{1}), ...
+    'Without a directory the RXN file must be read from the current folder.');
+cd(fileDir);
+
+%% An unbalanced reaction raises a warning and maps the bond that is broken
+% a two-atom substrate gives a one-atom product: the C-C bond breaks
+unbalancedDir = tempname;
+mkdir(unbalancedDir);
+removeUnbalancedDir = onCleanup(@() rmdir(unbalancedDir, 's'));
+writeRxnFile(unbalancedDir, 'unbalanced', 'a -> b', 1, 1, { ...
+    makeMolecule('a', {'C', 'C'}, [1 2], [1 2 1]), makeMolecule('b', {'C'}, 1, zeros(0, 3))});
+lastwarn('');
+unbalancedMappings = addBondMappingsRXNFile('unbalanced', unbalancedDir);
+assert(contains(lastwarn, 'do not have the same dimensions in reaction "unbalanced"'), ...
+    'An unbalanced reaction must raise a warning naming it.');
+assert(isequal(unbalancedMappings.mets, {'a'; 'unbalanced'}) && isequal(unbalancedMappings.isReacting, [-1; -1]), ...
+    'The broken bond must be mapped to the energy node of the reaction.');
+assert(isequal(unbalancedMappings.bondTransitionNrs, [1; 1]), ...
+    'A broken bond and its energy node must share a bond transition number.');
+
 fprintf('testAddBondMappingsRXNFile: done\n');
+
+function writeRxnFile(folder, rxnId, formula, nSubstrates, nProducts, molecules)
+% Write an MDL RXN file. molecules is a cell array of structs with fields name, elements,
+% mapping (the atom transition numbers) and bonds (rows [head tail type]).
+fid = fopen(fullfile(folder, [rxnId '.rxn']), 'w');
+fprintf(fid, '$RXN\n%s\nTest fixture\n%s\n%3d%3d\n', rxnId, formula, nSubstrates, nProducts);
+for i = 1:numel(molecules)
+    molecule = molecules{i};
+    fprintf(fid, '$MOL\n%s\n  fixture\n\n%3d%3d  0  0  0  0  0  0  0  0999 V2000\n', ...
+        molecule.name, numel(molecule.elements), size(molecule.bonds, 1));
+    for a = 1:numel(molecule.elements)
+        fprintf(fid, '%10.4f%10.4f%10.4f %-3s 0  0  0  0  0  0  0  0  0%3d  0  0\n', 0, 0, 0, ...
+            molecule.elements{a}, molecule.mapping(a));
+    end
+    for b = 1:size(molecule.bonds, 1)
+        fprintf(fid, '%3d%3d%3d  0\n', molecule.bonds(b, :));
+    end
+    fprintf(fid, 'M  END\n');
+end
+fclose(fid);
+end
+
+function molecule = makeMolecule(name, elements, mapping, bonds)
+% One molecule of a writeRxnFile fixture.
+molecule = struct('name', name, 'elements', {elements}, 'mapping', mapping, 'bonds', bonds);
+end

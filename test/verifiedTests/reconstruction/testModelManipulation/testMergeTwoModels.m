@@ -4,11 +4,35 @@
 %     - testMergeTwoModels tests the mergeTwoModels function for
 %     applicability to multiple different scenarios.
 %
+% Function under test:
+%     src/reconstruction/refinement/mergeTwoModels.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - no genome-scale model, no solver, hand-built inputs.
+%
+% Coverage exemptions:
+%     Lines 261-262: the local function updateRule, nothing in the file calls it.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A field that cannot be concatenated is dropped with a debug message
+%       SEVERITY: wrong-result
+%       TRIGGER: a reaction field present in both models whose sizes do not fit, for example
+%         model1.rxnMat = zeros(2, 2) and model2.rxnMat = zeros(3, 3) for models with 2 and 3
+%         reactions
+%       OBSERVED: the error is caught, the text test is printed and the merged model has no
+%         rxnMat field, without any warning
+%       EXPECTED: an error, or a warning that names the field that is lost
+%       LINES: 236-237
+%
 % Authors:
 %     - Thomas Pfau 2018
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path and initialize the test
 currentDir = cd(fileparts(which(mfilename)));
+
+% this test needs no solver, MATLAB toolbox or particular operating system
+prepareTest();
 
 % determine the test path for references
 testPath = pwd;
@@ -90,6 +114,76 @@ model2 = addReaction(model2,'Rcommon','A[c] -> C[c]');
 mergeTwoModels(model1, model2);
 
 assert(strcmp(lastwarn, 'The following reactions were present in both models but had distinct stoichiometries:\nRcommon'))
+
+%% two small models that share metabolite B[c], for the fields that may be missing
+
+smallModel1 = createModel();
+smallModel1 = addMultipleMetabolites(smallModel1, {'A[c]', 'B[c]'});
+smallModel1 = addMultipleReactions(smallModel1, {'R1'}, smallModel1.mets, [-1; 1]);
+smallModel2 = createModel();
+smallModel2 = addMultipleMetabolites(smallModel2, {'B[c]', 'C[c]'});
+smallModel2 = addMultipleReactions(smallModel2, {'R2'}, smallModel2.mets, [-1; 1]);
+geneFields = {'genes', 'rules', 'rxnGeneMat'};
+
+%% a model without genes takes over the genes of the other model
+
+% model1 without genes
+modelJoint = mergeTwoModels(rmfield(smallModel1, geneFields), ...
+    addGenes(smallModel2, {'G1'}, 'geneNames', {'gene one'}));
+assert(isequal(modelJoint.genes, {'G1'}));
+assert(isequal(modelJoint.geneNames, {'gene one'}));
+assert(isequal(size(modelJoint.S), [3, 2]));
+
+% model2 without genes
+modelJoint = mergeTwoModels(addGenes(smallModel1, {'G1'}, 'geneNames', {'gene one'}), ...
+    rmfield(smallModel2, geneFields));
+assert(isequal(modelJoint.genes, {'G1'}));
+assert(isequal(modelJoint.geneNames, {'gene one'}));
+assert(isequal(size(modelJoint.S), [3, 2]));
+
+%% a gene field present only in model2 is kept
+
+modelJoint = mergeTwoModels(addGenes(smallModel1, {'G1'}), ...
+    addGenes(smallModel2, {'G2'}, 'geneNames', {'gene two'}));
+assert(isequal(modelJoint.genes, {'G1'; 'G2'}));
+assert(strcmp(modelJoint.geneNames{strcmp(modelJoint.genes, 'G2')}, 'gene two'));
+
+%% compartments are merged, once each, and model1 wins for a common compartment
+
+compModel1 = smallModel1;
+compModel1.comps = {'c'};
+compModel1.compNames = {'cytosol of model1'};
+compModel2 = smallModel2;
+compModel2.comps = {'c'; 'e'};
+compModel2.compNames = {'cytosol of model2'; 'extracellular'};
+
+modelJoint = mergeTwoModels(compModel1, compModel2);
+assert(isequal(modelJoint.comps, {'c'; 'e'}));
+assert(isequal(modelJoint.compNames, {'cytosol of model1'; 'extracellular'}));
+
+% model2 without compartments
+modelJoint = mergeTwoModels(compModel1, smallModel2);
+assert(isequal(modelJoint.comps, {'c'}));
+
+% model1 without compartments
+modelJoint = mergeTwoModels(smallModel1, compModel2);
+assert(isequal(modelJoint.comps, {'c'; 'e'}));
+assert(isequal(modelJoint.compNames, {'cytosol of model2'; 'extracellular'}));
+
+%% a reaction field present in one model only is filled with defaults for the other model
+
+notesModel1 = smallModel1;
+notesModel1.rxnNotes = {'note of R1'};
+modelJoint = mergeTwoModels(notesModel1, smallModel2);
+assert(isequal(modelJoint.rxns, {'R1'; 'R2'}));
+assert(strcmp(modelJoint.rxnNotes{1}, 'note of R1'));
+assert(isempty(modelJoint.rxnNotes{2}));
+
+notesModel2 = smallModel2;
+notesModel2.rxnNotes = {'note of R2'};
+modelJoint = mergeTwoModels(smallModel1, notesModel2);
+assert(isempty(modelJoint.rxnNotes{1}));
+assert(strcmp(modelJoint.rxnNotes{2}, 'note of R2'));
 
 fprintf('\nDone.\n');
 fprintf('testMergeTwoModels passed successfully.\n');
