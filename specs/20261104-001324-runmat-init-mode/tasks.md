@@ -110,12 +110,12 @@ blocking defect. In MATLAB it equals `'agent'` mode.
 
 **Independent Test**: T014 shows no new analyzer message. T026 shows the MATLAB suite unchanged.
 
-- [ ] T013 [US2] In `initCobraToolbox.m`, restore the desktop hyperlink in the banner: wrap `docLink` in an
+- [X] T013 [US2] In `initCobraToolbox.m`, restore the desktop hyperlink in the banner: wrap `docLink` in an
   `<a href>` when `usejava('desktop')`, as before `6a22237af`. Only the default mode prints the banner (FR-014).
   - Check in MATLAB `-batch` that the banner prints the plain link and does not error.
   - Add a one-line assertion to `testInitCobraToolbox.m` that the default-mode call does not error. It is already
     covered by Test 1 there; add only a comment if so.
-- [ ] T014 [US2] Compare the analyzer snapshot of `initCobraToolbox.m` with `$F/baseline/analyzer-before.json`.
+- [X] T014 [US2] Compare the analyzer snapshot of `initCobraToolbox.m` with `$F/baseline/analyzer-before.json`.
   It must have no new identifier, except one the register records.
   - Review the diff to confirm that every `'default'`/`'agent'` code path is unchanged, apart from the
     MATLAB-equivalent rewrites of T011.

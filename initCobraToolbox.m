@@ -182,6 +182,9 @@ end
 % print header
 if ~isfield(ENV_VARS, 'printLevel') || ENV_VARS.printLevel
     docLink = 'http://opencobra.github.io/cobratoolbox';
+    if usejava('desktop')
+        docLink = ['<a href=\"', docLink, '\">', docLink, '</a>'];
+    end
 
     c = clock;
     fprintf('\n\n      _____   _____   _____   _____     _____     |\n');

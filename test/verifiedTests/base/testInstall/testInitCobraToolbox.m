@@ -152,6 +152,9 @@ fprintf('  Test 5: PASSED\n');
 % -------------------------------------------------------------------------
 % Test 1: default mode (regression) — omit mode, globals set, sslVerify
 % unchanged overall (it is set then restored internally).
+% The idempotency guard usually returns early here, so the default-mode banner
+% (a desktop hyperlink when usejava('desktop') is true) is checked by running
+% initCobraToolbox(false) after clear global (feature 20261104-001324, T013).
 % NOTE: this test performs a full init including git/network operations;
 % it may take ~30 s and requires an internet connection.
 % -------------------------------------------------------------------------
