@@ -1,7 +1,7 @@
 # Human Loop State
 
 ## Current State
-- Status: slice T001–T012 implemented (/speckit-implement); next: Gate 3
+- Status: Gate 3 → continue; T013–T025 approved, awaiting `/speckit-implement`
 - Active feature directory: specs/20261104-001324-runmat-init-mode
 - Branch: `20261104-001324-runmat-init-mode` (from `089-large-model-solver-speed` @ `87573f1e8`, which contains the
   RunMat-compatibility feature 20261102-153951-runmat-compat)
@@ -31,16 +31,18 @@
 | 2026-11-04 | Workflow | "continue with speckit humanloop" | Bundle 1 closed; Gate 1 |
 | 2026-11-04 | Gate 1 | "Amend constitution, then plan (Recommended)" | constitution v1.8.0; then plan, tasks, analyze |
 | 2026-11-04 | Gate 2 | "Fix findings, approve slice (Recommended)" | spec/tasks remediated (I1–I3, C1, C2, U1, U2); slice T001–T012 approved; needs /speckit-implement |
+| 2026-11-04 | Gate 3 | "Continue with T013–T025 (Recommended)" | Remaining tasks approved; needs /speckit-implement |
 | 2026-11-04 | Implementation invocation | `/speckit-implement` | Slice T001–T012 implemented; receipt agent-runs/20261104T183608Z-runmat-init-mode |
 | 2026-11-04 | Planning blocker | "Narrow: mode + debt now (Recommended)" | RunMat v0.6.2 D26–D29 block toolbox functions; SC-001/SC-002 narrowed to the stopping point; research.md R2 |
 
 ## Approved Implementation Scope
 - Approved: yes (2026-11-04), pending the explicit `/speckit-implement`
-- Scope: slice T001–T012 (Phases 1–3)
-- Tasks deferred: T013–T025
+- Scope: slice T001–T012 (Phases 1–3) done; T013–T025 approved at Gate 3 (2026-11-04)
+- Tasks deferred: none
 - Files allowed: `initCobraToolbox.m`; `test/verifiedTests/base/testInstall/testInitCobraToolboxAgentMode.m`, renamed
   to `testInitCobraToolbox.m`; `test/runtimeCompatibility/RunMat/**`; `specs/20261104-001324-runmat-init-mode/**`
-- Files not allowed: `test/testAll.m` (US3, deferred), `external/`, `deprecated/`, submodule paths, any other `src/`
+- Files additionally allowed for T013–T025: `test/testAll.m`, `specs/20261102-153951-runmat-compat/{spec.md,reports/}`
+- Files not allowed: `external/`, `deprecated/`, submodule paths, any other `src/`
   file (including the uncommitted `findSExRxnInd.m`/`findStoichConsistentSubset.m` changes from another session)
 - Implementation path: core implementer (`/speckit-implement`)
 
