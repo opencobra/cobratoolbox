@@ -56,3 +56,10 @@ Tests hardcoding an unavailable solver (9 report 0% while passing) switch to the
 - [X] T091 Re-measure all changed tests; regenerate coverage-inventory.md and test/known-defects.md
 - [X] T092 Write agent-runs/<UTC>-implement/implementation-receipt.md
 - [X] T093 Commit per batch (maintainer identity, no co-author line, only feature files) and push the branch
+
+## Phase 5: Diagnosable failures in testCreateMetIntrcNetwork (FR-009, SC-005)
+
+- [X] T100 [US2] Add a message with the check name, expected value and actual value to the 17 direct assertions in test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m, leaving every condition unchanged
+- [X] T101 [US2] Add a local function at the end of test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m that returns the error message actually thrown, and use it in the messages of the 3 `verifyCobraFunctionError` assertions
+- [X] T102 [US2] Verify test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m: it passes through matlab-safe, it still has 20 assertions with unchanged conditions, and a throwaway copy with wrong expected values prints both values (SC-005)
+- [X] T103 Write agent-runs/<UTC>-diagnosable-asserts/implementation-receipt.md and commit only the test and this feature's files (maintainer identity, no co-author line, scanned for local details); push only when the maintainer asks

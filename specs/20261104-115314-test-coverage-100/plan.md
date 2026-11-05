@@ -50,6 +50,20 @@ requirements. **Scale/Scope**: 527 mapped tests (78 out of scope).
 
 Batches are refined after the inventory (GAP counts per domain).
 
+## Addendum: diagnosable failures in testCreateMetIntrcNetwork (FR-009)
+
+CI on PR #2722 reported this test as failing with only `Assertion failed.`; 139 of 140 selected
+tests passed and the test passes when run alone on the reference machine. The test gains
+messages so that the next CI run names the failing check. This changes diagnostics only: it
+does not fix the failure, which is addressed once its cause is known.
+
+- Use `assert(condition, message, values...)`, keeping each condition exactly as it is.
+- Format numbers with `mat2str` and text as it stands, so empty or array values still print.
+- `verifyCobraFunctionError` returns only true or false, so a local function at the end of the
+  test returns the message actually thrown, for the three expected-error checks. The shared
+  helper in `test/` does not change, because other tests depend on it.
+- Scope is this one test; other tests keep their current assertions.
+
 ## Complexity Tracking
 
 No constitution violations; nothing to justify.

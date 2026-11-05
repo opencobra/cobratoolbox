@@ -94,6 +94,11 @@ installation that has the requirement (e.g. CPLEX) or after the failure is fixed
   maintainer identity (no co-author line), only feature files staged, and pushed.
 - **FR-008**: A final re-measurement updates the inventory; the receipt reports counts per
   status before and after.
+- **FR-009**: Every `assert` in `testCreateMetIntrcNetwork.m` carries a failure message that names
+  the check and reports the expected and the actual value, so that a CI failure can be diagnosed
+  from the test report alone (CI reported only `Assertion failed.` on PR #2722). No condition
+  changes and no assertion is removed; `verifyCobraFunctionError` stays the expected-failure
+  check and `src/` does not change.
 
 ### Key Entities
 
@@ -108,6 +113,8 @@ installation that has the requirement (e.g. CPLEX) or after the failure is fixed
   fully documented).
 - **SC-003**: 100% of changed tests pass; 0 `src/` files change.
 - **SC-004**: Every SKIPPED or FAILING test is reported with its reason.
+- **SC-005**: 20 of 20 assertions in `testCreateMetIntrcNetwork.m` report expected and actual values
+  when they fail, shown by running a throwaway copy with wrong expected values.
 
 ## Assumptions
 
