@@ -32,7 +32,7 @@ function success = verifyCobraFunctionError(functionCall, varargin)
 testMessage = false;
 parser = inputParser();
 parser.addRequired('functionCall',@ischar)
-parser.addParamValue('inputs',{},@iscell)
+parser.addParamValue('inputs',cell(0, 0),@iscell)
 parser.addParamValue('testMessage','',@ischar)
 parser.addParamValue('outputArgCount',0,@(x) isnumeric(x) && mod(x,1) == 0);
 

@@ -189,7 +189,7 @@ passes.
 
 ## Phase 8: Gate 3 scope extension (FR-016)
 
-- [ ] T026 [US3] In `test/verifyCobraFunctionError.m` line 35, replace `{}` with `cell(0, 0)`. Then:
+- [X] T026 [US3] In `test/verifyCobraFunctionError.m` line 35, replace `{}` with `cell(0, 0)`. Then:
   - run `checkcode` on the file: no new message;
   - in MATLAB, run two of the tests that call it (for example `testParseCobraVarargin` and one other), which
     must pass;
