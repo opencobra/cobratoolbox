@@ -9,7 +9,7 @@ and confirm the test is reliable and fast.
 ## Final Response
 
 Implemented and validated feature 017-buildgurobifrommodel-tests: added
-[testCharacterizeBuildGurobiProblemFromModel.m](/home/farid/Projects/cobratoolbox-f-develop/test/verifiedTests/base/testSolvers/testCharacterizeBuildGurobiProblemFromModel.m),
+[testCharacterizeBuildGurobiProblemFromModel.m](../../../../test/verifiedTests/base/testSolvers/testBuildGurobiProblemFromModel.m),
 a Constitution Principle III characterization test pinning the current behaviour
 of `buildGurobiProblemFromModel` (no `src` changes).
 
@@ -114,3 +114,5 @@ phases (`.specify/feature.json`, `CLAUDE.md`, `specs/017-buildgurobifrommodel-te
 - MATLAB reference consulted: none beyond the repository's own
   `documentation/source/guides/testGuide.rst` and the sibling
   `testCharacterizeBuildOptProblemFromModel.m`, per research.md R3.
+
+Redaction (2026-11-05): local machine details were removed or replaced with relative paths or a placeholder, as personal data. No other text changed.

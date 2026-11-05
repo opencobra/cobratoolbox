@@ -71,4 +71,6 @@ Not done / caveats:
 
 Spec Kit gate: spec, plan and tasks were written before any src edit; implementation was run on the
 maintainer's explicit authorisation above. Benchmarks: unmodified toolbox 35918b372, MATLAB R2025a, Gurobi
-11.0.3, 12 cores, 24 GB cap per stage (research.md).
+11.0.3, [hardware redacted], 24 GB cap per stage (research.md).
+
+Redaction (2026-11-05): local machine details were removed or replaced with relative paths or a placeholder, as personal data. No other text changed.

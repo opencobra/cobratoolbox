@@ -1,6 +1,7 @@
 function profRun(stage, inFile, outTxt)
+cobra = fileparts(fileparts(fileparts(fileparts(mfilename('fullpath')))));
 profile clear; profile on
-stageRun(stage, '/home/farid/Projects/cobratoolbox-f-develop/src', inFile, '', [tempname '.csv']);
+stageRun(stage, fullfile(cobra, 'src'), inFile, '', [tempname '.csv']);
 profile off
 p = profile('info'); T = p.FunctionTable;
 [~, ix] = sort([T.TotalTime], 'descend'); fid = fopen(outTxt,'w');

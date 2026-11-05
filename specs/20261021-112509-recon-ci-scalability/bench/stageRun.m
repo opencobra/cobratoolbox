@@ -1,6 +1,10 @@
 % stageRun(stage, cobraSrc, inFile, outFile, resultFile)  one stage per process, so VmHWM is per-stage.
 function stageRun(stage, cobraSrc, inFile, outFile, resultFile)
-addpath(genpath('/home/farid/Projects/reconxkg/ReconXKGtoCobra'));
+extraCode = getenv('COBRA_BENCH_EXTRA_CODE');   % folder of code outside the toolbox, used by the feasibility stage only
+if strcmp(stage, 'feasibility') && isempty(extraCode)
+    error('stageRun:missingExtraCode', 'Set COBRA_BENCH_EXTRA_CODE to the folder that holds checkFeasibilityConditions.');
+end
+if ~isempty(extraCode), addpath(genpath(extraCode)); end
 addpath(genpath(cobraSrc));
 initCobraToolbox(false); changeCobraSolver('gurobi','all',0);
 warning off all
