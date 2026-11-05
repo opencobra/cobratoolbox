@@ -214,6 +214,10 @@ register's re-check command reports each entry as still needed or now removable.
   banner, so the `usejava` defect (D23) is never reached and needs no workaround.
 - **FR-015**: `external/`, `deprecated/` and submodule paths MUST NOT change. Functions that RunMat lacks MUST NOT
   be added to the shared source tree as shadowing replacements; the workarounds stay inside the two start-up files.
+- **FR-016** (Gate 3, 2026-11-05): `test/verifyCobraFunctionError.m` MUST contain no empty cell literal `{}`. Its one
+  `{}` (line 35) becomes `cell(0, 0)`, which MATLAB evaluates identically, so it is not debt (VIII-Runtime
+  compile-time exception) and gets no marker. Reason: under RunMat v0.6.2 a `{}` in any file of the script's folder
+  stops that script before its first statement (D26), so `test/testAll.m` cannot start (reports/runmat-testAll.txt).
 
 ### Key Entities
 
@@ -276,6 +280,7 @@ register's re-check command reports each entry as still needed or now removable.
 | US2-1 / FR-001, FR-014 | same test: default and `'agent'` modes, banner hyperlink in desktop mode | `initCobraToolbox.m` |
 | US2-2 / FR-007, SC-003 | MATLAB `testAll` before and after (`compare_testall.py`) | `test/testAll.m` |
 | US3-1 / FR-005, FR-006, SC-002 | `runmat_testall.sh` with the RunMat opt-in | `test/testAll.m` |
+| US3-1 / FR-016, SC-002 | `runmat_testall.sh` with the RunMat opt-in; MATLAB `testAll` comparison (65 tests call it) | `test/verifyCobraFunctionError.m` |
 | US3-2 / FR-007 | MATLAB check of the `PERFORMANCE_REPORT` switch (four cases, as in the previous feature's T017) | `test/testAll.m` |
 | US4-1 / FR-008, FR-009, SC-005 | marker-versus-register consistency check | — (no source function) |
 | US4-2 / FR-010, SC-006 | debt re-check command over the reproducers | — (no source function) |

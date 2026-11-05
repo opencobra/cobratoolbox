@@ -187,6 +187,18 @@ passes.
 - [X] T025 Update `$F/quickstart.md` with the final commands. Write the implementation receipt in
   `$F/agent-runs/<UTC>-runmat-init-mode/implementation-receipt.md`, and update `$F/human-loop.md`.
 
+## Phase 8: Gate 3 scope extension (FR-016)
+
+- [ ] T026 [US3] In `test/verifyCobraFunctionError.m` line 35, replace `{}` with `cell(0, 0)`. Then:
+  - run `checkcode` on the file: no new message;
+  - in MATLAB, run two of the tests that call it (for example `testParseCobraVarargin` and one other), which
+    must pass;
+  - confirm `grep -l '{ *}' test/*.m` lists nothing.
+- [ ] T027 [US3] Re-run T019 on a full clone of the branch with T026, and update `$F/reports/runmat-testAll.txt`.
+  The v0.6.2 stopping point must now be inside `initCobraToolbox(false, 'runmat')` at a *Blocking defects* entry
+  (SC-002); then mark T019. Re-run the MATLAB `testAll` comparison (T022) on the same clone, which must show only
+  the rename pair. Write the slice receipt and update `$F/human-loop.md`.
+
 ## Dependencies & Execution Order
 
 - T001 runs in the background and must finish before T022. T002 and T003 can run in parallel.

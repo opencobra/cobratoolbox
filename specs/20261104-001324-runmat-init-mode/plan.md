@@ -61,7 +61,8 @@ feature's report gets an erratum: its "D6 at `testAll.m:55`" was a misreported D
 - No path under `external/`, `deprecated/` or a submodule changes.
 
 **Scale/Scope**:
-- 2 source files: `initCobraToolbox.m` and `test/testAll.m`.
+- 2 source files: `initCobraToolbox.m` and `test/testAll.m`; plus one MATLAB-equivalent `{}` -> `cell(0, 0)` in
+  the test helper `test/verifyCobraFunctionError.m` (FR-016, Gate 3).
 - 1 test file, renamed and extended.
 - 1 new folder under `test/` with the register, about 12 reproducers and the re-check script.
 - An erratum in the previous feature's report.
@@ -90,7 +91,8 @@ Checked against constitution v1.8.0.
 - **Performance and numerical integrity**: N/A. No solver path changes, and no diagnostic is made skippable.
 - **External-solver configuration audit**: N/A. No solver is invoked.
 - **Spec-driven scope control**:
-  - Edit: `initCobraToolbox.m`, `test/testAll.m`, `test/verifiedTests/base/testInstall/` (rename and extend),
+  - Edit: `initCobraToolbox.m`, `test/testAll.m`, `test/verifyCobraFunctionError.m` (line 35 only, FR-016),
+    `test/verifiedTests/base/testInstall/` (rename and extend),
     `test/runtimeCompatibility/RunMat/` (new), and the erratum in
     `specs/20261102-153951-runmat-compat/reports/`.
   - Read-only: `external/`, `deprecated/`, submodules, and every other `src/` file.
@@ -145,6 +147,7 @@ specs/20261104-001324-runmat-init-mode/
 ```text
 initCobraToolbox.m                                   # 'runmat' mode; {} -> cell(0, 0); docs genpath guard; banner link restored
 test/testAll.m                                       # COBRA_RUNMAT switch; eval read of PERFORMANCE_REPORT; {} -> cell(0, 0)
+test/verifyCobraFunctionError.m                      # {} -> cell(0, 0) on line 35 (FR-016)
 test/verifiedTests/base/testInstall/
 └── testInitCobraToolbox.m                           # renamed from testInitCobraToolboxAgentMode.m, extended
 test/runtimeCompatibility/RunMat/
