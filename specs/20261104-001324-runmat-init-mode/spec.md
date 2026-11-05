@@ -214,9 +214,10 @@ register's re-check command reports each entry as still needed or now removable.
   banner, so the `usejava` defect (D23) is never reached and needs no workaround.
 - **FR-015**: `external/`, `deprecated/` and submodule paths MUST NOT change. Functions that RunMat lacks MUST NOT
   be added to the shared source tree as shadowing replacements; the workarounds stay inside the two start-up files.
-- **FR-016** (Gate 3, 2026-11-05): `test/verifyCobraFunctionError.m` MUST contain no empty cell literal `{}`. Its one
-  `{}` (line 35) becomes `cell(0, 0)`, which MATLAB evaluates identically, so it is not debt (VIII-Runtime
-  compile-time exception) and gets no marker. Reason: under RunMat v0.6.2 a `{}` in any file of the script's folder
+- **FR-016** (Gate 3, 2026-11-05; widened at T027): `test/verifyCobraFunctionError.m` MUST contain no empty cell
+  literal `{}` and no method call with a cell expansion `obj.m(c{:})`. Line 35's `{}` becomes `cell(0, 0)` (D26) and
+  line 39's `parser.parse(..., varargin{:})` becomes `parse(parser, ..., varargin{:})` (D30). MATLAB evaluates both
+  identically, so they are not debt (VIII-Runtime compile-time exception) and get no marker. Reason: under RunMat v0.6.2 a `{}` in any file of the script's folder
   stops that script before its first statement (D26), so `test/testAll.m` cannot start (reports/runmat-testAll.txt).
 
 ### Key Entities
@@ -237,7 +238,8 @@ register's re-check command reports each entry as still needed or now removable.
   toolbox-function call, and stops at that call with a defect listed in the debt register. With a RunMat that
   fixes D26–D29, the same call completes (verified when the re-check reports those entries removable).
 - **SC-002**: Under RunMat v0.6.2, `testAll` with the RunMat opt-in compiles, runs its own start-up and reaches
-  the `initCobraToolbox(false, 'runmat')` call, then stops as in SC-001. The stopping point is recorded in the
+  the `initCobraToolbox(false, 'runmat')` call, then stops at or inside that call on a defect listed in the debt
+  register (called from `test/`, `initCobraToolbox` is itself a function on the path, so D27 can stop it at the call). The stopping point is recorded in the
   feature's measurement report.
 - **SC-003**: The MATLAB `testAll` (`COBRA_CI=1`, no RunMat opt-in) gives the same status for every test as the
   baseline run before this feature.

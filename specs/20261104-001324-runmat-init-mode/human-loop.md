@@ -35,6 +35,7 @@
 | 2026-11-04 | Implementation invocation | `/speckit-implement` | Slice T001–T012 implemented; receipt agent-runs/20261104T183608Z-runmat-init-mode |
 | 2026-11-04 | Implementation invocation | `/speckit-implemen` (taken as `/speckit-implement`) | T013–T025 implemented; receipt agent-runs/20261104T215330Z-runmat-init-mode-slice2 |
 | 2026-11-05 | Gate 3 | "Widen scope: fix that {} (Recommended)" | FR-016 added; T026–T027 added; `test/verifyCobraFunctionError.m` (line 35) allowed; needs /speckit-implement |
+| 2026-11-05 | T027 blocker | "Widen to line 39 + register D30 (Recommended)" | line 39 rewrite allowed; D30 registered; SC-002 reworded (at or inside the call); MATLAB comparison restarted |
 | 2026-11-04 | Planning blocker | "Narrow: mode + debt now (Recommended)" | RunMat v0.6.2 D26–D29 block toolbox functions; SC-001/SC-002 narrowed to the stopping point; research.md R2 |
 
 ## Approved Implementation Scope
@@ -44,7 +45,7 @@
 - Files allowed: `initCobraToolbox.m`; `test/verifiedTests/base/testInstall/testInitCobraToolboxAgentMode.m`, renamed
   to `testInitCobraToolbox.m`; `test/runtimeCompatibility/RunMat/**`; `specs/20261104-001324-runmat-init-mode/**`
 - Files additionally allowed for T013–T025: `test/testAll.m`, `specs/20261102-153951-runmat-compat/{spec.md,reports/}`
-- Files additionally allowed for T026–T027 (Gate 3, 2026-11-05): `test/verifyCobraFunctionError.m` (line 35 only)
+- Files additionally allowed for T026–T027 (Gate 3, 2026-11-05): `test/verifyCobraFunctionError.m` (lines 35 and 39 only)
 - Files not allowed: `external/`, `deprecated/`, submodule paths, any other `src/`
   file (including the uncommitted `findSExRxnInd.m`/`findStoichConsistentSubset.m` changes from another session)
 - Implementation path: core implementer (`/speckit-implement`)

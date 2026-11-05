@@ -1,4 +1,4 @@
-# T020: recheckRunMat.sh at 0a9a941d5
+# T027: recheckRunMat.sh after D30 was registered
 
 ## v0.6.2 (reference)
 ```
@@ -8,16 +8,16 @@ RunMat: runmat 0.6.2 (/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-matlab
 D10	still needed	error: Undefined function: prefdir
 D24	still needed	string
 D26	still needed	error: cell literal rows realize different widths
-D27	still needed	error: Could not compile function source '/tmp/tmp.l6UBCA54gC/run/lib/runmatReproNargin.m': local may be read before it 
-D28	still needed	error: Could not compile function source '/tmp/tmp.l6UBCA54gC/run/lib/runmatReproGlobal.m': local may be read before it 
+D27	still needed	error: Could not compile function source '/tmp/tmp.qRdf74b5MZ/run/lib/runmatReproNargin.m': local may be read before it 
+D28	still needed	error: Could not compile function source '/tmp/tmp.qRdf74b5MZ/run/lib/runmatReproGlobal.m': local may be read before it 
 D29	still needed	error: Not enough input arguments.
+D30	still needed	error: MIR cell index lowering expects expression selectors
 D5	still needed	error: undefined variable 'NOT_DEFINED'
 D6	still needed	0
 
 ## Markers versus register
 markers: 7, register rows: 7
 markers and register rows match
-exit=0
 ```
 
 ## Newer build (informational)
@@ -31,11 +31,11 @@ D26	removable
 D27	removable	
 D28	removable	
 D29	removable	
+D30	removable	
 D5	removable	
 D6	still needed	0
 
 ## Markers versus register
 markers: 7, register rows: 7
 markers and register rows match
-exit=0
 ```

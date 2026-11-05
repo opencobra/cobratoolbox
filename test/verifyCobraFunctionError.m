@@ -36,7 +36,7 @@ parser.addParamValue('inputs',cell(0, 0),@iscell)
 parser.addParamValue('testMessage','',@ischar)
 parser.addParamValue('outputArgCount',0,@(x) isnumeric(x) && mod(x,1) == 0);
 
-parser.parse(functionCall,varargin{:});
+parse(parser, functionCall, varargin{:});
 
 outputArgcount = parser.Results.outputArgCount;
 testMessage = ~any(ismember('testMessage',parser.UsingDefaults));
