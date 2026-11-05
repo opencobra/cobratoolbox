@@ -39,7 +39,6 @@ The `feasibility` stage was only tested with a stand-in for `checkFeasibilityCon
 
 | File | Lines |
 |---|---|
-| `.specify/feature.json` | +1 / -1 |
 | `deprecated/_testTopology/loop3b_neg_eq.ext` | +1 / -1 |
 | `specs/016-fastbarrier-fallback/agent-runs/20260814T140749Z-fastbarrier-fallback/implementation-receipt.md` | +4 / -2 |
 | `specs/017-buildgurobifrommodel-tests/agent-runs/20260817T121447Z-buildgurobifrommodel-characterization/implementation-receipt.md` | +3 / -1 |
@@ -67,7 +66,7 @@ The feature directory `specs/20261104-201445-scrub-local-paths/` is new.
 No function under test, so no test changed. Validation followed `quickstart.md`:
 
 1. Scan: 0 matches for the path in any form, and 0 for hardware statements in the listed files.
-2. Scope: 19 listed files, the feature directory and `.specify/feature.json` only.
+2. Scope: 19 listed files and the feature directory only.
 3. Line review: only personal details, replacements, redaction notes and path handling changed; 5 of
    5 receipts carry a note.
 4. Stub tree at another location: 20 of 21 checks passed. The failure is an incorrect expectation in
@@ -85,6 +84,9 @@ No function under test, so no test changed. Validation followed `quickstart.md`:
 - Other contributors' records were left alone, as the spec requires.
 
 ## Other information
+
+`.specify/feature.json` was restored to its upstream value, so that this branch and the coverage
+branch do not conflict on that pointer. The feature directory is named in `tasks.md` and this receipt.
 
 The test linked from the 017 receipt was later renamed. The link now targets the current file name,
 and the receipt's link text is unchanged.

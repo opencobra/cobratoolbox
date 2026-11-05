@@ -18,7 +18,7 @@ Expected: no output from either.
 git diff --name-only upstream/develop...HEAD
 ```
 
-Expected: the 19 listed files, the feature directory and `.specify/feature.json` only. Nothing under `src/` or `test/`.
+Expected: the 19 listed files and the feature directory only. Nothing under `src/` or `test/`.
 
 ## 3. Line review (FR-006, FR-007, SC-004, SC-005)
 
