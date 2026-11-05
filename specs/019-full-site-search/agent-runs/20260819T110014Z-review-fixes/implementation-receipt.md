@@ -95,7 +95,7 @@ rest of feature 019). Verification performed:
 
 - `python3 -c "import ast; ast.parse(...)"` on both modified files — PASS.
 - `generateTutorialSearchIndex.py` run against a scratch copy of the real
-  tutorial corpus (`/home/farid/Projects/cobratoolbox-gh-pages/stable/tutorials`,
+  tutorial corpus (`<gh-pages checkout>/stable/tutorials`,
   336 files): 219 patched, 121 left unchanged (no search box present),
   0 errors, exit 0. Post-run grep for `easyAutocomplete`/`functions.json`
   across the patched tree — 0 matches (confirms no old-widget markup
@@ -137,3 +137,7 @@ No tests failed.
   pipeline (no runner available here) — verified via direct invocation of
   both scripts with the same arguments the workflow uses, and via a
   from-scratch in-browser check, but not a full live CI run.
+
+## Other information
+
+Redaction (2026-11-05): local machine details were removed or replaced with relative paths or a placeholder, as personal data. No other text changed.

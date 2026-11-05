@@ -234,7 +234,7 @@ returns the updated page and that removed content no longer appears.
   extraction is scoped to `<div itemprop="articleBody">` (the same wrapper
   `UpdateSideBar.py` gives every sidebar-templated page, tutorials included) so entries hold
   each tutorial's own content, not the repeated nav/sidebar/footer boilerplate. Run against
-  the real tutorial content available at `/home/farid/Projects/cobratoolbox-gh-pages/stable/tutorials`
+  the real tutorial content available at `<gh-pages checkout>/stable/tutorials`
   (336 files indexed, 608KB → 532KB after the articleBody scoping fix). Confirmed non-zero
   exit + no output file written for a missing directory.
 - [X] T015 [P] [US3] Add a well-formedness/coverage check to

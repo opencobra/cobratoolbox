@@ -1,6 +1,6 @@
 function runTest(testName, srcFile, outFile)
 % initialise COBRA from the clone, run a test script, report executed lines of srcFile
-cobra = '/home/farid/Projects/cobratoolbox-f-develop';
+cobra = fileparts(fileparts(fileparts(fileparts(mfilename('fullpath')))));
 cd(cobra); initCobraToolbox(false); changeCobraSolver('gurobi','all',0); warning('off','all'); warning('on','all');
 profile clear; profile on
 try, run(which(testName)); st = 'PASS'; catch ME, st = ['FAIL: ' ME.message]; fprintf('%s\n', getReport(ME)); end
