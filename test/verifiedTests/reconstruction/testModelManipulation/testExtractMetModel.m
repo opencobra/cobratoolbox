@@ -3,8 +3,22 @@
 % Purpose:
 %     - testExtractMetModel tests extractMetModel
 %
+% Function under test:
+%     src/reconstruction/refinement/extractMetModel.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 2 - model manipulation, no solver; Recon2.v05 loaded through getDistributedModel, as the
+%     stored reference subnetworks come from it.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Uri David Akavia August 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 global CBTDIR
 
@@ -13,6 +27,9 @@ currentDir = pwd;
 
 fileDir = fileparts(which('testUpdateGenes'));
 cd(fileDir);
+
+% this test needs no solver, MATLAB toolbox or particular operating system
+prepareTest();
 
 if 1
     model = getDistributedModel('Recon2.v05.mat');
@@ -59,6 +76,15 @@ atpModel.grRules=model2.grRules;
 atpModel.rules=model2.rules;
 [isSame, nDiff, commonFields] = isSameCobraModel(model2, atpModel, printLevel);
 assert(isSame);
+
+%% one metabolite in one compartment gives exactly the reactions of that metabolite
+
+% with allCompFlag false the name is taken with its compartment, so one metabolite is selected
+oneMetabolite = model.mets{find(strncmp(model.mets, 'pppg9[', 6), 1)};
+model2 = extractMetModel(model, oneMetabolite, 0, 0);
+metRow = strcmp(model.mets, oneMetabolite);
+assert(isequal(sort(model2.rxns), sort(model.rxns(model.S(metRow, :) ~= 0 & model.c' ~= 1))));
+assert(any(strcmp(model2.mets, oneMetabolite)));
 
 %return to original directory
 cd(currentDir)

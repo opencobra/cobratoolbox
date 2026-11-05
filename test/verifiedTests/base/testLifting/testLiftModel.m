@@ -1,10 +1,27 @@
-% The COBRAToolbox: testliftModel.m
+% The COBRAToolbox: testLiftModel.m
 %
 % Purpose:
-%     - tests
+%     - liftModel builds the LP of a model and replaces its large coefficients by sequences of
+%       well scaled rows. The test checks that the lifted LP has the optimum of the original
+%       model, that the file interface works, and which default fields the function fills in.
+%
+% Function under test:
+%     src/base/solvers/rescale/liftModel.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - toy model, LP solver.
+%
+% Coverage exemptions:
+%     Lines 52-53: unreachable, buildOptProblemFromModel always returns the field A.
+%     Lines 66-67: unreachable, buildOptProblemFromModel always returns the field b.
+%     Line 72: unreachable, buildOptProblemFromModel always returns the field osense.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
 %
 % Authors:
 %     - Original file: Thomas Pfau - Sept 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 % Note:
 %     - The solver libraries must be included separately
@@ -15,11 +32,12 @@ global CBTDIR
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testliftModel.m'));
+fileDir = fileparts(which('testLiftModel'));
 cd(fileDir);
 
 % require an LP solver; skip gracefully if none is available
-prepareTest('needsLP', true);
+solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi', 'glpk'});
+initialSolverState = CobraSolverState.get();
 
 %get the default tolerances.
 tol = getCobraSolverParams('LP','optTol');
@@ -37,7 +55,7 @@ DefaultValues =   [10;1000000;1000000;0;-10;1000000;0;0];
 
 %Now, run solvers.
 % define the solver packages to be used to run this test
-solverPkgs = {'gurobi', 'tomlab_cplex', 'ibm_cplex', 'glpk'};
+solverPkgs = solvers.LP;
 
 for k = 1:length(solverPkgs)
 
@@ -108,6 +126,39 @@ assert(isSameCobraModel(LPproblem,liftedLPProblem));
 
 %Clean up.
 delete('toy.mat','L_toy.mat');
+
+%% an empty model is loaded from the file (done in a temporary folder)
+scratchDir = tempname;
+mkdir(scratchDir);
+save([scratchDir filesep 'toy.mat'], 'toy');
+liftedFromFile = liftModel([], 1000, 0, 'toy', scratchDir);
+assert(isequal(size(liftedFromFile.A), size(liftedLPProblem.A)));
+assert(max(abs(liftedFromFile.A(:) - liftedLPProblem.A(:))) < 1e-9);
+assert(exist([scratchDir filesep 'L_toy.mat'], 'file') == 2);
+rmdir(scratchDir, 's');
+
+%% a model with extra columns has no csense in its problem: the function assumes equalities
+toyE = struct();
+toyE.S = [1, -1; 0, 1];
+toyE.rxns = {'R1'; 'R2'};
+toyE.mets = {'A'; 'B'};
+toyE.b = [0; 0];
+toyE.c = [0; 1];
+toyE.lb = [0; 0];
+toyE.ub = [10; 10];
+toyE.csense = ['E'; 'E'];
+toyE.osenseStr = 'max';
+toyE.E = [0; 1];
+toyE.evars = {'x1'};
+toyE.evarlb = 0;
+toyE.evarub = 1;
+toyE.evarc = 0;
+liftedE = liftModel(toyE, 1000, 0);
+assert(isequal(full(liftedE.A), [1, -1, 0; 0, 1, 1]));
+assert(all(liftedE.csense == 'E'));
+
+% leave the solver selection as it was found
+CobraSolverState.restore(initialSolverState);
 
 fprintf('Done...\n')
 

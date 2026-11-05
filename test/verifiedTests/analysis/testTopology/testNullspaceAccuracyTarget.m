@@ -10,8 +10,21 @@
 %       assertions pin the formula, the size ceiling for the dense spectrum, and the
 %       documented fallback above it.
 %
+% Function under test:
+%     src/analysis/topology/extremeRays/optimalRays/nullspaceAccuracyTarget.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - no solver; ecoli_core_model only supplies a realistic matrix.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Feature 20261003-132730-greedy-recon3d-stall, October 2026
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 % Reference:
 %     specs/20261003-132730-greedy-recon3d-stall/contracts/nullspaceAccuracyTarget.md
@@ -24,10 +37,13 @@ currentDir = pwd;
 fileDir = fileparts(which('testNullspaceAccuracyTarget'));
 cd(fileDir);
 
+% declare the requirements of this test (it has none)
+prepareTest();
+
 % ecoli_core ships with the test suite; its internal (stoichiometrically consistent)
 % matrix is well scaled and has a non-empty left nullspace
-ecoli = load('ecoli_core_model.mat');
-[~, ~, ~, ~, ~, ~, ecoliConsistent] = findStoichConsistentSubset(ecoli.model, 0, 0);
+ecoliModel = getDistributedModel('ecoli_core_model.mat');
+[~, ~, ~, ~, ~, ~, ecoliConsistent] = findStoichConsistentSubset(ecoliModel, 0, 0);
 S = ecoliConsistent.S(:, ecoliConsistent.SConsistentRxnBool);
 
 % default ceiling: the spectrum is computed and the target derived
@@ -76,6 +92,14 @@ assert(targetBad.sigmaMinPlus < targetBad.regimeBoundary, ...
 targetZero = nullspaceAccuracyTarget(sparse(3, 2), param);
 assert(~targetZero.accuracyTargetDerived && strcmp(targetZero.regime, 'notAssessed'), ...
     'a zero matrix must fall back rather than claim a derivation');
+
+%% param may be omitted or empty: the default ceiling applies, and the result is the same
+targetNoParam = nullspaceAccuracyTarget(S);
+targetEmptyParam = nullspaceAccuracyTarget(S, []);
+assert(targetNoParam.accuracyTarget == target.accuracyTarget, 'Omitting param must use the defaults.');
+assert(targetEmptyParam.accuracyTarget == target.accuracyTarget, 'An empty param must use the defaults.');
+assert(strcmp(targetNoParam.regime, target.regime) && strcmp(targetEmptyParam.regime, target.regime), ...
+    'The regime must not depend on how the defaults were asked for.');
 
 fprintf('Done.\n');
 

@@ -14,11 +14,35 @@
 %     fixtures) rather than inventing synthetic small graphs, so the expected classes are
 %     grounded in the actual defect this feature fixes (research.md R2, R2.3).
 %
+% Function under test:
+%     src/analysis/topology/reactingMoieties/identifyAtomEquivalenceClasses.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - atoms and bonds from a shipped RXN file and hand-built graphs, no model and no solver.
+%
+% Coverage exemptions:
+%     Line 168: unreachable, the number of colours grows at each unconverged round and is at most p, so the loop of p + 1 rounds always converges.
+%     Lines 282, 291: unreachable, an atom differs from its representative only in a class of two or more, and such a class always has an unsafe entry from the loop above.
+%     Line 306: unreachable, an error raised inside this function always has a stack.
+%     Line 333: unreachable, the bonds are checked against atomNumbers at line 91 and the map holds every atom number.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: The check for a duplicate bond never fires
+%       SEVERITY: limitation
+%       TRIGGER: identifyAtomEquivalenceClasses([1; 2], {'C'; 'C'}, [1; 1], [2; 2], [1; 1], 'met') with two bonds between one atom pair
+%       OBSERVED: graph keeps parallel edges, so numedges(G) always equals numel(headAtoms); classes are returned without the warning
+%       EXPECTED: the input is detected as a duplicate bond and the function falls back to the identity map with a warning
+%       LINES: 110
+%
 % Authors:
 %     - COBRA Toolbox, feature 020-canonicalize-symmetric-atom-bonds
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path and initialize the test
 currentDir = cd(fileparts(which(mfilename)));
+
+% declare the requirements of this test (a Tier 1 test has none)
+prepareTest();
 
 rxnFilesDir = [pwd filesep 'data' filesep 'rxnFiles'];
 assert(isfolder(rxnFilesDir), 'Atom-mapped rxnFiles fixture not found.');
@@ -149,6 +173,45 @@ assert(faultRankMap(1) == 1 && faultRankMap(2) == 2 && faultRankMap(3) == 3, ...
 assert(isempty(faultUnsafeMap.keys()), ...
     'On a malformed/inconclusive input, the fallback unsafe-neighbours map must be empty (no equivalence classes detected).');
 % execution continues past the warning (non-fatal) -- reaching this line proves it did not halt.
+
+%% Other malformed inputs fall back in the same way, each naming the reason
+% (input, reason) pairs: no atom, atoms without elements, bonds of different lengths
+malformedInputs = { ...
+    {zeros(0, 1), cell(0, 1), [], [], []}, 'No atoms provided'; ...
+    {[1; 2], {'C'}, [], [], []}, 'atomNumbers and elements must be the same length'; ...
+    {[1; 2], {'C'; 'C'}, 1, [2; 2], 1}, 'headAtoms, tailAtoms, and bTypes must be the same length'};
+for k = 1:size(malformedInputs, 1)
+    lastwarn('');
+    [fallbackMap, fallbackClasses, fallbackUnsafe] = identifyAtomEquivalenceClasses(malformedInputs{k, 1}{:}, 'badInput[c]');
+    assert(contains(lastwarn, malformedInputs{k, 2}) && contains(lastwarn, 'badInput[c]'), ...
+        sprintf('The warning must name the metabolite and the reason: %s.', malformedInputs{k, 2}));
+    atomList = malformedInputs{k, 1}{1};
+    assert(fallbackMap.Count == numel(atomList) && numel(fallbackClasses) == numel(atomList) && ...
+        fallbackUnsafe.Count == 0, 'Each atom must be alone in its class after the fallback.');
+end
+
+%% Atoms without bonds: equal elements are equivalent, and nothing is unsafe
+lastwarn('');
+[isolatedMap, isolatedClasses, isolatedUnsafe] = identifyAtomEquivalenceClasses( ...
+    [1; 2; 3], {'C'; 'C'; 'O'}, zeros(0, 1), zeros(0, 1), zeros(0, 1), 'isolatedAtoms[c]');
+assert(isempty(lastwarn), 'Atoms without bonds are a valid input.');
+assert(isolatedMap(2) == 1 && isolatedMap(3) == 3, 'Only the two carbon atoms are equivalent.');
+assert(isequal(isolatedClasses, {[1; 2]; 3}) && isequal(isolatedUnsafe(1), []), ...
+    'The two classes hold the carbons and the oxygen, with no unsafe neighbour.');
+
+%% A colour refinement false positive is caught by the automorphism check
+% a hexagon and two triangles: every atom has two neighbours, so refinement gives one class,
+% but no automorphism maps a hexagon atom to a triangle atom
+hexagonAndTriangles = (1:12)';
+ringHeads = (1:12)';
+ringTails = [2 3 4 5 6 1 8 9 7 11 12 10]';
+lastwarn('');
+[ringMap, ringClasses, ringUnsafe] = identifyAtomEquivalenceClasses(hexagonAndTriangles, ...
+    repmat({'C'}, 12, 1), ringHeads, ringTails, ones(12, 1), 'rings[c]');
+assert(contains(lastwarn, 'failed the isisomorphic collision check') && contains(lastwarn, 'rings[c]'), ...
+    'A false positive of the colour refinement must fall back with a warning.');
+assert(numel(ringClasses) == 12 && ringMap(12) == 12 && ringUnsafe.Count == 0, ...
+    'After the fallback each atom must be alone in its class.');
 
 % return to the original directory
 cd(currentDir);

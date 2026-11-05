@@ -8,6 +8,13 @@
 % Authors:
 %     - Marouen BEN GUEBILA 09/02/2017 (initial)
 %     - 2026: rewritten to assert semantics, not a byte-equal fixture
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
+%
+% Coverage exemptions:
+%     Lines 37-38: unreachable. getCobraSolverParams does not throw for the constant arguments
+%     'LP' and 'feasTol'.
+%     Line 126: unreachable. solveCobraLP always returns a stat field, and the helper only gets
+%     here without one.
 
 global CBTDIR
 
@@ -139,6 +146,16 @@ for k = 1:length(solverPkgs.LP)
     end
     assert(threw, 'Expected writePajekNet:lpFailed on infeasible LP');
     if exist(outFile, 'file'); delete(outFile); end
+
+    % --- output file failure path --------------------------------------
+    % A file in a folder that does not exist cannot be opened.
+    threw = false;
+    try
+        writePajekNet(model, [], [tempname filesep 'noSuchFolder' filesep outFile]);
+    catch ME
+        threw = strcmp(ME.identifier, 'writePajekNet:openFailed');
+    end
+    assert(threw, 'Expected writePajekNet:openFailed for an unwritable file');
 
     fprintf('Done.\n');
 end

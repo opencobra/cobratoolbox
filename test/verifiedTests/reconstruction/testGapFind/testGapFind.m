@@ -3,8 +3,21 @@
 % Purpose:
 %     - testGapFind tests the validity of gapFind.
 %
+% Function under test:
+%     src/reconstruction/gapFind.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation (MILP) on a toy model.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Original file: Thomas Pfau Sept 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % save the current path
@@ -32,6 +45,13 @@ for k = 1:length(solverPkgs)
         %gapped.
         [allGaps, rootGaps, downstreamGaps] = gapFind(testModel);
         
+        assert(isempty(downstreamGaps))
+        assert(isequal(allGaps,{'H'}));
+        assert(isequal(rootGaps,{'H'}));
+        
+        %The verbose flag only changes what the solver prints, not the gaps
+        %that are found.
+        [allGaps, rootGaps, downstreamGaps] = gapFind(testModel, false, true);
         assert(isempty(downstreamGaps))
         assert(isequal(allGaps,{'H'}));
         assert(isequal(rootGaps,{'H'}));

@@ -38,19 +38,12 @@
 %     ecoli_core_model loaded through getDistributedModel.
 %
 % Coverage exemptions:
-%     Line 157: MATLAB rejects a fifth input ("Too many input arguments") before the function
-%     body runs, so the check cannot be reached.
-%     Line 163: MATLAB rejects a second output ("Too many output arguments") before the
-%     function body runs, so the check cannot be reached.
-%     Line 179: the condition requires the solver name to equal DCA, BDCA, BDF, CSDF and DBDF
-%     at the same time and can never be true; a derivative-free solver with L is rejected at
-%     line 208 instead ("Wrong solver is used."), which is tested.
-%     Lines 226-228: an F equal to R with L returns without the output (defect below); the
-%     input is skipped.
-%     Lines 533-537 and 540-543, the solvers DCA and BDCA: they call fminunc and optimoptions of
-%     the Optimization Toolbox, which this test does not require.
-%     Line 589: parms.flag_psi_error = 1 stops in every solver (defect below); the input is
-%     skipped.
+%     Line 157: unreachable, MATLAB rejects a fifth input before the function body runs.
+%     Line 163: unreachable, MATLAB rejects a second output before the function body runs.
+%     Line 179: unreachable, the solver name would have to equal five names at the same time.
+%     Lines 226-228: defective input skipped, F equal to R with L returns no output (defect below).
+%     Lines 533-537, 540-543: DCA and BDCA call fminunc of the Optimization Toolbox, not available.
+%     Line 589: defective input skipped, parms.flag_psi_error = 1 stops every solver (defect below).
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: The display format is switched to long E and never restored
@@ -88,6 +81,7 @@
 %
 % Authors:
 %     - Generated for feature 20261103-105830-tier2-safe-batch, 2026-11-03.
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;

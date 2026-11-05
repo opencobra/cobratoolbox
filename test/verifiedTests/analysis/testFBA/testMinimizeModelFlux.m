@@ -3,9 +3,22 @@
 % Purpose:
 %     - Tests the minimizeModelFlux function
 %
+% Function under test:
+%     src/analysis/FBA/minimizeModelFlux.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation; toy model from createToyModelForMinimizeFlux, LP solver required.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Thomas Pfau
 %     - Farid Zare 2024/10/02 -update test function with function updates
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % save the current path
@@ -63,6 +76,17 @@ for k = 1:length(solverPkgs.LP)
     modelChanged = rmfield(modelChanged,'osenseStr');
     sol = minimizeModelFlux(modelChanged);
     assert(abs(sol.x(end) - 25)  <= tol); %Flux -> A -> B -> C -> E -> 
+
+    % Test 7: an empty sense means 'min' and an empty norm means the plain LP
+    sol = minimizeModelFlux(modelChanged, [], []);
+    assert(abs(sol.x(end) - 25) <= tol);
+
+    % Test 8: a model that asks for 'max' is minimized all the same, with a warning
+    modelChanged.osenseStr = 'max';
+    lastwarn('');
+    sol = minimizeModelFlux(modelChanged);
+    assert(abs(sol.x(end) - 25) <= tol);
+    assert(contains(lastwarn, 'model.osenseStr is max, setting to min'));
 end
 
 % output a success message

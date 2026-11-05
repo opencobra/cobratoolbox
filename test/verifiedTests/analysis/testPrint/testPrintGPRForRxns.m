@@ -4,8 +4,21 @@
 %     - To test the printOut functionality for printGPRForRxns (and its
 %     wrapper findGPRsFromRxns
 %
+% Function under test:
+%     src/analysis/exploration/printGPRForRxns.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 2 - model manipulation, no solver; ecoli_core_model loaded through getDistributedModel.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Thomas Pfau December 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 global CBTDIR
@@ -16,6 +29,9 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testPrintGPRForRxns'));
 cd(fileDir);
+
+% this test needs no solver, toolbox or particular operating system
+prepareTest();
 
 model = getDistributedModel('ecoli_core_model.mat');
 
@@ -64,6 +80,12 @@ diary off
 text = importdata('findGPR.txt');
 assert(isempty(text));
 delete('findGPR.txt');
+
+%% reactions can be given by their position; a position outside the model is refused
+gprs = printGPRForRxns(model, [1, 3], 0);
+assert(isequal(gprs, model.grRules([1, 3])));
+assert(verifyCobraFunctionError('printGPRForRxns', 'inputs', {model, numel(model.rxns) + 1}, ...
+    'testMessage', 'Some indices provided are larger than the number of reactions.'));
 
 % change the directory
 cd(currentDir)

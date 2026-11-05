@@ -18,6 +18,21 @@
 %       [controlFlux1, controlFlux2, objFlux] = doubleRobustnessAnalysis(model,
 %       controlRxn1, controlRxn2, nPoints, plotResFlag, objRxn, objType)
 %
+% Function under test:
+%     src/analysis/robustnessAnalysis/robustnessAnalysis.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation on ecoli_core_model.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
+% Authors:
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
+%
 
 global CBTDIR
 
@@ -27,6 +42,9 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testRobustnessAnalysis'));
 cd(fileDir);
+
+% require an LP solver; skip gracefully if none is available
+prepareTest('needsLP', true);
 
 % set the tolerance
 tol = 1e-3;
@@ -91,6 +109,28 @@ assert(all(abs(controlFlux2 - controlExpected2) < tol))
 objFlux(isnan(objFlux))=0;
 objExpected(isnan(objExpected))=0;
 assert(all(all(abs(objFlux - objExpected) < tol)))
+
+%% an explicit objective reaction and objective sense, without a plot
+
+objRxn = 'ATPM';
+for objType = {'max', 'min'}
+    [controlFlux, objFlux] = robustnessAnalysis(model, controlRxn, 4, false, objRxn, objType{1});
+
+    % the control values span the range of the control reaction, and every objective value is the
+    % optimum of objRxn with the control reaction fixed at that value (NaN where infeasible)
+    assert(isequal(size(controlFlux), [4, 1]) && isequal(size(objFlux), [4, 1]));
+    assert(abs(controlFlux(1)) < tol && abs(controlFlux(end) - 176.61) < tol);
+    modelObj = changeObjective(model, objRxn);
+    for i = 1:numel(controlFlux)
+        solFixed = optimizeCbModel(changeRxnBounds(modelObj, controlRxn, controlFlux(i), 'b'), objType{1});
+        assert((isnan(objFlux(i)) && isnan(solFixed.f)) || abs(objFlux(i) - solFixed.f) < tol);
+    end
+end
+
+%% a control reaction that is not in the model is refused
+
+assert(verifyCobraFunctionError('robustnessAnalysis', 'inputs', {model, 'notAReaction'}, ...
+                                'testMessage', 'Control reaction does not exist!'));
 
 % close figures
 close all;

@@ -15,9 +15,44 @@
 %       transport, data/rxn) builds, with that reaction's atom transition in the atom graph and
 %       no bond transition from it (feature 20261012-093525-symmetric-iso-zero-bond, FR-005).
 %
+% Function under test:
+%     src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - no solver; RXN files shipped or written to a temporary folder, with a three-reaction
+%     extract of Recon3D and toy models.
+%
+% Coverage exemptions:
+%     Lines 187-189, 498-519: the bodies of two `if 0` blocks.
+%     Lines 430, 438, 862, 870: unreachable, the index tested is set to 1:n on the lines above, so its differences are all 1.
+%     Lines 458, 462, 467, 472: unreachable, incidence() refuses a self-loop, so each column has one -1 and one +1, and each node has an edge since the graph is built from its edges.
+%     Line 633: unreachable, the key repeats the node name, and the names of the digraph nodes are unique.
+%     Lines 936, 940, 945, 950: unreachable, as for lines 458-472, for the graph of the bonds.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: Decompartmentalising the model keeps the opening bracket
+%       SEVERITY: wrong-result
+%       TRIGGER: model.mets with compartments, as in 'a[c]', and RXN files without, as in 'a'
+%       OBSERVED: model.mets{i}(1:end-2) turns 'a[c]' into 'a[', which matches no atom
+%       EXPECTED: 'a[c]' becomes 'a', the three characters of the compartment removed, as for the atoms at line 275
+%       LINES: 206, 207
+%     - DEFECT: A reaction with an elemental mismatch stops the build instead of being skipped
+%       SEVERITY: error
+%       TRIGGER: an RXN file with an atom transition between two elements
+%       OBSERVED: the reaction is reported as skipped, then the unfilled rows of the edge table stop digraph at line 382 with an error about the edge table
+%       EXPECTED: the reaction is skipped, as the message says and as for an RXN file that cannot be parsed, and the graphs are built from the others
+%       LINES: 325, 368
+%     - DEFECT: The bond graph is not decompartmentalised
+%       SEVERITY: error
+%       TRIGGER: model.mets without compartments, RXN files with compartments, and options.bondTransitionMultigraph = 1
+%       OBSERVED: the atoms are decompartmentalised for the atom graph only, so no atom of the bonds is found, every reaction is skipped and digraph stops at line 771
+%       EXPECTED: the bond graph is built as the atom graph is; the option 0 works
+%       LINES: 771
+%
 % Authors:
 %     - COBRA Toolbox, feature 20260921-125236-sparse-bond-matrices
 %     - COBRA Toolbox, feature 20261012-093525-symmetric-iso-zero-bond (zero-bond reaction)
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 global CBTDIR
 
@@ -168,6 +203,98 @@ assert(any(strcmp(zeroBondBTM.Edges.rxns, 'ETOHt_implicitH')), ...
 assert(atomResidual == 0 && bondResidual == 0, ...
     sprintf('FR-005: decomposition residuals %g (atoms) and %g (bonds) must be zero.', atomResidual, bondResidual));
 
+% small RXN files written for the branches below go to temporary folders
+noBonds = zeros(0, 3);
+carbonOxide = @(name) makeMolecule(name, {'C', 'O'}, [1 2], [1 2 1]);
+carbonOxides = @(a, b) {carbonOxide(a), carbonOxide(b)};
+% a -> b -> c, with RXN files written in the folder toyDir
+toyModel = struct('mets', {{'a[c]'; 'b[c]'; 'c[c]'}}, 'rxns', {{'R1'; 'R2'}}, ...
+    'S', sparse([-1 0; 1 -1; 0 1]), 'lb', [-1000; -1000], 'ub', [1000; 1000], 'c', [0; 0], 'b', [0; 0; 0]);
+toyDir = tempname;
+mkdir(toyDir);
+removeToyDir = onCleanup(@() rmdir(toyDir, 's'));
+writeRxnFile(toyDir, 'R1', 'a[c] -> b[c]', 1, 1, carbonOxides('a[c]', 'b[c]'));
+writeRxnFile(toyDir, 'R2', 'b[c] -> c[c]', 1, 1, carbonOxides('b[c]', 'c[c]'));
+
+%% Default options: the checks run and both graphs are built
+toyOut = cell(1, 12);
+[toyOut{:}] = buildAtomAndBondTransitionMultigraph(toyModel, toyDir);
+assert(numedges(toyOut{1}) == 4 && numedges(toyOut{8}) == 2, ...
+    'Two reactions of two atoms and one bond have four atom and two bond transitions.');
+assert(all(toyOut{2}) && all(toyOut{3}), 'All the metabolites and reactions must be atom mapped.');
+[atomResidual, bondResidual] = decompositionResiduals(toyModel, toyOut);
+assert(atomResidual == 0 && bondResidual == 0, 'Both decompositions must hold on the toy model.');
+% an options structure without sanityChecks takes the same default
+sameOut = cell(1, 12);
+[sameOut{:}] = buildAtomAndBondTransitionMultigraph(toyModel, toyDir, struct('directed', 0));
+assert(isequaln(sameOut{1}, toyOut{1}) && isequaln(sameOut{8}, toyOut{8}), ...
+    'Unset options must take their defaults.');
+
+%% Repeated metabolites or reactions are refused
+repeatedMet = toyModel;
+repeatedMet.mets{2} = 'a[c]';
+assert(verifyCobraFunctionError('buildAtomAndBondTransitionMultigraph', 'inputs', {repeatedMet, toyDir}, ...
+    'testMessage', 'duplicate metabolites'));
+repeatedRxn = toyModel;
+repeatedRxn.rxns{2} = 'R1';
+assert(verifyCobraFunctionError('buildAtomAndBondTransitionMultigraph', 'inputs', {repeatedRxn, toyDir}, ...
+    'testMessage', 'duplicate reactions'));
+
+%% RXN files with compartments and a model without: the atom graph uses the model's names
+plainModel = toyModel;
+plainModel.mets = {'a'; 'b'; 'c'};
+[plainATM, plainMets, plainRxns] = buildAtomAndBondTransitionMultigraph(plainModel, toyDir, ...
+    struct('bondTransitionMultigraph', 0));
+assert(all(ismember(plainATM.Nodes.mets, plainModel.mets)) && all(plainMets) && all(plainRxns), ...
+    'The atoms must carry the metabolite names of the model, without compartments.');
+
+%% Different names without compartments, here R1 starts with b, are left as they are
+reversedDir = tempname;
+mkdir(reversedDir);
+removeReversedDir = onCleanup(@() rmdir(reversedDir, 's'));
+writeRxnFile(reversedDir, 'R1', 'b -> a', 1, 1, carbonOxides('b', 'a'));
+reversedModel = struct('mets', {{'a'; 'b'}}, 'rxns', {{'R1'}}, 'S', sparse([1; -1]), ...
+    'lb', -1000, 'ub', 1000, 'c', 0, 'b', [0; 0]);
+reversedATM = buildAtomAndBondTransitionMultigraph(reversedModel, reversedDir, struct('bondTransitionMultigraph', 0));
+assert(numedges(reversedATM) == 2 && all(ismember(reversedATM.Nodes.mets, {'a'; 'b'})), ...
+    'Metabolites without compartments must not be changed.');
+
+%% A reaction without an atom mapping is reported as skipped in both graphs, the others are built
+% zero transition numbers are not counted as transitions, so the edge tables stay full
+skippedDir = tempname;
+mkdir(skippedDir);
+removeSkippedDir = onCleanup(@() rmdir(skippedDir, 's'));
+writeRxnFile(skippedDir, 'R1', 'a[c] -> b[c]', 1, 1, carbonOxides('a[c]', 'b[c]'));
+unmapped = @(name) makeMolecule(name, {'C', 'O'}, [0 0], [1 2 1]);
+writeRxnFile(skippedDir, 'R2', 'b[c] -> c[c]', 1, 1, {unmapped('b[c]'), unmapped('c[c]')});
+skippedOut = cell(1, 12);
+consoleText = evalc('[skippedOut{:}] = buildAtomAndBondTransitionMultigraph(toyModel, skippedDir);');
+assert(isequal(skippedOut{2}', [true true false]) && isequal(skippedOut{3}', [true false]), ...
+    'Only the reaction with a mapping, and its metabolites, must be in the atom graph.');
+assert(numedges(skippedOut{1}) == 2 && numedges(skippedOut{8}) == 1, ...
+    'The mapped reaction must keep its two atom transitions and one bond transition.');
+assert(contains(consoleText, 'R2.rxn could not be parsed for atom mappings and was skipped.') && ...
+    contains(consoleText, 'R2.rxn could not be parsed for bond mappings and was skipped.'), ...
+    'A skipped reaction must be reported for both graphs.');
+assert(contains(consoleText, '3 metabolites should be atom mapped, but only 2 in the dATM:') && ...
+    contains(consoleText, '2 reactions should be atom mapped, but only 1 in the dATM:'), ...
+    'The metabolites and reactions left out of the atom graph must be reported.');
+
+%% A molecule with other bonds in another RXN file is reported, and its new atom kept as it is
+% b has one bond in R1 and two, to an atom that R1 does not have, in R2
+inconsistentDir = tempname;
+mkdir(inconsistentDir);
+removeInconsistentDir = onCleanup(@() rmdir(inconsistentDir, 's'));
+writeRxnFile(inconsistentDir, 'R1', 'a[c] -> b[c]', 1, 1, carbonOxides('a[c]', 'b[c]'));
+threeAtoms = @(name) makeMolecule(name, {'C', 'O', 'N'}, [1 2 3], [1 2 1; 2 3 1]);
+writeRxnFile(inconsistentDir, 'R2', 'b[c] -> c[c]', 1, 1, {threeAtoms('b[c]'), threeAtoms('c[c]')});
+inconsistentOut = cell(1, 12);
+consoleText = evalc('[inconsistentOut{:}] = buildAtomAndBondTransitionMultigraph(toyModel, inconsistentDir);');
+% warnings captured from the console are wrapped at its width
+assert(contains(regexprep(consoleText, '\s+', ' '), 'b[c] bond-graph node count (2) does not match its true bond count (1)'), ...
+    'A metabolite with more bonds than in its first molecule block must raise a warning.');
+assert(numedges(inconsistentOut{8}) == 3, 'R1 has one bond transition and R2 two.');
+
 % return to the original directory
 cd(currentDir);
 
@@ -210,4 +337,30 @@ end
 if isfile(diaryFile)
     delete(diaryFile);
 end
+end
+
+function writeRxnFile(folder, rxnId, formula, nSubstrates, nProducts, molecules)
+% Write an MDL RXN file. molecules is a cell array of structs with fields name, elements,
+% mapping (the atom transition numbers) and bonds (rows [head tail type]).
+fid = fopen(fullfile(folder, [rxnId '.rxn']), 'w');
+fprintf(fid, '$RXN\n%s\nTest fixture\n%s\n%3d%3d\n', rxnId, formula, nSubstrates, nProducts);
+for i = 1:numel(molecules)
+    molecule = molecules{i};
+    fprintf(fid, '$MOL\n%s\n  fixture\n\n%3d%3d  0  0  0  0  0  0  0  0999 V2000\n', ...
+        molecule.name, numel(molecule.elements), size(molecule.bonds, 1));
+    for a = 1:numel(molecule.elements)
+        fprintf(fid, '%10.4f%10.4f%10.4f %-3s 0  0  0  0  0  0  0  0  0%3d  0  0\n', 0, 0, 0, ...
+            molecule.elements{a}, molecule.mapping(a));
+    end
+    for b = 1:size(molecule.bonds, 1)
+        fprintf(fid, '%3d%3d%3d  0\n', molecule.bonds(b, :));
+    end
+    fprintf(fid, 'M  END\n');
+end
+fclose(fid);
+end
+
+function molecule = makeMolecule(name, elements, mapping, bonds)
+% One molecule of a writeRxnFile fixture.
+molecule = struct('name', name, 'elements', {elements}, 'mapping', mapping, 'bonds', bonds);
 end
