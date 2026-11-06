@@ -1,7 +1,7 @@
 # Human Loop State
 
 ## Current State
-- Status: Gate 3 → widen scope; T026–T027 added, awaiting `/speckit-implement`
+- Status: all 27 tasks done (T026–T027 extension); SC-001–SC-008 met; awaiting Gate 3 closeout
 - Active feature directory: specs/20261104-001324-runmat-init-mode
 - Branch: `20261104-001324-runmat-init-mode` (from `089-large-model-solver-speed` @ `87573f1e8`, which contains the
   RunMat-compatibility feature 20261102-153951-runmat-compat)
@@ -19,7 +19,7 @@
 - plan:           done (plan.md, research.md, data-model.md, contracts/, quickstart.md)
 - tasks:          done (25 tasks)
 - analyze:        done (implementation-review.md); re-run after remediation: 0 critical, 0 high, 100% coverage
-- implement:      done for slice T001–T012 and T013–T025 (/speckit-implement, 2026-11-04); T019 criterion failed
+- implement:      done for slice T001–T012 and T013–T025 (/speckit-implement, 2026-11-04), and T026–T027 (2026-11-05/06)
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -52,7 +52,8 @@
 
 ## Pointers
 - Implementation receipt(s): specs/20261104-001324-runmat-init-mode/agent-runs/20261104T183608Z-runmat-init-mode/implementation-receipt.md;
-  specs/20261104-001324-runmat-init-mode/agent-runs/20261104T215330Z-runmat-init-mode-slice2/implementation-receipt.md
+  specs/20261104-001324-runmat-init-mode/agent-runs/20261104T215330Z-runmat-init-mode-slice2/implementation-receipt.md;
+  specs/20261104-001324-runmat-init-mode/agent-runs/20261106T004903Z-runmat-init-mode-slice3/implementation-receipt.md
 - Implementation review: specs/20261104-001324-runmat-init-mode/implementation-review.md
 - Predecessor report: specs/20261102-153951-runmat-compat/reports/runmat-compat-report.md
 
@@ -63,5 +64,4 @@
 - T001 and the full `testAll` runs need full clones with submodules, and each takes more than 60 minutes.
 - A newer RunMat build (parallel RunMat session) clears D5, D10 and D26–D29. It stops `'runmat'` mode on an
   unregistered defect ("dynamic output count is not supported for expanded builtin calls"); see reports/runmat-init.txt.
-- SC-002 under v0.6.2: testAll stops before its first statement on D26 from the uncalled
-  `test/verifyCobraFunctionError.m` (`{}` on line 35), outside the allowed files; see reports/runmat-testAll.txt.
+- SC-002 under v0.6.2: RESOLVED by T026–T027 (D26 line 35, D30 line 39); testAll now stops at the init call on D27.

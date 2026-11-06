@@ -195,7 +195,7 @@ passes.
   - in MATLAB, run two of the tests that call it (for example `testParseCobraVarargin` and one other), which
     must pass;
   - confirm `grep -l '{ *}' test/*.m` lists nothing.
-- [ ] T027 [US3] Re-run T019 on a full clone of the branch with T026, and update `$F/reports/runmat-testAll.txt`.
+- [X] T027 [US3] Re-run T019 on a full clone of the branch with T026, and update `$F/reports/runmat-testAll.txt`.
   The v0.6.2 stopping point must now be inside `initCobraToolbox(false, 'runmat')` at a *Blocking defects* entry
   (SC-002); then mark T019. Re-run the MATLAB `testAll` comparison (T022) on the same clone, which must show only
   the rename pair. Write the slice receipt and update `$F/human-loop.md`.
