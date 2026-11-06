@@ -17,9 +17,10 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %                     * .mets - metabolite identifiers
 %                     * .rxns - reaction identifiers
 %                     * .c - `n` x 1 linear objective coefficient vector (created as zeros if absent)
-%                     * .sex - whole-body model organ/sex identifier (optional; if present, organ prefixes are stripped from `.rxns` before the exchange-reaction heuristics)
+%                     * .sex - whole-body model organ/sex identifier (optional; if present, organ prefixes are stripped from `.rxns` before the demand and sink heuristics, but only the `Diet_` and `Excretion_` prefixes before the `EX_` exchange heuristic, so organ-biofluid transports `<Organ>_EX_...` stay internal)
 %                     * .subSystems - reaction subsystem annotation (optional, used for HMR-style exchange-reaction heuristics)
 %                     * .rxnComps - reaction compartment annotation (optional, used together with `.subSystems`)
+%                     * .metFormulas - metabolite formulas (optional; in whole-body models, used to detect biomass pool pseudo-metabolites)
 %
 % OPTIONAL INPUT:
 %    model:         COBRA model structure with the optional field:
@@ -40,6 +41,7 @@ function model = findSExRxnInd(model, nRealMet, printLevel)
 %                     * .DMRxnBool - Boolean of demand reactions. Prefix `DM_` (optional field)
 %                     * .SinkRxnBool - Boolean of sink reactions. Prefix `sink_` (optional field)
 %                     * .ExchRxnBool - Boolean of exchange reactions. Prefix `EX_` or `Exch_` or `Ex_` or 'Excretion_EX' (optional field)
+%                     * .biomassPoolRxnBool - Boolean of reactions involving a biomass pool pseudo-metabolite: a metabolite with an empty `.metFormulas` entry that takes part in a biomass reaction. Set only for whole-body models (`.sex` and `.metFormulas` present), otherwise all false. These reactions are external.
 %
 % .. Author: -  Ronan Fleming
 
@@ -144,8 +146,15 @@ if isfield(model,'sex')
         WBMrxns{j} = replace(model.rxns{j},OrgansListExt,'');
     end
     rxns = WBMrxns;
+    %For the exchange prefix rule (EX_, Exch_, Ex_), strip only the whole-body boundary
+    %prefixes Diet_ and Excretion_, not the organ prefixes: <Organ>_EX_x[e]_[bc] is a
+    %transport between an organ and a biofluid, internal to the whole-body model, and must
+    %not be marked external. Whole-body exchanges with one metabolite remain external
+    %through the one-coefficient rule below.
+    exRxns = regexprep(model.rxns, '^(Diet_|Excretion_)', '');
 else
     rxns = model.rxns;
+    exRxns = rxns;
 end
 
 
@@ -156,10 +165,10 @@ if isfield(model,'subSystems')
         model.ExchRxnBool=model.ExchRxnBool | strcmp('x',model.rxnComps);
     end
     % models with typical COBRA abbreviations - heuristic
-    model.ExchRxnBool=strncmp('EX_', rxns, 3)==1 | strncmp('Exch_', rxns, 5)==1 | strncmp('Ex_', rxns, 5)==1 | biomassBool | model.ExchRxnBool;
+    model.ExchRxnBool=strncmp('EX_', exRxns, 3)==1 | strncmp('Exch_', exRxns, 5)==1 | strncmp('Ex_', exRxns, 5)==1 | biomassBool | model.ExchRxnBool;
 else
     % models with typical COBRA abbreviations - heuristic
-    model.ExchRxnBool=strncmp('EX_', rxns, 3)==1 | strncmp('Exch_', rxns, 5)==1 | strncmp('Ex_', rxns, 5)==1 | biomassBool;
+    model.ExchRxnBool=strncmp('EX_', exRxns, 3)==1 | strncmp('Exch_', exRxns, 5)==1 | strncmp('Ex_', exRxns, 5)==1 | biomassBool;
 end
 %demand reactions going out of model
 model.DMRxnBool=strncmp('DM_', rxns, 3)==1;
@@ -251,8 +260,27 @@ end
 %     end
 % end
 
+%whole-body models: a reaction involving a biomass pool pseudo-metabolite (a metabolite
+%without a chemical formula that takes part in a biomass reaction, e.g.
+%<Organ>_lipid_membrane[c], <Organ>_proteome[c] or <Organ>_biomass_maintenance_dummy_objective)
+%has no elemental balance to test, like the biomass reaction itself, so it is external.
+%This covers the pool degradation reactions <Organ>_*_DEGRx, which break such a pool into
+%its components with coefficients as small as 1e-6, and the gut-lumen transports of organ
+%biomass. Metabolites without a formula that take part in no biomass reaction are not affected.
+model.biomassPoolRxnBool=false(nRxn,1);
+if isfield(model,'sex') && isfield(model,'metFormulas')
+    poolMetBool=false(nMet,1);
+    poolMetBool(1:nRealMet)=cellfun(@isempty,model.metFormulas(1:nRealMet)) ...
+        & any(model.S(1:nRealMet,biomassBool)~=0,2);
+    model.biomassPoolRxnBool=any(model.S(poolMetBool,:)~=0,1)';
+    if printLevel>0
+        fprintf('%u%s%u%s\n',nnz(model.biomassPoolRxnBool & ~SExRxnBoolHeuristic & ~SExRxnBoolOneCoefficient), ...
+            ' reactions marked external because they involve one of ',nnz(poolMetBool),' biomass pool pseudo-metabolites.')
+    end
+end
+
 %amalagamate all exchanges
-SExRxnBool= SExRxnBoolHeuristic | SExRxnBoolOneCoefficient;
+SExRxnBool= SExRxnBoolHeuristic | SExRxnBoolOneCoefficient | model.biomassPoolRxnBool;
 model.SIntRxnBool=~SExRxnBool;
 %rows corresponding to internal reactions
 boolMet=true(nMet,1);

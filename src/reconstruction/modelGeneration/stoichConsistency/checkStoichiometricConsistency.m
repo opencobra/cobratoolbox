@@ -254,8 +254,12 @@ if isConsistent~=1
                 error('solve for maximal conservation vector failed')
             end
 
-            %mosek
-            algorithm=solution.algorithm;
+            %mosek (solveCobraLP no longer returns .algorithm for every solver)
+            if isfield(solution,'algorithm')
+                algorithm=solution.algorithm;
+            else
+                algorithm='';
+            end
             %change back the solver
 %            solverOK = changeCobraSolver(oldSolver,'LP');
         case 'DCCO'
