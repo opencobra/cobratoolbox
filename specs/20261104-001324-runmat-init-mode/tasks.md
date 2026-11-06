@@ -150,7 +150,7 @@ passes.
     `$F/baseline/analyzer-before.json`; it must show no new message, except one the register records.
   - Add the *Workarounds* rows for T016–T017 to `$RC/debtRegister.md`.
   - Run `$RC/recheckRunMat.sh`, which must exit 0.
-- [ ] T019 [US3] Measure under RunMat:
+- [X] T019 [US3] Measure under RunMat:
   - run `COBRA_RUNMAT=1 $P/tools/runmat_testall.sh <full clone> $F/reports/runmat-testAll.txt` on a full clone
     of this branch;
   - the stopping point must be inside `initCobraToolbox(false, 'runmat')`, at a *Blocking defects* entry

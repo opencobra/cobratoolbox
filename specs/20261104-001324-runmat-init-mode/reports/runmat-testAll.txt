@@ -1,4 +1,129 @@
-# T019: testAll with COBRA_RUNMAT=1 under RunMat (SC-002)
+# testAll with COBRA_RUNMAT=1 under RunMat (SC-002)
+
+## T027 (current): full clone at e2179c882 — SC-002 met under RunMat v0.6.2
+
+After T026/T027 (`test/verifyCobraFunctionError.m`: line 35 `{}` -> `cell(0, 0)`, D26; line 39
+`parser.parse(...)` -> `parse(parser, ...)`, D30), v0.6.2 compiles test/testAll.m, prints the banner, runs its
+start-up ("Running test in COBRA CI environment") and reaches line 83, `initCobraToolbox(false, 'runmat')`.
+It stops there: `RunMat:FunctionCompileError`, "Could not compile function source .../initCobraToolbox.m:
+local may be read before it is assigned". Called from test/, initCobraToolbox.m is a function reached through the
+search path, and it reads `nargin`: registered blocking defect D27 (SC-002 as reworded at the T027 gate).
+
+Intermediate run at d2230f7a5 (line 35 only): v0.6.2 stopped before testAll's first statement with
+`RunMat:MirCellIndexPlanInvalid` at a misreported location; bisection of the tree found line 39 of
+verifyCobraFunctionError.m, a method call with a cell expansion. Registered as D30 (`repro/D30/`).
+
+Newer build (informational): unchanged, `Undefined function: changeCbMapOutput` (misreported at
+testAll.m:369:17), after entering initCobraToolbox(false, 'runmat'). Not registered.
+
+### Raw harness output, v0.6.2, e2179c882
+
+# testAll under RunMat
+
+- Started: 2026-11-05T23:21:11Z
+- Source: /tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/cobra-rm @ e2179c882
+- RunMat: RunMat v0.6.2 (/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-matlab-interface-spec/1a66df61-8617-464a-b587-ebd470eb7b17/scratchpad/runmat-target/release/runmat)
+- Command: COBRA_CI=1 timeout 20m runmat run test/testAll.m, in a copy of SOURCE
+- Shims: none
+- Exit status: 1, after 11s
+
+## Files set aside (1095)
+
+```
+   1068 discovery round 1
+     17 runmat check panics (D7)
+     10 not UTF-8 (D11)
+test files among them (not run): 35
+```
+
+## Stopping point (no JUnit report was written)
+
+```
+12:error: Could not compile function source '/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/rm-work-t027b-v062/tree/initCobraToolbox.m': local may be read before it is assigned
+13-id: RunMat:FunctionCompileError
+14---> test/testAll.m:83:9
+15-83 |         initCobraToolbox(false, 'runmat');
+16-  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+17-callstack:
+18-  test/testAll.m @ test/testAll.m:83:9
+```
+
+Last lines of the output:
+
+```
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2026
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Test Suite
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |
+                                                  | 
+
+Running test in COBRA CI environment
+error: Could not compile function source '/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/rm-work-t027b-v062/tree/initCobraToolbox.m': local may be read before it is assigned
+id: RunMat:FunctionCompileError
+--> test/testAll.m:83:9
+83 |         initCobraToolbox(false, 'runmat');
+  |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+callstack:
+  test/testAll.m @ test/testAll.m:83:9
+```
+
+### Raw harness output, newer build, e2179c882
+
+# testAll under RunMat
+
+- Started: 2026-11-05T23:50:37Z
+- Source: /tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/cobra-rm @ e2179c882
+- RunMat: RunMat v0.6.2 (/tmp/claude-1000/-home-rfleming-drive-sbgCloud-code-fork-cobratoolbox/7b5ef7c3-bbe6-4f5f-8121-eacbdad8b324/scratchpad/runmat-6e0a7df1a)
+- Command: COBRA_CI=1 timeout 20m runmat run test/testAll.m, in a copy of SOURCE
+- Shims: none
+- Exit status: 1, after 10s
+
+## Files set aside (775)
+
+```
+    748 discovery round 1
+     17 runmat check panics (D7)
+     10 not UTF-8 (D11)
+test files among them (not run): 8
+```
+
+## Stopping point (no JUnit report was written)
+
+```
+12:error: Undefined function: changeCbMapOutput
+13-id: RunMat:UndefinedFunction
+14---> test/testAll.m:369:17
+15-369 |                 cl = sum(clFiles);
+16-  |                 ^^^^^^^^^^^^^^^^^
+17-callstack:
+18-  test/testAll.m @ test/testAll.m:369:17
+```
+
+Last lines of the output:
+
+```
+     /  ___| /  _  \ |  _  \ |  _  \   / ___ \    |   COnstraint-Based Reconstruction and Analysis
+     | |     | | | | | |_| | | |_| |  | |___| |   |   The COBRA Toolbox - 2026
+     | |     | | | | |  _  { |  _  /  |  ___  |   |
+     | |___  | |_| | | |_| | | | \ \  | |   | |   |   Test Suite
+     \_____| \_____/ |_____/ |_|  \_\ |_|   |_|   |
+                                                  | 
+
+Running test in COBRA CI environment
+error: Undefined function: changeCbMapOutput
+id: RunMat:UndefinedFunction
+--> test/testAll.m:369:17
+369 |                 cl = sum(clFiles);
+  |                 ^^^^^^^^^^^^^^^^^
+callstack:
+  test/testAll.m @ test/testAll.m:369:17
+```
+
+---
+
+## T019 (superseded): full clone at 5625ee3ef
+
 
 Tree: full clone at 5625ee3ef, run by runmat_testall.sh (TIME_LIMIT=20m).
 
