@@ -56,7 +56,7 @@ from upstream. Lines this feature authored, against `upstream/develop`:
 
 ## Unresolved issues
 
-- T028 push and T029 upstream PR: awaiting explicit confirmation. SSH push fails (publickey); HTTPS via
+- T028 push and T029 upstream PR: user chose "Don't push yet" and "Not now" (2026-11-07); both left open. SSH push fails (publickey); HTTPS via
   `gh auth git-credential` dry-runs as fast-forward `c8f02f273..42f9a21a2`.
 - 6 tests fail on upstream and merged alike (testEcosystemToy, testClassifySubgraphIsomorphism,
   testExtractBondSubgraphs, testGetMolecularWeight, testOptimizeCbModelNLP, testFitC13Data) — out of scope.
