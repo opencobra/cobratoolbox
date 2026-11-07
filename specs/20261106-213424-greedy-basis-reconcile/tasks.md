@@ -22,8 +22,8 @@ contracts/greedyExtremeRayBasis.md, quickstart.md
 
 ## Phase 2: Foundational (baselines; run in background, block only T024)
 
-- [ ] T003 [P] Run `testAll` in fast mode (Gate 2 decision; same mode for T004 and T025, recorded in `R/baseline-mode.txt`) in `../fork-cobratoolbox-develop` at `2409e7fd5` with `matlab -batch`; save per-test outcomes as `R/baseline-develop.csv` (`testName,outcome`) and the log as `R/baseline-develop.log`.
-- [ ] T004 [P] Run the same `testAll` in `../fork-cobratoolbox-upstream-baseline`; save `R/baseline-upstream.csv` and `R/baseline-upstream.log`.
+- [X] T003 [P] Run `testAll` in fast mode (Gate 2 decision; same mode for T004 and T025, recorded in `R/baseline-mode.txt`) in `../fork-cobratoolbox-develop` at `2409e7fd5` with `matlab -batch`; save per-test outcomes as `R/baseline-develop.csv` (`testName,outcome`) and the log as `R/baseline-develop.log`.
+- [X] T004 [P] Run the same `testAll` in `../fork-cobratoolbox-upstream-baseline`; save `R/baseline-upstream.csv` and `R/baseline-upstream.log`.
 - [X] T005 Capture the FR-007 reference: in a separate `matlab -batch` process (not the shared MCP session) on a detached checkout of merge-base `467094a5d` (reuse `../fork-cobratoolbox-upstream-baseline` via `git checkout --detach 467094a5d` after T004 finishes, or a further temporary worktree), run each fixture of the ancestor's own `TG` (B's later fixtures excluded) with fixed `rng` and none of the new options, saving `Zpos`, `Z` and the pre-existing status fields to `R/ancestor-reference.mat`. Record the fixture list and seeds in `R/ancestor-reference.txt`.
 
 **Checkpoint**: baselines running or done; the merge can start.
@@ -73,15 +73,15 @@ contracts/greedyExtremeRayBasis.md, quickstart.md
 ## Phase 6: User Story 2 (part 2) — verify, land on develop, propose upstream (P1)
 
 - [X] T024 [US2] Conclude the merge commit on the feature branch: confirm `git diff --cached --name-only` contains none of the other session's files; `git grep -n -E '^(<<<<<<<|=======$|>>>>>>>)' -- src test` is empty; `git diff 56dcc3064 --stat -- external deprecated .gitmodules` is empty (FR-014); commit with an openCOBRA-convention message naming upstream PR #2720's head and this feature.
-- [ ] T025 [US2] Run `testAll` on the merged feature branch (same mode as T003/T004); save `R/merged.csv`/`R/merged.log`; compare with both baselines into `R/regression.md`: list tests passing on both baselines and failing after merge (MUST be 0, FR-012), plus tests fixed by the merge. If any regression, STOP and report.
-- [ ] T026 [US2] In `../fork-cobratoolbox-develop`: `git merge --ff-only 20261106-213424-greedy-basis-reconcile`; verify `git merge-base --is-ancestor origin/develop develop` and `... upstream/develop develop` (SC-006); record in `R/ancestry.txt`.
-- [ ] T027 [US2] Write the implementation receipt at `specs/20261106-213424-greedy-basis-reconcile/agent-runs/<UTC>-greedy-reconcile/implementation-receipt.md` (Prompt, Final response, Diff summary, Tests, Unresolved issues) and update `human-loop.md` to point at it; update project memory `develop-sync-blocked-greedy.md` to resolved.
+- [X] T025 [US2] Run `testAll` on the merged feature branch (same mode as T003/T004); save `R/merged.csv`/`R/merged.log`; compare with both baselines into `R/regression.md`: list tests passing on both baselines and failing after merge (MUST be 0, FR-012), plus tests fixed by the merge. If any regression, STOP and report.
+- [X] T026 [US2] In `../fork-cobratoolbox-develop`: `git merge --ff-only 20261106-213424-greedy-basis-reconcile`; verify `git merge-base --is-ancestor origin/develop develop` and `... upstream/develop develop` (SC-006); record in `R/ancestry.txt`.
+- [X] T027 [US2] Write the implementation receipt at `specs/20261106-213424-greedy-basis-reconcile/agent-runs/<UTC>-greedy-reconcile/implementation-receipt.md` (Prompt, Final response, Diff summary, Tests, Unresolved issues) and update `human-loop.md` to point at it; update project memory `develop-sync-blocked-greedy.md` to resolved.
 - [ ] T028 [US2] **Outward, confirmation required**: ask the user explicitly before `git push origin develop` (and the feature branch, if wanted). Test auth with `git push --dry-run` first; if SSH still fails, report and stop.
 - [ ] T029 [US2] **Outward, confirmation required**: draft the PR title and body (title present tense; body starts with a short summary of what it delivers — A's checkpoint/resume on top of B's initialBasis, the three test fixes — then test results from `R/regression.md`); show it to the user; open `rmtfleming:develop` → `opencobra/cobratoolbox:develop` with `gh pr create` only after explicit approval; record the URL in the receipt (SC-007).
 
 ## Phase 7: Polish
 
-- [ ] T030 Remove the temporary worktree `../fork-cobratoolbox-upstream-baseline` (`git worktree remove`) after T025 and T005 no longer need it.
+- [X] T030 Remove the temporary worktree `../fork-cobratoolbox-upstream-baseline` (`git worktree remove`) after T025 and T005 no longer need it.
 
 ## Dependencies
 

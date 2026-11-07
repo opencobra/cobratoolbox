@@ -1,10 +1,10 @@
 # Human Loop State
 
 ## Current State
-- Status: Gate 2 approved (all tasks); awaiting `/speckit-implement`
+- Status: implemented T001–T027, T030; T028 push and T029 PR await explicit confirmation
 - Active feature directory: specs/20261106-213424-greedy-basis-reconcile
-- Last completed bundle: 2 (implementation preparation)
-- Source code modified by this workflow: no (only spec artifacts and the CLAUDE.md plan pointer)
+- Last completed bundle: 3 (implementation), up to the outward actions
+- Source code modified by this workflow: yes (see receipt)
 
 ## Core Command Ledger
 - constitution: checked
@@ -14,7 +14,7 @@
 - plan: invoked (2026-11-07)
 - tasks: invoked (2026-11-07, 30 tasks)
 - analyze: invoked (2026-11-07, 0 critical)
-- implement: not yet
+- implement: invoked 2026-11-07 (`/speckit-implement`)
 
 ## Human Decisions
 | Date (UTC) | Gate | Option chosen | Consequence |
@@ -32,10 +32,10 @@
 - Files not allowed: see implementation-review.md
 
 ## Pointers
-- Implementation receipt(s): (none yet) specs/20261106-213424-greedy-basis-reconcile/agent-runs/
+- Implementation receipt(s): specs/20261106-213424-greedy-basis-reconcile/agent-runs/20261107T122813Z-greedy-reconcile/implementation-receipt.md
 - Implementation review: specs/20261106-213424-greedy-basis-reconcile/implementation-review.md
 
 ## Open Risks and Ambiguities
 - Spec assumption corrected during planning: B is already upstream (research R1).
 - Analyze F1, D1, B1 applied; B2 decided: fast mode.
-- `git fetch`/push over SSH failing on 2026-11-07.
+- `git fetch`/push over SSH failing on 2026-11-07; HTTPS via gh credentials works (dry run).
