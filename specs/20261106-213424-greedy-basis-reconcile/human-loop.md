@@ -1,7 +1,7 @@
 # Human Loop State
 
 ## Current State
-- Status: Bundle 2 complete; waiting at Gate 2
+- Status: Gate 2 approved (all tasks); awaiting `/speckit-implement`
 - Active feature directory: specs/20261106-213424-greedy-basis-reconcile
 - Last completed bundle: 2 (implementation preparation)
 - Source code modified by this workflow: no (only spec artifacts and the CLAUDE.md plan pointer)
@@ -20,13 +20,14 @@
 | Date (UTC) | Gate | Option chosen | Consequence |
 |---|---|---|---|
 | 2026-11-06 | Gate 1 (clarify) | B's initialBasis meaning; drop raysSeeded; fix the 3 failing tests | encoded in spec |
+| 2026-11-07 | Gate 2 | Fix 3 items, then approve all (Recommended); testAll fast mode; path /speckit-implement | F1, D1, B1 applied to spec.md/tasks.md; T001–T030 approved, T028/T029 each need explicit confirmation at the time |
 | 2026-11-07 | — | "Merge as you suggest" | interpreted as: continue human loop through plan/tasks/analyze to Gate 2 (no merge before approval, per Principle VI) |
 
 ## Approved Implementation Scope
-- Approved: no
-- Scope:
-- Tasks approved:
-- Tasks deferred:
+- Approved: yes (2026-11-07), path `/speckit-implement`
+- Scope: all
+- Tasks approved: T001–T030 (T028 push and T029 PR need separate explicit confirmation)
+- Tasks deferred: none
 - Files allowed: see implementation-review.md
 - Files not allowed: see implementation-review.md
 
@@ -36,5 +37,5 @@
 
 ## Open Risks and Ambiguities
 - Spec assumption corrected during planning: B is already upstream (research R1).
-- Analyze F1, D1, B1 should-fix; B2 testAll mode to decide.
+- Analyze F1, D1, B1 applied; B2 decided: fast mode.
 - `git fetch`/push over SSH failing on 2026-11-07.

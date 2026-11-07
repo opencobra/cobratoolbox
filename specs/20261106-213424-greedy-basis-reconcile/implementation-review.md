@@ -36,8 +36,9 @@ None.
 R1 above; C2 (signal-kill path not automatically testable); SSH push currently failing (T028 dry-runs first).
 
 ## Human Approval
-- Approved: no
-- Approved option:
-- Approved tasks/scope:
+- Approved: yes
+- Approved option: Fix 3 items (F1, D1, B1, applied), then approve all; testAll fast mode
+- Approved tasks/scope: T001–T030; T028/T029 each require explicit confirmation when reached
 - Required implementation invocation per constitution: `/speckit-implement`, or `/speckit-agent-assign-assign` → `-validate` → `-execute`
-- Date (UTC):
+- Chosen path: `/speckit-implement`
+- Date (UTC): 2026-11-07

@@ -87,10 +87,10 @@ conflict markers, and the MATLAB test suite shows no new failures against a base
 
 **Acceptance Scenarios**:
 
-1. **Given** the merge of `origin/develop`, **When** it completes, **Then** `greedyExtremeRayBasis.m` is the
+1. **Given** the single merge of `upstream/develop` (which contains `origin/develop`), **When** it completes, **Then** `greedyExtremeRayBasis.m` is the
    reconciled function (US1) and `CLAUDE.md` keeps its hand-maintained section, with the Spec Kit plan pointer set
    to the active feature.
-2. **Given** the merge of `upstream/develop`, **When** it completes, **Then** each file where upstream's change met
+2. **Given** the same merge, **When** it completes, **Then** each file where upstream's change met
    a RunMat-compatibility rewrite (`waterGibbsEnergyOfFormation.m`, `compareBounds2Models.m`,
    `setSimulationConstraints.m`) has upstream's content and the rewrite's form (for example the explicit
    `end` terminators).
@@ -178,7 +178,7 @@ conflict markers, and the MATLAB test suite shows no new failures against a base
 - **SC-002**: A run interrupted after it has accepted k rays, then resumed from its checkpoint, returns those k rays
   unchanged as its leading rows and reaches the same number of rays as an uninterrupted run.
 - **SC-003**: With none of the new options, the reconciled function's output equals the ancestor's on every
-  fixture of `testGreedyExtremeRayBasis` with a fixed seed.
+  fixture of the ancestor's (`467094a5d`) `testGreedyExtremeRayBasis` with a fixed seed.
 - **SC-004**: The three previously failing tests pass, and 3 of 3 root causes are recorded.
 - **SC-005**: 0 tests regress across the merge (FR-012).
 - **SC-006**: 0 conflict markers in the tree; `git merge-base --is-ancestor` holds for both `origin/develop` and
