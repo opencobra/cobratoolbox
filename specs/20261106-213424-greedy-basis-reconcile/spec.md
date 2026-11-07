@@ -188,7 +188,11 @@ conflict markers, and the MATLAB test suite shows no new failures against a base
 
 ## Assumptions
 
-- Neither A nor B is in upstream `develop`, so B's semantics can be adopted without an upstream deprecation.
+- *(Corrected 2026-11-07 during planning.)* B **is already in** upstream `develop`: `origin/develop` is an
+  ancestor of `upstream/develop`, and B's `greedyExtremeRayBasis.m` and tests are byte-identical there. B's
+  `param.initialBasis` contract is therefore a published upstream interface, and Principle II binds the
+  reconciled function to it. A is not upstream. One merge of `upstream/develop` makes both remotes ancestors
+  (FR-011), so a separate merge of `origin/develop` is unnecessary.
 - A's checkpoint file format may change, because A was never published.
 - MATLAB R2026a and the default solvers of the existing tests (gurobi for LP) are the reference.
 - Full-suite `testAll` runs need full clones with submodules and take more than an hour each.
