@@ -86,9 +86,9 @@ if parallelAvailable
     end
 
     % Start a parallel pool with the specified number of cores.
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool('local', numCores);
+        openParallelPool('local', numCores);
     end
 
     % Process each map in parallel.
@@ -105,7 +105,7 @@ if parallelAvailable
     end
 
     % Close the parallel pool after processing.
-    delete(gcp('nocreate'));
+    closeParallelPool();
 else
     % If no parallel computing toolbox is available, process sequentially.
     for i = 1:numel(mapNames)

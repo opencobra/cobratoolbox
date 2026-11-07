@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: k = 0 errors; Negative
+%       parameters print a message and return empty.
 %
 % Function under test:
 %     src/dataIntegration/fluxomics/c13solver/Combination.m
@@ -13,25 +15,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     None for the tested inputs. The local function getNumberCombinations is covered through the n == k, n > k and n < k cases.
+%     None. The local function getNumberCombinations is covered through the n == k, n > k and n < k cases.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: k = 0 errors
-%       SEVERITY: error
-%       TRIGGER: Combination(n, 0)
-%       OBSERVED: data(0) is an invalid index (MATLAB:badsubscript)
-%       EXPECTED: one empty combination
-%       LINES: 23
-%     - DEFECT: Negative parameters print a message and return empty
-%       SEVERITY: cosmetic
-%       TRIGGER: n < 0 or k < 0
-%       OBSERVED: the text Negative parameter in constructor is printed to the console and an empty
-%         value is returned
-%       EXPECTED: a clear error instead of console text
-%       LINES: 17-20
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -64,10 +55,22 @@ combinations = Combination(2, 3);
 assert(combinations.choose == 0);
 assert(~isfield(combinations, 'all'));
 
-%% negative parameters: a message is printed and an empty result is returned
+%% k = 0: one empty combination
 
-assert(isempty(Combination(-1, 2)));
-assert(isempty(Combination(3, -1)));
+% there is exactly one way to pick nothing: one combination with no element (a 0 x 1 column)
+combinations = Combination(4, 0);
+assert(combinations.choose == 1);
+assert(isequal(size(combinations.all), [0 1]));
+combinations = Combination(0, 0);
+assert(combinations.choose == 1);
+assert(isequal(size(combinations.all), [0 1]));
+
+%% negative parameters raise an error
+
+assert(verifyCobraFunctionError('Combination', 'inputs', {-1, 2}, 'outputArgCount', 1, ...
+    'testMessage', 'Negative parameter in constructor'));
+assert(verifyCobraFunctionError('Combination', 'inputs', {3, -1}, 'outputArgCount', 1, ...
+    'testMessage', 'Negative parameter in constructor'));
 
 % change the directory
 cd(currentDir)

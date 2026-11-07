@@ -16,7 +16,8 @@ function [selRxns, rxnSets, rxnList, Rfilt] = removeCorrelRxns(model, R, correlC
 %
 % OUTPUTS:
 %    selRxns:         true/false vector that allow selecting non-redundant data
-%    rxnSets:         Correlated reaction sets
+%    rxnSets:         Correlated reaction sets (a reaction whose correlations, its own included,
+%                     are all below the cutoff forms its own set)
 %    rxnList:         Reaction list with correlated reactions concatenated
 %    Rfilt:           Filtered `R`
 %
@@ -40,6 +41,11 @@ for rxnID = 1:nRxns
         alreadyIncluded(rxnID) = true;
         newRxnCnt = newRxnCnt + 1;
         correlRxns = find(abs(R(rxnID,:)) >= correlCutoff);
+        if isempty(correlRxns)
+            % the reaction is not selected with any reaction (not even itself,
+            % e.g. a diagonal entry below the cutoff): it forms its own group
+            correlRxns = rxnID;
+        end
         rxnSets{newRxnCnt} = rxns(correlRxns);
         if (~isempty(correlRxns))
             alreadyIncluded(correlRxns) = true;
@@ -64,11 +70,7 @@ for i = 1:length(rxnSets)
         end
         rxnList{i} = tmpString;
     else
-        try
-            rxnList{i} = rxnSets{i}{1};
-        catch
-           rxnSets{i}
-        end
+        rxnList{i} = rxnSets{i}{1};
     end
 end
 

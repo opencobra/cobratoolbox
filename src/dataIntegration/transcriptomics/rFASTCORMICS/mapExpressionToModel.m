@@ -29,6 +29,10 @@ function [mapping] = mapExpressionToModel(model, data, dico, rownames, processTr
 %                           GPR rules, size(mapping, 1) equals the number of reactions and
 %                           size(mapping, 2) equals size(data, 2)
 %
+% NOTE:
+%    An error is raised when dico is not a table, when rownames contains empty entries, or when no
+%    entry of rownames matches the dictionary.
+%
 % .. Authors:
 %       - Maria Pires Pacheco, Thomas Sauter, 2016, University of Luxembourg, modified by Tamara Bintener
 %       - Maria Pires Pacheco, Thomas Sauter, 2022, University of Luxembourg, adaptation of the code to the Cobra toolbox
@@ -44,13 +48,11 @@ end
 if istable(dico)
     dico = table2array(dico);
 else
-    disp('dico must be a table');
-    return
+    error('dico must be a table');
 end
 
 if any(cellfun(@isempty, rownames))
-    disp('rownames contains empty entries, please check')
-    return
+    error('rownames contains empty entries, please check')
 end
 
 % find the dico column with the highest number of matches in rownames
@@ -58,8 +60,7 @@ col = (sum(ismember(dico, rownames)) == max(sum(ismember(dico, rownames))));
 [~, idico, irownames] = intersect(dico(:, col), rownames); % get indices in dico of the gene identifiers that match with rownames
 
 if isempty(irownames)
-    'rownames does not match the dataIds in the dico';
-    return
+    error('rownames does not match the dataIds in the dico');
 end
 
 mapped = data(irownames, :); % get discretized data for rownames matching in the dico

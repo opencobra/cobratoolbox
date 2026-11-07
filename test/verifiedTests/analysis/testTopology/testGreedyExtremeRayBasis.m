@@ -637,6 +637,37 @@ for k = 1:length(solvers.LP)
                 sprintf('the ''%s'' return must carry spectrumTime', earlyStatus{1}.outcome));
         end
 
+        % Feature 20261025-235131 FR-011: the supplied-basis partition, raysAdded,
+        % nSignRetries and nLPSolves are reported on EVERY return path. Without a supplied
+        % basis nothing is supplied, kept, dependent or rejected, and every ray is added.
+        newCountFields = {'initialBasisSupplied', 'initialBasisKept', ...
+            'initialBasisDependent', 'initialBasisRejected', 'nSignRetries'};
+        newIndexFields = {'initialBasisKeptIndex', 'initialBasisDependentIndex', ...
+            'initialBasisRejectedIndex', 'initialBasisRejectedReason'};
+        for anyStatus = {statusEcoli, statusBad, statusBare, statusEmptyPath}
+            thisStatus = anyStatus{1};
+            for iField = 1:numel(newCountFields)
+                assert(isfield(thisStatus, newCountFields{iField}) && ...
+                    thisStatus.(newCountFields{iField}) == 0, ...
+                    sprintf('the ''%s'' return must report %s = 0 without a supplied basis', ...
+                    thisStatus.outcome, newCountFields{iField}));
+            end
+            for iField = 1:numel(newIndexFields)
+                assert(isfield(thisStatus, newIndexFields{iField}) && ...
+                    isempty(thisStatus.(newIndexFields{iField})), ...
+                    sprintf('the ''%s'' return must report an empty %s without a supplied basis', ...
+                    thisStatus.outcome, newIndexFields{iField}));
+            end
+            assert(isfield(thisStatus, 'raysAdded') && thisStatus.raysAdded == thisStatus.raysFound, ...
+                sprintf('the ''%s'' return must report raysAdded == raysFound', thisStatus.outcome));
+            assert(isfield(thisStatus, 'nLPSolves') && thisStatus.nLPSolves >= thisStatus.raysFound, ...
+                sprintf('the ''%s'' return must count at least one LP per ray found', thisStatus.outcome));
+        end
+        for earlyStatus = {statusBad, statusBare, statusEmptyPath}
+            assert(earlyStatus{1}.nLPSolves == 0, ...
+                sprintf('the ''%s'' return solves no LP', earlyStatus{1}.outcome));
+        end
+
         % FR-015 / SC-010: the historical two-output call still works unmodified
         [ZposTwo, ZTwo] = greedyExtremeRayBasis(ecoliModel, param);
         assert(full(all(ZposTwo(:) >= 0)), 'two-output call must still return a valid basis');
@@ -645,6 +676,161 @@ for k = 1:length(solvers.LP)
         fprintf('Done.\n');
     end
 end
+
+% Feature 20261025-235131: complete a SUPPLIED partial non-negative basis
+% (param.initialBasis), as in Proposition prop:mr:left-basis of the moietyRank
+% manuscript. Fixtures are internal stoichiometric matrices with species as rows. Rays
+% are compared up to positive scaling, in exact rational form.
+%
+% Fixtures 1 and 3 are complete from the supplied basis alone, so they solve no LP and
+% run with whatever solver the session has. Fixture 2 and the rejection case need LP
+% vertices, so they run once per vertex-returning solver that is available.
+fprintf('   Testing greedyExtremeRayBasis with a supplied initial basis ... \n');
+rng(20261025, 'twister');
+vertexSolvers = intersect({'gurobi', 'ibm_cplex', 'glpk'}, solvers.LP, 'stable');
+basisModel = @(N) struct('S', sparse(N), 'SConsistentRxnBool', true(size(N, 2), 1));
+% a non-negative ray scaled so that its smallest non-zero entry is 1
+scaledRay = @(r) full(r(:)')/min(full(r(r > 0)));
+isIntegerRay = @(r) all(abs(r - round(r)) < 1e-9);
+ibParam = struct('printLevel', 0, 'maxNewBasisTime', 60, 'solver', '');
+
+% fixture 1, the dimer: N = [-1 0 2; 1 -2 0; 0 1 -1], rank 2, nullity 1. The supplied
+% conserved moiety vector already spans the left nullspace, so nothing is searched.
+N1 = [-1 0 2; 1 -2 0; 0 1 -1];
+ibParam.initialBasis = [1 1 2];
+[Zpos, ~, status] = greedyExtremeRayBasis(basisModel(N1), ibParam);
+assert(isequal(full(Zpos), [1 1 2]), 'F1: the supplied vector must be returned unchanged');
+assert(strcmp(status.outcome, 'complete') && status.raysAdded == 0 && ...
+    status.nLPSolves == 0, 'F1: complete immediately, 0 rays added, no LP solved');
+assert(isequal(status.initialBasisKeptIndex, 1) && status.initialBasisSupplied == 1, ...
+    'F1: the supplied vector must be reported as kept');
+
+% an all-zero supplied vector adds no rank, so it is reported as dependent
+ibParam.initialBasis = [0 0 0; 1 1 2];
+[Zpos, ~, status] = greedyExtremeRayBasis(basisModel(N1), ibParam);
+assert(isequal(full(Zpos), [1 1 2]) && isequal(status.initialBasisDependentIndex, 1) && ...
+    isequal(status.initialBasisKeptIndex, 2), 'F1: an all-zero row must be reported dependent');
+
+% fixture 3, exchange with transport: rank 5, nullity 3. Rows 1-3 are independent and
+% row 4 = row 2 + row 3 - row 1 is a dependent conserved moiety vector.
+N3 = [-1 0 0 0 1 0; -1 0 0 0 0 1; 1 -1 0 0 0 0; 1 0 -1 0 0 0;
+    0 0 0 1 -1 0; 0 0 0 1 0 -1; 0 1 0 -1 0 0; 0 0 1 -1 0 0];
+B3 = [1 0 1 0 1 0 1 0; 1 0 0 1 1 0 0 1; 0 1 1 0 0 1 1 0; 0 1 0 1 0 1 0 1];
+ibParam.initialBasis = B3;
+[Zpos, ~, status] = greedyExtremeRayBasis(basisModel(N3), ibParam);
+assert(isequal(status.initialBasisKeptIndex, [1 2 3]) && ...
+    isequal(status.initialBasisDependentIndex, 4) && status.initialBasisRejected == 0, ...
+    'F3: rows 1-3 must be kept and row 4 reported dependent');
+assert(isequal(full(Zpos), B3(1:3, :)), 'F3: the kept rows must be returned unchanged');
+assert(strcmp(status.outcome, 'complete') && status.raysAdded == 0 && status.nLPSolves == 0, ...
+    'F3: complete with 0 rays added and no LP solved');
+
+% a supplied basis of the wrong length is an error naming the expected size
+ibParam.initialBasis = [1 1];
+assert(verifyCobraFunctionError('greedyExtremeRayBasis', ...
+    'inputs', {basisModel(N1), ibParam}), 'a wrongly sized initialBasis must be an error');
+
+% fixture 2, coupled antiport, species (Xe, Xp, Xc, Yc, Ye, Yp): rank 3, nullity 3. The
+% two conserved moieties do not span the left nullspace, so exactly one ray, which is
+% not a moiety, must be added: the cytosolic total or the outer total.
+N2 = [-1 1 0 0; 0 -1 1 0; 1 0 -1 0; -1 0 1 0; 1 0 0 -1; 0 0 -1 1];
+L0 = [1 1 1 0 0 0; 0 0 0 1 1 1];
+for k = 1:numel(vertexSolvers)
+    vParam = ibParam;
+    vParam.solver = vertexSolvers{k};
+    vParam.initialBasis = L0;
+    rng(20261025, 'twister');
+    [Zpos, ~, status] = greedyExtremeRayBasis(basisModel(N2), vParam);
+    assert(isequal(full(Zpos(1:2, :)), L0), ...
+        sprintf('F2 (%s): the first two rows must equal L0 exactly', vertexSolvers{k}));
+    assert(strcmp(status.outcome, 'complete') && status.raysAdded == 1 && ...
+        size(Zpos, 1) == 3, sprintf('F2 (%s): exactly one ray must be added', vertexSolvers{k}));
+    added = scaledRay(Zpos(3, :));
+    assert(isIntegerRay(added) && (isequal(round(added), [0 0 1 1 0 0]) || ...
+        isequal(round(added), [1 1 0 0 1 1])), ...
+        sprintf('F2 (%s): the added ray must be the cytosolic or the outer total', vertexSolvers{k}));
+    assert(full(all(Zpos(:) >= 0)) && ...
+        all(full(max(abs(Zpos*N2), [], 2)) <= status.acceptanceTarget) && ...
+        rank(full(Zpos)) == status.raysFound, ...
+        sprintf('F2 (%s): every row must be non-negative, accurate and independent', vertexSolvers{k}));
+
+    % rejection: row 3 has one entry of -1e-20, so only the exact sign rule rejects it,
+    % and row 4 is not in the left nullspace, so it fails the accuracy target
+    vParam.initialBasis = [L0; 1 1 1 -1e-20 0 0; 1 0 0 0 0 0];
+    rng(20261025, 'twister');
+    [Zpos, ~, status] = greedyExtremeRayBasis(basisModel(N2), vParam);
+    assert(isequal(status.initialBasisRejectedIndex, [3 4]) && ...
+        isequal(status.initialBasisRejectedReason, {'negative', 'accuracy'}), ...
+        sprintf('F2 (%s): rows 3 and 4 must be rejected as negative and inaccurate', vertexSolvers{k}));
+    assert(isequal(status.initialBasisKeptIndex, [1 2]) && isequal(full(Zpos(1:2, :)), L0) && ...
+        strcmp(status.outcome, 'complete') && status.raysAdded == 1, ...
+        sprintf('F2 (%s): a rejected vector must not be returned', vertexSolvers{k}));
+end
+% fixture 4, sign recovery: S = [1; -1; 0], whose left-nullspace cone has the extreme
+% rays (1,1,0) and (0,0,1). With (1,1,0) supplied, the targeted direction g is
+% proportional to (0,0,1). Maximising -g returns (1/2,1/2,0), which is dependent, so the
+% search must re-solve with +g and recover (0,0,1). The test hook forces the targeted
+% objective on the first draw and the wrong sign first; without it a random objective
+% finds (0,0,1) about half the time and the targeted step is never reached.
+S4 = [1; -1; 0];
+for k = 1:numel(vertexSolvers)
+    vParam = ibParam;
+    vParam.solver = vertexSolvers{k};
+    vParam.initialBasis = [1 1 0];
+    vParam.testHook = struct('targetedSignFirst', -1, 'forceTargeted', true);
+    rng(20261025, 'twister');
+    [Zpos, ~, status] = greedyExtremeRayBasis(basisModel(S4), vParam);
+    assert(isequal(full(Zpos(1, :)), [1 1 0]) && strcmp(status.outcome, 'complete') && ...
+        status.raysAdded == 1, sprintf('F4 (%s): the missing ray must be added', vertexSolvers{k}));
+    assert(isequal(round(scaledRay(Zpos(2, :))), [0 0 1]) && isIntegerRay(scaledRay(Zpos(2, :))), ...
+        sprintf('F4 (%s): the added ray must be (0,0,1)', vertexSolvers{k}));
+    assert(status.nSignRetries == 1 && status.nLPSolves == 2 && ...
+        status.nTargetedObjectives == 1 && status.raysRejectedForDependence == 1, ...
+        sprintf(['F4 (%s): the wrong-sign vertex must be dropped as dependent and ' ...
+        'recovered by one retry with the opposite sign'], vertexSolvers{k}));
+
+    % control: the right sign first needs no retry
+    vParam.testHook.targetedSignFirst = 1;
+    rng(20261025, 'twister');
+    [Zpos, ~, status] = greedyExtremeRayBasis(basisModel(S4), vParam);
+    assert(isequal(round(scaledRay(Zpos(2, :))), [0 0 1]) && status.nSignRetries == 0 && ...
+        status.nLPSolves == 1, sprintf('F4 (%s): the right sign must need no retry', vertexSolvers{k}));
+end
+if isempty(vertexSolvers)
+    fprintf('   no vertex-returning LP solver available; fixtures 2 and 4 skipped.\n');
+end
+
+% The same fixtures in RIGHT-nullspace mode, posed on the transposed matrix with the
+% supplied basis given one candidate per COLUMN, as the right-mode Zpos is returned.
+rightIbParam = ibParam;
+rightIbParam.leftRight = 'right';
+rightIbParam.initialBasis = [1 1 2]';
+[ZposR, ~, statusR] = greedyExtremeRayBasis(basisModel(N1'), rightIbParam);
+assert(isequal(full(ZposR), [1 1 2]') && strcmp(statusR.outcome, 'complete') && ...
+    statusR.nLPSolves == 0, 'F1 right: the supplied column must be returned unchanged');
+rightIbParam.initialBasis = B3';
+[ZposR, ~, statusR] = greedyExtremeRayBasis(basisModel(N3'), rightIbParam);
+assert(isequal(full(ZposR), B3(1:3, :)') && isequal(statusR.initialBasisKeptIndex, [1 2 3]) && ...
+    isequal(statusR.initialBasisDependentIndex, 4) && strcmp(statusR.outcome, 'complete') && ...
+    statusR.nLPSolves == 0, 'F3 right: columns 1-3 kept, column 4 dependent, nothing searched');
+% a k x n basis in right mode has the wrong orientation
+rightIbParam.initialBasis = B3;
+assert(verifyCobraFunctionError('greedyExtremeRayBasis', ...
+    'inputs', {basisModel(N3'), rightIbParam}), ...
+    'a right-mode initialBasis must have one candidate per column');
+for k = 1:numel(vertexSolvers)
+    vParam = rightIbParam;
+    vParam.solver = vertexSolvers{k};
+    vParam.initialBasis = L0';
+    rng(20261025, 'twister');
+    [ZposR, ~, statusR] = greedyExtremeRayBasis(basisModel(N2'), vParam);
+    added = scaledRay(ZposR(:, 3));
+    assert(isequal(full(ZposR(:, 1:2)), L0') && strcmp(statusR.outcome, 'complete') && ...
+        statusR.raysAdded == 1 && size(ZposR, 2) == 3 && isIntegerRay(added) && ...
+        (isequal(round(added), [0 0 1 1 0 0]) || isequal(round(added), [1 1 0 0 1 1])), ...
+        sprintf('F2 right (%s): L0'' kept and one valid ray added', vertexSolvers{k}));
+end
+fprintf('Done.\n');
 
 % change back to the current directory
 cd(currentDir);

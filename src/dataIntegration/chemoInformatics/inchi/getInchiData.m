@@ -60,7 +60,7 @@ inchiLayersDetail.mainLayer = mainLayer;
 % Charge layer
 pLayer = contains(inchiSplited, 'p');
 if any(pLayer)
-    protons = str2double(regexprep(inchiSplited{pLayer}, 'p|;', ''));
+    protons = sum(str2double(regexprep(inchiSplited(pLayer), 'p|;', '')));
 else
     protons = 0;
 end

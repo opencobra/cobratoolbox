@@ -5,6 +5,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       026-tier1-test-batch2, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Option flag_x_error
+%       can never be set.
 %
 % Function under test:
 %     src/base/solvers/varKin/derFreeMethods/InitialDuplo.m
@@ -13,19 +15,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 122 of InitialDuplo.m (flag_x_error = options.flag_x_error) is uncovered because of the defect below.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Option flag_x_error can never be set
-%       SEVERITY: unusable-option
-%       TRIGGER: options.flag_x_error given
-%       OBSERVED: the code tests the misspelled field name flag_`x_error` (with backticks), so the
-%         output flag_x_error is always 0
-%       EXPECTED: the given value returned
-%       LINES: 121-122
+%     None found.
 %
 % Authors:
 %     - Generated for feature 026-tier1-test-batch2, 2026-10-11.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -46,9 +43,8 @@ tol = 1e-15;
 fieldNames = {'MaxNumIter', 'MaxNumMapEval', 'TimeLimit', 'epsilon', 'alpha', 'beta', 'sigma', 'l', ...
               'tauBar', 'lambda_min', 'lambda_max', 'flag_x_error', 'flag_psi_error', 'flag_time', 'Stopping_Crit'};
 expectedDefaults = {5000, 10000, inf, 1e-5, 1e-1, 0.5, 1, 10, 0.6, 1e-4, 1, 0, 0, 0, 5};
-customValues = {11, 22, 7, 3e-3, 0.3, 0.2, 2, 3, 0.9, 1e-3, 4, [], 1, 1, 3};
-% the 12th output (flag_x_error) is skipped everywhere because of the defect in the header
-checkedOutputs = [1:11, 13:15];
+customValues = {11, 22, 7, 3e-3, 0.3, 0.2, 2, 3, 0.9, 1e-3, 4, 1, 1, 1, 3};
+checkedOutputs = 1:15;
 
 %% defaults: an empty options structure gives the built-in values
 
@@ -69,6 +65,15 @@ custom = cell(1, 15);
 [custom{1:15}] = InitialDuplo(options);
 for k = checkedOutputs
     assert(isequal(custom{k}, customValues{k}), ['option not used for ' fieldNames{k}]);
+end
+
+%% flag_x_error: the given value is returned, the other outputs keep their defaults
+
+outputs = cell(1, 15);
+[outputs{1:15}] = InitialDuplo(struct('flag_x_error', 1));
+assert(outputs{12} == 1);
+for k = [1:11, 13:15]
+    assert(isequal(outputs{k}, defaults{k}), ['default changed for ' fieldNames{k}]);
 end
 
 % change the directory

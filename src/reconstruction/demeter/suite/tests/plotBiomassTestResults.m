@@ -67,9 +67,9 @@ solver = CBT_LP_SOLVER;
 
 if numWorkers > 0
     % with parallelization
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkers)
+        openParallelPool(numWorkers)
     end
 end
 environment = getEnvironment();

@@ -9,7 +9,8 @@ function [Bout, LIBkey, LOCAkey] = mapAontoB(Akey, Bkey, Ain, Bin, printLevel)
 %
 % INPUTS:
 %    Akey:          m x 1 primary key in array or table `Ain`
-%    Bkey:          n x 1 primary key in array or table `Bin`
+%    Bkey:          n x 1 primary key in array or table `Bin`, of the same
+%                   class as `Akey`
 %    Ain:           m x z array or table. When `Ain` is a `table`, fields
 %                   used are:
 %
@@ -25,7 +26,9 @@ function [Bout, LIBkey, LOCAkey] = mapAontoB(Akey, Bkey, Ain, Bin, printLevel)
 %
 % OUTPUTS:
 %    Bout:          n x y array or table, which is created starting from
-%                   `Bkey` if `Bin` is not provided.
+%                   `Bkey` if `Bin` is not provided. Without `Ain`, the n x 1
+%                   keys of `Bkey` that are in `Akey`, with an empty, NaN or
+%                   false entry for the other keys.
 %    LIBkey:        n x 1 array of the same size as `Bkey` containing true
 %                   where the elements of `Bkey` are in `Akey` and false
 %                   otherwise. Output from `[LIBkey, LOCAkey] = ismember(Bkey, Akey)`.
@@ -40,7 +43,7 @@ if ~exist('printLevel','var')
     printLevel=1;
 end
 
-if class(Akey)~=class(Bkey)
+if ~strcmp(class(Akey),class(Bkey))
     error('class of Akey and Bkey must be the same')
 end
 
@@ -132,7 +135,7 @@ else
         otherwise
             error('unrecognised class')
     end
-    Bout(LIBkey) =  Bkey(LIBkey(LOCAkey~=0));
+    Bout(LIBkey) =  Bkey(LIBkey);
 end
 
 

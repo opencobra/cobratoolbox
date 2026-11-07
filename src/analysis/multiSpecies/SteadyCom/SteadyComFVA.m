@@ -309,14 +309,14 @@ end
 
 %parallel computation
 try
-    p = gcp('nocreate');
+    p = getParallelPool();
     if isempty(p)
         if threads > 1
             %given explicit no. of threads
-            parpool(ceil(threads));
+            openParallelPool(ceil(threads));
         elseif threads ~= 1
             %default max no. of threads (input 0 or -1 etc)
-            parpool;
+            openParallelPool();
         end
     end
 catch

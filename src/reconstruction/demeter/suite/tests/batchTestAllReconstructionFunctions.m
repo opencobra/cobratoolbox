@@ -30,9 +30,9 @@ end
 % initialize parallel pool
 if numWorkers>0 && ~isempty(ver('parallel'))
     % with parallelization
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkers)
+        openParallelPool(numWorkers)
     end
 end
 environment = getEnvironment();

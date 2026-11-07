@@ -63,9 +63,10 @@ function [arm, moietyFormulae, reacting] = identifyConservedReactingMoieties(mod
 %                toolbox functions (Statistics_Toolbox's tabulate,
 %                Optimization_Toolbox's intlinprog). Set to false to
 %                prefer the licensed-toolbox implementations for backward
-%                compatibility; automatically falls back to the
-%                open-source path (with a warning) if the required
-%                toolbox is not licensed on this machine.
+%                compatibility (tabulate is then reproduced by
+%                cobraTabulate, which needs no toolbox; intlinprog falls
+%                back to the open-source path, with a warning, if the
+%                Optimization Toolbox is not licensed on this machine).
 %                * .conservedMoietiesOnly {(0),1} false (default) to compute
 %                both conserved and reacting moieties as before. Set to true
 %                to compute only conserved moieties: the function returns
@@ -823,12 +824,8 @@ moietyFormulae=cell(nIsomorphismClasses,1);
 for i = 1:nIsomorphismClasses
     if useOpenSourceMoietyTools
         elementTable = tabulatePlain(compElements(I2C(i,:)==1)); % elements in moiety i
-    elseif license('test','Statistics_Toolbox')
-        elementTable = tabulate(compElements(I2C(i,:)==1)); % elements in moiety i
     else
-        warning('identifyConservedReactingMoieties:noStatsToolbox', ...
-            'Statistics_Toolbox not licensed; falling back to tabulatePlain despite options.useOpenSourceMoietyTools=false.');
-        elementTable = tabulatePlain(compElements(I2C(i,:)==1));
+        elementTable = cobraTabulate(compElements(I2C(i,:)==1)); % elements in moiety i
     end
     formula='';
     for j=1:size(elementTable,1)
@@ -1143,7 +1140,7 @@ if sanityChecks
             if useOpenSourceMoietyTools
                 tabulatePlain(ATG.Nodes.Element(Mo2A(j,:)~=0))
             else
-                tabulate(ATG.Nodes.Element(Mo2A(j,:)~=0))
+                cobraTabulate(ATG.Nodes.Element(Mo2A(j,:)~=0))
             end
         end
         moietyMetIndices=atoms2mets(Mo2A(j,:)~=0);

@@ -93,7 +93,7 @@ respVarData = data.(string(response));
 if numel(unique(respVarData))==2  
     if ~isa(response,'double')     
         % Convery response variable data to numerical data
-        data.(string(response)) = grp2idx(categorical(data.(string(response))))-1;
+        data.(string(response)) = cobraGrp2idx(categorical(data.(string(response))))-1;
         responseDistribution = 'binomial';
     else
         responseDistribution = 'binomial';

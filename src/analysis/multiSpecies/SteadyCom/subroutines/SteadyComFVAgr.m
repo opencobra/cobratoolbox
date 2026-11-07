@@ -272,16 +272,20 @@ objList = SteadyComSubroutines('rxnList2objMatrix', rxnNameList, varNameDisp, xN
 
 if threads ~= 1
     try
-        if isempty(gcp('nocreate'))
+        if isempty(getParallelPool())
             if threads > 1
                 %given explicit no. of threads
-                parpool(ceil(threads));
+                openParallelPool(ceil(threads));
             else
                 %default max no. of threads (input 0 or -1 etc)
-                parpool;
+                openParallelPool();
             end
         end
     catch
+        threads = 1;
+    end
+    if isempty(getParallelPool())
+        % no Parallel Computing Toolbox: compute serially
         threads = 1;
     end
 end
@@ -401,7 +405,7 @@ else
         end
     end
 
-    p = gcp;
+    p = openParallelPool();
     numPool = p.NumWorkers;
     %assign reactions to each thread, from reaction i0P to nRxnFVA
     rxnRange = cell(numPool,1);

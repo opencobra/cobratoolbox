@@ -137,9 +137,9 @@ end
 
 % set parallel pool
 if numWorkers > 1
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkers)
+        openParallelPool(numWorkers)
     end
 end
     
@@ -201,9 +201,9 @@ catch
 end
 
 if numWorkers > 1
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkers)
+        openParallelPool(numWorkers)
     end
 else
     error('You disabled parallel mode to enable sequential one. Sequential mode is not available for this application. Please specify a higher number of workers modifying numWorkers option.')

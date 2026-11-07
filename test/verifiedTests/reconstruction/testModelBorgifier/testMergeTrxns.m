@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%       Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: A call with nothing to
+%       merge fails.
 %
 % Function under test:
 %     src/reconstruction/comparison/modelBorgifier/mergeTrxns.m
@@ -15,20 +17,15 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 116 of mergeTrxns.m (a reaction name that is not a cell) is never reached: the names
+%     Line 121 of mergeTrxns.m (a reaction name that is not a cell) is never reached: the names
 %     are always a cell array.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: A call with nothing to merge fails
-%       SEVERITY: error
-%       TRIGGER: an empty list of reactions to merge
-%       OBSERVED: the variable modelfields is created inside the loop only, so the clean-up after
-%         the loop errors (Unrecognized function or variable modelfields)
-%       EXPECTED: the model returned unchanged
-%       LINES: 51, 133
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -110,6 +107,13 @@ assert(isequal(merged.rxnMetNames, {'x'; 'z'}));        % only the removed react
 
 merged = mergeTrxns(makeModel(), {[2 3]}, 1);
 assert(isequal(merged.rxns, {'R1'; 'R_dup'}));
+
+%% nothing to merge: the model is returned unchanged
+
+% (formerly a known defect: an empty list stopped the function with an error)
+original = makeModel();
+merged = mergeTrxns(original, {}, []);
+assert(isequal(merged, original));
 
 % change the directory
 cd(currentDir)

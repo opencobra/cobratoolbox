@@ -90,7 +90,7 @@ if strcmp(inputDataType, "abundance")
     measuresStandardized(isnan(measuresStandardized)) = 0;
     
     % Perform RPCA
-    [coeff, PCscores, ~, ~, explVar] = pca(measuresStandardized', 'Centered', false, 'Algorithm', 'als');
+    [coeff, PCscores, ~, ~, explVar] = cobraPca(measuresStandardized', 'Centered', false, 'Algorithm', 'als');
 elseif strcmp(inputDataType, "betadiversitymatrix")
     % Perform PCoA for beta diversity matrix
     [PCscores, eigvals] = cmdscale(measuresMatrix);

@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Mode 2 is not the
+%       transpose of mode 1 for a general column permutation.
 %
 % Function under test:
 %     src/analysis/subspaces/nullspace/nullspaceLUSOLapply2Modes.m
@@ -17,19 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Mode 2 is not the transpose of mode 1 for a general column permutation
-%       SEVERITY: wrong-result
-%       TRIGGER: a null-space structure whose column permutation p is not its own inverse (for
-%         example p = [2; 3; 1])
-%       OBSERVED: mode 1 places the rows with W(p,:) = Z while mode 2 applies the same assignment to
-%         the input instead of its inverse, so the inner products <Z V1, V2> and <V1, Z V2> differ
-%         (-159 against 255 for the example factors); the author notes that the permutation handling
-%         in mode 2 is uncertain
-%       EXPECTED: mode 2 returns Z V, so both inner products are equal
-%       LINES: 71-73
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -68,9 +62,10 @@ assert(norm(full(W) - expected, 'fro') < tol);
 
 V2 = [1 2; 3 4; 5 6];
 W = nullspaceLUSOLapply2Modes(2, 3, 2, V2, nullS);
-% explicit evaluation: scale, permute, solve with L and keep the rows after the rank
+% explicit evaluation: scale, select the rows in the order p (the inverse of the row placement of
+% mode 1), solve with L and keep the rows after the rank
 U = full(nullS.Cinv)' * V2;
-U(nullS.p, :) = U;
+U = U(nullS.p, :);
 Y = full(nullS.L) \ U;
 expected = Y(nullS.rank + 1:3, :);
 assert(norm(full(W) - expected, 'fro') < tol);
@@ -82,6 +77,21 @@ Y = [1 -1; 2 0; 0 5];
 Z1 = nullspaceLUSOLapply2Modes(1, 3, 2, X, nullS);
 Z2 = nullspaceLUSOLapply2Modes(2, 3, 2, Y, nullS);
 assert(abs(trace(Y' * full(Z1)) - trace(X' * full(Z2))) < tol);
+
+%% the two modes are transposes of each other for a permutation that is not its own inverse
+
+% p = [2; 3; 1] differs from its inverse [3; 1; 2]; mode 2 must still apply Z', so the inner
+% products <Z X, Y> and <X, Z' Y> agree (the tolerance covers rounding in two triangular solves)
+cyclicNullS = nullS;
+cyclicNullS.p = [2; 3; 1];
+Z1 = nullspaceLUSOLapply2Modes(1, 3, 2, X, cyclicNullS);
+Z2 = nullspaceLUSOLapply2Modes(2, 3, 2, Y, cyclicNullS);
+assert(abs(trace(Y' * full(Z1)) - trace(X' * full(Z2))) < tol);
+% the same check against the explicitly formed operator Z = Cinv * Pi * inv(L') * [0; I]
+explicitZ = zeros(3, 2);
+explicitZ(cyclicNullS.p, :) = full(cyclicNullS.L') \ [zeros(1, 2); eye(2)];
+explicitZ = full(cyclicNullS.Cinv) * explicitZ;
+assert(norm(full(Z2) - explicitZ' * Y, 'fro') < tol);
 
 % change the directory
 cd(currentDir)

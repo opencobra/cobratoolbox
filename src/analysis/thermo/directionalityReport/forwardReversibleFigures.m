@@ -85,7 +85,7 @@ if thorStandard
     for n=1:nRxn
         if model.SIntRxnBool(n)
             %forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrG0_Uncertainty(n),tValue*model.DrG0_Uncertainty(n));
-            forwardProbability(n)= normcdf(0,model.DrGt0(n),tValue*model.DrG0_Uncertainty(n),tValue*model.DrG0_Uncertainty(n));
+            forwardProbability(n)= cobraNormcdf(0,model.DrGt0(n),tValue*model.DrG0_Uncertainty(n),tValue*model.DrG0_Uncertainty(n));
             if strcmp(model.rxns{n},'ACYP') & 0
                 fprintf('%s\n',model.rxns{n})
             end
@@ -103,7 +103,7 @@ else
     U=model.DrGtMax-Y;
     %find the amount of reactions with normal cumulative distribution over
     %range of dGt0
-    forwardProbability = normcdf(0,Y0,L0);
+    forwardProbability = cobraNormcdf(0,Y0,L0);
 end
 
 

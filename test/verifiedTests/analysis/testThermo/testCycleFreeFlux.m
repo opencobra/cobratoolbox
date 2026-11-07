@@ -42,9 +42,9 @@ relaxBoundsFailSolvers = {};
 
 try
     parTest = true;
-    poolobj = gcp('nocreate'); % if no pool, do not create new one.
+    poolobj = getParallelPool(); % if no pool, do not create new one.
     if isempty(poolobj)
-        parpool(2); % launch 2 workers
+        openParallelPool(2); % launch 2 workers
     end
 catch ME
     parTest = false;

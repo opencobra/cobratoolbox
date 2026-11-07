@@ -84,7 +84,7 @@ for i=1:length(numWorkers)
 
     disp(append("Test ", string(numWorkers(i)), " workers"))
     
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if ~isempty(poolobj)
         if poolobj.NumWorkers ~= numWorkers(i)
     
@@ -92,7 +92,7 @@ for i=1:length(numWorkers)
             delete(poolobj)
     
             % Create new pool
-            parpool(numWorkers(i))
+            openParallelPool(numWorkers(i))
         end
     end
     currWorkers = numWorkers(i);
@@ -128,7 +128,7 @@ for i=1:length(numWorkers)
     % Store FBA times and info
     disp('Store timed info')
     totalFBAtime.('FBA times')(i) = solveTime;
-    totalFBAtime.('FBA times max variation')(i) = max(pdist(fbaTime));
+    totalFBAtime.('FBA times max variation')(i) = max(cobraPdist(fbaTime));
     totalFBAtime.('Median load times')(i) = median(setupTime);
     totalFBAtime.('Load corrected FBA times')(i) = totalFBAtime.('FBA times')(i) - totalFBAtime.('Median load times')(i);
 end

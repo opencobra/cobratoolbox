@@ -39,7 +39,7 @@ for i = 1:length(samples)
     sampleStats.std(:, i) = std(samples{i}')';
     sampleStats.mode(:, i) = mode(samples{i}')';
     sampleStats.median(:, i) = median(samples{i}')';
-    sampleStats.skew(:, i) = skewness(samples{i}')';
-    sampleStats.kurt(:, i) = kurtosis(samples{i}')';
+    sampleStats.skew(:, i) = cobraSkewness(samples{i}')';
+    sampleStats.kurt(:, i) = cobraKurtosis(samples{i}')';
 end
 end

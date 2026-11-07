@@ -1,6 +1,7 @@
 
 function defValue = getDefaultValue(value)
 % get the default value for a given value (NaN for numeric, empty strings for textual, false for logical)
+% Any other class (for example a struct or a function handle) raises an error.
 % USAGE:
 %    defValue = getDefaultValue(value)
 %
@@ -25,5 +26,7 @@ function defValue = getDefaultValue(value)
         % recursive use, get the default for each element of the cell
         % array.
         defValue = cellfun(@(x) getDefaultValue(x),value,'Uniform',false);
+    else
+        error('getDefaultValue has no default value for input of class %s.', class(value));
     end
 end

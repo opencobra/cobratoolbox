@@ -332,7 +332,7 @@ PCT = 'Parallel Computing Toolbox';
 parpoolOn = false;
 if  any(strcmp(PCT, {v.Name})) && license('test', 'Distrib_Computing_Toolbox')
     try
-        parpoolOn = ~isempty(gcp('nocreate'));
+        parpoolOn = ~isempty(getParallelPool());
         PCT_status = 1;
     catch
         PCT_status = 0;
@@ -349,9 +349,9 @@ elseif ~isempty(threads) && threads ~= 1 && PCT_status  % explicit input for par
     if ~parpoolOn
         % create a parpool if no existing one
         if threads <= 0  % <= 0 for the default number of workers
-            parpool;
+            openParallelPool();
         elseif threads > 1  % otherwise specified number of workers
-            parpool(threads);
+            openParallelPool(threads);
         end
     end
 end

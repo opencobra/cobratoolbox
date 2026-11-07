@@ -23,7 +23,7 @@ function model = assignQualDir(model)
 
 [mlt,nlt]=size(model.S);
 
-model.qualDir=false(nlt,1);
+model.qualDir=zeros(nlt,1);
 
 if any(model.lb>model.ub)
     error('Model bounds are inconsistent');

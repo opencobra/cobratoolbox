@@ -9,7 +9,9 @@ function [overlapResults, statistic] = compareXomicsModels(multiModels, printFla
 %    multiModels:     struct format with models that need to compare
 %                      e.g.multimodels.model1
 %                          multimodels.model2 ...
-%    printFlag:       1 if information should be printed to a table.
+%                     At least two models are required; otherwise an
+%                     error is raised.
+%    printFlag:      1 if information should be printed to a table.
 %                     Default = 0
 %
 % OUTPUT:
@@ -91,7 +93,7 @@ if isstruct(models) && length(fieldnames(models))>1
     statistic.overlapproportion_genes = calculateProportionMatrix(models, fields, 'genes', statGenes);
 
 else
-    disp('please check the input variable')
+    error('please check the input variable')
 end
 
 

@@ -62,7 +62,7 @@ cd(currentDir)
 
 % try to shut down any left open parpool
 try
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     delete(poolobj);
 catch
     % pass

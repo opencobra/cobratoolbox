@@ -11,7 +11,7 @@
 global ILOG_CPLEX_PATH
 
 %Test requirements
-requiredToolboxes = {'distrib_computing_toolbox'};
+requiredToolboxes = {}; % parfor runs serially without the Parallel Computing Toolbox
 requiredSolvers = {'ibm_cplex'};
 prepareTest('requiredSolvers',requiredSolvers,'toolboxes',requiredToolboxes);
 

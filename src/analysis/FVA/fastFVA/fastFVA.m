@@ -322,7 +322,7 @@ else
 end
 
 % count the number of workers
-poolobj = gcp('nocreate');  % If no pool, do not create new one.
+poolobj = getParallelPool();  % If no pool, do not create new one.
 if isempty(poolobj)
     nworkers = 1;
 else

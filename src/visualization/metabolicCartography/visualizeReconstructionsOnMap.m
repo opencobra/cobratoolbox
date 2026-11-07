@@ -43,9 +43,9 @@ function visualizeReconstructionsOnMap(mapFile, folderPath, numCores)
         end
         
         % Start a parallel pool with the specified number of cores.
-        poolobj = gcp('nocreate');
+        poolobj = getParallelPool();
         if isempty(poolobj)
-            parpool('local', numCores);
+            openParallelPool('local', numCores);
         end
 
         % Process each reconstruction model file in parallel.
@@ -78,7 +78,7 @@ function visualizeReconstructionsOnMap(mapFile, folderPath, numCores)
         end
 
         % Close the parallel pool after processing is done.
-        delete(gcp('nocreate'));
+        closeParallelPool();
     else
         % If no parallel computing toolbox is available, process sequentially.
         for i = 1:length(modelFiles)

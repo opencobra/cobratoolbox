@@ -72,12 +72,12 @@ end
 %% read input files
 if annotateRxns == 1
     % load reactions from VMH
-    VMH_rxns = tdfread('VMH_Reactions.tsv');
+    VMH_rxns = cobraTdfread('VMH_Reactions.tsv');
 end
 
 if annotateMets == 1
     % load metabolites from VMH
-    VMH_mets = tdfread('VMH_Metabolites.tsv');
+    VMH_mets = cobraTdfread('VMH_Metabolites.tsv');
 end
 %% reactions
 if annotateRxns == 1

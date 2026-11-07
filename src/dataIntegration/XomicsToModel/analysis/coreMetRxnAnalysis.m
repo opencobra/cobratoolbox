@@ -22,7 +22,8 @@ function [coreMetAbbrNew, coreRxnAbbrNew] = coreMetRxnAnalysis(oldModel, model, 
 %
 % OPTIONAL INPUTS:
 %    deletedMets:    set of metabolites removed from oldModel. If empty, given by setdiff(oldModel.mets, model.mets)
-%    deletedRxns:    set of reactions removed from oldModel. If empty, given by setdiff(oldModel.rxns, model.rxns)
+%    deletedRxns:    set of reactions removed from oldModel. If empty, given by setdiff(oldModel.rxns, model.rxns),
+%                    or empty when oldModel is empty
 %    param:    a structure containing the parameters for the function:
 %
 %                * .printLevel - verbose level controlling printed output
@@ -49,6 +50,7 @@ end
 if ~exist('deletedRxns','var')  || isempty(deletedRxns)
     if isempty(oldModel)
         deletedMets = [];
+        deletedRxns = [];
     else
         deletedRxns = setdiff(oldModel.rxns,model.rxns);
     end

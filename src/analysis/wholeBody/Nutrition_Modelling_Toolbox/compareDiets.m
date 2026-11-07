@@ -71,7 +71,8 @@ for i = 1:length(allMets)
    fluxChanges = allMets;
    
    if one2Two == false 
-       fluxChanges = fluxChanges*-1;
+       % reverse the sign of every flux change (diet1 minus diet2)
+       fluxChanges(:,2) = cellfun(@uminus, fluxChanges(:,2), 'UniformOutput', false);
    end
 end
 end

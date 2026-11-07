@@ -15,7 +15,7 @@ function setWorkerCount(nworkers)
 global poolobj
 
 % find the number of workers in the current parallel pool
-poolobj = gcp('nocreate');  % if no pool, do not create new one.
+poolobj = getParallelPool();  % if no pool, do not create new one.
 if isempty(poolobj)
     poolsize = 0;
 else
@@ -33,8 +33,9 @@ else
         if poolsize > 0
             delete(poolobj);
         end
-        parpool('local', nworkers);  % 'SpmdEnabled',false
-        fprintf('Parallel computation initialized\n')
+        if ~isempty(openParallelPool('local', nworkers))  % 'SpmdEnabled',false
+            fprintf('Parallel computation initialized\n')
+        end
     end
 end
 end

@@ -51,9 +51,9 @@ mkdir(panPath)
 % initialize parallel pool
 if numWorkers > 0
     % with parallelization
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkers)
+        openParallelPool(numWorkers)
     end
 end
 

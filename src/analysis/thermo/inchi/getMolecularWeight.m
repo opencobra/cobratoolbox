@@ -34,7 +34,7 @@ for n = 1:length(inchis)
 	if isempty(inchis{n})
 		Ematrix(n, :) = NaN;
         if warnings
-            fprintf('Warning: InChI no. %d is empty', n);
+            fprintf('Warning: InChI no. %d is empty\n', n);
         end
         continue;
     end
@@ -51,7 +51,7 @@ for n = 1:length(inchis)
         k = find(strcmp(letters, comp));
         if isempty(k)
             if warnings
-                fprintf('Warning: %s, %s', formula, comp);
+                fprintf('Warning: %s, %s\n', formula, comp);
             end
         else
             Ematrix(n, k) = q;

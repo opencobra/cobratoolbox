@@ -17,7 +17,7 @@ if 0
     requiredToolboxes = {'bioinformatics_toolbox'};
     prepareTest('requireOneSolverOf',requireOneSolverOf,'toolboxes',requiredToolboxes);
 else
-    prepareTest('requireOneSolverOf',requireOneSolverOf,'requiredToolboxes', {'statistics_toolbox'});
+    prepareTest('requireOneSolverOf',requireOneSolverOf);
 end
 
 % define global paths

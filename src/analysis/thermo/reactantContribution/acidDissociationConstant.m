@@ -23,8 +23,8 @@ function [Ka, pKa] = acidDissociationConstant(metAbbr, Alberty2006, metAbbrAlber
 %    chi:                   electrical potential (default 0)
 %
 % OUTPUTS:
-%    Ka:                    apparent equilibrium constants
-%    pKa:                   :math:`-log_{10}(Ka)`
+%    Ka:                    `(p-1) x 1` apparent equilibrium constants (`p` species)
+%    pKa:                   `(p-1) x 1` vector, :math:`-log_{10}(Ka)`
 
 if ~exist('temp','var')
     temp=298.15;
@@ -59,8 +59,8 @@ pHr = 7; %dummy, has no effect
 
 [dGf0,dHf0,mf,aveHbound,aveZi,lambda,gpfnsp]=calcdGHT(Alberty2006(n).basicData(1:p,1),Alberty2006(n).basicData(1:p,2),Alberty2006(n).basicData(1:p,3),Alberty2006(n).basicData(1:p,4),pHr,is,temp,chi,Legendre,LegendreCHI);
 
-Ka=zeros(p-1);
-pKa=zeros(p-1);
+Ka=zeros(p-1,1);
+pKa=zeros(p-1,1);
 
 gasConstant = 8.314472/1000; % kJ K-1 mol-1
 

@@ -63,18 +63,6 @@ function [vfN, vfR, vrN, vrR, vnetN, vnetR, uL, uC, u0L, u0C, lnxL, lnxC] = proj
 %    lnxL:      logarithmic concentration - left nullspace
 %    lnxC:      logarithmic concentration - column space
 
-if ~isempty(vf)
-    if any((vnet(colBool)- vf +vr)>1e-12) %sanity check
-    error('Net flux does not equal the difference between forward and reverse flux')
-    end
-end
-
-if ~isempty(lnx)
-    if any((u - u0 - lnx)>1e-12)
-        error('Chemical potential does not equal standard chemical potential plus logarithmic conc.')
-    end
-end
-
 if ~exist('printLevel','var')
     printLevel=0;
 end
@@ -87,6 +75,18 @@ end
 
 if ~exist('colBool','var')
     colBool=true(n,1);
+end
+
+if ~isempty(vf)
+    if any(abs(vnet(colBool)- vf +vr)>1e-12) %sanity check
+        error('Net flux does not equal the difference between forward and reverse flux')
+    end
+end
+
+if ~isempty(lnx)
+    if any(abs(u - u0 - lnx)>1e-12)
+        error('Chemical potential does not equal standard chemical potential plus logarithmic conc.')
+    end
 end
 
 %generate fake outputs, or populate with unprojected vectors, part of which
@@ -165,7 +165,7 @@ if ~isempty(vnet)
 end
 if ~isempty(vf)
     vfN(colBool)=PN*vf(colBool);
-    vrR(colBool)=PR*vr(colBool);
+    vfR(colBool)=PR*vf(colBool);
 end
 if ~isempty(vr)
     vrN(colBool)=PN*vr(colBool);

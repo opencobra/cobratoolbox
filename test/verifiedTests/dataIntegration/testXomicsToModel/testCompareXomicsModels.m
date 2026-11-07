@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch3, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: Fewer than two models
+%       give no outputs.
 %
 % Function under test:
 %     src/dataIntegration/XomicsToModel/analysis/compareXomicsModels.m
@@ -15,20 +17,14 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     Line 94 of compareXomicsModels.m (the message for fewer than two models) is not tested
-%     because of the defect below.
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: Fewer than two models give no outputs
-%       SEVERITY: error
-%       TRIGGER: a structure with a single model, with outputs requested
-%       OBSERVED: the function only prints "please check the input variable" and never assigns its
-%         outputs, so the call errors (unassigned outputs)
-%       EXPECTED: an empty result or a clear error message
-%       LINES: 93-95
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch3, 2026-10-12.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -101,6 +97,14 @@ catch exception
     errorCaught = strcmp(exception.message, 'printFlag should be a number or a bool');
 end
 assert(errorCaught);
+
+%% fewer than two models are rejected with a clear error
+
+% a structure with a single model cannot be compared; the call stops with an error instead of
+% leaving the outputs unassigned
+singleModel.m1 = models.m1;
+assert(verifyCobraFunctionError('compareXomicsModels', 'inputs', {singleModel}, ...
+    'outputArgCount', 2, 'testMessage', 'please check the input variable'));
 
 % change the directory
 cd(currentDir)

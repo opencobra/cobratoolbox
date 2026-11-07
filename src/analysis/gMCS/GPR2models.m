@@ -84,7 +84,7 @@ end
 networks = cell(size(selected_rxns));
 
 % Examine if there is an existing pool
-p = gcp('nocreate'); % If no pool, do not create new one.
+p = getParallelPool(); % If no pool, do not create new one.
 if isempty(p)
     poolsize = 0;               % Single core
 elseif numWorkers == 0
@@ -92,8 +92,7 @@ elseif numWorkers == 0
 elseif numWorkers == 1
     poolsize = 0;               % Single core
 else
-    p = parpool(numWorkers);
-    poolsize = p.NumWorkers;    % Multi core, limited by user
+    poolsize = min(numWorkers, p.NumWorkers);    % Multi core, limited by user
 end
 
 % Step 2: Create models
@@ -292,7 +291,7 @@ model.S = model.S(:,~idx_DM_rxns);
 model.rxns = model.rxns(~idx_DM_rxns);
 
 % Divide into genes with one transcript and two or more transcripts
-x = tabulate(genes);
+x = cobraTabulate(genes);
 genes_unique = x(:,1);
 genes_one_transcrits = x(cell2mat(x(:,2))==1,1);
 genes_more_transcripts = x(cell2mat(x(:,2))>1,1);

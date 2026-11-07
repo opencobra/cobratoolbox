@@ -56,8 +56,8 @@ threadsForFVA = 1;
 % primal residual ~1e-4 (> feasTol 1e-6), which violate the 1e-4 reference-value
 % assertions below. gurobi/ibm_cplex meet the accuracy those exact checks require.
 try
-    if isempty(gcp('nocreate'))
-        parpool(2);
+    if isempty(getParallelPool())
+        openParallelPool(2);
     end
     solverPkgs = prepareTest('needsLP',true,'needsMILP',true,'needsQP',true,'needsMIQP',true, ...
         'useSolversIfAvailable',{'ibm_cplex','gurobi'},...

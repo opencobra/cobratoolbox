@@ -52,7 +52,7 @@ if 0
     U=model.dGtMax-Y;
     %find the amount of reactions with normal cumulative distribution over
     %range of dGt0
-    P = normcdf(0,Y0,L0);
+    P = cobraNormcdf(0,Y0,L0);
 else
     Y0=model.DrGt0Mean;
     L0=model.DrGt0Mean-model.DrGt0Min;
@@ -214,7 +214,7 @@ if horizontal
     U=model.dGtMax-Y;
     %find the amount of reactions with normal cumulative distribution over
     %range of dGt0
-    P = normcdf(0,Y0,L0);
+    P = cobraNormcdf(0,Y0,L0);
     %sort by probability that a reaction is forward (puts any NaN first)
     [tmp,xip]=sort(P,'descend');
     %     only take the indices of the problematic reactions, but be sure to

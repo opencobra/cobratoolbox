@@ -16,11 +16,14 @@ function genes = findGenesBelowThresholdGT1(threshold, geneNames, expressionValu
 % OUTPUTS:
 %    genes:                  cell array ix3 where columns include geneId, 
 %                           expressionValue, expression classification - 'Low'
+%                           (a 0x3 cell array when no gene qualifies)
 %
 % .. Authors:
 %       - Kristina Grausa 05/16/2022
 %       - Kristina Grausa 08/23/2022 - standard header and formatting
 
+    % an empty list (0 rows) is returned when no gene qualifies
+    genes = cell(0, 3);
     cnt = 1;
     for i=1:1:length(geneNames)
         if threshold >= expressionValues(i)

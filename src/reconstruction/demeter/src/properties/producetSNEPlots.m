@@ -37,7 +37,7 @@ tol=0.0000001;
 if contains(infoFilePath,'.xlsx')
     [~,infoFile,~]=xlsread(infoFilePath);
 else
-    gettab=tdfread(infoFilePath);
+    gettab=cobraTdfread(infoFilePath);
     getcols=fieldnames(gettab);
     infoFile={};
     for j=1:length(getcols)

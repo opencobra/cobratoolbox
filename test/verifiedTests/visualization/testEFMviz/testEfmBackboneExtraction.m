@@ -7,7 +7,7 @@
 %     - Created initial test script: Chaitra Sarathy 2 Dec 19
 %     - Updates to header docs: Chaitra Sarathy 19 Dec 19
 
-solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'});
+solvers = prepareTest();
 
 global CBTDIR
 

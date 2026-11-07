@@ -253,7 +253,7 @@ if printLevel > 0
     bonds(isnan(bonds) | isnan(mass)) = [];
     title({'Total mass of substrates vs bonds', ...
         'broken and formed', ...
-        ['Correlation = ' num2str(round(corr(mass1, bonds,'Type','Spearman'), 2))]}, 'FontSize', 20)
+        ['Correlation = ' num2str(round(cobraCorr(mass1, bonds,'Type','Spearman'), 2))]}, 'FontSize', 20)
     xlabel('Mass of substrates (amu)', 'FontSize', 18)
     ylabel('Number of bonds broken and formed', 'FontSize', 18)
     

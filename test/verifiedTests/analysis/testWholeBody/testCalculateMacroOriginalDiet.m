@@ -6,6 +6,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: A diet in which every
+%       amount is zero stops the function with an error.
 %
 % Function under test:
 %     src/analysis/wholeBody/Nutrition_Modelling_Toolbox/calculateMacroOriginalDiet.m
@@ -17,17 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: A diet in which every amount is zero stops the function with an error
-%       SEVERITY: error
-%       TRIGGER: a diet whose amounts are all zero, for example {bread, 0}
-%       OBSERVED: the rows with a zero amount are removed first, which leaves an empty diet, and
-%         multiplying the empty list of amounts with the nutrient table fails with "Arrays have
-%         incompatible sizes for this operation"
-%       EXPECTED: zero amounts for all nutrients
-%       LINES: 33-37
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -71,6 +67,14 @@ assert(norm(orgMacroDiet.values_g - 1.5 * (1:10)') < tol);
 diet = {'apple', 100; 'bread', 0};
 orgMacroDiet = calculateMacroOriginalDiet(diet, table1);
 assert(norm(orgMacroDiet.values_g - (1:10)') < tol);
+
+%% a diet in which every amount is zero has no nutrients
+
+diet = {'bread', 0};
+orgMacroDiet = calculateMacroOriginalDiet(diet, table1);
+assert(isequal(orgMacroDiet.macroNames, names'));
+% exact zeros: nothing is summed
+assert(isequal(orgMacroDiet.values_g, zeros(10, 1)));
 
 % change the directory
 cd(currentDir)

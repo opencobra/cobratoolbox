@@ -291,7 +291,7 @@ if printLevel > 0
     mass1(isnan(be) | isnan(mass)) = [];
     be(isnan(be) | isnan(mass)) = [];
     title({'Total mass of substrates vs bond', 'enthalpies', ...
-        ['Correlation = ' num2str(round(corr(mass1, abs(be),'Type','Spearman'), 2))]}, 'FontSize', 20)
+        ['Correlation = ' num2str(round(cobraCorr(mass1, abs(be),'Type','Spearman'), 2))]}, 'FontSize', 20)
     ylabel('Enthalpy change (kJ/mol)', 'FontSize', 18)
     yline(0)
     xlabel('Mass of substrates (amu)', 'FontSize', 18)

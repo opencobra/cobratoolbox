@@ -102,8 +102,8 @@ for n=1:nRxn
                 end
 
                 % Calculate the least common multiple of all denominators
-                k = lcm(denominators(1), denominators(2));
-                for i = 3:length(denominators)
+                k = denominators(1);
+                for i = 2:length(denominators)
                     k = lcm(k, denominators(i));
                 end
                 g(n)=k;

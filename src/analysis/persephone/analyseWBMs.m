@@ -245,12 +245,12 @@ end
 % Set parellel pool
 % Check if numWorkersOptimization is not a negative number are calls no workers.
 if numWorkersOptimization > 0
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkersOptimization)
+        openParallelPool(numWorkersOptimization)
     else
         delete(poolobj);
-        parpool(numWorkersOptimization);
+        openParallelPool(numWorkersOptimization);
     end
 end
 

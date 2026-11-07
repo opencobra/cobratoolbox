@@ -31,7 +31,7 @@ if ~iscell(uniqSubsys)
     error('uniqSubsys is not a cell')
 end
 uniqSubsys(find(cellfun('isempty', uniqSubsys)))=[];
-subsysSummary = sortrows(tabulate(string(model.subSystems(reshape(nonzeros(EFMRxns), [], 1)))),2, 'descend');
+subsysSummary = sortrows(cobraTabulate(string(model.subSystems(reshape(nonzeros(EFMRxns), [], 1)))),2, 'descend');
 countSubPerEFM = zeros(length(uniqSubsys), size(EFMRxns, 1));
 for ii = 1:size(EFMRxns, 1)
     singleEFM = nonzeros(EFMRxns(ii,:));

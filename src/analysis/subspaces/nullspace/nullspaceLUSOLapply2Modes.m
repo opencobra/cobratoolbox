@@ -60,12 +60,12 @@ else
     % such that S*Z = 0 and then computing W = Z'*V.
     % The aim is to obtain W without forming Z explicitly.
 
-    % When S is scaled as S = R*A*C, we have Z = Cinv*P'*inv(L')[0;I]
-
-    % This was the maths I tried to follow -RF
-    %     W   =   A'*V
+    % When S is scaled as S = R*A*C, we have Z = Cinv*P'*inv(L')[0;I],
+    % where P'*X is the row placement X2(p,:) = X used in mode 1, so that
+    %     W   =   Z'*V
     %         =   (Cinv*P'*inv(L')[0;I])'*V
-    %         =   [0,I]'*inv(L)*P*Cinv'*V
+    %         =   [0,I]*inv(L)*P*Cinv'*V
+    % and P*X is the row selection X(p,:), the inverse of the placement.
 
 
     Cinv    = nullS.Cinv; % Column scales
@@ -77,10 +77,8 @@ else
 
     V = Cinv'*V;
 
-    % I am not sure how to use these permutations
-    % e.g. if P*A = B then is it B(p,:)=A or B=A(p,:)
-    V(p,:) = V;
-%     V(fliplr(p),:) = V;
+    % inverse of the row placement W(p,:) = Z of mode 1
+    V = V(p,:);
 
     W = L\V;
 

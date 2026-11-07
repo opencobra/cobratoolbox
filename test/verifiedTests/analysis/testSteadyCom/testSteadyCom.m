@@ -23,7 +23,7 @@ fileDir = fileparts(which('testSteadyCom'));
 cd(fileDir);
 %Test for parallel toolbox
 try
-    poolobj = gcp('nocreate');% create a toy model
+    poolobj = getParallelPool();% create a toy model
     parWorks = true;
 catch
     parWorks = false;
@@ -440,9 +440,9 @@ for jTest = 1:2
             minWorkers = 2;
             myCluster = parcluster(parallel.defaultClusterProfile);
             if myCluster.NumWorkers >= minWorkers
-                poolobj = gcp('nocreate');  % if no pool, do not create new one.
+                poolobj = getParallelPool();  % if no pool, do not create new one.
                 if isempty(poolobj)
-                    parpool(minWorkers);  % launch minWorkers workers
+                    openParallelPool(minWorkers);  % launch minWorkers workers
                 end
 
                 optionsPar = options;

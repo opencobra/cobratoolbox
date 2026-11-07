@@ -55,7 +55,7 @@ if 0
     U=model.DrGtMax-Y;
     %find the amount of reactions with normal cumulative distribution over
     %range of dGt0
-    P = normcdf(0,Y0,L0);
+    P = cobraNormcdf(0,Y0,L0);
 else
     Y0=model.DrGt0Mean;
     L0=model.DrGt0Mean-model.DrGt0Min;

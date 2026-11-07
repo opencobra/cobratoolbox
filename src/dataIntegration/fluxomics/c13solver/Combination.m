@@ -12,15 +12,20 @@ function [out] = Combination(n, k)
 %    k:      number of elements to pick from `n`
 %
 % OUTPUT:
-%    out:    array of combinations
+%    out:    structure with the fields:
+%
+%              * .choose - number of combinations
+%              * .all - `k x choose` array, one combination per column
+%                (for `k = 0`, one empty combination: a `0 x 1` array)
+%
+% NOTE:
+%    Negative `n` or `k` raise an error.
 
     if (n < 0 || k < 0) % normally n >= k
-      disp('Negative parameter in constructor');
-      out = [];
-      return
+      error('Negative parameter in constructor');
     end
 
-    data(k) = 0;
+    data = zeros(1, k);
     for i = 1:k;
       data(i) = i;
     end
@@ -50,7 +55,7 @@ return;
 end
 
 function [c] = getCombination(n,k,index)
-    c(1) = 1;
+    c = zeros(1, k);
     x = 1;
     for i = 1:n
         if (k == 0)

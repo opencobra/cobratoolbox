@@ -163,9 +163,9 @@ if createMWBMs == true
    
     
     % initialise parallel pool
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkersCreation)
+        openParallelPool(numWorkersCreation)
     end
     
     % Set environment before entering the parfor loop.
@@ -294,9 +294,9 @@ paths = string(append(what(mWBMPath).path, filesep, what(mWBMPath).mat));
 
 % Set parellel pool
 if numWorkersCreation > 1
-    poolobj = gcp('nocreate');
+    poolobj = getParallelPool();
     if isempty(poolobj)
-        parpool(numWorkersCreation)
+        openParallelPool(numWorkersCreation)
     end
 end
 

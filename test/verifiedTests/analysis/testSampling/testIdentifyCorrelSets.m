@@ -7,6 +7,8 @@
 %       Characterization test that PINS the current behaviour (feature
 %       tier1-test-batch4, Constitution Principle III characterization mode);
 %       it must not change the function under test.
+%     - Defect(s) fixed by feature 20261102-140321-tier1-safe-defect-fixes: The function stops with
+%       an error when no reactions are correlated.
 %
 % Function under test:
 %     src/analysis/sampling/identifyCorrelSets.m
@@ -18,17 +20,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The function stops with an error when no reactions are correlated
-%       SEVERITY: error
-%       TRIGGER: a correlation matrix (or sample) in which no pair of reactions reaches the
-%         threshold
-%       OBSERVED: no set is created, so the set list is never defined and the function stops with
-%         "Unrecognized function or variable setSize"
-%       EXPECTED: empty outputs
-%       LINES: 65-79
+%     None found.
 %
 % Authors:
 %     - Generated for feature tier1-test-batch4, 2026-10-13.
+%     - Updated for feature 20261102-140321-tier1-safe-defect-fixes, 2026-11-02.
 
 % save the current path
 currentDir = pwd;
@@ -80,6 +76,21 @@ R(3, 4) = 1; R(3, 5) = 1; R(4, 3) = 1; R(4, 5) = 1; R(5, 3) = 1; R(5, 4) = 1;
 assert(isequal(setSize, [3; 2]));
 assert(isequal(setNoSorted, [2; 2; 1; 1; 1]));
 assert(isequal(setsSorted{1}.names, {'c'; 'd'; 'e'}) && isequal(setsSorted{2}.names, {'a'; 'b'}));
+
+%% no pair of reactions reaches the threshold: empty outputs
+
+% a, b and c are only weakly correlated (0.5 at most); no set is formed
+R = [0 0.5 0.1; 0.5 0 0.2; 0.1 0.2 0];
+[setsSorted, setNoSorted, setSize] = identifyCorrelSets(struct('rxns', {{'a'; 'b'; 'c'}}), rand(3, 4), 0.9, R);
+assert(iscell(setsSorted) && isempty(setsSorted));
+assert(isempty(setSize));
+% every reaction has set number 0 (no set)
+assert(isequal(setNoSorted, [0; 0; 0]));
+
+% the same from a sample: a and b are a sine and a cosine of t, below the default threshold
+t = 1:10;
+[setsSorted, setNoSorted, setSize] = identifyCorrelSets(struct('rxns', {{'a'; 'b'}}), [sin(t); cos(t)]);
+assert(isempty(setsSorted) && isempty(setSize) && isequal(setNoSorted, [0; 0]));
 
 % change the directory
 cd(currentDir)
