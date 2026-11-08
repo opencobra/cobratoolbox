@@ -99,6 +99,10 @@ installation that has the requirement (e.g. CPLEX) or after the failure is fixed
   from the test report alone (CI reported only `Assertion failed.` on PR #2722). No condition
   changes and no assertion is removed; `verifyCobraFunctionError` stays the expected-failure
   check and `src/` does not change.
+- **FR-010**: The three warning checks in `testCreateMetIntrcNetwork.m` capture all warning output of
+  the call and look for the expected text in it, so that a later warning cannot hide the expected
+  one. On PR #2722 CI read a later warning about `opengl` through `lastwarn` instead of the warning
+  the function had raised. The expected texts and the failure messages stay; `src/` does not change.
 
 ### Key Entities
 
@@ -115,6 +119,8 @@ installation that has the requirement (e.g. CPLEX) or after the failure is fixed
 - **SC-004**: Every SKIPPED or FAILING test is reported with its reason.
 - **SC-005**: 20 of 20 assertions in `testCreateMetIntrcNetwork.m` report expected and actual values
   when they fail, shown by running a throwaway copy with wrong expected values.
+- **SC-006**: `testCreateMetIntrcNetwork.m` passes on CI on PR #2722, and its warning checks no longer
+  read `lastwarn`.
 
 ## Assumptions
 

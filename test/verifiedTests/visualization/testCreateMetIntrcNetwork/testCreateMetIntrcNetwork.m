@@ -146,16 +146,14 @@ assert(verifyCobraFunctionError('createMetIntrcNetwork', 'inputs', {model, model
        thrownMessage(model, model.mets, 'excNodesWithDeg', [1000 2000]));
 
 %% Warnings: scales without fluxes, and metabolites that are not in the model
-lastwarn('');
-createMetIntrcNetwork(model, model.mets, 'scaleMin', 0, 'scaleMax', 3);
-assert(contains(lastwarn, 'Scales are given without giving fluxes'), ...
-       'scale warning: expected "Scales are given without giving fluxes", got "%s"', lastwarn);
+warningText = evalc('createMetIntrcNetwork(model, model.mets, ''scaleMin'', 0, ''scaleMax'', 3);');
+assert(contains(warningText, 'Scales are given without giving fluxes'), ...
+       'scale warning: expected "Scales are given without giving fluxes", got "%s"', strtrim(warningText));
 delete(findall(0, 'Type', 'figure'));
 
-lastwarn('');
-[GraphUnknownMet] = createMetIntrcNetwork(model, {'A'; 'notInModel'});
-assert(contains(lastwarn, 'These metabolites are not found in model : notInModel'), ...
-       'unknown metabolite warning: expected "These metabolites are not found in model : notInModel", got "%s"', lastwarn);
+warningText = evalc('[GraphUnknownMet] = createMetIntrcNetwork(model, {''A''; ''notInModel''});');
+assert(contains(warningText, 'These metabolites are not found in model : notInModel'), ...
+       'unknown metabolite warning: expected "These metabolites are not found in model : notInModel", got "%s"', strtrim(warningText));
 assert(ismember('A', GraphUnknownMet.Nodes.Name), ...
        'unknown metabolite: expected node A to stay, got nodes: %s', strjoin(GraphUnknownMet.Nodes.Name', ' '));
 assert(~ismember('notInModel', GraphUnknownMet.Nodes.Name), ...
@@ -174,10 +172,9 @@ assert(numel(plottedGraph.LineWidth) == numedges(GraphAllEdges) - nSmallEdges, .
 delete(findall(0, 'Type', 'figure'));
 
 % a threshold above every weight leaves a plot without edges and a warning
-lastwarn('');
-createMetIntrcNetwork(model, model.mets, 'fluxes', fluxes, 'threshold', 1e6);
-assert(contains(lastwarn, 'There is no edges in the Network'), ...
-       'threshold 1e6 warning: expected "There is no edges in the Network", got "%s"', lastwarn);
+warningText = evalc('createMetIntrcNetwork(model, model.mets, ''fluxes'', fluxes, ''threshold'', 1e6);');
+assert(contains(warningText, 'There is no edges in the Network'), ...
+       'threshold 1e6 warning: expected "There is no edges in the Network", got "%s"', strtrim(warningText));
 assert(isempty(get(gca, 'Colorbar')), 'threshold 1e6: expected no colorbar, got %d', numel(get(gca, 'Colorbar'))); % nothing to colour
 delete(findall(0, 'Type', 'figure'));
 

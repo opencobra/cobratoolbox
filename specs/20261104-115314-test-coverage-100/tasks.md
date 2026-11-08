@@ -63,3 +63,9 @@ Tests hardcoding an unavailable solver (9 report 0% while passing) switch to the
 - [X] T101 [US2] Add a local function at the end of test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m that returns the error message actually thrown, and use it in the messages of the 3 `verifyCobraFunctionError` assertions
 - [X] T102 [US2] Verify test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m: it passes through matlab-safe, it still has 20 assertions with unchanged conditions, and a throwaway copy with wrong expected values prints both values (SC-005)
 - [X] T103 Write agent-runs/<UTC>-diagnosable-asserts/implementation-receipt.md and commit only the test and this feature's files (maintainer identity, no co-author line, scanned for local details); push only when the maintainer asks
+
+## Phase 6: Warning checks that later warnings cannot hide (FR-010, SC-006)
+
+- [X] T104 [US2] Replace the `lastwarn` checks in test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m with `evalc` capture of the three calls, keeping the expected texts and reporting the captured text in the failure messages
+- [X] T105 [US2] Verify test/verifiedTests/visualization/testCreateMetIntrcNetwork/testCreateMetIntrcNetwork.m: it passes through matlab-safe, it still has 20 assertions, the other 17 conditions are unchanged, and a throwaway copy that raises a later warning still passes the warning checks
+- [ ] T106 Write agent-runs/<UTC>-warning-capture/implementation-receipt.md and commit only the test and this feature's files (maintainer identity, no co-author line, scanned for local details); push only when the maintainer asks, then confirm the CI result (SC-006)

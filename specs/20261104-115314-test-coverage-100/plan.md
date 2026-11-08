@@ -64,6 +64,17 @@ does not fix the failure, which is addressed once its cause is known.
   helper in `test/` does not change, because other tests depend on it.
 - Scope is this one test; other tests keep their current assertions.
 
+## Addendum: warning checks that later warnings cannot hide (FR-010)
+
+The FR-009 messages showed the cause of the CI failure: `lastwarn` keeps only the most recent
+warning, and on CI a warning about `opengl` is raised while the figure is drawn, after the warning
+under test. The function behaves correctly, so the test changes and `src/` does not.
+
+- Wrap each of the three calls in `evalc` and assert that the captured text contains the expected
+  warning, as `testGetMolecularWeight.m` already does.
+- The failure messages report the captured text as the actual value.
+- The other 17 assertions do not change.
+
 ## Complexity Tracking
 
 No constitution violations; nothing to justify.
