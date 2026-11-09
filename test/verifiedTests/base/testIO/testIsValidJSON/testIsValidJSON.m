@@ -6,6 +6,7 @@
 %
 % Authors:
 %     - Farid Zare, 2024/08/15
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % Save the current path and initialize the test
@@ -76,8 +77,18 @@ fclose(fid);
 [isValid] = isValidJSON(fileName);
 assert(~isValid)
 
+% Case 3
+% The extension may be left out: '.json' is appended (the file is still the invalid one)
+[isValid] = isValidJSON('validJSONtest');
+assert(~isValid)
+
 % Clean up (delete the generated JSON file)
 delete(fileName);
+
+% Case 4
+% A file that does not exist is an error, not an invalid JSON
+assert(verifyCobraFunctionError('isValidJSON', 'inputs', {fileName}, 'outputArgCount', 1, ...
+    'testMessage', ['File does not exist: ' fileName]));
 
 % Change the directory back to the original
 cd(currentDir);

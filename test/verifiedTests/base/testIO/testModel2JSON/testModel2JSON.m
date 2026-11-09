@@ -10,6 +10,7 @@
 %
 % Authors:
 %     - Farid Zare, 24/08/14
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % Save the current path and initialize the test
@@ -78,6 +79,53 @@ window = txt(idStart(1):min(idStart(1) + 2000, numel(txt)));
 subsystemValue = regexp(window, '"subsystem":"([^"]*)"', 'tokens', 'once');
 assert(strcmp(subsystemValue{1}, expectedSingleName), ...
     'model2JSON changed the output for a reaction with a single subsystem.');
+
+%% Every optional annotation field is written, and the file stays valid JSON
+toyModel = struct();
+toyModel.mets = {'glc[c]'; 'glc[e]'};
+toyModel.metNames = {'Glucose'; 'Glucose'};
+toyModel.rxns = {'GLCt'; 'EX_glc'};
+toyModel.rxnNames = {'Glucose transport'; 'Glucose exchange'};
+toyModel.S = sparse([1, 0; -1, 1]);
+toyModel.lb = [0; -10];
+toyModel.ub = [1000; 1000];
+toyModel.grRules = {'G1'; ''};
+toyModel.subSystems = {'Transport'; 'Exchange'};
+toyModel.genes = {'G1'};
+toyModel.metBiGGID = {'glc__D_c'; 'glc__D_e'};
+toyModel.metBioCycID = {'META%GLC'; 'META%GLC'};
+toyModel.metInchiKey = {'WQZGKKKJIJFFOK'; 'WQZGKKKJIJFFOK'};
+toyModel.metMetaNetXID = {'MNXM41'; 'MNXM41'};
+toyModel.metReactomeID = {'R-ALL-1'; 'R-ALL-2'};
+toyModel.metSabiork = {'1406'; '1406'};
+toyModel.metSBOTerms = {'SBO:0000247'; 'SBO:0000247'};
+toyModel.metSEEDID = {'cpd00027'; 'cpd00027'};
+toyModel.rxnMetaNetXID = {'MNXR1'; 'MNXR2'};
+toyModel.rxnSBOTerms = {'SBO:0000185'; 'SBO:0000627'};
+toyModel.geneSBOTerms = {'SBO:0000243'};
+toyModel.modelAnnotation = {'not written'; 'v1.2'};
+
+% a file name without the extension gets it appended
+fileName = 'testModel2JSON_annotations';
+model2JSON(toyModel, fileName);
+fileName = [fileName '.json'];
+assert(isValidJSON(fileName), 'The annotated toy model produced an invalid JSON file.');
+txt = fileread(fileName);
+delete(fileName);
+
+% the name of each annotation, followed by the value of the first metabolite or reaction
+expectedAnnotations = {'"bigg.metabolite":[', 'glc__D_c'; '"biocyc":[', 'METAGLC'; ...
+    '"inchi_key":[', 'WQZGKKKJIJFFOK'; '"metanetx.chemical":[', 'MNXM41'; ...
+    '"reactome.compound":[', 'R-ALL-1'; '"sabiork":[', '1406'; '"seed.compound":[', 'cpd00027'; ...
+    '"metanetx.reaction":[', 'MNXR1'};
+for i = 1:size(expectedAnnotations, 1)
+    assert(contains(txt, [expectedAnnotations{i, 1} newline '"' expectedAnnotations{i, 2} '"']), ...
+        'Annotation %s is missing.', expectedAnnotations{i, 1});
+end
+assert(contains(txt, '"sbo":"SBO:0000247"'));
+assert(contains(txt, ['"sbo":[' newline '"SBO:0000185"']));
+assert(contains(txt, '"sbo":"SBO:0000243"'));
+assert(contains(txt, '"version":"v1.2"'));
 
 % Change the directory back to the original
 cd(currentDir);

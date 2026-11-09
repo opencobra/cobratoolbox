@@ -6,6 +6,11 @@
 % Authors:
 %     - Original file: Jacek Wachowiak
 %     - Updated to check models for similarity: Thomas Pfau - Sept 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
+%
+% Coverage exemptions:
+%     Line 62: unreachable. The file was checked to be absent at line 43, and neither readCbModel
+%     nor a failed save leaves it behind for an input (only a disk failure while saving could).
 %
 
 global CBTDIR
@@ -78,6 +83,26 @@ defaultfoldercontent = dir(defaultname);
 
 % the invalid file, '.' and '..'
 assert(size(defaultfoldercontent,1) == 3);
+
+%% A model that already has its .mat file is not parsed again
+% the xml file is invalid: a new parse would fail, and the existing .mat file must stay as it is
+existingModel = 'kept';
+save([defaultname filesep 'Invalid.mat'], 'existingModel');
+parsedOutput = evalc('sbmlTestModelToMat()');
+assert(contains(parsedOutput, 'Invalid.xml :already parsed and compatible with readCbModel'));
+savedContent = load([defaultname filesep 'Invalid.mat']);
+assert(isequal(savedContent, struct('existingModel', 'kept')));
+
+%% CBTDIR is filled in when the toolbox root is not known yet
+savedCBTDIR = CBTDIR;
+CBTDIR = [];
+try
+    sbmlTestModelToMat();
+catch ME
+    CBTDIR = savedCBTDIR;
+    rethrow(ME);
+end
+assert(strcmp(CBTDIR, savedCBTDIR));
 
 cd(fileDir);
 

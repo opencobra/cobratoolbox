@@ -9,12 +9,80 @@
 %       from testCharacterizeOptimizeCbModel.m per Constitution Principle
 %       III-Naming (feature 018-test-naming-convention): one test file per
 %       source function.
+%     - The last part of the file reaches the remaining branches on a toy pathway. The solver
+%       status values that no solver can be made to return on demand (almost optimal, no
+%       solution, an unknown value, the discontinued mps interface) come from a stand-in
+%       solveCobraLP in a temporary folder.
+%
+% Function under test:
+%     src/analysis/FBA/optimizeCbModel.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation; iAF1260 through getDistributedModel for the real problems (norm
+%     strategies at genome scale), ecoli_core_model for the weighted Euclidean norm (gurobi ends
+%     that QP on iAF1260 with status SUBOPTIMAL) and a toy pathway for the branches. LP solver
+%     required; the sections on QP, MILP and MIQP run with the solvers that support them.
+%
+% Coverage exemptions:
+%     Line 399: unreachable, the condition above it compares the text 'minNorm' with
+%       'optimizeCardinality' instead of the variable, which is never true.
+%     Lines 407-408, 410-412: unreachable, the error just before them always stops the function.
+%     Lines 469-471: unreachable, debugging code behind `if 0`.
+%     Line 914: unreachable, buildOptProblemFromModel always sets the field c.
+%     Lines 928-931: unreachable, the variable LPproblem2 is never assigned.
+%     Lines 1006, 1008-1014, 1016-1018: unreachable, code behind `if 0`.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: param.osenseStr and the sense of the model are ignored for a parameter structure
+%       SEVERITY: wrong-result
+%       TRIGGER: the parameter structure as second input with a model that has osenseStr, for
+%         example model.osenseStr = 'min' or param.osenseStr = 'min' on a model with 'max'
+%       OBSERVED: the else branch sets model.osenseStr to 'max', so the model is maximised
+%       EXPECTED: param.osenseStr is used when given, otherwise the sense of the model
+%       LINES: 259-263
+%     - DEFECT: A text in param.minNorm reaches solveCobraLP and stops with an error
+%       SEVERITY: error
+%       TRIGGER: param.minNorm = 'one' or 'oneInternal', for example
+%         optimizeCbModel(model, struct('minNorm', 'one'))
+%       OBSERVED: the second solve passes param on to solveCobraLP, where the check of minNorm
+%         fails with "Operands to the logical AND (&&) and OR (||) operators must be convertible"
+%       EXPECTED: the documented param.minNorm works as the input minNorm does
+%       LINES: 677, 733
+%     - DEFECT: minNorm oneInternal fails for a model without linear objective
+%       SEVERITY: error
+%       TRIGGER: minNorm = 'oneInternal' on a model with all of c zero
+%       OBSERVED: objectiveLP is empty, so the right hand side is one row short and solveCobraLP
+%         stops with "Incorrect size(model.rhs)"
+%       EXPECTED: the internal fluxes are minimised
+%       LINES: 719
+%     - DEFECT: QRQP cannot run
+%       SEVERITY: unusable-option
+%       TRIGGER: param.solveWBMmethod = 'QRQP' with param.minNorm = 'QRQP'
+%       OBSERVED: the variable minNormWBM does not exist, so the call stops with "Unrecognized
+%         function or variable 'minNormWBM'"
+%       EXPECTED: the quadratically regularised QP is solved, using param.minNormWBM
+%       LINES: 758-760
+%     - DEFECT: The residual and the slack of QRLP are read from the wrong positions
+%       SEVERITY: wrong-result
+%       TRIGGER: minNorm = 'QRLP'
+%       OBSERVED: the slack holds the first fluxes, and r runs from n+1 to m, which is empty
+%         for a model with more reactions than constraints
+%       EXPECTED: r and the slack are the m residual values that follow the n fluxes
+%       LINES: 744, 750
+%     - DEFECT: The linear objective is dropped for param.solveWBMmethod
+%       SEVERITY: limitation
+%       TRIGGER: param.solveWBMmethod = 'QP', 'QRLP' or 'QRQP' on a model with a linear objective
+%       OBSERVED: model.c is set to zero, so the flux of the objective reaction is not maximised
+%         and solution.f is empty
+%       EXPECTED: the regularised problem keeps the linear objective of the model
+%       LINES: 441
 %
 % Authors:
 %     - CI integration: Laurent Heirendt, Ronan Fleming
 %     - Characterization: generated for feature
 %       009-fba-characterization-statusmap, 2026-07-15; merged into this file by
 %       feature 018-test-naming-convention, 2026-08-17.
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % save the current path
@@ -27,6 +95,8 @@ cd(fileDir);
 % set the tolerance
 tol = 1e-6;
 
+% the norm weights below are drawn at random; fix them so that the test is repeatable
+rng(0);
 
 %Test the requirements
 if 1
@@ -52,6 +122,9 @@ if 0
 else
     model = getDistributedModel('iAF1260.mat');
 end
+% the Euclidean norm is minimised on the small model: gurobi ends that QP on iAF1260 with status
+% SUBOPTIMAL, which solveCobraQP reports as stat = -1
+coreModel = getDistributedModel('ecoli_core_model.mat');
 
 osenseStr = 'max';
 allowLoops = true;
@@ -75,16 +148,15 @@ for k = 1:length(solverPkgs.LP)
         assert(bool);
         assert(norm(model.S * FBAsolution.x - model.b, 2) < tol);     
         
-        if strcmp(solverPkgs.LP{k}, 'tomlab_cplex')
-        % change the COBRA solver (QP)
-            solverOK = changeCobraSolver('tomlab_cplex', 'QP');
-
-            % Minimise the Euclidean Norm of internal fluxes
-            minNorm = rand(size(model.S, 2), 1);
-            L2solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops);
+        % use the same solver for QP, if it can solve them
+        if changeCobraSolver(solverPkgs.LP{k}, 'QP', 0)
+            % Minimise the Euclidean Norm of internal fluxes (on the small model, see the header)
+            coreFBAsolution = optimizeCbModel(coreModel, osenseStr, 0, allowLoops);
+            minNorm = rand(size(coreModel.S, 2), 1);
+            L2solution = optimizeCbModel(coreModel, osenseStr, minNorm, allowLoops);
             assert(L2solution.stat == 1);
-            assert(norm(model.S * L2solution.x - model.b, 2) < tol);
-            assert(abs(FBAsolution.f - L2solution.x'* model.c) < 0.01);
+            assert(norm(coreModel.S * L2solution.x - coreModel.b, 2) < tol);
+            assert(abs(coreFBAsolution.f - L2solution.x'* coreModel.c) < 0.01);
         end
 
         % output a success message
@@ -198,16 +270,15 @@ for k = 1:length(solverPkgs.LP)
         %assert(nnz(L01solution3.v~=L01solution2.v)>0)
         assert(abs(L01solution3.f - 0.736700938697735)<1e-6)
         
-        if strcmp(solverPkgs.LP{k}, 'tomlab_cplex')
-        % change the COBRA solver (QP)
-            solverOK = changeCobraSolver('tomlab_cplex', 'QP');
-
-            % Minimise the Euclidean Norm of internal fluxes
-            minNorm = rand(size(model.S, 2), 1);
-            L2solution = optimizeCbModel(model, osenseStr, minNorm, allowLoops);
+        % use the same solver for QP, if it can solve them
+        if changeCobraSolver(solverPkgs.LP{k}, 'QP', 0)
+            % Minimise the Euclidean Norm of internal fluxes (on the small model, see the header)
+            coreFBAsolution = optimizeCbModel(coreModel, osenseStr, 0, allowLoops);
+            minNorm = rand(size(coreModel.S, 2), 1);
+            L2solution = optimizeCbModel(coreModel, osenseStr, minNorm, allowLoops);
             assert(L2solution.stat == 1);
-            assert(norm(model.S * L2solution.x - model.b, 2) < tol);
-            assert(abs(FBAsolution.f - L2solution.x'* model.c) < 0.01);
+            assert(norm(coreModel.S * L2solution.x - coreModel.b, 2) < tol);
+            assert(abs(coreFBAsolution.f - L2solution.x'* coreModel.c) < 0.01);
         end
 
         % output a success message
@@ -310,8 +381,281 @@ for charK = 1:length(charSolverPkgs.LP)
     end
 end
 
+%% Coverage completion: the remaining branches on the toy pathway
+% The optimum of the pathway is f = 10 with all three fluxes at 10; the objective pins below are
+% solved by hand from that. covTol is the accuracy of a direct solve, covQpTol the accuracy of a
+% small regularised QP, where the solver stops close to, not at, the minimum.
+covTol = 1e-6;
+covQpTol = 1e-2;
+covSolverPkgs = prepareTest('needsLP', true);
+
+for covK = 1:length(covSolverPkgs.LP)
+    covSolver = covSolverPkgs.LP{covK};
+    fprintf('   Covering optimizeCbModel with LP solver %s ... ', covSolver);
+    changeCobraSolver(covSolver, 'LP', 0);
+    covQpOK = changeCobraSolver(covSolver, 'QP', 0);
+    covMilpOK = changeCobraSolver(covSolver, 'MILP', 0);
+    covMiqpOK = changeCobraSolver(covSolver, 'MIQP', 0);
+    covModel = buildCharToyModel();
+    covResidual = @(sol) norm(covModel.S * sol.v - covModel.b);
+
+    % --- default arguments ------------------------------------------------------------------
+    covS = optimizeCbModel(covModel);                 % every optional input left out
+    assert(covS.stat == 1 && abs(covS.f - 10) < covTol);
+    covS = optimizeCbModel(covModel, []);             % an empty sense means maximise
+    assert(covS.stat == 1 && abs(covS.f - 10) < covTol);
+    covS = optimizeCbModel(covModel, 'max', 0, []);   % an empty allowLoops means true
+    assert(covS.stat == 1 && abs(covS.f - 10) < covTol);
+    covS = optimizeCbModel(covModel, 'max', false);   % logical minNorm: false is no norm
+    assert(covS.stat == 1 && abs(covS.f1 - 10) < covTol && isnan(covS.f2));
+
+    % --- the parameter structure as second input ---------------------------------------------
+    covModelNoSense = rmfield(covModel, 'osenseStr');
+    covS = optimizeCbModel(covModelNoSense, struct('printLevel', 0));
+    assert(covS.stat == 1 && abs(covS.f - 10) < covTol);        % maximise by default
+    covS = optimizeCbModel(covModelNoSense, struct('osenseStr', 'min'));
+    assert(covS.stat == 1 && abs(covS.f - 0) < covTol);         % the sense comes from param
+    assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', {covModel, struct(), [], [], struct()}, ...
+        'testMessage', 'osenseStr is a structure and param structure is also present'));
+
+    % --- approximations of the zero norm -----------------------------------------------------
+    covS = optimizeCbModel(covModel, 'max', 'zero', true, struct('zeroNormApprox', 'exp'));
+    assert(covS.stat == 1 && abs(covS.f - 10) < covQpTol);
+    lastwarn('');
+    covS = optimizeCbModel(covModel, 'max', 'zero', true, struct('zeroNormApprox', 'nonsense'));
+    assert(covS.stat == 1 && abs(covS.f - 10) < covQpTol);
+    assert(contains(lastwarn, 'Approximation is not valid'));
+
+    % --- coupling constraints C v <= d --------------------------------------------------------
+    covModelC = covModel;
+    covModelC.C = sparse([1, 0, 0]);
+    covModelC.d = 5;
+    covModelC.dsense = 'L';
+    covS = optimizeCbModel(covModelC, 'max', 0);
+    assert(covS.stat == 1 && abs(covS.f - 5) < covTol);
+    assert(numel(covS.ctrs_y) == 1 && abs(covS.ctrs_s) < covTol);   % the constraint is active
+    covModelC.lb(:) = 6;                                            % above the coupling limit
+    covS = optimizeCbModel(covModelC, 'max', 0);
+    assert(covS.stat == 0 && isempty(covS.ctrs_y) && isempty(covS.ctrs_s));
+
+    % --- additional variables E -----------------------------------------------------------------
+    % one extra source of metabolite A that also counts in the objective: v3 = 12, extra = 2
+    covModelE = covModel;
+    covModelE.E = sparse([1; 0]);
+    covModelE.evarlb = 0;
+    covModelE.evarub = 2;
+    covModelE.evarc = 1;
+    covS = optimizeCbModel(covModelE, 'max', 0);
+    assert(covS.stat == 1 && abs(covS.f - 14) < covTol);
+    assert(abs(covS.vars_v - 2) < covTol && numel(covS.vars_w) == 1);
+    covModelE.lb(3) = 50;
+    covS = optimizeCbModel(covModelE, 'max', 0);
+    assert(covS.stat == 0 && isempty(covS.vars_v) && isempty(covS.vars_w));
+
+    % --- minNorm = 'oneInternal' ------------------------------------------------------------------
+    covModelInt = covModel;
+    covModelInt.SConsistentRxnBool = [false; true; false];
+    covS = optimizeCbModel(covModelInt, 'max', 'oneInternal');
+    assert(covS.stat == 1 && abs(covS.f - 10) < covTol && covResidual(covS) < covTol);
+    covS = optimizeCbModel(covModelInt, 'min', 'oneInternal');
+    assert(covS.stat == 1 && abs(covS.f - 0) < covTol);
+    covModelInt.g1 = [1; 2; 1];                                     % weighted internal norm
+    covS = optimizeCbModel(covModelInt, 'max', 'oneInternal');
+    assert(covS.stat == 1 && abs(covS.f - 10) < covTol);
+    covModelInt.g1 = [1; -1; 1];                                    % negative internal weight
+    lastwarn('');
+    optimizeCbModel(covModelInt, 'max', 'oneInternal');
+    assert(contains(lastwarn, 'may not eliminate thermodynamically infeasible fluxes'));
+
+    % --- weight fields ------------------------------------------------------------------------
+    assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', {addField(covModel, 'g', [1; 1; 1]), 'max', 0}, ...
+        'testMessage', ['model.g no longer supported by optimizeCbModel. zero and one norm weights ' ...
+        'must be separately specified in model.g0 and model.g1 respectively']));
+    lastwarn('');
+    covS = optimizeCbModel(addField(addField(covModel, 'g', [1; 1; 1]), 'g0', [1; 1; 1]), 'max', 0);
+    assert(covS.stat == 1 && contains(lastwarn, 'model.g ignored by optimizeCbModel'));
+    % a wrong length, and the right length with more than one column
+    for covWrong = {[1; 1], ones(3, 2)}
+        assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', {addField(covModel, 'g0', covWrong{1}), 'max', 0}, ...
+            'testMessage', 'model.g0 must be nRxns x 1'));
+        assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', {addField(covModel, 'g1', covWrong{1}), 'max', 0}, ...
+            'testMessage', 'model.g1 must be nRxns x 1'));
+    end
+    assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', {addField(covModel, 'g2', [1; 1; 1]), 'max', 0}, ...
+        'testMessage', 'minimisation of two norm in combination with one and zero norm is not yet supported'));
+
+    % --- no linear objective: the norm is minimised directly, all fluxes can be zero ---------------
+    covModelNoObj = covModel;
+    covModelNoObj.c(:) = 0;
+    covS = optimizeCbModel(covModelNoObj, 'max', 'one');
+    assert(covS.stat == 1 && norm(covS.v) < covTol);
+    covS = optimizeCbModel(covModelNoObj, 'max', 'zero');
+    assert(covS.stat == 1 && norm(covS.v) < covTol);
+    assert(isempty(covS.f));
+
+    % --- other sense and loop law for the one norm ------------------------------------------------
+    covS = optimizeCbModel(covModel, 'min', 'one');
+    assert(covS.stat == 1 && norm(covS.v) < covTol);
+    if covMilpOK
+        covS = optimizeCbModel(covModel, 'max', 'one', false);
+        assert(covS.stat == 1 && abs(covS.f - 10) < covTol);
+    end
+
+    % --- an optimal basis of the model can be passed on ---------------------------------------------
+    covS = optimizeCbModel(covModel, 'max', 0);
+    covS = optimizeCbModel(addField(covModel, 'basis', covS.basis), 'max', 0);
+    assert(covS.stat == 1 && abs(covS.f - 10) < covTol);
+
+    % --- parameters for the solver that carry minNorm are not passed to the first LP ---------------
+    covS = optimizeCbModel(covModel, 'max', 0, true, struct('minNorm', 1e-6));
+    assert(covS.stat == 1 && abs(covS.f - 10) < covTol);
+
+    % --- minNorm = 'optimizeCardinality' ------------------------------------------------------------
+    covModelCard = covModel;
+    covModelCard.g0 = [1; 1; 1];
+    for covField = {'lambda0', 'lambda1', 'delta0', 'delta1'}
+        covModelCard.(covField{1}) = 1;
+    end
+    covS = optimizeCbModel(covModelCard, 'max', 'optimizeCardinality');
+    assert(covS.stat == 1 && abs(covS.f - 10) < covQpTol);
+    covModelCard.c(:) = 0;                                          % no LP before the norm
+    covS = optimizeCbModel(covModelCard, 'max', 'optimizeCardinality');
+    assert(covS.stat == 1 && norm(covS.v) < covTol);
+    assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', ...
+        {addField(covModelCard, 'F', speye(3)), 'max', 'optimizeCardinality'}, ...
+        'testMessage', 'optimizeCardinality does not (yet) support minimisation of 2-norm'));
+    assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', ...
+        {addField(covModelCard, 'g1', [1; -1; 1]), 'max', 'optimizeCardinality'}, ...
+        'testMessage', 'optimizeCardinality does not (yet) support maximisation of 1-norm'));
+
+    % --- minNorm of a form that is not supported --------------------------------------------------
+    assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', {covModel, 'max', [1; 2]}, ...
+        'testMessage', ['minNorm has dimensions 2 x 1 but it can only of the form ' ...
+        '{(0), ''one'', ''zero'', > 0 , n x 1 vector}.']));
+    assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', {covModel, 'max', 'abcd'}, ...
+        'testMessage', ['minNorm has dimensions 1 x 4 but it can only of the form ' ...
+        '{(0), ''one'', ''zero'', > 0 , n x 1 vector}.']));
+
+    % --- printed messages for the solver status ------------------------------------------------------
+    covPrinted = evalc('covS = optimizeCbModel(covModel, ''max'', 0, true, struct(''printLevel'', 1));');
+    assert(covS.stat == 1 && contains(covPrinted, 'Optimal solution found.'));
+    lastwarn('');
+    covS = optimizeCbModel(addField(covModel, 'lb', [0; 0; 50]), 'max', 0, true, struct('printLevel', 1));
+    assert(covS.stat == 0 && contains(lastwarn, 'Infeasible model.'));
+    lastwarn('');
+    covS = optimizeCbModel(addField(covModel, 'ub', [inf; inf; inf]), 'max', 0, true, struct('printLevel', 1));
+    assert(covS.stat == 2 && contains(lastwarn, 'Unbounded model.'));
+
+    % --- quadratic programs ------------------------------------------------------------------------
+    if covQpOK
+        % logical true stands for minNorm = 1e-6
+        covS = optimizeCbModel(covModel, 'max', true);
+        assert(covS.stat == 1 && abs(covS.f - 10) < covQpTol);
+        % minNorm given in the parameter structure, with allowLoops
+        covS = optimizeCbModel(covModel, struct('minNorm', 1e-6, 'allowLoops', true));
+        assert(covS.stat == 1 && abs(covS.f - 10) < covQpTol);
+        % minNorm given as the text '1e-6'
+        covS = optimizeCbModel(covModel, 'max', '1e-6');
+        assert(covS.stat == 1 && abs(covS.f - 10) < covQpTol);
+        % without linear objective there is no LP first and the linear objective stays empty
+        covS = optimizeCbModel(covModelNoObj, 'max', 1e-6);
+        assert(covS.stat == 1 && isempty(covS.f) && norm(covS.v) < covQpTol);
+        % with the objective reaction fixed by its bounds there is no LP first either
+        covModelFixed = covModel;
+        [covModelFixed.lb(3), covModelFixed.ub(3)] = deal(4);
+        covS = optimizeCbModel(covModelFixed, 'max', 1e-6);
+        assert(covS.stat == 1 && norm(covS.v - 4) < covQpTol);
+        assert(abs(covS.f2 - 0.5 * 1e-6 * 3 * 16) < 1e-6);          % 0.5 v' F v, without LP
+        % a whole-body-model method without linear objective
+        covS = optimizeCbModel(covModelNoObj, 'max', 1e-6, true, ...
+            struct('solveWBMmethod', 'QP', 'minNorm', 1e-6));
+        assert(covS.stat == 1 && norm(covS.v) < covQpTol);
+        % the quadratically regularised LP keeps the fluxes of the problem without objective
+        covS = optimizeCbModel(covModelNoObj, 'max', 'QRLP', true, ...
+            struct('solveWBMmethod', 'QRLP', 'minNorm', 'QRLP', 'minNormWBM', 1e-6));
+        assert(covS.stat == 1 && covResidual(covS) < covQpTol);
+        assert(all(covS.v >= covModel.lb - covQpTol) && all(covS.v <= covModel.ub + covQpTol));
+        assert(numel(covS.p) == numel(covModel.rxns) && numel(covS.q) == numel(covModel.rxns));
+    end
+    if covQpOK && covMiqpOK
+        % the loop law with a quadratic objective, after an LP and without one
+        covS = optimizeCbModel(covModel, 'max', 1e-6, false);
+        assert(covS.stat == 1 && abs(covS.f - 10) < covQpTol);
+        covS = optimizeCbModel(covModelFixed, 'max', 1e-6, false);
+        assert(covS.stat == 1 && norm(covS.v - 4) < covQpTol);
+    end
+    fprintf('Done.\n');
+end
+
+%% Coverage completion: solver status values that come from a stand-in for solveCobraLP
+% the stand-in lives in a temporary folder, which the cleanup object removes again
+sandboxDir = tempname;
+mkdir(sandboxDir);
+fid = fopen(fullfile(sandboxDir, 'solveCobraLP.m'), 'w');
+fprintf(fid, '%s\n', ...
+    'function solution = solveCobraLP(LPproblem, varargin)', ...
+    '% stand-in written by testOptimizeCbModel: returns what the test stored', ...
+    'solution = getappdata(0, ''standInSolution'');', ...
+    'solution.full = ones(size(LPproblem.A, 2), 1);', ...
+    'end');
+fclose(fid);
+addpath(sandboxDir);
+removeSandbox = onCleanup(@() removeStandIn(sandboxDir));
+rehash path
+% the sandbox is active: the calls below reach the stand-in
+assert(startsWith(which('solveCobraLP'), sandboxDir));
+
+standIn = struct('obj', 1, 'dual', [], 'rcost', [], 'slack', [], 'solver', 'standIn', 'stat', 3);
+covModel = buildCharToyModel();
+printParam = struct('printLevel', 1);
+
+% almost optimal: a warning, and the solution is returned as for an optimal one
+setappdata(0, 'standInSolution', standIn);
+lastwarn('');
+covS = optimizeCbModel(covModel, 'max', 0, true, printParam);
+assert(covS.stat == 3 && isequal(covS.v, ones(3, 1)) && covS.f == 1);
+assert(contains(lastwarn, 'not proven to be optimal'));
+
+% no solution: a warning, and the solution stays empty
+standIn.stat = -1;
+setappdata(0, 'standInSolution', standIn);
+lastwarn('');
+covS = optimizeCbModel(covModel, 'max', 0, true, printParam);
+assert(covS.stat == -1 && isempty(covS.v) && isnan(covS.f));
+assert(contains(lastwarn, 'No solution reported'));
+
+% a status outside the documented set is refused
+standIn.stat = 7;
+setappdata(0, 'standInSolution', standIn);
+assert(verifyCobraFunctionError('optimizeCbModel', 'inputs', {covModel, 'max', 0}, ...
+    'testMessage', 'solution.stat must be in {-1, 0 , 1, 2, 3}'));
+
+% the former mps interface returns what the solver returned, without a solution
+standIn.solver = 'mps';
+setappdata(0, 'standInSolution', standIn);
+covS = optimizeCbModel(covModel, 'max', 0);
+assert(strcmp(covS.solver, 'mps') && ~isfield(covS, 'v'));
+
+clear removeSandbox
+assert(~strcmp(fileparts(which('solveCobraLP')), sandboxDir));
+
 % change the directory
 cd(currentDir)
+
+
+function model = addField(model, fieldName, value)
+    % returns the model with one field set, for use inside a call
+    model.(fieldName) = value;
+end
+
+
+function removeStandIn(sandboxDir)
+    % removes the temporary folder with the stand-in of solveCobraLP and what it depends on
+    rmpath(sandboxDir);
+    rmappdata(0, 'standInSolution');
+    rmdir(sandboxDir, 's');
+    rehash path
+end
 
 
 function model = buildCharToyModel()

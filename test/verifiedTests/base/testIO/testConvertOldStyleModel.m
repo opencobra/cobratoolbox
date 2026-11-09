@@ -8,6 +8,7 @@
 %
 % Authors:
 %     - Thomas Pfau
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;
@@ -163,6 +164,154 @@ modelWithA = fixedModel;
 modelWithA.A = fixedModel.S;
 modelConverted = convertOldStyleModel(modelWithA);
 assert(verifyModel(modelConverted,'simpleCheck',true));
+
+% The sections below perturb one small model, one legacy shape per section.
+toyModel = struct;
+toyModel.mets = {'m1'; 'm2'; 'm3'};
+toyModel.rxns = {'r1'; 'r2'};
+toyModel.S = [1 -1; -1 1; 0 0];
+toyModel.lb = [-1000; 0];
+toyModel.ub = [1000; 1000];
+toyModel.c = [1; 0];
+toyModel.b = [0; 0; 0];
+toyModel.genes = {'g1'; 'g2'};
+
+%% Old and new numeric fields: both exist, and one of them is a cell array
+% old field as a cell of strings and empties: the larger score of old and new is kept
+testCase = toyModel;
+testCase.confidenceScores = {'4'; []};
+testCase.rxnConfidenceScores = [1; 2];
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.rxnConfidenceScores, [4; 2]));
+assert(~isfield(converted, 'confidenceScores'));
+
+% new field as a cell with empties: an empty entry counts as missing
+testCase = toyModel;
+testCase.confidenceScores = [1; 3];
+testCase.rxnConfidenceScores = {2; []};
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.rxnConfidenceScores, [2; 3]));
+
+% charges: the old value only fills what the new field does not have
+testCase = toyModel;
+testCase.metCharge = [1; 2; 3];
+testCase.metCharges = {[]; -1; []};
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.metCharges, [1; -1; 3]));
+assert(~isfield(converted, 'metCharge'));
+
+%% An old field of the wrong size is left alone, with a warning
+testCase = toyModel;
+testCase.metCharge = [1; 2];
+lastwarn('');
+converted = convertOldStyleModel(testCase);
+assert(strcmp(lastwarn, 'Old field metCharge exists, but does not fit to size of mets, not converting it'));
+assert(isequal(converted.metCharge, [1; 2]));
+assert(~isfield(converted, 'metCharges'));
+
+%% The numeric objective sense is translated, unless osenseStr is already there
+testCase = toyModel;
+testCase.osense = -1;
+converted = convertOldStyleModel(testCase);
+assert(strcmp(converted.osenseStr, 'max') && ~isfield(converted, 'osense'));
+testCase.osense = 1;
+converted = convertOldStyleModel(testCase);
+assert(strcmp(converted.osenseStr, 'min') && ~isfield(converted, 'osense'));
+testCase.osenseStr = 'max';
+converted = convertOldStyleModel(testCase);
+assert(strcmp(converted.osenseStr, 'max') && ~isfield(converted, 'osense'));
+
+%% An invalid constraint sense becomes an equality, with a warning
+testCase = toyModel;
+testCase.csense = 'EXL';
+lastwarn('');
+converted = convertOldStyleModel(testCase);
+assert(strcmp(lastwarn, 'Assuming 1 missing csense are equality constraints.'));
+assert(isequal(converted.csense, ['E'; 'E'; 'L']));
+
+%% Missing fields are created: objective, right hand side, rules from grRules
+testCase = rmfield(toyModel, {'c', 'b'});
+testCase.grRules = {'g1 and g2'; ''};
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.c, zeros(size(toyModel.rxns))));
+assert(isequal(converted.b, zeros(size(toyModel.mets))));
+assert(contains(converted.rules{1}, 'x(1) & x(2)') && isempty(converted.rules{2}));
+
+%% Confidence scores that cannot be converted are set to 0, with a warning
+testCase = toyModel;
+testCase.rxnConfidenceScores = {1; 'not a number'};
+lastwarn('');
+converted = convertOldStyleModel(testCase);
+assert(strcmp(lastwarn, 'Cannot Convert Reaction Confidence Scores, setting to 0'));
+assert(isequal(converted.rxnConfidenceScores, zeros(size(toyModel.rxns))));
+
+%% subSystems: numbers become text, and one subsystem per reaction becomes a plain char
+testCase = toyModel;
+testCase.subSystems = {1; 2};
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.subSystems, {'1'; '2'}));
+testCase.subSystems = {{'first'}; {'second'}};
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.subSystems, {'first'; 'second'}));
+
+%% A model without genes gets a rxnGeneMat of the right size, and an empty genes field 0 x 1
+testCase = toyModel;
+testCase.genes = {};
+testCase.rxnGeneMat = zeros(2, 3);
+converted = convertOldStyleModel(testCase);
+assert(isequal(size(converted.rxnGeneMat), [2, 0]));
+assert(isequal(size(converted.genes), [0, 1]));
+
+%% Compartments and identifiers that were stored as chars and numbers become cell arrays of text
+testCase = toyModel;
+testCase.comps = 'ce';
+testCase.metChEBIID = [15377; 16236; 17234];
+testCase.metPubChemID = [962; NaN; 5793];
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.comps, {'c'; 'e'}));
+assert(isequal(converted.metChEBIID, {'15377'; '16236'; '17234'}));
+assert(isequal(converted.metPubChemID, {'962'; ''; '5793'}));
+
+% a cell array that mixes numbers and text
+testCase = toyModel;
+testCase.metChEBIID = {15377; '16236'; 17234};
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.metChEBIID, {'15377'; '16236'; '17234'}));
+
+%% Reaction names and rules stored as several entries are joined
+testCase = toyModel;
+testCase.rxnNames = {{'name one', 'name two'}; 'name three'};
+testCase.grRules = {{'g1', 'g2'}; ''};
+testCase.rules = {'x(1) | x(2)'; ''};
+converted = convertOldStyleModel(testCase);
+assert(isequal(converted.rxnNames, {sprintf('name one\nname two'); 'name three'}));
+assert(isequal(converted.grRules, {'g1 or g2'; ''}));
+
+%% Rules left empty next to existing grRules are generated
+testCase = toyModel;
+testCase.grRules = {'g1'; 'g2'};
+testCase.rules = {''; ''};
+converted = convertOldStyleModel(testCase);
+assert(contains(converted.rules{1}, 'x(1)') && contains(converted.rules{2}, 'x(2)'));
+
+%% The invalid rule of Recon2, at its reaction 2173, is corrected in rules and grRules
+reconRule = ['(x(1039)) | (x(1040)) | (x(1041)) | (x(1042)) | (x(1043)) | (x(1044)) | (x(1045)) | ', ...
+    '(x(1046)) | (x(1047)) | (x(1048)) | (x(1049)) | (x(1050)) | ()'];
+nReconRxns = 2173;
+reconSized = struct;
+reconSized.mets = {'m1'};
+reconSized.rxns = arrayfun(@(k) sprintf('r%d', k), (1:nReconRxns)', 'UniformOutput', false);
+reconSized.S = sparse(1, nReconRxns);
+reconSized.lb = zeros(nReconRxns, 1);
+reconSized.ub = ones(nReconRxns, 1);
+reconSized.c = zeros(nReconRxns, 1);
+reconSized.b = 0;
+reconSized.genes = arrayfun(@(k) sprintf('g%d', k), (1:1050)', 'UniformOutput', false);
+reconSized.rules = repmat({''}, nReconRxns, 1);
+reconSized.rules{nReconRxns} = reconRule;
+converted = convertOldStyleModel(reconSized);
+assert(strcmp(converted.rules{nReconRxns}, strrep(reconRule, ' | ()', '')));
+assert(contains(converted.grRules{nReconRxns}, 'g1050') && ~contains(converted.grRules{nReconRxns}, '()'));
 
 % output a success message
 fprintf('Done.\n');

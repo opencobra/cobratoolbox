@@ -4,9 +4,22 @@
 %     - testcheckModelPreFBA tests the functionality of checkModelPreFBA.m
 %     function
 %
+% Function under test:
+%     src/reconstruction/modelGeneration/checkModelPreFBA.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation: ecoli_core_model, an LP solver.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Ronan Fleming     06/11/2020
 %     - Farid Zare:       21/11/2023      Revised the code
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 global CBTDIR
@@ -55,6 +68,36 @@ for k = 1:length(solvers.LP)
        fprintf('Done.\n');
     end
 end
+
+%% diagnostics at printLevel 2
+% (the first solver is enough: these sections test the printed report and the input handling)
+changeCobraSolver(solvers.LP{1}, 'LP', 0);
+param.printLevel = 2;
+reportText = evalc('isConsistent = checkModelPreFBA(model, param);');
+assert(isConsistent);
+assert(contains(reportText, 'totals.') && contains(reportText, 'heuristically exchange.'));
+assert(contains(reportText, '(Check 1: minimum cardinality of conservation relaxation vector.)'));
+assert(contains(reportText, '(Check 2: leak/siphon tests.)'));
+assert(contains(reportText, '(Check 3: maximim cardinality conservation vector.)'));
+assert(contains(reportText, '(Check 4: maximim cardinality constrained right nullspace.)'));
+assert(contains(reportText, 'Open external reactions is stoichiometrically and flux consistent.'));
+
+%% a model given by file name, and the default model and parameters
+% the default model file is a large one: a copy of the small model under that name, in a temporary
+% folder that is searched first, stands in for it
+tempFolder = tempname;
+mkdir(tempFolder);
+cd(tempFolder);
+save('smallCopy.mat', 'model');
+assert(checkModelPreFBA('smallCopy.mat', struct('printLevel', 0)));
+save('Recon3DModel_301.mat', 'model');
+assert(checkModelPreFBA());
+% the parameters can be left out, and printLevel defaults to 0
+assert(checkModelPreFBA('smallCopy.mat'));
+assert(checkModelPreFBA(model, struct()));
+assert(~checkModelPreFBA(incModel));
+cd(testPath);
+rmdir(tempFolder, 's');
 
 % change the directory
 cd(currentDir)

@@ -3,8 +3,21 @@
 % Purpose:
 %     - test the theoretMaxProd function
 %
+% Function under test:
+%     src/design/theoretMaxProd.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation on ecoli_core_model, loaded through getDistributedModel.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Jacek Wachowiak
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 global CBTDIR
 % save the current path
 currentDir = pwd;
@@ -60,6 +73,20 @@ assert(abs(MaxTheoOut3(1) - sum(FBAsol.x(allExPos & ~acExPos & FBAsol.x > 0 & ca
 % Sum of Molecular weights of all Carbon Exporters ( > 0) without Acetate
 assert(abs(MaxTheoOut4(1) - sum(FBAsol.x(allExPos).*(FBAsol.x(allExPos)>0).*exWeights.*carbEx.*~acPosInExch)) < 1e-4); % 'EX_ac(e)' in weight yield
 assert(isequal(MaxTheoOut5, zeros(20, 1))); % bad criterion returns only 0s
+
+%% Normalised outputs of the weight and other-exporter criteria
+% The maximal 'EX_ac(e)' flux uses the whole glucose uptake (10), so normalising divides the
+% molar value by 10 and the weight values by 10 times the molecular weight of glucose.
+[~, MaxTheoOutMwNorm] = theoretMaxProd(model, 'EX_glc(e)', 'pr_mw', true);
+[~, MaxTheoOutOtherMolNorm] = theoretMaxProd(model, 'EX_glc(e)', 'pr_other_mol', true);
+[~, MaxTheoOutOtherMwNorm] = theoretMaxProd(model, 'EX_glc(e)', 'pr_other_mw', true);
+glcWeight = mw(find(model.S(:, ismember(model.rxns, 'EX_glc(e)'))));
+glcUptake = 10;
+
+% mass yield of acetate on glucose: 2 mol acetate per mol glucose, in weight
+assert(abs(MaxTheoOutMwNorm(1) - 2 * exWeights(1) / glcWeight) < 1e-4);
+assert(abs(MaxTheoOutOtherMolNorm(1) - MaxTheoOut3(1) / glcUptake) < 1e-4);
+assert(abs(MaxTheoOutOtherMwNorm(1) - MaxTheoOut4(1) / (glcUptake * glcWeight)) < 1e-4);
 
 % change to old directory
 cd(currentDir);

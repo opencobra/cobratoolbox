@@ -4,8 +4,21 @@
 %     - tests that metabolites are found when a set of reactions is
 %     provided 
 %
+% Function under test:
+%     src/analysis/exploration/findMetsFromRxns.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 2 - model manipulation, no solver; ecoli_core_model loaded through getDistributedModel.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Original file: Thomas Pfau Jan 2018
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % save the current path
@@ -14,6 +27,9 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testFindMetsFromRxns'));
 cd(fileDir);
+
+% this test needs no solver, toolbox or particular operating system
+prepareTest();
 
 % load model
 model = getDistributedModel('ecoli_core_model.mat');
@@ -68,6 +84,10 @@ for i = 1:2
     cstoich = stoich{i};
     assert(isequal(cstoich(pos),returnedStoich{reacpos(i)}));
 end
+
+%% a reaction list that is neither a cell array nor numeric is refused
+assert(verifyCobraFunctionError('findMetsFromRxns', 'inputs', {model, 'R1'}, ...
+    'testMessage', 'wrong reaction format'));
 
 % change the directory
 cd(currentDir)

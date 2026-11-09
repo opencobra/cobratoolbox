@@ -2,8 +2,22 @@
 %
 % Purpose:
 %     - Tests the changeRxnBounds function
+%
+% Function under test:
+%     src/analysis/FBA/changeRxnBounds.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - no genome-scale model, no solver; the toy model is written by hand.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Author:
 %     - Original file: Stefania Magnusdottir
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;
@@ -11,6 +25,9 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testChangeRxnBounds'));
 cd(fileDir);
+
+% this test needs no solver, toolbox or particular operating system
+prepareTest();
 
 % define the test model
 toyModel = struct;
@@ -72,6 +89,11 @@ try
 catch ME
     assert(length(ME.message) > 0)
 end
+
+%% one value with a list of bound types is applied to every listed reaction
+modelNew = changeRxnBounds(toyModel, {'Rxn1'; 'Rxn2'; 'Rxn3'}, 7, {'l'; 'u'; 'b'});
+assert(isequal(modelNew.lb, [7; 0; 7]))
+assert(isequal(modelNew.ub, [0; 7; 7]))
 
 % change the directory
 cd(currentDir)
