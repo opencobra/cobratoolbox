@@ -1,5 +1,7 @@
-addpath(genpath('/home/farid/Projects/cobratoolbox-f-develop/src')); initCobraToolbox(false); warning off all
-S0=load('/home/farid/Projects/reconxkg/models/20261001/12_56/original_models/20261001T105846Z_Recon4_VMH.mat'); f=fieldnames(S0); m=S0.(f{1}); S=sparse(m.S); clear S0 m
+modelFile = getenv('COBRA_BENCH_MODEL');   % stored model .mat file to measure
+if isempty(modelFile), error('ownCode:missingModel', 'Set COBRA_BENCH_MODEL to the model .mat file to measure.'); end
+addpath(genpath(fullfile(fileparts(fileparts(fileparts(fileparts(mfilename('fullpath'))))), 'src'))); initCobraToolbox(false); warning off all
+S0=load(modelFile); f=fieldnames(S0); m=S0.(f{1}); S=sparse(m.S); clear S0 m
 hw=@() peakGB();
 fprintf('size %d x %d nnz %d\n',size(S,1),size(S,2),nnz(S));
 t=tic; F=-S; F(F<0)=0; R=S; R(R<0)=0; fprintf('F,R build %.1f s  peak %.2f GB\n',toc(t),hw());

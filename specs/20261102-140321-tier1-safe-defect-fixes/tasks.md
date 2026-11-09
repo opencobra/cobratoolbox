@@ -21,7 +21,7 @@ document and registry are checked by reading and by the registry tool.
 1. Re-read the source function and its test (Constitution III-Defects re-check). Confirm the
    entry still describes the current source; if not, report it.
 2. Baseline: run the test with the throwaway coverage helper
-   `/tmp/claude-1000/-home-farid-Projects-cobratoolbox-f-develop/e1c97340-2072-48e2-a3db-de9e7dd9cefc/scratchpad/impact/runWithCoverage.m`
+   `runWithCoverage.m` (a throwaway helper, not kept in the repository)
    (`initCobraToolbox(false)` first, then `addpath` of that folder, then
    `runWithCoverage(which('test<Name>'), which('<name>'))`); record covered/total.
 3. Fix the source with the smallest change that produces EXPECTED (research R3/R4). Do not

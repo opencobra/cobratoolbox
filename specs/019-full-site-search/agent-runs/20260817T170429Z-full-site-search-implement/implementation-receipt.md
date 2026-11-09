@@ -102,7 +102,7 @@ convention throughout). In place of a MATLAB test file:
   coverage check (valid JSON, non-empty, required fields present per entry),
   run automatically at the end of every invocation and wired as the CI step's
   built-in failure gate. Exercised against real tutorial content (336 entries
-  from `/home/farid/Projects/cobratoolbox-gh-pages/stable/tutorials`) —
+  from `<gh-pages checkout>/stable/tutorials`) —
   PASS. Exercised against a missing directory and an empty-but-valid
   directory — both correctly exit non-zero with no output file written.
 - Full local reproduction of the CI build-and-stage pipeline (first build →
@@ -145,3 +145,7 @@ found and fixed during this verification (not left as known failures).
   rule out.
 - Cross-browser behavior (Firefox, Safari) was not tested — out of scope per
   `quickstart.md`'s explicit scope note.
+
+## Other information
+
+Redaction (2026-11-05): local machine details were removed or replaced with relative paths or a placeholder, as personal data. No other text changed.
