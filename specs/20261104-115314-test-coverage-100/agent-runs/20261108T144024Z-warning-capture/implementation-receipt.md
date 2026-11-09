@@ -43,7 +43,11 @@ No file under `src/` changed.
 
 ## Unresolved issues
 
-- SC-006 (the test passes on CI on PR #2722) is not yet confirmed; T106 closes when it is.
 - The source of the `opengl` warning on CI was not identified; no code in `src`, `external` or
   `test` calls `opengl`, so it is probably raised by MATLAB's graphics code on CI.
 - `CLAUDE.md` and `AGENTS.md` name a different override phrase from the constitution.
+
+## CI confirmation
+
+CI on PR #2722 for commit `13ce1e335`: 140 tests, 140 passed, 0 failed, 0 skipped, including
+`testCreateMetIntrcNetwork.m`. SC-006 is met and T106 is closed.
