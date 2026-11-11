@@ -48,30 +48,30 @@ at most three MATLAB sessions at once across all concurrent workers; never raise
 
 ## Phase 1: Setup
 
-- [ ] T001 Create the reference scripts skeleton `specs/20261111-152503-toolbox-free-remaining/references/{g1_stats,g2_fit_optim,g3_regression,g4_figures}.py` (shared helper for printing full-precision values) and confirm the reference venv imports scipy, statsmodels, sklearn; try `pip install firthlogist` into it (record success or failure in research.md R7)
+- [X] T001 Create the reference scripts skeleton `specs/20261111-152503-toolbox-free-remaining/references/{g1_stats,g2_fit_optim,g3_regression,g4_figures}.py` (shared helper for printing full-precision values) and confirm the reference venv imports scipy, statsmodels, sklearn; try `pip install firthlogist` into it (record success or failure in research.md R7)
 
 ## Phase 2: Foundational (blocks US1 and US3)
 
-- [ ] T002 [P] Write `cobraTiedrank` (contract G1 §8) and `test/verifiedTests/base/testToolboxFree/testCobraTiedrank.m` (references: scipy.stats.rankdata) — used by cobraRanksum and cobraKruskalwallis
-- [ ] T003 [P] (no separate engine, analyze C1) `cobraKruskalwallis` is implemented as one-way ANOVA on tied ranks by calling `cobraAnova1` internally and converting to the chi-square statistic, as MathWorks documents; nothing to create in this task beyond confirming the design in research.md R4
+- [X] T002 [P] Write `cobraTiedrank` (contract G1 §8) and `test/verifiedTests/base/testToolboxFree/testCobraTiedrank.m` (references: scipy.stats.rankdata) — used by cobraRanksum and cobraKruskalwallis
+- [X] T003 [P] (no separate engine, analyze C1) `cobraKruskalwallis` is implemented as one-way ANOVA on tied ranks by calling `cobraAnova1` internally and converting to the chi-square statistic, as MathWorks documents; nothing to create in this task beyond confirming the design in research.md R4
 
 ## Phase 3: User Story 1 — statistical tests, distributions, utilities (P1)
 
 **Goal**: US1. **Independent test**: every `testCobra*` of this phase passes on base MATLAB; changed call sites' tests pass or are statically verified.
 
-- [ ] T004 [P] [US1] `cobraHygecdf` + test (G1 §6; scipy.stats.hypergeom; doc values)
-- [ ] T005 [P] [US1] `cobraAnova1` + test (G1 §1; doc beam-strength example; scipy f_oneway)
-- [ ] T006 [P] [US1] `cobraKruskalwallis` + test (after T002, T005; G1 §2; doc example p = 0.0018; scipy kruskal; `tbl` layout incl. empty cells)
-- [ ] T007 [P] [US1] `cobraRanksum` + test (after T002; G1 §3; doc mileage example p = 0.0043; exact with ties; `'method'` exact/approximate; `stats.ranksum` of the first sample as single switch documented UNCONFIRMED)
-- [ ] T008 [P] [US1] `cobraTtest2` + test (G1 §4; scipy ttest_ind equal_var=True)
-- [ ] T009 [P] [US1] `cobraKstest2` + test (G1 §5; positional and name-value; doc example p-values; ks_2samp statistic)
-- [ ] T010 [P] [US1] `cobraKsdensity` + test (G1 §12; default call only; bandwidth vs doc; values vs NumPy normal-kernel sum on the MATLAB grid)
-- [ ] T011 [P] [US1] `cobraCmdscale` + test (G1 §13; NumPy eigh reference; compare up to column sign)
-- [ ] T012 [P] [US1] `cobraConfusionmat` + test (G1 §14; sklearn confusion_matrix with labels; 'Order'/'ORDER'/'order'; missing values)
-- [ ] T013 [US1] Switch call sites: anova1, kruskalwallis, ranksum in `performStatisticalAnalysis.m`, `retrieveModelStats.m`, `runNonparametricTests.m`, `dimensionalityReductionAndMultivariateAnalysis.m`, `compareTwoSamplesStat.m` (ranksum/ttest2/kstest2), `score_KS.m`; ttest2 in `optimalScores.m` (only that line); hygecdf + `mafdr(...,'BHFDR',true)` → `fdrBHadjustment` in `FEA.m` and `dimensionalityReductionAndMultivariateAnalysis.m`; in `performStatisticalAnalysis.m` replace mafdr only on the `BHFDR=true` path, keep the Storey default path calling `mafdr` (left toolbox-gated, R1) with a clear error naming the Bioinformatics Toolbox when it is absent
-- [ ] T014 [US1] Switch call sites: tiedrank in `analyseWBMsol.m`; ksdensity in `KLdistance.m`, `discretizeFPKM.m`; cmdscale in `mgSimResCollect.m`, `plotMappingInfo.m`, `dimensionalityReductionAndMultivariateAnalysis.m`; confusionmat in `modelPredictiveCapacity.m`, `quanQualAcc.m`, `plotThermoKernelExtractStats.m`, `plotThermoKernelStats.m`
-- [ ] T015 [US1] Base substitutions (research R3): geomean in `createContextSpecificModel.m`, `estimateDfGt0.m`, `estimateDrGt0.m`; normrnd in `eFlux.m`, `SWIFTCORE/core.m`; `range` → `max-min` in `SWIFTCORE/partition.m`; `dataset` export in `generateIsotopomerSolver.m` → `fopen`/`fprintf` byte-identical (compare against the documented dataset export format in G1 §15)
-- [ ] T016 [US1] Licence guards (FR-008a): remove `assert(license(...bioinformatics...))` in `partition.m:34`; remove the Statistics guard around tiedrank in `analyseWBMsol.m:205`; remove the `noPcoa` Statistics guard in `mgSimResCollect.m:115`; leave `initPersephone` and its `statToolboxInstalled` output unchanged (public interface, analyze I1); first trace every function `performStatsPersephone` reaches and, only if all are replaced or guarded, stop gating `runPersephone.m:315` on `statToolboxInstalled` (otherwise record why it stays); make `performRegressions` raise an error naming the Statistics Toolbox only when a mixed-effects formula is given without it
+- [X] T004 [P] [US1] `cobraHygecdf` + test (G1 §6; scipy.stats.hypergeom; doc values)
+- [X] T005 [P] [US1] `cobraAnova1` + test (G1 §1; doc beam-strength example; scipy f_oneway)
+- [X] T006 [P] [US1] `cobraKruskalwallis` + test (after T002, T005; G1 §2; doc example p = 0.0018; scipy kruskal; `tbl` layout incl. empty cells)
+- [X] T007 [P] [US1] `cobraRanksum` + test (after T002; G1 §3; doc mileage example p = 0.0043; exact with ties; `'method'` exact/approximate; `stats.ranksum` of the first sample as single switch documented UNCONFIRMED)
+- [X] T008 [P] [US1] `cobraTtest2` + test (G1 §4; scipy ttest_ind equal_var=True)
+- [X] T009 [P] [US1] `cobraKstest2` + test (G1 §5; positional and name-value; doc example p-values; ks_2samp statistic)
+- [X] T010 [P] [US1] `cobraKsdensity` + test (G1 §12; default call only; bandwidth vs doc; values vs NumPy normal-kernel sum on the MATLAB grid)
+- [X] T011 [P] [US1] `cobraCmdscale` + test (G1 §13; NumPy eigh reference; compare up to column sign)
+- [X] T012 [P] [US1] `cobraConfusionmat` + test (G1 §14; sklearn confusion_matrix with labels; 'Order'/'ORDER'/'order'; missing values)
+- [X] T013 [US1] Switch call sites: anova1, kruskalwallis, ranksum in `performStatisticalAnalysis.m`, `retrieveModelStats.m`, `runNonparametricTests.m`, `dimensionalityReductionAndMultivariateAnalysis.m`, `compareTwoSamplesStat.m` (ranksum/ttest2/kstest2), `score_KS.m`; ttest2 in `optimalScores.m` (only that line); hygecdf + `mafdr(...,'BHFDR',true)` → `fdrBHadjustment` in `FEA.m` and `dimensionalityReductionAndMultivariateAnalysis.m`; in `performStatisticalAnalysis.m` replace mafdr only on the `BHFDR=true` path, keep the Storey default path calling `mafdr` (left toolbox-gated, R1) with a clear error naming the Bioinformatics Toolbox when it is absent
+- [X] T014 [US1] Switch call sites: tiedrank in `analyseWBMsol.m`; ksdensity in `KLdistance.m`, `discretizeFPKM.m`; cmdscale in `mgSimResCollect.m`, `plotMappingInfo.m`, `dimensionalityReductionAndMultivariateAnalysis.m`; confusionmat in `modelPredictiveCapacity.m`, `quanQualAcc.m`, `plotThermoKernelExtractStats.m`, `plotThermoKernelStats.m`
+- [X] T015 [US1] Base substitutions (research R3): geomean in `createContextSpecificModel.m`, `estimateDfGt0.m`, `estimateDrGt0.m`; normrnd in `eFlux.m`, `SWIFTCORE/core.m`; `range` → `max-min` in `SWIFTCORE/partition.m`; `dataset` export in `generateIsotopomerSolver.m` → `fopen`/`fprintf` byte-identical (compare against the documented dataset export format in G1 §15)
+- [X] T016 [US1] (partition, analyseWBMsol, mgSimResCollect done; the runPersephone gate is lifted in T034 once fitglm/fitlm are replaced) Licence guards (FR-008a): remove `assert(license(...bioinformatics...))` in `partition.m:34`; remove the Statistics guard around tiedrank in `analyseWBMsol.m:205`; remove the `noPcoa` Statistics guard in `mgSimResCollect.m:115`; leave `initPersephone` and its `statToolboxInstalled` output unchanged (public interface, analyze I1); first trace every function `performStatsPersephone` reaches and, only if all are replaced or guarded, stop gating `runPersephone.m:315` on `statToolboxInstalled` (otherwise record why it stays); make `performRegressions` raise an error naming the Statistics Toolbox only when a mixed-effects formula is given without it
 
 ## Phase 4: User Story 2 — curve fit and optimizers (P1)
 
@@ -88,14 +88,14 @@ at most three MATLAB sessions at once across all concurrent workers; never raise
 
 **Goal**: US6. **Independent test**: each changed test runs on base MATLAB (or statically verified where it needs CPLEX) and passes.
 
-- [ ] T023 [US6] (after T004, T013) testFEA: `hygecdf` at line 76 → `cobraHygecdf`; remove bioinformatics and statistics requirements; run
-- [ ] T024 [US6] (after T015, T016) testSWIFTCORE (`randsample` → `randperm(n,k)'`), testPartition: remove requirements; run both
-- [ ] T025 [US6] (after T015) testEFlux: parse the two GEO SOFT tables with a local function in the test (block between `!sample_table_begin` and `!sample_table_end`; ID_REF, VALUE); remove `bioinformatics_toolbox`, keep `needsWebAddress`; run
-- [ ] T026 [US6] testSammi (`randsample` → `randperm` at lines 151, 156, 186), testCreatePanModels (malformed `'Statistics Toolbox'` key; note the violin error swallowed inside its `try` in the header), testMoieties (remove the dead `if 0` requirement block): remove requirements; run
+- [X] T023 [US6] (after T004, T013) testFEA: `hygecdf` at line 76 → `cobraHygecdf`; remove bioinformatics and statistics requirements; run
+- [X] T024 [US6] (after T015, T016) testSWIFTCORE (`randsample` → `randperm(n,k)'`), testPartition: remove requirements; run both
+- [X] T025 [US6] (after T015) testEFlux: parse the two GEO SOFT tables with a local function in the test (block between `!sample_table_begin` and `!sample_table_end`; ID_REF, VALUE); remove `bioinformatics_toolbox`, keep `needsWebAddress`; run
+- [X] T026 [US6] testSammi (`randsample` → `randperm` at lines 151, 156, 186), testCreatePanModels (malformed `'Statistics Toolbox'` key corrected to `statistics_toolbox` and kept: the external violinplot calls ksdensity, found by running it), testMoieties (remove the dead `if 0` requirement block): remove requirements; run
 - [ ] T027 [US6] (after T010, T017, T018) testRFASTCORMICS: remove `statistics_toolbox` and the `assert(ver('curvefit'))`; add a `discretizeFPKM` section (with `figflag` off) asserting the discretization thresholds against values computed from the SciPy reference of T017; run
 - [ ] T028 [US6] testBiomassPrecursorCheck: remove the requirement; run; document the line-91 assertion failure under "Known defects documented (NOT tested, NOT fixed here)" (III-Defects), skip that input, list exempted source lines; test passes
 - [ ] T029 [US6] (after T014, T016) testMgPipe: remove `statistics_toolbox` (keep `ibm_cplex`); verify statically that the reached path (mgSimResCollect cmdscale) no longer needs a toolbox
-- [ ] T030 [US6] testSampleCbModel, testSampleCbModelRHMC, testConnectedComponents: keep the requirement; add to each header the external function that needs the toolbox and the reason (external/ read-only)
+- [ ] T030 [US6] testSampleCbModel, testSampleCbModelRHMC, testConnectedComponents (and testCreatePanModels, T026): keep the requirement; add to each header the external function that needs the toolbox and the reason (external/ read-only)
 
 ## Phase 6: User Story 3 — regression and SVM (P2)
 
@@ -130,7 +130,7 @@ at most three MATLAB sessions at once across all concurrent workers; never raise
 - [ ] T043 Record every pre-existing defect found (research R9) in the covering test headers (III-Defects format); regenerate `test/known-defects.md` with its generator
 - [ ] T044 Re-run `references/scanUnresolved.m` (SC-001): only left-gated call sites and the `matlab` solver backend remain; record the output summary in the receipt
 - [ ] T045 Run all new tests in one MATLAB session with coverage (SC-002, FR-011); re-run existing tests of every changed call-site file that can run here (SC-005)
-- [ ] T046 Full test suite on base MATLAB + Gurobi (SC-003): count skips by reason; exactly three toolbox skips
+- [ ] T046 Full test suite on base MATLAB + Gurobi (SC-003): count skips by reason; exactly four toolbox skips
 - [ ] T047 Write `agent-runs/<UTC>-implement/implementation-receipt.md` (Prompt, Final response, Diff summary, Tests, Unresolved issues)
 - [ ] T048 Scan staged files for machine paths, keys, licences and private names; commit as the maintainer (no co-author line; never the submodule pointers `binary`, `papers`, `tutorials`, `test/models`, `external/analysis/octave-networks-toolbox`); push the branch to `origin` with upstream tracking
 

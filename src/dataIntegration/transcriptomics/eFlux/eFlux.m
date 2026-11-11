@@ -47,7 +47,7 @@ function [foldChange, standardError, solControl, solCondition] = eFlux(model, co
 %    Please note, that this code does not perform any preprocessing expcept
 %    for that described in the above paper after array normalization. 
 
-normFun = @(mean,std) normrnd(mean,std);
+normFun = @(mean,std) randn(size(mean + std)) .* std + mean; % as normrnd(mean,std)
 
 if ~isfield(controlExpression,'preprocessed')
     controlExpression.preprocessed = true;

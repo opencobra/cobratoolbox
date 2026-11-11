@@ -38,6 +38,6 @@ toolbox-gated call sites (spec Scope) and the optional `matlab` solver backend.
 results = runTestSuite();   % full suite, base MATLAB + Gurobi
 ```
 
-Expected: exactly three skips name a toolbox (`testSampleCbModel`, `testSampleCbModelRHMC`,
-`testConnectedComponents`); every other skip names a solver, web address or program; no test
+Expected: exactly four skips name a toolbox (`testSampleCbModel`, `testSampleCbModelRHMC`,
+`testConnectedComponents`, `testCreatePanModels`); every other skip names a solver, web address or program; no test
 of a changed call-site file newly fails.

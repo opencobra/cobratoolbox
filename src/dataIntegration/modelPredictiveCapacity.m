@@ -600,7 +600,7 @@ if ismember({'flux'}, param.tests)
             comparisonStats.SpearmanPval(ind) = NaN;
         end
         % confusionMatrix
-        C = confusionmat(fullReport.target(rowsInReport), fullReport.predict(rowsInReport), 'ORDER',[1, 0, -1]);
+        C = cobraConfusionmat(fullReport.target(rowsInReport), fullReport.predict(rowsInReport), 'ORDER',[1, 0, -1]);
         comparisonStats.qualAccuracy(ind) = sum(diag(C), 1) / sum(sum(C, 1));
         
         %modelSec
@@ -624,7 +624,7 @@ if ismember({'flux'}, param.tests)
             comparisonStats.SpearmanPval(ind) = NaN;
         end
         % confusionMatrix
-        C = confusionmat(fullReport.target(rowsInReport), fullReport.predict(rowsInReport), 'ORDER',[1, 0, -1]);
+        C = cobraConfusionmat(fullReport.target(rowsInReport), fullReport.predict(rowsInReport), 'ORDER',[1, 0, -1]);
         comparisonStats.qualAccuracy(ind) = sum(diag(C), 1) / sum(sum(C, 1));
         
         %modelUpt
@@ -651,7 +651,7 @@ if ismember({'flux'}, param.tests)
             disp(ind)
         end
         % confusionMatrix
-        C = confusionmat(fullReport.target(rowsInReport), fullReport.predict(rowsInReport),'ORDER',[1, 0, -1]);
+        C = cobraConfusionmat(fullReport.target(rowsInReport), fullReport.predict(rowsInReport),'ORDER',[1, 0, -1]);
         comparisonStats.qualAccuracy(ind) = sum(diag(C), 1) / sum(sum(C, 1));
         
     end

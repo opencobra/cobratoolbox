@@ -28,7 +28,7 @@ weights = std(mdv,0,2);
 scores = zeros(nvars, 1);
 parfor i = 1:nvars
 
-    [h, p] = kstest2(loset(i,:), hiset(i,:));
+    [h, p] = cobraKstest2(loset(i,:), hiset(i,:));
     scores(i) = max(log(p), -708); % log(realmin) to avoid scores of inf.
 
 end

@@ -99,7 +99,7 @@ print(strcat(resPath, 'Metabolic_Diversity'), figForm)
 
 % PCoA -> different reactions per individual
 D = cobraPdist(cell2mat(table2cell(reacTab(:,2:end))),'jaccard');
-[Y, eigvals] = cmdscale(D);
+[Y, eigvals] = cobraCmdscale(D);
 % catch if too few individuals to cluster
 if ~isempty(Y)
     if (length(Y(1,:))>1)
@@ -167,7 +167,7 @@ print(strcat(resPath, 'Metabolic_Diversity'), figForm)
 
 % PCoA -> different reactions per individual
 D = cobraPdist(cell2mat(table2cell(reacTab(:,2:end))),'jaccard');
-[Y, eigvals] = cmdscale(D);
+[Y, eigvals] = cobraCmdscale(D);
 
 P = [eigvals eigvals / max(abs(eigvals))];
 if (length(Y(1,:))>2)

@@ -235,7 +235,7 @@ serially with the same results.
 ### User Story 6 - Tests that only needed a toolbox run (Priority: P1)
 
 A maintainer running the test suite on base MATLAB plus Gurobi sees no test skipped for a paid
-toolbox, except the three that depend on `external/` code.
+toolbox, except the four that depend on `external/` code.
 
 **Why this priority**: this is what the maintainer asked about: CI skipped dozens of tests.
 
@@ -253,12 +253,12 @@ test on base MATLAB.
    defect (for example `testBiomassPrecursorCheck`, line 91), **When** the requirement is removed,
    **Then** the defect is documented in the test header under III-Defects, the affected input is
    skipped, and the test passes.
-4. **Given** a stale requirement (`testCreatePanModels`, `testRFASTCORMICS`,
-   `testBiomassPrecursorCheck`) or one made unnecessary by this feature (`testPartition` once
+4. **Given** a stale requirement (`testRFASTCORMICS`, `testBiomassPrecursorCheck`) or one made unnecessary by this feature (`testPartition` once
    `partition` drops its licence assertion and `range`), **When** the requirement is removed,
    **Then** the test passes on base MATLAB.
 5. **Given** a test that depends on `external/` code calling a toolbox
-   (`testSampleCbModel`, `testSampleCbModelRHMC`, `testConnectedComponents`), **When** the suite
+   (`testSampleCbModel`, `testSampleCbModelRHMC`, `testConnectedComponents`,
+   `testCreatePanModels`), **When** the suite
    runs, **Then** it keeps its requirement and its header states the external function and reason.
 
 ---
@@ -344,8 +344,8 @@ answered in `review.md`.
 - **FR-012**: Tests stop calling toolbox functions directly and drop every toolbox requirement
   that the code they exercise no longer needs; each change is verified by running the test on
   base MATLAB (or, where it also needs an unavailable solver, verified statically and stated so).
-  Requirements stay for `testSampleCbModel`, `testSampleCbModelRHMC` and
-  `testConnectedComponents` (`external/` code), with the reason written in their headers.
+  Requirements stay for `testSampleCbModel`, `testSampleCbModelRHMC`, `testConnectedComponents`
+  and `testCreatePanModels` (`external/` code), with the reason written in their headers.
 - **FR-013**: A pre-existing defect revealed by a test that newly runs is documented in that
   test's header under III-Defects (affected input skipped, lines exempted); the source function
   is not changed in this feature, and `test/known-defects.md` is regenerated.
@@ -378,8 +378,10 @@ answered in `review.md`.
   `matlab` solver backend and the left toolbox-gated call sites listed in Scope.
 - **SC-002**: Every new test passes on base MATLAB; parity sections pass wherever the toolbox is
   installed.
-- **SC-003**: In a run of the full test suite on base MATLAB plus Gurobi, exactly three tests skip
-  for a paid toolbox (`testSampleCbModel`, `testSampleCbModelRHMC`, `testConnectedComponents`);
+- **SC-003**: In a run of the full test suite on base MATLAB plus Gurobi, exactly four tests skip
+  for a paid toolbox (`testSampleCbModel`, `testSampleCbModelRHMC`, `testConnectedComponents`,
+  `testCreatePanModels`; corrected from three on 2026-11-11: the external violinplot reached by
+  testCreatePanModels calls `ksdensity`);
   every other skip names a solver, web address or external program.
 - **SC-004**: Every replacement matches its references within the tolerance stated in its test;
   every optimizer reaches the known optimum of each test problem within its stated tolerance.

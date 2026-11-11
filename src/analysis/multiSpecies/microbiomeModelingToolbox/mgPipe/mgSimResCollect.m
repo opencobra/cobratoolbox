@@ -112,15 +112,12 @@ for j = init:fl
     ext=['Net uptake';sampNames];
     netUptakeFluxes=[ext';uSp'];
     writetable(cell2table(netUptakeFluxes),[resPath names{1, j} '_net_uptake_fluxes.csv'],'WriteVariableNames',false);
-    if ~license ('test' , 'Statistics_Toolbox') 
-        noPcoa = 1;
-    end    
     if noPcoa == 1
         Y=[];
         disp('Jump plotting')
     else
         JD = cobraPdist(fSpOld','euclidean');
-        [Y, eigvals] = cmdscale(JD);
+        [Y, eigvals] = cobraCmdscale(JD);
         P = [eigvals eigvals / max(abs(eigvals))];
         expr = [eigvals/sum(eigvals)];
         if patStat == 0

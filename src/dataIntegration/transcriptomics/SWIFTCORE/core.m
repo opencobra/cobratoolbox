@@ -30,7 +30,7 @@ S = model.S;
 rev = model.rev;
 [m, n] = size(S);
 dense = zeros(n, 1);
-dense(blocked == 1) = normrnd(0, 1, [sum(blocked), 1]);
+dense(blocked == 1) = randn(sum(blocked), 1); % standard normal, as normrnd(0, 1, ...)
 k = sum(weights ~= 0 & rev == 1);
 l = sum(weights ~= 0 & rev == 0);
 problem.obj = [dense; weights(weights~=0&rev==1); weights(weights~=0&rev==0)];

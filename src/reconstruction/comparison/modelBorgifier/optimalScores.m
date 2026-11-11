@@ -125,7 +125,7 @@ if exist('rxnList','var')
 
             for it = 1:size(qual, 1)
                 for it2 = it:size(qual, 1)
-                    [~, qual(it, it2)] = ttest2(trunk(trainlabel, it, it2), trunk(~trainlabel, it, it2)) ;
+                    [~, qual(it, it2)] = cobraTtest2(trunk(trainlabel, it, it2), trunk(~trainlabel, it, it2)) ;
                     qualsign(it, it2) = (mean(trunk(trainlabel, it, it2)) < mean(trunk(~trainlabel, it, it2))) ;
                 end
             end

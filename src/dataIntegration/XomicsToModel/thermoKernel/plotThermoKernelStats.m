@@ -52,7 +52,7 @@ if 1
     labels = {'Active';'Inactive'};
     %    CM = CONFUSIONMAT(G,GHAT) returns the confusion matrix CM determined
     %    by the known group labels G and the predicted group labels GHAT.
-    C = confusionmat(P,T,'order',labels);
+    C = cobraConfusionmat(P,T,'order',labels);
     ax1 = nexttile;
     plotConfMat(C,labels,'FontSize',12);
     accuracy = sum(diag(C),1)/sum(sum(C,1));
@@ -77,7 +77,7 @@ if 1
     P=P(presentAbsentMet~=0);
     
     labels = {'Active';'Inactive'};
-    C = confusionmat(P,T,'order',labels);
+    C = cobraConfusionmat(P,T,'order',labels);
     plotConfMat(C,labels,'FontSize',12);
     accuracy = sum(diag(C),1)/sum(sum(C,1));
     title(ax2,'Metabolites','FontSize',12)
@@ -100,7 +100,7 @@ else
         
         
         labels = {'Active';'Inactive'};
-        C = confusionmat(P,T,'order',labels);
+        C = cobraConfusionmat(P,T,'order',labels);
         plotConfMat(C,labels);
         accuracy = sum(diag(C),1)/sum(sum(C,1));
         title(['Reaction confusion matrix, accuracy = ' num2str(accuracy)])
@@ -124,7 +124,7 @@ else
         P=P(presentAbsentMet~=0);
         
         labels = {'Active';'Inactive'};
-        C = confusionmat(P,T,'order',labels);
+        C = cobraConfusionmat(P,T,'order',labels);
         plotConfMat(C,labels);
         accuracy = sum(diag(C),1)/sum(sum(C,1));
         title(['Metabolite confusion matrix, accuracy = ' num2str(accuracy)])

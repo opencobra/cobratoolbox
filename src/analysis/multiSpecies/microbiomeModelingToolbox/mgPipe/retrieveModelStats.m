@@ -153,7 +153,7 @@ else
         
         if length(groups)==2
             % use Wilcoxon rank sum test
-            [p,h,stats] = ranksum(dataGrouped{1},dataGrouped{2},'method','approximate');
+            [p,h,stats] = cobraRanksum(dataGrouped{1},dataGrouped{2},'method','approximate');
             if isnan(p)
                 p=1;
             end
@@ -171,7 +171,7 @@ else
                 end
             end
             % use Kruskal Wallis test
-            [p,ANOVATAB] = kruskalwallis(dataAll,group);
+            [p,ANOVATAB] = cobraKruskalwallis(dataAll,group);
             close all
             statistics{i+1,2}=p;
             if ANOVATAB{2,6} ==0

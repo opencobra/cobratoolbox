@@ -164,8 +164,10 @@ G1 §1–§14 and summary table §16. Notable choices:
   The replacements warn where MathWorks does (iteration limit, perfect separation without penalty,
   rank deficiency) with `COBRA:` identifiers and never otherwise (VII-B: warnings stay visible).
 - **Firth conventions UNCONFIRMED** (SE from I(β̂)⁻¹, Wald p, unpenalised deviance; normal +
-  jeffreys-prior = OLS expected): implemented as stated, tested against `firthlogist` and a NumPy
-  modified-score script; settled by parity (R1 risk).
+  jeffreys-prior = OLS expected): implemented as stated, tested against a NumPy modified-score
+  script (Heinze & Schemper 2002); settled by parity (R1 risk). `firthlogist` could not be used:
+  every release requires Python < 3.11 and the reference environment has Python 3.12 (T001,
+  2026-11-11).
 - The R2024b version gate in `performRegressions` (`ver >= 24.2` → Firth) is kept unchanged.
 - `cobraFitcsvm` (optimalScores `'svm'`): linear kernel, defaults of the call (no standardisation,
   C = 1, positive class = the second class in sorted order, i.e. label 1 for {0,1}); only `Beta` is read and it is unique (strictly convex). SMO
@@ -178,15 +180,18 @@ G1 §1–§14 and summary table §16. Notable choices:
 
 Verdicts per test: semantics note G4 Part C. After this feature:
 
-- **Requirement removed** (13): testBiomassPrecursorCheck (line-91 assertion documented under
-  III-Defects), testCreatePanModels (malformed key `'Statistics Toolbox'`; the violin error inside
-  its `try` is noted), testRFASTCORMICS (also its `assert(ver('curvefit'))`; add a
+- **Requirement removed** (12): testBiomassPrecursorCheck (line-91 assertion documented under
+  III-Defects), testRFASTCORMICS (also its `assert(ver('curvefit'))`; add a
   `discretizeFPKM` section to cover R5's fit), testFEA, testSteadyCom (+ `parWorks =
   isParallelToolboxAvailable()`), testMgPipe (static: needs CPLEX), testSWIFTCORE, testPartition,
   testEFlux (parse the GEO SOFT tables in the test; keep `needsWebAddress`), testOptGene, testSammi,
   testPaint4Net_bio_draw_by_rxn, testPaint4Net_bio_draw_by_met (self-skips).
-- **Kept** (3): testSampleCbModel, testSampleCbModelRHMC (external sampler code: `exprnd`,
-  `kstest`, `adtest`, `norminv`), testConnectedComponents (external `graph_analysis` → `bwlabel`).
+- **Kept** (4): testSampleCbModel, testSampleCbModelRHMC (external sampler code: `exprnd`,
+  `kstest`, `adtest`, `norminv`), testConnectedComponents (external `graph_analysis` → `bwlabel`),
+  testCreatePanModels (external `violinplot` → `Violin.m` → `ksdensity`, reached through
+  plotBiomassTestResults/plotATPTestResults; the research note expected the error to be swallowed
+  by a `try`, but the run on 2026-11-11 failed with "Undefined function 'ksdensity'"; its key is
+  corrected from the never-matching `'Statistics Toolbox'` to `statistics_toolbox`).
 - testMoieties: the requirement sits in an `if 0` block; the dead block is removed.
 - Direct toolbox calls in tests switch: `hygecdf` → `cobraHygecdf` (testFEA:76), `randsample` →
   `randperm` (testSWIFTCORE:36, testSammi:151/156/186), `geosoftread` → local parser (testEFlux).

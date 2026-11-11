@@ -10,8 +10,7 @@
 global CBTDIR
 
 % require the specified toolboxes and solvers
-solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'}, ...
-    'requiredToolboxes', {'bioinformatics_toolbox'});
+solvers = prepareTest('needsLP', true, 'useSolversIfAvailable', {'gurobi'});
 
 % save the current path
 currentDir = pwd;

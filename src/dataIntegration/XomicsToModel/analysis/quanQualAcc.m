@@ -125,7 +125,7 @@ else
     comparisonStats.wEuclidNorm = NaN;
 end
 % confusionMatrix
-C = confusionmat(fullReport.target, fullReport.predict, 'ORDER',[2,1, 0, -1]);
+C = cobraConfusionmat(fullReport.target, fullReport.predict, 'ORDER',[2,1, 0, -1]);
 comparisonStats.qualAccuracy = sum(diag(C), 1) / sum(sum(C, 1));
 
 if isnan(comparisonStats.wEuclidNorm)

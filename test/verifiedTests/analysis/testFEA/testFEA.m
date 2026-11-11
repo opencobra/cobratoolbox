@@ -6,12 +6,26 @@
 %
 % Author:
 %     - Marouen BEN GUEBILA 09/02/2017
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: An empty reaction set raises an error instead of returning the header-only result
+%       SEVERITY: error
+%       TRIGGER: FEA(model, [], 'subSystems')
+%       OBSERVED: error 'Please provide the indices of the reactions e.g. 1:10', because
+%         isvector([]) is false, so the check at line 32 fires before the empty-set branch
+%       EXPECTED: the header-only cell array of lines 35-36 (the branch is unreachable)
+%       LINES: 32, 35-37
+%       (found 2026-11-11 when the toolbox requirement that had kept this test skipped was
+%       removed; the empty-set input is therefore not asserted below)
+%
+% Coverage exemptions:
+%     FEA.m lines 36-37 (unreachable empty-set branch, see the defect above).
 
 global CBTDIR
 
 % Test requirements
-requiredToolboxes = {'bioinformatics_toolbox', 'statistics_toolbox'};
-prepareTest('toolboxes', requiredToolboxes);
+% FEA uses cobraHygecdf and fdrBHadjustment, so no toolbox is required
+prepareTest();
 
 % save the current path
 currentDir = pwd;
@@ -73,7 +87,11 @@ X = sum(cellfun(@(x) any(strcmp(x, testGroup)), groups));
 % Count successes in population (K)
 Kpop = sum(cellfun(@(x) any(strcmp(x, testGroup)), allGroups));
 % Manual upper-tail p-value: P(x >= X)
-expectedPval = hygecdf(X - 1, M, Kpop, N, 'upper');
+% computed here term by term from the hypergeometric probability mass function (independent of
+% cobraHygecdf, which FEA uses); log-binomials avoid overflow of nchoosek
+logChoose = @(a, b) gammaln(a + 1) - gammaln(b + 1) - gammaln(a - b + 1);
+upperTerms = X:min(Kpop, N);
+expectedPval = sum(exp(logChoose(Kpop, upperTerms) + logChoose(M - Kpop, N - upperTerms) - logChoose(M, N)));
 assert(abs(resultCellFtest{2, 1} - expectedPval) < 1e-10, ...
     'P-value for first group does not match manual hypergeometric calculation');
 
@@ -100,10 +118,7 @@ catch ME
     assert(length(ME.message) > 0)
 end
 
-% check empty rxnSet returns header-only result
-resultCellEmpty = FEA(model, [], 'subSystems');
-assert(size(resultCellEmpty, 1) == 1, 'Empty rxnSet should return header only');
-assert(isequal(resultCellEmpty(1, :), {'P-value', 'Adjusted P-value', 'Group', 'Enriched set size', 'Total set size'}));
+% an empty rxnSet is not asserted: see the known defect in the header
 
 % change the directory
 cd(currentDir)

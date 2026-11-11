@@ -85,7 +85,7 @@ for j = 1:size(fpkm, 2) % for each sample
     end
     
     % Density plot
-    [probability_estimate, xi] = ksdensity((signal_sample));
+    [probability_estimate, xi] = cobraKsdensity((signal_sample));
     if figflag
         figure; 
         hold on;
@@ -190,7 +190,7 @@ for j = 1:size(fpkm, 2) % for each sample
     end
     
     zFPKM = (signal_sample - mu1)/sigma1;
-    [yFPKM, xFPKM] = ksdensity(zFPKM);
+    [yFPKM, xFPKM] = cobraKsdensity(zFPKM);
     
     %% do the analysis
     
@@ -257,7 +257,7 @@ if figflag
         signal_sample = signal_sample(exp(signal_sample) > 1e-6);
         
         % Density plot
-        [probability_estimate, xi] = ksdensity((signal_sample));
+        [probability_estimate, xi] = cobraKsdensity((signal_sample));
         % plot(xi, probability_estimate, line_col{j}, 'LineWidth', 1); end
         plot(xi, probability_estimate, 'LineWidth', 1);
     end
@@ -284,7 +284,7 @@ if figflag
         signal_sample = signal_sample(exp(signal_sample) > 1e-6);
         
         % Density plot
-        [probability_estimate, xi] = ksdensity((signal_sample));
+        [probability_estimate, xi] = cobraKsdensity((signal_sample));
         subplot(5, 6, j)
         % plot(xi, probability_estimate, line_col{j}, 'LineWidth', 1);
         plot(xi, probability_estimate, 'LineWidth', 1);
