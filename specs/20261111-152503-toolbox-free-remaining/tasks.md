@@ -93,9 +93,9 @@ at most three MATLAB sessions at once across all concurrent workers; never raise
 - [X] T025 [US6] (after T015) testEFlux: parse the two GEO SOFT tables with a local function in the test (block between `!sample_table_begin` and `!sample_table_end`; ID_REF, VALUE); remove `bioinformatics_toolbox`, keep `needsWebAddress`; run
 - [X] T026 [US6] testSammi (`randsample` → `randperm` at lines 151, 156, 186), testCreatePanModels (malformed `'Statistics Toolbox'` key corrected to `statistics_toolbox` and kept: the external violinplot calls ksdensity, found by running it), testMoieties (remove the dead `if 0` requirement block): remove requirements; run
 - [X] T027 [US6] (after T010, T017, T018) testRFASTCORMICS: remove `statistics_toolbox` and the `assert(ver('curvefit'))`; add a `discretizeFPKM` section (with `figflag` off) asserting the discretization thresholds against values computed from the SciPy reference of T017; run
-- [ ] T028 [US6] testBiomassPrecursorCheck: remove the requirement; run; document the line-91 assertion failure under "Known defects documented (NOT tested, NOT fixed here)" (III-Defects), skip that input, list exempted source lines; test passes
-- [ ] T029 [US6] (after T014, T016) testMgPipe: remove `statistics_toolbox` (keep `ibm_cplex`); verify statically that the reached path (mgSimResCollect cmdscale) no longer needs a toolbox
-- [ ] T030 [US6] testSampleCbModel, testSampleCbModelRHMC, testConnectedComponents (and testCreatePanModels, T026): keep the requirement; add to each header the external function that needs the toolbox and the reason (external/ read-only)
+- [X] T028 [US6] testBiomassPrecursorCheck: remove the requirement; run; the line-91 failure turned out to be the stale biomass identifier `Biomass_Ecoli_core_N(w/GAM)-Nmet2` (now `Biomass_Ecoli_core_w_GAM`), so only BIOMASS2 was the objective; identifier corrected in the test, no source defect; test passes
+- [X] T029 [US6] (after T014, T016) testMgPipe: remove `statistics_toolbox` (keep `ibm_cplex`); verify statically that the reached path (mgSimResCollect cmdscale) no longer needs a toolbox
+- [X] T030 [US6] testSampleCbModel, testSampleCbModelRHMC, testConnectedComponents (and testCreatePanModels, T026): keep the requirement; add to each header the external function that needs the toolbox and the reason (external/ read-only)
 
 ## Phase 6: User Story 3 — regression and SVM (P2)
 

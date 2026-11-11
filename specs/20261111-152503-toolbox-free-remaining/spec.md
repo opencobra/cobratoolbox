@@ -250,9 +250,10 @@ test on base MATLAB.
 2. **Given** a test that calls a toolbox function directly (`randsample`, `hygecdf`,
    `geosoftread`), **When** it runs, **Then** it uses the replacement instead.
 3. **Given** a test that fails once its toolbox requirement is removed because of a pre-existing
-   defect (for example `testBiomassPrecursorCheck`, line 91), **When** the requirement is removed,
-   **Then** the defect is documented in the test header under III-Defects, the affected input is
-   skipped, and the test passes.
+   defect (found: FEA with an empty reaction set), **When** the requirement is removed, **Then** the
+   defect is documented in the test header under III-Defects, the affected input is skipped, and
+   the test passes. (The line-91 failure of `testBiomassPrecursorCheck` noted by the first slice
+   was a stale biomass reaction identifier in the test, not a source defect; the test is corrected.)
 4. **Given** a stale requirement (`testRFASTCORMICS`, `testBiomassPrecursorCheck`) or one made unnecessary by this feature (`testPartition` once
    `partition` drops its licence assertion and `range`), **When** the requirement is removed,
    **Then** the test passes on base MATLAB.

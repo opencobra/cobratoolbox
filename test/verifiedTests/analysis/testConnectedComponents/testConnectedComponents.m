@@ -29,6 +29,9 @@ cd(testdir)
 
 requiredToolboxes = {'image_toolbox'};
 
+% The Image Processing Toolbox stays required: connectedComponents calls the vendored
+% external/analysis/graph_analysis/graph_analysis.m, which calls bwlabel; external/ is read-only
+% (feature 20261111-152503-toolbox-free-remaining)
 prepareTest('toolboxes',requiredToolboxes);
 
 

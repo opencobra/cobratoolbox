@@ -10,7 +10,8 @@
 % save the current path
 currentDir = pwd;
 
-solvers = prepareTest('requiredToolboxes', {'statistics_toolbox'});
+% biomassPrecursorCheck reaches no toolbox function, so no toolbox is required
+solvers = prepareTest();
 
 % initialize the test
 fileDir = fileparts(which('testBiomassPrecursorCheck'));
@@ -81,8 +82,10 @@ model = readCbModel('ecoli_core_model.mat');
 % add a hypothetical non-producible cofactor pair
 model = addReaction(model, 'COF', 'reactionFormula', 'metTest1[c] -> metTest2[c]');
 model = addReaction(model, 'BIOMASS2', 'reactionFormula', 'metTest1[c] + atp[c] -> metTest2[c] + adp[c]');
-% test the function's capability to handle >1 objective reactions 
-model = changeObjective(model, {'Biomass_Ecoli_core_N(w/GAM)-Nmet2'; 'BIOMASS2'}, 1);
+% test the function's capability to handle >1 objective reactions (the biomass reaction of the
+% current ecoli_core_model is Biomass_Ecoli_core_w_GAM; the former identifier
+% Biomass_Ecoli_core_N(w/GAM)-Nmet2 no longer exists, so only BIOMASS2 was the objective)
+model = changeObjective(model, {'Biomass_Ecoli_core_w_GAM'; 'BIOMASS2'}, 1);
 % additional functionalities not turned on
 [missingMets0, presentMets0] = biomassPrecursorCheck(model);
 
