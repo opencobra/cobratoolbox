@@ -118,7 +118,7 @@ at most three MATLAB sessions at once across all concurrent workers; never raise
 
 ## Phase 8: User Story 5 — parallel leftovers (P2)
 
-- [ ] T040 [US5] `fastFVA.m:529`: guard `getCurrentTask` with `isParallelToolboxAvailable`; task ID 1 when `t` is empty; `SteadyComPOAgr.m:586`: explicit guard so the `spmd`/`Composite`/`lab*` branch runs only with the toolbox and an open pool, else the existing serial branch; `testSteadyCom.m`: `parWorks = isParallelToolboxAvailable()` before `parcluster`, remove `statistics_toolbox`; run testSteadyCom (testFastFVA needs CPLEX: static)
+- [X] T040 [US5] `fastFVA.m:529`: guard `getCurrentTask` with `isParallelToolboxAvailable`; task ID 1 when `t` is empty; `SteadyComPOAgr.m:586`: explicit guard so the `spmd`/`Composite`/`lab*` branch runs only with the toolbox and an open pool, else the existing serial branch; `testSteadyCom.m`: `parWorks = isParallelToolboxAvailable()` before `parcluster`, remove `statistics_toolbox`; run testSteadyCom (testFastFVA needs CPLEX: static)
 
 ## Phase 9: User Story 7 — review (P3)
 
