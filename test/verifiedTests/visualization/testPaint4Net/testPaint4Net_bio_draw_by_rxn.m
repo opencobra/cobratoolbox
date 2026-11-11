@@ -18,11 +18,7 @@
 
 % save the current path
 
-if ~exist('biograph', 'file')
-    fprintf('Skipping test: biograph not available.\n');
-    clear;
-    return;
-end
+% (bio_draw_by_rxn draws with digraph/plot, so no biograph or Bioinformatics Toolbox is needed)
 
 currentDir = pwd;
 

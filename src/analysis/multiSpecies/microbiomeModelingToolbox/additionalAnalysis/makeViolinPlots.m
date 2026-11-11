@@ -99,7 +99,7 @@ if isempty(sampleInformation)
             if strcmp(plotType,'ViolinPlot')
                 violinplot(plotdata);
             elseif strcmp(plotType,'Boxplot')
-                boxplot(plotdata)
+                cobraBoxplot(plotdata)
             else
                 error('Invalid entry for plot type!')
             end
@@ -196,7 +196,7 @@ else
             if strcmp(plotType,'ViolinPlot')
                 violinplot(plotdata,sampleStratification);
             elseif strcmp(plotType,'Boxplot')
-                boxplot(plotdata,sampleStratification)
+                cobraBoxplot(plotdata,sampleStratification)
                 h = findobj(gca,'Tag','Box');
                 for j=1:length(h)
                     patch(get(h(j),'XData'),get(h(j),'YData'),cols(j,:),'FaceAlpha',.5);

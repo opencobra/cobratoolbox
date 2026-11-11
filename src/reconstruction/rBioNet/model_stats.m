@@ -389,8 +389,10 @@ function act_plot_Callback(hObject, eventdata, handles)
 set(handles.text_esc,'string','Press Esc or Enter to stop marking metabolites.');
 axes(handles.axes2);
 met_data = sortrows(handles.met_data,-2);
-plot(cell2mat(met_data(:,2)),'+');
-gname(met_data(:,1));
+metPoints = plot(cell2mat(met_data(:,2)),'+');
+% click a point to see its metabolite (data tips; replaces gname of the Statistics Toolbox)
+metPoints.DataTipTemplate.DataTipRows(end + 1) = dataTipTextRow('Metabolite', met_data(:,1));
+datacursormode(ancestor(handles.axes2, 'figure'), 'on');
 ylabel('Connectivity');
 xlabel('Metabolites');
 set(handles.text_esc,'string','');

@@ -44,7 +44,7 @@ else
         P(1,:) = g0orig < 0;
         P(2,:) = g0orig == 0;
         P(3,:) = g0orig > 0;
-        plotconfusion(T,P,'Reaction activity')
+        % (plotconfusion of the Deep Learning Toolbox removed: this branch never runs)
     else
         
         if 0

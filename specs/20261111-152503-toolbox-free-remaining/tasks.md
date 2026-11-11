@@ -111,10 +111,10 @@ at most three MATLAB sessions at once across all concurrent workers; never raise
 
 **Goal**: US4. **Independent test**: headless figure tests assert groups, order, labels, CData, colour limits, node/edge sets.
 
-- [ ] T036 [P] [US4] `cobraBoxplot` + test (G4 A1; tags 'Box'/'Median'/whiskers/outliers; MathWorks quartile and whisker rule); switch `makeViolinPlots.m` boxplot path
-- [ ] T037 [P] [US4] `cobraOptimalLeafOrder` + test (Bar-Joseph et al. 2001; brute-force optimal order on small trees as reference) then `cobraClustergram` + test (G4 A4; uses `computeEcosystemLinkage`, `cobraPdist`); switch `correlateFluxWithTaxonAbundance.m`, `summarizeFeaturesOnTaxonLevels.m`
-- [ ] T038 [US4] `plotEssentialRxns.m`: `HeatMap(...)` → base `heatmap` with the same labels, colormap and colour limits; drop the overwritten `redbluecmap`; `model_stats.m:393`: `gname` → `dataTipTextRow` on the plotted line; `plotThermoKernelExtractStats.m`: remove the dead `plotconfusion` branch
-- [ ] T039 [US4] `bio_draw_by_rxn.m`: replace the biograph drawing block (lines ~448–612) with `digraph` + `plot` + `outedges`/`inedges` + `highlight`; outputs unchanged; remove the `exist('biograph')` self-skip in `testPaint4Net_bio_draw_by_rxn.m` and `testPaint4Net_bio_draw_by_met.m`; run both
+- [X] T036 [P] [US4] `cobraBoxplot` + test (G4 A1; tags 'Box'/'Median'/whiskers/outliers; MathWorks quartile and whisker rule); switch `makeViolinPlots.m` boxplot path
+- [X] T037 [P] [US4] `cobraOptimalLeafOrder` + test (Bar-Joseph et al. 2001; brute-force optimal order on small trees as reference) then `cobraClustergram` + test (G4 A4; uses `computeEcosystemLinkage`, `cobraPdist`); switch `correlateFluxWithTaxonAbundance.m`, `summarizeFeaturesOnTaxonLevels.m`
+- [X] T038 [US4] `plotEssentialRxns.m`: `HeatMap(...)` → base `heatmap` with the same labels, colormap and colour limits; drop the overwritten `redbluecmap`; `model_stats.m:393`: `gname` → `dataTipTextRow` on the plotted line; `plotThermoKernelExtractStats.m`: remove the dead `plotconfusion` branch
+- [X] T039 [US4] `bio_draw_by_rxn.m`: replace the biograph drawing block (lines ~448–612) with `digraph` + `plot` + `outedges`/`inedges` + `highlight`; outputs unchanged; remove the `exist('biograph')` self-skip in `testPaint4Net_bio_draw_by_rxn.m` and `testPaint4Net_bio_draw_by_met.m`; run both
 
 ## Phase 8: User Story 5 — parallel leftovers (P2)
 
