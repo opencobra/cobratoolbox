@@ -141,6 +141,9 @@ while exitflag == 0 && iterations < settings.maxIterations
     [trialValue, trialGradient, trialHessian] = evaluate(fun, x + step, shape);
     funcCount = funcCount + 1;
     ratio = (fval - trialValue) / predictedDecrease;
+    if ~isfinite(trialValue) || isnan(ratio)
+        ratio = -Inf; % a NaN or Inf objective rejects the step and shrinks the region
+    end
     stepSize = norm(step);
     if trialValue < fval
         valueChange = fval - trialValue;

@@ -167,6 +167,17 @@ rsquared = struct('Ordinary', 1 - sse / sst, 'Adjusted', 1 - (sse / sst) * (nObs
 
 fittedResponse = NaN(height(tbl), 1);
 fittedResponse(isUsed) = mu;
+% raw and Pearson residuals (variance function 1 for normal, mu.*(1 - mu) for binomial), NaN for
+% excluded rows
+rawResidual = NaN(height(tbl), 1);
+rawResidual(isUsed) = residual;
+pearsonResidual = NaN(height(tbl), 1);
+if isBinomial
+    pearsonResidual(isUsed) = residual ./ sqrt(mu .* (1 - mu));
+else
+    pearsonResidual(isUsed) = residual / sqrt(dispersion);
+end
+residualTable = table(rawResidual, pearsonResidual, 'VariableNames', {'Raw', 'Pearson'});
 linearPredictor = NaN(height(tbl), 1);
 linearPredictor(isUsed) = design.X(isUsed, :) * estimate;
 termText = strjoin(cellfun(@(term) strjoin(term, ':'), parsed.terms, 'UniformOutput', false), ' + ');
@@ -193,8 +204,9 @@ values = struct('Coefficients', coefficients, 'CoefficientNames', {design.coeffi
     'ObservationInfo', observationInfo, ...
     'Fitted', table(fittedResponse, linearPredictor, fittedResponse, 'VariableNames', {'Response', 'LinearPredictor', 'Probability'}), ...
     'LikelihoodPenalty', penalty, 'ResponseName', parsed.response, 'PredictorNames', {parsed.predictors}, ...
-    'VariableInfo', design.variableInfo, 'Terms', {parsed.terms}, 'SSE', sse, 'SST', sst, ...
-    'Deviance0', deviance0);
+    'DesignInfo', design.variableInfo, 'Terms', {parsed.terms}, 'SSE', sse, 'SST', sst, ...
+    'Deviance0', deviance0, 'Residuals', residualTable, 'NumPredictors', numel(parsed.predictors), ...
+    'NumVariables', width(tbl), 'VariableNames', {tbl.Properties.VariableNames(:)});
 mdl = cobraGeneralizedLinearModel(values);
 end
 

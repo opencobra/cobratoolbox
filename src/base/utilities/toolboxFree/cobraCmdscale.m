@@ -85,7 +85,10 @@ centering = eye(n) - ones(n) / n;
 B = -centering * (D .^ 2) * centering / 2;
 B = (B + B') / 2;
 [V, E] = eig(B);
-[e, order] = sort(diag(E), 'descend');
+% ascending sort reversed (as R14): tied eigenvalues keep the reversed order of eig
+[e, order] = sort(diag(E));
+e = flipud(e);
+order = flipud(order);
 V = V(:, order);
 isKept = e > max(abs(e)) * eps ^ (3 / 4);
 if any(isKept)

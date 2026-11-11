@@ -122,14 +122,14 @@ at most three MATLAB sessions at once across all concurrent workers; never raise
 
 ## Phase 9: User Story 7 — review (P3)
 
-- [ ] T041 [US7] Independent review of every new function and call-site change (Codex read-only if the account accepts a model, else independent reviewer agents given only code, tests and mathworks-semantics.md); record findings and resolutions in `specs/20261111-152503-toolbox-free-remaining/review.md`
-- [ ] T042 [US7] Fix or answer every finding; re-run affected tests
+- [X] T041 [US7] Independent review of every new function and call-site change (Codex read-only if the account accepts a model, else independent reviewer agents given only code, tests and mathworks-semantics.md); record findings and resolutions in `specs/20261111-152503-toolbox-free-remaining/review.md`
+- [X] T042 [US7] Fix or answer every finding; re-run affected tests
 
 ## Phase 10: Polish
 
-- [ ] T043 Record every pre-existing defect found (research R9) in the covering test headers (III-Defects format); regenerate `test/known-defects.md` with its generator
-- [ ] T044 Re-run `references/scanUnresolved.m` (SC-001): only left-gated call sites and the `matlab` solver backend remain; record the output summary in the receipt
-- [ ] T045 Run all new tests in one MATLAB session with coverage (SC-002, FR-011); re-run existing tests of every changed call-site file that can run here (SC-005)
+- [X] T043 Record every pre-existing defect found (research R9) in the covering test headers (III-Defects format); regenerate `test/known-defects.md` with its generator
+- [X] T044 Re-run `references/scanUnresolved.m` (SC-001): only left-gated call sites and the `matlab` solver backend remain; record the output summary in the receipt
+- [X] T045 Run all new tests in one MATLAB session with coverage (SC-002, FR-011); re-run existing tests of every changed call-site file that can run here (SC-005)
 - [ ] T046 Full test suite on base MATLAB + Gurobi (SC-003): count skips by reason; exactly four toolbox skips
 - [ ] T047 Write `agent-runs/<UTC>-implement/implementation-receipt.md` (Prompt, Final response, Diff summary, Tests, Unresolved issues)
 - [ ] T048 Scan staged files for machine paths, keys, licences and private names; commit as the maintainer (no co-author line; never the submodule pointers `binary`, `papers`, `tutorials`, `test/models`, `external/analysis/octave-networks-toolbox`); push the branch to `origin` with upstream tracking

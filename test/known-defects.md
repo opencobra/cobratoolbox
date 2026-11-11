@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-252 known defects in 134 functions (93 wrong-result, 84 error, 22 unusable-option, 28 cosmetic, 25 limitation).
+253 known defects in 135 functions (93 wrong-result, 85 error, 22 unusable-option, 28 cosmetic, 25 limitation).
 
 ## Summary
 
@@ -37,6 +37,7 @@
 | `src/analysis/exploration/surfNet.m` | error | Searching with a flux vector stops with an error | `test/verifiedTests/analysis/testPrint/testSurfNet.m` |
 | `src/analysis/exploration/surfNet.m` | cosmetic | The message for a partial field name shows a literal backslash n | `test/verifiedTests/analysis/testPrint/testSurfNet.m` |
 | `src/analysis/exploration/surfNetSubfunctions/generateGrRules.m` | wrong-result | Nested hyperlinks when genes are named from the rules and a gene repeats | `test/verifiedTests/analysis/testExploration/testGenerateGrRules.m` |
+| `src/analysis/fluxEnrichmentAnalysis/FEA.m` | error | An empty reaction set raises an error instead of returning the header-only result | `test/verifiedTests/analysis/testFEA/testFEA.m` |
 | `src/analysis/geometricFBA/geometricFBA.m` | error | A model with a unique optimum stops with an error | `test/verifiedTests/analysis/testGeometricFBA/testGeometricFBA.m` |
 | `src/analysis/igemRNA/filterNonFluxReactions/filterNonFluxReactions.m` | wrong-result | The result file is written next to the result folder, not into it | `test/verifiedTests/analysis/testFilterNonFluxReactions/testFilterNonFluxReactions.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/addMicrobeCommunityBiomass.m` | wrong-result | Abundance weights are rounded to six significant digits | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddMicrobeCommunityBiomass.m` |
@@ -545,6 +546,17 @@
 - **Expected**: each gene of the rule hyperlinked exactly once
 - **Source lines**: 64, 73-74
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testGenerateGrRules.m`
+
+### `src/analysis/fluxEnrichmentAnalysis/FEA.m`
+
+#### An empty reaction set raises an error instead of returning the header-only result
+
+- **Severity**: error
+- **Trigger**: FEA(model, [], 'subSystems')
+- **Observed**: error 'Please provide the indices of the reactions e.g. 1:10', because isvector([]) is false, so the check at line 32 fires before the empty-set branch
+- **Expected**: the header-only cell array of lines 35-36 (the branch is unreachable)
+- **Source lines**: 32, 35-37
+- **Documented in**: `test/verifiedTests/analysis/testFEA/testFEA.m`
 
 ### `src/analysis/geometricFBA/geometricFBA.m`
 

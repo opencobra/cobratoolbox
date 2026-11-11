@@ -34,8 +34,8 @@ function parsed = cobraParseModelFormula(formula, variableNames)
 % NOTE:
 %    Helper of cobraFitglm and cobraFitlm (plain-MATLAB replacements of fitglm and fitlm);
 %    semantics: specs/20261111-152503-toolbox-free-remaining/mathworks-semantics.md, G3
-%    section 6. The intercept is always included (explicit '1', '-1', '0', powers '^',
-%    nesting '/' and random slopes raise an error naming the term). Whitespace is ignored.
+%    section 6. The intercept is always included (an explicit '1' is accepted; '-1', '0',
+%    powers '^', nesting '/' and random slopes raise an error naming the term). Whitespace is ignored.
 %    The order of the terms within one interaction order follows the formula (MathWorks
 %    documents main effects before interactions; its order within an order is
 %    UNCONFIRMED, and the call sites give the variables in formula order).
@@ -68,6 +68,9 @@ end
 terms = {};
 removed = {};
 for k = 1:numel(tokens)
+    if strcmp(tokens{k}, '1') && signs(k) < 0
+        error('COBRA:cobraParseModelFormula:unsupportedTerm', 'cobraParseModelFormula: unsupported term ''-1'' (models without intercept are not supported).');
+    end
     expanded = expandTerm(tokens{k}, variableNames);
     if signs(k) > 0
         terms = [terms, expanded]; %#ok<AGROW>
@@ -119,7 +122,11 @@ end
 
 function expanded = expandTerm(token, variableNames)
 % Expands one term: a, a:b, a*b (all sub-interactions); returns a cell of terms
-if any(strcmp(token, {'1', '0'})) || contains(token, '^') || contains(token, '/')
+if strcmp(token, '1')
+    expanded = {}; % the intercept, always included
+    return
+end
+if strcmp(token, '0') || contains(token, '^') || contains(token, '/')
     error('COBRA:cobraParseModelFormula:unsupportedTerm', 'cobraParseModelFormula: unsupported term ''%s''.', token);
 end
 if contains(token, '*')

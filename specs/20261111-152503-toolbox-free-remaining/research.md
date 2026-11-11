@@ -109,7 +109,8 @@ G1 §1–§14 and summary table §16. Notable choices:
 
 - `cobraFitGauss1(x,y,'StartPoint',sp,'Lower',lb,'Display','off')` — replaces
   `prepareCurveData` + `fittype('gauss1')` + `fitoptions` + `fit` in createFitL/R; bounded nonlinear
-  least squares (trust-region, analytic Jacobian), returns a struct with `a1`, `b1`, `c1`, an
+  least squares by trust-region reflective (Branch, Coleman, Li 1999, as SciPy's trf; review finding
+  2: Levenberg-Marquardt collapsed on 1 of 160 realistic curves), analytic Jacobian, returns a struct with `a1`, `b1`, `c1`, an
   evaluation handle and `gof` (`sse`, `rsquare`, `dfe`, `adjrsquare`, `rmse`). Downstream reads only
   `.b1`, `.c1` and one `plot(fit,...)` under `figflag` [G2 §1]. Reference: SciPy `curve_fit`
   (`method='trf'`). Risk: the left fit on zero-padded data can reach a different local minimum;

@@ -82,6 +82,8 @@ assert(relativeError(tblCategorical{2, 5}, 12.630188499619193) < 1e-12 && abs(pC
 
 [p, tbl] = cobraKruskalwallis([0 0 0 0], {'a', 'a', 'b', 'b'}, 'off');
 assert(isnan(p) && isnan(tbl{2, 5}) && isnan(tbl{2, 6}));
+% a single group (no degrees of freedom between groups): no test, p is NaN
+assert(isnan(cobraKruskalwallis([1 2 3 4], {'a', 'a', 'a', 'a'}, 'off')));
 
 %% errors: missing group, matrix x, unsupported display option, size mismatch
 

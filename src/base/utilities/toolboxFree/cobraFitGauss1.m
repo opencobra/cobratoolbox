@@ -47,15 +47,20 @@ function [fitresult, gof, output] = cobraFitGauss1(x, y, varargin)
 %    'NonlinearLeastSquares') + fit (Curve Fitting Toolbox) as used by createFitL and createFitR;
 %    supported options are those listed above, any other option or bound pattern raises an
 %    error naming it; semantics: specs/20261111-152503-toolbox-free-remaining/
-%    mathworks-semantics.md, G2 section 1. Algorithm: Levenberg-Marquardt in trust-region form
-%    (More 1978; Nielsen's damping update) with the analytic Jacobian
+%    mathworks-semantics.md, G2 section 1. Algorithm: trust-region reflective nonlinear least
+%    squares for bounds (Branch, Coleman and Li 1999; the class of the MathWorks default
+%    'Trust-Region', which Curve Fitting uses for bounded fits), written after SciPy's
+%    least_squares(method='trf', x_scale=1) with the exact subproblem solver (More-Hebden
+%    iteration on the singular value decomposition of the scaled, augmented Jacobian), with the
+%    analytic Jacobian
 %    d/da1 = e, d/db1 = 2*a1*e.*(x - b1)/c1^2, d/dc1 = 2*a1*e.*(x - b1).^2/c1^3 with
 %    e = exp(-((x - b1)/c1).^2). The model depends on c1 only through c1^2, so the bound c1 >= 0
-%    is met exactly by reporting |c1| (same sum of squares); MathWorks uses a reflective trust
-%    region (Coleman and Li) for bounded fits, which can stop at a slightly different point
-%    within the tolerances. Stopping: relative coefficient step <= TolX, relative change of the
-%    sum of squares <= TolFun, or the iteration and evaluation limits (exitflag 0, with a
-%    warning-free message; Display 'notify' prints it). The fitresult is a structure, not a cfit
+%    with the bound c1 >= 0 handled by the reflective method (c1 is reported as |c1|; the sum of
+%    squares depends on c1^2). The result can differ from MathWorks within the tolerances.
+%    Stopping (SciPy rules): scaled gradient below 1e-8 (exitflag 1), relative coefficient step
+%    below TolX (2), relative reduction of the sum of squares below TolFun on a well-predicted
+%    step (3), or the iteration and evaluation limits (exitflag 0, with a warning-free message;
+%    Display 'notify' prints it). The fitresult is a structure, not a cfit
 %    object: dot access to the coefficients works as before; use fitresult.f to evaluate or plot.
 %
 % .. Authors:
@@ -107,67 +112,23 @@ end
 residual = y - model(p);
 sse = residual' * residual;
 funcCount = 1;
-J = jacobian(p, x);
-lambda = 1e-3 * max(diag(J' * J));
-nu = 2;
-exitflag = 0;
-message = 'Fit computation did not converge: maximum number of iterations exceeded.';
-iteration = 0;
-while iteration < options.maxiter
-    iteration = iteration + 1;
-    A = J' * J;
-    g = J' * residual;
-    % damped normal equations solved through the eigen-decomposition of the symmetric matrix,
-    % dropping directions without curvature (a1 = 0 makes b1 and c1 unidentifiable), so that a
-    % singular system gives the minimum-norm step instead of a singular-matrix warning
-    damped = A + lambda * diag(max(diag(A), eps));
-    [V, E] = eig((damped + damped') / 2);
-    curvature = diag(E);
-    isUsed = curvature > 3 * eps * max(abs(curvature));
-    step = V(:, isUsed) * ((V(:, isUsed)' * g) ./ curvature(isUsed));
-    stepNorm = norm(step);
-    trial = p + step;
-    trialResidual = y - model(trial);
-    trialSse = trialResidual' * trialResidual;
-    funcCount = funcCount + 1;
-    predicted = step' * (lambda * max(diag(A), eps) .* step + g);
-    rho = (sse - trialSse) / predicted;
-    if rho > 0
-        sseChange = sse - trialSse;
-        p = trial;
-        residual = trialResidual;
-        sse = trialSse;
-        J = jacobian(p, x);
-        lambda = lambda * max(1 / 3, 1 - (2 * rho - 1) ^ 3);
-        nu = 2;
-        if strcmp(displayLevel, 'iter')
-            fprintf('cobraFitGauss1: iteration %d, sum of squares %.10g\n', iteration, sse);
-        end
-        if stepNorm <= options.tolx * (norm(p) + options.tolx)
-            exitflag = 2;
-            message = 'Success, but fitting stopped because change in coefficients less than tolerance (TolX).';
-            break
-        end
-        if sseChange <= options.tolfun * sse
-            exitflag = 3;
-            message = 'Success, but fitting stopped because change in residuals less than tolerance (TolFun).';
-            break
-        end
-    else
-        lambda = lambda * nu;
-        nu = 2 * nu;
-        if stepNorm <= options.tolx * (norm(p) + options.tolx)
-            % even the damped step is below the tolerance: no further progress is possible
-            exitflag = 2;
-            message = 'Success, but fitting stopped because change in coefficients less than tolerance (TolX).';
-            break
-        end
-    end
-    if funcCount >= options.maxfunevals
-        message = 'Fit computation did not converge: maximum number of function evaluations exceeded.';
-        break
-    end
+% the only bound supported is c1 >= 0 (a negative lower bound on c1 is no bound: the model
+% depends on c1^2)
+if lowerBound(3) == 0
+    lowerBound = [-Inf; -Inf; 0];
+else
+    lowerBound = -Inf(3, 1);
 end
+upperBound = Inf(3, 1);
+if lowerBound(3) == 0 && p(3) <= 0
+    p(3) = abs(p(3)) + eps; % strictly feasible start (the model depends on c1^2)
+    residual = y - model(p);
+    sse = residual' * residual;
+end
+[p, iteration, funcCount, exitflag, message] = trustRegionReflective(@(q) model(q) - y, @(q) jacobian(q, x), ...
+    p, lowerBound, upperBound, options.tolfun, options.tolx, options.maxiter, options.maxfunevals, displayLevel);
+residual = y - model(p);
+sse = residual' * residual;
 p(3) = abs(p(3));
 
 a1 = p(1);
@@ -182,9 +143,300 @@ gof = struct('sse', sse, 'rsquare', 1 - sse / sst, 'dfe', dfe, ...
 output = struct('numobs', n, 'numparam', 3, 'residuals', residual, 'Jacobian', jacobian(p, x), ...
     'exitflag', exitflag, 'iterations', iteration, 'funcCount', funcCount, ...
     'firstorderopt', norm(jacobian(p, x)' * residual, Inf), ...
-    'algorithm', 'Levenberg-Marquardt (trust-region form)', 'message', message);
+    'algorithm', 'trust-region-reflective', 'message', message);
 if strcmp(displayLevel, 'final') || (strcmp(displayLevel, 'notify') && exitflag == 0) || strcmp(displayLevel, 'iter')
     fprintf('cobraFitGauss1: %s\n', message);
+end
+end
+
+function [x, iteration, funcCount, exitflag, message] = trustRegionReflective(fun, jac, x, lb, ub, ftol, xtol, maxIter, maxFunEvals, displayLevel)
+% Trust-region reflective least squares for bounds (Branch, Coleman and Li 1999), as implemented
+% in SciPy's least_squares(method='trf') with x_scale = 1 and the exact subproblem solver: Coleman-
+% Li scaling of the variables by their distance to the bound the gradient points to, the
+% subproblem on the augmented Jacobian [J*d; sqrt(diag(g.*dv))] solved through the singular value
+% decomposition (More-Hebden iteration), and the choice between the trust-region step, its
+% reflection at the bound and the scaled anti-gradient
+f = fun(x);
+funcCount = 1;
+J = jac(x);
+cost = 0.5 * (f' * f);
+g = J' * f;
+[v, ~] = scalingVector(x, g, lb, ub);
+radius = norm(x ./ sqrt(v)); % > 0: c1 is never 0 at the start
+alpha = 0;
+iteration = 0;
+exitflag = 0;
+message = 'Fit computation did not converge: maximum number of iterations exceeded.';
+n = numel(x);
+m = numel(f);
+while true
+    [v, dv] = scalingVector(x, g, lb, ub);
+    gradientNorm = norm(g .* v, Inf);
+    if gradientNorm < 1e-8
+        exitflag = 1;
+        message = 'Success. Fitting converged to a solution.';
+        break
+    end
+    if iteration >= maxIter
+        break
+    end
+    if funcCount >= maxFunEvals
+        message = 'Fit computation did not converge: maximum number of function evaluations exceeded.';
+        break
+    end
+    d = sqrt(v);
+    diagH = g .* dv;
+    gH = d .* g;
+    JH = J .* d';
+    [U, S, V] = svd([JH; diag(sqrt(diagH))], 0);
+    singular = diag(S);
+    uf = U' * [f; zeros(n, 1)];
+    theta = max(0.995, 1 - gradientNorm);
+    actualReduction = -1;
+    status = 0;
+    while actualReduction <= 0 && funcCount < maxFunEvals
+        [pH, alpha] = solveTrustRegion(n, m, uf, singular, V, radius, alpha);
+        p = d .* pH;
+        [step, stepH, predictedReduction] = selectStep(x, JH, diagH, gH, p, pH, d, radius, lb, ub, theta);
+        xNew = x + step;
+        xNew(xNew <= lb) = lb(xNew <= lb) + eps(lb(xNew <= lb)); % strictly feasible (next number above the bound)
+        fNew = fun(xNew);
+        funcCount = funcCount + 1;
+        stepHNorm = norm(stepH);
+        if ~all(isfinite(fNew))
+            radius = 0.25 * stepHNorm;
+            continue
+        end
+        costNew = 0.5 * (fNew' * fNew);
+        actualReduction = cost - costNew;
+        if predictedReduction > 0
+            ratio = actualReduction / predictedReduction;
+        elseif predictedReduction == 0 && actualReduction == 0
+            ratio = 1;
+        else
+            ratio = 0;
+        end
+        newRadius = radius;
+        if ratio < 0.25
+            newRadius = 0.25 * stepHNorm;
+        elseif ratio > 0.75 && stepHNorm > 0.95 * radius
+            newRadius = 2 * radius;
+        end
+        stepNorm = norm(step);
+        isFtol = actualReduction < ftol * cost && ratio > 0.25;
+        isXtol = stepNorm < xtol * (xtol + norm(x));
+        if isFtol || isXtol
+            status = 2 + double(isXtol && ~isFtol);
+            break
+        end
+        alpha = alpha * radius / newRadius;
+        radius = newRadius;
+    end
+    if actualReduction > 0
+        x = xNew;
+        f = fNew;
+        cost = costNew;
+        J = jac(x);
+        g = J' * f;
+    end
+    iteration = iteration + 1;
+    if strcmp(displayLevel, 'iter')
+        fprintf('cobraFitGauss1: iteration %d, sum of squares %.10g\n', iteration, 2 * cost);
+    end
+    if status == 2
+        exitflag = 3;
+        message = 'Success, but fitting stopped because change in residuals less than tolerance (TolFun).';
+        break
+    elseif status == 3
+        exitflag = 2;
+        message = 'Success, but fitting stopped because change in coefficients less than tolerance (TolX).';
+        break
+    end
+end
+end
+
+function [v, dv] = scalingVector(x, g, lb, ub)
+% Coleman-Li scaling: distance to the bound that the negative gradient points to
+v = ones(size(x));
+dv = zeros(size(x));
+mask = g < 0 & isfinite(ub);
+v(mask) = ub(mask) - x(mask);
+dv(mask) = -1;
+mask = g > 0 & isfinite(lb);
+v(mask) = x(mask) - lb(mask);
+dv(mask) = 1;
+end
+
+function [p, alpha] = solveTrustRegion(n, m, uf, s, V, radius, alpha)
+% min ||J*p + f|| subject to ||p|| <= radius, J = U*diag(s)*V' (More-Hebden iteration on alpha)
+suf = s .* uf;
+isFullRank = m >= n && s(end) > eps * m * s(1);
+if isFullRank
+    p = -V * (uf ./ s);
+    if norm(p) <= radius
+        alpha = 0;
+        return
+    end
+end
+alphaUpper = norm(suf) / radius;
+if isFullRank
+    [phi, phiPrime] = phiAndDerivative(0, suf, s, radius);
+    alphaLower = -phi / phiPrime;
+else
+    alphaLower = 0;
+end
+if ~isFullRank && alpha == 0
+    alpha = max(0.001 * alphaUpper, sqrt(alphaLower * alphaUpper));
+end
+for iterationCount = 1:10
+    if alpha < alphaLower || alpha > alphaUpper
+        alpha = max(0.001 * alphaUpper, sqrt(alphaLower * alphaUpper));
+    end
+    [phi, phiPrime] = phiAndDerivative(alpha, suf, s, radius);
+    if phi < 0
+        alphaUpper = alpha;
+    end
+    ratio = phi / phiPrime;
+    alphaLower = max(alphaLower, alpha - ratio);
+    alpha = alpha - (phi + radius) * ratio / radius;
+    if abs(phi) < 0.01 * radius
+        break
+    end
+end
+p = -V * (suf ./ (s .^ 2 + alpha));
+p = p * radius / norm(p);
+end
+
+function [phi, phiPrime] = phiAndDerivative(alpha, suf, s, radius)
+% ||p(alpha)|| - radius and its derivative
+denominator = s .^ 2 + alpha;
+pNorm = norm(suf ./ denominator);
+phi = pNorm - radius;
+phiPrime = -sum(suf .^ 2 ./ denominator .^ 3) / pNorm;
+end
+
+function [step, stepH, predicted] = selectStep(x, JH, diagH, gH, p, pH, d, radius, lb, ub, theta)
+% Trust-region step if it stays feasible; otherwise the best of its reflection at the bound, the
+% step to the bound shortened by theta, and the scaled anti-gradient (Branch, Coleman, Li 1999)
+if all(x + p >= lb) && all(x + p <= ub)
+    step = p;
+    stepH = pH;
+    predicted = -quadraticValue(JH, gH, pH, diagH);
+    return
+end
+[pStride, hits] = stepToBound(x, p, lb, ub);
+rH = pH;
+rH(hits ~= 0) = -rH(hits ~= 0);
+r = d .* rH;
+p = p * pStride;
+pH = pH * pStride;
+xOnBound = x + p;
+[~, toRegion] = intersectRegion(pH, rH, radius);
+toBound = stepToBound(xOnBound, r, lb, ub);
+rStride = min(toBound, toRegion);
+if rStride > 0
+    rStrideLower = (1 - theta) * pStride / rStride;
+    if rStride == toBound
+        rStrideUpper = theta * toBound;
+    else
+        rStrideUpper = toRegion;
+    end
+else
+    rStrideLower = 0;
+    rStrideUpper = -1;
+end
+if rStrideLower <= rStrideUpper
+    [a, b, c] = quadratic1d(JH, gH, rH, pH, diagH);
+    [rStride, rValue] = minimizeQuadratic1d(a, b, rStrideLower, rStrideUpper, c);
+    rH = rH * rStride + pH;
+    r = rH .* d;
+else
+    rValue = Inf;
+end
+p = p * theta;
+pH = pH * theta;
+pValue = quadraticValue(JH, gH, pH, diagH);
+agH = -gH;
+ag = d .* agH;
+toRegion = radius / norm(agH);
+toBound = stepToBound(x, ag, lb, ub);
+if toBound < toRegion
+    agStride = theta * toBound;
+else
+    agStride = toRegion;
+end
+[a, b] = quadratic1d(JH, gH, agH, [], diagH);
+[agStride, agValue] = minimizeQuadratic1d(a, b, 0, agStride, 0);
+agH = agH * agStride;
+ag = ag * agStride;
+if pValue < rValue && pValue < agValue
+    step = p;
+    stepH = pH;
+    predicted = -pValue;
+elseif rValue < pValue && rValue < agValue
+    step = r;
+    stepH = rH;
+    predicted = -rValue;
+else
+    step = ag;
+    stepH = agH;
+    predicted = -agValue;
+end
+end
+
+function value = quadraticValue(J, g, s, diagH)
+% 0.5*s'*(J'*J + diag(diagH))*s + g'*s
+q = J * s;
+value = 0.5 * (q' * q + sum(diagH .* s .^ 2)) + g' * s;
+end
+
+function [a, b, c] = quadratic1d(J, g, s, s0, diagH)
+% Coefficients of the quadratic model along s0 + t*s: a*t^2 + b*t + c
+v = J * s;
+a = 0.5 * (v' * v + sum(diagH .* s .^ 2));
+b = g' * s;
+c = 0;
+if ~isempty(s0)
+    u = J * s0;
+    b = b + u' * v + sum(diagH .* s0 .* s);
+    c = 0.5 * (u' * u + sum(diagH .* s0 .^ 2)) + g' * s0;
+end
+end
+
+function [t, value] = minimizeQuadratic1d(a, b, lower, upper, c)
+% Minimum of a*t^2 + b*t + c over [lower, upper]
+candidates = [lower, upper];
+if a ~= 0
+    extremum = -0.5 * b / a;
+    if lower < extremum && extremum < upper
+        candidates(end + 1) = extremum;
+    end
+end
+values = candidates .* (a * candidates + b) + c;
+[value, index] = min(values);
+t = candidates(index);
+end
+
+function [minStep, hits] = stepToBound(x, s, lb, ub)
+% Largest step along s inside the bounds and the variables whose bound is hit (with the sign of s)
+steps = Inf(size(x));
+isMoving = s ~= 0;
+steps(isMoving) = max((lb(isMoving) - x(isMoving)) ./ s(isMoving), (ub(isMoving) - x(isMoving)) ./ s(isMoving));
+minStep = min(steps);
+hits = (steps == minStep) .* sign(s);
+end
+
+function [t1, t2] = intersectRegion(x, s, radius)
+% The two values of t with ||x + t*s|| = radius (t1 <= t2)
+a = s' * s;
+b = x' * s;
+c = x' * x - radius ^ 2;
+discriminant = sqrt(b ^ 2 - a * c);
+q = -(b + sign(b + (b == 0)) * discriminant);
+t1 = q / a;
+t2 = c / q;
+if t1 > t2
+    [t1, t2] = deal(t2, t1);
 end
 end
 

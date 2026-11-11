@@ -88,6 +88,15 @@ labelsWithMissing = labels;
 labelsWithMissing(5) = NaN;
 assert(sum(cobraFitcsvm(X, labelsWithMissing).IsSupportVector) <= 59);
 
+%% numeric class names are kept exactly; rows with NaN predictors are removed
+
+mdlClose = cobraFitcsvm(X, 1.23456789 + 1e-7 * labels);
+assert(isequal(mdlClose.ClassNames, [1.23456789; 1.23456789 + 1e-7]));
+XWithNaN = X;
+XWithNaN(7, 2) = NaN;
+mdlNaN = cobraFitcsvm(XWithNaN, labels, 'DeltaGradientTolerance', 1e-10);
+assert(numel(mdlNaN.IsSupportVector) == 59 && all(isfinite(mdlNaN.Beta)));
+
 %% seeded random problems: optimality conditions (all branches of the two-variable update)
 
 rng(20261111);

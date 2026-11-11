@@ -116,6 +116,15 @@ nonsmooth = @(x) deal(abs(x(1)) + x(1) ^ 2, sign(x(1)) + 2 * x(1), 2);
     'SpecifyObjectiveGradient', true, 'Display', 'off', 'StepTolerance', 1e-6));
 assert(exitflag == 2 && abs(x) < 1e-3 && contains(output.message, 'trust region'));
 
+%% a NaN objective at trial points rejects the step and shrinks the region
+
+% f = (x - 0.9)^2 with a small Hessian (long Newton steps), NaN for |x| >= 1
+nanOutside = @(x) deal((x - 0.9) ^ 2 + 0 / (abs(x) < 1), 2 * (x - 0.9), 0.002);
+[x, ~, exitflag] = cobraFminunc(nanOutside, 0.5, struct('HessianFcn', 'objective', 'SpecifyObjectiveGradient', true, 'Display', 'off'));
+% before the fix the start point was returned unchanged; with the default function tolerance
+% (1e-6 relative change of f) the iterate stops within 1e-3 of the minimizer
+assert(abs(x - 0.9) < 1e-3 && exitflag > 0);
+
 %% display levels (captured with evalc to check the printed text)
 
 printedIter = evalc('cobraFminunc(rosenbrock, [-1.2; 1], setfield(newtonOptions, ''Display'', ''iter''));');

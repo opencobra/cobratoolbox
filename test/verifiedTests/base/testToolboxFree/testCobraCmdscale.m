@@ -85,6 +85,12 @@ S = [1 0.5 0.2; 0.5 1 0.3; 0.2 0.3 1];
 [YD, eD] = cobraCmdscale(sqrt(1 - S));
 assert(isequal(YS, YD) && isequal(eS, eD));
 
+%% tied eigenvalues (equilateral triangle): two equal eigenvalues, distances reproduced
+
+[Y, e] = cobraCmdscale(ones(3) - eye(3));
+assert(max(abs(e(1:2) - 0.5)) < 1e-14 && abs(e(3)) < 1e-14 && isequal(size(Y), [3 2]));
+assert(max(abs(cobraPdist(Y, 'euclidean') - [1 1 1])) < 1e-14);
+
 %% no positive eigenvalue (all points equal): Y = zeros(n, 1)
 
 [Y, e] = cobraCmdscale(zeros(4));

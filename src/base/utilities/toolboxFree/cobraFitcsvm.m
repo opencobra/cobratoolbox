@@ -41,7 +41,8 @@ function mdl = cobraFitcsvm(X, Y, varargin)
 %    maximal violating pair's gradient gap is below DeltaGradientTolerance. Beta = sum of
 %    a(i)*y(i)*x(i) is unique (strictly convex primal); the bias is the mean of
 %    y(i) - x(i)'*Beta over the free support vectors (libsvm rule; the MathWorks rule is
-%    UNCONFIRMED and the bias need not be unique). Rows with a missing label are removed.
+%    UNCONFIRMED and the bias need not be unique). Rows with a missing label or a NaN predictor
+%    value are removed.
 %
 % .. Authors:
 %     - Generated for feature 20261111-152503-toolbox-free-remaining, 2026-11-11.
@@ -65,17 +66,16 @@ if ~(isnumeric(X) || islogical(X)) || ~ismatrix(X)
     error('COBRA:cobraFitcsvm:invalidInput', 'cobraFitcsvm: X must be a numeric matrix.');
 end
 X = double(X);
-[classIndex, classNames] = cobraGrp2idx(Y);
+[classIndex, classNames, classLevels] = cobraGrp2idx(Y);
 if numel(classIndex) ~= size(X, 1)
     error('COBRA:cobraFitcsvm:invalidInput', 'cobraFitcsvm: Y must have one label per row of X.');
 end
-isKept = ~isnan(classIndex);
+isKept = ~isnan(classIndex) & ~any(isnan(X), 2); % missing labels and predictor values
 X = X(isKept, :);
 classIndex = classIndex(isKept);
 % classes in sorted order (fitcsvm ClassNames); the second is the positive class
 if isnumeric(Y) || islogical(Y)
-    [sortedNames, order] = sort(str2double(classNames));
-    classNamesOut = sortedNames;
+    [classNamesOut, order] = sort(classLevels(:));
 else
     [~, order] = sort(classNames);
     classNamesOut = classNames(order);

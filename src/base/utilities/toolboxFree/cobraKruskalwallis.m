@@ -45,7 +45,8 @@ function [p, tbl, stats] = cobraKruskalwallis(x, group, displayopt)
 %    ranks are analysed with `cobraAnova1`, and the statistic is
 %    H = SSg/(SSt/(N - 1)), which includes the tie correction; p is the upper
 %    tail of the chi-square distribution with k - 1 degrees of freedom. When
-%    all values are tied, SSt is 0 and H and p are NaN. MathWorks draws a
+%    all values are tied, SSt is 0 and H and p are NaN; with a single group
+%    p is NaN. MathWorks draws a
 %    table figure and a box plot when displayopt is 'on'; this replacement
 %    draws nothing, which leaves the outputs unchanged (the call sites that
 %    use 'on' close or replace those figures at once).
@@ -91,6 +92,9 @@ dfGroups = anovaTable{2, 3};
 total = numel(ranks);
 H = ssGroups / (ssTotal / (total - 1));
 p = cobraChi2cdf(H, dfGroups, 'upper');
+if dfGroups < 1
+    p = NaN; % one group: no test (R14 arithmetic gives NaN)
+end
 
 tbl = anovaTable;
 tbl(1, 5:6) = {'Chi-sq', 'Prob>Chi-sq'};

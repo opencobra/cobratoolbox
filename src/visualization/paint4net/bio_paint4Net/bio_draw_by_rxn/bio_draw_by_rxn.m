@@ -480,11 +480,11 @@ if ~isempty(flux) %if flux vector is not empty
 
                     if strcmp(involvedMets{m},model.mets{n}) %if particular metabolite has been found in the model
 
-                        if isfield(model, 'metNames') %label=metabolite name
+                        if isfield(model, 'metNames') && numel(model.metNames) >= n %label=metabolite name
                             nodeLabels{m} = strcat('Name: ',model.metNames{n});
                         end
 
-                        if isfield(model, 'metFormulas') %description=metabolite charged formula
+                        if isfield(model, 'metFormulas') && numel(model.metFormulas) >= n %description=metabolite charged formula
                             nodeDescriptions{m} = strcat('Charged formula: ',model.metFormulas{n});
                         end
 
@@ -500,7 +500,7 @@ if ~isempty(flux) %if flux vector is not empty
 
                     if strcmp(model.rxns{RxIDs(m)},model.rxns{n}) %if particular reaction has been found in the model
 
-                        if isfield(model, 'rxnNames') %label=reaction name
+                        if isfield(model, 'rxnNames') && numel(model.rxnNames) >= n %label=reaction name
                             nodeLabels{length(involvedMets)+m} = strcat('Name: ',model.rxnNames{n});
                         end
 
@@ -517,7 +517,7 @@ if ~isempty(flux) %if flux vector is not empty
             max_flux=max(abs(flux)); %get max absolute flux value from the input vector
 
             figureHandle = figure('Name', 'Biograph Viewer'); % name kept for closev
-            h = plot(networkGraph, 'Layout', 'layered', 'NodeLabel', ids); %generate layout
+            h = plot(networkGraph, 'Layout', 'layered', 'NodeLabel', ids, 'EdgeColor', [0.5 0.5 0.5]); %generate layout (grey edges without flux)
             h.DataTipTemplate.DataTipRows(end + 1) = dataTipTextRow('Name', nodeLabels);
             h.DataTipTemplate.DataTipRows(end + 1) = dataTipTextRow('Description', nodeDescriptions);
 

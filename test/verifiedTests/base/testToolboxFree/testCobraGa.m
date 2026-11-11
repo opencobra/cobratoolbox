@@ -126,6 +126,11 @@ cappedOneMax = @(X) -sum(X, 2) .* (sum(X, 2) <= MaxKnockOuts);
 [x, fval, exitflag, ~, population] = cobraGa(struct('fitnessfcn', cappedOneMax, 'nvars', 20, 'options', optGeneOptions));
 % the optimum is -3; after the first generation every row is a capped child or an elite row
 assert(fval == -3 && sum(x) == 3 && all(sum(population, 2) <= 3) && exitflag == 0 && size(population, 1) == 80);
+% a creation function given as a cell {handle, extra arguments} receives the extra arguments
+rng(3);
+[~, ~, ~, ~, population] = cobraGa(struct('fitnessfcn', cappedOneMax, 'nvars', 20, 'options', ...
+    setfield(setfield(optGeneOptions, 'CreationFcn', {@onesCreation, 2}), 'Generations', 1)));
+assert(size(population, 1) == 80);
 clear global MaxKnockOuts
 
 %% exit flags
@@ -198,6 +203,14 @@ flips = rand(size(children)) < rate;
 children(flips) = 1 - children(flips);
 end
 
+function population = onesCreation(nvars, fitnessFcn, options, nOnes)
+% creation function with an extra argument: nOnes ones at random positions in every individual
+population = zeros(sum(options.PopulationSize), nvars);
+for row = 1:size(population, 1)
+    population(row, randperm(nvars, nOnes)) = 1;
+end
+end
+
 % ---- copies of the local operators of src/design/optGene.m (as of 2026-11-11) ----
 
 function [Population] = lowmutationcreation(GenomeLength, FitnessFcn, options)
@@ -215,15 +228,20 @@ end
 function mutationChildren = mutationUniformEqual(parents, options, GenomeLength, FitnessFcn, state, thisScore, thisPopulation, mutationRate)
 % optGene mutation function: bit flips, at most MaxKnockOuts ones, tends to fewer ones
 global MaxKnockOuts
+if nargin < 8
+    mutationRate = 0.01; % default mutation rate
+end
 mutationChildren = zeros(length(parents), GenomeLength);
 for i = 1:length(parents)
     child = thisPopulation(parents(i), :);
     kos = sum(child);
     mutationPoints = find(rand(1, length(child)) < mutationRate);
     child(mutationPoints) = ~child(mutationPoints);
-    while sum(child(:)) > MaxKnockOuts
-        ind2 = find(child);
-        child(ind2(randi(length(ind2), 1))) = 0;
+    if MaxKnockOuts > 0
+        while sum(child(:)) > MaxKnockOuts
+            ind2 = find(child);
+            child(ind2(randi(length(ind2), 1))) = 0;
+        end
     end
     if rand > .5 && kos > 1
         while sum(child(:)) >= kos
@@ -252,9 +270,11 @@ for i = 1:nKids
             xoverKids(i, j) = thisPopulation(r2, j);
         end
     end
-    while sum(xoverKids(i, :)) > MaxKnockOuts
-        ind2 = find(xoverKids(i, :));
-        xoverKids(i, ind2(randi(length(ind2), 1))) = 0;
+    if MaxKnockOuts > 0
+        while sum(xoverKids(i, :)) > MaxKnockOuts
+            ind2 = find(xoverKids(i, :));
+            xoverKids(i, ind2(randi(length(ind2), 1))) = 0;
+        end
     end
 end
 xoverKids = mutationUniformEqual(1:size(xoverKids, 1), [], GenomeLength, [], [], [], xoverKids, mutationRate);

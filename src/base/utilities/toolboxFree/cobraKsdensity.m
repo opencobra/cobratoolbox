@@ -32,7 +32,9 @@ function [f, xi, bw] = cobraKsdensity(x, varargin)
 %    sigma <= 0, sigma = max(x) - min(x); bw = sigma*(4/(3n))^(1/5) when
 %    sigma > 0, otherwise bw = 1. Points: linspace(min(x) - 3*bw,
 %    max(x) + 3*bw, 100). Density: f(xi) = mean over i of
-%    phi((xi - x_i)/bw)/bw with the standard normal density phi. The
+%    phi((xi - x_i)/bw)/bw with the standard normal density phi, where for
+%    more than 300 observations only |xi - x_i| <= 4*bw contribute (the
+%    kernel cut-off of R14 for large samples; current release UNCONFIRMED). The
 %    bandwidth matches the MathWorks documentation example; the grid rule is
 %    the R14 rule (current release UNCONFIRMED, settled by the parity
 %    section of the test).
@@ -71,13 +73,20 @@ else
 end
 xi = linspace(min(x) - 3 * bw, max(x) + 3 * bw, 100);
 
-% sum of the kernels in blocks of observations to bound memory for long vectors
+% sum of the kernels; when n*100 > 3e4, only the observations within 4 bandwidths of a point
+% contribute (the kernel cut-off of the MathWorks computation for large samples, as in R14);
+% blocks of observations bound the memory
 f = zeros(1, 100);
+isWindowed = n * 100 > 3e4;
 blockSize = 10000;
 for first = 1:blockSize:n
     block = x(first:min(first + blockSize - 1, n));
     z = (xi - block) / bw;
-    f = f + sum(exp(-0.5 * z .^ 2), 1);
+    kernel = exp(-0.5 * z .^ 2);
+    if isWindowed
+        kernel(abs(z) > 4) = 0;
+    end
+    f = f + sum(kernel, 1);
 end
 f = f / (n * bw * sqrt(2 * pi));
 end

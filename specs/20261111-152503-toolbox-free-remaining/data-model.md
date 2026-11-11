@@ -28,18 +28,20 @@
 | `Rsquared` | struct: `Ordinary`, `Adjusted` (GLM also `LLR`, `Deviance`, `AdjGeneralized`) | ✓ | ✓ |
 | `Deviance`, `LogLikelihood`, `Dispersion`, `DispersionEstimated` | double / logical | ✓ | — |
 | `SSE`, `SSR`, `SST`, `RMSE`, `MSE` | double | — | ✓ |
-| `Distribution` | struct with `Name` (`'normal'`/`'binomial'`) | ✓ | — |
+| `Distribution` | struct with `Name` (`'Normal'`/`'Binomial'`) | ✓ | — |
 | `Formula` | char (MathWorks uses a formula object; `char(mdl.Formula)` text is matched) | ✓ | ✓ |
 | `Variables` | the input table (or a table built from x, y) incl. excluded rows | ✓ | ✓ |
 | `ObservationInfo` | table with `Weights`, `Excluded`, `Missing`, `Subset` | ✓ | ✓ |
 | `Fitted` | GLM: table `Response`, `LinearPredictor`, `Probability`; LM: column vector | ✓ | ✓ |
 | `LikelihoodPenalty` | char (`'none'`, `'jeffreys-prior'`) | ✓ | — |
+| `Residuals` | table `Raw`, `Pearson` (other MathWorks residual types not provided) | ✓ | ✓ |
+| `NumPredictors`, `NumVariables`, `VariableNames` | counts and names of the input table | ✓ | ✓ |
 
 Methods: `coefCI(mdl, alpha)` (t(DFE)-based for both, as MathWorks), `predict(mdl, Xnew)`
 (response scale; table or matrix input in the variables of the fit), `disp` (summary in the
 MathWorks layout). Any other MathWorks method name called on these objects
-(e.g. `plotResiduals`, `step`, `anova`, `compact`) raises
-`COBRA:cobraGeneralizedLinearModel:unsupportedMethod` naming it.
+(e.g. `plotResiduals`, `step`, `anova`, `compact`) is not defined and raises MATLAB's
+undefined-function error, which names it. `ModelCriterion` is not provided.
 
 Validation: values computed once at construction (immutable); NaN rows excluded and flagged in
 `ObservationInfo.Missing`; the warnings of R7 are issued during fitting, never on property access.

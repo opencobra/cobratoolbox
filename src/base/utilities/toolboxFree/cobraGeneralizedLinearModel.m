@@ -18,7 +18,8 @@ classdef cobraGeneralizedLinearModel
 %    Deviance, AdjGeneralized), Deviance, LogLikelihood, Dispersion, DispersionEstimated,
 %    Distribution (structure with Name), Formula (formula text), Variables (the input table),
 %    ObservationInfo (table Weights, Excluded, Missing, Subset), Fitted (table Response,
-%    LinearPredictor, Probability), LikelihoodPenalty
+%    LinearPredictor, Probability), LikelihoodPenalty, Residuals (table Raw, Pearson; the
+%    other MathWorks residual types are not provided), NumPredictors, NumVariables, VariableNames
 %
 % NOTE:
 %    Plain-MATLAB stand-in for GeneralizedLinearModel (Statistics and Machine Learning
@@ -27,7 +28,8 @@ classdef cobraGeneralizedLinearModel
 %    class; documented differences: the class name (isa(mdl, 'GeneralizedLinearModel') is
 %    false), Formula holds the formula text instead of a formula object, and methods other
 %    than coefCI, predict and disp (for example plotResiduals, step, anova, compact) are not
-%    defined, so calling one raises MATLAB's error naming it. coefCI uses t(DFE) quantiles, as
+%    defined, so calling one raises MATLAB's error naming it; ModelCriterion and the residual types
+%    other than Raw and Pearson are not provided. coefCI uses t(DFE) quantiles, as
 %    MathWorks does for every distribution. predict accepts a table with the predictor
 %    variables, or a numeric matrix with one column per predictor (continuous predictors
 %    only), and returns the response scale (probabilities for the binomial model).
@@ -54,12 +56,16 @@ classdef cobraGeneralizedLinearModel
         ObservationInfo
         Fitted
         LikelihoodPenalty
+        Residuals
+        NumPredictors
+        NumVariables
+        VariableNames
     end
 
     properties (SetAccess = private, Hidden)
         ResponseName
         PredictorNames
-        VariableInfo
+        DesignInfo
         Terms
         SSE
         SST
@@ -87,14 +93,14 @@ classdef cobraGeneralizedLinearModel
         function yPredicted = predict(mdl, newData)
             % Predicted response (response scale) for a table or a matrix of predictor values
             if ~istable(newData)
-                if ~isnumeric(newData) || size(newData, 2) ~= numel(mdl.PredictorNames) || any([mdl.VariableInfo.isCategorical])
+                if ~isnumeric(newData) || size(newData, 2) ~= numel(mdl.PredictorNames) || any([mdl.DesignInfo.isCategorical])
                     error('COBRA:cobraGeneralizedLinearModel:invalidInput', ...
                         'cobraGeneralizedLinearModel.predict: give a table, or a matrix with one column per (continuous) predictor.');
                 end
                 newData = array2table(newData, 'VariableNames', mdl.PredictorNames);
             end
             parsed = struct('response', mdl.ResponseName, 'terms', {mdl.Terms});
-            design = cobraBuildModelDesign(newData, parsed, mdl.VariableInfo);
+            design = cobraBuildModelDesign(newData, parsed, mdl.DesignInfo);
             eta = design.X * mdl.Coefficients.Estimate;
             if strcmp(mdl.Distribution.Name, 'Binomial')
                 yPredicted = 1 ./ (1 + exp(-eta));

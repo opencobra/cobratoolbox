@@ -71,16 +71,23 @@ assert(relativeError(bw, 2 * (4 / 15) ^ (1 / 5)) < 1e-14);
 [f, xi, bw] = cobraKsdensity(5);
 assert(bw == 1 && abs(trapz(xi, f) - 1) < 0.01);
 
-%% long vectors are evaluated in blocks with the same result
+%% long vectors: blocks, and the kernel cut-off at 4 bandwidths when n*100 > 3e4
 
 rng(20261111);
 xLong = randn(25000, 1);
 [fLong, xiLong, bwLong] = cobraKsdensity(xLong);
-% direct evaluation at three points as an independent check (no blocks)
+% direct evaluation at three points as an independent check (no blocks; only observations
+% within 4 bandwidths contribute)
 for k = [1 50 100]
-    direct = mean(exp(-0.5 * ((xiLong(k) - xLong) / bwLong) .^ 2)) / (bwLong * sqrt(2 * pi));
+    z = (xiLong(k) - xLong) / bwLong;
+    direct = sum(exp(-0.5 * z(abs(z) <= 4) .^ 2)) / (numel(xLong) * bwLong * sqrt(2 * pi));
     assert(relativeError(fLong(k), direct) < 1e-12);
 end
+% 300 observations (n*100 = 3e4): the full sum; 301 observations: the windowed sum
+xShort = randn(300, 1);
+[fShort, xiShort, bwShort] = cobraKsdensity(xShort);
+fullSum = mean(exp(-0.5 * ((xiShort(1) - xShort) / bwShort) .^ 2)) / (bwShort * sqrt(2 * pi));
+assert(relativeError(fShort(1), fullSum) < 1e-12);
 
 %% errors: unsupported options and invalid input
 

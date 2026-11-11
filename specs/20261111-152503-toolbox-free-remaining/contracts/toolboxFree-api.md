@@ -24,7 +24,7 @@ other option or argument it is given. Semantics, sources and UNCONFIRMED points 
 
 | Function | Syntax | Notes |
 |---|---|---|
-| `cobraFitGauss1` [G2 §1] | `[fitresult, gof, output] = cobraFitGauss1(x, y, 'StartPoint', sp, 'Lower', lb, 'Upper', ub, 'Display', d)` | model a1·exp(−((x−b1)/c1)²); NaN/Inf removed and columns reshaped (prepareCurveData); `fitresult` struct with `a1`, `b1`, `c1`, `f` (handle); `gof`: `sse`, `rsquare`, `dfe`, `adjrsquare`, `rmse` |
+| `cobraFitGauss1` [G2 §1] | `[fitresult, gof, output] = cobraFitGauss1(x, y, 'StartPoint', sp, 'Lower', lb, 'Upper', ub, 'Display', d, 'TolFun', ..., 'TolX', ..., 'MaxIter', ..., 'MaxFunEvals', ...)`; `Lower` only `[-Inf -Inf 0]` or none, `Upper` only none | model a1·exp(−((x−b1)/c1)²); NaN/Inf removed and columns reshaped (prepareCurveData); `fitresult` struct with `a1`, `b1`, `c1`, `f` (handle); `gof`: `sse`, `rsquare`, `dfe`, `adjrsquare`, `rmse` |
 | `cobraFminunc` [G2 §2] | `[x, fval, exitflag, output] = cobraFminunc(fun, x0, options)` | `options` struct; trust-region with `fun` returning `[f, g, H]` (`SpecifyObjectiveGradient`/`GradObj`, `HessianFcn`/`Hessian` = `'objective'`/`'on'`); `MaxIterations`/`MaxIter`, `OptimalityTolerance`/`TolFun`, `StepTolerance`/`TolX`, `FunctionTolerance`, `Display`; exitflag 1/2/3/0 as MathWorks |
 | `cobraGa` [G2 §4] | `[x, fval, exitflag, output, population, scores] = cobraGa(problem)` with `problem.fitnessfcn`, `.nvars`, `.options` (struct) | options optGene sets: `PopulationType` `'bitstring'`, `PopulationSize` (vector → subpopulations), `CreationFcn`, `CrossoverFcn`, `MutationFcn`, `Vectorized`, `Generations`, `StallGenLimit`, `TimeLimit`, `StallTimeLimit`, `FitnessLimit`, `TolFun`, `MigrationDirection`, `MigrationInterval`, `MigrationFraction`, `EliteCount`, `CrossoverFraction`, `InitialPopulation`, `Display`, `OutputFcns`; `PlotFcns` → error (Global Optimization–only plot functions); population double 0/1 |
 
@@ -41,13 +41,15 @@ other option or argument it is given. Semantics, sources and UNCONFIRMED points 
 | Function | Syntax | Notes |
 |---|---|---|
 | `cobraFitglm` [G3 §2] | `mdl = cobraFitglm(tbl, formula, 'Distribution', d, 'LikelihoodPenalty', lp)` | d `'normal'`/`'binomial'`; lp `'none'`/`'jeffreys-prior'`; formula `y ~ t1 + t2 + ...` with `*`, `:`, `-`; categorical/text reference = first appearance; returns `cobraGeneralizedLinearModel` |
-| `cobraFitlm` [G3 §5] | `mdl = cobraFitlm(x, y)` | vector x; returns `cobraLinearModel`; rank-deficiency warning kept |
+| `cobraFitlm` [G3 §5] | `mdl = cobraFitlm(x, y)` | numeric/logical matrix or categorical vector x; returns `cobraLinearModel`; rank-deficiency warning `COBRA:cobraFitglm:RankDeficient` (the normal fit of `cobraFitglm`) |
+| `cobraParseModelFormula` [G3 §6] | `parsed = cobraParseModelFormula(formula, variableNames)` | `y ~ a + b`, `a:b`, `a*b`, `- term`, random intercepts `(1|g)` returned separately; other terms error naming them |
+| `cobraBuildModelDesign` [G3 §6] | `design = cobraBuildModelDesign(tbl, parsed)`, `(tbl, parsed, referenceInfo)` | reference coding, first level as reference (`cobraGrp2idx` order), missing values exclude the row; `referenceInfo` codes new data with fitted levels (predict) |
 | `cobraGeneralizedLinearModel`, `cobraLinearModel` | properties and methods: [data-model.md](../data-model.md) | `coefCI(mdl, alpha)`, `predict(mdl, X)`, `disp`; other MathWorks methods → error naming them |
-| `cobraFitcsvm` [G3 §7] | `mdl = cobraFitcsvm(X, y)` | linear kernel, `BoxConstraint` 1, no standardisation, positive class = second class in sorted order as MathWorks; returns struct with `Beta`, `Bias`, `ClassNames`, `IsSupportVector`, `Alpha` |
+| `cobraFitcsvm` [G3 §7] | `mdl = cobraFitcsvm(X, y)`, `(..., 'DeltaGradientTolerance', t, 'IterationLimit', k)` | linear kernel, `BoxConstraint` 1, no standardisation, positive class = second class in sorted order as MathWorks; SMO (Fan, Chen & Lin 2005); returns struct with `Beta`, `Bias`, `Alpha`, `IsSupportVector`, `SupportVectors`, `ClassNames`, `ConvergenceInfo` |
 
 ## Error and warning identifiers
 
 - Unsupported option: `COBRA:<function>:unsupportedOption` (message names the option).
-- Unsupported model method: `COBRA:<class>:unsupportedMethod`.
+- Unsupported model method: MATLAB's undefined-function error naming the method (the classes define only `coefCI`, `predict` and `disp`).
 - Warnings raised where MathWorks warns (iteration limit, perfect separation without penalty,
   rank-deficient design): `COBRA:<function>:<Reason>`; no other warnings.

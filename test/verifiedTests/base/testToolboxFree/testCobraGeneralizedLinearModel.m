@@ -65,6 +65,11 @@ assert(isequal(mdl.Variables, tbl) && mdl.Variables.Sex(1) == "male" && mdl.NumO
 assert(isfield(mdl.Rsquared, 'Adjusted') && isfield(mdl.Rsquared, 'Ordinary') && isfield(mdl.Rsquared, 'AdjGeneralized'));
 assert(istable(mdl.ObservationInfo) && all(mdl.ObservationInfo.Subset) && istable(mdl.Fitted));
 assert(isequal(size(mdl.CoefficientCovariance), [4 4]) && mdl.NumCoefficients == 4 && mdl.NumEstimatedCoefficients == 4);
+% residuals (raw and Pearson), variable counts and names
+rawResidual = yBinary - mdl.Fitted.Response;
+assert(max(abs(mdl.Residuals.Raw - rawResidual)) < 1e-14 && isequal(mdl.Residuals.Properties.VariableNames, {'Raw', 'Pearson'}));
+assert(max(abs(mdl.Residuals.Pearson - rawResidual ./ sqrt(mdl.Fitted.Response .* (1 - mdl.Fitted.Response)))) < 1e-12);
+assert(mdl.NumPredictors == 3 && mdl.NumVariables == 5 && isequal(mdl.VariableNames, tbl.Properties.VariableNames'));
 
 %% coefCI: t(DFE) quantiles for every distribution
 
@@ -129,7 +134,7 @@ function mdl = setCoefficients(mdl, estimate, se, dfe)
 % A copy of mdl with given estimates, standard errors and error degrees of freedom (for the
 % published coefCI example, whose data are not available without the toolbox)
 values = struct();
-names = [properties(mdl); {'ResponseName'; 'PredictorNames'; 'VariableInfo'; 'Terms'; 'SSE'; 'SST'; 'Deviance0'}];
+names = [properties(mdl); {'ResponseName'; 'PredictorNames'; 'DesignInfo'; 'Terms'; 'SSE'; 'SST'; 'Deviance0'}];
 for k = 1:numel(names)
     values.(names{k}) = mdl.(names{k});
 end

@@ -18,7 +18,7 @@
 %     Tier 1 - no model, no solver, hand-built inputs (patients.mat ships with base MATLAB).
 %
 % Coverage exemptions:
-%     Line 267 (warning after 1000 Firth iterations): a safeguard; no data set found needs more
+%     Line 279 (warning after 1000 Firth iterations): a safeguard; no data set found needs more
 %     than 1000 Fisher-scoring iterations (the slowest case below, an observation with leverage
 %     near 1, converges well within the limit).
 %
@@ -101,13 +101,14 @@ assert(max(relativeError(mdl.Coefficients.Estimate', [-1.9159293240354487 1.6391
 assert(max(relativeError(mdl.Coefficients.SE', [2.7092745366140987 0.5729590205732012 1.5389438686429653 0.06468119092373772])) < 1e-6);
 assert(strcmp(mdl.LikelihoodPenalty, 'jeffreys-prior'));
 % an observation with leverage near 1 (x = 100): the Fisher-scoring iteration converges linearly;
-% NumPy reference [-0.32205593 0.01691805] (references/g3_regression.py, section separation);
-% with linear convergence the error exceeds the last step (1e-6 relative), hence 1e-4
+% NumPy reference converged on the modified score to 1e-13 (references/g3_regression.py, section
+% separation): [-0.3220608061458092 0.016919034773876736]; the stopping rule on the step leaves
+% less than 1e-6 relative
 highLeverage = table([1; 2; 3; 4; 5; 6; 7; 8; 9; 100], [0; 0; 0; 0; 1; 0; 1; 1; 1; 1], 'VariableNames', {'x', 'y'});
 lastwarn('');
 mdl = cobraFitglm(highLeverage, 'y ~ x', 'Distribution', 'binomial', 'LikelihoodPenalty', 'jeffreys-prior');
 [warningMessage, ~] = lastwarn;
-assert(isempty(warningMessage) && max(relativeError(mdl.Coefficients.Estimate', [-0.32205593 0.01691805])) < 1e-4);
+assert(isempty(warningMessage) && max(relativeError(mdl.Coefficients.Estimate', [-0.3220608061458092 0.016919034773876736])) < 1e-6);
 % for the normal distribution the penalty does not change the least-squares estimates
 mdlPenalized = cobraFitglm(tbl, 'yNormal ~ Flux + Sex + Age', 'Distribution', 'normal', 'LikelihoodPenalty', 'jeffreys-prior');
 mdlPlain = cobraFitglm(tbl, 'yNormal ~ Flux + Sex + Age');

@@ -18,7 +18,12 @@
 %     Tier 1 - no model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     Safeguard branches of the trust-region reflective algorithm (the code paths of SciPy's
+%     least_squares 'trf') that neither the realistic curves nor the 150 seeded random starts below
+%     reach: lines 207-208 (non-finite residuals at a trial point: the Gaussian model stays finite
+%     for finite coefficients), 214-217 (zero or negative predicted reduction), 289 (initial
+%     damping for a rank-deficient scaled Jacobian), 340, 345-346, 354, 364 (reflection stride
+%     limited by a second bound, or no admissible reflection: only c1 has a bound).
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     None found.
@@ -92,6 +97,20 @@ assert(relativeError(gofLeft.sse, 3.0932605346591117e-07) < 1e-6);
 % agree with the optimum to 1e-4 relative
 fitLeftDefault = cobraFitGauss1(xi, rest, 'StartPoint', startL, 'Lower', bounds, 'Display', 'off');
 assert(max(relativeError([fitLeftDefault.b1 fitLeftDefault.c1], [fitLeft.b1 fitLeft.c1])) < 1e-4);
+
+%% seeded random starts on peaked data: steps that reach the bound c1 >= 0 are reflected
+
+% (the reflective step selection of the trust-region reflective method); every fit ends with
+% c1 >= 0 and a sum of squares no larger than at its start
+rng(20261111);
+for trial = 1:150
+    truth = [0.1 + rand, -3 + 9 * rand, 0.05 + 3 * rand];
+    yTrial = truth(1) * exp(-((x - truth(2)) / truth(3)) .^ 2) + 0.01 * randn(size(x));
+    start = [2 * rand - 0.5, -5 + 15 * rand, 0.01 + 4 * rand];
+    [fitTrial, gofTrial] = cobraFitGauss1(x, yTrial, 'StartPoint', start, 'Lower', bounds, 'Display', 'off');
+    startSse = sum((yTrial - start(1) * exp(-((x - start(2)) / start(3)) .^ 2)) .^ 2);
+    assert(fitTrial.c1 >= 0 && gofTrial.sse <= startSse * (1 + 1e-12), sprintf('trial %d', trial));
+end
 
 %% bound c1 >= 0 from a negative start, and no bounds at all
 

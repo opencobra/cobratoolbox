@@ -88,14 +88,18 @@ close all
 
 %% one dimension only, a single row, and the order for more than 1500 elements
 
-[~, rowOrder, columnOrder] = cobraClustergram(data, 'Cluster', 'column');
-assert(isequal(rowOrder, 1:5) && ~isequal(columnOrder, []));
-[~, rowOrder, columnOrder] = cobraClustergram(data, 'Cluster', 'row');
-assert(isequal(columnOrder, 1:4) && numel(rowOrder) == 5);
+% clustergram documents 'column' as clustering along the columns, which orders the rows, and
+% 'row' as ordering the columns
+[ax, rowOrder, columnOrder] = cobraClustergram(data, 'Cluster', 'column');
+assert(isequal(columnOrder, 1:4) && ~isequal(sort(rowOrder), rowOrder) && isequal(sort(rowOrder), 1:5));
+% without labels the ticks show the original row and column numbers in the clustered order
+assert(isequal(ax.YTickLabel, cellstr(string(rowOrder))') && isequal(ax.XTickLabel, {'1'; '2'; '3'; '4'}));
+[ax, rowOrder, columnOrder] = cobraClustergram(data, 'Cluster', 'row');
+assert(isequal(rowOrder, 1:5) && numel(columnOrder) == 4 && isequal(ax.XTickLabel, cellstr(string(columnOrder))'));
 [~, rowOrder] = cobraClustergram([1 2 3], 'ShowDendrogram', 'on');
 assert(isequal(rowOrder, 1));
 large = [(1:1501)' .^ 1.5, zeros(1501, 1)];
-[~, rowOrder] = cobraClustergram(large, 'Cluster', 'row', 'ShowDendrogram', 'off');
+[~, rowOrder] = cobraClustergram(large, 'Cluster', 'column', 'ShowDendrogram', 'off');
 assert(isequal(sort(rowOrder), 1:1501));
 close all
 

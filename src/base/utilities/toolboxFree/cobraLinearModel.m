@@ -16,7 +16,8 @@ classdef cobraLinearModel
 %    Coefficients, CoefficientNames, CoefficientCovariance, NumCoefficients,
 %    NumEstimatedCoefficients, NumObservations, DFE, Rsquared (Ordinary, Adjusted), SSE, SSR,
 %    SST, MSE, RMSE, Formula (formula text), Variables (table x1, ..., y), ObservationInfo,
-%    Fitted (column of fitted values)
+%    Fitted (column of fitted values), Residuals (table Raw, Pearson), NumPredictors,
+%    NumVariables, VariableNames
 %
 % NOTE:
 %    Plain-MATLAB stand-in for LinearModel (Statistics and Machine Learning Toolbox), created
@@ -46,6 +47,10 @@ classdef cobraLinearModel
         Variables
         ObservationInfo
         Fitted
+        Residuals
+        NumPredictors
+        NumVariables
+        VariableNames
     end
 
     properties (SetAccess = private, Hidden)
@@ -57,7 +62,8 @@ classdef cobraLinearModel
             % Creates the object from the normal-distribution fit of cobraFitglm
             mdl.GeneralizedModel = generalizedModel;
             names = {'Coefficients', 'CoefficientNames', 'CoefficientCovariance', 'NumCoefficients', ...
-                'NumEstimatedCoefficients', 'NumObservations', 'DFE', 'Formula', 'Variables', 'ObservationInfo'};
+                'NumEstimatedCoefficients', 'NumObservations', 'DFE', 'Formula', 'Variables', 'ObservationInfo', ...
+                'Residuals', 'NumPredictors', 'NumVariables', 'VariableNames'};
             for k = 1:numel(names)
                 mdl.(names{k}) = generalizedModel.(names{k});
             end

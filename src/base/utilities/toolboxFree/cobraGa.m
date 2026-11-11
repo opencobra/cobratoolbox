@@ -129,7 +129,8 @@ if isempty(settings.CreationFcn)
     population(1:nProvided, :) = settings.InitialPopulation;
     population(nProvided + 1:end, :) = rand(total - nProvided, nvars) < 0.5;
 else
-    population = double(settings.CreationFcn(nvars, fitnessFcn, functionOptions));
+    [creationFcn, extra] = splitFunction(settings.CreationFcn);
+    population = double(creationFcn(nvars, fitnessFcn, functionOptions, extra{:}));
 end
 [scores, output.funccount] = evaluate(fitnessFcn, population, isVectorized, output.funccount);
 bestHistory = min(scores);

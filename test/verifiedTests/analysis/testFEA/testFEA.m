@@ -2,10 +2,14 @@
 %
 % Purpose:
 %     - testFEA tests the Flux Enrichment Analysis
-%     function
+%     function. The empty-reaction-set defect below was found on 2026-11-11, when the
+%     toolbox requirement that had kept this test skipped was removed; that input is not asserted.
 %
 % Author:
 %     - Marouen BEN GUEBILA 09/02/2017
+%
+% Function under test:
+%     src/analysis/fluxEnrichmentAnalysis/FEA.m
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: An empty reaction set raises an error instead of returning the header-only result
@@ -15,8 +19,6 @@
 %         isvector([]) is false, so the check at line 32 fires before the empty-set branch
 %       EXPECTED: the header-only cell array of lines 35-36 (the branch is unreachable)
 %       LINES: 32, 35-37
-%       (found 2026-11-11 when the toolbox requirement that had kept this test skipped was
-%       removed; the empty-set input is therefore not asserted below)
 %
 % Coverage exemptions:
 %     FEA.m lines 36-37 (unreachable empty-set branch, see the defect above).

@@ -17,8 +17,9 @@ function [ax, rowOrder, columnOrder] = cobraClustergram(data, varargin)
 % 'true'/'false', 'on'/'off'):
 %    'RowLabels', 'ColumnLabels':  cell or string arrays of labels
 %    'ColumnLabelsRotate':         rotation of the column labels in degrees (default 90)
-%    'Cluster':                    'all' (default), 'column' (cluster the columns, the second
-%                                  dimension) or 'row'
+%    'Cluster':                    'all' (default), 'column' (cluster along the columns, which
+%                                  orders the rows, as clustergram documents it) or 'row'
+%                                  (along the rows: orders the columns)
 %    'ShowDendrogram':             draw the dendrograms (default true)
 %    'Symmetric':                  color limits symmetric about 0 (default true)
 %    'Colormap':                   colormap name (for example 'turbo', 'jet') or matrix
@@ -88,10 +89,11 @@ rowOrder = 1:nRows;
 columnOrder = 1:nColumns;
 rowLinkage = [];
 columnLinkage = [];
-if any(strcmp(clusterSetting, {'all', 'column'}))
+% clustergram: 'column' clusters along the columns (the rows are ordered), 'row' along the rows
+if any(strcmp(clusterSetting, {'all', 'row'}))
     [columnOrder, columnLinkage] = clusterOrder(data');
 end
-if any(strcmp(clusterSetting, {'all', 'row'}))
+if any(strcmp(clusterSetting, {'all', 'column'}))
     [rowOrder, rowLinkage] = clusterOrder(data);
 end
 
@@ -119,14 +121,18 @@ ax = axes('Position', [0.25 0.12 0.6 0.62]);
 imagesc(ax, data(rowOrder, columnOrder));
 colormap(ax, colormapMatrix);
 set(ax, 'CLim', colorLimits, 'YDir', 'normal', 'XTick', 1:nColumns, 'YTick', 1:nRows, 'YAxisLocation', 'right');
-if ~isempty(settings.rowlabels)
+% labels follow the clustered order; without labels, the original row and column numbers
+if isempty(settings.rowlabels)
+    rowLabels = cellstr(string(1:nRows))';
+else
     rowLabels = cellstr(string(settings.rowlabels(:)));
-    set(ax, 'YTickLabel', rowLabels(rowOrder));
 end
-if ~isempty(settings.columnlabels)
+if isempty(settings.columnlabels)
+    columnLabels = cellstr(string(1:nColumns))';
+else
     columnLabels = cellstr(string(settings.columnlabels(:)));
-    set(ax, 'XTickLabel', columnLabels(columnOrder));
 end
+set(ax, 'YTickLabel', rowLabels(rowOrder), 'XTickLabel', columnLabels(columnOrder));
 set(ax, 'XTickLabelRotation', settings.columnlabelsrotate);
 if isShowingDendrogram
     if ~isempty(columnLinkage)

@@ -55,6 +55,16 @@ design = buildDesign(tbl, 'y ~ c + s + l + h');
 assert(isequal(design.coefficientNames, {'(Intercept)', 'c_b', 's_v', 's_w', 'l_1', 'h_q'}));
 assert(isequal(design.X(:, 2)', [1 0 1 0]) && isequal(design.X(:, 5)', [1 0 0 1]) && isequal(design.X(:, 6)', [0 1 0 1]));
 
+%% unused categories of a categorical predictor give no column (no rank deficiency)
+
+tbl = table(categorical({'lo'; 'hi'; 'lo'; 'hi'}, {'lo', 'mid', 'hi'}), [1; 3; 2; 5], 'VariableNames', {'c', 'y'});
+design = buildDesign(tbl, 'y ~ c');
+assert(isequal(design.coefficientNames, {'(Intercept)', 'c_hi'}) && isequal(design.variableInfo(1).levels, {'lo', 'hi'}));
+lastwarn('');
+cobraFitglm(tbl, 'y ~ c');
+[warningMessage, ~] = lastwarn;
+assert(isempty(warningMessage));
+
 %% interactions: continuous by categorical, categorical by categorical (first factor fastest)
 
 tbl = table([1; 2; 3; 4; 5; 6], {'a'; 'b'; 'c'; 'a'; 'b'; 'c'}, {'u'; 'u'; 'v'; 'v'; 'w'; 'w'}, (1:6)', ...

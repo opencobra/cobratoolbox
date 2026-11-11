@@ -46,6 +46,9 @@ end
 if istable(x)
     error('COBRA:cobraFitlm:unsupportedOption', 'cobraFitlm: unsupported option ''table input'' (use cobraFitglm with a formula).');
 end
+if ~(isnumeric(x) || islogical(x) || iscategorical(x))
+    error('COBRA:cobraFitlm:unsupportedOption', 'cobraFitlm: unsupported option ''%s x'' (x must be numeric, logical or categorical).', class(x));
+end
 if isvector(x)
     x = x(:);
 end

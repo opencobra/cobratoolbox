@@ -73,7 +73,11 @@ cols = [1 0 0; 0 1 0; 0 0 1];
 for j = 1:length(boxes)
     patch(get(boxes(j), 'XData'), get(boxes(j), 'YData'), cols(j, :), 'FaceAlpha', .5);
 end
-assert(numel(findobj(gca, 'Type', 'patch')) == 3 && ishold);
+patches = findobj(gca, 'Type', 'patch');
+assert(numel(patches) == 3 && ishold);
+% cols(1, :) is drawn on the last group's box (x = 3), as with boxplot
+redPatch = patches(arrayfun(@(p) isequal(p.FaceColor, [1 0 0]), patches));
+assert(isscalar(redPatch) && abs((min(redPatch.XData) + max(redPatch.XData)) / 2 - 3) < 1e-12);
 clf(figureHandle);
 
 %% matrix input (one box per column) and an all-NaN column

@@ -50,7 +50,7 @@ def r2(y, mu, n, p):
     return 1 - sse / sst, 1 - (sse / sst) * (n - 1) / (n - p)
 
 
-def firth(X, y, tol=1e-12):
+def firth(X, y, tol=1e-13):
     """Firth's penalized logistic regression (Heinze and Schemper 2002), Newton with step halving."""
     b = np.zeros(X.shape[1])
 
@@ -61,7 +61,7 @@ def firth(X, y, tol=1e-12):
         return (y * np.log(mu) + (1 - y) * np.log(1 - mu)).sum() + 0.5 * np.linalg.slogdet(info)[1], mu, w, info
 
     val, mu, w, info = pen(b)
-    for _ in range(200):
+    for _ in range(10000):
         sw = np.sqrt(w)
         A = sw[:, None] * X
         h = np.einsum('ij,jk,ik->i', A, np.linalg.inv(info), A)
@@ -73,10 +73,13 @@ def firth(X, y, tol=1e-12):
             if nv >= val - 1e-14 * abs(val):
                 break
             frac /= 2
-        b_new = b + frac * step
-        done = np.max(np.abs(b_new - b)) < tol
-        b, val, mu, w, info = b_new, nv, nmu, nw, ninfo
-        if done:
+        b, val, mu, w, info = b + frac * step, nv, nmu, nw, ninfo
+        # converged when the modified score vanishes (the iteration can converge linearly, so a
+        # small step alone does not mean convergence)
+        sw = np.sqrt(w)
+        A = sw[:, None] * X
+        h = np.einsum('ij,jk,ik->i', A, np.linalg.inv(info), A)
+        if np.max(np.abs(X.T @ (y - mu + h * (0.5 - mu)))) < tol:
             break
     se = np.sqrt(np.diag(np.linalg.inv(info)))
     return b, se, mu

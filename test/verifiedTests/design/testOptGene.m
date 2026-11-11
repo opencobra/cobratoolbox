@@ -44,7 +44,8 @@ for k = 1:klt
     % function outputs
     % Set the rng, for reproducability
     rng(0);
-    [x, population, scores, optGeneSol] = optGene(model, targetRxn, fructose_substrateRxn, generxnList, 'StallTimeLimit', 15, 'TimeLimit', 30);
+    % a generation limit (besides the time limits) makes the run reproducible with rng(0) and fast
+    [x, population, scores, optGeneSol] = optGene(model, targetRxn, fructose_substrateRxn, generxnList, 'StallTimeLimit', 15, 'TimeLimit', 30, 'Generations', 20);
     % Check, that we get the expected solution from a previous run.
     optSols = population((optGeneSol.scores == min(optGeneSol.scores)), :);  % Get the set of optimal Solutions.
     % bit-string populations are double 0/1 (as ga documents), so convert before indexing

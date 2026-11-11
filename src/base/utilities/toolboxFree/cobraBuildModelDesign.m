@@ -102,6 +102,9 @@ for k = find([variableInfo.isCategorical])
         isMissing = isMissing | isnan(fullIndex);
     else
         [index, levels] = cobraGrp2idx(values(~isMissing));
+        % keep only the levels that occur (unused categories of a categorical give no column)
+        [usedLevels, ~, index] = unique(index);
+        levels = levels(usedLevels);
         fullIndex = NaN(nRows, 1);
         fullIndex(~isMissing) = index;
     end
