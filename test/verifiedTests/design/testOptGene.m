@@ -8,8 +8,8 @@
 
 % Check requirements
 
-requiredToolboxes = {'gads_toolbox'};  % This is the Global optimization toolbox
-solvers = prepareTest('needsLP', true, 'needsMILP', true, 'toolboxes', requiredToolboxes);
+% (optGene uses cobraGa, so the Global Optimization Toolbox is not required)
+solvers = prepareTest('needsLP', true, 'needsMILP', true);
 % If we have more than one solver per type (LP/MILP), only use those that
 % are available for both.
 if numel(solvers.LP) > 1 && numel(solvers.MILP) > 1
@@ -42,13 +42,13 @@ for k = 1:klt
     fprintf(' -- Running testOptGene using the solver interfaces: LP: %s ; MILP: %s... ', solvers.LP{k}, solvers.MILP{k});
     basicsolution = optimizeCbModel(model);
     % function outputs
-    % requires Global Optimization Toolbox
     % Set the rng, for reproducability
     rng(0);
     [x, population, scores, optGeneSol] = optGene(model, targetRxn, fructose_substrateRxn, generxnList, 'StallTimeLimit', 15, 'TimeLimit', 30);
     % Check, that we get the expected solution from a previous run.
     optSols = population((optGeneSol.scores == min(optGeneSol.scores)), :);  % Get the set of optimal Solutions.
-    optReacs = optSols(1, :);
+    % bit-string populations are double 0/1 (as ga documents), so convert before indexing
+    optReacs = logical(optSols(1, :));
     model2 = model;
     model2.lb(ismember(model2.rxns, generxnList(optReacs))) = 0;
     model2.ub(ismember(model2.rxns, generxnList(optReacs))) = 0;

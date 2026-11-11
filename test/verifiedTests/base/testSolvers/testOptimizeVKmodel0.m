@@ -42,7 +42,6 @@
 %     Line 163: unreachable, MATLAB rejects a second output before the function body runs.
 %     Line 179: unreachable, the solver name would have to equal five names at the same time.
 %     Lines 226-228: defective input skipped, F equal to R with L returns no output (defect below).
-%     Lines 533-537, 540-543: DCA and BDCA call fminunc of the Optimization Toolbox, not available.
 %     Line 589: defective input skipped, parms.flag_psi_error = 1 stops every solver (defect below).
 %
 % Known defects documented (NOT tested, NOT fixed here):
@@ -230,6 +229,37 @@ for k = 1:numel(dfSolvers)
     % Tier-5 values
     assert(output.Nmap == expectedNmap(k), dfSolvers{k});
     assert(abs(output.psi_best - expectedPsi(k)) <= 1e-6 * expectedPsi(k), dfSolvers{k});
+end
+
+% restore the display format
+format(originalFormat);
+
+%% DC programming solvers DCA and BDCA (subproblems solved by cobraFminunc)
+
+% The strongly convex subproblem of each DC iteration is minimized by cobraFminunc (trust-region
+% Newton; feature 20261111-152503-toolbox-free-remaining). Tier-5 evaluation counts and merit
+% values after 50 iterations (first run 2026-11-11, MATLAB R2025a), in the order of dcSolvers;
+% the merit values are compared with a relative tolerance of 1e-6, which allows for the
+% subproblem tolerance (1e-8) accumulated over the 50 iterations
+dcSolvers = {'DCA', 'BDCA'};
+expectedNmap = [50, 240];
+expectedPsi = [0.09428740835999998, 0.01775869375191672];
+for k = 1:numel(dcSolvers)
+    output = optimizeVKmodel0(kineticModel, dcSolvers{k}, x0, parms);
+
+    % the output has the documented fields (no gradient count) and psi_best is the merit value
+    % of x_best
+    assert(isequal(sort(fieldnames(output)), dfFields), dcSolvers{k});
+    assert(isequal(size(output.x_best), [nMets, 1]), dcSolvers{k});
+    assert(abs(output.psi_best - meritFunction(output.x_best)) <= meritTol * output.psi_best, dcSolvers{k});
+
+    % the solvers decrease the merit value but stop at the iteration limit
+    assert(strcmp(output.Status, maxIterStatus) && output.Niter == parms.MaxNumIter, dcSolvers{k});
+    assert(output.psi_best < psi0, dcSolvers{k});
+
+    % Tier-5 values
+    assert(output.Nmap == expectedNmap(k), dcSolvers{k});
+    assert(abs(output.psi_best - expectedPsi(k)) <= 1e-6 * expectedPsi(k), dcSolvers{k});
 end
 
 % restore the display format

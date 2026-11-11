@@ -133,8 +133,11 @@ for j = 1:size(fpkm, 2) % for each sample
     [fit_l_r, ~] = createFitL(xi, rest_curve_r);
     
     if figflag
-        plot(fit_r_r, 'b');
-        plot(fit_l_r, 'g');
+        % fitted curves over the range of the current axes (as plot of a cfit object did)
+        fitRange = xlim;
+        fitPoints = linspace(fitRange(1), fitRange(2), 1001);
+        plot(fitPoints, fit_r_r.f(fitPoints), 'b');
+        plot(fitPoints, fit_l_r.f(fitPoints), 'g');
         title({'Density plot with fitted curves', ['Sample: ', colnames{j}]}, 'Interpreter','none');
         ylabel('Density');
         xlabel('log2(FPKM)');

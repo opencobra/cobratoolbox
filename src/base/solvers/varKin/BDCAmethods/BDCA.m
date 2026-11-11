@@ -112,7 +112,9 @@ FR_RF = FR-RF;
 df=@(x) FR*diag(exp(p+FR'*x))*FR_RF';
 
 eps = 1e-8;
-options_fmin = optimoptions('fminunc','Algorithm', 'trust-region', ...
+% option structure for cobraFminunc (trust-region Newton with the gradient and Hessian
+% returned by FuncGradHessSub; replaces optimoptions/fminunc of the Optimization Toolbox)
+options_fmin = struct('Algorithm', 'trust-region', ...
 'GradObj', 'on','Hessian','on','Display','off','TolFun',eps,'TolX',eps);
 
 xk         = x0;
@@ -136,7 +138,7 @@ T0 = tic;
 % ======================= start of the main loop =======================
 while ~StopFlag
 
-    yk = fminunc(@(x)FuncGradHessSub(x,xk,F,R,kin,rho),xk,options_fmin);
+    yk = cobraFminunc(@(x)FuncGradHessSub(x,xk,F,R,kin,rho),xk,options_fmin);
 
     fyk  = mapp(yk);
     Nmap = Nmap+1;
