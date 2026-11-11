@@ -33,7 +33,17 @@ function [results, regressions] = performRegressions(data, metadata, formula, ex
 %                    the estimates, confidence intervals, p-values, FDR values
 %                    and adjusted R2 for each reaction/taxon
 %    regressions:    structure with the fitted regression model object for each
-%                    reaction/taxon (empty entries where no fit was found)
+%                    reaction/taxon (empty entries where no fit was found):
+%                    cobraGeneralizedLinearModel objects (from cobraFitglm; the
+%                    properties and the methods coefCI and predict of a MathWorks
+%                    GeneralizedLinearModel) for fixed-effects formulas, and
+%                    GeneralizedLinearMixedModel objects (fitglme) for mixed-effects
+%                    formulas
+%
+% NOTE:
+%    Fixed-effects regressions use cobraFitglm and need no toolbox; mixed-effects
+%    formulas (random terms such as (1|ID)) use fitglme and need the Statistics and
+%    Machine Learning Toolbox.
 %
 % .. Author: - Tim Hensen, 2024
 %            - Tim Hensen, May 2025 (support for unnested mixed-effect regressions)
@@ -132,6 +142,11 @@ if matlabVersion(1)>=24.2 % Check if the current matlab version is greater than 
     firthRegression = true;
 end
 
+% Mixed-effects regressions use fitglme (Statistics and Machine Learning Toolbox)
+if mixedEffectRegression && exist('fitglme', 'file') ~= 2
+    error('performRegressions: the mixed-effects formula needs fitglme from the Statistics and Machine Learning Toolbox (fixed-effects formulas run without it).');
+end
+
 % Perform regressions
 regressions = struct;
 for i = 1:length(unique(groups))
@@ -145,11 +160,11 @@ for i = 1:length(unique(groups))
     end
 
     if mixedEffectRegression == false && firthRegression == true % Perform regression with jeffreys-prior penalty for improved robustness
-        mdl = fitglm(data(groups==i,:),formula,'Distribution',responseDistribution,'LikelihoodPenalty','jeffreys-prior'); % Firth's regression
+        mdl = cobraFitglm(data(groups==i,:),formula,'Distribution',responseDistribution,'LikelihoodPenalty','jeffreys-prior'); % Firth's regression
     end
 
     if mixedEffectRegression == false && firthRegression == false % Perform regression
-        mdl = fitglm(data(groups==i,:),formula,'Distribution',responseDistribution);
+        mdl = cobraFitglm(data(groups==i,:),formula,'Distribution',responseDistribution);
     end     
 
     % If no good fit could be found, do not save the result

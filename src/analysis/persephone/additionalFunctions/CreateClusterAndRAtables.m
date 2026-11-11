@@ -87,7 +87,7 @@ for i=1:size(rxns,1)
 
 
         % Perform linear regression on flux and relative abundances
-        fit_microbe = fitlm(flux, singleClusterAbn);
+        fit_microbe = cobraFitlm(flux, singleClusterAbn);
 
         % Add R2 values to table
         fluxMicrobeCorr{i,j} = fit_microbe.Rsquared.Ordinary;

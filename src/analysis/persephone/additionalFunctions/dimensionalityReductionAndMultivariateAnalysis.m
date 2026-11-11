@@ -245,7 +245,7 @@ function exploreMetadataCorrelations(metadataTable, PCofInterestScore, PCofInter
     for i = 1:numVars
         lastwarn('')
         currentVar = metadataTable.(metadataVars{i});
-        mdl = fitlm(currentVar, PCofInterestScore);
+        mdl = cobraFitlm(currentVar, PCofInterestScore);
 
         % If no good fit could be found, do not save the result
         warnMsg = lastwarn;

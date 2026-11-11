@@ -104,7 +104,7 @@ if exist('rxnList','var')
         labelVec = [ones(size(hitVec, 2), 1); zeros(size(missVec, 2), 1)] ;
 
         % Train model and pull out weights
-        SVMModel = fitcsvm(combinedVec, labelVec) ;
+        SVMModel = cobraFitcsvm(combinedVec, labelVec) ;
 
         weights = SVMModel.Beta ;
 
