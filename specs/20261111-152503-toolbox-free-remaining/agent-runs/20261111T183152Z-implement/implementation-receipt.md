@@ -112,3 +112,12 @@ Branch `20261111-152503-toolbox-free-remaining`, 8 commits on upstream/develop `
   of another release); follow-up outside this feature.
 - testEFlux downloads GEO data; NCBI currently answers with a reCAPTCHA page, so the test reports a
   missing web requirement and skips.
+
+## Follow-up (2026-11-12): testOptimizeVKmodel0 DCA failed on CI
+
+The DCA/BDCA merit values had been pinned to a relative 1e-6. CI runs another MATLAB build, and
+the result after 50 DC iterations depends on where each subproblem stops within its 1e-8
+tolerance: 40 starts perturbed by relative 1e-16 to 1e-12 moved the merit value by up to 3.6e-5
+(DCA) and 1.3e-2 (BDCA), while the evaluation counts (50, 240) never changed. The tolerances are
+now 1e-3 and 5e-2, and the test also requires BDCA to reach a lower merit value than DCA. The test
+passes locally; no source file changed.
