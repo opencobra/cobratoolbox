@@ -21,10 +21,20 @@ of scope.
 | `testOptimizeCbModelNLP` | Agent-mode start-up declares the `matlab` solver installed without checking; without the Optimization Toolbox the test errors instead of being skipped. Default mode skips it. |
 | `testFitC13Data` | Same false availability in agent mode; once the test runs it fails on its own defect: it reads an undefined variable (`solverPkgs`) where its solver list is held in `solvers`. |
 | `testExtractBondSubgraphs`, `testClassifySubgraphIsomorphism` | Each asserts that the rewritten function fails exactly as the function it replaced, by comparing the exact built-in error identifier recorded under R2024b. R2026a reports two of those built-in failures under new identifiers, so the comparison fails although the behaviour is unchanged. |
-| `testEcosystemToy` | Passes with glpk and gurobi. With mosek, one or more flux variability problems behind the ecosystem cluster summary come back without an optimal value, producing a `NaN` and a different summary table. |
+| `testEcosystemToy` | Passes with glpk and gurobi. With mosek the summary table differs. Corrected by the plan-phase diagnosis (2026-11-12, see Clarifications): no problem is non-optimal and no `NaN` occurs; mosek's interior-point flux ranges lie within 3.1e-7 of gurobi's, but `ecosystemQualitativeFVA` treats a flux as zero only within `delta = 1e-9`, so 28 of 656 qualitative states flip. |
 
 Also found: start-up in default mode, run inside a linked git worktree, attempts to initialise a git repository and
 add a remote, because it recognises a repository only when `.git` is a folder.
+
+## Clarifications
+
+### Session 2026-11-12
+
+- Q: (plan-phase diagnosis of US3) Mosek gives no `NaN`; its flux ranges are within 3.1e-7 of gurobi's, and the
+  1e-9 zero threshold of `ecosystemQualitativeFVA` flips 28/656 qualitative states (0 flips for any threshold
+  >= 1e-7, gurobi's states unchanged). Which option? -> A: the default zero threshold of `ecosystemQualitativeFVA`
+  is derived from the LP solver's feasibility tolerance (rejected: test-only `delta`, mosek vertex solutions,
+  skipping mosek in the test). This is an approved change of a public default (Principle II); see FR-006, FR-007.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -141,8 +151,11 @@ the shared repository's configuration is unchanged.
   different failure. The recorded R2024b fixtures MUST remain the reference; nothing is re-recorded unless the
   plan shows that is the only sound option.
 - **FR-006**: The mosek discrepancy in `testEcosystemToy` MUST be diagnosed (which problem, which status, why)
-  and presented to the maintainer with options; implementation of US3 waits for that choice.
-- **FR-007**: The functions under the ecosystem analysis MUST NOT change their results for glpk or gurobi.
+  and presented to the maintainer with options; implementation of US3 waits for that choice. Done in the plan
+  phase; chosen option: when the caller gives no `delta`, `ecosystemQualitativeFVA` MUST use the feasibility
+  tolerance of the current LP solver as its zero threshold. An explicit `delta` MUST behave as before.
+- **FR-007**: The ecosystem tests MUST give the same results as before for glpk and gurobi. The default-threshold
+  change of FR-006 is the one approved behaviour change, and its help text MUST say so.
 - **FR-008**: Default-mode start-up MUST recognise a linked worktree as a git repository and MUST NOT run
   repository initialisation or remote creation there.
 - **FR-009**: `src/analysis/thermo/inchi/` MUST NOT be modified (out of scope by the maintainer's decision).
