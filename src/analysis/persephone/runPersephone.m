@@ -39,7 +39,7 @@ validatePersephoneInputs(paths,resultPath);
 diary(fullfile(resultPath, 'logFile_initialisation.txt'))
 
 % Initialise PERSEPHONE
-[~, statToolboxInstalled, updatedMetadataPath] = initPersephone(resultPath, paths);
+[~, ~, updatedMetadataPath] = initPersephone(resultPath, paths);
 paths.General.metadataPath = updatedMetadataPath;
 
 % Validate the path to the given diet.
@@ -312,7 +312,10 @@ diary('off') % Close diary and save to resultPath
 
 %% Part 7: Analysis of flux results %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 tic;
-if paths.stats.flagStatistics && statToolboxInstalled
+% the statistics stage runs on base MATLAB (cobraFitglm, cobraFitlm and the other toolboxFree
+% functions); only mixed-effects formulas need the Statistics and Machine Learning Toolbox,
+% and performRegressions raises an error naming it in that case
+if paths.stats.flagStatistics
     diary([resultPath filesep 'logFile_statistics.txt']) % Open diary for log file
 
     for i = 1:size(paths.stats.response,2)

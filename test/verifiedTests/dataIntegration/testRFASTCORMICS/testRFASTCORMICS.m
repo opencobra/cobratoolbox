@@ -7,10 +7,9 @@
 %     - Vanille Lejal, University of Luxembourg, June 2026
 
 % required toolboxes and solvers
-solvers = prepareTest('needsLP', true, 'requireOneSolverOf', {'gurobi','ibm_cplex'}, 'requiredToolboxes', {'statistics_toolbox'});
-
-% check presence of curvefit
-assert(~isempty(ver('curvefit')), 'Curve Fitting Toolbox not found');
+% (rFastcormics needs no Statistics or Curve Fitting Toolbox; discretizeFPKM is tested in
+% testDiscretizeFPKM)
+solvers = prepareTest('needsLP', true, 'requireOneSolverOf', {'gurobi','ibm_cplex'});
 
 % initiate a model for testing
 reactionFormulas = {'A -> 2 B', '2 B -> C', 'G -> F', 'F -> 2 B', '2 B -> D', 'D -> E', ...
@@ -53,9 +52,3 @@ for k = 1:length(solvers.LP)
     % compare output with expected model
     assert(isequal(model.rxns(retainedReactions), expectedReactionNames'));
 end
-
-
-
-
-
-

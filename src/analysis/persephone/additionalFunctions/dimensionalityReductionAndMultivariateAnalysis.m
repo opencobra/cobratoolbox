@@ -93,7 +93,7 @@ if strcmp(inputDataType, "abundance")
     [coeff, PCscores, ~, ~, explVar] = cobraPca(measuresStandardized', 'Centered', false, 'Algorithm', 'als');
 elseif strcmp(inputDataType, "betadiversitymatrix")
     % Perform PCoA for beta diversity matrix
-    [PCscores, eigvals] = cmdscale(measuresMatrix);
+    [PCscores, eigvals] = cobraCmdscale(measuresMatrix);
     explVar = eigvals / sum(eigvals) * 100;
     coeff = [];
 end
@@ -186,7 +186,7 @@ function performStatisticalTests(PCofInterestScore, PCofInterest, metadataTable,
     if ~isnumeric(metadataTable.(varOfInterest))    
         [categories, ~, ic] = unique(metadataTable.(varOfInterest));
         ic_namedByCategories = categories(ic);
-        [p_kruskal, tbl_kruskal, ~] = kruskalwallis(PCofInterestScore, ic_namedByCategories);
+        [p_kruskal, tbl_kruskal, ~] = cobraKruskalwallis(PCofInterestScore, ic_namedByCategories);
         
         % Figure: Violinplot showing PC of interest scores distribution for all groups
         % of categorical metadata variable
@@ -245,7 +245,7 @@ function exploreMetadataCorrelations(metadataTable, PCofInterestScore, PCofInter
     for i = 1:numVars
         lastwarn('')
         currentVar = metadataTable.(metadataVars{i});
-        mdl = fitlm(currentVar, PCofInterestScore);
+        mdl = cobraFitlm(currentVar, PCofInterestScore);
 
         % If no good fit could be found, do not save the result
         warnMsg = lastwarn;
@@ -271,7 +271,7 @@ function exploreMetadataCorrelations(metadataTable, PCofInterestScore, PCofInter
     
     % Calculate FDR (False Discovery Rate)
     pValues = generalTable.pValue;
-    FDR = mafdr(pValues, 'BHFDR', true);
+    FDR = reshape(fdrBHadjustment(pValues), size(pValues));
     generalTable.FDR = FDR;
     
     % Sort the table by p-value

@@ -11,7 +11,10 @@
 global CBTDIR
 
 % define the features required to run the test
-requiredToolboxes = { 'statistics_toolbox' };
+% (mgPipe uses cobraCmdscale, cobraRanksum and cobraKruskalwallis, so no Statistics Toolbox is
+% required; the violin plots of retrieveModelStats need an info file, which this test does not
+% pass)
+requiredToolboxes = {};
 
 % test Requirements
 prepareTest('requiredToolboxes',requiredToolboxes, 'requiredSolvers', {'ibm_cplex'});

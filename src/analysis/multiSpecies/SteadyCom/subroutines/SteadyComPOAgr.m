@@ -435,7 +435,7 @@ if any(undone)
     end
     addConstraint = false;
 
-    if threads == 1
+    if threads == 1 || ~isParallelToolboxAvailable() % spmd and Composite need the Parallel Computing Toolbox
         %% single thread computation
         for jP = 1:Npair
             [j,k] = deal(pairList(undoneId(jP), 1),pairList(undoneId(jP), 2));

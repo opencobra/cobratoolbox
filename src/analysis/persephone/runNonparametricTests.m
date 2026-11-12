@@ -154,7 +154,7 @@ for i = 1:length(groupnames)
         
         if nanFraction1 < 0.3 && nanFraction2 < 0.3
             % Perform test
-            [p, ~, stats] = ranksum(group1Data, group2Data);
+            [p, ~, stats] = cobraRanksum(group1Data, group2Data);
             resultTable.("p-value")(i) = p;
             resultTable.statistic(i) = stats.ranksum;
         else
@@ -181,7 +181,7 @@ for i = 1:length(groupnames)
         resultTable.method(i) = "Kruskall-Wallis test";
 
         % Perform test
-        [p, tbl, stats] = kruskalwallis(normalizedData, dataGroup.Response, 'off');
+        [p, tbl, stats] = cobraKruskalwallis(normalizedData, dataGroup.Response, 'off');
         resultTable.("p-value")(i) = p; % Store p-value
         resultTable.n(i) = sum(stats.n); % Store sample size
         resultTable.statistic(i) = tbl{2,5}; % Get chi-square statistic

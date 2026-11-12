@@ -93,7 +93,7 @@ nRxns = histcounts(K, 0.5:1:(numel(uniquehSubsystemsA) + 0.5))';  % the number o
 %   M = total reactions : population size
 %   K = nRxns           : success states in population (total reactions per subsystem)
 %   N = length(rxnSet)  : number of draws (size of the reaction set)
-gopvalues = hygecdf(allSubsystems' - 1, length(model.rxns), nRxns, length(rxnSet), 'upper');
+gopvalues = cobraHygecdf(allSubsystems' - 1, length(model.rxns), nRxns, length(rxnSet), 'upper');
 
 % take out the zeros for one-sided test
 nonZerInd = find(allSubsystems);
@@ -114,7 +114,7 @@ resultCell(1, :) = {'P-value', 'Adjusted P-value', 'Group', 'Enriched set size',
 resultCell(2:end, 1) = num2cell(gopvalues(orderedPval));
 
 % correct for multiple testing with FDR
-resultCell(2:end, 2) = num2cell(mafdr(cell2mat(resultCell(2:end, 1)), 'BHFDR', true));
+resultCell(2:end, 2) = num2cell(fdrBHadjustment(cell2mat(resultCell(2:end, 1))));
 
 % Group name
 resultCell(2:end, 3) = uniquehSubsystemsA(orderedPval);

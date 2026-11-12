@@ -14,8 +14,11 @@
 fileDir = fileparts(which('testCreatePanModels'));
 cd(fileDir);
 
-% ksdensity function in Violin requires Statistics and Machine
-solverPkgs = prepareTest('requiredToolboxes', {'Statistics Toolbox'});
+% createPanModels plots with plotBiomassTestResults/plotATPTestResults, which call the vendored
+% external/base/utilities/violinPlots/violinplot; its Violin.m calls ksdensity (Statistics and
+% Machine Learning Toolbox). external/ is read-only, so the requirement stays. (The former key
+% 'Statistics Toolbox' never matched a toolbox name, so the test was skipped everywhere.)
+solverPkgs = prepareTest('requiredToolboxes', {'statistics_toolbox'});
 
 modelList={
         'Abiotrophia_defectiva_ATCC_49176'

@@ -468,7 +468,11 @@ if ~isempty(flux) %if flux vector is not empty
 
             ids=ids';
 
-            map = biograph(matrix,ids,'ShowTextInNodes','ID','LayoutType', 'hierarchical') %create a biograph object EdgeType/ 'LayoutType', 'evuilibrium'
+            % network as a digraph drawn with plot (biograph, removed from MATLAB in R2022b, and the
+            % Bioinformatics Toolbox are not needed); node names and descriptions become data tips
+            networkGraph = digraph(matrix, ids);
+            nodeLabels = repmat({''}, length(ids), 1);
+            nodeDescriptions = repmat({''}, length(ids), 1);
 
             for m=1:length(involvedMets) %cycle through the involved mets
 
@@ -476,14 +480,12 @@ if ~isempty(flux) %if flux vector is not empty
 
                     if strcmp(involvedMets{m},model.mets{n}) %if particular metabolite has been found in the model
 
-                        try %try to set label=metabolite name
-                            set(map.nodes(m), 'Label', strcat('Name: ',model.metNames{n}))
-                        catch info
+                        if isfield(model, 'metNames') && numel(model.metNames) >= n %label=metabolite name
+                            nodeLabels{m} = strcat('Name: ',model.metNames{n});
                         end
 
-                        try %try to set description=metabolite charged formula
-                            set(map.nodes(m), 'Description', strcat('Charged formula: ',model.metFormulas{n}))
-                        catch info
+                        if isfield(model, 'metFormulas') && numel(model.metFormulas) >= n %description=metabolite charged formula
+                            nodeDescriptions{m} = strcat('Charged formula: ',model.metFormulas{n});
                         end
 
                     end
@@ -498,16 +500,13 @@ if ~isempty(flux) %if flux vector is not empty
 
                     if strcmp(model.rxns{RxIDs(m)},model.rxns{n}) %if particular reaction has been found in the model
 
-                        try %try to set label=reaction name
-                            set(map.nodes(length(involvedMets)+m), 'Label', strcat('Name: ',model.rxnNames{n}))
-                        catch info
+                        if isfield(model, 'rxnNames') && numel(model.rxnNames) >= n %label=reaction name
+                            nodeLabels{length(involvedMets)+m} = strcat('Name: ',model.rxnNames{n});
                         end
 
-                        try %try to set description=reaction evuation
-                            strtmp=printRxnFormula(model,model.rxns{RxIDs(m)},false);
-                            set(map.nodes(length(involvedMets)+m), 'Description', strcat('Reaction: ',strtmp{1},' lb=',num2str(model.lb(RxIDs(m))),' ub=',num2str(model.ub(RxIDs(m)))))
-                        catch info
-                        end
+                        %description=reaction equation and bounds
+                        strtmp=printRxnFormula(model,model.rxns{RxIDs(m)},false);
+                        nodeDescriptions{length(involvedMets)+m} = strcat('Reaction: ',strtmp{1},' lb=',num2str(model.lb(RxIDs(m))),' ub=',num2str(model.ub(RxIDs(m))));
 
                     end
 
@@ -517,27 +516,25 @@ if ~isempty(flux) %if flux vector is not empty
 
             max_flux=max(abs(flux)); %get max absolute flux value from the input vector
 
+            figureHandle = figure('Name', 'Biograph Viewer'); % name kept for closev
+            h = plot(networkGraph, 'Layout', 'layered', 'NodeLabel', ids, 'EdgeColor', [0.5 0.5 0.5]); %generate layout (grey edges without flux)
+            h.DataTipTemplate.DataTipRows(end + 1) = dataTipTextRow('Name', nodeLabels);
+            h.DataTipTemplate.DataTipRows(end + 1) = dataTipTextRow('Description', nodeDescriptions);
+
             for p=length(MetsNodesIDs)+1:length(ids) %cycle through the nodes IDs starting from the first reaction node
 
                 if flux(RxIDs(p-length(MetsNodesIDs)))>1e-9 && flux(RxIDs(p-length(MetsNodesIDs)))~='x' %if flux is positive and not evual to x
-                    edges1 = getedgesbynodeid(map,ids(p),[]); %get all source edges connected to particular reaction node
-                    edges2 = getedgesbynodeid(map,[],ids(p)); %get all sink edges connected to particular reaction node
-                    tot_edges=[edges1;edges2]; %concatenate edges
-                    set(tot_edges,'LineColor',[0 1 0]); %set green color to found edges
-                    set(tot_edges,'LineWidth',abs(7*(flux(RxIDs(p-length(MetsNodesIDs))))/max_flux)); %set thichness of edge proportional to max flux
+                    tot_edges=[outedges(networkGraph,p);inedges(networkGraph,p)]; %all source and sink edges of the reaction node
+                    highlight(h,'Edges',tot_edges,'EdgeColor',[0 1 0],'LineWidth',abs(7*(flux(RxIDs(p-length(MetsNodesIDs))))/max_flux)); %green, thickness proportional to max flux
                 elseif flux(RxIDs(p-length(MetsNodesIDs)))<-1e-9 && flux(RxIDs(p-length(MetsNodesIDs)))~='x' %if flux is negative and not evual to x
-                    edges1 = getedgesbynodeid(map,ids(p),[]); %get all source edges connected to particular reaction node
-                    edges2 = getedgesbynodeid(map,[],ids(p)); %get all sink edges connected to particular reaction node
-                    tot_edges=[edges1;edges2]; %concatenate edges
-                    set(tot_edges,'LineColor',[0 0 1]); %set green color to found edges
-                    set(tot_edges,'LineWidth',abs(7*(flux(RxIDs(p-length(MetsNodesIDs))))/max_flux)); %set thichness of edge proportional to max flux
+                    tot_edges=[outedges(networkGraph,p);inedges(networkGraph,p)]; %all source and sink edges of the reaction node
+                    highlight(h,'Edges',tot_edges,'EdgeColor',[0 0 1],'LineWidth',abs(7*(flux(RxIDs(p-length(MetsNodesIDs))))/max_flux)); %blue, thickness proportional to max flux
                 end
             end
 
 
-            h=view(map); %generate layout
-            set(h.nodes(RxnsNodesIDs),'Color',[241/255,176/255,102/255]); %set color to reaction nodes
-            set(h.nodes(MetsNodesIDs),'Shape','ellipse'); %set shape of ellipse to metabolite nodes
+            highlight(h,RxnsNodesIDs,'NodeColor',[241/255,176/255,102/255],'Marker','s'); %set color to reaction nodes
+            highlight(h,MetsNodesIDs,'Marker','o'); %set shape of ellipse to metabolite nodes
 
 
             for v=1:length(DeadRxnsID2)
@@ -563,7 +560,7 @@ if ~isempty(flux) %if flux vector is not empty
             end
 
             if DeadMetsID(1)~=-1 %if dead end mets exist
-                set(h.nodes(DeadMetsID),'Color',[1 0 0]); %set red color to dead end metabolite nodes
+                highlight(h,DeadMetsID,'NodeColor',[1 0 0]); %set red color to dead end metabolite nodes
             end
 
             ExRxnsID=-1;%declare variable
@@ -583,33 +580,30 @@ if ~isempty(flux) %if flux vector is not empty
             end
 
             if ExRxnsID(1)~=-1 %if exchange reactions exist
-                set(h.nodes(ExRxnsID),'Color',[173/255, 1, 47/255]); %set red color to exchange reaction nodes
+                highlight(h,ExRxnsID,'NodeColor',[173/255, 1, 47/255]); %set color to exchange reaction nodes
             end
 
             if nargin>5 && ~strcmp(initialMet{1},'') %if the number of arguments > 5 and the argument initialMet is not empty
-                set(h.nodes(initialMetID),'Color',[0 1 0]); %set green color to initial met node
+                highlight(h,initialMetID,'NodeColor',[0 1 0]); %set green color to initial met node
             end
 
             if DeadRxnsID(1)~=-1 %if dead reactions exist
-                set(h.nodes(DeadRxnsID),'Color',[1 0 0]); %set red color to dead reaction nodes
+                highlight(h,DeadRxnsID,'NodeColor',[1 0 0]); %set red color to dead reaction nodes
             end
 
             if ExRxnsID(1)~=-1 %if exchange reactions exist
-                set(h.nodes(ExRxnsID),'Shape','diamond'); %set shape of ellipse to metabolite nodes
+                highlight(h,ExRxnsID,'Marker','d'); %set diamond shape to exchange reaction nodes
             end
 
             if strcmp(save,'true') %if save=true
-                f = get(h.hgAxes, 'Parent');
+                f = figureHandle;
                 clock_tmp=clock;
                 print(f, '-djpeg', strcat(num2str(clock_tmp(1)),'_',num2str(clock_tmp(2)),'_',num2str(clock_tmp(3)),'_',num2str(clock_tmp(4)),'_',num2str(clock_tmp(5)),'_',num2str(clock_tmp(6)),'.jpg'));
 
             end
 
             if strcmp(closev,'true') %if closev=true
-                child_handles = allchild(0);
-                names = get(child_handles,'Name');
-                k = find(strncmp('Biograph Viewer', names, 15));
-                close(child_handles(k))
+                close(figureHandle)
             end
 
         end

@@ -202,7 +202,8 @@ if microbiomePresent == true
     %%
 
     
-    if license('test', 'Statistics_Toolbox')
+    % Ranks are computed with cobraTiedrank, so no Statistics Toolbox is needed
+    if true
         % Correlate flux predictions with microbial relative abundances. Then,
         % create a tall table with reaction, taxon, rho, 95% CI, and the
         % p-value.
@@ -234,7 +235,7 @@ if microbiomePresent == true
         preparedTables = combinedTables;
     
         % Convert matrices to rank for spearman correlations
-        convToRank = @(x) array2table(tiedrank(table2array(x)),'RowNames',x.Properties.RowNames,'VariableNames',x.Properties.VariableNames);
+        convToRank = @(x) array2table(cobraTiedrank(table2array(x)),'RowNames',x.Properties.RowNames,'VariableNames',x.Properties.VariableNames);
         rankedTables = cellfun(@(x) convToRank(x), preparedTables,'UniformOutput',false);
     
         for i=1:nPairs
@@ -251,10 +252,6 @@ if microbiomePresent == true
 
         % Rename populated results for saving
         fluxMicrobeCorrTable = corrTable; 
-
-    else
-        warning('Statistics Toolbox was not installed, correlation between flux and relative abundance could not be performed');
-        fluxMicrobeCorrTable = cell2table({'Statistics Toolbox was not installed, correlation between flux and relative abundance could not be performed'});
     end
 end
 

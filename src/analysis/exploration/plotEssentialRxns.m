@@ -67,22 +67,33 @@ minFluxUnits = min(min(rxnsOfInterest));
 
 if maxFluxUnits ~= 0 && minFluxUnits == 0
     mymap = [1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0; 1 1 0; 1 1 0; 1 1 0;  1 1 0;  1 1 0; 0 0 0];
-    hm = HeatMap(rxnsOfInterest, 'ColumnLabels', modelNames, 'RowLabels', rxnInterestNames, 'Colormap', redbluecmap, 'Symmetric', false, 'DisplayRange', 100);  % maxFluxUnits/3
+    hm = essentialRxnsHeatMap(rxnsOfInterest, modelNames, rxnInterestNames);  % DisplayRange 100 (maxFluxUnits/3)
     colormap(hm, mymap);
 elseif maxFluxUnits ~= 0 && minFluxUnits < 0 && essentialityRange(1) <= 0
     mymap = [1 1 1; 1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0; 1 1 0; 1 1 0; 1 1 0;  1 1 0;  1 1 0; 0 0 0];
-    hm = HeatMap(rxnsOfInterest, 'ColumnLabels', modelNames, 'RowLabels', rxnInterestNames, 'Colormap', redbluecmap, 'Symmetric', false, 'DisplayRange', 100);  % maxFluxUnits/3
+    hm = essentialRxnsHeatMap(rxnsOfInterest, modelNames, rxnInterestNames);  % DisplayRange 100 (maxFluxUnits/3)
     colormap(hm, mymap);
 elseif maxFluxUnits ~= 0 && minFluxUnits == 0 && essentialityRange(1) == 0
     mymap = [1 0 0;  1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0; 1 1 0; 1 1 0; 1 1 0;  1 1 0;  1 1 0; 0 0 0];
-    hm = HeatMap(rxnsOfInterest, 'ColumnLabels', modelNames, 'RowLabels', rxnInterestNames, 'Colormap', redbluecmap, 'Symmetric', false, 'DisplayRange', 100);  % maxFluxUnits/3
+    hm = essentialRxnsHeatMap(rxnsOfInterest, modelNames, rxnInterestNames);  % DisplayRange 100 (maxFluxUnits/3)
     colormap(hm, mymap);
 elseif maxFluxUnits ~= 0 && essentialityRange(1) >= 0
     mymap = [1 0.5 0;  1 0.5 0; 1 0.5 0; 1 0.5 0; 1 1 0; 1 1 0; 1 1 0;  1 1 0;  1 1 0; 0 0 0];
-    hm = HeatMap(rxnsOfInterest, 'ColumnLabels', modelNames, 'RowLabels', rxnInterestNames, 'Colormap', redbluecmap, 'Symmetric', false, 'DisplayRange', 100);  % maxFluxUnits/3
+    hm = essentialRxnsHeatMap(rxnsOfInterest, modelNames, rxnInterestNames);  % DisplayRange 100 (maxFluxUnits/3)
     colormap(hm, mymap);
 else
     fprintf('\n Attention: All non-essential reactions have flux above the threshold \n')
 end
 
+end
+
+function hm = essentialRxnsHeatMap(values, columnLabels, rowLabels)
+% Heat map of the reactions (rows) by models (columns), as HeatMap (Bioinformatics Toolbox) drew it
+% with 'Symmetric' false and 'DisplayRange' 100: the colour limits are the data range clipped at
+% +-100; the caller sets the colormap. Base-MATLAB heatmap chart.
+hm = heatmap(cellstr(string(columnLabels)), cellstr(string(rowLabels)), values);
+limits = [max(min(values(:)), -100), min(max(values(:)), 100)];
+if limits(1) < limits(2)
+    hm.ColorLimits = limits;
+end
 end

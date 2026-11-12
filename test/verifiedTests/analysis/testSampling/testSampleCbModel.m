@@ -7,6 +7,9 @@
 % Check Requirements
 % quad minos and dqqMinos cannot be used due to parallel processing
 % for some reason, matlab fails on this system if it runs in parallel.
+% The Statistics and Machine Learning Toolbox stays required: the CHRR_EXP sampler uses the
+% vendored external/analysis/Volume-and-Sampling (rand_exponential_range_coord calls exprnd);
+% external/ is read-only (feature 20261111-152503-toolbox-free-remaining)
 solverPkgs = prepareTest('needsUnix',true, 'needsLP',true, 'excludeSolvers',{'mosek', 'dqqMinos','quadMinos','matlab','pdco'},'requiredToolboxes', {'statistics_toolbox'}); %TODO: Check, whether UNIX is really still required for the test.
 
 % save the current path

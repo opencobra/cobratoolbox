@@ -18,13 +18,15 @@ fprintf(' -- Running testEFlux ...\n');
 
 % requires access to GEO to download data.
 % Matlabs tolerances and precision seem incompatible for this function.
-solverPkgs = prepareTest('needsLP',true,'toolboxes',{'bioinformatics_toolbox'},'needsWebAddress','https://www.ncbi.nlm.nih.gov/geo/query/','excludeSolvers',{'matlab','pdco'});
+% the GEO sample tables are parsed by readGeoSampleTable (end of this file) instead of
+% geosoftread (Bioinformatics Toolbox)
+solverPkgs = prepareTest('needsLP',true,'needsWebAddress','https://www.ncbi.nlm.nih.gov/geo/query/','excludeSolvers',{'matlab','pdco'});
 
 model = getDistributedModel('ecoli_core_model.mat');
 model = removeGenesFromModel(model,'s0001','keepReactions',true);
 geoaddress = 'https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?form=text&acc=%s&view=full';
-anaerobic = geosoftread(urlread(sprintf(geoaddress,'GSM1010240')));
-aerobic = geosoftread(urlread(sprintf(geoaddress,'GSM1126445')));
+anaerobic = readGeoSampleTable(urlread(sprintf(geoaddress,'GSM1010240')));
+aerobic = readGeoSampleTable(urlread(sprintf(geoaddress,'GSM1126445')));
 expressionControl.preprocessed = false;
 expressionControl.value = cell2mat(aerobic.Data(:,2));
 expressionControl.target = cellfun(@(x) x(1:5),aerobic.Data(:,1),'Uniform',false);
@@ -75,3 +77,25 @@ fprintf('Done.\n');
 fprintf('testEFlux passed successfully.\n');
 
 cd(currentDir)
+
+function record = readGeoSampleTable(softText)
+% Reads the data table of a GEO sample (GSM) record in SOFT text format: the
+% lines between '!sample_table_begin' and '!sample_table_end', whose first line
+% is the header (ID_REF, VALUE, ...). Returns record.Data as an N x 2 cell array
+% {ID_REF (char), VALUE (double)}, the two columns geosoftread returned and
+% this test uses.
+global CBT_MISSING_REQUIREMENTS_ERROR_ID
+if ~contains(softText, '!sample_table_begin') || ~contains(softText, '!sample_table_end')
+    % GEO answered, but not with a SOFT record (for example a browser check page): the
+    % web requirement of this test is not met
+    error(CBT_MISSING_REQUIREMENTS_ERROR_ID, 'GEO did not return the SOFT sample table (the response is not a GEO SOFT record).');
+end
+lines = splitlines(string(softText));
+first = find(startsWith(lines, '!sample_table_begin'), 1) + 2; % skip the header line
+last = find(startsWith(lines, '!sample_table_end'), 1) - 1;
+fields = split(lines(first:last), sprintf('\t'));
+if isvector(fields)
+    fields = reshape(fields, 1, []);
+end
+record.Data = [cellstr(fields(:, 1)), num2cell(str2double(fields(:, 2)))];
+end
