@@ -63,6 +63,12 @@ function [x, population, scores, optGeneSol] = optGene(model, targetRxn, substra
 %    scores:                   An array of scores
 %    optGeneSol:               `optGene` solution strcture
 %
+% NOTE:
+%    The genetic algorithm is cobraGa (plain MATLAB; the Global Optimization Toolbox is
+%    not needed). The population is returned as double 0/1 (bit strings, as ga documents);
+%    use logical(...) to index with it. The progress plots of the toolbox (gaplotscores,
+%    gaplotbestf, gaplotscorediversity, gaplotstopping) are no longer drawn.
+%
 % .. Authors: - Jan Schellenberger and Adam Feist 04/08/08
 %             - Modified by Sebastian Mendoza 18/06/17. Improving handling
 %             of optional inputs (varargin)
@@ -127,7 +133,6 @@ outputFolder = parser.Results.outputFolder;
 MaxKnockOuts = MaxKOs;
 InitialPopulation = double(population);
 
-PlotFcns =  {@gaplotscores, @gaplotbestf, @gaplotscorediversity, @gaplotstopping, @gaplotmutationdiversity}; % what to plot.
 crossfun = @(a,b,c,d,e,f) crossoverCustom(a,b,c,d,e,f,crossovermutationRate);
 
 % figure out if list is genes or reactions
@@ -149,14 +154,14 @@ end
 %%% END PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-options = gaoptimset(...
+% options of cobraGa (gaoptimset names in a plain structure; cell values are wrapped in {})
+options = struct(...
     'PopulationType', 'bitstring',...
     'CreationFcn', @lowmutationcreation,...
-    'MutationFcn', {@mutationUniformEqual, mutationRate},...
+    'MutationFcn', {{@mutationUniformEqual, mutationRate}},...
     'PopulationSize', PopulationSize,...
     'StallTimeLimit', StallTimeLimit,...
     'TimeLimit', TimeLimit,...
-    'PlotFcns', PlotFcns,...
     'InitialPopulation', InitialPopulation,...
     'CrossoverFraction', CrossoverFraction,...
     'CrossoverFcn', crossfun,...
@@ -180,7 +185,7 @@ gap.fitnessfcn  = FitnessFunction;
 gap.nvars = ngenes;
 gap.options = options;
 
-[x,FVAL,REASON,OUTPUT,population, scores] = ga(gap);
+[x,FVAL,REASON,OUTPUT,population, scores] = cobraGa(gap);
 
 % save the solution
 [optGeneSol] = GetOptGeneSol(model, targetRxn, substrateRxn, generxnList, population, x, scores, geneok, saveFile, outputFolder); % in case of genes

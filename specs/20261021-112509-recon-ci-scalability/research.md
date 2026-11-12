@@ -3,7 +3,7 @@
 ## Method
 
 Unmodified toolbox at `35918b372` (origin/develop of the maintainer's fork), MATLAB R2025a,
-Gurobi 11.0.3, 12 cores, 31 GB RAM. Model: `models/20261001/12_56/original_models/20261001T105846Z_Recon4_VMH.mat`
+Gurobi 11.0.3. Model: `models/20261001/12_56/original_models/20261001T105846Z_Recon4_VMH.mat`
 of the ReconXKG repository (30 665 mets x 38 841 rxns, 177 752 non-zeros). Each stage runs in
 its own MATLAB process under `systemd-run --user --scope -p MemoryMax=24G -p MemorySwapMax=0`;
 peak memory is `VmHWM` from `/proc/<pid>/status`; the calls mirror `extractFeasibleModel` and

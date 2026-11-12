@@ -6,8 +6,30 @@
 %     - Check axis padding so bars are not clipped
 %     - Demonstrate exporting of panels and whole figure
 %
+% Function under test:
+%     src/visualization/upsetPlot/upsetPlot.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - no genome-scale model, no solver.
+%
+% Coverage exemptions:
+%     Line 179: unreachable, this branch needs at least one intersection (nInt > 0), and every
+%     intersection that is listed counts at least one element, so yMax is positive.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: Sets without any element stop with an index error
+%       SEVERITY: error
+%       TRIGGER: a membership matrix without any true entry, for example false(3, 2), or empty
+%         raw sets
+%       OBSERVED: no intersection pattern is found, but [diff(sPPos); 1] still gives one position,
+%         so sPPos(dPPos) fails with "Index exceeds array bounds" before the plot is made
+%       EXPECTED: an empty plot; the code at the end of the function already handles a largest
+%         set of size zero
+%       LINES: 213
+%
 % Authors:
 %     - initial version: <your name> <YYYY-MM-DD>
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 global CBTDIR
@@ -115,6 +137,29 @@ close(hFig6);
 % wrong inputs should error
 wrongInputs = {{struct('a',1)}, {'OnlyOneName'}}; % unsupported set element type and mismatched names
 verifyCobraFunctionError('upsetPlot', 'inputs', wrongInputs);
+
+%% 5) Without a parent figure a new figure is created
+hFigNew = upsetPlot(DataABC, namesABC);
+assert(ishghandle(hFigNew, 'figure'), 'No new figure was created.');
+assert(numel(findobj(hFigNew, 'Type', 'axes')) == 3, 'A new figure should hold the three axes.');
+close(hFigNew);
+
+%% 6) Disjoint sets without singletons: no intersection to show
+f7 = figure('Color', 'w', 'Visible', 'off');
+[hFig7, axI7, axS7] = upsetPlot({[1 2], [3 4 5]}, {'A', 'B'}, 'Parent', f7);
+assert(countBarsOnAxes(axI7) == 0, 'Disjoint sets should give no intersection bar.');
+assert(isequal(axI7.YLim, [0 1]) && isequal(axI7.XLim, [0 1]), 'Empty intersection axis limits.');
+assert(axS7.XLim(2) >= 3, 'The set sizes are still drawn.');
+close(hFig7);
+
+%% 7) One colour for the set-size bars is used for all of them
+f8 = figure('Color', 'w', 'Visible', 'off');
+barColour = [1 0 0];
+[hFig8, ~, axS8] = upsetPlot(DataABC, namesABC, 'bar2Color', barColour, 'Parent', f8);
+sizeBars = findall(axS8, 'Type', 'Bar');
+assert(max(max(abs(sizeBars.CData - repmat(barColour, numel(namesABC), 1)))) < 1e-9, ...
+       'A single set-size colour should apply to every bar.');
+close(hFig8);
 
 % output a success message
 fprintf('Done.\n');

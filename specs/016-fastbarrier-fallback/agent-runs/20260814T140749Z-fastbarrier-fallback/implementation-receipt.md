@@ -6,7 +6,7 @@ Run `$speckit-implement` for `specs/016-fastbarrier-fallback`: add a fastBarrier
 
 ## Final Response
 
-Implemented the FVA fastBarrier fallback in [fluxVariability.m](/home/farid/Projects/cobratoolbox-f-develop/src/analysis/FVA/fluxVariability.m:190): fastBarrier now keeps the no-crossover first attempt, retries that reaction LP with `Crossover = 1` when Gurobi reports native `NUMERIC` or when the no-crossover solution residual is too loose for FVA tolerance, disables heuristics after defaults are assigned, and restores the previous LP solver via `onCleanup`.
+Implemented the FVA fastBarrier fallback in [fluxVariability.m](../../../../src/analysis/FVA/fluxVariability.m#L190): fastBarrier now keeps the no-crossover first attempt, retries that reaction LP with `Crossover = 1` when Gurobi reports native `NUMERIC` or when the no-crossover solution residual is too loose for FVA tolerance, disables heuristics after defaults are assigned, and restores the previous LP solver via `onCleanup`.
 
 Validation passed:
 - focused PFK/PPS fastBarrier probe: `PFK 0 16.7935905507`, `PPS 0 9.4221442431`
@@ -14,7 +14,7 @@ Validation passed:
 - full `testFVA`: passed, including `fastBarrier mode test passed.`
 - solver-state check: `LP solver restored: glpk`
 
-I did not modify `testFVA.m` assertions. Spec Kit receipt: [implementation-receipt.md](/home/farid/Projects/cobratoolbox-f-develop/specs/016-fastbarrier-fallback/agent-runs/20260814T140749Z-fastbarrier-fallback/implementation-receipt.md). Optional git commit hook was not run, so these changes are still uncommitted.
+I did not modify `testFVA.m` assertions. Spec Kit receipt: [implementation-receipt.md](implementation-receipt.md). Optional git commit hook was not run, so these changes are still uncommitted.
 
 MATLAB references used: [Error Handling](https://www.mathworks.com/help/matlab/error-handling.html), [try/catch](https://www.mathworks.com/help/matlab/matlab_prog/use-trycatch-to-handle-errors.html).
 
@@ -72,3 +72,5 @@ Result: no `testFVA.m` diff, no `testFVAparamValue*` artifacts left in the test 
 - MATLAB error-handling references checked while designing cleanup/error propagation:
   - https://www.mathworks.com/help/matlab/error-handling.html
   - https://www.mathworks.com/help/matlab/matlab_prog/use-trycatch-to-handle-errors.html
+
+Redaction (2026-11-05): local machine details were removed or replaced with relative paths or a placeholder, as personal data. No other text changed.

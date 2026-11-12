@@ -4,9 +4,38 @@
 %     - testSurfNet tests the functionality of surfNet
 %       and compares it to expected data.
 %
+% Function under test:
+%     src/analysis/exploration/surfNet.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation (the flux vectors come from optimizeCbModel); ecoli_core_model loaded
+%     through getDistributedModel, LP solver required.
+%
+% Coverage exemptions:
+%     Lines 348-349: unreachable, the assignment above them sets metF only where rxnF is false and
+%       then rxnF only where metF is false, so a field is never marked as both.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: Searching with a flux vector stops with an error
+%       SEVERITY: error
+%       TRIGGER: a query that is no identifier and matches reactions, together with a flux vector,
+%         for example surfNet(model, 'glucose', 't', 0.6, 'flux', solution.x)
+%       OBSERVED: the search listing reads fluxLocal(id) although id is only set after the search,
+%         so the call fails with "Unrecognized function or variable 'id'"
+%       EXPECTED: the matching reactions are listed with their fluxes
+%       LINES: 522, 543, 566
+%     - DEFECT: The message for a partial field name shows a literal backslash n
+%       SEVERITY: cosmetic
+%       TRIGGER: a partial field name in printFields that matches several fields, for example 'met'
+%       OBSERVED: the message starts with the two characters backslash and n, because error is
+%         called with the text as its only argument, which is not processed as a format
+%       EXPECTED: the message starts on a new line
+%       LINES: 319, 333
+%
 % Authors:
 %     - Lemmer El Assal March 2017
 %     - Siu Hung Joshua Chan July 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 global CBTDIR
@@ -300,6 +329,88 @@ for j = 1:3
 end
 assert(isequal(textSurfNet{1}, textSurfNet{2}))
 assert(isequal(textSurfNet{1}, textSurfNet{3}))
+
+%% too many input arguments are refused
+assert(verifyCobraFunctionError('surfNet', 'inputs', {model, 'GAPD', 0, [], 0, 1, [], 0, 0.8, [], 1}, ...
+    'testMessage', 'Too many input arguments'));
+
+%% a list with an unknown term shows the known terms first and then searches for the others
+printed = evalc('surfNet(model, {''NOTEXIST''; ''GAPD''})');
+assert(strfind(printed, 'Rxn #') < strfind(printed, '''NOTEXIST'' is not a metabolite'));
+
+%% a nonzeroFluxFlag between 0 and 1 is the tolerance for nonzero fluxes
+sparseFlux = zeros(numel(model.rxns), 1);
+sparseFlux(strcmp(model.rxns, 'PYK')) = 0.1;
+sparseFlux(strcmp(model.rxns, 'PDH')) = 2;
+printed = evalc('surfNet(model, ''pyr[c]'', ''flux'', sparseFlux, ''nonzeroFluxFlag'', 0.5)');
+assert(contains(printed, 'PDH'));
+assert(~contains(printed, 'PYK'));
+
+%% a model without GPR information prints no GPR, for the default and for a given field list
+modelNoGpr = rmfield(model, {'grRules', 'rules'});
+printed = evalc('surfNet(modelNoGpr, ''GAPD'')');
+assert(contains(printed, 'Rxn #') && ~contains(printed, 'grRules'));
+printed = evalc('surfNet(modelNoGpr, ''GAPD'', ''printFields'', {''lb'', ''grRules''})');
+assert(contains(printed, 'LB: -1000') && ~contains(printed, 'grRules'));
+
+%% partial field names may also be given per object type
+printed = evalc('surfNet(model, ''GAPD'', ''printFields'', {{''metFor''}, {''rxnNa''}})');
+assert(contains(printed, 'glyceraldehyde-3-phosphate dehydrogenase'));
+assert(contains(printed, 'C3H5O6P'));
+
+%% a partial field name that fits several fields is refused
+errorMessage = '';
+try
+    surfNet(model, 'GAPD', 'printFields', {'met'});
+catch ME
+    errorMessage = ME.message;
+end
+assert(contains(errorMessage, 'The partial input "met" matches to >1 fields: mets, metFormulas, metNames'));
+
+%% a search with one bound shows only that bound
+printed = evalc('surfNet(model, ''glucose'', ''t'', 0.6, ''printFields'', {''lb''})');
+assert(contains(printed, 'LB, matches') && ~contains(printed, 'UB'));
+printed = evalc('surfNet(model, ''glucose'', ''t'', 0.6, ''printFields'', {''ub''})');
+assert(contains(printed, 'UB, matches') && ~contains(printed, 'LB'));
+
+%% a search can also find genes, without or with gene fields of the model
+printed = evalc('surfNet(model, ''b124'', ''t'', 0.6)');
+assert(contains(printed, 'Gene   matches'));
+assert(contains(printed, 'genes:b1241'));
+modelGeneNames = model;
+modelGeneNames.geneNames = strcat('name', model.genes);
+modelGeneNames.geneFamily = model.genes;
+printed = evalc('surfNet(modelGeneNames, ''b124'', ''t'', 0.6)');
+assert(contains(printed, 'geneNames, geneFamily, matches'));
+assert(contains(printed, 'nameb1241'));
+
+%% a gene that findRxnsFromGenes cannot find under its name shows no reactions
+printed = evalc('surfNet(modelGeneNames, ''b1241'')');
+assert(contains(printed, 'Gene #') && contains(printed, 'none'));
+
+%% the reactions of a gene are shown with fluxes and with each single bound
+% the reaction names are hyperlinks, which are taken out to read the line
+removeLinks = @(text) regexprep(text, '<a href="[^"]*">|</a>', '');
+printed = evalc('surfNet(model, ''b1241'', ''flux'', sparseFlux)');
+assert(contains(removeLinks(printed), 'ACALD (0)'));
+printed = evalc('surfNet(model, ''b1241'', ''printFields'', {''lb''})');
+assert(contains(removeLinks(printed), 'ACALD, LB: -1000'));
+printed = evalc('surfNet(model, ''b1241'', ''printFields'', {''ub''})');
+assert(contains(removeLinks(printed), 'ACALD, UB: 1000'));
+
+%% an identifier used for a reaction and a metabolite shows the reaction, with a warning
+modelSameName = model;
+modelSameName.mets{1} = 'GAPD';
+lastwarn('');
+printed = evalc('surfNet(modelSameName, ''GAPD'')');
+assert(contains(lastwarn, 'GAPD corresponds to a rxn, met at the same time'));
+assert(contains(printed, 'Rxn #'));
+
+%% a very small stoichiometric coefficient is printed in exponential notation
+modelTiny = model;
+modelTiny.S(findMetIDs(model, '13dpg[c]'), findRxnIDs(model, 'GAPD')) = 1e-8;
+printed = evalc('surfNet(modelTiny, ''GAPD'')');
+assert(contains(printed, '1.00e-08'));
 
 fprintf('Done.\n');
 fprintf('testSurfNet passed successfully.\n');

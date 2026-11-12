@@ -1,3 +1,40 @@
+% The COBRAToolbox: testLiftCouplingConstraints.m
+%
+% Purpose:
+%     - liftCouplingConstraints replaces badly scaled coupling constraints by sequences of well
+%       scaled ones, splitting rows with more than two variables first. The test pins the lifted
+%       matrices for toy models, with and without pre-existing fields for extra variables.
+%
+% Function under test:
+%     src/base/solvers/rescale/liftCouplingConstraints.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - hand-built models; an LP solver is required by the sections on the gecko-style model.
+%
+% Coverage exemptions:
+%     Lines 345-348: unreachable, the branch of an if 0.
+%     Lines 446-447: unreachable, the branch of an if 0.
+%     Line 245: defective input skipped, the split of a row without equalities stops (defect below).
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A row with more than two variables cannot be lifted with the default options
+%       SEVERITY: error
+%       TRIGGER: an inequality row with more than two variables and a large coefficient, with
+%         equalities false (the default), for example C = [1, 1, -1000000] with dsense L
+%       OBSERVED: the split of the row adds equality rows, so the check that follows stops with
+%         equality dsense at 1 positions, although the original constraint is an inequality
+%       EXPECTED: the row lifted, as the option equalities only concerns original constraints
+%       LINES: 245, 331-333
+%     - DEFECT: The model identifier gets two suffixes
+%       SEVERITY: cosmetic
+%       TRIGGER: a model with the field modelID
+%       OBSERVED: the identifier toy becomes toy_lifted_liftedCouplingConstraints
+%       EXPECTED: toy_liftedCouplingConstraints, as documented
+%       LINES: 186, 423
+%
+% Authors:
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
+%
 %    model: 
 %                         * C - `k x n` Left hand side of C*v <= d
 %                         * d - `k x 1` Right hand side of C*v <= d
@@ -444,6 +481,56 @@ disp(full([model_lifted.C, model_lifted.D]));
 % in the same variable are lifted, the name of the new evar is the same,
 % therefore the same evar name exists for two different evar entries.
 % Should be solved?
+
+%% default BIG and printLevel, and a model identifier
+clear model
+model.S = [0, 0];
+model.rxns = {'rxn1'; 'rxn2'};
+model.C = [1, -10000];
+model.d = 0;
+model.dsense = 'L';
+model.ctrs = {'test'};
+model.modelID = 'toy';
+model_lifted = liftCouplingConstraints(model);
+% the default BIG 1000 splits -10000 with the step 100
+assert(isequal(full(model_lifted.C), [1, 0; 0, -100]));
+assert(isequal(full(model_lifted.D), [-100; 1]));
+assert(startsWith(model_lifted.modelID, 'toy') && endsWith(model_lifted.modelID, '_liftedCouplingConstraints'));
+
+%% an equality row is refused unless equalities are enabled
+model = rmfield(model, 'modelID');
+model.dsense = 'E';
+assert(verifyCobraFunctionError('liftCouplingConstraints', 'inputs', {model, BIG, 0}, ...
+    'testMessage', 'equality dsense at 1 positions'));
+model.dsense = 'L';
+
+%% subSystems held in nested cells are unpacked
+model.subSystems = {{'first'}; 'second'};
+model_lifted = liftCouplingConstraints(model, BIG, 0);
+assert(isequal(model_lifted.subSystems, {'first'; 'second'}));
+model = rmfield(model, 'subSystems');
+
+%% the homogenisation for the whole body model with the reaction sIEC_biomass_reactionIEC01b_trtr
+wholeBody = struct();
+wholeBody.S = zeros(1, 4);
+wholeBody.rxns = {'rxn1'; 'sIEC_biomass_reactionIEC01b_trtr'; 'sIEC_biomass_reactionIEC01b'; 'rxn4'};
+wholeBody.C = sparse([1, 0, 0, -20000; 1, 0, 0, 0; 0, 0, 0, 0]);
+wholeBody.d = [0; 0; 0];
+wholeBody.dsense = ['L'; 'L'; 'L'];
+wholeBody.ctrs = {'pair'; 'single'; 'blank'};
+for printLevelHomogenise = [0, 1]
+    model_lifted = liftCouplingConstraints(wholeBody, BIG, printLevelHomogenise);
+    % the row with a single entry and the blank row are gone, the pair row is lifted with one
+    % dummy variable
+    assert(size(model_lifted.C, 1) == 2 && size(model_lifted.D, 2) == 1);
+    assert(max(max(abs([model_lifted.C, model_lifted.D]))) < BIG);
+end
+
+%% the final consistency check fails for a model whose reactions do not match the columns
+mismatched = model;
+mismatched.rxns = {'rxn1'; 'rxn2'; 'rxn3'};
+assert(verifyCobraFunctionError('liftCouplingConstraints', 'inputs', {mismatched, BIG, 0}, ...
+    'testMessage', 'lifting of whole body model did not proceed correctly'));
 
 %revert to normal format
 format short

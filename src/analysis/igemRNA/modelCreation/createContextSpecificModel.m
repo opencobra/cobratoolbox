@@ -88,7 +88,7 @@ function model = createContextSpecificModel(modelPath, trDataPath, mediumDataPat
                     if strcmp(gmAndOperation,'MIN')
                         orsToCompare = [orsToCompare min(andsToCompare)];
                     else 
-                        orsToCompare = [orsToCompare round(geomean(andsToCompare))];
+                        orsToCompare = [orsToCompare round(exp(mean(reallog(andsToCompare))))]; % geometric mean (log is a variable here)
                     end
                 end
 
@@ -124,7 +124,7 @@ function model = createContextSpecificModel(modelPath, trDataPath, mediumDataPat
                 if strcmp(gmAndOperation,'MIN')
                     log{i,5} = min(numbersToCompare);
                 else 
-                    log{i,5} = round(geomean(numbersToCompare));
+                    log{i,5} = round(exp(mean(reallog(numbersToCompare)))); % geometric mean (log is a variable here)
                 end
 
             % Gene combination OR

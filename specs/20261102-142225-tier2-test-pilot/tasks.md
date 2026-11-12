@@ -35,7 +35,7 @@ description: "Tasks for the Tier-2 test pilot"
    lines are listed as exemptions with reasons. Do not suppress output (no `evalc` unless the
    captured text is asserted).
 5. Run with the coverage helper
-   `/tmp/claude-1000/-home-farid-Projects-cobratoolbox-f-develop/e1c97340-2072-48e2-a3db-de9e7dd9cefc/scratchpad/impact/runWithCoverage.m`
+   `runWithCoverage.m` (a throwaway helper, not kept in the repository)
    (after `initCobraToolbox(false)`); the test must pass and reach 100% coverage or list every
    missed line. Report runtime of the test.
 

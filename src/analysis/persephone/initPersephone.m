@@ -64,12 +64,12 @@ end
 if any(strcmp(sysAddons.Name,'Statistics and Machine Learning Toolbox'))
     if ~matlab.addons.isAddonEnabled('Statistics and Machine Learning Toolbox')
         statToolboxInstalled = false;
-        warning('It seems the Statistics and Machine Learning Toolbox is not installed. Please consider installing it via the add-on option in MATLAB as it is required for analysis')
+        warning('It seems the Statistics and Machine Learning Toolbox is not installed. It is only required for mixed-effects regressions; the other analyses run without it.')
     else
         if license('test', 'Statistics_Toolbox')
         statToolboxInstalled = true;
         else 
-         warning('It seems the Statistics and Machine Learning Toolbox installed but no valid license exists. Please consider updating/obtaining a license as it is required for analysis')
+         warning('It seems the Statistics and Machine Learning Toolbox installed but no valid license exists. It is only required for mixed-effects regressions; the other analyses run without it.')
         statToolboxInstalled = false;
         end    
     end

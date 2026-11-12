@@ -4,8 +4,30 @@
 %     - Test merging of model fields with the function
 %     mergeModelFieldPositions
 %
+% Function under test:
+%     src/reconstruction/refinement/mergeModelFieldPositions.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 2 - model manipulation, no solver; ecoli_core_model loaded through getDistributedModel.
+%
+% Coverage exemptions:
+%     None besides the defective input listed below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A cell field that does not hold text or cell arrays cannot be merged
+%       SEVERITY: error
+%       TRIGGER: a cell field with one entry per reaction that holds numbers, strings or empty
+%         matrices, for example model.rxnValues = num2cell(ones(size(model.rxns))), followed by
+%         mergeModelFieldPositions(model, 'rxns', [1, 2])
+%       OBSERVED: the call stops in setSlice with Conversion to cell from double is not possible
+%         (for string entries: value of type 'string' is not convertible to 'cell'; for empty
+%         entries: the size of the right side is 0-by-1)
+%       EXPECTED: the entries are merged into one cell entry, as for the other cell fields
+%       LINES: 115
+%
 % Author:
 %     - Original file: Thomas Pfau
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 global CBTDIR
 
@@ -15,6 +37,9 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testMergeModelFieldPositions.m'));
 cd(fileDir);
+
+% this test needs no solver, MATLAB toolbox or particular operating system
+prepareTest();
 
 % load reference data and model
 model = getDistributedModel('ecoli_core_model.mat');
@@ -89,6 +114,44 @@ assert(isequal(modelMerged.rules(involvedInEnd),strrep(model.rules(involvedInEnd
 assert(~isequal(model.grRules,modelMerged.grRules))
 %And correctly updated
 assert(isequal(modelMerged.grRules,regexprep(model.grRules,['(' model.genes{1} ')|(' model.genes{end} ')'],strjoin(model.genes([1,end]),';'))));
+
+%% a logical vector selects the same positions as the equivalent indices
+
+logicalPositions = false(size(model.rxns));
+logicalPositions(rxnspos) = true;
+assert(isequal(mergeModelFieldPositions(model, 'rxns', logicalPositions), ...
+    mergeModelFieldPositions(model, 'rxns', rxnspos)));
+
+%% fewer than two positions leave the model unchanged
+
+assert(isequal(mergeModelFieldPositions(model, 'rxns', 5), model));
+assert(isequal(mergeModelFieldPositions(model, 'rxns', false(size(model.rxns))), model));
+
+%% merge functions for both rule fields replace the default rule functions
+
+customFunctions = {'rules', @(x) x(1); 'grRules', @(x) {'customRule'}};
+modelCustom = mergeModelFieldPositions(model, 'rxns', [1, 2], customFunctions);
+% the merged reaction stays at the first position and takes the output of the given functions
+assert(numel(modelCustom.rxns) == numel(model.rxns) - 1);
+assert(isequal(modelCustom.rules(1), model.rules(1)));
+assert(strcmp(modelCustom.grRules{1}, 'customRule'));
+
+%% a merge function for another field is used along with the default rule functions
+
+modelLowerBound = mergeModelFieldPositions(model, 'rxns', [1, 2], {'lb', @(x) min(x)});
+% the lower bounds are not added up, as they are by default
+assert(modelLowerBound.lb(1) == min(model.lb(1:2)));
+% the rules are still joined by the default function, in the sorted order of setdiff
+defaultRule = ['(' strjoin(sort(model.grRules(1:2)), ') and (') ')'];
+assert(strcmp(modelLowerBound.grRules{1}, defaultRule));
+
+%% a cell field of cell arrays merges into the unique entries
+
+modelNested = model;
+modelNested.subSystems = cellfun(@(x) {x}, model.subSystems, 'UniformOutput', false);
+modelMerged = mergeModelFieldPositions(modelNested, 'rxns', [1, 2]);
+assert(isequal(modelMerged.subSystems{1}, unique([modelNested.subSystems{1:2}])));
+assert(iscell(modelMerged.subSystems{1}));
 
 fprintf('Done...\n');
 %Switch back

@@ -3,8 +3,22 @@
 % Purpose:
 %     - testExtremePathways tests the functionality of lsr and extremePathways.
 %
+% Function under test:
+%     src/analysis/topology/extremeRays/lrs/extremePathways.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - hand-built toy network, no optimisation solver; needs the external lrs program.
+%     All lrs input and output files are written to a temporary folder.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Sylvain Arreckx March 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 % Test problem from
 %     Extreme Pathway Lengths and Reaction Participation in Genome-Scale Metabolic Networks
@@ -38,6 +52,15 @@ cd(fileDir);
 figsBefore = findall(0, 'Type', 'figure');
 model = createExtremePathwayModel();
 
+% extremePathways writes its lrs files to the current folder: use a temporary one
+workDir = tempname;
+mkdir(workDir);
+fakeLrsDir = tempname;
+mkdir(fakeLrsDir);
+systemPath = getenv('PATH');
+restoreState = onCleanup(@() restoreSystemState(currentDir, systemPath, {workDir, fakeLrsDir}));
+cd(workDir);
+
 minimalModel = struct();
 minimalModel.S = model.S;
 
@@ -61,6 +84,7 @@ assert(isequal(expectedPSorted, actualPSorted), ...
     ['ExtremePathways mismatch (case 1).\nExpected:\n%s\nActual:\n%s\n' ...
      'Sorted(Expected):\n%s\nSorted(Actual):\n%s'], ...
     mat2str(expectedP), mat2str(P), mat2str(expectedPSorted), mat2str(actualPSorted))
+minimalExpectedSorted = expectedPSorted;
 
 positivity = 0;
 inequality = 1;
@@ -99,5 +123,70 @@ if ~isempty(figsToClose)
     close(figsToClose);
 end
 
-% change the directory
-cd(currentDir)
+%% model.description names the lrs files, here with the default positivity and an equality
+namedModel = struct('S', minimalModel.S, 'description', 'toyNetwork');
+namedPathways = extremePathways(namedModel);
+assert(isequal(sortrows(full(namedPathways)), minimalExpectedSorted));
+assert(isfile('toyNetwork_pos_eq.ine') && isfile('toyNetwork_pos_eq.ext'), ...
+    'The lrs files must be named after model.description.');
+delete('toyNetwork_pos_eq.*');
+
+% The next three sections replace the lrs program with a script found first on the PATH, or
+% hide it. These are the only ways to see a failing, missing or wrong lrs.
+if isunix
+    %% lrs failing is an error naming the input file
+    writeFakeLrs(fakeLrsDir, 'exit 1\n');
+    setenv('PATH', [fakeLrsDir pathsep systemPath]);
+    failedMessage = '';
+    try
+        extremePathways(minimalModel);
+    catch ME
+        failedMessage = ME.message;
+    end
+    setenv('PATH', systemPath);
+    assert(contains(failedMessage, 'lsr failed on file') && contains(failedMessage, 'model_pos_eq.ine'), ...
+        'A failing lrs must raise an error naming the input file.');
+
+    %% lrs missing from the PATH is an error that says how to install it
+    emptyDir = fullfile(workDir, 'nothingHere');
+    mkdir(emptyDir);
+    setenv('PATH', emptyDir);
+    missingMessage = '';
+    try
+        extremePathways(minimalModel);
+    catch ME
+        missingMessage = ME.message;
+    end
+    setenv('PATH', systemPath);
+    assert(contains(missingMessage, 'lrs is not installed'), ...
+        'A missing lrs must raise an error that says so.');
+
+    %% A ray outside the nullspace of S is reported, and still returned
+    writeFakeLrs(fakeLrsDir, ['cat <<EOF\nV-representation\nbegin\n***** 10 rational\n' ...
+        ' 0 1 0 0 0 0 0 0 0 0\nend\nEOF\n']);
+    setenv('PATH', [fakeLrsDir pathsep systemPath]);
+    lastwarn('');
+    wrongRay = extremePathways(minimalModel);
+    setenv('PATH', systemPath);
+    assert(isequal(full(wrongRay), [1; zeros(8, 1)]));
+    assert(contains(lastwarn, 'pathway not in nullspace'), ...
+        'A ray outside the nullspace must raise a warning.');
+end
+
+function writeFakeLrs(fakeLrsDir, scriptBody)
+% Write an executable called lrs that runs scriptBody.
+fid = fopen(fullfile(fakeLrsDir, 'lrs'), 'w');
+fprintf(fid, ['#!/bin/sh\n' scriptBody]);
+fclose(fid);
+fileattrib(fullfile(fakeLrsDir, 'lrs'), '+x');
+end
+
+% restore the folder and PATH, and remove the temporary folders
+clear restoreState
+
+function restoreSystemState(folder, systemPath, temporaryFolders)
+% Back to the caller's folder and PATH, on every exit from this test, then remove the folders.
+cd(folder);
+setenv('PATH', systemPath);
+cellfun(@(d) rmdir(d, 's'), temporaryFolders);
+end

@@ -108,7 +108,9 @@ F = options.F;
 R = options.R;
 
 eps = 1e-8;
-options_fmin = optimoptions('fminunc','Algorithm', 'trust-region', ...
+% option structure for cobraFminunc (trust-region Newton with the gradient and Hessian
+% returned by FuncGradHessSub; replaces optimoptions/fminunc of the Optimization Toolbox)
+options_fmin = struct('Algorithm', 'trust-region', ...
 'GradObj', 'on','Hessian','on','Display','off','TolFun',eps,'TolX',eps);
 
 xk         = x0;
@@ -131,7 +133,7 @@ T0 = tic;
 % ======================= start of the main loop =======================
 while ~StopFlag
 
-    xk = fminunc(@(x)FuncGradHessSub(x,xk,F,R,kin,rho),xk,options_fmin);
+    xk = cobraFminunc(@(x)FuncGradHessSub(x,xk,F,R,kin,rho),xk,options_fmin);
 
     fxk   = mapp(xk);
     Nmap  = Nmap+1;

@@ -9,8 +9,21 @@
 %       basis known to be valid, so that every outcome is shown to be reachable and
 %       to mean what it says.
 %
+% Function under test:
+%     src/analysis/topology/extremeRays/optimalRays/checkNullspaceBasis.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation; ecoli_core_model and toy matrices, needs an LP solver for the reference basis.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Feature 20261003-132730-greedy-recon3d-stall, October 2026
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 % Reference:
 %     specs/20261003-132730-greedy-recon3d-stall/contracts/checkNullspaceBasis.md
@@ -26,8 +39,8 @@ cd(fileDir);
 solvers = prepareTest('needsLP', true);
 rng(20261003, 'twister');
 
-ecoli = load('ecoli_core_model.mat');
-[~, ~, ~, ~, ~, ~, ecoliModel] = findStoichConsistentSubset(ecoli.model, 0, 0);
+originalModel = getDistributedModel('ecoli_core_model.mat');
+[~, ~, ~, ~, ~, ~, ecoliModel] = findStoichConsistentSubset(originalModel, 0, 0);
 
 param.printLevel = 0;
 param.internalStoichiometriMatrixLeftNullspace = 1;
@@ -105,9 +118,48 @@ for k = 1:length(solvers.LP)
         assert(strcmp(reportRight.outcome, 'valid'), ...
             sprintf('the transposed problem gave ''%s'' in right mode', reportRight.outcome));
 
+        % the consistent subset is computed when the model does not hold it, with the same verdict
+        reportComputed = checkNullspaceBasis(originalModel, B, param);
+        assert(strcmp(reportComputed.outcome, 'valid') && ...
+            isequal(reportComputed.operativeMatrixSize, size(Sop)), ...
+            sprintf('computing the consistent subset gave ''%s''', reportComputed.outcome));
+
+        % above the size ceiling the rank of the basis comes from LUSOL, with the same verdict
+        ceilingParam = param;
+        ceilingParam.maxElementsForSpectrum = 0;
+        reportCeiling = checkNullspaceBasis(ecoliModel, B, ceilingParam);
+        assert(reportCeiling.rankB == report.rankB && ~reportCeiling.accuracyTargetDerived, ...
+            'LUSOL must give the rank of the basis above the ceiling');
+
         fprintf('Done.\n');
     end
 end
+
+%% Default param: omitted or empty, it prints the verdict and judges the left nullspace
+% a closed cycle A -> B -> C -> A has the single conserved pool [1 1 1]
+cycleModel = struct('S', sparse([-1 0 1; 1 -1 0; 0 1 -1]));
+consoleText = evalc('reportDefault = checkNullspaceBasis(cycleModel, [1 1 1]);');
+assert(strcmp(reportDefault.outcome, 'valid') && reportDefault.nullity == 1, ...
+    'the conserved pool of a closed cycle must be a valid basis');
+assert(contains(consoleText, ['checkNullspaceBasis: ' reportDefault.message]), ...
+    'the default printLevel must print the verdict');
+reportEmptyParam = evalc('checkNullspaceBasis(cycleModel, [1 1 1], []);');
+assert(contains(reportEmptyParam, 'Valid'), 'an empty param must use the default printLevel');
+
+%% Empty basis: nothing to measure, so the residuals are zero and the rank is zero
+quietParam = struct('printLevel', 0);
+reportEmpty = checkNullspaceBasis(cycleModel, zeros(0, 3), quietParam);
+assert(strcmp(reportEmpty.outcome, 'rankDeficient') && reportEmpty.rankB == 0, ...
+    'an empty basis cannot span a nullspace of dimension one');
+assert(isempty(reportEmpty.residualByRow) && size(reportEmpty.residualByRow, 2) == 1 ...
+    && reportEmpty.residualAbsolute == 0 && reportEmpty.residualScaled == 0, ...
+    'an empty basis must report zero residuals');
+
+% with no left nullspace to span, the empty basis is the right answer
+fullRowRankModel = struct('S', sparse([1 0; 0 1]));
+reportNoNullspace = checkNullspaceBasis(fullRowRankModel, zeros(0, 2), quietParam);
+assert(strcmp(reportNoNullspace.outcome, 'valid') && reportNoNullspace.nullity == 0, ...
+    'an empty basis of a full row rank matrix must be valid');
 
 % change back to the current directory
 cd(currentDir);

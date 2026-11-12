@@ -5,7 +5,7 @@ Prerequisites: a working COBRA Toolbox checkout on this branch, headless MATLAB 
 ## 1. Initialize
 
 ```matlab
-cd('/home/farid/Projects/cobratoolbox-f-develop');
+cd('<path to your COBRA Toolbox clone>');
 initCobraToolbox(false, 'agent');   % fast, non-interactive; no solver check needed
 ```
 

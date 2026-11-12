@@ -31,14 +31,8 @@ load("testPaint4Net_workspace_expected_results.mat")
 
 % list of solver packages: none needed
 
-% Bioinformatics toolbox Needed for bio_draw_by_rxn & bio_draw_by_met
-% BIOGRAPH DOES NOT WORK PAST MATLAB 2023
-
-if ~exist('biograph', 'file')
-    fprintf('Skipping test: biograph not available.\n');
-    clear;
-    return;
-end
+% bio_draw_by_rxn & bio_draw_by_met draw with digraph/plot, so no biograph or Bioinformatics
+% Toolbox is needed
 
 % run bio_draw_by_met
 %%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,7 +1,8 @@
 function diffDup(realFiles)
-cobra = '/home/farid/Projects/cobratoolbox-f-develop';
+benchDir = fileparts(mfilename('fullpath'));
+cobra = fileparts(fileparts(fileparts(benchDir)));
 cd(cobra); initCobraToolbox(false); 
-addpath('/tmp/claude-1000/-home-farid-Projects-reconxkg/e854ce54-e2a8-4121-baee-4a5dbf3a5092/scratchpad/prof/ref');
+addpath(fullfile(benchDir, 'ref'));
 rng(12345); nBad = 0; nCases = 0;
 % ---- random models with planted duplicates
 for trial = 1:300

@@ -15,19 +15,17 @@ global SOLVERS
 currentDir = pwd;
 
 requireOneSolverOf = {'gurobi'; 'glpk'; 'tomlab_cplex'; 'cplex_direct'; 'mosek'};
-prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf,'requiredToolboxes', {'statistics_toolbox'});
+% (SteadyCom uses cobraRegress, so the Statistics and Machine Learning Toolbox is not required)
+prepareTest('needsQP',true,'requireOneSolverOf', requireOneSolverOf);
 
 
 % initialize the test
 fileDir = fileparts(which('testSteadyCom'));
 cd(fileDir);
 %Test for parallel toolbox
-try
-    poolobj = getParallelPool();% create a toy model
-    parWorks = true;
-catch
-    parWorks = false;
-end
+% getParallelPool never errors (it returns [] without the toolbox), so ask for the toolbox itself;
+% parcluster below needs it
+parWorks = isParallelToolboxAvailable();
 
 rxns = {'EX_a(e)'; 'EX_b(e)'; 'EX_c(e)'; 'TransA'; 'TransB'; 'TransC'; 'A2B'; 'A2C'; 'BIOMASS'};
 rxnNames = {'Exchange of a'; 'Exchange of b'; 'Exchange of c'; ...
@@ -505,9 +503,8 @@ for jTest = 1:2
                     end
                 end
             end
-            % remove all created files
-
-            rmdir([pwd filesep 'testSteadyComFVAsave'], 's')
+            % remove the files of the parallel run (testSteadyComFVAsave is removed at the end of
+            % the test; removing it here too made the final cleanup fail whenever this branch ran)
             rmdir([pwd filesep 'testSteadyComFVAsavePar'], 's')
         else
             disp('Skipping Parallel Test, No Parallel toolbox installed');

@@ -33,9 +33,15 @@ jobs:
     # pull_request event is always the base (target) repo, never the fork.
     if: github.repository == 'opencobra/cobratoolbox'
     runs-on: self-hosted
+    # The MATLAB step may wait for the ReconXKG CI to finish (shared lock, see the
+    # 'docker run' below); waiting counts toward the timeout.
+    timeout-minutes: 1440
     steps:
       - name: Cleanup orphaned MATLAB containers
-        run: docker ps -q --filter ancestor=matlab | xargs -r docker rm -f
+        # Only this CI's own containers. The ReconXKG CI shares this runner and the
+        # matlab image; removing every matlab container killed its running job (and
+        # its identical line killed ours).
+        run: docker ps -q --filter label=ci=cobra | xargs -r docker rm -f
         continue-on-error: true
 
       # The MATLAB test step below runs in Docker as root and writes regenerable outputs
@@ -135,7 +141,21 @@ jobs:
           # NOTE: do NOT re-introduce -e MOCOV_PATH / -e JSONLAB_PATH here — the image
           # bakes them (pointing at the patched tools); passing empty or host values
           # would clobber the baked ENV and silently disable coverage.
-          docker run --rm \
+          # One MATLAB job at a time on this runner: the ReconXKG CI takes the same
+          # lock, so the second job waits here instead of the two competing for the
+          # machine's RAM and the Gurobi licence. The directory is made once with
+          # sudo (mkdir -p /var/lock/blacknight && chmod 777 /var/lock/blacknight);
+          # without it the job runs unlocked.
+          lock_file=/var/lock/blacknight/matlab.lock
+          if [ -d "$(dirname "${lock_file}")" ] && [ -w "$(dirname "${lock_file}")" ]; then
+            echo "Waiting for the runner's MATLAB lock (${lock_file}) ..."
+            with_lock="flock --verbose ${lock_file}"
+          else
+            echo "WARNING: $(dirname "${lock_file}") missing or not writable, running without the shared lock."
+            with_lock=""
+          fi
+          ${with_lock} docker run --rm \
+            --label ci=cobra \
             --mac-address="02:42:ac:11:00:02" \
             --platform linux/amd64 \
             -e HOME=/tmp \

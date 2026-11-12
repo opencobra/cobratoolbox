@@ -148,7 +148,7 @@ if 1
     if 0
         model.DrGtMean = model.DrGt0 + gasConstant*T*(R-F)'*log((model.concMax+model.concMin)/2);
     else
-        model.DrGtMean = model.DrGt0 + gasConstant*T*(R-F)'*log(geomean([model.concMin,model.concMax],2));
+        model.DrGtMean = model.DrGt0 + gasConstant*T*(R-F)'*log(exp(mean(log([model.concMin,model.concMax]),2))); % geometric mean
     end
 else
     % Estimate standard transformed reaction Gibbs energies

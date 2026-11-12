@@ -24,8 +24,21 @@
 %             the globals restored afterwards.
 %     Sections (1)-(4) are pure (no solver required); (5)-(6) are prepareTest-gated.
 %
+% Function under test:
+%     src/base/solvers/getSetSolver/CobraSolverState.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - sections (1)-(4) use no solver; (5)-(6) use the available LP solver on a toy LP.
+%
+% Coverage exemptions:
+%     None: every line is reached.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Author:
 %     - Created for feature 015-solver-spine-hardening, 2026-07-20.
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path and any tolerances/seeds
 currentDir = pwd;
@@ -132,7 +145,22 @@ try
         assert(strcmp(ME.identifier, 'COBRA:CobraSolverState:unknownType'));
     end
     assert(threw, 'setSolver did not throw on an unknown type');
+
+    % a type that is neither a character vector nor a string scalar has its own message
+    threw = false;
+    try
+        CobraSolverState.getSolver(7);
+    catch ME
+        threw = true;
+        assert(strcmp(ME.identifier, 'COBRA:CobraSolverState:unknownType'));
+        assert(contains(ME.message, 'must be a character vector or string scalar'));
+    end
+    assert(threw, 'getSolver did not throw on a numeric type');
     fprintf('   + unknown type raises COBRA:CobraSolverState:unknownType\n');
+
+    % an unset solver reads as the empty character vector, whatever empty value the global holds
+    CobraSolverState.setSolver('EP', []);
+    assert(ischar(CobraSolverState.getSolver('EP')) && isempty(CobraSolverState.getSolver('EP')));
 
     % restore the real state before the solver-gated sections
     CobraSolverState.restore(origState);

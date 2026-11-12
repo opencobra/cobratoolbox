@@ -3,8 +3,21 @@
 % Purpose:
 %     - Check the functions MTA and rMTA using different solvers
 %
+% Function under test:
+%     src/analysis/rMTA/MTA.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation (MIQP) on a toy model.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Luis V. Valcarcel 2018-12-17
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 global CBTDIR
@@ -75,6 +88,50 @@ for k = 1:length(solverPkgs)
         [TSscore,deletedGenes] = MTA(model,rxnFBS,Vref, 0.66, 0.01, 'SeparateTranscript','.');
         assert(TSscore(strcmp(deletedGenes,'g2'))<0)
         assert(TSscore(strcmp(deletedGenes,'g4'))>0)
+        fullScore = TSscore;
+        fullGenes = deletedGenes;
+
+        % Calculate MTA by reaction knock-outs: one score per reaction, the same signs as the genes
+        [TSscoreRxn,deletedRxns] = MTA(model,rxnFBS,Vref, 0.66, 0.01, 'rxnKO',1, 'printLevel',0);
+        assert(isequal(deletedRxns, model.rxns));
+        assert(TSscoreRxn(strcmp(deletedRxns,'r2'))<0)
+        assert(TSscoreRxn(strcmp(deletedRxns,'r4'))>0)
+
+        % a list of reactions: repeated names count once, the scores are those of the full run
+        [TSscoreList,deletedList] = MTA(model,rxnFBS,Vref, 0.66, 0.01, 'rxnKO',1, 'listKO',{'r4','r2','r2'}, 'printLevel',0);
+        assert(isequal(deletedList, {'r2';'r4'}));
+        assert(norm(TSscoreList - TSscoreRxn(ismember(model.rxns,{'r2','r4'}))) < 1e-4);
+
+        % a list of genes without transcript separator: the names of model.genes
+        [TSscoreList,deletedList] = MTA(model,rxnFBS,Vref, 0.66, 0.01, 'listKO',{'g4.1','g2.1','g4.1'}, 'printLevel',0);
+        assert(isequal(deletedList, {'g2.1';'g4.1'}));
+        assert(TSscoreList(strcmp(deletedList,'g4.1'))>0)
+
+        % a list of transcripts with a separator: reduced to the gene, as in the full run
+        [TSscoreList,deletedList] = MTA(model,rxnFBS,Vref, 0.66, 0.01, 'SeparateTranscript','.', 'listKO',{'g2.1','g2.2','g4.1'}, 'printLevel',0);
+        assert(isequal(deletedList, {'g2';'g4'}));
+        assert(norm(TSscoreList - fullScore(ismember(fullGenes,{'g2','g4'}))) < 1e-4);
+
+        % names that are not in the model are refused
+        assert(verifyCobraFunctionError('MTA', 'inputs', {model,rxnFBS,Vref, 0.66, 0.01, 'rxnKO',1, 'listKO',{'rX'}}, ...
+                                        'testMessage', 'Reactions in listKO are not in the model'));
+        assert(verifyCobraFunctionError('MTA', 'inputs', {model,rxnFBS,Vref, 0.66, 0.01, 'listKO',{'gX'}}, ...
+                                        'testMessage', 'Genes in listKO are not in the model'));
+        assert(verifyCobraFunctionError('MTA', 'inputs', {model,rxnFBS,Vref, 0.66, 0.01, 'SeparateTranscript','.', 'listKO',{'gX.1'}}, ...
+                                        'testMessage', 'Genes in listKO are not in the model'));
+
+        % a temporary file left by an interrupted run is picked up: the current alpha is repeated,
+        % the wrong scores stored in the file are overwritten and the file is removed at the end
+        i = 2; %#ok<NASGU> counters of the interrupted run, as saved by MTA
+        i_alpha = 1; %#ok<NASGU>
+        TSscore = -5 * ones(numel(fullGenes), 1); %#ok<NASGU>
+        Vres = {zeros(numel(model.rxns), numel(fullGenes))}; %#ok<NASGU>
+        save('temp_MTA.mat', 'i', 'i_alpha', 'TSscore', 'Vres');
+        [TSscore,deletedGenes] = MTA(model,rxnFBS,Vref, 0.66, 0.01, 'SeparateTranscript','.', 'printLevel',0);
+        assert(isequal(deletedGenes, fullGenes));
+        assert(norm(TSscore(isfinite(TSscore)) - fullScore(isfinite(fullScore))) < 1e-4);
+        assert(isequal(isfinite(TSscore), isfinite(fullScore)));
+        assert(~isfile('temp_MTA.mat'));
 
         % Calculate rMTA  and check solutions
         [TSscore,deletedGenes] = rMTA(model,rxnFBS,Vref, 0.4, 0.01, 'SeparateTranscript','.');

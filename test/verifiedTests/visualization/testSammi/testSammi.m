@@ -16,7 +16,7 @@ global CBTDIR;
 % save the current path
 currentDir = pwd;
 
-solverPkgs = prepareTest('requiredToolboxes', {'statistics_toolbox'});
+solverPkgs = prepareTest(); % random NaN positions use randperm (same draws as randsample)
 
 % Get SAMMIM folder
 sammipath = strrep(which('sammi'),'/sammi.m','');
@@ -148,12 +148,12 @@ load([CBTDIR '/test/models/mat/ecoli_core_model.mat'])
 n = 5;
 %Make reaction table with random data
 rxntbl = randn(length(model.rxns),n);
-rxntbl(randsample(length(model.rxns)*n,floor(n*length(model.rxns)/10))) = NaN;
+rxntbl(randperm(length(model.rxns)*n,floor(n*length(model.rxns)/10))) = NaN;
 rxntbl = array2table(rxntbl,'VariableNames',sprintfc('condition_%d',1:n),...
     'RowNames',model.rxns);
 %Make metabolites table with random data
 mettbl = randn(length(model.mets),n);
-mettbl(randsample(length(model.mets)*n,floor(0.5*length(model.mets)))) = NaN;
+mettbl(randperm(length(model.mets)*n,floor(0.5*length(model.mets)))) = NaN;
 mettbl = array2table(mettbl,'VariableNames',sprintfc('condition_%d',1:n),...
     'RowNames',model.mets);
 %Make struct
@@ -183,7 +183,7 @@ load([CBTDIR '/test/models/mat/ecoli_core_model.mat'])
 n = 5;
 %Make reaction table with random data
 rxntbl = randn(length(model.rxns),n);
-rxntbl(randsample(length(model.rxns)*n,floor(n*length(model.rxns)/10))) = NaN;
+rxntbl(randperm(length(model.rxns)*n,floor(n*length(model.rxns)/10))) = NaN;
 rxntbl = array2table(rxntbl,'VariableNames',sprintfc('condition_%d',1:n),...
     'RowNames',model.rxns);
 %Make struct

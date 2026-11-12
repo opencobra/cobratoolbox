@@ -10,26 +10,20 @@ function [fitresult, gof] = createFitL(xi, rest)
 %    rest:          y values (residual density) to fit
 %
 % OUTPUTS:
-%    fitresult:     a `cfit` object representing the Gaussian fit
+%    fitresult:     structure with the coefficients `a1`, `b1`, `c1` of the Gaussian
+%                   a1*exp(-((x-b1)/c1)^2) and the handle `f` that evaluates it
+%                   (formerly a `cfit` object; the coefficient fields are the same)
 %    gof:           structure with goodness-of-fit information
 %
-% See also: FIT, CFIT, SFIT
+% NOTE:
+%    Fitted with cobraFitGauss1 (no Curve Fitting Toolbox needed).
 %
 % .. Author: - Maria Pires Pacheco, 2016
 
 
-%% Fit: 'untitled fit 1'.
-[xData, yData] = prepareCurveData( xi, rest );
-
-% Set up fittype and options.
-ft = fittype( 'gauss1' );
-opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
-opts.Display = 'Off';
-opts.Lower = [-Inf -Inf 0];
-opts.StartPoint = [0.0442312785349232 -0.515420615759673 2.77989514663167];
-
-% Fit model to data.
-[fitresult, gof] = fit( xData, yData, ft, opts );
+%% Fit: one-term Gaussian, nonlinear least squares with c1 >= 0
+[fitresult, gof] = cobraFitGauss1(xi, rest, 'StartPoint', [0.0442312785349232 -0.515420615759673 2.77989514663167], ...
+    'Lower', [-Inf -Inf 0], 'Display', 'off');
 end
 
 

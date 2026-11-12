@@ -5,6 +5,9 @@
 %
 
 % initialize the test
+% The Statistics and Machine Learning Toolbox stays required: distribution_test of the vendored
+% external/analysis/PolytopeSamplerMatlab calls exprnd, kstest, adtest and norminv; external/ is
+% read-only (feature 20261111-152503-toolbox-free-remaining)
 solverPkgs = prepareTest('requiredToolboxes', {'statistics_toolbox'});
 
 fileDir = fileparts(which('testSampleCbModelRHMC'));

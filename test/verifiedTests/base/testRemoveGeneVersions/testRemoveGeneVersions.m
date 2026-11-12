@@ -7,6 +7,19 @@
 %
 % Authors:
 %     - Initial version: Farid Zare, April 2025
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
+%
+% Function under test:
+%     src/base/removeGeneVersions.m
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A model without grRules stops after the warning
+%       SEVERITY: error
+%       TRIGGER: a model with genes but without the field grRules
+%       OBSERVED: the warning at line 46 suggests that the call goes on, but with no rule to build
+%         from, generateRules (called at line 70) stops with an error from setdiff
+%       EXPECTED: the genes stripped of their versions, and empty rules
+%       LINES: 46
 %
 
 global CBTDIR
@@ -53,6 +66,17 @@ assert(isequal(modelOut.rules, ref_rules), ...
 % Assert that rxnGeneMat matches the expected output
 assert(isequal(modelOut.rxnGeneMat, ref_rxnGeneMat), ...
     'Test failed: modelOut.rxnGeneMat does not match the expected output');
+
+%% An existing rules field is replaced by rules built from the stripped grRules
+modelWithRules = model;
+modelWithRules.rules = {'obsolete'; 'obsolete'; 'obsolete'; 'obsolete'};
+modelOut = removeGeneVersions(modelWithRules);
+assert(isequal(modelOut.rules, ref_rules), ...
+    'Test failed: an existing rules field was not rebuilt.');
+
+%% A model without a genes field is rejected
+assert(verifyCobraFunctionError('removeGeneVersions', 'inputs', {rmfield(model, 'genes')}, ...
+    'testMessage', 'Input model must have the "genes" field.'));
 
 fprintf('Done.\n');
 

@@ -4,11 +4,31 @@
 %     - tests the basic functionality of pFBA
 %       Tests the basic solution for both minimizing the flux of gene-
 %       associated reactions and all rxns, while growing on gluose or lactose
-%       minimal media. Does not test the functionality of the map function.
+%       minimal media. The map output is tested with the E. coli core map of testMaps.
+%
+% Function under test:
+%     src/analysis/parsimoniousFBA/pFBA.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation on the E. coli core models of testpFBAData.mat.
+%
+% Coverage exemptions:
+%     Line 253: unreachable, the only two calls of the local function pass both arguments.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A call with one output stops with an error
+%       SEVERITY: error
+%       TRIGGER: GeneClasses = pFBA(model), without skipclass
+%       OBSERVED: the essential reactions are only computed for more than one output, but they are
+%         always stored in RxnClasses, which stops with "Unrecognized function or variable
+%         'pFBAEssentialRxns'"
+%       EXPECTED: the gene classes
+%       LINES: 213
 %
 % Authors:
 %     - Original file: Nathan Lewis 08/30/10
 %     - CI integration: Laurent Heirendt February 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 % Note:
 %     - The solver libraries must be included separately
@@ -145,6 +165,62 @@ for k = 1:length(solverPkgs)
         assert(min(t_fm) == 1)
 
         x = min([t_fm; t_fg; t_fr]);
+
+        %% default parameters and a model without rxnGeneMat
+
+        % the default is to minimise the gene-associated flux; rxnGeneMat is rebuilt from the rules
+        netFluxID = @(m) findRxnIDs(m, 'netFlux');
+        modelNoMat = rmfield(model_glc, 'rxnGeneMat');
+        [geneClasses, rxnClasses, modelIrrev, minimizedFlux] = pFBA(modelNoMat);
+        classNames = fieldnames(t_objGenes.GeneClasses_glc1);
+        for i = 1:numel(classNames)
+            assert(isempty(setxor(geneClasses.(classNames{i}), t_objGenes.GeneClasses_glc1.(classNames{i}))));
+        end
+        assert(isempty(setxor(rxnClasses.pFBAOpt_Rxns, t_objRxns.RxnClasses_glc1.pFBAOpt_Rxns)));
+        assert(abs(minimizedFlux.f - t_objModel.modelIrrev_glc1.lb(netFluxID(t_objModel.modelIrrev_glc1))) < 1e-6);
+        assert(abs(modelIrrev.ub(netFluxID(modelIrrev)) - minimizedFlux.f) < tol);
+
+        %% a tolerance given by name: the classes of the default tolerance on this model
+
+        [geneClasses, rxnClasses] = pFBA(model_glc, 'geneoption', 0, 'tol', 1e-7);
+        assert(isempty(setxor(geneClasses.pFBAEssential, t_objGenes.GeneClasses_glc0.pFBAEssential)));
+        assert(isempty(setxor(rxnClasses.Essential_Rxns, t_objRxns.RxnClasses_glc0.Essential_Rxns)));
+
+        %% skipclass: only the minimised flux and the irreversible model are returned
+
+        [geneClasses, rxnClasses, modelIrrev, minimizedFlux] = pFBA(model_glc, 'skipclass', 1, 'geneoption', 0);
+        assert(isempty(geneClasses) && isempty(rxnClasses));
+        assert(minimizedFlux.stat == 1);
+
+        % the same minimum as with the classification, fixed on the netFlux reaction
+        assert(abs(minimizedFlux.f - t_objModel.modelIrrev_glc0.lb(netFluxID(t_objModel.modelIrrev_glc0))) < 1e-6);
+        assert(modelIrrev.lb(netFluxID(modelIrrev)) == minimizedFlux.f);
+        assert(modelIrrev.ub(netFluxID(modelIrrev)) == minimizedFlux.f);
+
+        %% an odd number of parameters is refused
+
+        assert(verifyCobraFunctionError('pFBA', 'inputs', {model_glc, 'geneoption'}, ...
+                                        'testMessage', 'Invalid number of parameters/values'));
+
+        %% a map is written with the reaction classes
+
+        % the map output type is set to svg when it is not set, in the file given by name; an
+        % unknown parameter name is passed on to the map options
+        global CB_MAP_OUTPUT
+        savedMapOutput = CB_MAP_OUTPUT;
+        CB_MAP_OUTPUT = [];
+        map = readCbMap(which('ecoli_core_map.txt'));
+        mapFile = [tempname '.svg'];
+        [geneClasses, rxnClasses] = pFBA(model_glc, 'geneoption', 0, 'map', map, 'mapoutname', mapFile, 'lineWidth', 3);
+        assert(strcmp(CB_MAP_OUTPUT, 'svg'));
+        CB_MAP_OUTPUT = savedMapOutput;
+        assert(isfile(mapFile));
+        svgText = fileread(mapFile);
+        delete(mapFile);
+        assert(contains(svgText, '<svg'));
+
+        % the classes do not depend on the map
+        assert(isempty(setxor(geneClasses.pFBAoptima, t_objGenes.GeneClasses_glc0.pFBAoptima)));
 
         % output a success message
         fprintf('Done.\n');

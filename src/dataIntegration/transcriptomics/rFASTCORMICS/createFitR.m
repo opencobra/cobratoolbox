@@ -10,25 +10,18 @@ function [fitresult, gof] = createFitR(x, hybrid_curve)
 %    hybrid_curve:    y values (hybrid density curve) to fit
 %
 % OUTPUTS:
-%    fitresult:     a `cfit` object representing the Gaussian fit
+%    fitresult:     structure with the coefficients `a1`, `b1`, `c1` of the Gaussian
+%                   a1*exp(-((x-b1)/c1)^2) and the handle `f` that evaluates it
+%                   (formerly a `cfit` object; the coefficient fields are the same)
 %    gof:           structure with goodness-of-fit information
 %
-% See also: FIT, CFIT, SFIT
+% NOTE:
+%    Fitted with cobraFitGauss1 (no Curve Fitting Toolbox needed).
 %
 % .. Author: - Maria Pires Pacheco, 2016
 
-%% Fit: 'untitled fit 1'.
-[xData, yData] = prepareCurveData(x', hybrid_curve);
-
-% Set up fittype and options.
-ft = fittype('gauss1');
-opts = fitoptions('Method', 'NonlinearLeastSquares');
-opts.Display = 'Off';
-opts.Lower = [-Inf -Inf 0];
-opts.StartPoint = [0.215494818454649 5.36184523579772 1.10452062242243];
-
-% Fit model to data.
-
-[fitresult, gof] = fit(xData, yData, ft, opts);
+%% Fit: one-term Gaussian, nonlinear least squares with c1 >= 0
+[fitresult, gof] = cobraFitGauss1(x', hybrid_curve, 'StartPoint', [0.215494818454649 5.36184523579772 1.10452062242243], ...
+    'Lower', [-Inf -Inf 0], 'Display', 'off');
 
 end

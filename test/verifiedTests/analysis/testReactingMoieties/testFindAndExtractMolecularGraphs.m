@@ -10,8 +10,21 @@
 %       Recon3D fixture, as produced by the pre-change extractBondSubgraphs, so this
 %       test does not depend on extractBondSubgraphs itself.
 %
+% Function under test:
+%     src/analysis/topology/reactingMoieties/findAndExtractMolecularGraphs.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - stored reference graphs, no model and no solver.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - COBRA Toolbox, feature 20260921-154310-reacting-moiety-optimisation
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % only base MATLAB graph functions are used: no solver or toolbox requirement
 prepareTest();
@@ -40,6 +53,20 @@ for c = 1:numel(cacheForms)
     assertMatchesReference(ciExpected, CMTG, RMTG, CMG, RMG, conservedGroup, reactingGroups, ...
         cacheLabels{c});
 end
+
+%% One subgraph is the whole conserved group: there is no reacting group, so RMTG and RMG are empty
+% (the reacting transition graph is built from an empty set of subgraphs)
+[CMTG, RMTG, CMG, RMG, conservedGroup, reactingGroups] = findAndExtractMolecularGraphs( ...
+    ciInputs.BIG, ciExpected.BMG(1, :), ciExpected.bondSubgraphs(1, :));
+assert(isequal(conservedGroup, 1) && isempty(reactingGroups), ...
+    'A single subgraph must be the conserved group, with no reacting group.');
+assert(numnodes(RMTG) == 0 && numedges(RMTG) == 0, 'With no reacting group RMTG must be empty.');
+assert(numedges(RMG) == 0 && numnodes(RMG) == numnodes(ciInputs.BIG), ...
+    'With no reacting group RMG must hold the nodes of BIG and no edges.');
+assert(numedges(CMTG) == numedges(ciExpected.bondSubgraphs{1, 1}), ...
+    'The conserved transition graph must be the single subgraph.');
+assert(numedges(CMG) == numel(ciExpected.BMG{1}.Edges.EdgeIndex), ...
+    'The conserved molecular graph must hold the edges of the single bond mapping graph.');
 
 % change the directory
 cd(currentDir)

@@ -7,6 +7,7 @@
 %
 % Authors:
 %     - Original file: Joshua Chan 03/22/19
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 
 % save the current path
@@ -343,6 +344,29 @@ assert(verifyCobraFunctionError('parseCobraVarargin', 'outputArgCount', 3, ...
     'input', {{'input1value', [], 123}, optArgin, defaultValues, validator}, ...
     'testMessage', 'The value of ''aIn2'' is invalid. It must satisfy the function: ischar.'))
 
-           
+%% empty positional inputs mixed with parameter/value inputs are defaults, when requested
+% a trailing empty positional input stays at its default
+funParams = parseCobraVarargin({'input1value', [], 'bIn', 5}, optArgin, defaultValues, validator, [], [], true);
+assert(isequal(funParams, {'input1value', 'test', 5}))
+% a leading empty positional input: the next value goes to the second argument
+funParams = parseCobraVarargin({[], 'input2value', 'bIn', 5}, optArgin, defaultValues, validator, [], [], true);
+assert(isequal(funParams, {[], 'input2value', 5}))
+
+%% invalid parameter inputs
+% keyForSolverParams must be a string
+assert(verifyCobraFunctionError('parseCobraVarargin', 'outputArgCount', 3, ...
+    'input', {{}, optArgin, defaultValues, validator, problemTypes, 1}, ...
+    'testMessage', 'Input `keyForSolverParams` must be a string'))
+invalidParamMessage = sprintf(['Invalid Parameters supplied.\nParameters have to be supplied either as parameter/value pairs, or as struct.\n', ...
+    'A combination is possible, if the last or first input argument is a struct, and all other arguments']);
+% a parameter name that is not a string
+assert(verifyCobraFunctionError('parseCobraVarargin', 'outputArgCount', 3, ...
+    'input', {{'bIn', 5, 7, 8}, optArgin, defaultValues, validator, problemTypes}, ...
+    'testMessage', invalidParamMessage))
+% a parameter name without a value
+assert(verifyCobraFunctionError('parseCobraVarargin', 'outputArgCount', 3, ...
+    'input', {{'bIn'}, optArgin, defaultValues, validator, problemTypes}, ...
+    'testMessage', invalidParamMessage))
+
 % change the directory
 cd(currentDir)

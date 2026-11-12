@@ -83,12 +83,18 @@ Isotopomer_Info = vertcat(inputMet, Isotopomer_Info);
 
 
 
-isotopomer = dataset(Isotopomer_Info);
 xdir = which('generateIsotopomerSolver');
 xdir = strrep(xdir, 'generateIsotopomerSolver.m', ''); % get only directory
 
 %export(isotopomer,'file','C:\UserSVN\isotopomer\solver\Isotopomer_Text.txt');
-export(isotopomer,'file',strcat(xdir,'IsotopomerModel.txt'),'WriteVarNames',false);
+% one line per entry, unquoted, as dataset/export (Statistics Toolbox) wrote it; the Perl
+% solver scripts read the file line by line
+isotopomerFile = fopen(strcat(xdir,'IsotopomerModel.txt'), 'w');
+if isotopomerFile == -1
+    error('generateIsotopomerSolver: cannot write %s', strcat(xdir,'IsotopomerModel.txt'));
+end
+fprintf(isotopomerFile, '%s\n', Isotopomer_Info{:});
+fclose(isotopomerFile);
 
 cd(xdir);   % writable working dir holding IsotopomerModel.txt and the generated slvr*.m files
 % The Perl 13C solver scripts are vendored under external/ (relocated out of src/); invoke them

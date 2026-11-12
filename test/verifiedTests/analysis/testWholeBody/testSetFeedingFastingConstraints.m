@@ -32,6 +32,10 @@
 %       that reaction changeRxnBounds warns (twice per call) that it is not in the model. These
 %       warnings, and the storageAA list printed by the AAStorage script (defect below), are
 %       not suppressed.
+%     - Measuring: the MATLAB R2025a coverage collector reports the function as an invalid file and
+%       gives no line data, because it calls the script AAStorage. On 2026-11-04 the coverage was
+%       measured on a scratch copy with the script call replaced by its list, on the same line:
+%       129 of 129 executable lines.
 %
 % Function under test:
 %     src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m
@@ -54,6 +58,7 @@
 %
 % Authors:
 %     - Generated for feature 20261103-105830-tier2-safe-batch, 2026-11-03.
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;

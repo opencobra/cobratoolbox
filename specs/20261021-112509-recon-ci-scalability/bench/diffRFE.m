@@ -1,6 +1,7 @@
 function diffRFE(realModels)
-cobra = '/home/farid/Projects/cobratoolbox-f-develop'; cd(cobra); initCobraToolbox(false); warning off all
-addpath('/tmp/claude-1000/-home-farid-Projects-reconxkg/e854ce54-e2a8-4121-baee-4a5dbf3a5092/scratchpad/prof/ref');
+benchDir = fileparts(mfilename('fullpath'));
+cobra = fileparts(fileparts(fileparts(benchDir))); cd(cobra); initCobraToolbox(false); warning off all
+addpath(fullfile(benchDir, 'ref'));
 rng(777); nBad = 0; nCases = 0; nMatch = 0;
 for trial = 1:400
   nG = randi([3 40]); nR = randi([2 50]);

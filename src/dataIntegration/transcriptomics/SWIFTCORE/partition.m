@@ -25,14 +25,12 @@ function component = partition(model, solver, algorithm)
 %
 % NOTE:
 %
-%    requires bioinformatics toolbox
+%    runs on base MATLAB (no toolbox required)
 %
 % .. Authors:
 %       - Mojtaba Tefagh, Stephen P. Boyd, 2019, Stanford University
 %       - Farid Zare   29 Feb 2024 (Replaced the depreciated graphconncomp)
 
-assert(license('test', 'bioinformatics_toolbox') == 1, ...
-    'The required Bioinformatics toolbox is not available!');
 S = model.S;
 rev = model.rev;
 lb = model.lb;
@@ -70,7 +68,7 @@ C = conncomp(G);
 C = C(1:end-1);
 
 %% finding weakly connected components in the graph
-if range(C) == 0
+if max(C) - min(C) == 0
     G = digraph(DG);
     C = conncomp(G, 'Type', 'weak');
     C = C(1:end-1);
@@ -83,7 +81,7 @@ end
 % C = C(1:end-1);
 %
 % %% finding weakly connected components in the graph
-% if range(C) == 0
+% if max(C) - min(C) == 0
 %     [~, C] = graphconncomp(max(DG, DG.'), 'Directed', false);
 %     C = C(1:end-1);
 % end
@@ -94,7 +92,7 @@ for i = 1:n
     v = C(S(:, i) ~= 0);
     component(i) = all(v == v(1))*v(1);
 end
-if range(component) == 0
+if max(component) - min(component) == 0
     component = zeros(n, 1);
     if strcmp(algorithm, 'fast')
         component(fastcc(model, getCobraSolverParams('LP', 'feasTol')*100)) = 1;

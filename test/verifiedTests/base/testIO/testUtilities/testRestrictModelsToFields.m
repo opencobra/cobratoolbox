@@ -5,6 +5,7 @@
 %
 % Authors:
 %     - Jacek Wachowiak
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 global CBTDIR
 % save the current path
 currentDir = pwd;
@@ -43,6 +44,11 @@ restrictedModels = restrictModelsToFields(models, allFields);
 % test
 assert(isSameCobraModel(restrictedModels{1}, models{1}));
 assert(isSameCobraModel(restrictedModels{2}, models{2}));
+
+%a single model is given as a struct and returned as a struct
+restrictedModel = restrictModelsToFields(models{1}, fieldsKept);
+assert(isstruct(restrictedModel));
+assert(isempty(setxor(fieldsKept, fieldnames(restrictedModel))));
 
 % change to old directory
 cd(currentDir);

@@ -44,7 +44,7 @@ else
         P(1,:) = g0orig < 0;
         P(2,:) = g0orig == 0;
         P(3,:) = g0orig > 0;
-        plotconfusion(T,P,'Reaction activity')
+        % (plotconfusion of the Deep Learning Toolbox removed: this branch never runs)
     else
         
         if 0
@@ -62,7 +62,7 @@ else
             %             % Then, plot
             %             plotConfMat(C) plots the confmat with integers 1 to n as class labels
             %             plotConfMat(C, order) plots the confmat with the specified labels
-            C = confusionmat(T,P,'order',{'Active';'Inactive';'Unspecified'});
+            C = cobraConfusionmat(T,P,'order',{'Active';'Inactive';'Unspecified'});
             plotConfMat(C,{'Active';'Inactive';'Unspecified'});
         else
             
@@ -105,7 +105,7 @@ else
                 else
                     labels = {'Active';'Inactive'};
                 end
-                C = confusionmat(P,T,'order',labels);
+                C = cobraConfusionmat(P,T,'order',labels);
                 plotConfMat(C,labels);
                 accuracy = sum(diag(C),1)/sum(sum(C,1));
                 title(['Reaction confusion matrix, accuracy = ' num2str(accuracy)])
@@ -151,7 +151,7 @@ else
                 else
                     labels = {'Active';'Inactive'};
                 end
-                C = confusionmat(P,T,'order',labels);
+                C = cobraConfusionmat(P,T,'order',labels);
                 plotConfMat(C,labels);
                 accuracy = sum(diag(C),1)/sum(sum(C,1));
                 title(['Metabolite confusion matrix, accuracy = ' num2str(accuracy)])

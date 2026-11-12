@@ -10,7 +10,7 @@
 global CBTDIR
 
 % require the specified toolboxes and solvers
-solvers = prepareTest('needsLP', true, 'requireOneSolverOf', {'gurobi','ibm_cplex'},'excludeSolvers', {'matlab', 'lp_solve','pdco'},'requiredToolboxes', {'statistics_toolbox'});
+solvers = prepareTest('needsLP', true, 'requireOneSolverOf', {'gurobi','ibm_cplex'},'excludeSolvers', {'matlab', 'lp_solve','pdco'});
 
 
 % save the current path
@@ -33,7 +33,7 @@ model.ub = model.ub(A);
 model.lb = model.lb(A);
 model.rxns = model.rxns(A);
 n = length(model.rev);
-core = randsample(n, round(n/2));
+core = randperm(n, round(n/2))'; % the same draws as randsample(n, k)
 
 
 

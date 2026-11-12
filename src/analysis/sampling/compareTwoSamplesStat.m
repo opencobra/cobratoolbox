@@ -45,9 +45,9 @@ for i=1:length(tests)
     switch lower(tests{i})
         case 'ks'
             for j = 1:nVar
-                [~, pLarger, statLarger] = kstest2(sample1(j, :), ...
+                [~, pLarger, statLarger] = cobraKstest2(sample1(j, :), ...
                     sample2(j, :), 0.01, 'larger');
-                [~, pSmaller, statSmaller] = kstest2(sample1(j, :), ...
+                [~, pSmaller, statSmaller] = cobraKstest2(sample1(j, :), ...
                     sample2(j, :), 0.01, 'smaller');
                 if statLarger > statSmaller
                     stats.ks(j, 1) = statLarger;
@@ -59,7 +59,7 @@ for i=1:length(tests)
             end
         case 'ranksum'
             for j = 1:nVar
-                [p, ~, stat] = ranksum(sample1(j, :), ...
+                [p, ~, stat] = cobraRanksum(sample1(j, :), ...
                     sample2(j, :), 'method', 'approximate');
                 pVals.ranksum(j, 1) = p;
                 stats.ranksum(j, 1) = -stat.zval;
@@ -75,7 +75,7 @@ for i=1:length(tests)
             pVals.chisquare = cobraChi2cdf([stats.chisquare], nBin-1);
         case 'ttest'
             for j = 1:nVar
-                [~, pVals.ttest(j, 1), tmp, tmpstats] = ttest2(sample1(j, :), sample2(j, :));
+                [~, pVals.ttest(j, 1), tmp, tmpstats] = cobraTtest2(sample1(j, :), sample2(j, :));
                 stats.ttest(j, 1) = tmpstats.tstat;
             end
         otherwise

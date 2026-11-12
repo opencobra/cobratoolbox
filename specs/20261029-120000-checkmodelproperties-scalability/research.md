@@ -2,7 +2,7 @@
 
 Question: does `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` use
 runtime or memory that the toolbox itself, and not the solver, can save on a Recon4-size model?
-Machine: 12 cores, 31 GB, MATLAB R2025a, Gurobi 11.0.3, toolbox at upstream/develop `5e8170e12`.
+Software: MATLAB R2025a, Gurobi 11.0.3, toolbox at upstream/develop `5e8170e12`.
 
 ## Correction of an earlier statement
 

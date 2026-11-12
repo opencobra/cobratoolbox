@@ -193,7 +193,7 @@ model.DfGtMin = model.DfGt0Min + rt*log(model.concMin);
 model.DfGtMax = model.DfGt0Max + rt*log(model.concMax);
 
 %We choose the arithmetic mean of minimum and maximum concentration since logarithmic concentration is linear in Gibbs energy.
-model.DfGtMean = model.DfGt0 + rt*log(geomean([model.concMin,model.concMax],2));
+model.DfGtMean = model.DfGt0 + rt*log(exp(mean(log([model.concMin,model.concMax]),2))); % geometric mean
 
 if ~(all(model.DfGtMin(hBool)==0) && all(model.DfGtMin(hBool)==0))
     error('Transformed Gibbs energy for each proton should be zero')

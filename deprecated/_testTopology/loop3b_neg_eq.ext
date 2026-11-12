@@ -1,6 +1,6 @@
 
 *lrs:lrslib v.7.1 2021.6.2(64bit,lrslong.h,hybrid arithmetic)
-*Input taken from  /home/farid/cobratoolbox-develop/test/additionalTests/testTopology/loop3b_neg_eq.ine
+*Input taken from  test/additionalTests/testTopology/loop3b_neg_eq.ine
 loop3b
 *Input linearity in row 3 is redundant--converted to inequality
 V-representation

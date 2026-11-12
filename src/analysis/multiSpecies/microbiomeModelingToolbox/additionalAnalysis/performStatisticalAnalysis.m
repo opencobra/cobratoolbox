@@ -24,6 +24,10 @@ function [Statistics, significantFeatures] = performStatisticalAnalysis(sampleDa
 %    BHFDR:                  Defines whether Benjamini and Hochberg (true) or
 %                            Storey (false) procedure should be used for
 %                            correction for multiple testing. Default=false.
+%                            The Storey procedure calls mafdr and needs the
+%                            Bioinformatics Toolbox (its bootstrap is not
+%                            reproducible without it); Benjamini and Hochberg
+%                            runs on base MATLAB.
 %
 % OUTPUTS:
 %    Statistics:             Table with results of statistical tests for each
@@ -139,7 +143,7 @@ for i=2:size(sampleData,1)
     if length(groups)==2
         % use Wilcoxon rank sum test
         
-        [p,h,stats] = ranksum(dataGrouped{1},dataGrouped{2},'method','approximate');
+        [p,h,stats] = cobraRanksum(dataGrouped{1},dataGrouped{2},'method','approximate');
         if isnan(p)
             p=1;
         end
@@ -151,7 +155,7 @@ for i=2:size(sampleData,1)
     elseif length(groups)>2
         if strcmp(groupTest,'Kruskal-Wallis')
             % use Kruskal Wallis test
-            [p,ANOVATAB] = kruskalwallis(dataAll,group,'off');
+            [p,ANOVATAB] = cobraKruskalwallis(dataAll,group,'off');
             Statistics{i,3}=p;
             if ANOVATAB{2,6} ==0
                 Statistics{i,5}='0';
@@ -161,7 +165,7 @@ for i=2:size(sampleData,1)
             Statistics{i,6}=ANOVATAB{2,3};
             Statistics{i,7}=ANOVATAB{2,5};
         elseif strcmp(groupTest,'ANOVA')
-            [p,tbl,stats] = anova1(dataAll,group,'off');
+            [p,tbl,stats] = cobraAnova1(dataAll,group,'off');
             Statistics{i,3}=p;
             if p<0.05
                 Statistics{i,5}='1';
@@ -185,9 +189,14 @@ end
 pAverages=cell2mat(Statistics(2:end,3));
 
 if BHFDR
-    fdr = mafdr(pAverages,'BHFDR', BHFDR);
+    fdr = fdrBHadjustment(pAverages);
     Statistics(2:end,4)=num2cell(fdr);
 else
+    % Storey q-values: mafdr (Bioinformatics Toolbox) is kept because its
+    % bootstrap cannot be reproduced without the toolbox
+    if exist('mafdr', 'file') ~= 2
+        error('performStatisticalAnalysis: the Storey procedure (BHFDR = false) needs mafdr from the Bioinformatics Toolbox; use ''BHFDR'', true for the Benjamini-Hochberg procedure, which runs on base MATLAB.');
+    end
     [fdr,q] = mafdr(pAverages,'BHFDR', BHFDR);
     Statistics(2:end,4)=num2cell(q);
 end

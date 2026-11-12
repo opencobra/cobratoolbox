@@ -14,8 +14,35 @@
 %       rather than by computation, so the expected answer carries no floating-point
 %       error of its own. They are verified before being used to judge the routine.
 %
+% Function under test:
+%     src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - optimisation; hand-built matrices and ecoli_core_model, needs an LP solver.
+%     The sections at the end replace findExtremePool and solveCobraLP with stubs in a temporary
+%     folder, to obtain rays and failures that no working LP solver returns on a small matrix.
+%
+% Coverage exemptions:
+%     Line 687: unreachable, untruncatedRay clips each candidate at zero.
+%     Lines 800-805: unreachable, a kept vector passed the same residual metric before the search and is never modified.
+%     Lines 808-811, 913: unreachable, each accepted ray passed the same metric at acceptance, so no row is dropped here, and the search only ends with a complete basis or a timeout.
+%     Lines 839-841: unreachable, rays are clipped at zero and supplied vectors with a negative entry are rejected.
+%     Line 1112: unreachable, the caller requires nBases > 0, and Z is empty only when the nullspace is, in which case the search does not run.
+%     Line 1128: unreachable, the Z of a nullspace of dimension above nBases always has a part outside the span of the rays.
+%     Lines 1141, 1152-1153: unreachable, the direction is orthogonal to a non-zero non-negative ray, so it has entries of both signs and the shifted objective is not zero.
+%     Line 1157: unreachable, the direction is a column of a matrix with nVar rows.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: glpk, one of the solvers the routine falls back on, cannot run the search
+%       SEVERITY: error
+%       TRIGGER: greedyExtremeRayBasis with glpk as the solver and any LP to solve, for example param.solver = 'glpk' on a model without a supplied complete basis
+%       OBSERVED: below printLevel 2 the negative param.printLevel-2 stops glpk with "glpkcc: param.msglev must be 0 ...", and at any level contains(sol.origStat, 'WARNING') stops with "First argument must be text", because the origStat of glpk is a number
+%       EXPECTED: the search runs with glpk; the sections here use glpk only where no search with it is needed
+%       LINES: 650, 1018, 1167
+%
 % Authors:
 %     - Feature 20260914-204640-greedy-left-nullspace-conditioning, September 2026
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 %
 % Reference:
 %     specs/20260914-204640-greedy-left-nullspace-conditioning/spec.md
@@ -101,7 +128,7 @@ end
 
 % genome-scale case. ecoli_core ships with the test suite and depends on no git
 % submodule content, which SC-011 requires of anything run in CI.
-ecoli = load('ecoli_core_model.mat');
+ecoli.model = getDistributedModel('ecoli_core_model.mat');
 ecoliModel.S = ecoli.model.S;
 ecoliModel.SConsistentRxnBool = true(size(ecoliModel.S, 2), 1);
 
@@ -832,5 +859,243 @@ for k = 1:numel(vertexSolvers)
 end
 fprintf('Done.\n');
 
+%% Input handling of the solver: mosek is refused, others are switched to and restored
+assert(verifyCobraFunctionError('greedyExtremeRayBasis', 'inputs', {struct('S', F1.S), ...
+    struct('solver', 'mosek')}, 'testMessage', ...
+    'needs an LP solver that returns exact VERTICES, e.g., gurobi'));
+
+cycleModel = basisModel(F1.S);
+quietParam = struct('printLevel', 0, 'maxNewBasisTime', 60);
+% prepareTest lists the solvers of its own default; these two are the vertex solvers that matter here
+workingSolvers = {};
+for candidate = {'gurobi', 'glpk'}
+    if changeCobraSolver(candidate{1}, 'LP', 0)
+        workingSolvers{end + 1} = candidate{1}; %#ok<SAGROW>
+    end
+end
+if numel(workingSolvers) == 2
+    % a nominated solver is used for the call, and the session's solver comes back
+    % (the session is on glpk and solves nothing itself, see the known defect)
+    changeCobraSolver(workingSolvers{2}, 'LP', 0);
+    switchParam = quietParam;
+    switchParam.solver = workingSolvers{1};
+    [~, ~, status] = greedyExtremeRayBasis(cycleModel, switchParam);
+    assert(strcmp(status.outcome, 'complete') && status.solverChanged && ...
+        strcmp(status.solverUsed, workingSolvers{1}), 'The nominated solver must be used.');
+    assert(strcmp(CobraSolverState.getSolver('LP'), workingSolvers{2}), 'The solver of the session must come back.');
+
+    % a nominated solver that is not installed: the next vertex solver is used, and that is printed
+    unavailableSolver = '';
+    for candidate = {'tomlab_cplex', 'cplexlp', 'cplex_direct', 'lp_solve'}
+        if ~changeCobraSolver(candidate{1}, 'LP', 0)
+            unavailableSolver = candidate{1};
+            break
+        end
+    end
+    changeCobraSolver('gurobi', 'LP', 0);
+    if ~isempty(unavailableSolver)
+        % (the basis supplied is complete: glpk has nothing to solve, see the known defect)
+        missingParam = struct('printLevel', 1, 'solver', unavailableSolver, 'initialBasis', [1 1 1]);
+        consoleText = evalc('[~, ~, status] = greedyExtremeRayBasis(cycleModel, missingParam);');
+        assert(strcmp(status.solverUsed, 'glpk') && status.solverChanged, ...
+            'The first vertex solver other than the current one must be used.');
+        assert(contains(consoleText, [unavailableSolver ' is not available; using glpk instead.']), ...
+            'The change of solver must be printed.');
+        assert(strcmp(CobraSolverState.getSolver('LP'), 'gurobi'), 'The solver of the session must come back.');
+    end
+end
+if ~isempty(workingSolvers)
+    changeCobraSolver(workingSolvers{1}, 'LP', 0);
+end
+
+%% The stoichiometrically consistent subset is computed when it is asked for and missing
+internalParam = quietParam;
+internalParam.internalStoichiometriMatrixLeftNullspace = 1;
+[Zpos, ~, status] = greedyExtremeRayBasis(ecoli.model, internalParam);
+assert(strcmp(status.outcome, 'complete') && size(Zpos, 2) == size(ecoli.model.S, 1), ...
+    'The consistent subset must be computed by the routine.');
+
+%% Printing: a complete basis, a completed supplied basis, and an incomplete basis
+printParam = struct('printLevel', 1, 'maxNewBasisTime', 60);
+consoleText = evalc('[Zpos, ~, status] = greedyExtremeRayBasis(cycleModel, printParam);');
+assert(strcmp(status.outcome, 'complete'), 'The basis of a closed cycle must be complete.');
+assert(contains(consoleText, '1 extreme rays. Basis complete.') && contains(consoleText, 'Hit fraction') && ...
+    contains(consoleText, 'accuracy target') && contains(consoleText, '|| S''*Zpos||_inf'), ...
+    'A complete basis must be reported.');
+printParam.initialBasis = [1 1 1];
+consoleText = evalc('greedyExtremeRayBasis(cycleModel, printParam);');
+assert(contains(consoleText, 'Supplied basis: 1 supplied, 1 kept, 0 dependent, 0 rejected; 0 rays added.'), ...
+    'The supplied basis must be reported.');
+printParam = rmfield(printParam, 'initialBasis');
+printParam.maxTime = -1;                    % the budget is spent before the first solve
+consoleText = evalc('[Zpos, ~, status] = greedyExtremeRayBasis(cycleModel, printParam);');
+assert(status.timedOut && strcmp(status.outcome, 'incomplete') && strcmp(status.terminationReason, 'timeBudget'), ...
+    'A spent time budget must be the reason of an incomplete basis.');
+assert(contains(consoleText, 'exhausted param.maxTime') && contains(consoleText, '0 extreme rays computed.') && ...
+    contains(consoleText, 'extreme rays required. Basis incomplete.'), 'An incomplete basis must be reported.');
+
+%% A search that stalls: the rays above its structural limit are not found, and it restarts
+% x1 + x2 = 0 forces both to zero, so only e3 and e4 are non-negative rays of a nullity of three
+if ~isempty(vertexSolvers)
+    stallModel = basisModel([1; 1; 0; 0]);
+    stallParam = struct('printLevel', 3, 'maxNewBasisTime', 0.3, 'maxTime', 1.5);
+    rng(20261104, 'twister');
+    consoleText = evalc('[Zpos, ~, status] = greedyExtremeRayBasis(stallModel, stallParam);');
+    assert(status.nRestarts >= 1 && status.timedOut && strcmp(status.shortfallKind, 'structural'), ...
+        'The search must restart until its budget ends, on a structural shortfall.');
+    assert(status.raysFound == 2 && status.attainableDimension == 2 && strcmp(status.terminationReason, 'timeBudget'), ...
+        'The two reachable rays must be kept.');
+    assert(contains(consoleText, 'no new basis vector within 0.3 s') && ...
+        contains(consoleText, 'Linearly dependent pool vector discarded') && ...
+        contains(consoleText, '2 of 3 linearly independent kernel rays'), 'The stall must be reported.');
+
+    % the supplied vectors survive a restart
+    stallParam = struct('printLevel', 0, 'maxNewBasisTime', 0.2, 'maxTime', 0.6, 'initialBasis', [0 0 1 0]);
+    [Zpos, ~, status] = greedyExtremeRayBasis(stallModel, stallParam);
+    assert(status.nRestarts >= 1 && isequal(full(Zpos(1, :)), [0 0 1 0]) && status.initialBasisKept == 1, ...
+        'A restart must keep the supplied vector.');
+
+    % the sign retry is printed
+    retryParam = struct('printLevel', 3, 'maxNewBasisTime', 60, 'solver', '', 'initialBasis', [1 1 0]);
+    retryParam.testHook = struct('targetedSignFirst', -1, 'forceTargeted', true);
+    consoleText = evalc('[~, ~, status] = greedyExtremeRayBasis(basisModel(S4), retryParam);');
+    assert(status.nSignRetries == 1 && contains(consoleText, 're-solving with the opposite sign.'), ...
+        'The retry with the opposite sign must be reported.');
+end
+
+%% Kept supplied vectors can exceed the nullity, when two floating point rank decisions disagree
+% 1e-12 is within the accuracy target eps*1e4, so [0 1] is accepted, while the rank of S is two;
+% only the fallback target (matrix above the spectrum ceiling) has this regime not assessed
+keptParam = struct('printLevel', 0, 'maxElementsForSpectrum', 0, 'initialBasis', [0 1], 'solver', '');
+lastwarn('');
+[Zpos, ~, status] = greedyExtremeRayBasis(basisModel(sparse([1e4 0; 0 1e-12])), keptParam);
+assert(strcmp(status.outcome, 'complete') && isequal(full(Zpos), [0 1]) && status.raysExpected == 0, ...
+    'All the kept vectors must be returned.');
+assert(contains(lastwarn, '1 supplied vectors were kept as independent'), 'The disagreement must be reported.');
+
+%% Paired comparison of solvers on each search state
+if ~isempty(workingSolvers)
+    compareParam = struct('printLevel', 2, 'maxNewBasisTime', 60, 'solver', '');
+    % printLevel 2 because glpk stops on a negative print level, see the known defect
+    compareParam.compareSolvers = workingSolvers(:)';
+    rng(20261104, 'twister');
+    twoPools = basisModel(F2b.S);
+    evalc('[Zpos, ~, status] = greedyExtremeRayBasis(twoPools, compareParam);');
+    assert(strcmp(status.outcome, 'complete') && size(Zpos, 1) == 2, 'The comparison must not change the result.');
+    paired = status.pairedComparison;
+    assert(numel(paired) >= 2*numel(workingSolvers), 'Each solver must have a row at each point.');
+    assert(all(ismember({paired.solver}, workingSolvers)) && all([paired.meetsTarget]) && all([paired.stat] == 1), ...
+        'Each solver must meet the target on this exact fixture.');
+    assert(all([paired.residualAbsolute] <= status.acceptanceTarget), 'The residuals must be measured.');
+    assert(strcmp(CobraSolverState.getSolver('LP'), workingSolvers{1}), 'The comparison must leave the solver as it was.');
+
+    % the nominated solver joins a list without it, and an unavailable solver gets no row
+    compareParam.compareSolvers = {'tomlab_cplex'};
+    evalc('[~, ~, status] = greedyExtremeRayBasis(cycleModel, compareParam);');
+    assert(isequal(unique({status.pairedComparison.solver}), workingSolvers(1)), ...
+        'Only the nominated solver must have a row.');
+
+    % an infeasible LP has no ray to measure: x1 + x2 = 0 and x1 + x2 = 1
+    compareParam.compareSolvers = workingSolvers(1);
+    compareParam.maxTime = 0.1;
+    infeasibleModel = basisModel([1; 1]);
+    evalc('[~, ~, status] = greedyExtremeRayBasis(infeasibleModel, compareParam);');
+    paired = status.pairedComparison;
+    assert(~isempty(paired) && isnan(paired(1).residualAbsolute) && ~paired(1).meetsTarget, ...
+        'A solver without a solution must have an empty row.');
+end
+
+%% Rays and failures that no LP solver returns here, from stubs of findExtremePool and solveCobraLP
+% each call of findExtremePool takes the next step of a script, kept in the application data
+stubDir = tempname;
+mkdir(stubDir);
+fid = fopen(fullfile(stubDir, 'findExtremePool.m'), 'w');
+fprintf(fid, ['function [x, sol] = findExtremePool(~, ~, ~, ~, ~, ~)\n' ...
+    'steps = getappdata(0, ''greedySteps'');\nnextStep = getappdata(0, ''greedyNextStep'');\n' ...
+    'setappdata(0, ''greedyNextStep'', nextStep + 1);\n' ...
+    'step = steps(min(nextStep, numel(steps)));\npause(step.wait);\n' ...
+    'sol = struct(''full'', step.full, ''stat'', step.stat, ''origStat'', step.origStat);\n' ...
+    'x = step.full;\nend\n']);
+fclose(fid);
+fid = fopen(fullfile(stubDir, 'solveCobraLP.m'), 'w');
+fprintf(fid, ['function sol = solveCobraLP(~, varargin)\n' ...
+    'if getappdata(0, ''greedyLpFails'')\n    error(''greedyTest:noLP'', ''no solver today'');\nend\n' ...
+    'sol = struct(''stat'', 0, ''full'', []);\nend\n']);
+fclose(fid);
+removeStubs = onCleanup(@() removeGreedyStubs(stubDir));
+ray = @(x, wait) struct('full', x, 'stat', 1, 'origStat', 'OPTIMAL', 'wait', wait);
+noRay = @(wait) struct('full', [], 'stat', 0, 'origStat', 'INFEASIBLE', 'wait', wait);
+addpath(stubDir);
+rehash path
+setappdata(0, 'greedyLpFails', false);
+
+% a solver warning counts as a stall at once, and the ray is still judged
+warningRay = ray(ones(3, 1)/3, 0);
+warningRay.origStat = 'OPTIMAL WARNING';
+setappdata(0, 'greedySteps', warningRay);
+setappdata(0, 'greedyNextStep', 1);
+[Zpos, ~, status] = greedyExtremeRayBasis(cycleModel, quietParam);
+assert(strcmp(status.outcome, 'complete') && status.nStallEscalations == 1 && size(Zpos, 1) == 1, ...
+    'A warning of the solver must escalate at once and keep the ray.');
+
+% an all-zero ray satisfies the residual, and is caught on the returned basis
+setappdata(0, 'greedySteps', ray(zeros(3, 1), 0));
+setappdata(0, 'greedyNextStep', 1);
+zeroRowId = '';
+try
+    greedyExtremeRayBasis(cycleModel, quietParam);
+catch ME
+    zeroRowId = ME.identifier;
+end
+assert(strcmp(zeroRowId, 'greedyExtremeRayBasis:zeroBasisRow'), 'An all-zero row must be an error.');
+
+% the best basis survives a restart that finds less before the budget ends:
+% a ray at once, then three seconds without a new ray (restart at 1.5 s), then another three
+restartModel = basisModel([1; 1; 0; 0]);
+restartParam = struct('printLevel', 0, 'maxNewBasisTime', 1.5, 'maxTime', 5.1);
+setappdata(0, 'greedySteps', [ray([0; 0; 1; 0], 0), ray([0; 0; 1; 0], 3), noRay(3)]);
+setappdata(0, 'greedyNextStep', 1);
+setappdata(0, 'greedyLpFails', true);
+consoleText = evalc('[Zpos, ~, status] = greedyExtremeRayBasis(restartModel, restartParam);');
+assert(status.nRestarts == 1 && status.timedOut && isequal(full(Zpos), [0 0 1 0]), ...
+    'The best basis must be returned, not the last one.');
+assert(status.raysFound == 1 && strcmp(status.terminationReason, 'timeBudget'), 'The ray kept must be counted.');
+
+% a failed attainability LP leaves the shortfall not assessed, and says why
+oneLine = regexprep(consoleText, '\s+', ' ');
+assert(strcmp(status.shortfallKind, 'notAssessed') && ~status.attainableDimensionAssessed, ...
+    'Without the attainability LP the shortfall must not be classified.');
+assert(contains(oneLine, 'Could not compute the attainable dimension (no solver today'), ...
+    'The failure of the attainability LP must be reported.');
+% and so does an attainability LP without an optimal solution
+setappdata(0, 'greedyLpFails', false);
+timeoutParam = struct('printLevel', 0, 'maxTime', -1);
+[~, ~, status] = greedyExtremeRayBasis(restartModel, timeoutParam);
+assert(strcmp(status.shortfallKind, 'notAssessed'), 'An LP without a solution must not classify the shortfall.');
+
+% rays too close to each other to aim at what they leave out: the objective stays random
+% (S = 0, so every vector is in the nullspace; nullspaceAccuracyTarget gives a target of zero)
+nearlyParallel = basisModel(sparse(3, 1));
+setappdata(0, 'greedySteps', [ray([1; 1; 0], 0), ray([1; 1 + 1e-9; 0], 0), ray([0; 0; 1], 0)]);
+setappdata(0, 'greedyNextStep', 1);
+targetParam = quietParam;
+targetParam.testHook = struct('forceTargeted', true);
+[Zpos, ~, status] = greedyExtremeRayBasis(nearlyParallel, targetParam);
+assert(strcmp(status.outcome, 'complete') && size(Zpos, 1) == 3, 'The three rays must be accepted.');
+assert(status.nTargetedObjectives == 1, 'Only the search state with one ray can be aimed at.');
+clear removeStubs
+
 % change back to the current directory
 cd(currentDir);
+
+function removeGreedyStubs(stubDir)
+% Remove the stubs and their application data, on every exit from these sections.
+rmpath(stubDir);
+rmdir(stubDir, 's');
+for name = {'greedySteps', 'greedyNextStep', 'greedyLpFails'}
+    if isappdata(0, name{1})
+        rmappdata(0, name{1});
+    end
+end
+rehash path
+end

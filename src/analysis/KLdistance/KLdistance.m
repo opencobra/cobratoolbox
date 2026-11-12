@@ -31,8 +31,8 @@ for jj = 1: size(data, 2) - 1
 
     dataAll = data;
 
-    [fWT, ~] = ksdensity(dataAll(1:length(find(dataAll(:, end) == 0)), jj));
-    [fMUT, ~] = ksdensity(dataAll(length(find(dataAll(:, end) == 0)) + 1:end, jj));
+    [fWT, ~] = cobraKsdensity(dataAll(1:length(find(dataAll(:, end) == 0)), jj));
+    [fMUT, ~] = cobraKsdensity(dataAll(length(find(dataAll(:, end) == 0)) + 1:end, jj));
     dist(1) = KLDis(fMUT, fWT);
 
     % randomly shuffle
@@ -44,8 +44,8 @@ for jj = 1: size(data, 2) - 1
         data2_WT = data_shuff(find(data_shuff(:, end) == 0), :);
         data2_MUT = data_shuff(find(data_shuff(:, end) == 1), :);
 
-        [fWT, ~] = ksdensity(data2_WT(:, jj));
-        [fMUT, ~] = ksdensity(data2_MUT(:, jj));
+        [fWT, ~] = cobraKsdensity(data2_WT(:, jj));
+        [fMUT, ~] = cobraKsdensity(data2_MUT(:, jj));
 
         dist(ii) = KLDis(fMUT, fWT);
     end

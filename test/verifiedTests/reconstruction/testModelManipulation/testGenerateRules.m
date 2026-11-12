@@ -3,8 +3,21 @@
 % Purpose:
 %     - testGenerateRules tests generateRules
 %
+% Function under test:
+%     src/reconstruction/refinement/generateRules.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 2 - model manipulation, no solver; models loaded through getDistributedModel.
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Initial Version: Uri David Akavia - August 2017
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 global CBTDIR
 
@@ -14,6 +27,9 @@ currentDir = pwd;
 % initialize the test
 fileDir = fileparts(which('testGenerateRules'));
 cd(fileDir);
+
+% this test needs no solver, MATLAB toolbox or particular operating system
+prepareTest();
 
 if 1
     modelsToTry = {'Acidaminococcus_intestini_RyC_MR95.mat', 'Acidaminococcus_sp_D21.mat', 'Recon1.0model.mat', 'ecoli_core_model.mat', 'modelReg.mat'};
@@ -86,3 +102,35 @@ for i=1:length(modelsToTry)
     end
     fprintf('Succesfully completed model %s\n', modelsToTry{i});
 end
+
+%% a model without grRules is returned unchanged, with a warning
+
+noRulesModel = struct('rxns', {{'R1'}});
+lastwarn('');
+assert(isequal(generateRules(noRulesModel), noRulesModel));
+assert(strcmp(lastwarn, 'generateRules can be only be used on a model that has grRules field!'));
+
+%% genes that appear only in grRules are added to the model
+
+toyModel = createModel();
+toyModel = addMultipleMetabolites(toyModel, {'A[c]', 'B[c]'});
+toyModel = addMultipleReactions(toyModel, {'R1'}, toyModel.mets, [-1; 1]);
+toyModel = addGenes(toyModel, {'g1'});
+toyModel.grRules = {'g1 and g2'};
+
+% by default the new genes are named in a warning
+lastwarn('');
+toyWithRules = generateRules(toyModel);
+assert(contains(lastwarn, 'g2'));
+assert(isequal(toyWithRules.genes, {'g1'; 'g2'}));
+assert(fp.parseFormula(toyWithRules.rules{1}).isequal(fp.parseFormula('x(1) & x(2)')));
+
+% with printLevel 0 the result is the same, without the warning
+lastwarn('');
+toyWithoutWarning = generateRules(toyModel, 0);
+assert(isempty(lastwarn));
+assert(isequal(toyWithoutWarning.genes, toyWithRules.genes));
+assert(isequal(toyWithoutWarning.rules, toyWithRules.rules));
+
+% change the directory
+cd(currentDir)

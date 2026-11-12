@@ -12,10 +12,23 @@
 %         Bug A - MIQP gurobi returns a NUMERIC .stat and a STRING .origStat.
 %         Bug B - LP ibm_cplex native 101 does NOT yield .stat == 0.
 %
+% Function under test:
+%     src/base/solvers/statusMapping/mapSolverStatus.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 3 - the status map is pure; the last section solves a toy MIQP with gurobi.
+%
+% Coverage exemptions:
+%     None: every line is reached.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     None found.
+%
 % Authors:
 %     - Generated for feature 009-fba-characterization-statusmap, 2026-07-15.
 %     - Extended to the full relation for feature 015-solver-spine-hardening,
 %       2026-07-20.
+%     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
 
 % save the current path
 currentDir = pwd;
@@ -206,6 +219,19 @@ catch
     threw = true;
 end
 assert(~threw);   % a known solver with an out-of-table string still resolves (no throw)
+
+% an unknown solver is refused for the QP and MILP problem types as well
+for problemTypeCell = {'QP', 'MILP'}
+    threw = false;
+    try
+        mapSolverStatus('someUnknownSolver', problemTypeCell{1}, 0);
+    catch ME
+        threw = true;
+        assert(strcmp(ME.identifier, 'COBRA:mapSolverStatus:unmappedSolver'));
+        assert(contains(ME.message, ['no ' problemTypeCell{1} ' status map']));
+    end
+    assert(threw);
+end
 
 threw = false;
 try
