@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-07
 
-**Status**: Draft
+**Status**: Clarified (2026-11-12)
 
 **Input**: User description: fix the six tests that fail in the R2026a fast-mode suite on `develop` (`2363a5a71`):
 `testGetMolecularWeight`, `testOptimizeCbModelNLP`, `testFitC13Data`, `testExtractBondSubgraphs`,
@@ -98,8 +98,8 @@ glpk and gurobi.
 
 **Acceptance Scenarios**:
 
-1. **Given** `testEcosystemToy` under mosek, **When** diagnosed, **Then** the diagnosis identifies each problem
-   that yields no optimal value, mosek's status for it, and the cause.
+1. **Given** `testEcosystemToy` under mosek, **When** diagnosed, **Then** the diagnosis identifies where mosek's
+   results differ from gurobi's (problems, statuses, values) and the cause.
 2. **Given** the diagnosis, **When** presented, **Then** the maintainer sees at least two options with their
    consequences, and nothing is changed until they choose.
 3. **Given** the chosen option is implemented, **When** the test runs with glpk, gurobi and mosek, **Then** it
@@ -159,8 +159,8 @@ the shared repository's configuration is unchanged.
 - **FR-008**: Default-mode start-up MUST recognise a linked worktree as a git repository and MUST NOT run
   repository initialisation or remote creation there.
 - **FR-009**: `src/analysis/thermo/inchi/` MUST NOT be modified (out of scope by the maintainer's decision).
-- **FR-010**: The fast-mode suite on R2026a after both start-up modes MUST show no test passing on `develop`
-  (`2363a5a71`) that fails after this feature.
+- **FR-010**: The fast-mode suite on R2026a after both start-up modes MUST show no test passing at the pre-edit
+  branch tip `cb1fb7394` (`develop` `2363a5a71` plus upstream `5200aad48`) that fails after this feature.
 
 ## Existing Contract
 
@@ -179,11 +179,12 @@ the shared repository's configuration is unchanged.
   runs.
 - **SC-003**: The two error-parity tests reject 100% of a set of deliberately different failures (at least one
   per recorded error case).
-- **SC-004**: The fast-mode suite shows 0 regressions against `develop` after either start-up mode.
+- **SC-004**: The fast-mode suite shows 0 regressions against the pre-edit tip `cb1fb7394` after either start-up
+  mode.
 - **SC-005**: Start-up in a linked worktree runs 0 repository-creating commands; the shared repository's
   configuration is byte-identical before and after.
-- **SC-006**: The mosek diagnosis names every non-optimal problem, its status and the cause, and gives at least 2
-  options.
+- **SC-006**: The mosek diagnosis states where and by how much mosek's results differ from gurobi's, the cause,
+  and at least 2 options.
 
 ## Assumptions
 
@@ -205,5 +206,5 @@ the shared repository's configuration is unchanged.
 | US2-1–US2-4, FR-005, SC-003 | `testExtractBondSubgraphs`, `testClassifySubgraphIsomorphism` | `extractBondSubgraphs`, `classifySubgraphIsomorphism` |
 | US3-1–US3-3, FR-006, FR-007, SC-006 | `testEcosystemToy`; diagnosis note | `src/analysis/ecosystem/` |
 | US4-1, US4-2, FR-008, SC-005 | start-up in a temporary linked worktree | `initCobraToolbox` (git detection) |
-| FR-003, FR-010, SC-004 | fast-mode suite after both modes vs `develop` | — |
+| FR-003, FR-010, SC-004 | fast-mode suite after both modes vs `cb1fb7394` | — |
 | SC-002 | timed agent start-up | `initCobraToolbox` |
