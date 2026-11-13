@@ -5,6 +5,7 @@ usage:
   update_ledger.py <feature dir> --next-wave <tier> [--limit N] [--slice-size 10]
   update_ledger.py <feature dir> --apply <results.jsonl> [...]
   update_ledger.py <feature dir> --existing-defect <src file> <test file> "<defect title>"
+  update_ledger.py <feature dir> --reclassify <review.tsv> [...]   (file, decision, reason)
   update_ledger.py <feature dir> --check
   update_ledger.py <feature dir> --summary
 
@@ -242,6 +243,29 @@ class Ledger:
         self.save()
         return problems, removed
 
+    # ---- reclassification after reading the code (T008)
+    def reclassify(self, files):
+        changes = []
+        for path in files:
+            with open(path) as f:
+                for rec in csv.DictReader(f, delimiter='\t'):
+                    r = self.by_file.get(rec['file'])
+                    if r is None or r['status'] not in ('PENDING', 'EXCLUDED'):
+                        continue
+                    decision = rec['decision'].strip().upper()
+                    if decision == 'TESTABLE' and r['status'] == 'EXCLUDED':
+                        r['status'], r['reason'] = 'PENDING', ''
+                        r['notes'] = 'reclassified testable (T008): ' + rec['reason']
+                        changes.append((r['file'], 'PENDING'))
+                    elif decision in ('EXCLUDE', 'EXCLUDED') and r['status'] == 'PENDING':
+                        r['status'], r['reason'] = 'EXCLUDED', rec['reason']
+                        r['notes'] = 'reclassified excluded (T008)'
+                        changes.append((r['file'], 'EXCLUDED'))
+                    elif decision == 'KEEP' and r['status'] == 'EXCLUDED':
+                        r['reason'] = rec['reason'] or r['reason']
+        self.save()
+        return changes
+
     # ---- checks
     def check(self):
         issues = []
@@ -322,6 +346,7 @@ def main():
     p.add_argument('--slice-size', type=int, default=10)
     p.add_argument('--apply', nargs='+')
     p.add_argument('--existing-defect', nargs=3)
+    p.add_argument('--reclassify', nargs='+')
     p.add_argument('--check', action='store_true')
     p.add_argument('--summary', action='store_true')
     a = p.parse_args()
@@ -333,6 +358,11 @@ def main():
         removed = L.propagate()
         L.save()
         print('existing-defective recorded; tests to remove:', removed)
+    if a.reclassify:
+        changes = L.reclassify(a.reclassify)
+        print('reclassified %d rows' % len(changes))
+        for f, st in changes:
+            print('  %s -> %s' % (f, st))
     if a.apply:
         problems, removed = L.apply(a.apply)
         print('applied; problems: %d' % len(problems))

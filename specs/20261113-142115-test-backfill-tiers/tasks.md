@@ -37,7 +37,7 @@ A wave is formed, written, verified and committed as follows (research R4–R7, 
 - [X] T001 Copy the coverage tool of feature 20261104-115314-test-coverage-100 to `$F/tools/measureCoverage.m` (header names both features) and add `$F/tools/run_coverage.sh <list> <out>` that runs it through the memory-capped wrapper
 - [X] T002 Sync the local `test/models` checkout to the recorded commit 75c070d01 (local only, research R8) and verify every `test/models/mat/*.mat` is a MAT file; record the result in `$F/inventory/environment.md`
 - [X] T003 Write `$F/tools/update_ledger.py` (adds the data-model fields to `$F/inventory/ledger.tsv`; `--next-wave`, `--apply`, `--check`, `--summary`; blocking propagation R6; generates `$F/inventory/quarantine.md` and `$F/inventory/summary.md`)
-- [ ] T004 [P] Coverage baseline (R10): executable-line counts of the 1085 untested files from one coverage run with an empty test, and covered lines of the 557 tested files from `specs/20261104-115314-test-coverage-100/coverage-runs/zz-final-*.jsonl` → `$F/inventory/coverage-before.tsv`
+- [X] T004 [P] Coverage baseline (R10): executable-line counts of the 1085 untested files from one coverage run with an empty test, and covered lines of the 557 tested files from `specs/20261104-115314-test-coverage-100/coverage-runs/zz-final-*.jsonl` → `$F/inventory/coverage-before.tsv`
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
@@ -51,7 +51,7 @@ A wave is formed, written, verified and committed as follows (research R4–R7, 
 **Goal**: every untested file has a row, a tier and an order position. **Independent test**:
 `update_ledger.py --check` reports 1085 rows, no callee after its caller within a tier.
 
-- [ ] T007 [US1] Add `--check` order and completeness checks to `$F/tools/update_ledger.py` and run them on `$F/inventory/ledger.tsv`; record the output in `$F/inventory/summary.md`
+- [X] T007 [US1] Add `--check` order and completeness checks to `$F/tools/update_ledger.py` and run them on `$F/inventory/ledger.tsv`; record the output in `$F/inventory/summary.md`
 - [ ] T008 [US1] Review the 155 inventory exclusions and the 62 `external-program` flags by reading each file's code; correct misclassifications in `$F/inventory/ledger.tsv` with reasons (scripts that only define data, GUIs whose logic functions are callable, etc.)
 
 ## Phase 4: User Story 2 — Tier 1 tests (Priority: P1)
