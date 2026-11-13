@@ -1,5 +1,31 @@
 <!--
 Sync Impact Report
+Version change: 1.7.1 -> 1.8.0
+Modified principles:
+- III-Defects (expanded, no new principle): adds QUARANTINE, an option a test back-fill
+  feature (III-Characterization) MAY adopt in its spec. When a defect is found in f, f's
+  test file records the defect, exempts every line and asserts nothing about f; every
+  function that calls f, directly or indirectly, gets no test in that feature and is
+  listed in the feature's quarantine ledger; both are tested normally once the defect is
+  fixed. Elsewhere the input-level rule is unchanged. Maintainer decision 2026-11-13.
+- III-Coverage (reference only): the exemption sentence now points to III-Defects for
+  defect exemptions (skipped defective input, or every line of a quarantined function).
+Modified sections: III-Defects, III-Coverage. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; spec-template.md's Characterization Mode block
+  only references Principle III; no template restates defect handling (Principle X).
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for MINOR bump: a materially expanded option within an existing sub-clause (a
+new way a feature may handle defects, with its own obligations: test header, quarantine
+ledger, follow-up testing); no principle removed or redefined, and the existing
+input-level rule still applies by default.
+Deferred items: none. How "calls f, directly or indirectly" is determined (the call graph)
+is defined by the feature that adopts quarantine.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.7.0 -> 1.7.1
 Modified principles:
 - III-Defects (simplified, no new principle): the enforced staleness check is removed.
@@ -418,8 +444,9 @@ function have a test, and is it complete" a single lookup rather than a search.
 Every test file MUST aim for 100% line coverage of the single function it tests.
 A line that cannot be reached (unavailable solver or toolbox, GUI, OS-specific
 branch) is permitted to stay uncovered ONLY when the test file header documents the
-exemption: the line number(s) and the reason. Undocumented uncovered lines are a
-defect in the test.
+exemption: the line number(s) and the reason. Lines left uncovered because of a known
+defect are exempt as III-Defects defines (a skipped defective input, or every line of a
+quarantined function). Undocumented uncovered lines are a defect in the test.
 
 Every test file MUST open with a `prepareTest(...)` call placed after the
 `cd(fileDir)` boilerplate, declaring the test's requirements (solvers, MATLAB
@@ -508,11 +535,29 @@ resolve a defect MUST re-check the entry against the current source, then update
 test header (remove or correct the entry and, once the defect is fixed, write the test
 for the formerly skipped input) and regenerate the registry.
 
+Quarantine in back-fill campaigns. A feature that back-fills tests for untested functions
+(III-Characterization) MAY adopt QUARANTINE in its spec instead of skipping only the
+defective input. When a defect is found in a function f:
+
+* f's test file is still created. Its header records the defect in the standard format
+  above, and its "Coverage exemptions" state that every line is exempt because f is
+  quarantined for that defect. Its body is the standard opening with `prepareTest()`
+  only; it asserts nothing about f.
+* Every function that calls f, directly or indirectly, gets no test in that feature.
+  The feature lists each such function in its quarantine ledger with the blocking defect.
+* When the defect is fixed (a separate, spec-driven change), f and its callers are tested
+  normally and the quarantine entries are removed.
+
+Outside such features, and in features whose spec does not adopt it, the input-level rule
+above applies.
+
 Rationale: defects found while back-filling tests are valuable and otherwise stay
 buried in individual headers. Generating one registry from those headers keeps a single
 source of truth that a hand-written list would not. A complete staleness check would need
 a far more complicated system; the registry is a navigational aid, and re-checking an
-entry when it is used or resolved is sufficient.
+entry when it is used or resolved is sufficient. Quarantine keeps a large back-fill from
+pinning behaviour built on a known defect: no test of f or of its callers asserts results
+that a fix of f may change, and a human reviews each blocking defect before they are tested.
 
 ### IV. Solver Abstraction, Numerical Integrity, And Performance
 
@@ -1051,4 +1096,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.7.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-12
+**Version**: 1.8.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-13
