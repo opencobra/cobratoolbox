@@ -1,7 +1,7 @@
 order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	missed	exempt	wave	confirmed_by	notes
 1	src/base/solvers/param/getCobraSolverParamsOptionsForType.m	1	TESTED					changeCobraSolverParams,computeMetFormulae,getCobraSolverParams,parseCobraVarargin,parseSolverParameters	test/verifiedTests/base/testSolvers/testGetCobraSolverParamsOptionsForType.m	89			01		pilot, written by the lead
 2	src/base/solvers/param/getCobraSolverParams.m	1	PENDING				getCobraSolverParamsOptionsForType	GDLS,OptKnock,SteadyComCplex,SteadyComSubroutines,XomicsToModel,biomassPrecursorCheck,buildCplexProblemFromCOBRAStruct,checkGeneMCS,checkModelPreFBA,checkModelProperties,checkRankFR,checkSolFeas,checkStoichiometricConsistency,checkThermoFeasibility,computeReconstructionFeatures,constrainRxns,createDummyModel,createTissueSpecificModel,cycleFreeFlux,driver_testThermoQP,enumerateOptimalSolutions,fastCoreWeighted,fastGapFill,fastSNP,fastcc,fastcore,findExtremePool,findFluxConsistentSubset,findMassLeaksAndSiphons,findMinNull,findMinimalLeakageModeMet,findMinimalLeakageModeRxn,findSignedCyclicFluxConsistentSubset,findSparseMode,findSparsePathway,findStoichConsistentSubset,findThermoConsistentFluxSubset,fitExperimentalFlux,fluxVariability,identifyBlockedRxns,maxCardinalityConservationVector,mdFBA,metUtilisation,metabolomicsTomodel,minCardinalityConservationRelaxationVector,modelPredictiveCapacity,multiProductionEnvelope,optCardThermo,optimizeCardinality,optimizeCbModel,optimizeTwoCbModels,optimizeWBModel,parseSolverParameters,partition,performSanityChecksonRecon,plotRelaxedFBA,preprocessingOmicsModel,pruneModel,quanQualAcc,rFastcormics,relaxFBA_cappedL1,relaxedFBA,solveCobraNLP,sparseFBA,sparseLP,submitGapFill,thermoKernel,writePajekNet							
-3	src/analysis/FVA/fastFVA/cleanFilesFastFVA.m	1	EXCLUDED	interactive input											
+3	src/analysis/FVA/fastFVA/cleanFilesFastFVA.m	1	PENDING												reclassified testable (T008): input() prompt (line with input('\n Do you want to clean...')) runs only when userInteraction is true (the default); cleanFilesFastFVA(false) is exempt-free and testable for the empty-logFiles message and the log-file branch, where m is undefined when userInteraction=false (defect to quarantine)
 4	src/base/solvers/getSetSolver/getCobraSolverVersion.m	1	TESTED					fastFVA,generateMexFastFVA,isCompatible	test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m	68			01		pilot, written by the lead
 5	src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m	1	PENDING				getCobraSolverVersion								
 6	src/base/solvers/cplex/checkSolFeas.m	1	PENDING				getCobraSolverParams	SteadyCom,SteadyComCplex,SteadyComFVA,SteadyComFVAgr,SteadyComPOA,SteadyComPOAgr,computeMetFormulae,fastSNP,findMinNull,fluxVariability							
@@ -76,7 +76,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 75	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/VegetarianDiet.m	1	EXCLUDED	script (no function to call)				analyzeHMmodel,setDietConstraints,validateDietPath							
 76	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/normalizeCoverage.m	1	PENDING				readInputTableForPipeline								
 77	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m	1	PENDING				readInputTableForPipeline								
-78	src/reconstruction/demeter/src/integration/parseNCBItaxonomy.m	1	EXCLUDED	internet				compareVersions,createInfoFileDEMETER,reportPDF,updateAGORATaxonomyFile,updateTaxonomyInfoAGORA							
+78	src/reconstruction/demeter/src/integration/parseNCBItaxonomy.m	1	EXCLUDED	every call fetches the NCBI Taxonomy browser page with urlread before any parsing; the regex parsing has no offline entry point				compareVersions,createInfoFileDEMETER,reportPDF,updateAGORATaxonomyFile,updateTaxonomyInfoAGORA							
 79	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/updateTaxonomyInfoAGORA.m	1	PENDING				parseNCBItaxonomy,readInputTableForPipeline								
 80	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m	1	PENDING												
 81	src/analysis/thermo/vonBertalanffy/getCompartment.m	1	PENDING					configureSetupThermoModelInputs,deltaG0concFluxConstraintBounds,efmSubmodelExtractionAsSBML,estimateDrGt0,getMultiSpeciesModelId,metUtilisation,model2JSON,setCommonZeroStandardGibbsEnergyOfFormation,thermodynamicAdjustmentToStoichiometry,transportReactionBool							
@@ -84,7 +84,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 83	src/analysis/persephone/additionalFunctions/combineFluxResults.m	1	PENDING												
 84	src/analysis/persephone/additionalFunctions/convertVMHIDName.m	1	PENDING				loadVMHDatabase								
 85	src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m	1	PENDING												
-86	src/analysis/persephone/additionalFunctions/downloadAGORA2.m	1	EXCLUDED	internet											
+86	src/analysis/persephone/additionalFunctions/downloadAGORA2.m	1	EXCLUDED	every call websaves four AGORA2 zip archives from vmh.life before unzipping; nothing runs without internet											
 87	src/analysis/persephone/additionalFunctions/generateAGORA2MappingStatTable.m	1	EXCLUDED	script (no function to call)											
 88	src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m	1	PENDING												
 89	src/analysis/persephone/additionalFunctions/generatePanDatabase.m	1	PENDING												
@@ -155,9 +155,9 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 154	src/base/utilities/duplicates.m	1	PENDING					check4DuplicatesInList,regulariseGroupIncidenceMatrix							
 155	src/analysis/thermo/groupContribution/new/regulariseGroupIncidenceMatrix.m	1	PENDING				duplicates	createGroupIncidenceMatrix							
 156	src/analysis/thermo/trainingModel/new/loadTrainingData.m	1	PENDING					addThermoToModel,createTrainingModel,prepareTrainingData							
-157	src/analysis/thermo/trainingModel/new/getInchies.m	1	EXCLUDED	internet	external-program			addThermoToModel,prepareTrainingData							
+157	src/analysis/thermo/trainingModel/new/getInchies.m	1	EXCLUDED	every call errors because data/kegg_additions.tsv does not exist next to the file; beyond that it requires the external 'babel' binary (only obabel is installed) and urlread to the KEGG REST API for uncached compounds	external-program			addThermoToModel,prepareTrainingData							
 158	src/analysis/thermo/componentContribution/new/invertProjection.m	1	PENDING					componentContribution							
-159	src/analysis/thermo/molFiles/new/kegg2mol.m	1	EXCLUDED	internet	external-program			createTrainingModel,setupComponentContribution,setupComponentContribution							
+159	src/analysis/thermo/molFiles/new/kegg2mol.m	1	EXCLUDED	its only work is urlread of each KEGG molfile (plus ChemAxon cxcalc for major microspecies); offline only argument defaulting and the skip of already-existing mol files run, which produce no observable output	external-program			createTrainingModel,setupComponentContribution,setupComponentContribution							
 160	src/analysis/thermo/inchi/mol2inchi.m	1	PENDING		external-program			createInChIStruct							
 161	src/analysis/thermo/inchi/new/sdf2inchi.m	1	PENDING		external-program			createInChIStruct							
 162	src/analysis/thermo/inchi/new/createInChIStruct.m	1	PENDING				mol2inchi,sdf2inchi	addInchiToModel,setupComponentContribution,setupComponentContribution							
@@ -166,7 +166,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 165	src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m	1	PENDING				numAtomsOfElementInFormula	getFormulaAndChargeFromInChI,modelMetabolitesToSDF,regulariseModelFormulae							
 166	src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m	1	PENDING					getFormulaAndChargeFromInChI,modelMetabolitesToSDF							
 167	src/analysis/thermo/inchi/new/getFormulaAndChargeFromInChI.m	1	PENDING				getChargeFromInChI,getFormulaFromInChI	createTrainingModel,estimate_pKa,getInchiString2ChargedFormula,getKeggpKas,getMolecularWeight,verifyInchiString							
-168	src/analysis/thermo/protons/new/estimate_pKa.m	1	PENDING		external-program		getFormulaAndChargeFromInChI	addPseudoisomersToModel,createTrainingModel,getInchiString2ChargedFormula,setupComponentContribution,setupComponentContribution							
+168	src/analysis/thermo/protons/new/estimate_pKa.m	1	EXCLUDED	every path runs ChemAxon `cxcalc pka`; nonzero status errors 'Could not estimate pKa values'	external-program		getFormulaAndChargeFromInChI	addPseudoisomersToModel,createTrainingModel,getInchiString2ChargedFormula,setupComponentContribution,setupComponentContribution							reclassified excluded (T008)
 169	src/analysis/thermo/directionalityReport/directionalityStatsFigures.m	1	PENDING					analyseThermoConstrainedModel							
 170	src/analysis/thermo/directionalityReport/directionalityCheckAll.m	1	EXCLUDED	script (no function to call)											
 171	src/analysis/thermo/reactantContribution/calcdGHT.m	1	PENDING					acidDissociationConstant,assignThermoToModel,estimateDG_temp,estimateDfGt0,moleFraction							
@@ -183,7 +183,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 182	src/analysis/thermo/trainingModel/new/driver_addChemoinfoToTrainingModel.m	1	EXCLUDED	script (no function to call)											
 183	src/analysis/thermo/vonBertalanffy/initVonBertalanffy.m	1	EXCLUDED	script (no function to call)	external-program			driver_createTrainingModel							
 184	src/base/paths/editCobraToolboxPath.m	1	PENDING					driver_createTrainingModel							
-185	src/analysis/thermo/trainingModel/new/getKeggpKas.m	1	PENDING		external-program		getFormulaAndChargeFromInChI								
+185	src/analysis/thermo/trainingModel/new/getKeggpKas.m	1	EXCLUDED	it first runs `cxcalc` and errors when that fails, before any other work; each compound then needs babel and cxcalc	external-program		getFormulaAndChargeFromInChI								reclassified excluded (T008)
 186	src/analysis/topology/FR/combinatorialDependentRows.m	1	PENDING					testCombinatorialDependentRows							
 187	src/analysis/topology/FR/extractFRfromResults.m	1	EXCLUDED	script (no function to call)											
 188	src/analysis/topology/FR/testBP.m	1	EXCLUDED	script (no function to call)											
@@ -226,7 +226,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 225	src/base/ci/addKeyToKnownHostsCT.m	1	PENDING		external-program										
 226	src/base/cobrarrow/COBRArrowSolver.m	1	PENDING					COBRArrow							
 227	src/base/cobrarrow/COBRArrow.m	1	PENDING				COBRArrowSolver								
-228	src/base/cobrarrow/initCobrarrow.m	1	PENDING		external-program										
+228	src/base/cobrarrow/initCobrarrow.m	1	EXCLUDED	with Python configured (as on the reference machine) every path runs `python -m pip install -r requirements.txt`, which downloads pyarrow (internet) and changes the Python environment; the no-Python branch cannot be reached	external-program										reclassified excluded (T008)
 229	src/base/codeConsistency/printFunctionIO.m	1	PENDING												
 230	src/base/install/adaptMacPath.m	1	PENDING		external-program										
 231	src/base/install/addCOBRABinaryPathToSystemPath.m	1	PENDING												
@@ -234,22 +234,22 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 233	src/base/install/getIgnoredFiles.m	1	PENDING					getFilesInDir							
 234	src/base/install/getFilesInDir.m	1	PENDING		external-program		getIgnoredFiles	changeCobraSolver,removeTempFiles							
 235	src/base/install/getGitBashVersion.m	1	PENDING					installGitBash,updateGitBash							
-236	src/base/install/installDevTools.m	1	PENDING		external-program										
-237	src/base/install/portableGitSetup.m	1	EXCLUDED	internet	external-program			installGitBash,updateGitBash							
+236	src/base/install/installDevTools.m	1	EXCLUDED	every path runs addKeyToKnownHosts (ssh-keyscan github.com) and then either a `git clone git@github.com:...` over SSH (internet) or interactive input() when MATLAB.devTools already exists	external-program										reclassified excluded (T008)
+237	src/base/install/portableGitSetup.m	1	EXCLUDED	on Linux every call hits the 'gitBash can only be installed on Windows' error; all substantive code is Windows-only and websaves PortableGit from GitHub	external-program			installGitBash,updateGitBash							
 238	src/base/install/installGitBash.m	1	PENDING				getGitBashVersion,portableGitSetup	updateGitBash							
 239	src/base/install/removeTempFiles.m	1	PENDING				getFilesInDir	changeCobraSolver							
 240	src/base/install/updateGitBash.m	1	PENDING		external-program		getGitBashVersion,installGitBash,portableGitSetup	updateCobraToolbox							
 241	src/base/install/updateCobraToolbox.m	1	PENDING		external-program		updateGitBash								
 242	src/base/io/convertCobraLP2mps.m	1	PENDING												
-243	src/base/io/definitions/getRegisteredDatabases.m	1	EXCLUDED	internet				addMIRIAMAnnotations							
-244	src/base/io/python/condalab/conda.m	1	EXCLUDED	interactive input	external-program										
+243	src/base/io/definitions/getRegisteredDatabases.m	1	EXCLUDED	every first call webreads the identifiers.org registry (result cached in a persistent); offline it only raises the no-connection error				addMIRIAMAnnotations							
+244	src/base/io/python/condalab/conda.m	1	EXCLUDED	every functional path (getenv/setenv/addBaseCondaPath) shells out to the conda executable, which is absent on the reference machine, and init() prompts with input() when the condalab pref is unset; only the 'Unknown argument syntax' errors run without them	external-program										
 245	src/base/io/utilities/write4ti2.m	1	PENDING												
 246	src/base/io/writeGDXFromCOBRA.m	1	PENDING												
 247	src/base/io/writeLPProblem.m	1	PENDING					solveCobraLP,solveCobraMILP,solveCobraQP							
 248	src/base/setWorkerCount.m	1	PENDING					generateMetaboScore							
 249	src/base/solvers/cplex/setCplexParametersForProblem.m	1	PENDING				setCplexParam	solveCobraLP,solveCobraMILP,solveCobraMIQP,solveCobraQP							
 250	src/base/solvers/entropicFBA/mosekParamSetEFBA.m	1	PENDING					flux2json,plotyy_eFBA							
-251	src/base/solvers/gams/getAvailableGAMSSolvers.m	1	PENDING		external-program			checkGAMSSolvers							
+251	src/base/solvers/gams/getAvailableGAMSSolvers.m	1	EXCLUDED	needs the GAMS executable: errors at once when which('gams') is empty and otherwise runs `gams licememo`	external-program			checkGAMSSolvers							reclassified excluded (T008)
 252	src/base/solvers/gams/checkGAMSSolvers.m	1	PENDING				getAvailableGAMSSolvers	findMustLLWithGAMS,findMustLWithGAMS,findMustULWithGAMS,findMustUUWithGAMS,findMustUWithGAMS,optForceWithGAMS							
 253	src/base/solvers/gurobi/setGurobiParam.m	1	PENDING					solveCobraLP,solveCobraQP							
 254	src/base/solvers/init/configEnvVars.m	1	PENDING					changeCobraSolver							
@@ -258,8 +258,8 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 257	src/base/solvers/lp_solve/lp_solve.m	1	PENDING				mxlpsolve	solveCobraLP							
 258	src/base/solvers/minos/DQQCleanup.m	1	PENDING					solveCobraLP							
 259	src/base/solvers/minos/readMinosSolution.m	1	PENDING					solveCobraLP,solveCobraQP							
-260	src/base/solvers/optarrow/solveCobraLPOptArrow.m	1	PENDING		external-program			solveCobraLP							
-261	src/base/solvers/optarrow/solveCobraQPOptArrow.m	1	PENDING		external-program			solveCobraQP							
+260	src/base/solvers/optarrow/solveCobraLPOptArrow.m	1	EXCLUDED	every solve runs the OptArrow Python CLI, which needs an external optArrow_mat source tree (OPTARROW_SRC) plus highspy, or the HTTP path needs a running OptArrow server; only input-validation errors run without it	external-program			solveCobraLP							reclassified excluded (T008)
+261	src/base/solvers/optarrow/solveCobraQPOptArrow.m	1	EXCLUDED	every solve runs solve_cobra_qp_cli.py, which needs the external OptArrow source tree (Pyomo service) plus numpy/scipy; only input-validation errors run without it	external-program			solveCobraQP							reclassified excluded (T008)
 262	src/base/solvers/param/parseSolverParameters.m	1	PENDING				getCobraSolverParams,getCobraSolverParamsOptionsForType	computeMetFormulae,parseCobraVarargin,solveCobraEP,solveCobraLP,solveCobraMILP,solveCobraMIQP,solveCobraNLP,solveCobraQP							
 263	src/base/solvers/rescale/liftRows.m	1	PENDING					liftCouplingConstraints							
 264	src/base/solvers/varKin/BDCAmethods/BDCA.m	1	PENDING					optimizeVKmodel0							
@@ -276,7 +276,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 275	src/base/solvers/varKin/levMarMethods/LMTR.m	1	PENDING					optimizeVKmodel0							
 276	src/base/solvers/varKin/levMarMethods/LevMar.m	1	PENDING					optimizeVKmodel0							
 277	src/base/utilities/generateStructFunction.m	1	PENDING												
-278	src/base/utilities/issueConfirmationWarning.m	1	EXCLUDED	interactive input				INIT,OptKnock,SteadyCom,fastcc,iMAT,optForce,optGene,prepareFastGapFill							
+278	src/base/utilities/issueConfirmationWarning.m	1	PENDING					INIT,OptKnock,SteadyCom,fastcc,iMAT,optForce,optGene,prepareFastGapFill							reclassified testable (T008): the input() prompt runs only when HOME contains 'jenkins' (exempt); the warning emission and the onCleanup restore of the warning state are testable in a normal environment
 279	src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m	1	PENDING					XomicsToModel							
 280	src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelStats.m	1	PENDING					thermoKernel							
 281	src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelWeights.m	1	PENDING					thermoKernel							
@@ -313,48 +313,48 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 312	src/dataIntegration/metaboAnnotator/analyseMetStruct/assignMetaboliteIDs.m	1	EXCLUDED	script (no function to call)			addAnnotations,getAnnoFromHMDB,getIDsFromBIGG	createMetaboliteIDs							
 313	src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m	1	PENDING				duplicates	list2MetaboliteStructure							
 314	src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m	1	PENDING					checkAbbrExists,createrBioNetStructure,generateVMHMetAbbr							
-315	src/dataIntegration/metaboAnnotator/analyseMetStruct/checkAbbrExists.m	1	EXCLUDED	internet			createRBioNetDBFromVMHDB	generateVMHMetAbbr,list2MetaboliteStructure,model2MetStructure							
-316	src/dataIntegration/metaboAnnotator/analyseMetStruct/checkLinkValidity.m	1	EXCLUDED	internet											
-317	src/dataIntegration/metaboAnnotator/connect2resources/parseChebiIdWebPage.m	1	EXCLUDED	internet				createMetaboliteIDs,getInchisFromDatabases,parseDBCollection							
-318	src/dataIntegration/metaboAnnotator/connect2resources/getIDsfromFiehnLab.m	1	EXCLUDED	internet				createMetaboliteIDs,parseDBCollection							
-319	src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromUniChem.m	1	EXCLUDED	internet				createMetaboliteIDs,parseDBCollection							
-320	src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromInchiKeys.m	1	EXCLUDED	internet				createMetaboliteIDs							
+315	src/dataIntegration/metaboAnnotator/analyseMetStruct/checkAbbrExists.m	1	EXCLUDED	every list entry is checked with webread against the VMH API (no try around the reactions query), and without database arguments it also websaves the rBioNet databases from GitHub			createRBioNetDBFromVMHDB	generateVMHMetAbbr,list2MetaboliteStructure,model2MetStructure							
+316	src/dataIntegration/metaboAnnotator/analyseMetStruct/checkLinkValidity.m	1	EXCLUDED	its only purpose is to urlread each HMDB id page to detect dead/revoked links; offline only the loop over non-hmdb fields runs, which does nothing											
+317	src/dataIntegration/metaboAnnotator/connect2resources/parseChebiIdWebPage.m	1	EXCLUDED	every metabolite with a ChEBI id is fetched with urlread (no try) and all field extraction parses that page; offline only the skip of entries without a ChEBI id runs				createMetaboliteIDs,getInchisFromDatabases,parseDBCollection							
+318	src/dataIntegration/metaboAnnotator/connect2resources/getIDsfromFiehnLab.m	1	EXCLUDED	every lookup is a urlread to the Fiehn lab CTS service; offline only skip paths run (and the default endSearch uses undefined Mets)				createMetaboliteIDs,parseDBCollection							
+319	src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromUniChem.m	1	EXCLUDED	every enabled check performs a urlread to UniChem and all annotation is parsed from the response; offline only the flag defaulting runs				createMetaboliteIDs,parseDBCollection							
+320	src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromInchiKeys.m	1	EXCLUDED	every annotation path is a urlread to UniChem; the loop is also hard-coded to metabolites 3001:4000 and reads metabolite 301, so no small documented input exercises anything offline				createMetaboliteIDs							
 321	src/dataIntegration/metaboAnnotator/analyseMetStruct/createMetaboliteIDs.m	1	EXCLUDED	script (no function to call)			assignMetaboliteIDs,getIDsfromFiehnLab,getMetIdsFromInchiKeys,getMetIdsFromUniChem,parseChebiIdWebPage								
 322	src/dataIntegration/metaboAnnotator/analyseMetStruct/getIDfromMetStructure.m	1	PENDING					VMH2Metabolon,VMH2Seed,assignAGORAReconPresence,getMolFilesMultipleSources,getRxnFromKegg,model2MetStructure							
 323	src/dataIntegration/metaboAnnotator/analyseMetStruct/getStatsMetStruct.m	1	PENDING					createrBioNetStructure,model2MetStructure							
 324	src/dataIntegration/metaboAnnotator/analyseMetStruct/linkComparison.m	1	EXCLUDED	script (no function to call)											
 325	src/dataIntegration/metaboAnnotator/connect2resources/getCas2Echa.m	1	PENDING					createrBioNetStructure,list2MetaboliteStructure							
-326	src/dataIntegration/metaboAnnotator/molFileFinder/getMolFileFromDrugbank.m	1	EXCLUDED	internet				getMissingDrugMolForm							
-327	src/dataIntegration/metaboAnnotator/buildMetStruct/generateVMHMetAbbr.m	1	EXCLUDED	internet			checkAbbrExists,createRBioNetDBFromVMHDB	createNewMetaboliteStructure,list2MetaboliteStructure,searchUnknownMetOnline							
-328	src/dataIntegration/metaboAnnotator/connect2resources/parseCHOmineWebpage.m	1	EXCLUDED	internet				parseDBCollection							
-329	src/dataIntegration/metaboAnnotator/connect2resources/parseBiggID4VMH.m	1	EXCLUDED	internet				parseDBCollection							
-330	src/dataIntegration/metaboAnnotator/connect2resources/parseKeggWebpage.m	1	EXCLUDED	internet				parseDBCollection							
-331	src/dataIntegration/metaboAnnotator/connect2resources/parseMetaNetXWebpage.m	1	EXCLUDED	internet				parseDBCollection							
-332	src/dataIntegration/metaboAnnotator/connect2resources/parseFDAsisWebpage.m	1	EXCLUDED	internet				parseDBCollection							
-333	src/dataIntegration/metaboAnnotator/connect2resources/parseChemIDPlusWebpage.m	1	EXCLUDED	internet				parseDBCollection							
-334	src/dataIntegration/metaboAnnotator/connect2resources/parseEPA4VMH.m	1	EXCLUDED	internet				parseDBCollection							
+326	src/dataIntegration/metaboAnnotator/molFileFinder/getMolFileFromDrugbank.m	1	EXCLUDED	every call websaves the DrugBank molfile; offline both websaves fail and it only returns '' after mkdir				getMissingDrugMolForm							
+327	src/dataIntegration/metaboAnnotator/buildMetStruct/generateVMHMetAbbr.m	1	EXCLUDED	every metabolite unconditionally calls checkAbbrExists, which webreads the VMH API for each abbreviation; the abbreviation-building code cannot complete without it			checkAbbrExists,createRBioNetDBFromVMHDB	createNewMetaboliteStructure,list2MetaboliteStructure,searchUnknownMetOnline							
+328	src/dataIntegration/metaboAnnotator/connect2resources/parseCHOmineWebpage.m	1	EXCLUDED	every eligible metabolite is queried with urlread to CHOmine inside a try; offline only skip paths run (and the hit branch references undefined idNew)				parseDBCollection							
+329	src/dataIntegration/metaboAnnotator/connect2resources/parseBiggID4VMH.m	1	EXCLUDED	every metabolite is fetched with urlread from BiGG inside a try/catch; offline nothing is annotated				parseDBCollection							
+330	src/dataIntegration/metaboAnnotator/connect2resources/parseKeggWebpage.m	1	EXCLUDED	every eligible metabolite is fetched with urlread from genome.jp and all parsing works on that page; offline the try/catch just continues				parseDBCollection							
+331	src/dataIntegration/metaboAnnotator/connect2resources/parseMetaNetXWebpage.m	1	EXCLUDED	all annotation and verification is driven by urlread of MetaNetX search and chem_info pages; offline only skip paths run				parseDBCollection							
+332	src/dataIntegration/metaboAnnotator/connect2resources/parseFDAsisWebpage.m	1	EXCLUDED	every eligible metabolite is fetched with urlread from fdasis.nlm.nih.gov; offline the catch continues and nothing is annotated				parseDBCollection							
+333	src/dataIntegration/metaboAnnotator/connect2resources/parseChemIDPlusWebpage.m	1	EXCLUDED	both annotation loops urlread ChemIDplus pages inside try blocks; offline nothing is annotated				parseDBCollection							
+334	src/dataIntegration/metaboAnnotator/connect2resources/parseEPA4VMH.m	1	EXCLUDED	every metabolite with a CAS number or InChIKey is fetched with urlread (no try) from the EPA CompTox dashboard; offline only metabolites without either id are skipped				parseDBCollection							
 335	src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m	1	PENDING		external-program			parseDBCollection							
-336	src/dataIntegration/metaboAnnotator/connect2resources/parseHmdbWebPage.m	1	EXCLUDED	internet				getInchisFromDatabases,parseDBCollection,tutorial_MetaboRePort_m							
-337	src/dataIntegration/metaboAnnotator/connect2resources/parseWikipediaWebpage.m	1	EXCLUDED	internet				parseDBCollection							
-338	src/dataIntegration/metaboAnnotator/connect2resources/parseDrugBankWebpage.m	1	EXCLUDED	internet				parseDBCollection							
+336	src/dataIntegration/metaboAnnotator/connect2resources/parseHmdbWebPage.m	1	EXCLUDED	every metabolite with an HMDB id is fetched with urlread inside a try; offline only the progress printing and skips run				getInchisFromDatabases,parseDBCollection,tutorial_MetaboRePort_m							
+337	src/dataIntegration/metaboAnnotator/connect2resources/parseWikipediaWebpage.m	1	EXCLUDED	every metabolite triggers urlread of a Wikipedia page (by id or by name); offline the catches continue and nothing is annotated				parseDBCollection							
+338	src/dataIntegration/metaboAnnotator/connect2resources/parseDrugBankWebpage.m	1	EXCLUDED	every metabolite with a DrugBank id is fetched with urlread inside a try; offline nothing is annotated				parseDBCollection							
 339	src/dataIntegration/metaboAnnotator/connect2resources/parseDBCollection.m	1	PENDING				getIDsfromFiehnLab,getMetIdsFromUniChem,parseBiggID4VMH,parseBridgeDb,parseCHOmineWebpage,parseChebiIdWebPage,parseChemIDPlusWebpage,parseDrugBankWebpage,parseEPA4VMH,parseFDAsisWebpage,parseHmdbWebPage,parseKeggWebpage,parseMetaNetXWebpage,parseWikipediaWebpage	createrBioNetStructure,list2MetaboliteStructure,model2MetStructure							
 340	src/dataIntegration/metaboAnnotator/connect2resources/assignAGORAReconPresence.m	1	PENDING				getIDfromMetStructure	createrBioNetStructure,list2MetaboliteStructure,model2MetStructure							
 341	src/dataIntegration/metaboAnnotator/buildMetStruct/metaboliteStructureFieldNames.m	1	EXCLUDED	script (no function to call)				addField2MetStructure,createNewMetaboliteStructure							
 342	src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m	1	PENDING				generateVMHMetAbbr,metaboliteStructureFieldNames	createNewMetEntryFromArray,createrBioNetStructure,list2MetaboliteStructure							
 343	src/dataIntegration/metaboAnnotator/connect2resources/getCas2CTD.m	1	PENDING					createrBioNetStructure,list2MetaboliteStructure							
-344	src/dataIntegration/metaboAnnotator/connect2resources/retrievePotHitsHMDB.m	1	EXCLUDED	internet				getMissingHMDBMolForm,searchUnknownMetOnline							
-345	src/dataIntegration/metaboAnnotator/connect2resources/assignClassyFire.m	1	EXCLUDED	internet				createrBioNetStructure,list2MetaboliteStructure,model2MetStructure							
+344	src/dataIntegration/metaboAnnotator/connect2resources/retrievePotHitsHMDB.m	1	EXCLUDED	the search is an urlread of the HMDB unearth page followed by urlread of each candidate page; offline the try swallows the failure and it returns '' and 0 only				getMissingHMDBMolForm,searchUnknownMetOnline							
+345	src/dataIntegration/metaboAnnotator/connect2resources/assignClassyFire.m	1	EXCLUDED	every metabolite with an InChIKey is fetched with urlread from ClassyFire inside a try; the taxonomy parser is a local function only reachable through that page				createrBioNetStructure,list2MetaboliteStructure,model2MetStructure							
 346	src/dataIntegration/metaboAnnotator/analyseMetStruct/verifyInchiString.m	1	PENDING				getFormulaAndChargeFromInChI								
-347	src/dataIntegration/metaboAnnotator/connect2resources/getInchiStringFromHMDB.m	1	EXCLUDED	internet				createNewMetEntryFromArray							
-348	src/dataIntegration/metaboAnnotator/connect2resources/parseVMH4IDs.m	1	EXCLUDED	internet				createrBioNetStructure,model2MetStructure							
+347	src/dataIntegration/metaboAnnotator/connect2resources/getInchiStringFromHMDB.m	1	EXCLUDED	every call urlreads the HMDB metabolite page; offline the catch only returns []				createNewMetEntryFromArray							
+348	src/dataIntegration/metaboAnnotator/connect2resources/parseVMH4IDs.m	1	EXCLUDED	every metabolite with a VMH id is fetched with urlread from the VMH API (no try) and all fields are parsed from it				createrBioNetStructure,model2MetStructure							
 349	src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m	1	PENDING				getIDfromMetStructure	createrBioNetStructure							
 350	src/dataIntegration/metaboAnnotator/connect2resources/VMH2Seed.m	1	PENDING				getIDfromMetStructure	createrBioNetStructure							
 351	src/dataIntegration/metaboAnnotator/connect2resources/getSeed2Kegg.m	1	PENDING					createrBioNetStructure							
 352	src/dataIntegration/metaboAnnotator/buildMetStruct/translateMetStr2COBRAmodel.m	1	EXCLUDED	script (no function to call)				convertModel2Metstructure,populateModelMetStr							
-353	src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m	1	EXCLUDED	internet											
-354	src/dataIntegration/metaboAnnotator/connect2resources/getRxnFromKegg.m	1	EXCLUDED	internet			getIDfromMetStructure								
-355	src/dataIntegration/metaboAnnotator/connect2resources/queryExposomeExplorer.m	1	EXCLUDED	internet											
-356	src/dataIntegration/metaboAnnotator/connect2resources/queryLipidMaps.m	1	EXCLUDED	internet											
+353	src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m	1	PENDING												reclassified testable (T008): only the biggId target (urlread to bigg.ucsd.edu, swallowed by try) needs internet and is exempt; the seed/keggId/biocyc cross-filling from the local PMID 24927599 table (tutorials/dataIntegration/metaboAnnotator/data/pnas.1401329111.sd01.xlsx via xlsread) is testable with metabolites whose biggId is pre-set
+354	src/dataIntegration/metaboAnnotator/connect2resources/getRxnFromKegg.m	1	EXCLUDED	every metabolite with a KEGG id triggers urlread of genome.jp pages (no try) and all output is parsed from them; the declared output keggkeggRxn is also never assigned and the function name does not match the file			getIDfromMetStructure								
+355	src/dataIntegration/metaboAnnotator/connect2resources/queryExposomeExplorer.m	1	EXCLUDED	every metabolite lacking a lipidmaps id is queried with urlread (no try) on Exposome Explorer; offline only already-annotated entries are skipped											
+356	src/dataIntegration/metaboAnnotator/connect2resources/queryLipidMaps.m	1	EXCLUDED	every metabolite lacking a lipidmaps id is queried with urlread (no try) on LIPID MAPS; offline only already-annotated entries are skipped											
 357	src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m	1	PENDING				convertInchiString2format								
 358	src/dataIntegration/metabotools/calculateQuantitativeDiffs.m	1	PENDING												
 359	src/dataIntegration/metabotools/checkExchangeProfiles.m	1	PENDING												
@@ -367,30 +367,30 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 366	src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m	1	PENDING					discretizeFPKM							
 367	src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m	1	PENDING					discretizeFPKM							
 368	src/reconstruction/comparison/modelBorgifier/TmodelStats.m	1	PENDING					mergeModelsBorg							
-369	src/reconstruction/comparison/modelBorgifier/addMetInfo.m	1	EXCLUDED	GUI				metCompareGUI							
-370	src/reconstruction/comparison/modelBorgifier/cleanTmodel.m	1	EXCLUDED	interactive input				addToTmodel,mergeModelsBorg							
+369	src/reconstruction/comparison/modelBorgifier/addMetInfo.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				metCompareGUI							
+370	src/reconstruction/comparison/modelBorgifier/cleanTmodel.m	1	PENDING					addToTmodel,mergeModelsBorg							reclassified testable (T008): the input() prompts run only in 'Verbose' mode (and the per-item prompts only when the user answers 'a'); the default call merges identical reactions and beautifies names non-interactively and is testable on a small hand-built Tmodel
 371	src/reconstruction/comparison/modelBorgifier/addToTmodel.m	1	PENDING				cleanTmodel	mergeModelsBorg							
 372	src/reconstruction/comparison/modelBorgifier/findMetMatch.m	1	PENDING					metCompare,metCompareGUI							
-373	src/reconstruction/comparison/modelBorgifier/metCompareGUI.m	1	EXCLUDED	GUI			addMetInfo,findMetMatch	metCompare							
+373	src/reconstruction/comparison/modelBorgifier/metCompareGUI.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure			addMetInfo,findMetMatch	metCompare							
 374	src/reconstruction/comparison/modelBorgifier/metCompare.m	1	PENDING				findMetMatch,metCompareGUI	autoMatchReactions,mergeModelsBorg,reactionCompareGUI							
 375	src/reconstruction/comparison/modelBorgifier/autoMatchReactions.m	1	PENDING				metCompare	reactionCompareGUI							
 376	src/reconstruction/comparison/modelBorgifier/compareAllMets.m	1	PENDING												
 377	src/reconstruction/comparison/modelBorgifier/mapMatch.m	1	PENDING					compareCbModels							
 378	src/reconstruction/comparison/modelBorgifier/optimalScores.m	1	PENDING					compareCbModels,reactionCompare,reactionCompareGUI							
 379	src/reconstruction/comparison/modelBorgifier/compareCbModels.m	1	PENDING				mapMatch,optimalScores								
-380	src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m	1	EXCLUDED	GUI			autoMatchReactions,metCompare,optimalScores	reactionCompare							
+380	src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure			autoMatchReactions,metCompare,optimalScores	reactionCompare							
 381	src/reconstruction/comparison/modelBorgifier/reactionCompare.m	1	PENDING				optimalScores,reactionCompareGUI	mergeModelsBorg							
 382	src/reconstruction/demeter/suite/tests/testRefinedReactions.m	1	PENDING					runTestsOnModel							
 383	src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m	1	PENDING					runDebuggingTools,runTestSuiteTools							
-384	src/reconstruction/demeter/src/integration/createInfoFileDEMETER.m	1	EXCLUDED	internet			parseNCBItaxonomy,readInputTableForPipeline								
+384	src/reconstruction/demeter/src/integration/createInfoFileDEMETER.m	1	EXCLUDED	every taxonomy row is resolved with parseNCBItaxonomy (urlread) and the function unconditionally websaves the NCBI RefSeq assembly summary and genome files; offline only the input-validation errors run			parseNCBItaxonomy,readInputTableForPipeline								
 385	src/reconstruction/demeter/src/integration/getCurationStatus.m	1	PENDING				readInputTableForPipeline								
 386	src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m	1	PENDING				readInputTableForPipeline	prepareInputData							
 387	src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m	1	PENDING				loadVMHDatabase,parseRxnFormula								
 388	src/reconstruction/demeter/src/integration/writeReactionsFromPubSeedSpreadsheets.m	1	PENDING				loadVMHDatabase,readInputTableForPipeline	prepareInputData							
 389	src/reconstruction/demeter/src/integration/prepareInputData.m	1	PENDING				getUnannotatedReactionsFromPubSeedSpreadsheets,readInputTableForPipeline,writeReactionsFromPubSeedSpreadsheets								
 390	src/reconstruction/demeter/src/integration/printRefinedModelIDs.m	1	PENDING												
-391	src/reconstruction/demeter/src/integration/propagateKBaseMetTranslationToRxns.m	1	PENDING		external-program		readInputTableForPipeline								
-392	src/reconstruction/demeter/src/integration/translateKBaseToVMHMets.m	1	PENDING		external-program		loadVMHDatabase,readInputTableForPipeline								
+391	src/reconstruction/demeter/src/integration/propagateKBaseMetTranslationToRxns.m	1	EXCLUDED	it always runs `curl -LJO` to download ModelSEED reactions.tsv from raw.githubusercontent.com before parsing, so every call goes to the internet	external-program		readInputTableForPipeline								reclassified excluded (T008)
+392	src/reconstruction/demeter/src/integration/translateKBaseToVMHMets.m	1	EXCLUDED	it always runs `curl -LJO` to download ModelSEED compounds.tsv from raw.githubusercontent.com before parsing, so every call goes to the internet	external-program		loadVMHDatabase,readInputTableForPipeline								reclassified excluded (T008)
 393	src/reconstruction/demeter/src/integration/updateAGORATaxonomyFile.m	1	PENDING				parseNCBItaxonomy,readInputTableForPipeline								
 394	src/reconstruction/demeter/src/properties/computeMetabolicDistance.m	1	PENDING				readInputTableForPipeline								
 395	src/reconstruction/demeter/src/properties/producetSNEPlots.m	1	PENDING				readInputTableForPipeline	computeModelProperties							
@@ -404,45 +404,45 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 403	src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m	1	PENDING					computeMetFormulae							
 404	src/reconstruction/modelGeneration/massBalance/ispolymer.m	1	PENDING				numAtomsOfElementInFormula								
 405	src/reconstruction/rBioNet/BalancePrep.m	1	PENDING					ReactionChecks,ReconstructionTool							
-406	src/reconstruction/rBioNet/CreateGPR.m	1	EXCLUDED	GUI				ReconstructionCreator							
-407	src/reconstruction/rBioNet/GenesAndReactions.m	1	EXCLUDED	GUI				ReconstructionCreator							
+406	src/reconstruction/rBioNet/CreateGPR.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReconstructionCreator							
+407	src/reconstruction/rBioNet/GenesAndReactions.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReconstructionCreator							
 408	src/reconstruction/rBioNet/GenesReactions.m	1	PENDING					ReconstructionCreator							
-409	src/reconstruction/rBioNet/Keep_reactions.m	1	EXCLUDED	GUI											
-410	src/reconstruction/rBioNet/unbalanced.m	1	EXCLUDED	GUI				ReactionChecks,ReconstructionTool							
+409	src/reconstruction/rBioNet/Keep_reactions.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure											
+410	src/reconstruction/rBioNet/unbalanced.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReactionChecks,ReconstructionTool							
 411	src/reconstruction/rBioNet/balancecheck.m	1	PENDING				numAtomsOfElementInFormula	ReactionChecks,ReconstructionTool							
-412	src/reconstruction/rBioNet/ReactionChecks.m	1	EXCLUDED	interactive input			BalancePrep,balancecheck,unbalanced	addreactions							
+412	src/reconstruction/rBioNet/ReactionChecks.m	1	PENDING				BalancePrep,balancecheck,unbalanced	addreactions							reclassified testable (T008): questdlg/msgbox/unbalanced-GUI only fire for empty, duplicate, already-in-database, FULLRCO, unknown-metabolite or unbalanced reactions (exempt); the happy path for new, balanced reactions with known metabolites (balance check, similarity check, output {newrxns,data,check}) is testable with hand-built rxn/metab tables
 413	src/reconstruction/rBioNet/webDatabases.m	1	PENDING					ReconstructionCreator,ReconstructionTool,load_reaction,model_stats							
 414	src/reconstruction/rBioNet/rBioNet_search.m	1	PENDING					ReconstructionCreator,ReconstructionTool,load_reaction							
 415	src/reconstruction/rBioNet/webKeggMapper.m	1	PENDING					ReconstructionCreator,ReconstructionTool,load_reaction,model_stats							
-416	src/reconstruction/rBioNet/load_reaction.m	1	EXCLUDED	GUI			rBioNet_search,webDatabases,webKeggMapper	ReconstructionCreator							
-417	src/reconstruction/rBioNet/rBioNetAbout.m	1	EXCLUDED	GUI				ReconstructionCreator,ReconstructionTool							
-418	src/reconstruction/rBioNet/sim_general.m	1	EXCLUDED	GUI				ReconstructionTool							
-419	src/reconstruction/rBioNet/compartment.m	1	EXCLUDED	GUI				ReconstructionTool							
-420	src/reconstruction/rBioNet/rBioNetSettings.m	1	EXCLUDED	GUI				ReconstructionTool							
-421	src/reconstruction/rBioNet/addreactions.m	1	EXCLUDED	GUI			ReactionChecks	ReconstructionTool,addmetabolites,addmissing							
-422	src/reconstruction/rBioNet/metabolites_in_database.m	1	EXCLUDED	GUI				addmetabolites							
-423	src/reconstruction/rBioNet/met_charge_formula.m	1	EXCLUDED	GUI				addmetabolites							
-424	src/reconstruction/rBioNet/similarities.m	1	EXCLUDED	GUI				ReconstructionTool							
-425	src/reconstruction/rBioNet/closeGUI.m	1	EXCLUDED	interactive input											
+416	src/reconstruction/rBioNet/load_reaction.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure			rBioNet_search,webDatabases,webKeggMapper	ReconstructionCreator							
+417	src/reconstruction/rBioNet/rBioNetAbout.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReconstructionCreator,ReconstructionTool							
+418	src/reconstruction/rBioNet/sim_general.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReconstructionTool							
+419	src/reconstruction/rBioNet/compartment.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReconstructionTool							
+420	src/reconstruction/rBioNet/rBioNetSettings.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReconstructionTool							
+421	src/reconstruction/rBioNet/addreactions.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure			ReactionChecks	ReconstructionTool,addmetabolites,addmissing							
+422	src/reconstruction/rBioNet/metabolites_in_database.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				addmetabolites							
+423	src/reconstruction/rBioNet/met_charge_formula.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				addmetabolites							
+424	src/reconstruction/rBioNet/similarities.m	1	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReconstructionTool							
+425	src/reconstruction/rBioNet/closeGUI.m	1	EXCLUDED	questdlg on every call, then deletes gcf; GUI close-request callback											
 426	src/reconstruction/rBioNet/formula2mets.m	1	PENDING				parseRxnFormula								
 427	src/visualization/SAMMIM/openSammi.m	1	PENDING												
 428	src/visualization/cellDesigner/ColorMet.m	1	EXCLUDED	script (no function to call)											
 429	src/visualization/cellDesigner/addColour.m	1	PENDING												
 430	src/visualization/cellDesigner/position.m	1	PENDING					repairXML,writeCD,writeXML							
-431	src/visualization/cellDesigner/writeCD.m	1	EXCLUDED	interactive input			position	colourAll,colourNode							
-432	src/visualization/cellDesigner/colourAll.m	1	EXCLUDED	interactive input			writeCD								
+431	src/visualization/cellDesigner/writeCD.m	1	PENDING				position	colourAll,colourNode							reclassified testable (T008): uiputfile/uigetfile run only when the file-name arguments are omitted and errordlg only when parsed.r_info lacks XMLtext (exempt); with explicit file names and a hand-built parsed structure the XML rewrite of width/colour attributes is testable
+432	src/visualization/cellDesigner/colourAll.m	1	PENDING				writeCD								reclassified testable (T008): uiputfile/uigetfile run only when fname/fname_out are omitted (exempt); with explicit files and a hand-built parsed CellDesigner structure the recolouring and the returned texts are testable
 433	src/visualization/cellDesigner/colourCode.m	1	EXCLUDED	script (no function to call)											
-434	src/visualization/cellDesigner/colourNode.m	1	EXCLUDED	interactive input			writeCD	colourNodeWhite							
+434	src/visualization/cellDesigner/colourNode.m	1	PENDING				writeCD	colourNodeWhite							reclassified testable (T008): uiputfile runs only when fname_out is omitted and errordlg only for missing XMLtext or an unknown reaction (exempt); colouring of listed reactions/metabolites with explicit output file is testable
 435	src/visualization/cellDesigner/colourNodeWhite.m	1	PENDING				colourNode								
 436	src/visualization/cellDesigner/correctMetName.m	1	PENDING												
-437	src/visualization/cellDesigner/parseCD.m	1	EXCLUDED	interactive input											
-438	src/visualization/cellDesigner/writeText2XML.m	1	EXCLUDED	interactive input				repairXML							
-439	src/visualization/cellDesigner/repairXML.m	1	EXCLUDED	interactive input			position,writeText2XML								
-440	src/visualization/cellDesigner/writeTXT.m	1	EXCLUDED	interactive input											
-441	src/visualization/cellDesigner/writeXML.m	1	EXCLUDED	interactive input			position								
-442	src/visualization/convert/mapFormatConversion.m	1	EXCLUDED	internet	external-program										
+437	src/visualization/cellDesigner/parseCD.m	1	PENDING												reclassified testable (T008): uigetfile runs only when fname is omitted (exempt); parsing a small CellDesigner XML fixture written by the test is testable
+438	src/visualization/cellDesigner/writeText2XML.m	1	PENDING					repairXML							reclassified testable (T008): uiputfile runs only when fname_out is omitted (exempt); writing the text struct lines to an explicit file is testable
+439	src/visualization/cellDesigner/repairXML.m	1	PENDING				position,writeText2XML								reclassified testable (T008): uiputfile/uigetfile run only when the file-name arguments are omitted and errordlg only when parsed.r_info lacks XMLtext (exempt); with explicit file names and a hand-built parsed structure the XML rewrite of width/colour attributes is testable
+440	src/visualization/cellDesigner/writeTXT.m	1	PENDING												reclassified testable (T008): uiputfile runs only when fname_out is omitted (exempt); the name/colour table formatting (default red, FF stripping, # prefix, header row) written to an explicit file is testable
+441	src/visualization/cellDesigner/writeXML.m	1	PENDING				position								reclassified testable (T008): uiputfile/uigetfile run only when the file-name arguments are omitted and errordlg only when parsed.r_info lacks XMLtext (exempt); with explicit file names and a hand-built parsed structure the XML rewrite of width/colour attributes is testable
+442	src/visualization/convert/mapFormatConversion.m	1	EXCLUDED	every call first webreads the MINERVA converter API to obtain the accepted formats, and the conversions themselves use curl to MINERVA or the EscherConverter jar	external-program										
 443	src/visualization/createMetIntrcNetwork/hit_node.m	1	PENDING					createMetIntrcNetwork							
-444	src/visualization/maps/ReconMap/postMINERVArequest.m	1	PENDING		external-program			buildFluxDistLayout,generateSubsytemsLayout							
+444	src/visualization/maps/ReconMap/postMINERVArequest.m	1	EXCLUDED	every path curls https://www.vmh.life/minerva/api/doLogin/ (internet, credentials)	external-program			buildFluxDistLayout,generateSubsytemsLayout							reclassified excluded (T008)
 445	src/visualization/maps/ReconMap/changeCbMapOutput.m	1	PENDING					pFBA							
 446	src/visualization/maps/ReconMap/generateSubsytemsLayout.m	1	PENDING				postMINERVArequest	generateSubsystemLayouts							
 447	src/visualization/maps/ReconMap/generateSubsystemLayouts.m	1	PENDING				generateSubsytemsLayout								
@@ -547,13 +547,13 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 546	src/analysis/sampling/CHRR/chrrExpSampler.m	2	PENDING					sampleCbModel							
 547	src/analysis/sampling/compareSampleTraj.m	2	PENDING				findRxnIDs								
 548	src/analysis/sampling/plotHistConv.m	2	PENDING												
-549	src/analysis/sampling/plotSampleHist.m	2	EXCLUDED	interactive input			findRxnIDs								
+549	src/analysis/sampling/plotSampleHist.m	2	PENDING				findRxnIDs								reclassified testable (T008): input() paging prompts run only when the number of reactions exceeds perScreen (exempt); with the default perScreen (1e5) it plots and returns, so reaction filtering, histogram/smoothing and figure creation are testable headless
 550	src/analysis/sampling/sampleScatterMatrix.m	2	PENDING												
 551	src/analysis/subspaces/checkScaling.m	2	PENDING												
 552	src/analysis/thermo/trainingModel/new/reverseTransformTrainingData.m	2	PENDING					addThermoToModel,driver_createTrainingModel,prepareTrainingData							
 553	src/analysis/thermo/trainingModel/new/checkForMissingStereo.m	2	PENDING					getMappingScores							
 554	src/analysis/thermo/groupContribution/new/getMappingScores.m	2	PENDING				checkForMissingStereo	createGroupIncidenceMatrix							
-555	src/analysis/thermo/groupContribution/new/createGroupIncidenceMatrix.m	2	PENDING		external-program		autoFragment,getGroupVectorFromInchi,getMappingScores,regulariseGroupIncidenceMatrix	addThermoToModel,prepareTrainingData							
+555	src/analysis/thermo/groupContribution/new/createGroupIncidenceMatrix.m	2	EXCLUDED	default 'abinito' needs a dGPredictor clone plus rdkit through pyenv (autoFragment; there are no cache files in the repo); 'manual' needs python2 inchi2gv.py or Python-2 compound_groups.py with Open Babel; any other method errors	external-program		autoFragment,getGroupVectorFromInchi,getMappingScores,regulariseGroupIncidenceMatrix	addThermoToModel,prepareTrainingData							reclassified excluded (T008)
 556	src/analysis/thermo/transport/transportReactionBool.m	2	PENDING				getCompartment	componentContribution,deltaG0concFluxConstraintBounds,estimateDrGt0							
 557	src/analysis/thermo/componentContribution/new/componentContribution.m	2	PENDING				findSExRxnInd,invertProjection,subspaceProjector,transportReactionBool	addThermoToModel							
 558	src/analysis/thermo/componentContribution/addThermoToModel.m	2	PENDING				componentContribution,createGroupIncidenceMatrix,getInchies,loadTrainingData,reverseTransformTrainingData								
@@ -588,7 +588,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 587	src/analysis/thermo/inchi/addInchiToModel.m	2	PENDING				createInChIStruct,mol2sdf	createTrainingModel							
 588	src/analysis/thermo/molFiles/molFilesToCDFfile.m	2	PENDING												
 589	src/analysis/thermo/molFiles/new/modelMetabolitesToSDF.m	2	PENDING		external-program		getChargeFromInChI,getFormulaFromInChI								
-590	src/analysis/thermo/protons/addPseudoisomersToModel.m	2	PENDING		external-program		estimate_pKa,numAtomsOfElementInFormula								
+590	src/analysis/thermo/protons/addPseudoisomersToModel.m	2	EXCLUDED	it first runs `cxcalc` and errors when ChemAxon is missing; then estimate_pKa also needs cxcalc	external-program		estimate_pKa,numAtomsOfElementInFormula								reclassified excluded (T008)
 591	src/analysis/thermo/protons/moleFractionStats.m	2	PENDING												
 592	src/analysis/thermo/protons/plotActivityCoefficients.m	2	PENDING												
 593	src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m	2	PENDING				getCompartment								
@@ -597,7 +597,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 596	src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m	2	PENDING												
 597	src/analysis/thermo/thermoFBA/connectedRxnsByEFM.m	2	PENDING					addLoopLawConstraints							
 598	src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m	2	PENDING												
-599	src/analysis/thermo/trainingModel/new/createTrainingModel.m	2	EXCLUDED	internet	external-program		addInchiToModel,estimate_pKa,getFormulaAndChargeFromInChI,kegg2mol,loadTrainingData	driver_createTrainingModel							
+599	src/analysis/thermo/trainingModel/new/createTrainingModel.m	2	PENDING		external-program		addInchiToModel,estimate_pKa,getFormulaAndChargeFromInChI,kegg2mol,loadTrainingData	driver_createTrainingModel							reclassified testable (T008): the forceMolReplacement branch (babel, KEGG urlread, kegg2mol) and estimate_pKa (ChemAxon cxcalc) are exempt; with a training model already carrying inchi and pseudoisomers and forceMolReplacement=0, formula/charge derivation from InChI, default rxns/lb/ub and the dG0_prime->DrGt0 rename are testable
 600	src/analysis/thermo/trainingModel/new/driver_createTrainingModel.m	2	EXCLUDED	script (no function to call)			checkMassChargeBalance,createTrainingModel,editCobraToolboxPath,initVonBertalanffy,reverseTransformTrainingData								
 601	src/analysis/thermo/trainingModel/new/prepareTrainingData.m	2	PENDING				createGroupIncidenceMatrix,getInchies,loadTrainingData,reverseTransformTrainingData								
 602	src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m	2	PENDING				getCompartment								
@@ -643,12 +643,12 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 642	src/dataIntegration/chemoInformatics/atomicallyResolveModel.m	2	PENDING				addMetInfoInCBmodel,buildAtomTransitionMultigraph,checkChemoinformaticDependencies,checkRXNFiles								
 643	src/dataIntegration/chemoInformatics/inchi/compareInchis.m	2	PENDING					generateChemicalDatabase							
 644	src/dataIntegration/chemoInformatics/metabolites/metDatabaseStatus.m	2	PENDING												
-645	src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m	2	EXCLUDED	internet	external-program		openBabelConverter	generateChemicalDatabase,getMolFilesMultipleSources							
+645	src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m	2	PENDING		external-program		openBabelConverter	generateChemicalDatabase,getMolFilesMultipleSources							reclassified testable (T008): the webread sources (chebi, drugbank, hmdb, kegg, lipidmaps, pubchem) are exempt; with sources limited to inchi/smiles (local obabel) or with empty source ids, ID-field detection, metList handling and the molCollectionReport tables are testable
 646	src/reconstruction/modelGeneration/massBalance/computeElementalMatrix.m	2	PENDING				findMetIDs,getElementalComposition,getElementalWeightMatrix	computeMW							
 647	src/dataIntegration/chemoInformatics/molecularWeight/computeMW.m	2	PENDING				computeElementalMatrix,findMetIDs	calculateReactionMasses,theoretMaxProd							
 648	src/dataIntegration/chemoInformatics/reactions/findBondsBrokenAndFormed.m	2	PENDING				findRxnIDs,findSExRxnInd	generateChemicalDatabase							
 649	src/dataIntegration/chemoInformatics/reactions/findEnthalpyChange.m	2	PENDING				findRxnIDs,findSExRxnInd	generateChemicalDatabase							
-650	src/dataIntegration/chemoInformatics/reactions/obtainAtomMappingsRDT.m	2	EXCLUDED	internet	external-program		checkRXNFiles,writeRxnfile	generateChemicalDatabase							
+650	src/dataIntegration/chemoInformatics/reactions/obtainAtomMappingsRDT.m	2	PENDING		external-program		checkRXNFiles,writeRxnfile	generateChemicalDatabase							reclassified testable (T008): urlwrite of the RDT jar (only when rdtAlgorithm.jar is absent) and the java atom mapping are exempt; with a placeholder jar in rxnResultsDir and writeRXNonly=true, directory setup, H removal and RXN-file writing from local mol files are testable
 651	src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m	2	PENDING				slvrCumomer_fast,slvrEMU_fast	errorComputation2							
 652	src/dataIntegration/fluxomics/c13solver/errorComputation2.m	2	PENDING				scoreC13Fit	C13ConfidenceInterval,errorComputation2_grad							
 653	src/dataIntegration/fluxomics/atomTransition/ATN/buildAtomTransitionNetwork.m	2	PENDING												
@@ -666,7 +666,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 665	src/dataIntegration/metaboAnnotator/molFileFinder/getMissingHMDBMolForm.m	2	PENDING				addMetFormulaCharge,generateInchiFromMol,getMolFilesMultipleSources,retrievePotHitsHMDB	createrBioNetStructure,list2MetaboliteStructure,model2MetStructure							
 666	src/dataIntegration/metaboAnnotator/analyseMetStruct/list2MetaboliteStructure.m	2	PENDING				addInfoFromMolFiles,assignAGORAReconPresence,assignClassyFire,check4DuplicatesInList,checkAbbrExists,createNewMetaboliteStructure,generateInchiFromMol,generateVMHMetAbbr,getCas2CTD,getCas2Echa,getMissingDrugMolForm,getMissingHMDBMolForm,getMolFilesMultipleSources,parseDBCollection								
 667	src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetEntryFromArray.m	2	PENDING				createNewMetaboliteStructure,getInchiString2ChargedFormula,getInchiStringFromHMDB,getMolFilesMultipleSources	searchUnknownMetOnline							
-668	src/dataIntegration/metaboAnnotator/buildMetStruct/createrBioNetStructure.m	2	EXCLUDED	internet			VMH2Metabolon,VMH2Seed,addInfoFromMolFiles,assignAGORAReconPresence,assignClassyFire,createNewMetaboliteStructure,createRBioNetDBFromVMHDB,generateInchiFromMol,getCas2CTD,getCas2Echa,getMissingDrugMolForm,getMissingHMDBMolForm,getMolFilesMultipleSources,getSeed2Kegg,getStatsMetStruct,parseDBCollection,parseVMH4IDs								
+668	src/dataIntegration/metaboAnnotator/buildMetStruct/createrBioNetStructure.m	2	EXCLUDED	every metabolite goes through parseVMH4IDs, parseDBCollection, assignClassyFire and other web scrapers, it websaves the rBioNet databases when no structure is given, and it uses a hard-coded Windows molfile directory			VMH2Metabolon,VMH2Seed,addInfoFromMolFiles,assignAGORAReconPresence,assignClassyFire,createNewMetaboliteStructure,createRBioNetDBFromVMHDB,generateInchiFromMol,getCas2CTD,getCas2Echa,getMissingDrugMolForm,getMissingHMDBMolForm,getMolFilesMultipleSources,getSeed2Kegg,getStatsMetStruct,parseDBCollection,parseVMH4IDs								
 669	src/dataIntegration/metaboAnnotator/buildMetStruct/populateModelMetStr.m	2	PENDING				translateMetStr2COBRAmodel	tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m							
 670	src/dataIntegration/metaboAnnotator/connect2resources/getInchisFromDatabases.m	2	PENDING				generateInchiFromMol,parseChebiIdWebPage,parseHmdbWebPage								
 671	src/dataIntegration/metaboAnnotator/connect2resources/searchUnknownMetOnline.m	2	PENDING				createNewMetEntryFromArray,generateVMHMetAbbr,retrievePotHitsHMDB	searchMultipleUnknownMetOnline							
@@ -689,16 +689,16 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 688	src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m	2	PENDING					findMustLLWithGAMS,findMustULWithGAMS,findMustUUWithGAMS							
 689	src/design/optForceGAMS/exportInputsMustToGAMS.m	2	PENDING					findMustLWithGAMS,findMustUWithGAMS							
 690	src/design/optForceGAMS/exportInputsOptForceToGAMS.m	2	PENDING					optForceWithGAMS							
-691	src/design/optForceGAMS/findMustLLWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS								
-692	src/design/optForceGAMS/findMustLWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustToGAMS								
-693	src/design/optForceGAMS/findMustULWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS								
-694	src/design/optForceGAMS/findMustUUWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS								
-695	src/design/optForceGAMS/findMustUWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustToGAMS								
+691	src/design/optForceGAMS/findMustLLWithGAMS.m	2	EXCLUDED	every path needs GAMS: getAvailableGAMSSolvers/which('gams') error without it, and the core runs `gams` plus the GDX interface	external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS								reclassified excluded (T008)
+692	src/design/optForceGAMS/findMustLWithGAMS.m	2	EXCLUDED	every path needs GAMS: getAvailableGAMSSolvers/which('gams') error without it, and the core runs `gams` plus the GDX interface	external-program		checkGAMSSolvers,exportInputsMustToGAMS								reclassified excluded (T008)
+693	src/design/optForceGAMS/findMustULWithGAMS.m	2	EXCLUDED	every path needs GAMS: getAvailableGAMSSolvers/which('gams') error without it, and the core runs `gams` plus the GDX interface	external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS								reclassified excluded (T008)
+694	src/design/optForceGAMS/findMustUUWithGAMS.m	2	EXCLUDED	every path needs GAMS: getAvailableGAMSSolvers/which('gams') error without it, and the core runs `gams` plus the GDX interface	external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS								reclassified excluded (T008)
+695	src/design/optForceGAMS/findMustUWithGAMS.m	2	EXCLUDED	every path needs GAMS: getAvailableGAMSSolvers/which('gams') error without it, and the core runs `gams` plus the GDX interface	external-program		checkGAMSSolvers,exportInputsMustToGAMS								reclassified excluded (T008)
 696	src/reconstruction/comparison/modelBorgifier/buildTmodel.m	2	PENDING												
-697	src/reconstruction/comparison/modelBorgifier/readCbTmodel.m	2	EXCLUDED	interactive input				mergeModelsBorg							
-698	src/reconstruction/comparison/modelBorgifier/mergeModelsBorg.m	2	EXCLUDED	interactive input			TmodelStats,addToTmodel,cleanTmodel,metCompare,reactionCompare,readCbTmodel								
-699	src/reconstruction/comparison/modelBorgifier/verifyModelBorg.m	2	EXCLUDED	interactive input											
-700	src/reconstruction/rBioNet/data2model.m	2	EXCLUDED	interactive input			createModel	ReconstructionCreator,createPanModels,model_stats,rebuildModel							
+697	src/reconstruction/comparison/modelBorgifier/readCbTmodel.m	2	PENDING					mergeModelsBorg							reclassified testable (T008): input() runs only when modelName is not in Tmodel.Models or when no 'y'/'n' empty-array choice is passed (exempt); extracting a named model with the 'y' or 'n' option is testable on a hand-built Tmodel
+698	src/reconstruction/comparison/modelBorgifier/mergeModelsBorg.m	2	PENDING				TmodelStats,addToTmodel,cleanTmodel,metCompare,reactionCompare,readCbTmodel								reclassified testable (T008): the input() prompts, metCompare/reactionCompare GUIs and spy figure run only when metList has undeclared/duplicate entries or the merged S differs (exempt); a clean merge with a fully declared rxnList/metList and the mode argument is testable
+699	src/reconstruction/comparison/modelBorgifier/verifyModelBorg.m	2	PENDING												reclassified testable (T008): input() runs only without the 'keepName' option or when the model description is missing/invalid (exempt); with 'keepName' and a valid description the field pruning, formula/name fixing and reordering are testable
+700	src/reconstruction/rBioNet/data2model.m	2	PENDING				createModel	ReconstructionCreator,createPanModels,model_stats,rebuildModel							reclassified testable (T008): msgbox/questdlg fire only for duplicate reactions, empty data or reactions/metabolites missing from the database (exempt); with a database struct argument covering all entries, the model construction and description are testable
 701	src/reconstruction/demeter/suite/tests/testGeneRules.m	2	PENDING					runTestsOnModel							
 702	src/reconstruction/demeter/suite/tests/testModelMassChargeBalance.m	2	PENDING				checkMassChargeBalance,findExcRxns	reportPDF,runTestsOnModel							
 703	src/reconstruction/demeter/src/refinement/secretionProductGapfill.m	2	PENDING				addReaction,readInputTableForPipeline	performDataDrivenRefinement							
@@ -714,8 +714,8 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 713	src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m	2	PENDING												
 714	src/reconstruction/modelGeneration/modelProperties/plotModelConsistency.m	2	PENDING												
 715	src/reconstruction/modelGeneration/stoichConsistency/printMinimalLeakageMode.m	2	PENDING				addReaction	findMinimalLeakageModeRxn							
-716	src/reconstruction/rBioNet/model_description.m	2	EXCLUDED	GUI				ReconstructionCreator							
-717	src/reconstruction/rBioNet/model2text.m	2	EXCLUDED	interactive input											
+716	src/reconstruction/rBioNet/model_description.m	2	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure				ReconstructionCreator							
+717	src/reconstruction/rBioNet/model2text.m	2	EXCLUDED	uiputfile is called unconditionally on every call to choose the output file (no file-name argument exists)											
 718	src/reconstruction/refinement/GPRLogic/NormaliseGPRs.m	2	PENDING				FormulaParser,creategrRulesField								
 719	src/reconstruction/refinement/addMIRIAMAnnotations.m	2	PENDING				getDefinedFieldProperties,getRegisteredDatabases								
 720	src/reconstruction/refinement/addMultipleReactionsIT.m	2	PENDING				addGenes,changeGeneAssociation,extendModelFieldsForType,getDefinedFieldProperties,getModelFieldsForType								
@@ -729,13 +729,13 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 728	src/reconstruction/refinement/moveRxn.m	2	PENDING				getModelFieldsForType								
 729	src/reconstruction/refinement/removeSubSystemsFromRxns.m	2	PENDING												
 730	src/reconstruction/refinement/setRxnSubSystems.m	2	PENDING												
-731	src/visualization/SAMMIM/expa.m	2	EXCLUDED	interactive input											
-732	src/visualization/cellDesigner/addAnnotation.m	2	EXCLUDED	interactive input											
+731	src/visualization/SAMMIM/expa.m	2	PENDING												reclassified testable (T008): askinput/input() prompts run only after more than 15 s of tableau computation and keyboard only on an internal size mismatch (exempt); extreme-pathway computation on a small model is testable
+732	src/visualization/cellDesigner/addAnnotation.m	2	PENDING												reclassified testable (T008): uiputfile/uigetfile run only when fname/fname_out are omitted and warndlg only for unmatched items (exempt); annotating a small CellDesigner XML fixture from a model with explicit arguments is testable
 733	src/visualization/cellDesigner/addFlux.m	2	PENDING												
-734	src/visualization/cellDesigner/addMiriam.m	2	EXCLUDED	interactive input											
+734	src/visualization/cellDesigner/addMiriam.m	2	PENDING												reclassified testable (T008): uiputfile/uigetfile run only when fname/fname_out are omitted and warndlg only when no MIRIAM relations/items match (exempt); adding MIRIAM annotations to a small XML fixture using the bundled MIRIAM.mat is testable
 735	src/visualization/cellDesigner/cmpMet.m	2	PENDING												
 736	src/visualization/cellDesigner/cmpRxn.m	2	PENDING												
-737	src/visualization/cellDesigner/intergrate.m	2	EXCLUDED	does not parse: Syntax Error: L 1 (C 11): SYNER: Parse error at '~': usage might be invalid MATLAB syntax. 											
+737	src/visualization/cellDesigner/intergrate.m	2	EXCLUDED	does not parse: 'function [~] = intergrate(...)' is invalid MATLAB syntax, so the function cannot be called at all											
 738	src/visualization/entropicFBA/calculateGeneWeight.m	2	PENDING												
 739	src/visualization/maps/ReconMap/buildFluxDistLayout.m	2	PENDING				postMINERVArequest								
 740	src/visualization/metabolicCartography/addFluxFBA.m	2	PENDING				createColorsMap								
@@ -955,7 +955,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 954	src/design/optForce/findMustU.m	3	PENDING				saveInputsMustSetsFirstOrder								
 955	src/design/optForce/findMustUL.m	3	PENDING				saveInputsMustSetsSecondOrder								
 956	src/design/optForce/findMustUU.m	3	PENDING				saveInputsMustSetsSecondOrder								
-957	src/design/optForceGAMS/optForceWithGAMS.m	3	PENDING		external-program		analyzeOptForceSol,checkGAMSSolvers,exportInputsOptForceToGAMS								
+957	src/design/optForceGAMS/optForceWithGAMS.m	3	EXCLUDED	every path needs GAMS: getAvailableGAMSSolvers/which('gams') error without it, and the core runs `gams` plus the GDX interface	external-program		analyzeOptForceSol,checkGAMSSolvers,exportInputsOptForceToGAMS								reclassified excluded (T008)
 958	src/design/optGeneFitness.m	3	PENDING				buildRxnGeneMat,deleteModelGenes,findRxnIDs								
 959	src/design/optGeneFitnessTilt.m	3	PENDING				buildRxnGeneMat,deleteModelGenes	optGene							
 960	src/design/randomKO.m	3	PENDING				findExcRxns								
@@ -1035,7 +1035,7 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 1034	src/visualization/paint4net/bio_paint4Net/bio_draw_by_rxn/bio_draw_by_rxn.m	3	PENDING				findMetIDs,findRxnIDs,fluxVariability	bio_draw_by_met							
 1035	src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_draw_by_met.m	3	PENDING				bio_draw_by_rxn,findMetIDs,findNearRxns,findRxnIDs								
 1036	src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m	3	PENDING				findMetIDs,findRxnIDs								
-1037	src/base/io/readCbModel.m	4	EXCLUDED	interactive input			readSimPhenyCMPD,readSimPhenyGPR,readSimPhenyGprText	ReconstructionCreator,addmetabolites,batchTestAllReconstructionFunctions,buildModelStorage,calculateReactionAbundance,calculateReactionMasses,changeMapMetIDToName,checkModelPreFBA,completeSpeciesFolder,computeFluxConsistentReactionPresence,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createContextSpecificModel,createPanModels,createSBMLFiles,extractReconstructionResourceSubset,fastCalculateReactionAbundance,fastSetupCreator,getDistributedModel,getMappingInfo,getReactionMetabolitePresence,joinModelsPairwiseFromList,loadBiGGModel,loadPSCMfile,loadUncModels,mgPipe,model2MetStructure,plotATPTestResults,plotBiomassTestResults,predictMicrobeContributions,printReconstructionContent,runDebuggingTools,runDemeter,runTestSuiteTools,sbmlTestModelToMat,simulatePairwiseInteractions,submitGapFill							
+1037	src/base/io/readCbModel.m	4	PENDING				readSimPhenyCMPD,readSimPhenyGPR,readSimPhenyGprText	ReconstructionCreator,addmetabolites,batchTestAllReconstructionFunctions,buildModelStorage,calculateReactionAbundance,calculateReactionMasses,changeMapMetIDToName,checkModelPreFBA,completeSpeciesFolder,computeFluxConsistentReactionPresence,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createContextSpecificModel,createPanModels,createSBMLFiles,extractReconstructionResourceSubset,fastCalculateReactionAbundance,fastSetupCreator,getDistributedModel,getMappingInfo,getReactionMetabolitePresence,joinModelsPairwiseFromList,loadBiGGModel,loadPSCMfile,loadUncModels,mgPipe,model2MetStructure,plotATPTestResults,plotBiomassTestResults,predictMicrobeContributions,printReconstructionContent,runDebuggingTools,runDemeter,runTestSuiteTools,sbmlTestModelToMat,simulatePairwiseInteractions,submitGapFill							reclassified testable (T008): uigetfile runs only when no file name is given or an extension-less name matches 0 or several files, and input() only when a .mat holds several models without modelName (exempt); reading SBML/.mat/Excel models by explicit file name is testable
 1038	src/analysis/igemRNA/modelCreation/createContextSpecificModel.m	4	PENDING				deleteInactiveGenes,fluxVariability,readCbModel								
 1039	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateReactionAbundance.m	4	PENDING				readCbModel,readInputTableForPipeline								
 1040	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/fastCalculateReactionAbundance.m	4	PENDING				readCbModel,readInputTableForPipeline	mgPipe							
@@ -1077,10 +1077,10 @@ order	file	tier	status	reason	flags	cycle	untested_callees	callers	test	lines	mi
 1076	src/reconstruction/demeter/src/refinement/runDemeter.m	4	PENDING				createSBMLFiles,getEnvironment,readCbModel,refinementPipeline,restoreEnvironment,translateDraftReconstruction								
 1077	src/reconstruction/demeter/suite/tests/runTestSuiteTools.m	4	PENDING				batchTestAllReconstructionFunctions,plotATPTestResults,plotBiomassTestResults,plotTestSuiteResults,printRefinementReport,readCbModel,reportPDF								
 1078	src/reconstruction/fastGapFill/submitGapFill.m	4	PENDING				getCobraSolverParams,postProcessGapFillSolutions,prepareFastGapFill,readCbModel,swiftGapFill								
-1079	src/reconstruction/rBioNet/addmetabolites.m	4	EXCLUDED	GUI			addreactions,creategrRulesField,met_charge_formula,metabolites_in_database,readCbModel	ReconstructionTool,addmissing							
-1080	src/reconstruction/rBioNet/ReconstructionCreator.m	4	EXCLUDED	GUI		ReconstructionCreator,ReconstructionTool,model_stats	CreateGPR,GenesAndReactions,GenesReactions,ReconstructionTool,creategrRulesField,data2model,load_reaction,model_description,model_stats,rBioNetAbout,rBioNet_search,readCbModel,webDatabases,webKeggMapper	ReconstructionTool,model_stats							
-1081	src/reconstruction/rBioNet/ReconstructionTool.m	4	EXCLUDED	GUI		ReconstructionCreator,ReconstructionTool,model_stats	BalancePrep,ReconstructionCreator,addmetabolites,addreactions,balancecheck,compartment,rBioNetAbout,rBioNetSettings,rBioNet_search,sim_general,similarities,unbalanced,webDatabases,webKeggMapper	ReconstructionCreator							
-1082	src/reconstruction/rBioNet/model_stats.m	4	EXCLUDED	GUI		ReconstructionCreator,ReconstructionTool,model_stats	ReconstructionCreator,data2model,webDatabases,webKeggMapper	ReconstructionCreator							
-1083	src/reconstruction/rBioNet/addmissing.m	4	EXCLUDED	GUI			addmetabolites,addreactions								
+1079	src/reconstruction/rBioNet/addmetabolites.m	4	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure			addreactions,creategrRulesField,met_charge_formula,metabolites_in_database,readCbModel	ReconstructionTool,addmissing							
+1080	src/reconstruction/rBioNet/ReconstructionCreator.m	4	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure		ReconstructionCreator,ReconstructionTool,model_stats	CreateGPR,GenesAndReactions,GenesReactions,ReconstructionTool,creategrRulesField,data2model,load_reaction,model_description,model_stats,rBioNetAbout,rBioNet_search,readCbModel,webDatabases,webKeggMapper	ReconstructionTool,model_stats							
+1081	src/reconstruction/rBioNet/ReconstructionTool.m	4	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure		ReconstructionCreator,ReconstructionTool,model_stats	BalancePrep,ReconstructionCreator,addmetabolites,addreactions,balancecheck,compartment,rBioNetAbout,rBioNetSettings,rBioNet_search,sim_general,similarities,unbalanced,webDatabases,webKeggMapper	ReconstructionCreator							
+1082	src/reconstruction/rBioNet/model_stats.m	4	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure		ReconstructionCreator,ReconstructionTool,model_stats	ReconstructionCreator,data2model,webDatabases,webKeggMapper	ReconstructionCreator							
+1083	src/reconstruction/rBioNet/addmissing.m	4	EXCLUDED	GUIDE GUI file (gui_mainfcn/gui_State with callbacks); every call opens the figure			addmetabolites,addreactions								
 1084	src/visualization/entropicFBA/calculateReactionMasses.m	4	PENDING				computeMW,findMetIDs,findRxnIDs,readCbModel								
 1085	src/visualization/metabolicCartography/changeMapMetIDToName.m	4	PENDING				readCbModel,transformMap2XML,transformXML2Map								

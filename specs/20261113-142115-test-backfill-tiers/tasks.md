@@ -52,7 +52,7 @@ A wave is formed, written, verified and committed as follows (research R4–R7, 
 `update_ledger.py --check` reports 1085 rows, no callee after its caller within a tier.
 
 - [X] T007 [US1] Add `--check` order and completeness checks to `$F/tools/update_ledger.py` and run them on `$F/inventory/ledger.tsv`; record the output in `$F/inventory/summary.md`
-- [ ] T008 [US1] Review the 155 inventory exclusions and the 62 `external-program` flags by reading each file's code; correct misclassifications in `$F/inventory/ledger.tsv` with reasons (scripts that only define data, GUIs whose logic functions are callable, etc.)
+- [X] T008 [US1] Review the 155 inventory exclusions and the 62 `external-program` flags by reading each file's code; correct misclassifications in `$F/inventory/ledger.tsv` with reasons (scripts that only define data, GUIs whose logic functions are callable, etc.)
 
 ## Phase 4: User Story 2 — Tier 1 tests (Priority: P1)
 

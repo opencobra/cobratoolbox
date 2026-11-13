@@ -70,6 +70,15 @@ are not defects). Severities (III-Defects): `wrong-result`, `error`, `unusable-o
 - If a defect lies in a function your function calls (not in your function), say so in `notes`
   with the callee's name and the reproduction; do not quarantine your function for it.
 
+## Installed programs and reviewer notes
+
+The reference machine has `obabel`, `lrs`, `java`, `python3` (3.12), `git` and `curl`; it has no
+`cxcalc` (ChemAxon), `babel`, GAMS, conda or `python2`, and tests never use the internet. A test
+that needs an installed program declares it: `prepareTest('requiredSoftwares', {'obabel'})`; lines
+that need a missing program or the internet are exemptions. The `notes` column of your slice may
+hold a reviewer's reading of the file (which branches need what, suspected defects): treat it as a
+lead to check, not as a finding.
+
 ## When a row cannot be tested here
 
 Status `EXCLUDED` with the reason (every line needs internet, an external program, an unavailable

@@ -179,12 +179,12 @@ class Ledger:
         out = os.path.join(self.inv, 'waves', 'wave%02d.tsv' % number)
         if ready:
             with open(out, 'w') as f:
-                f.write('slice\torder\tfile\ttier\tflags\tcycle\tuntested_callees\tcallers\n')
+                f.write('slice\torder\tfile\ttier\tflags\tcycle\tuntested_callees\tcallers\tnotes\n')
                 for k, s in enumerate(slices):
                     for r in s:
                         f.write('\t'.join([chr(ord('a') + k), r['order'], r['file'], r['tier'],
                                            r['flags'], r['cycle'], r['untested_callees'],
-                                           r['callers']]) + '\n')
+                                           r['callers'], r['notes']]) + '\n')
         self.save()
         return number, slices, removed, out
 
