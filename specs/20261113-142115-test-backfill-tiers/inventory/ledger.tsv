@@ -1,0 +1,1086 @@
+order	file	tier	status	reason	flags	cycle	untested_callees	callers
+1	src/base/solvers/param/getCobraSolverParamsOptionsForType.m	1	PENDING					changeCobraSolverParams,computeMetFormulae,getCobraSolverParams,parseCobraVarargin,parseSolverParameters
+2	src/base/solvers/param/getCobraSolverParams.m	1	PENDING				getCobraSolverParamsOptionsForType	GDLS,OptKnock,SteadyComCplex,SteadyComSubroutines,XomicsToModel,biomassPrecursorCheck,buildCplexProblemFromCOBRAStruct,checkGeneMCS,checkModelPreFBA,checkModelProperties,checkRankFR,checkSolFeas,checkStoichiometricConsistency,checkThermoFeasibility,computeReconstructionFeatures,constrainRxns,createDummyModel,createTissueSpecificModel,cycleFreeFlux,driver_testThermoQP,enumerateOptimalSolutions,fastCoreWeighted,fastGapFill,fastSNP,fastcc,fastcore,findExtremePool,findFluxConsistentSubset,findMassLeaksAndSiphons,findMinNull,findMinimalLeakageModeMet,findMinimalLeakageModeRxn,findSignedCyclicFluxConsistentSubset,findSparseMode,findSparsePathway,findStoichConsistentSubset,findThermoConsistentFluxSubset,fitExperimentalFlux,fluxVariability,identifyBlockedRxns,maxCardinalityConservationVector,mdFBA,metUtilisation,metabolomicsTomodel,minCardinalityConservationRelaxationVector,modelPredictiveCapacity,multiProductionEnvelope,optCardThermo,optimizeCardinality,optimizeCbModel,optimizeTwoCbModels,optimizeWBModel,parseSolverParameters,partition,performSanityChecksonRecon,plotRelaxedFBA,preprocessingOmicsModel,pruneModel,quanQualAcc,rFastcormics,relaxFBA_cappedL1,relaxedFBA,solveCobraNLP,sparseFBA,sparseLP,submitGapFill,thermoKernel,writePajekNet
+3	src/analysis/FVA/fastFVA/cleanFilesFastFVA.m	1	EXCLUDED	interactive input				
+4	src/base/solvers/getSetSolver/getCobraSolverVersion.m	1	PENDING					fastFVA,generateMexFastFVA,isCompatible
+5	src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m	1	PENDING				getCobraSolverVersion	
+6	src/base/io/utilities/getDefinedFieldProperties.m	1	PENDING					addGenes,addMIRIAMAnnotations,addMultipleMetabolites,addMultipleReactions,addMultipleReactionsIT,checkDatabaseIDs,convertOldStyleModel,createEmptyFields,extendModelFieldsForType,generateFieldDescriptionFile,getDatabaseMappings,getModelFieldsForType,initFBAFields,orderModelFields,searchModel,verifyModel
+7	src/base/utilities/getGlobalValue.m	1	PENDING					getEnvironment
+8	src/base/utilities/getEnvironment.m	1	PENDING				getGlobalValue	SteadyComFVAgr,analyseObjectiveShadowPrices,analyseWBMs,batchTestAllReconstructionFunctions,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createBatchMWBM,createPanModels,cycleFreeFlux,findOptimalCoreCount,fluxVariability,getPanSpeciesMetProdCapacity,joinModelsPairwiseFromList,loadUncModels,microbiotaModelSimulator,plotATPTestResults,plotBiomassTestResults,predictMicrobeContributions,printReconstructionContent,runDebuggingTools,runDemeter,simulatePairwiseInteractions
+9	src/base/utilities/clearGlobal.m	1	PENDING					restoreEnvironment
+10	src/base/utilities/setGlobal.m	1	PENDING					restoreEnvironment
+11	src/base/utilities/restoreEnvironment.m	1	PENDING				clearGlobal,setGlobal	SteadyComFVAgr,analyseObjectiveShadowPrices,analyseWBMs,batchTestAllReconstructionFunctions,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createBatchMWBM,createPanModels,cycleFreeFlux,findOptimalCoreCount,fluxVariability,getPanSpeciesMetProdCapacity,joinModelsPairwiseFromList,loadUncModels,microbiotaModelSimulator,plotATPTestResults,plotBiomassTestResults,predictMicrobeContributions,printReconstructionContent,runDebuggingTools,runDemeter,simulatePairwiseInteractions
+12	src/base/solvers/cplex/checkSolFeas.m	1	PENDING				getCobraSolverParams	SteadyCom,SteadyComCplex,SteadyComFVA,SteadyComFVAgr,SteadyComPOA,SteadyComPOAgr,computeMetFormulae,fastSNP,findMinNull,fluxVariability
+13	src/analysis/FVA/fvaJaccardIndex.m	1	PENDING					
+14	src/analysis/KLdistance/KLdistance.m	1	PENDING					
+15	src/analysis/ecosystem/computeEcosystemLinkage.m	1	PENDING					clusterEcosystemPoints,cobraClustergram
+16	src/analysis/ecosystem/computeEcosystemDistances.m	1	PENDING					clusterEcosystemPoints
+17	src/analysis/ecosystem/computeEcosystemDBSCAN.m	1	PENDING					clusterEcosystemPoints
+18	src/analysis/ecosystem/clusterEcosystemPoints.m	1	PENDING				computeEcosystemDBSCAN,computeEcosystemDistances,computeEcosystemLinkage	
+19	src/analysis/ecosystem/qualitativeStateLabels.m	1	PENDING					compareEcosystemClusters,getEcosystemClusterDescriptor,getEcosystemClusterReactionValues,getQualitativeFluxStates,plotEcosystemGrid,plotQualitativeStateOverlap
+20	src/analysis/ecosystem/compareEcosystemClusters.m	1	PENDING				qualitativeStateLabels	
+21	src/analysis/ecosystem/getQualitativeFluxStates.m	1	PENDING				qualitativeStateLabels	ecosystemQualitativeFVA
+22	src/analysis/ecosystem/filterEcosystemScenarios.m	1	PENDING					
+23	src/analysis/ecosystem/getEcosystemClusterDescriptor.m	1	PENDING				qualitativeStateLabels	
+24	src/analysis/ecosystem/getEcosystemClusterReactionValues.m	1	PENDING				qualitativeStateLabels	
+25	src/base/io/utilities/readNumpyArray.m	1	PENDING					loadEcosystemScenario
+26	src/base/io/utilities/resolvePickleProxies.m	1	PENDING					readPythonPickle
+27	src/base/io/utilities/numpyBufferToArray.m	1	PENDING					readPythonPickle
+28	src/base/io/utilities/readPythonPickle.m	1	PENDING				numpyBufferToArray,resolvePickleProxies	loadEcosystemScenario
+29	src/analysis/ecosystem/matchEcosystemClusters.m	1	PENDING					
+30	src/analysis/ecosystem/plotEcosystemGrid.m	1	PENDING				qualitativeStateLabels	
+31	src/analysis/ecosystem/plotQualitativeStateOverlap.m	1	PENDING				qualitativeStateLabels	
+32	src/analysis/ecosystem/plotQuantitativeFluxCoupling.m	1	PENDING					
+33	src/analysis/ecosystem/removeEcosystemPoints.m	1	PENDING					
+34	src/analysis/ecosystem/selectEcosystemReactions.m	1	PENDING					
+35	src/analysis/ecosystem/setEcosystemPoolBounds.m	1	PENDING					
+36	src/analysis/topology/getCorrespondingCols.m	1	PENDING					XomicsToModel,checkStoichiometricConsistency,findGenesFromMets,findMassLeaksAndSiphons,findStoichConsistentSubset,maxCardinalityConservationVector,modelExtraction,removeMapMol,removeMapReactions,removeMapSpecies,removeMapSpeciesOnly,removeMetabolites,thermoKernel
+37	src/base/parseRxnFormula.m	1	PENDING					LoadReaction,ReactionEq,addReaction,createModel,createModelNewCompartment,findTrspRxnFromMet,formula2mets,mapKBaseToVMHReactions,neighborRxn2data,similarity
+38	src/analysis/exploration/plotEssentialRxns.m	1	PENDING					
+39	src/analysis/fastForest/extractSubsetFeaturesfromFile.m	1	PENDING					
+40	src/reconstruction/refinement/GPRLogic/AndNode.m	1	PENDING			AndNode,OrNode	OrNode	FormulaParser,LiteralNode,OrNode,combineChildren
+41	src/reconstruction/refinement/GPRLogic/OrNode.m	1	PENDING			AndNode,OrNode	AndNode	AndNode,FormulaParser,LiteralNode,combineChildren
+42	src/reconstruction/refinement/GPRLogic/LiteralNode.m	1	PENDING			LiteralNode,Node	AndNode,Node,OrNode	FormulaParser,Node
+43	src/reconstruction/refinement/GPRLogic/Node.m	1	PENDING			LiteralNode,Node	LiteralNode	LiteralNode
+44	src/reconstruction/refinement/GPRLogic/FormulaParser.m	1	PENDING				AndNode,LiteralNode,OrNode	GPR2models,GPRparser,NormaliseGPRs,removeFieldEntriesForType,removeGenesFromModel
+45	src/analysis/gMCS/GPR2models.m	1	PENDING				FormulaParser,addMetabolite,buildRxnGeneMat,changeRxnMets,createModel	buildGmatrix
+46	src/base/solvers/cplex/setCplexParam.m	1	PENDING					SteadyComCplex,SteadyComFVA,SteadyComFVAgr,SteadyComPOA,SteadyComPOAgr,calculateGeneMCS,calculateMCS,mtFVA,setCplexParametersForProblem,solveCobraLPCPLEX,solveCobraLPCPLEX_2018,tuneParam
+47	src/analysis/igemRNA/IgemRNA.m	1	EXCLUDED	script (no function to call)				
+48	src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m	1	PENDING					findHighlyLowlyExpressedGenesLT1
+49	src/analysis/igemRNA/LT1/findGenesBelowThresholdLocal1.m	1	PENDING					deleteInactiveGenes,findHighlyLowlyExpressedGenesLT1
+50	src/analysis/igemRNA/LT2/findGenesAboveThresholdLocal2.m	1	PENDING					findHighlyLowlyExpressedGenesLT2
+51	src/analysis/igemRNA/LT2/findGenesBelowThresholdLocal2.m	1	PENDING					deleteInactiveGenes,findHighlyLowlyExpressedGenesLT2
+52	src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m	1	PENDING					
+53	src/base/io/utilities/readSimPhenyCMPD.m	1	PENDING					readCbModel
+54	src/base/io/utilities/readSimPhenyGPR.m	1	PENDING					readCbModel
+55	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m	1	PENDING				findMetIDs,findRxnIDs,getCobraSolverParams	SteadyCom,SteadyComCplex,SteadyComFVA,SteadyComFVAgr,SteadyComPOA,SteadyComPOAgr
+56	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m	1	PENDING					analyseObjectiveShadowPrices,completeSpeciesFolder,createPersonalizedModel,microbiotaModelSimulator
+57	src/reconstruction/demeter/src/integration/readInputTableForPipeline.m	1	PENDING					analyzeMgPipeResults,batchTestAllReconstructionFunctions,calculateReactionAbundance,calculateSubsystemAbundance,carbonSourceGapfill,computeFluxConsistentReactionPresence,computeInternalMetaboliteProduction,computeMetabolicDistance,computeUptakeSecretion,correlateFluxWithTaxonAbundance,createInfoFileDEMETER,createPanModels,curateAgainstBacDiveData,curateGrowthRequirements,debugModel,extractReconstructionResourceSubset,fastCalculateReactionAbundance,fermentationPathwayGapfill,getCurationStatus,getReactionMetabolitePresence,getSubsystemPresence,getUnannotatedReactionsFromPubSeedSpreadsheets,initMgPipe,mgSimResCollect,microbiotaModelSimulator,normalizeCoverage,plotFluxesAgainstOrganismAbundances,plotMappingInfo,prepareInputData,producetSNEPlots,propagateKBaseMetTranslationToRxns,putrefactionPathwaysGapfilling,rankFeaturesByIncidence,refineGenomeAnnotation,refinementPipeline,retrieveModelStats,runDebuggingTools,secretionProductGapfill,summarizeFeaturesOnTaxonLevels,testAromaticAADegradation,testBileAcidBiosynthesis,testCarbonSources,testDrugMetabolism,testFermentationProducts,testGrowthOnDefinedMedia,testMetaboliteUptake,testPutrefactionPathways,testSecretionProducts,translateKBaseModel2VMHModel,translateKBaseToVMHMets,translateMetagenome2AGORA,updateAGORATaxonomyFile,updateTaxonomyInfoAGORA,uptakeMetaboliteGapfill,writeReactionsFromPubSeedSpreadsheets
+58	src/reconstruction/demeter/src/integration/loadVMHDatabase.m	1	PENDING					calculateSubsystemAbundance,collectFoodItemInfo,convertVMHIDName,correlateFluxWithTaxonAbundance,createMultipleSpeciesModel,createPanModels,debugModel,getDietComposition,getDietEnergy,getVMHID,individualizedLabReport,makeViolinPlots,mapKBaseToVMHReactions,mgSimResCollect,nutritionAlgorithmWBM,performStatisticalAnalysis,performStatsPersephone,persWBMmetabolomics,plotFluxesAgainstOrganismAbundances,printReconstructionContent,rankFeaturesByIncidence,refinementPipeline,reportPDF,runTestsOnModel,translateDraftReconstruction,translateKBaseToVMHMets,writeReactionsFromPubSeedSpreadsheets
+59	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/performStatisticalAnalysis.m	1	PENDING				loadVMHDatabase	analyzeMgPipeResults
+60	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m	1	PENDING				loadVMHDatabase	analyzeMgPipeResults
+61	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/analyzeMgPipeResults.m	1	PENDING				makeViolinPlots,performStatisticalAnalysis,readInputTableForPipeline	
+62	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateSubsystemAbundance.m	1	PENDING				loadVMHDatabase,readInputTableForPipeline	mgPipe
+63	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m	1	PENDING				loadVMHDatabase,readInputTableForPipeline	calculateCorrelations
+64	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/plotFluxesAgainstOrganismAbundances.m	1	PENDING				loadVMHDatabase,readInputTableForPipeline	
+65	src/base/solvers/param/changeCobraSolverParams.m	1	PENDING				getCobraSolverParamsOptionsForType	batchTestAllReconstructionFunctions,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createPanModels,optCardThermo,phenotypePhasePlane,predictMicrobeContributions,printReconstructionContent,setThermoReactionDirectionalityiAF1260,simulatePairwiseInteractions
+66	src/analysis/topology/getCorrespondingRows.m	1	PENDING					checkMassChargeBalance,checkModelProperties,cycleFreeFlux,detectDeadEnds,findFluxConsistentSubset,findSExRxnInd,findSignedCyclicFluxConsistentSubset,findStoichConsistentSubset,findThermoConsistentFluxSubset,modelExtraction,removeCDReactions,removeMapMol,removeMapReactions,removeMapSpecies,removeRxns,thermoKernel
+67	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/detectOutput.m	1	PENDING					createPersonalizedModel,mgPipe,microbiotaModelSimulator
+68	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/extractFullRes.m	1	PENDING					
+69	src/analysis/wholeBody/PSCMToolbox/io/OrganLists.m	1	EXCLUDED	script (no function to call)				findSExRxnInd,getOrgansFromHarvey,organEssentiality,physiologicalConstraintsHMDBbased,physiologicalConstraintsHMDBbasedTEMP,physiologicalConstraintsHMDBbased_old,runFindSparsePathway
+70	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/getIndividualSizeName.m	1	PENDING					mgPipe
+71	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m	1	PENDING				loadVMHDatabase,readInputTableForPipeline	mgPipe
+72	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/HighFiberDiet.m	1	EXCLUDED	script (no function to call)				analyzeHMmodel,setDietConstraints,validateDietPath
+73	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/UnhealthyDiet.m	1	EXCLUDED	script (no function to call)				analyzeHMmodel,setDietConstraints,validateDietPath
+74	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/EUAverageDietNew.m	1	EXCLUDED	script (no function to call)				analyzeHMmodel,perform_BMR_newData,perform_sensi_BMR_all,runIEM_HH,setDietConstraints,validateDietPath
+75	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/VegetarianDiet.m	1	EXCLUDED	script (no function to call)				analyzeHMmodel,setDietConstraints,validateDietPath
+76	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/HighProteinDiet.m	1	EXCLUDED	script (no function to call)				analyzeHMmodel,setDietConstraints,validateDietPath
+77	src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/AGORAEssentialMetabolites.m	1	EXCLUDED	script (no function to call)				setDietConstraints
+78	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/normalizeCoverage.m	1	PENDING				readInputTableForPipeline	
+79	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m	1	PENDING				readInputTableForPipeline	
+80	src/reconstruction/demeter/src/integration/parseNCBItaxonomy.m	1	EXCLUDED	internet				compareVersions,createInfoFileDEMETER,reportPDF,updateAGORATaxonomyFile,updateTaxonomyInfoAGORA
+81	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/updateTaxonomyInfoAGORA.m	1	PENDING				parseNCBItaxonomy,readInputTableForPipeline	
+82	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m	1	PENDING					
+83	src/analysis/thermo/vonBertalanffy/getCompartment.m	1	PENDING					configureSetupThermoModelInputs,deltaG0concFluxConstraintBounds,efmSubmodelExtractionAsSBML,estimateDrGt0,getMultiSpeciesModelId,metUtilisation,model2JSON,setCommonZeroStandardGibbsEnergyOfFormation,thermodynamicAdjustmentToStoichiometry,transportReactionBool
+84	src/analysis/persephone/additionalFunctions/CreateClusterAndRAtables.m	1	EXCLUDED	script (no function to call)				
+85	src/analysis/persephone/additionalFunctions/combineFluxResults.m	1	PENDING					
+86	src/analysis/persephone/additionalFunctions/convertVMHIDName.m	1	PENDING				loadVMHDatabase	
+87	src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m	1	PENDING					
+88	src/analysis/persephone/additionalFunctions/downloadAGORA2.m	1	EXCLUDED	internet				
+89	src/analysis/persephone/additionalFunctions/generateAGORA2MappingStatTable.m	1	EXCLUDED	script (no function to call)				
+90	src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m	1	PENDING					
+91	src/analysis/persephone/additionalFunctions/generatePanDatabase.m	1	PENDING					
+92	src/analysis/persephone/additionalFunctions/generateStackedBarPlot.m	1	PENDING					
+93	src/analysis/persephone/additionalFunctions/getDirectorySize.m	1	PENDING					runSeqC
+94	src/analysis/persephone/additionalFunctions/getMicrobeFluxMappingStats.m	1	EXCLUDED	script (no function to call)				
+95	src/analysis/persephone/additionalFunctions/getVMHID.m	1	PENDING				loadVMHDatabase	
+96	src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m	1	PENDING					
+97	src/analysis/persephone/additionalFunctions/plotAbsentTaxaEffectOnMARScoverage.m	1	PENDING					
+98	src/analysis/persephone/runNonparametricTests.m	1	PENDING					performStatsPersephone,runStatisticsOnModerationAnalysisResults
+99	src/analysis/persephone/performRegressions.m	1	PENDING					performStatsPersephone,runStatisticsOnModerationAnalysisResults
+100	src/analysis/persephone/additionalFunctions/runStatisticsOnModerationAnalysisResults.m	1	PENDING				performRegressions,runNonparametricTests	
+101	src/analysis/persephone/additionalFunctions/setResultPath.m	1	PENDING					
+102	src/analysis/persephone/additionalFunctions/slimDownFBAresults.m	1	PENDING					analyseWBMs
+103	src/analysis/persephone/additionalFunctions/validateDietPath.m	1	PENDING				EUAverageDietNew,HighFiberDiet,HighProteinDiet,UnhealthyDiet,VegetarianDiet	runPersephone
+104	src/analysis/persephone/analyseWBMsol.m	1	PENDING					analyseWBMs
+105	src/analysis/persephone/configTemplatePersephone.m	1	EXCLUDED	script (no function to call)				
+106	src/analysis/persephone/readMetadataForPersephone.m	1	PENDING					createBatchMWBM,initPersephone,performStatsPersephone
+107	src/analysis/persephone/createForestPlot.m	1	PENDING					
+108	src/analysis/persephone/createVolcanoPlot.m	1	PENDING					performStatsPersephone
+109	src/analysis/persephone/generateStackedBarPlot_PhylumMARScoverage.m	1	PENDING					
+110	src/analysis/persephone/initPersephone.m	1	PENDING				readMetadataForPersephone	runPersephone
+111	src/analysis/persephone/performStatsPersephone.m	1	PENDING				createVolcanoPlot,loadVMHDatabase,performRegressions,readMetadataForPersephone,runNonparametricTests	runPersephone
+112	src/analysis/wholeBody/PSCMToolbox/setConstraints/organWeight/getOrganWeightFraction.m	1	EXCLUDED	script (no function to call)				calcOrganFract,organEssentiality,standardPhysiolDefaultParameters
+113	src/analysis/wholeBody/PSCMToolbox/setConstraints/standardPhysiolDefaultParameters.m	1	EXCLUDED	script (no function to call)			getOrganWeightFraction	analyzeHMmodel,perform_BMR_newData,perform_sensi_BMR_all,persWBM,runIEM_HH
+114	src/analysis/persephone/persWBMmetabolomics.m	1	PENDING				loadVMHDatabase,physiologicalConstraintsHMDBbased	persWBM
+115	src/analysis/persephone/runMars.m	1	PENDING					runPersephone
+116	src/analysis/persephone/runSeqC.m	1	PENDING		external-program		getDirectorySize	runPersephone
+117	src/analysis/rMTA/calculateEPSILON.m	1	PENDING					
+118	src/analysis/rMTA/rMTAsaveInExcel.m	1	PENDING					
+119	src/analysis/rumba/classifyRxns.m	1	PENDING				findMetIDs,findRxnIDs	rumba
+120	src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m	1	PENDING		external-program			gpSampler
+121	src/analysis/sampling/ACHR/verifyPoints.m	1	PENDING					
+122	src/analysis/sampling/BarrierRound/utils/isarm.m	1	PENDING		external-program			AdaptiveChol,CMatrix,compileCMatrix,ddouble,qdouble
+123	src/analysis/sampling/BarrierRound/CMatrix/CMatrix.m	1	PENDING				isarm	
+124	src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m	1	PENDING					compileCMatrix
+125	src/analysis/sampling/BarrierRound/utils/compile.m	1	PENDING					compileCMatrix
+126	src/analysis/sampling/BarrierRound/CMatrix/compileCMatrix.m	1	EXCLUDED	script (no function to call)			compile,configCMatrix,isarm	
+127	src/analysis/sampling/BarrierRound/CMatrix/include/ddouble.m	1	PENDING				isarm	AdaptiveChol,CMatrixTest,ConvexProgram,analyticCenter,demo,lewisCenter
+128	src/analysis/sampling/BarrierRound/CMatrix/include/qdouble.m	1	PENDING				isarm	AdaptiveChol
+129	src/analysis/sampling/BarrierRound/CMatrix/include/AdaptiveChol.m	1	PENDING				ddouble,isarm,qdouble	CMatrixTest,ConvexProgram,demo
+130	src/analysis/sampling/BarrierRound/CMatrix/coverage/CMatrixTest.m	1	PENDING				AdaptiveChol,ddouble	
+131	src/analysis/sampling/BarrierRound/CMatrix/coverage/runCMatrixTest.m	1	EXCLUDED	script (no function to call)				
+132	src/analysis/sampling/BarrierRound/CMatrix/demo.m	1	EXCLUDED	script (no function to call)	shadowed-name		AdaptiveChol,ddouble	
+133	src/analysis/sampling/BarrierRound/PolytopeSimplifier/analyticCenter.m	1	PENDING				ddouble	ConvexProgram
+134	src/analysis/sampling/BarrierRound/PolytopeSimplifier/lewisCenter.m	1	PENDING				ddouble	ConvexProgram
+135	src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m	1	PENDING				AdaptiveChol,analyticCenter,ddouble,lewisCenter	
+136	src/analysis/sampling/BarrierRound/utils/loadModular.m	1	PENDING					configPolytopeSimplifier,demo,runPolytopeSimplifierTest
+137	src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m	1	PENDING				loadModular	demo
+138	src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifierTest.m	1	PENDING					
+139	src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/runPolytopeSimplifierTest.m	1	EXCLUDED	script (no function to call)			loadModular	
+140	src/analysis/sampling/BarrierRound/PolytopeSimplifier/demo.m	1	EXCLUDED	script (no function to call)	shadowed-name		configPolytopeSimplifier,loadModular	
+141	src/analysis/sampling/BarrierRound/logBarrierRound.m	1	PENDING					chrrSampler
+142	src/analysis/sampling/BarrierRound/sanity_check.m	1	EXCLUDED	script (no function to call)			chrrSampler	
+143	src/analysis/sampling/calcSampleStats.m	1	PENDING					printSampleStats
+144	src/analysis/sampling/compareTwoSamplesStat.m	1	PENDING					
+145	src/analysis/sampling/loadSamples.m	1	PENDING					sampleCbModel,summarizeSamplingResults
+146	src/analysis/sampling/printSampleStats.m	1	PENDING				calcSampleStats	
+147	src/analysis/subspaces/nullspace/nullSpaceOperator.m	1	PENDING					fourFundamentalSubpaces,getNullSpace
+148	src/analysis/subspaces/nullspace/getNullSpace.m	1	PENDING				nullSpaceOperator	checkNullspaceBasis,detMinSpan,entropicFluxBalanceAnalysis,findCyclicRxns,findFluxConsistentSubset,findSignedCyclicFluxConsistentSubset,greedyExtremeRayBasis
+149	src/analysis/subspaces/lsqr/lsqr.m	1	PENDING					lsqrtest
+150	src/analysis/subspaces/rank/getRankLUSOL.m	1	PENDING					checkModelProperties,checkNullspaceBasis,checkRankFR,extremePools,generateFullRowRankFR,greedyExtremeRayBasis,identifyConservedMoieties,identifyConservedReactingMoieties,testFRconnectedness
+151	src/analysis/subspaces/subspaceProjection/subspaceProjector.m	1	PENDING					componentContribution,projectOntoSubspace
+152	src/analysis/thermo/trainingModel/new/getInchies.m	1	EXCLUDED	internet	external-program			addThermoToModel,prepareTrainingData
+153	src/analysis/thermo/trainingModel/new/loadTrainingData.m	1	PENDING					addThermoToModel,createTrainingModel,prepareTrainingData
+154	src/analysis/thermo/componentContribution/new/invertProjection.m	1	PENDING					componentContribution
+155	src/base/utilities/duplicates.m	1	PENDING					check4DuplicatesInList,regulariseGroupIncidenceMatrix
+156	src/analysis/thermo/groupContribution/new/regulariseGroupIncidenceMatrix.m	1	PENDING				duplicates	createGroupIncidenceMatrix
+157	src/analysis/thermo/groupContribution/new/getGroupVectorFromInchi.m	1	PENDING		external-program			createGroupIncidenceMatrix
+158	src/base/io/python/pyPath/get_py_path.m	1	PENDING					autoFragment,comparePaths,py_rmpath,writeModelinJSON
+159	src/base/io/python/pyPath/py_rmpath.m	1	PENDING				get_py_path	initPythonEnvironment
+160	src/base/paths/comparePaths.m	1	PENDING		external-program		get_py_path	initPythonEnvironment
+161	src/base/io/python/initPythonEnvironment.m	1	PENDING		external-program		comparePaths,py_rmpath	autoFragment,writeModelinJSON
+162	src/base/io/python/pyPath/py_addpath.m	1	PENDING					autoFragment,writeModelinJSON
+163	src/analysis/thermo/groupContribution/wang/autoFragment.m	1	PENDING				get_py_path,initPythonEnvironment,py_addpath	createFragmentIncidenceMatrix,createGroupIncidenceMatrix,test_autoFragment
+164	src/analysis/thermo/inchi/new/sdf2inchi.m	1	PENDING		external-program			createInChIStruct
+165	src/analysis/thermo/inchi/mol2inchi.m	1	PENDING		external-program			createInChIStruct
+166	src/analysis/thermo/inchi/new/createInChIStruct.m	1	PENDING				mol2inchi,sdf2inchi	addInchiToModel,setupComponentContribution,setupComponentContribution
+167	src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m	1	PENDING					getFormulaAndChargeFromInChI,modelMetabolitesToSDF
+168	src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m	1	PENDING					addPseudoisomersToModel,assignpKasToSpecies,balancecheck,checkBalance,checkFormulae,constructElementalMatrix,createComputedSpeciesData,dGfzeroGroupContToBiochemical,deltaG0concFluxConstraintBounds,estimateDG_temp,estimateDrGt0,getFormulaFromInChI,getMolecularMass,ispolymer,pHbalanceProtons,setupComponentContribution,setupComponentContribution
+169	src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m	1	PENDING				numAtomsOfElementInFormula	getFormulaAndChargeFromInChI,modelMetabolitesToSDF,regulariseModelFormulae
+170	src/analysis/thermo/inchi/new/getFormulaAndChargeFromInChI.m	1	PENDING				getChargeFromInChI,getFormulaFromInChI	createTrainingModel,estimate_pKa,getInchiString2ChargedFormula,getKeggpKas,getMolecularWeight,verifyInchiString
+171	src/analysis/thermo/protons/new/estimate_pKa.m	1	PENDING		external-program		getFormulaAndChargeFromInChI	addPseudoisomersToModel,createTrainingModel,getInchiString2ChargedFormula,setupComponentContribution,setupComponentContribution
+172	src/analysis/thermo/molFiles/new/mol2sdf.m	1	PENDING					addInchiToModel,setupComponentContribution,setupComponentContribution
+173	src/analysis/thermo/molFiles/new/kegg2mol.m	1	EXCLUDED	internet	external-program			createTrainingModel,setupComponentContribution,setupComponentContribution
+174	src/analysis/thermo/directionalityReport/directionalityStatsFigures.m	1	PENDING					analyseThermoConstrainedModel
+175	src/analysis/thermo/directionalityReport/directionalityCheckAll.m	1	EXCLUDED	script (no function to call)				
+176	src/analysis/thermo/reactantContribution/calcdGHT.m	1	PENDING					acidDissociationConstant,assignThermoToModel,estimateDG_temp,estimateDfGt0,moleFraction
+177	src/analysis/thermo/directionalityReport/qualitativeVSquantitativeChangesTable.m	1	EXCLUDED	script (no function to call)			setupThermoModel	
+178	src/base/solvers/getSetSolver/getAvailableSolversByType.m	1	PENDING					prepareTest
+179	src/base/install/prepareTest.m	1	PENDING		external-program		getAvailableSolversByType	createTissueSpecificModel,findFluxConsistentSubset
+180	src/analysis/thermo/groupContribution/jankowski/createGroupContributionStruct.m	1	PENDING					
+181	src/analysis/thermo/groupContribution/wang/test_autoFragment.m	1	EXCLUDED	script (no function to call)			autoFragment	
+182	src/analysis/thermo/inchi/inchi2mol.m	1	PENDING		external-program			
+183	src/analysis/thermo/protons/getMetaboliteMsDistr.m	1	PENDING		external-program			
+184	src/analysis/thermo/protons/getMetabolitepKa.m	1	PENDING		external-program			
+185	src/analysis/thermo/protons/new/assignpKasToSpecies.m	1	PENDING		external-program		numAtomsOfElementInFormula	
+186	src/analysis/thermo/protons/realpH.m	1	PENDING					moleFraction,plotMoleFraction
+187	src/analysis/thermo/protons/plotMoleFraction.m	1	PENDING				realpH	
+188	src/analysis/thermo/trainingModel/new/createTrainingModel.m	1	EXCLUDED	internet	external-program		addInchiToModel,estimate_pKa,getFormulaAndChargeFromInChI,kegg2mol,loadTrainingData	driver_createTrainingModel
+189	src/analysis/thermo/trainingModel/new/driver_addChemoinfoToTrainingModel.m	1	EXCLUDED	script (no function to call)				
+190	src/analysis/thermo/vonBertalanffy/initVonBertalanffy.m	1	EXCLUDED	script (no function to call)	external-program			driver_createTrainingModel
+191	src/base/paths/editCobraToolboxPath.m	1	PENDING					driver_createTrainingModel
+192	src/analysis/thermo/trainingModel/new/driver_createTrainingModel.m	1	EXCLUDED	script (no function to call)			checkMassChargeBalance,createTrainingModel,editCobraToolboxPath,initVonBertalanffy,reverseTransformTrainingData	
+193	src/analysis/thermo/trainingModel/new/getKeggpKas.m	1	PENDING		external-program		getFormulaAndChargeFromInChI	
+194	src/analysis/topology/FR/combinatorialDependentRows.m	1	PENDING					testCombinatorialDependentRows
+195	src/analysis/topology/FR/extractFRfromResults.m	1	EXCLUDED	script (no function to call)				
+196	src/analysis/topology/FR/testBP.m	1	EXCLUDED	script (no function to call)				
+197	src/analysis/topology/FR/testBilinearDecomposition.m	1	EXCLUDED	script (no function to call)				
+198	src/analysis/topology/FR/testCombinatorialDependentRows.m	1	EXCLUDED	script (no function to call)			combinatorialDependentRows	
+199	src/analysis/topology/FR/testFRconnectedness.m	1	EXCLUDED	script (no function to call)			getRankLUSOL	
+200	src/analysis/topology/conservedMoieties/classifyMoieties.m	1	PENDING					biomassPrecursorCheck
+201	src/analysis/topology/conservedMoieties/constructElementalMatrix.m	1	PENDING				numAtomsOfElementInFormula	
+202	src/analysis/topology/conservedMoieties/estimateMoietyFormulas.m	1	PENDING					
+203	src/reconstruction/modelGeneration/massBalance/getElementalComposition.m	1	PENDING					computeElementalMatrix,computeMetFormulae,getMolecularMass,identifyConservedMoieties,identifyConservedReactingMoieties
+204	src/analysis/topology/conservedMoieties/representativeMoiety.m	1	PENDING					
+205	src/analysis/topology/conservedMoieties/representativeMolecule.m	1	PENDING					
+206	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsOutputReadRay.m	1	PENDING					equivalentSets,extremePathways,extremePools
+207	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsInputHalfspace.m	1	PENDING					extremePathways,extremePools
+208	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m	1	PENDING		external-program			lrsRun
+209	src/analysis/topology/graphHypergraphConversion/convertHypergraphToBipartiteGraph.m	1	PENDING					connectedFR,largestConnectedFR
+210	src/analysis/topology/reactingMoieties/buildReactingMoietyTables.m	1	PENDING					
+211	src/analysis/topology/reactingMoieties/displayReactingMoieties.m	1	PENDING					
+212	src/analysis/topology/reactingMoieties/identifyIsomorphicClasses.m	1	PENDING					identifyConservedReactingMoieties
+213	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m	1	PENDING					collectFoodItemInfo,getDietComposition,getDietEnergy,getMetaboliteFlux,nutritionAlgorithmWBM,setFoodRxnsWbm,vmhFoodFinder
+214	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietEnergy.m	1	PENDING				getNutritionDatabaseFile,loadVMHDatabase	collectFoodItemInfo,generateInSilicoDiet,normalizeDiet
+215	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getMetaboliteFlux.m	1	PENDING				getNutritionDatabaseFile	collectFoodItemInfo,generateInSilicoDiet
+216	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietComposition.m	1	PENDING				getNutritionDatabaseFile,loadVMHDatabase	collectFoodItemInfo,generateInSilicoDiet
+217	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/collectFoodItemInfo.m	1	PENDING				getDietComposition,getDietEnergy,getMetaboliteFlux,getNutritionDatabaseFile,loadVMHDatabase	vmhFoodFinder
+218	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createBLSdatabase.m	1	PENDING					
+219	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createFridaDatabase.m	1	PENDING					
+220	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m	1	PENDING					
+221	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/generateInSilicoDiet.m	1	PENDING				getDietComposition,getDietEnergy,getMetaboliteFlux	setInSilicoDiet
+222	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/normalizeDiet.m	1	PENDING				getDietEnergy	
+223	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/setFoodRxnsWbm.m	1	PENDING				addMultipleMetabolites,addMultipleReactions,getNutritionDatabaseFile	nutritionAlgorithmWBM,setInSilicoDiet
+224	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/vmhFoodFinder.m	1	PENDING				collectFoodItemInfo,getNutritionDatabaseFile	
+225	src/analysis/wholeBody/PSCMToolbox/annotateOrganAtlas.m	1	EXCLUDED	script (no function to call)			annotateModel	
+226	src/analysis/wholeBody/PSCMToolbox/getStatsOrganComp.m	1	PENDING					
+227	src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/adjust.m	1	EXCLUDED	script (no function to call)				
+228	src/analysis/wholeBody/PSCMToolbox/setConstraints/AAStorage.m	1	EXCLUDED	script (no function to call)				setFeedingFastingConstraints
+229	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/DACH.m	1	EXCLUDED	script (no function to call)				
+230	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/GlutenFreeDiet.m	1	EXCLUDED	script (no function to call)				
+231	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/HighFatLowCarbDiet.m	1	EXCLUDED	script (no function to call)				
+232	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/Mediterranian.m	1	EXCLUDED	script (no function to call)				
+233	src/analysis/wholeBody/PSCMToolbox/setConstraints/diets/VeganDiet.m	1	EXCLUDED	script (no function to call)				
+234	src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m	1	PENDING					
+235	src/base/ci/addKeyToKnownHostsCT.m	1	PENDING		external-program			
+236	src/base/cobrarrow/COBRArrowSolver.m	1	PENDING					COBRArrow
+237	src/base/cobrarrow/COBRArrow.m	1	PENDING				COBRArrowSolver	
+238	src/base/cobrarrow/initCobrarrow.m	1	PENDING		external-program			
+239	src/base/codeConsistency/printFunctionIO.m	1	PENDING					
+240	src/base/install/adaptMacPath.m	1	PENDING		external-program			
+241	src/base/install/addCOBRABinaryPathToSystemPath.m	1	PENDING					
+242	src/base/install/checkCNAinstallation.m	1	PENDING					convertCNAModelToCbModel,convertCbModelToCNAModel
+243	src/base/install/getIgnoredFiles.m	1	PENDING					getFilesInDir
+244	src/base/install/getFilesInDir.m	1	PENDING		external-program		getIgnoredFiles	changeCobraSolver,removeTempFiles
+245	src/base/install/getGitBashVersion.m	1	PENDING					installGitBash,updateGitBash
+246	src/base/install/installDevTools.m	1	PENDING		external-program			
+247	src/base/install/portableGitSetup.m	1	EXCLUDED	internet	external-program			installGitBash,updateGitBash
+248	src/base/install/installGitBash.m	1	PENDING				getGitBashVersion,portableGitSetup	updateGitBash
+249	src/base/install/removeTempFiles.m	1	PENDING				getFilesInDir	changeCobraSolver
+250	src/base/install/updateGitBash.m	1	PENDING		external-program		getGitBashVersion,installGitBash,portableGitSetup	updateCobraToolbox
+251	src/base/install/updateCobraToolbox.m	1	PENDING		external-program		updateGitBash	
+252	src/base/io/KEGG/createUniversalReactionModel.m	1	PENDING				createModel	generateSUXMatrix
+253	src/base/io/convertCobraLP2mps.m	1	PENDING					
+254	src/base/io/definitions/getRegisteredDatabases.m	1	EXCLUDED	internet				addMIRIAMAnnotations
+255	src/base/io/python/condalab/conda.m	1	EXCLUDED	interactive input	external-program			
+256	src/base/io/utilities/readBooleanRegModel.m	1	PENDING				findRxnIDs	
+257	src/base/io/utilities/write4ti2.m	1	PENDING					
+258	src/base/io/writeGDXFromCOBRA.m	1	PENDING					
+259	src/base/io/writeLPProblem.m	1	PENDING					solveCobraLP,solveCobraMILP,solveCobraQP
+260	src/base/setWorkerCount.m	1	PENDING					generateMetaboScore
+261	src/base/solvers/cplex/setCplexParametersForProblem.m	1	PENDING				setCplexParam	solveCobraLP,solveCobraMILP,solveCobraMIQP,solveCobraQP
+262	src/base/solvers/entropicFBA/mosekParamSetEFBA.m	1	PENDING					flux2json,plotyy_eFBA
+263	src/base/solvers/gams/getAvailableGAMSSolvers.m	1	PENDING		external-program			checkGAMSSolvers
+264	src/base/solvers/gams/checkGAMSSolvers.m	1	PENDING				getAvailableGAMSSolvers	findMustLLWithGAMS,findMustLWithGAMS,findMustULWithGAMS,findMustUUWithGAMS,findMustUWithGAMS,optForceWithGAMS
+265	src/base/solvers/gurobi/setGurobiParam.m	1	PENDING					solveCobraLP,solveCobraQP
+266	src/base/solvers/init/configEnvVars.m	1	PENDING					changeCobraSolver
+267	src/base/solvers/lindo/solveCobraLPLindo.m	1	PENDING					
+268	src/base/solvers/lp_solve/mxlpsolve.m	1	EXCLUDED	script (no function to call)				lp_solve
+269	src/base/solvers/lp_solve/lp_solve.m	1	PENDING				mxlpsolve	solveCobraLP
+270	src/base/solvers/minos/DQQCleanup.m	1	PENDING					solveCobraLP
+271	src/base/solvers/minos/readMinosSolution.m	1	PENDING					solveCobraLP,solveCobraQP
+272	src/base/solvers/optarrow/solveCobraLPOptArrow.m	1	PENDING		external-program			solveCobraLP
+273	src/base/solvers/optarrow/solveCobraQPOptArrow.m	1	PENDING		external-program			solveCobraQP
+274	src/base/solvers/param/parseSolverParameters.m	1	PENDING				getCobraSolverParams,getCobraSolverParamsOptionsForType	computeMetFormulae,parseCobraVarargin,solveCobraEP,solveCobraLP,solveCobraMILP,solveCobraMIQP,solveCobraNLP,solveCobraQP
+275	src/base/solvers/rescale/liftRows.m	1	PENDING					liftCouplingConstraints
+276	src/base/solvers/varKin/BDCAmethods/BDCA.m	1	PENDING					optimizeVKmodel0
+277	src/base/solvers/varKin/BDCAmethods/DCA.m	1	PENDING					optimizeVKmodel0
+278	src/base/solvers/varKin/BDCAmethods/Rate_function.m	1	PENDING		shadowed-name			optimizeVKmodel0
+279	src/base/solvers/varKin/derFreeMethods/BDF.m	1	PENDING					optimizeVKmodel0
+280	src/base/solvers/varKin/derFreeMethods/CSDF.m	1	PENDING					optimizeVKmodel0
+281	src/base/solvers/varKin/derFreeMethods/DBDF.m	1	PENDING					optimizeVKmodel0
+282	src/base/solvers/varKin/derFreeMethods/Rate_function.m	1	PENDING		shadowed-name			optimizeVKmodel0
+283	src/base/solvers/varKin/levMarMethods/GLM_FY.m	1	PENDING					optimizeVKmodel0
+284	src/base/solvers/varKin/levMarMethods/GLM_YF.m	1	PENDING					optimizeVKmodel0
+285	src/base/solvers/varKin/levMarMethods/LLM.m	1	PENDING					optimizeVKmodel0
+286	src/base/solvers/varKin/levMarMethods/LMLS.m	1	PENDING					optimizeVKmodel0
+287	src/base/solvers/varKin/levMarMethods/LMTR.m	1	PENDING					optimizeVKmodel0
+288	src/base/solvers/varKin/levMarMethods/LevMar.m	1	PENDING					optimizeVKmodel0
+289	src/base/utilities/generateStructFunction.m	1	PENDING					
+290	src/base/utilities/issueConfirmationWarning.m	1	EXCLUDED	interactive input				INIT,OptKnock,SteadyCom,fastcc,iMAT,optForce,optGene,prepareFastGapFill
+291	src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m	1	PENDING					XomicsToModel
+292	src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelStats.m	1	PENDING					thermoKernel
+293	src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelWeights.m	1	PENDING					thermoKernel
+294	src/dataIntegration/XomicsToModel/analysis/plotOverlapResults.m	1	PENDING					
+295	src/dataIntegration/XomicsToModel/analysis/quanQualAcc.m	1	PENDING				getCobraSolverParams	plotExperimentalvsPredictedExchange
+296	src/dataIntegration/XomicsToModel/metabolomics/plotExperimentalvsPredictedExchange.m	1	PENDING				quanQualAcc	
+297	src/dataIntegration/XomicsToModel/metabolomics/plotPredictedAndExperimentalReactionRates.m	1	EXCLUDED	script (no function to call)				
+298	src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m	1	PENDING					
+299	src/dataIntegration/XomicsToModel/metabolomics/summaryConcentrations.m	1	PENDING					
+300	src/dataIntegration/XomicsToModel/prepareData/preprocessingOmicsModel.m	1	PENDING				getCobraSolverParams	
+301	src/dataIntegration/chemoInformatics/RXN/writeRxnfile.m	1	PENDING					obtainAtomMappingsRDT
+302	src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m	1	PENDING		external-program			atomicallyResolveModel,generateChemicalDatabase
+303	src/dataIntegration/chemoInformatics/openBabelConverter.m	1	PENDING		external-program			metaboliteStructuresTable,obtainMetStructures
+304	src/dataIntegration/chemoInformatics/metabolites/metaboliteStructuresTable.m	1	PENDING				openBabelConverter	
+305	src/dataIntegration/chemoInformatics/metabolites/standardiseMolDatabase.m	1	PENDING		external-program			generateChemicalDatabase
+306	src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m	1	PENDING					getElementalWeightMatrix
+307	src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/getElementalWeightMatrix.m	1	PENDING				parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements	computeElementalMatrix,getMolecularMass
+308	src/dataIntegration/fluxomics/c13solver/slvrEMU_fast.m	1	PENDING					calcMDVfromSamp,scoreC13Fit
+309	src/dataIntegration/fluxomics/c13solver/slvrCumomer_fast.m	1	PENDING					scoreC13Fit
+310	src/dataIntegration/fluxomics/c13solver/errorComputation2.m	1	PENDING				scoreC13Fit	C13ConfidenceInterval,errorComputation2_grad
+311	src/dataIntegration/fluxomics/atomTransition/renameDREAMOutputFiles.m	1	PENDING					
+312	src/dataIntegration/fluxomics/c13solver/convertCarbonInput.m	1	PENDING					
+313	src/dataIntegration/fluxomics/c13solver/errorComputation2_grad.m	1	PENDING				errorComputation2	gradtest
+314	src/dataIntegration/fluxomics/c13solver/slvrCumomer.m	1	PENDING					
+315	src/dataIntegration/fluxomics/c13solver/slvrEMU.m	1	PENDING					
+316	src/dataIntegration/fluxomics/calcMDVfromSamp.m	1	PENDING				slvrEMU_fast	compareMultSamp,compareTwoSamp,runHiLoExp
+317	src/dataIntegration/fluxomics/getBinsOfFluxes.m	1	PENDING					getCompareBinsOfFluxes
+318	src/dataIntegration/fluxomics/isotopomerViewer.m	1	PENDING					
+319	src/dataIntegration/fluxomics/score_KS.m	1	PENDING					runHiLoExp
+320	src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m	1	PENDING					
+321	src/dataIntegration/metaboAnnotator/analyseMetStruct/addAnnotations.m	1	PENDING					assignMetaboliteIDs,getAnnoFromHMDB,getIDsFromBIGG
+322	src/dataIntegration/metaboAnnotator/generateMetInfo/convertInchiString2format.m	1	PENDING		external-program			addInfoFromMolFiles,generateInchiFromMol,generateInchiKeysSmilesFromInchiStrings,removeSmilesInchiKey
+323	src/dataIntegration/metaboAnnotator/analyseMetStruct/addInfoFromMolFiles.m	1	PENDING		external-program		convertInchiString2format	createrBioNetStructure,list2MetaboliteStructure
+324	src/dataIntegration/metaboAnnotator/generateMetInfo/getInchiString2ChargedFormula.m	1	PENDING		external-program		createModel,estimate_pKa,getFormulaAndChargeFromInChI	addMetFormulaCharge,createNewMetEntryFromArray
+325	src/dataIntegration/metaboAnnotator/analyseMetStruct/addMetFormulaCharge.m	1	PENDING				getInchiString2ChargedFormula	generateInchiFromMol,getMissingDrugMolForm,getMissingHMDBMolForm
+326	src/dataIntegration/metaboAnnotator/connect2resources/getIDsFromBIGG.m	1	EXCLUDED	script (no function to call)			addAnnotations	assignMetaboliteIDs
+327	src/dataIntegration/metaboAnnotator/connect2resources/getAnnoFromHMDB.m	1	EXCLUDED	script (no function to call)	external-program		addAnnotations	assignMetaboliteIDs
+328	src/dataIntegration/metaboAnnotator/analyseMetStruct/assignMetaboliteIDs.m	1	EXCLUDED	script (no function to call)			addAnnotations,getAnnoFromHMDB,getIDsFromBIGG	createMetaboliteIDs
+329	src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m	1	PENDING				duplicates	list2MetaboliteStructure
+330	src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m	1	PENDING					checkAbbrExists,createrBioNetStructure,generateVMHMetAbbr
+331	src/dataIntegration/metaboAnnotator/analyseMetStruct/checkAbbrExists.m	1	EXCLUDED	internet			createRBioNetDBFromVMHDB	generateVMHMetAbbr,list2MetaboliteStructure,model2MetStructure
+332	src/dataIntegration/metaboAnnotator/analyseMetStruct/checkLinkValidity.m	1	EXCLUDED	internet				
+333	src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromInchiKeys.m	1	EXCLUDED	internet				createMetaboliteIDs
+334	src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromUniChem.m	1	EXCLUDED	internet				createMetaboliteIDs,parseDBCollection
+335	src/dataIntegration/metaboAnnotator/connect2resources/parseChebiIdWebPage.m	1	EXCLUDED	internet				createMetaboliteIDs,getInchisFromDatabases,parseDBCollection
+336	src/dataIntegration/metaboAnnotator/connect2resources/getIDsfromFiehnLab.m	1	EXCLUDED	internet				createMetaboliteIDs,parseDBCollection
+337	src/dataIntegration/metaboAnnotator/analyseMetStruct/createMetaboliteIDs.m	1	EXCLUDED	script (no function to call)			assignMetaboliteIDs,getIDsfromFiehnLab,getMetIdsFromInchiKeys,getMetIdsFromUniChem,parseChebiIdWebPage	
+338	src/dataIntegration/metaboAnnotator/analyseMetStruct/getIDfromMetStructure.m	1	PENDING					VMH2Metabolon,VMH2Seed,assignAGORAReconPresence,getMolFilesMultipleSources,getRxnFromKegg,model2MetStructure
+339	src/dataIntegration/metaboAnnotator/analyseMetStruct/getStatsMetStruct.m	1	PENDING					createrBioNetStructure,model2MetStructure
+340	src/dataIntegration/metaboAnnotator/analyseMetStruct/linkComparison.m	1	EXCLUDED	script (no function to call)				
+341	src/dataIntegration/metaboAnnotator/molFileFinder/getMolFilesMultipleSources.m	1	PENDING				getIDfromMetStructure,obtainMetStructures	createNewMetEntryFromArray,createrBioNetStructure,getMissingHMDBMolForm,list2MetaboliteStructure,model2MetStructure
+342	src/dataIntegration/metaboAnnotator/connect2resources/getCas2CTD.m	1	PENDING					createrBioNetStructure,list2MetaboliteStructure
+343	src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiFromMol.m	1	PENDING		external-program		addMetFormulaCharge,convertInchiString2format	createrBioNetStructure,getInchisFromDatabases,getMissingHMDBMolForm,list2MetaboliteStructure,model2MetStructure
+344	src/dataIntegration/metaboAnnotator/molFileFinder/getMolFileFromDrugbank.m	1	EXCLUDED	internet				getMissingDrugMolForm
+345	src/dataIntegration/metaboAnnotator/molFileFinder/getMissingDrugMolForm.m	1	PENDING				addMetFormulaCharge,getMolFileFromDrugbank	createrBioNetStructure,list2MetaboliteStructure,model2MetStructure
+346	src/dataIntegration/metaboAnnotator/buildMetStruct/generateVMHMetAbbr.m	1	EXCLUDED	internet			checkAbbrExists,createRBioNetDBFromVMHDB	createNewMetaboliteStructure,list2MetaboliteStructure,searchUnknownMetOnline
+347	src/dataIntegration/metaboAnnotator/connect2resources/retrievePotHitsHMDB.m	1	EXCLUDED	internet				getMissingHMDBMolForm,searchUnknownMetOnline
+348	src/dataIntegration/metaboAnnotator/molFileFinder/getMissingHMDBMolForm.m	1	PENDING				addMetFormulaCharge,generateInchiFromMol,getMolFilesMultipleSources,retrievePotHitsHMDB	createrBioNetStructure,list2MetaboliteStructure,model2MetStructure
+349	src/dataIntegration/metaboAnnotator/connect2resources/getCas2Echa.m	1	PENDING					createrBioNetStructure,list2MetaboliteStructure
+350	src/dataIntegration/metaboAnnotator/buildMetStruct/metaboliteStructureFieldNames.m	1	EXCLUDED	script (no function to call)				addField2MetStructure,createNewMetaboliteStructure
+351	src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m	1	PENDING				generateVMHMetAbbr,metaboliteStructureFieldNames	createNewMetEntryFromArray,createrBioNetStructure,list2MetaboliteStructure
+352	src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m	1	PENDING		external-program			parseDBCollection
+353	src/dataIntegration/metaboAnnotator/connect2resources/parseBiggID4VMH.m	1	EXCLUDED	internet				parseDBCollection
+354	src/dataIntegration/metaboAnnotator/connect2resources/parseKeggWebpage.m	1	EXCLUDED	internet				parseDBCollection
+355	src/dataIntegration/metaboAnnotator/connect2resources/parseDrugBankWebpage.m	1	EXCLUDED	internet				parseDBCollection
+356	src/dataIntegration/metaboAnnotator/connect2resources/parseEPA4VMH.m	1	EXCLUDED	internet				parseDBCollection
+357	src/dataIntegration/metaboAnnotator/connect2resources/parseMetaNetXWebpage.m	1	EXCLUDED	internet				parseDBCollection
+358	src/dataIntegration/metaboAnnotator/connect2resources/parseChemIDPlusWebpage.m	1	EXCLUDED	internet				parseDBCollection
+359	src/dataIntegration/metaboAnnotator/connect2resources/parseHmdbWebPage.m	1	EXCLUDED	internet				getInchisFromDatabases,parseDBCollection,tutorial_MetaboRePort_m
+360	src/dataIntegration/metaboAnnotator/connect2resources/parseWikipediaWebpage.m	1	EXCLUDED	internet				parseDBCollection
+361	src/dataIntegration/metaboAnnotator/connect2resources/parseCHOmineWebpage.m	1	EXCLUDED	internet				parseDBCollection
+362	src/dataIntegration/metaboAnnotator/connect2resources/parseFDAsisWebpage.m	1	EXCLUDED	internet				parseDBCollection
+363	src/dataIntegration/metaboAnnotator/connect2resources/parseDBCollection.m	1	PENDING				getIDsfromFiehnLab,getMetIdsFromUniChem,parseBiggID4VMH,parseBridgeDb,parseCHOmineWebpage,parseChebiIdWebPage,parseChemIDPlusWebpage,parseDrugBankWebpage,parseEPA4VMH,parseFDAsisWebpage,parseHmdbWebPage,parseKeggWebpage,parseMetaNetXWebpage,parseWikipediaWebpage	createrBioNetStructure,list2MetaboliteStructure,model2MetStructure
+364	src/dataIntegration/metaboAnnotator/connect2resources/assignClassyFire.m	1	EXCLUDED	internet				createrBioNetStructure,list2MetaboliteStructure,model2MetStructure
+365	src/dataIntegration/metaboAnnotator/connect2resources/assignAGORAReconPresence.m	1	PENDING				getIDfromMetStructure	createrBioNetStructure,list2MetaboliteStructure,model2MetStructure
+366	src/dataIntegration/metaboAnnotator/analyseMetStruct/list2MetaboliteStructure.m	1	PENDING				addInfoFromMolFiles,assignAGORAReconPresence,assignClassyFire,check4DuplicatesInList,checkAbbrExists,createNewMetaboliteStructure,generateInchiFromMol,generateVMHMetAbbr,getCas2CTD,getCas2Echa,getMissingDrugMolForm,getMissingHMDBMolForm,getMolFilesMultipleSources,parseDBCollection	
+367	src/dataIntegration/metaboAnnotator/analyseMetStruct/verifyInchiString.m	1	PENDING				getFormulaAndChargeFromInChI	
+368	src/dataIntegration/metaboAnnotator/connect2resources/getInchiStringFromHMDB.m	1	EXCLUDED	internet				createNewMetEntryFromArray
+369	src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetEntryFromArray.m	1	PENDING				createNewMetaboliteStructure,getInchiString2ChargedFormula,getInchiStringFromHMDB,getMolFilesMultipleSources	searchUnknownMetOnline
+370	src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m	1	PENDING				getIDfromMetStructure	createrBioNetStructure
+371	src/dataIntegration/metaboAnnotator/connect2resources/getSeed2Kegg.m	1	PENDING					createrBioNetStructure
+372	src/dataIntegration/metaboAnnotator/connect2resources/parseVMH4IDs.m	1	EXCLUDED	internet				createrBioNetStructure,model2MetStructure
+373	src/dataIntegration/metaboAnnotator/connect2resources/VMH2Seed.m	1	PENDING				getIDfromMetStructure	createrBioNetStructure
+374	src/dataIntegration/metaboAnnotator/buildMetStruct/createrBioNetStructure.m	1	EXCLUDED	internet			VMH2Metabolon,VMH2Seed,addInfoFromMolFiles,assignAGORAReconPresence,assignClassyFire,createNewMetaboliteStructure,createRBioNetDBFromVMHDB,generateInchiFromMol,getCas2CTD,getCas2Echa,getMissingDrugMolForm,getMissingHMDBMolForm,getMolFilesMultipleSources,getSeed2Kegg,getStatsMetStruct,parseDBCollection,parseVMH4IDs	
+375	src/dataIntegration/metaboAnnotator/buildMetStruct/translateMetStr2COBRAmodel.m	1	EXCLUDED	script (no function to call)				convertModel2Metstructure,populateModelMetStr
+376	src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m	1	EXCLUDED	internet				
+377	src/dataIntegration/metaboAnnotator/connect2resources/getRxnFromKegg.m	1	EXCLUDED	internet			getIDfromMetStructure	
+378	src/dataIntegration/metaboAnnotator/connect2resources/queryExposomeExplorer.m	1	EXCLUDED	internet				
+379	src/dataIntegration/metaboAnnotator/connect2resources/queryLipidMaps.m	1	EXCLUDED	internet				
+380	src/dataIntegration/metaboAnnotator/connect2resources/searchUnknownMetOnline.m	1	PENDING				createNewMetEntryFromArray,generateVMHMetAbbr,retrievePotHitsHMDB	searchMultipleUnknownMetOnline
+381	src/dataIntegration/metaboAnnotator/connect2resources/searchMultipleUnknownMetOnline.m	1	PENDING				searchUnknownMetOnline	
+382	src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m	1	PENDING				convertInchiString2format	
+383	src/dataIntegration/metabotools/calculateQuantitativeDiffs.m	1	PENDING					
+384	src/dataIntegration/metabotools/checkExchangeProfiles.m	1	PENDING					
+385	src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m	1	PENDING					
+386	src/dataIntegration/metabotools/illustrate_ppp.m	1	PENDING					
+387	src/dataIntegration/metabotools/make3Dplot.m	1	PENDING					
+388	src/dataIntegration/metabotools/mkTableOfAddedExchanges.m	1	PENDING					
+389	src/dataIntegration/metabotools/statisticsAddedExchanges.m	1	PENDING					
+390	src/dataIntegration/transcriptomics/FASTCORE/tmplp8cvx.m	1	EXCLUDED	script (no function to call)				
+391	src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m	1	PENDING					discretizeFPKM
+392	src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m	1	PENDING					discretizeFPKM
+393	src/reconstruction/comparison/modelBorgifier/TmodelStats.m	1	PENDING					mergeModelsBorg
+394	src/reconstruction/comparison/modelBorgifier/addMetInfo.m	1	EXCLUDED	GUI				metCompareGUI
+395	src/reconstruction/comparison/modelBorgifier/cleanTmodel.m	1	EXCLUDED	interactive input				addToTmodel,mergeModelsBorg
+396	src/reconstruction/comparison/modelBorgifier/addToTmodel.m	1	PENDING				cleanTmodel	mergeModelsBorg
+397	src/reconstruction/comparison/modelBorgifier/findMetMatch.m	1	PENDING					metCompare,metCompareGUI
+398	src/reconstruction/comparison/modelBorgifier/metCompareGUI.m	1	EXCLUDED	GUI			addMetInfo,findMetMatch	metCompare
+399	src/reconstruction/comparison/modelBorgifier/metCompare.m	1	PENDING				findMetMatch,metCompareGUI	autoMatchReactions,mergeModelsBorg,reactionCompareGUI
+400	src/reconstruction/comparison/modelBorgifier/autoMatchReactions.m	1	PENDING				metCompare	reactionCompareGUI
+401	src/reconstruction/comparison/modelBorgifier/compareAllMets.m	1	PENDING					
+402	src/reconstruction/comparison/modelBorgifier/mapMatch.m	1	PENDING					compareCbModels
+403	src/reconstruction/comparison/modelBorgifier/optimalScores.m	1	PENDING					compareCbModels,reactionCompare,reactionCompareGUI
+404	src/reconstruction/comparison/modelBorgifier/compareCbModels.m	1	PENDING				mapMatch,optimalScores	
+405	src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m	1	EXCLUDED	GUI			autoMatchReactions,metCompare,optimalScores	reactionCompare
+406	src/reconstruction/comparison/modelBorgifier/reactionCompare.m	1	PENDING				optimalScores,reactionCompareGUI	mergeModelsBorg
+407	src/reconstruction/comparison/modelBorgifier/mergeModelsBorg.m	1	EXCLUDED	interactive input			TmodelStats,addToTmodel,cleanTmodel,metCompare,reactionCompare,readCbTmodel	
+408	src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m	1	PENDING					runDebuggingTools,runTestSuiteTools
+409	src/reconstruction/demeter/suite/tests/testRefinedReactions.m	1	PENDING					runTestsOnModel
+410	src/reconstruction/demeter/src/integration/createInfoFileDEMETER.m	1	EXCLUDED	internet			parseNCBItaxonomy,readInputTableForPipeline	
+411	src/reconstruction/demeter/src/integration/getCurationStatus.m	1	PENDING				readInputTableForPipeline	
+412	src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m	1	PENDING				readInputTableForPipeline	prepareInputData
+413	src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m	1	PENDING				loadVMHDatabase,parseRxnFormula	
+414	src/reconstruction/demeter/src/integration/writeReactionsFromPubSeedSpreadsheets.m	1	PENDING				loadVMHDatabase,readInputTableForPipeline	prepareInputData
+415	src/reconstruction/demeter/src/integration/prepareInputData.m	1	PENDING				getUnannotatedReactionsFromPubSeedSpreadsheets,readInputTableForPipeline,writeReactionsFromPubSeedSpreadsheets	
+416	src/reconstruction/demeter/src/integration/printRefinedModelIDs.m	1	PENDING					
+417	src/reconstruction/demeter/src/integration/propagateKBaseMetTranslationToRxns.m	1	PENDING		external-program		readInputTableForPipeline	
+418	src/reconstruction/demeter/src/integration/translateKBaseToVMHMets.m	1	PENDING		external-program		loadVMHDatabase,readInputTableForPipeline	
+419	src/reconstruction/demeter/src/integration/updateAGORATaxonomyFile.m	1	PENDING				parseNCBItaxonomy,readInputTableForPipeline	
+420	src/reconstruction/demeter/src/properties/computeMetabolicDistance.m	1	PENDING				readInputTableForPipeline	
+421	src/reconstruction/demeter/src/properties/getSubsystemPresence.m	1	PENDING				readInputTableForPipeline	computeModelProperties
+422	src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m	1	PENDING				loadVMHDatabase,readInputTableForPipeline	computeModelProperties
+423	src/reconstruction/demeter/src/properties/producetSNEPlots.m	1	PENDING				readInputTableForPipeline	computeModelProperties
+424	src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m	1	PENDING					
+425	src/reconstruction/demeter/src/properties/summarizeFeaturesOnTaxonLevels.m	1	PENDING				readInputTableForPipeline	
+426	src/reconstruction/demeter/suite/reports/compareVersions.m	1	PENDING		external-program		parseNCBItaxonomy	
+427	src/reconstruction/demeter/suite/reports/printRefinementReport.m	1	PENDING					runTestSuiteTools
+428	src/reconstruction/fastGapFill/AuxillaryFiles/createUniversalReactionModel2.m	1	PENDING				createModel	generateSUXComp
+429	src/reconstruction/growthExpMatch/printSolutionGEM.m	1	PENDING					growthExpMatch
+430	src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m	1	PENDING					computeMetFormulae
+431	src/reconstruction/modelGeneration/massBalance/ispolymer.m	1	PENDING				numAtomsOfElementInFormula	
+432	src/reconstruction/rBioNet/BalancePrep.m	1	PENDING					ReactionChecks,ReconstructionTool
+433	src/reconstruction/rBioNet/CreateGPR.m	1	EXCLUDED	GUI				ReconstructionCreator
+434	src/reconstruction/rBioNet/GenesAndReactions.m	1	EXCLUDED	GUI				ReconstructionCreator
+435	src/reconstruction/rBioNet/GenesReactions.m	1	PENDING					ReconstructionCreator
+436	src/reconstruction/rBioNet/Keep_reactions.m	1	EXCLUDED	GUI				
+437	src/reconstruction/rBioNet/unbalanced.m	1	EXCLUDED	GUI				ReactionChecks,ReconstructionTool
+438	src/reconstruction/rBioNet/balancecheck.m	1	PENDING				numAtomsOfElementInFormula	ReactionChecks,ReconstructionTool
+439	src/reconstruction/rBioNet/ReactionChecks.m	1	EXCLUDED	interactive input			BalancePrep,balancecheck,unbalanced	addreactions
+440	src/reconstruction/rBioNet/rBioNetAbout.m	1	EXCLUDED	GUI				ReconstructionCreator,ReconstructionTool
+441	src/reconstruction/rBioNet/rBioNet_search.m	1	PENDING					ReconstructionCreator,ReconstructionTool,load_reaction
+442	src/reconstruction/rBioNet/webDatabases.m	1	PENDING					ReconstructionCreator,ReconstructionTool,load_reaction,model_stats
+443	src/reconstruction/rBioNet/webKeggMapper.m	1	PENDING					ReconstructionCreator,ReconstructionTool,load_reaction,model_stats
+444	src/reconstruction/rBioNet/rBioNetSettings.m	1	EXCLUDED	GUI				ReconstructionTool
+445	src/reconstruction/rBioNet/compartment.m	1	EXCLUDED	GUI				ReconstructionTool
+446	src/reconstruction/rBioNet/addreactions.m	1	EXCLUDED	GUI			ReactionChecks	ReconstructionTool,addmetabolites,addmissing
+447	src/reconstruction/rBioNet/sim_general.m	1	EXCLUDED	GUI				ReconstructionTool
+448	src/reconstruction/rBioNet/metabolites_in_database.m	1	EXCLUDED	GUI				addmetabolites
+449	src/reconstruction/rBioNet/met_charge_formula.m	1	EXCLUDED	GUI				addmetabolites
+450	src/reconstruction/rBioNet/similarities.m	1	EXCLUDED	GUI				ReconstructionTool
+451	src/reconstruction/rBioNet/load_reaction.m	1	EXCLUDED	GUI			rBioNet_search,webDatabases,webKeggMapper	ReconstructionCreator
+452	src/reconstruction/rBioNet/closeGUI.m	1	EXCLUDED	interactive input				
+453	src/reconstruction/rBioNet/formula2mets.m	1	PENDING				parseRxnFormula	
+454	src/visualization/SAMMIM/openSammi.m	1	PENDING					
+455	src/visualization/cellDesigner/ColorMet.m	1	EXCLUDED	script (no function to call)				
+456	src/visualization/cellDesigner/addColour.m	1	PENDING					
+457	src/visualization/cellDesigner/position.m	1	PENDING					repairXML,writeCD,writeXML
+458	src/visualization/cellDesigner/writeCD.m	1	EXCLUDED	interactive input			position	colourAll,colourNode
+459	src/visualization/cellDesigner/colourAll.m	1	EXCLUDED	interactive input			writeCD	
+460	src/visualization/cellDesigner/colourCode.m	1	EXCLUDED	script (no function to call)				
+461	src/visualization/cellDesigner/colourNode.m	1	EXCLUDED	interactive input			writeCD	colourNodeWhite
+462	src/visualization/cellDesigner/colourNodeWhite.m	1	PENDING				colourNode	
+463	src/visualization/cellDesigner/correctMetName.m	1	PENDING					
+464	src/visualization/cellDesigner/parseCD.m	1	EXCLUDED	interactive input				
+465	src/visualization/cellDesigner/writeText2XML.m	1	EXCLUDED	interactive input				repairXML
+466	src/visualization/cellDesigner/repairXML.m	1	EXCLUDED	interactive input			position,writeText2XML	
+467	src/visualization/cellDesigner/writeTXT.m	1	EXCLUDED	interactive input				
+468	src/visualization/cellDesigner/writeXML.m	1	EXCLUDED	interactive input			position	
+469	src/visualization/convert/mapFormatConversion.m	1	EXCLUDED	internet	external-program			
+470	src/visualization/createMetIntrcNetwork/hit_node.m	1	PENDING					createMetIntrcNetwork
+471	src/visualization/maps/ReconMap/postMINERVArequest.m	1	PENDING		external-program			buildFluxDistLayout,generateSubsytemsLayout
+472	src/visualization/maps/ReconMap/changeCbMapOutput.m	1	PENDING					pFBA
+473	src/visualization/maps/ReconMap/generateSubsytemsLayout.m	1	PENDING				postMINERVArequest	generateSubsystemLayouts
+474	src/visualization/maps/ReconMap/generateSubsystemLayouts.m	1	PENDING				generateSubsytemsLayout	
+475	src/visualization/metabolicCartography/createColorsMap.m	1	PENDING					addColourNode,addFluxFBA,addFluxFBAdirectionAndColor,changeMetColor,changeRxnColorAndWidth,colorProtein,colorRxnType,colorRxnsFromGenes,colorSubsystemCD,defaultLookMap,modifyReactionsMetabolites
+476	src/visualization/metabolicCartography/addColourNode.m	1	PENDING				createColorsMap	visualizeReconstructionsOnMap
+477	src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m	1	PENDING					visualizeFluxFromFile
+478	src/visualization/metabolicCartography/getMapMatrices.m	1	PENDING					removeMapMol,removeMapReactions,removeMapSpecies,removeMapSpeciesOnly,transformXML2Map
+479	src/visualization/metabolicCartography/transformXML2Map.m	1	PENDING				getMapMatrices	changeMapMetIDToName,removeCDReactions,visualizeFluxFromFile,visualizeFluxTimeseriesFromFile,visualizeNormalizedRxnPresence,visualizeReconstructionsOnMap
+480	src/visualization/metabolicCartography/transformMap2XML.m	1	PENDING					changeMapMetIDToName,visualizeFluxFromFile,visualizeFluxTimeseriesFromFile,visualizeNormalizedRxnPresence,visualizeReconstructionsOnMap
+481	src/visualization/metabolicCartography/changeMetColor.m	1	PENDING				createColorsMap	
+482	src/visualization/metabolicCartography/changeNodesArea.m	1	PENDING					
+483	src/visualization/metabolicCartography/changeRxnColorAndWidth.m	1	PENDING				createColorsMap	visualizeReconstructionsOnMap
+484	src/visualization/metabolicCartography/changeRxnType.m	1	PENDING					
+485	src/visualization/metabolicCartography/mapFormula.m	1	PENDING					compareModelMapFormulas
+486	src/visualization/metabolicCartography/colorProtein.m	1	PENDING				createColorsMap	
+487	src/visualization/metabolicCartography/colorRxnType.m	1	PENDING				createColorsMap	
+488	src/visualization/metabolicCartography/correctMetNameCD.m	1	PENDING					
+489	src/visualization/metabolicCartography/correctRxnNameCD.m	1	PENDING					
+490	src/visualization/metabolicCartography/defaultColorCD.m	1	PENDING					
+491	src/visualization/metabolicCartography/defaultLookMap.m	1	PENDING				createColorsMap	
+492	src/visualization/metabolicCartography/findMetsFromCompartInMap.m	1	PENDING					
+493	src/visualization/metabolicCartography/findMetsInMap.m	1	PENDING					
+494	src/visualization/metabolicCartography/findRxnsFromCompartInMap.m	1	PENDING					
+495	src/visualization/metabolicCartography/findRxnsInMap.m	1	PENDING					
+496	src/visualization/metabolicCartography/findRxnsPerTypeInMap.m	1	PENDING					
+497	src/visualization/metabolicCartography/modifyReactionsMetabolites.m	1	PENDING				createColorsMap	
+498	src/visualization/metabolicCartography/removeCDReactions.m	1	PENDING				getCorrespondingRows,transformXML2Map	
+499	src/visualization/metabolicCartography/transformFullMap2XML.m	1	PENDING					
+500	src/visualization/metabolicCartography/transformFullXML2Map.m	1	PENDING					
+501	src/visualization/metabolicCartography/transformToIrreversibleMap.m	1	PENDING					
+502	src/visualization/metabolicCartography/transformToReversibleMap.m	1	PENDING					
+503	src/visualization/metabolicCartography/unifyMetabolicMapCD.m	1	PENDING					visualizeNormalizedRxnPresence,visualizeReconstructionsOnMap
+504	src/visualization/metabolicCartography/unifyMetabolicPPImapCD.m	1	PENDING					
+505	src/visualization/metabolicCartography/visualizeFluxFromFile.m	1	PENDING				addFluxFromFileWidthAndColor,transformMap2XML,transformXML2Map	
+506	src/visualization/metabolicCartography/visualizeFluxTimeseriesFromFile.m	1	PENDING				transformMap2XML,transformXML2Map	
+507	src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m	1	PENDING				transformMap2XML,transformXML2Map,unifyMetabolicMapCD	
+508	src/visualization/metabolicCartography/visualizeReconstructionsOnMap.m	1	PENDING				addColourNode,changeRxnColorAndWidth,transformMap2XML,transformXML2Map,unifyMetabolicMapCD	
+509	src/visualization/visualizeEpistasis/visualizePathwayInEpistasis.m	1	PENDING					
+510	src/reconstruction/refinement/getModelFieldsForType.m	2	PENDING				getDefinedFieldProperties	addGenes,addMultipleMetabolites,addMultipleReactions,addMultipleReactionsIT,buildUFBAmodel,convertToIrreversible,extendModelFieldsForType,mergeModelFieldPositions,mergeTwoModels,moveRxn,removeFieldEntriesForType,searchModel,updateFieldOrderForType
+511	src/reconstruction/refinement/extendModelFieldsForType.m	2	PENDING				getDefinedFieldProperties,getModelFieldsForType	addCOBRAConstraints,addCOBRAVariables,addGenes,addMultipleMetabolites,addMultipleReactions,addMultipleReactionsIT,addReaction,addReactionGEM,changeGeneAssociation,mergeTwoModels
+512	src/reconstruction/refinement/addCOBRAConstraints.m	2	PENDING				extendModelFieldsForType	ROOM,XomicsToModel,addCouplingConstraint,addRatioReaction,applyEFluxConstraints,constrainRxnListAboveBound,coupleRxnList2Rxn,fluxVariability,linearROOM
+513	src/analysis/exploration/findRxnIDs.m	2	PENDING					C13ConfidenceInterval,ICONGEMs,SteadyComFVAgr,SteadyComSubroutines,XomicsToModel,addMissingReactions,augmentBOF,bio_draw_by_met,bio_draw_by_rxn,bio_findNearRxns,buildUFBAmodel,calculateReactionMasses,changeObjective,changeRxnBounds,changeRxnMets,classifyRxns,compareSampleTraj,computeMetFormulae,constrainRxns,deleteModelGenes,doubleRobustnessAnalysis,draw_by_met,draw_by_rxn,fastFVA,findBondsBrokenAndFormed,findEnthalpyChange,findGenesFromRxns,findMetabolicJunctions,findMetsFromRxns,findNearRxns,findNeighborRxns,fluxVariability,keepCompartment,metUtilisation,milpOEReinserts,modelPredictiveCapacity,multiProductionEnvelope,normalizePoints,nutritionAlgorithmWBM,optEnvelope,optGeneFitness,pValDistForModelOverlap,phenotypePhasePlane,plotSampleHist,plotyy_eFBA,printGPRForRxns,printRxnFormula,printRxnFormulaLinked,readBooleanRegModel,robustnessAnalysis,robustnessAnalysisWB,setInSilicoDiet,solveBooleanRegModel,surfNet,theoretMaxProd
+514	src/reconstruction/refinement/convertToIrreversible.m	2	PENDING				getModelFieldsForType	GIMME,ICONGEMs,OptKnock,findMinCardModel,generateSUXMatrix,milpOEReinserts,minimizeModelFlux,optEnvelope,pFBA,prepareModelNutrientGeneMCS
+515	src/reconstruction/refinement/addCOBRAVariables.m	2	PENDING				extendModelFieldsForType	ROOM,applyEFluxConstraints,linearROOM
+516	src/analysis/coupling/addCouplingConstraint.m	2	PENDING				addCOBRAConstraints	
+517	src/analysis/coupling/addRatioReaction.m	2	PENDING				addCOBRAConstraints	
+518	src/analysis/coupling/constrainRxnListAboveBound.m	2	PENDING				addCOBRAConstraints	
+519	src/base/io/utilities/buildRxnGeneMat.m	2	PENDING					GDLS,GPR2models,XomicsToModel,addEnv,colorRxnsFromGenes,computeRescuedGenes,deleteModelGenes,doubleGeneDeletion,extractSubNetwork,findGenesFromMets,findGenesFromRxns,findMetabolicJunctions,findNeighborRxns,mergeTwoModels,minActiveRxns,normalizePoints,optGeneFitness,optGeneFitnessTilt,pFBA,removeGeneVersions,removeUnusedGenes,sequentialOEReinserts,simpleOptKnock,singleGeneDeletion
+520	src/analysis/deletion/deleteModelGenes.m	2	PENDING				buildRxnGeneMat,findRxnIDs	GetOptGeneSol,XomicsToModel,addEnv,analyzeOptKnock,calculateGeneKOMatrix,checkGeneMCS,computeRescuedGenes,deleteInactiveGenes,doubleProductionEnvelope,dynamicRFBA,findSubsystemOfGenes,integrateGeneExpressionData,multiProductionEnvelope,multiProductionEnvelopeInorg,optGeneFitness,optGeneFitnessTilt,optimizeRegModel,productionEnvelope,sequentialOEReinserts,simpleOptKnock,singleGeneDeletion,singleProductionEnvelope,solveBooleanRegModel
+521	src/base/io/utilities/creategrRulesField.m	2	PENDING					GDLS,NormaliseGPRs,ReconstructionCreator,addmetabolites,changeGeneAssociation,convertOldStyleModel,createEcosystemModel,model2data,model2xls,removeGenesFromModel,translateKBaseModel2VMHModel,writeCbModel,writeMoominOutput,writeSBML
+522	src/analysis/ecosystem/createEcosystemModel.m	2	PENDING				creategrRulesField	
+523	src/base/io/utilities/readCobrapyJSONModel.m	2	PENDING					loadEcosystemScenario
+524	src/analysis/exploration/findCarbonRxns.m	2	PENDING					multiProductionEnvelope
+525	src/analysis/exploration/findExcRxns.m	2	PENDING					GDLS,XomicsToModel,buildModelStorage,dynamicFBA,dynamicRFBA,findOrphanRxns,findTransRxns,loadUncModels,mediaConstraints,metabolomicsTomodel,multiProductionEnvelope,multiProductionEnvelopeInorg,optEnvelope,pFBA,printFluxVector,printUptakeBound,rFastcormics,randomKO,reporterMets,rumba,solveBooleanRegModel,testLeakingMetabolites,testModelMassChargeBalance,theoretMaxProd,writeCbModel
+526	src/analysis/exploration/findGPRFromRxns.m	2	PENDING					
+527	src/analysis/exploration/findGeneIDs.m	2	PENDING					surfNet
+528	src/analysis/exploration/findGenesFromRxns.m	2	PENDING				buildRxnGeneMat,findRxnIDs	pFBA
+529	src/analysis/exploration/findMetIDs.m	2	PENDING					SteadyComSubroutines,addExchangeRxn,bio_draw_by_met,bio_draw_by_rxn,bio_findNearRxns,buildUFBAmodel,calculateReactionMasses,changeRxnMets,classifyRxns,computeElementalMatrix,computeMW,computeMetFormulae,draw_by_met,draw_by_rxn,findElementaryMoietyVectors,findNearRxns,findNeighborRxns,modelSetting,solveBooleanRegModel,surfNet
+530	src/analysis/exploration/findMetabolicJunctions.m	2	PENDING				buildRxnGeneMat,findRxnIDs	
+531	src/analysis/exploration/findNeighborRxns.m	2	PENDING				buildRxnGeneMat,findMetIDs,findRxnIDs	neighborRxn2data
+532	src/analysis/exploration/findSubSysGen.m	2	PENDING					
+533	src/analysis/exploration/generateHyperlinkedModel.m	2	PENDING					
+534	src/analysis/exploration/getMIRIAMAnnotations.m	2	PENDING					
+535	src/analysis/exploration/printCouplingConstraints.m	2	PENDING					XomicsToModel
+536	src/analysis/exploration/printFluxBounds.m	2	PENDING					
+537	src/reconstruction/refinement/changeRxnMets.m	2	PENDING				findMetIDs,findRxnIDs	GPR2models
+538	src/reconstruction/refinement/changeGeneAssociation.m	2	PENDING				creategrRulesField,extendModelFieldsForType	addMultipleReactions,addMultipleReactionsIT,addReaction,addReactionsHH,getOrgansFromHarvey,prepareModelNutrientGeneMCS
+539	src/reconstruction/refinement/addGenes.m	2	PENDING				extendModelFieldsForType,getDefinedFieldProperties,getModelFieldsForType	addMultipleReactions,addMultipleReactionsIT,generateRules,mergeTwoModels
+540	src/reconstruction/refinement/addMultipleReactions.m	2	PENDING				addGenes,changeGeneAssociation,extendModelFieldsForType,getDefinedFieldProperties,getModelFieldsForType	addDemandReaction,addExchangeRxn,addMicrobeCommunityBiomass,buildModelStorage,convert_EX_to_diet,createModel,createMultipleSpeciesModel,fastSetupCreator,findViableDiet,integrate_cVector_into_model,nutritionAlgorithm,nutritionAlgorithmWBM,setFoodRxnsWbm
+541	src/reconstruction/refinement/addMultipleMetabolites.m	2	PENDING				extendModelFieldsForType,getDefinedFieldProperties,getModelFieldsForType	addDemandReaction,addExchangeRxn,addMetabolite,addMicrobeCommunityBiomass,buildModelStorage,createModel,createMultipleSpeciesModel,fastSetupCreator,setFoodRxnsWbm
+542	src/reconstruction/refinement/createModel.m	2	PENDING				addMultipleMetabolites,addMultipleReactions,parseRxnFormula	GPR2models,addMicrobeCommunityBiomass,buildModelStorage,createUniversalReactionModel,createUniversalReactionModel2,createXMatrix,createXMatrix2,data2model,fastSetupCreator,getInchiString2ChargedFormula,untargetedGapFilling,xls2model
+543	src/reconstruction/refinement/addMetabolite.m	2	PENDING				addMultipleMetabolites	GPR2models,addElementTracker,addReaction,createPeriplasmaticSpace,findViableDiet,integrate_cVector_into_model,minimizeModelFlux,nutritionAlgorithm,nutritionAlgorithmWBM,pFBA
+544	src/analysis/gMCS/prepareModelNutrientGeneMCS.m	2	PENDING				changeGeneAssociation,convertToIrreversible	calculateGeneMCS
+545	src/base/io/utilities/readSimPhenyGprText.m	2	PENDING					readCbModel
+546	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/useDiet.m	2	PENDING					adaptVMHDietToAGORA,createPanModels,curateGrowthRequirements,debugModel,deleteSeedGapfilledReactions,doubleCheckGapfilledReactions,identifyFutileCycles,microbiotaModelSimulator,refinementPipeline,removeFutileCycles,removeUnannotatedReactions,runTestsOnModel,simulatePairwiseInteractions,testATP,testGrowth,testGrowthOnDefinedMedia
+547	src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m	2	PENDING				OrganLists,getCorrespondingRows	XomicsToModel,addLoopLawConstraints,checkModelProperties,checkRankFR,checkStoichiometricConsistency,componentContribution,connectedComponents,conservationAnalysis,consistentPotentials,extremePools,fastSetupCreator,findBondsBrokenAndFormed,findEnthalpyChange,findRXNFiles,findRXNFilesPlain,findStoichConsistentSubset,findThermoConsistentFluxSubset,generateChemicalDatabase,generateFullRowRankFR,generateMetaboScore,growthMediaToModel,integerizeS,metabolomicsTomodel,optCardThermo,optimalExtremePoolDriver,relaxedFBA,test4HumanFctExt,thermoFlux2QNty,thermoKernel
+548	src/analysis/wholeBody/PSCMToolbox/setConstraints/setDietConstraints.m	2	PENDING				AGORAEssentialMetabolites,EUAverageDietNew,HighFiberDiet,HighProteinDiet,UnhealthyDiet,VegetarianDiet	analyzeHMmodel,createMWBM,ensureWBMfeasibility,microbiotaModelSimulator,perform_BMR_newData,perform_sensi_BMR_all,persWBM,runIEM_HH,setInSilicoDiet
+549	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/retrieveModelStats.m	2	PENDING				readInputTableForPipeline	mgPipe
+550	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/getMultiSpeciesModelId.m	2	PENDING				getCompartment	
+551	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/printUptakeBoundCom.m	2	PENDING					
+552	src/reconstruction/refinement/addReaction.m	2	PENDING				addMetabolite,changeGeneAssociation,extendModelFieldsForType,parseRxnFormula	Test4HumanFctExtv5,XomicsToModel,addElementTracker,addMicrobeCommunityBiomass,addReactionsHH,addSinkReactions,anaerobicGrowthGapfill,biomassPrecursorCheck,buildUFBAmodel,carbonSourceGapfill,combineHarveyMicrotiota,conditionSpecificGapFilling,connectRxnGapfilling,createModelNewCompartment,createPanModels,createPeriplasmaticSpace,createXMatrix2,curateAgainstBacDiveData,curateGrowthRequirements,debugCouplingConstraints,fermentationPathwayGapfill,generateFullRowRankFR,getOrgansFromHarvey,minimizeModelFlux,modelSetting,pFBA,performSanityChecksonRecon,postProcessGapFillSolutions,prepareFastGapFill,printMinimalLeakageMode,putrefactionPathwaysGapfilling,rebuildBiomassReaction,rebuildModel,refineGenomeAnnotation,refinementPipeline,removeCompartments,removeFutileCycles,runFindSparsePathway,runTestsOnModel,secretionProductGapfill,targetedGapFilling,test4HumanFctExt,testATP,testATPYieldFromCsources,testPathway,translateDraftReconstruction,translateKBaseModel2VMHModel,untargetedGapFilling,uptakeMetaboliteGapfill
+553	src/analysis/nutritionAlgorithm/addElementTracker.m	2	PENDING				addMetabolite,addReaction	
+554	src/analysis/nutritionAlgorithm/convert_EX_to_diet.m	2	PENDING				addMultipleReactions	
+555	src/analysis/nutritionAlgorithm/integrate_cVector_into_model.m	2	PENDING				addMetabolite,addMultipleReactions	
+556	src/reconstruction/refinement/addSinkReactions.m	2	PENDING				addReaction	Test4HumanFctExtv5,XomicsToModel,buildUFBAmodel,metabolomicsTomodel,nutritionAlgorithm,nutritionAlgorithmWBM,targetedGapFilling,test4HumanFctExt
+557	src/reconstruction/refinement/addDemandReaction.m	2	PENDING				addMultipleMetabolites,addMultipleReactions	Test4HumanFctExtv5,analyseWBMs,biomassPrecursorCheck,computeInternalMetaboliteProduction,createMultipleSpeciesModel,fastLeakTest,nutritionAlgorithm,nutritionAlgorithmWBM,performIEMAnalysis,performSanityChecksonRecon,runIEM_HH,test4HumanFctExt
+558	src/analysis/persephone/additionalFunctions/physiologicalConstraintsHMDBbasedTEMP.m	2	PENDING				OrganLists	
+559	src/analysis/persephone/loadMinimalWBM.m	2	PENDING					analyseWBMs,ensureWBMfeasibility
+560	src/analysis/wholeBody/PSCMToolbox/calcOrganFract.m	2	PENDING				getOrganWeightFraction	perform_BMR_newData,perform_sensi_BMR_all,persWBM
+561	src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m	2	PENDING				OrganLists	analyzeHMmodel,individualizedLabReport,perform_BMR_newData,perform_sensi_BMR_all,persWBM,persWBMmetabolomics,runIEM_HH
+562	src/analysis/rMTA/calculateGeneKOMatrix.m	2	PENDING				deleteModelGenes	MTA,rMTA
+563	src/analysis/rMTA/diffexprs2rxnFBS.m	2	PENDING					
+564	src/analysis/relaxedFBA/plotRelaxedFBA.m	2	PENDING				getCobraSolverParams	
+565	src/analysis/sampling/ACHR/ACBSampler.m	2	PENDING					
+566	src/analysis/sampling/ACHR/ACHRSampler.m	2	PENDING					performSampling,sampleCbModel
+567	src/analysis/sampling/CHRR/chrrSampler.m	2	PENDING				logBarrierRound	sampleCbModel,sanity_check
+568	src/analysis/sampling/CHRR/chrrExpSampler.m	2	PENDING					sampleCbModel
+569	src/analysis/sampling/compareSampleTraj.m	2	PENDING				findRxnIDs	
+570	src/analysis/sampling/plotHistConv.m	2	PENDING					
+571	src/analysis/sampling/plotSampleHist.m	2	EXCLUDED	interactive input			findRxnIDs	
+572	src/analysis/sampling/sampleScatterMatrix.m	2	PENDING					
+573	src/analysis/subspaces/checkScaling.m	2	PENDING					
+574	src/analysis/thermo/trainingModel/new/reverseTransformTrainingData.m	2	PENDING					addThermoToModel,driver_createTrainingModel,prepareTrainingData
+575	src/analysis/thermo/transport/transportReactionBool.m	2	PENDING				getCompartment	componentContribution,deltaG0concFluxConstraintBounds,estimateDrGt0
+576	src/analysis/thermo/componentContribution/new/componentContribution.m	2	PENDING				findSExRxnInd,invertProjection,subspaceProjector,transportReactionBool	addThermoToModel
+577	src/analysis/thermo/trainingModel/new/checkForMissingStereo.m	2	PENDING					getMappingScores
+578	src/analysis/thermo/groupContribution/new/getMappingScores.m	2	PENDING				checkForMissingStereo	createGroupIncidenceMatrix
+579	src/analysis/thermo/groupContribution/new/createGroupIncidenceMatrix.m	2	PENDING		external-program		autoFragment,getGroupVectorFromInchi,getMappingScores,regulariseGroupIncidenceMatrix	addThermoToModel,prepareTrainingData
+580	src/analysis/thermo/componentContribution/addThermoToModel.m	2	PENDING				componentContribution,createGroupIncidenceMatrix,getInchies,loadTrainingData,reverseTransformTrainingData	
+581	src/analysis/thermo/componentContribution/setupComponentContribution.m	2	PENDING		shadowed-name		createInChIStruct,estimate_pKa,kegg2mol,mol2sdf,numAtomsOfElementInFormula	
+582	src/analysis/thermo/directionalityReport/directionalityChangeReport.m	2	PENDING					analyseThermoConstrainedModel
+583	src/analysis/thermo/directionalityReport/forwardProbablyReverseFigures.m	2	PENDING					analyseThermoConstrainedModel
+584	src/analysis/thermo/directionalityReport/forwardReversibleFigures.m	2	PENDING					analyseThermoConstrainedModel
+585	src/analysis/thermo/directionalityReport/forwardTransportQuantReverseFigures.m	2	PENDING					analyseThermoConstrainedModel
+586	src/analysis/thermo/directionalityReport/directionalityStats.m	2	PENDING					analyseThermoConstrainedModel
+587	src/analysis/thermo/directionalityReport/analyseThermoConstrainedModel.m	2	PENDING				directionalityChangeReport,directionalityStats,directionalityStatsFigures,forwardProbablyReverseFigures,forwardReversibleFigures,forwardTransportQuantReverseFigures	
+588	src/analysis/thermo/directionalityReport/generateThermodynamicTables.m	2	PENDING					
+589	src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m	2	PENDING					
+590	src/analysis/thermo/vonBertalanffy/estimateDrGt0.m	2	PENDING				getCompartment,numAtomsOfElementInFormula,transportReactionBool	setupThermoModel
+591	src/analysis/thermo/vonBertalanffy/estimateDfGt0.m	2	PENDING				calcdGHT	setupThermoModel
+592	src/analysis/thermo/vonBertalanffy/setupThermoModel.m	2	PENDING				estimateDfGt0,estimateDrGt0	qualitativeVSquantitativeChangesTable
+593	src/analysis/thermo/directionalityReport/singleMetaboliteThermoFigure.m	2	PENDING					
+594	src/analysis/thermo/directionalityReport/standardGibbsFormationEnergyStats.m	2	PENDING					
+595	src/analysis/thermo/directionalityReport/writeReactionListThermo.m	2	PENDING					
+596	src/analysis/thermo/experimentalData/boundsToFiles.m	2	PENDING					
+597	src/analysis/thermo/experimentalData/readMetRxnBoundsFiles.m	2	PENDING					
+598	src/analysis/thermo/experimentalDesign/priorityKeqMeasurement.m	2	PENDING					
+599	src/reconstruction/modelGeneration/massBalance/checkBalance.m	2	PENDING				numAtomsOfElementInFormula	checkMassChargeBalance
+600	src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m	2	PENDING				checkBalance,getCorrespondingRows	checkRankFR,driver_createTrainingModel,findStoichConsistentSubset,generateMetaboScore,testModelMassChargeBalance,verifyModel
+601	src/analysis/thermo/formulae/compareMetaboliteFormulae.m	2	PENDING					
+602	src/analysis/thermo/groupContribution/assignThermoToModel.m	2	PENDING				calcdGHT	
+603	src/analysis/thermo/groupContribution/jankowski/createGroupIncidenceMatrix_jankowski.m	2	PENDING					
+604	src/analysis/thermo/groupContribution/jankowski/plotConcVSdGft0GroupContUncertainty.m	2	PENDING					
+605	src/analysis/thermo/groupContribution/jankowski/setupComponentContribution.m	2	PENDING		shadowed-name		createInChIStruct,estimate_pKa,kegg2mol,mol2sdf,numAtomsOfElementInFormula	
+606	src/analysis/thermo/groupContribution/jankowski/webCGMtoTabDelimitedFile.m	2	PENDING					
+607	src/analysis/thermo/groupContribution/wang/createFragmentIncidenceMatrix.m	2	PENDING				autoFragment	
+608	src/analysis/thermo/inchi/addInchiToModel.m	2	PENDING				createInChIStruct,mol2sdf	createTrainingModel
+609	src/analysis/thermo/molFiles/molFilesToCDFfile.m	2	PENDING					
+610	src/analysis/thermo/molFiles/new/modelMetabolitesToSDF.m	2	PENDING		external-program		getChargeFromInChI,getFormulaFromInChI	
+611	src/analysis/thermo/protons/addPseudoisomersToModel.m	2	PENDING		external-program		estimate_pKa,numAtomsOfElementInFormula	
+612	src/analysis/thermo/protons/moleFractionStats.m	2	PENDING					
+613	src/analysis/thermo/protons/plotActivityCoefficients.m	2	PENDING					
+614	src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m	2	PENDING				getCompartment	
+615	src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m	2	PENDING				getCompartment	
+616	src/analysis/thermo/thermoDirectionality/deltaG0concFluxConstraintBounds.m	2	PENDING				getCompartment,numAtomsOfElementInFormula,transportReactionBool	
+617	src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m	2	PENDING					
+618	src/analysis/thermo/thermoFBA/connectedRxnsByEFM.m	2	PENDING					addLoopLawConstraints
+619	src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m	2	PENDING					
+620	src/analysis/thermo/trainingModel/new/prepareTrainingData.m	2	PENDING				createGroupIncidenceMatrix,getInchies,loadTrainingData,reverseTransformTrainingData	
+621	src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m	2	PENDING				getCompartment	
+622	src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m	2	PENDING				numAtomsOfElementInFormula	estimateDG_temp
+623	src/analysis/thermo/vonBertalanffy/estimateDG_temp.m	2	PENDING				calcdGHT,numAtomsOfElementInFormula,pHbalanceProtons	
+624	src/analysis/topology/FR/makeFRresultsTable.m	2	PENDING					plotFRresults
+625	src/analysis/topology/FR/plotFRresults.m	2	PENDING				makeFRresultsTable	
+626	src/analysis/topology/FR/printFRdependencies.m	2	PENDING					
+627	src/analysis/topology/conservedMoieties/identifyConservedMoieties.m	2	PENDING				getElementalComposition,getRankLUSOL	biomassPrecursorCheck
+628	src/analysis/topology/extremeRays/lrs/equivalentSets.m	2	PENDING		external-program		lrsOutputReadRay	
+629	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadHalfspace.m	2	PENDING					
+630	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadRay.m	2	PENDING					extremePools
+631	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsRun.m	2	PENDING		external-program		lrsSpecifyRows	extremePools
+632	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m	2	PENDING					extremePools
+633	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteRay.m	2	PENDING					
+634	src/analysis/topology/reactingMoieties/getMetMoietySubgraphs.m	2	PENDING					createMoietyGraph
+635	src/analysis/topology/reactingMoieties/createMoietyGraph.m	2	PENDING				getMetMoietySubgraphs	
+636	src/analysis/topology/reactingMoieties/findRXNFilesPlain.m	2	PENDING				findSExRxnInd	checkABRXNFiles
+637	src/analysis/topology/reactingMoieties/identifyConservedReactingSubgraphs.m	2	PENDING					
+638	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/makeDietFormatConsistant.m	2	PENDING					
+639	src/analysis/wholeBody/PSCMToolbox/annotateModel.m	2	PENDING					annotateHH,annotateOrganAtlas,getOrgansFromHarvey
+640	src/reconstruction/refinement/addExchangeRxn.m	2	PENDING				addMultipleMetabolites,addMultipleReactions,findMetIDs	createMultipleSpeciesModel,getOrgansFromHarvey,performDataDrivenRefinement,runIEM_HH
+641	src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased_old.m	2	PENDING				OrganLists	
+642	src/base/getExchangedMetaboliteTable.m	2	PENDING					
+643	src/base/io/KEGG/transformKEGG2Model.m	2	PENDING					generateSUXComp,generateSUXMatrix
+644	src/base/io/convertCbModelToCNAModel.m	2	PENDING				checkCNAinstallation	
+645	src/base/io/newt/writeNewtExperiment.m	2	PENDING					
+646	src/base/io/utilities/getDistributedModelFolder.m	2	PENDING					getDistributedModel
+647	src/base/io/utilities/model2xls.m	2	PENDING				creategrRulesField	writeCbModel
+648	src/base/solvers/entropicFBA/addExoMetToEFBA.m	2	PENDING					exoMetLOOCV
+649	src/base/solvers/minos/minosCleanUp.m	2	PENDING					solveCobraLP
+650	src/dataIntegration/transcriptomics/preprocessing/mapExpressionToReactions.m	2	PENDING					XomicsToModel,applyEFluxConstraints,efmEnrichmentAnalysis
+651	src/dataIntegration/XomicsToModel/analysis/metUtilisation.m	2	PENDING				findRxnIDs,getCobraSolverParams,getCompartment	
+652	src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelExtractStats.m	2	PENDING					
+653	src/dataIntegration/chemoInformatics/RXN/findRXNFiles.m	2	PENDING				findSExRxnInd	checkRXNFiles
+654	src/dataIntegration/chemoInformatics/RXN/checkRXNFiles.m	2	PENDING				findRXNFiles	atomicallyResolveModel,buildAtomTransitionMultigraph,obtainAtomMappingsRDT
+655	src/dataIntegration/fluxomics/atomTransition/buildAtomTransitionMultigraph.m	2	PENDING				checkRXNFiles	atomicallyResolveModel
+656	src/dataIntegration/chemoInformatics/metabolites/addMetInfoInCBmodel.m	2	PENDING					atomicallyResolveModel
+657	src/dataIntegration/chemoInformatics/atomicallyResolveModel.m	2	PENDING				addMetInfoInCBmodel,buildAtomTransitionMultigraph,checkChemoinformaticDependencies,checkRXNFiles	
+658	src/dataIntegration/chemoInformatics/inchi/compareInchis.m	2	PENDING					generateChemicalDatabase
+659	src/dataIntegration/chemoInformatics/metabolites/metDatabaseStatus.m	2	PENDING					
+660	src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m	2	EXCLUDED	internet	external-program		openBabelConverter	generateChemicalDatabase,getMolFilesMultipleSources
+661	src/reconstruction/modelGeneration/massBalance/computeElementalMatrix.m	2	PENDING				findMetIDs,getElementalComposition,getElementalWeightMatrix	computeMW
+662	src/dataIntegration/chemoInformatics/molecularWeight/computeMW.m	2	PENDING				computeElementalMatrix,findMetIDs	calculateReactionMasses,theoretMaxProd
+663	src/dataIntegration/chemoInformatics/reactions/findBondsBrokenAndFormed.m	2	PENDING				findRxnIDs,findSExRxnInd	generateChemicalDatabase
+664	src/dataIntegration/chemoInformatics/reactions/findEnthalpyChange.m	2	PENDING				findRxnIDs,findSExRxnInd	generateChemicalDatabase
+665	src/dataIntegration/chemoInformatics/reactions/obtainAtomMappingsRDT.m	2	EXCLUDED	internet	external-program		checkRXNFiles,writeRxnfile	generateChemicalDatabase
+666	src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m	2	PENDING				slvrCumomer_fast,slvrEMU_fast	errorComputation2
+667	src/dataIntegration/fluxomics/atomTransition/ATN/buildAtomTransitionNetwork.m	2	PENDING					
+668	src/dataIntegration/fluxomics/compareTwoSamp.m	2	PENDING				calcMDVfromSamp	compareBinsOfFluxes
+669	src/dataIntegration/fluxomics/compareBinsOfFluxes.m	2	PENDING				compareTwoSamp	getCompareBinsOfFluxes
+670	src/dataIntegration/fluxomics/compareMultSamp.m	2	PENDING				calcMDVfromSamp	
+671	src/dataIntegration/fluxomics/getCompareBinsOfFluxes.m	2	PENDING				compareBinsOfFluxes,getBinsOfFluxes	
+672	src/dataIntegration/fluxomics/gradtest.m	2	PENDING				errorComputation2_grad	
+673	src/dataIntegration/metaboAnnotator/buildMetStruct/populateModelMetStr.m	2	PENDING				translateMetStr2COBRAmodel	tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m
+674	src/dataIntegration/metaboAnnotator/connect2resources/getInchisFromDatabases.m	2	PENDING				generateInchiFromMol,parseChebiIdWebPage,parseHmdbWebPage	
+675	src/dataIntegration/metabotools/integrateGeneExpressionData.m	2	PENDING				deleteModelGenes	
+676	src/dataIntegration/metabotools/networkTopology.m	2	PENDING					
+677	src/dataIntegration/metabotools/setQualitativeConstraints.m	2	PENDING					
+678	src/dataIntegration/metabotools/setSemiQuantConstraints.m	2	PENDING					
+679	src/dataIntegration/transcriptomics/FASTCORE/LP10cvx.m	2	PENDING					
+680	src/dataIntegration/transcriptomics/FASTCORE/LP3cvx.m	2	PENDING					fastcc_cvx
+681	src/dataIntegration/transcriptomics/FASTCORE/LP7cvx.m	2	PENDING					fastcc_cvx
+682	src/dataIntegration/transcriptomics/FASTCORE/LP7cvx2.m	2	PENDING					
+683	src/dataIntegration/transcriptomics/FASTCORE/fastcc_cvx.m	2	PENDING				LP3cvx,LP7cvx	
+684	src/dataIntegration/transcriptomics/FASTCORE/tmplp7cvx.m	2	PENDING					
+685	src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m	2	PENDING				addCOBRAConstraints,addCOBRAVariables,mapExpressionToReactions	eFlux
+686	src/design/TrimGdel/readGeneRules.m	2	PENDING					gDel_minRN,step2and3
+687	src/design/optForce/saveInputsMustSetsFirstOrder.m	2	PENDING					findMustL,findMustU
+688	src/design/optForce/saveInputsMustSetsSecondOrder.m	2	PENDING					findMustLL,findMustUL,findMustUU
+689	src/design/optForce/saveInputsOptForce.m	2	PENDING					optForce
+690	src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m	2	PENDING					findMustLLWithGAMS,findMustULWithGAMS,findMustUUWithGAMS
+691	src/design/optForceGAMS/exportInputsMustToGAMS.m	2	PENDING					findMustLWithGAMS,findMustUWithGAMS
+692	src/design/optForceGAMS/exportInputsOptForceToGAMS.m	2	PENDING					optForceWithGAMS
+693	src/design/optForceGAMS/findMustLLWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS	
+694	src/design/optForceGAMS/findMustLWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustToGAMS	
+695	src/design/optForceGAMS/findMustULWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS	
+696	src/design/optForceGAMS/findMustUUWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustOrder2ToGAMS	
+697	src/design/optForceGAMS/findMustUWithGAMS.m	2	PENDING		external-program		checkGAMSSolvers,exportInputsMustToGAMS	
+698	src/reconstruction/comparison/modelBorgifier/buildTmodel.m	2	PENDING					
+699	src/reconstruction/comparison/modelBorgifier/readCbTmodel.m	2	EXCLUDED	interactive input				mergeModelsBorg
+700	src/reconstruction/comparison/modelBorgifier/verifyModelBorg.m	2	EXCLUDED	interactive input				
+701	src/reconstruction/rBioNet/data2model.m	2	EXCLUDED	interactive input			createModel	ReconstructionCreator,createPanModels,model_stats,rebuildModel
+702	src/reconstruction/demeter/suite/tests/testGeneRules.m	2	PENDING					runTestsOnModel
+703	src/reconstruction/demeter/suite/tests/testModelMassChargeBalance.m	2	PENDING				checkMassChargeBalance,findExcRxns	reportPDF,runTestsOnModel
+704	src/reconstruction/demeter/src/refinement/secretionProductGapfill.m	2	PENDING				addReaction,readInputTableForPipeline	performDataDrivenRefinement
+705	src/reconstruction/demeter/src/refinement/uptakeMetaboliteGapfill.m	2	PENDING				addReaction,readInputTableForPipeline	performDataDrivenRefinement
+706	src/reconstruction/demeter/src/refinement/refineGenomeAnnotation.m	2	PENDING				addReaction,readInputTableForPipeline	refinementPipeline
+707	src/reconstruction/demeter/suite/tests/testInputFiles.m	2	PENDING					
+708	src/reconstruction/fastGapFill/AuxillaryFiles/createXMatrix2.m	2	PENDING				addReaction,createModel	generateSUXComp
+709	src/reconstruction/metaboRePort/generateMetaboReport.m	2	PENDING					
+710	src/reconstruction/metaboRePort/other/populateModelwithRxnIDs.m	2	PENDING		shadowed-name			tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m
+711	src/reconstruction/metaboRePort/populateModelwithRxnIDs.m	2	PENDING		shadowed-name			tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m
+712	src/reconstruction/refinement/annotateSBOTerms.m	2	PENDING					tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m
+713	src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m	2	PENDING					
+714	src/reconstruction/modelGeneration/modelProperties/plotModelConsistency.m	2	PENDING					
+715	src/reconstruction/modelGeneration/stoichConsistency/printMinimalLeakageMode.m	2	PENDING				addReaction	findMinimalLeakageModeRxn
+716	src/reconstruction/rBioNet/model_description.m	2	EXCLUDED	GUI				ReconstructionCreator
+717	src/reconstruction/rBioNet/model2text.m	2	EXCLUDED	interactive input				
+718	src/reconstruction/refinement/GPRLogic/NormaliseGPRs.m	2	PENDING				FormulaParser,creategrRulesField	
+719	src/reconstruction/refinement/addMIRIAMAnnotations.m	2	PENDING				getDefinedFieldProperties,getRegisteredDatabases	
+720	src/reconstruction/refinement/addMultipleReactionsIT.m	2	PENDING				addGenes,changeGeneAssociation,extendModelFieldsForType,getDefinedFieldProperties,getModelFieldsForType	
+721	src/reconstruction/refinement/addSubSystemsToReactions.m	2	PENDING					readSBML
+722	src/reconstruction/refinement/alphabetizeModel.m	2	PENDING					
+723	src/reconstruction/refinement/assignGPRA.m	2	PENDING					
+724	src/reconstruction/refinement/assignSubSystems.m	2	PENDING					
+725	src/reconstruction/refinement/changeCOBRAConstraints.m	2	PENDING					
+726	src/reconstruction/refinement/changeCOBRAVariable.m	2	PENDING					
+727	src/reconstruction/refinement/isSameCobraModel.m	2	PENDING					
+728	src/reconstruction/refinement/moveRxn.m	2	PENDING				getModelFieldsForType	
+729	src/reconstruction/refinement/removeSubSystemsFromRxns.m	2	PENDING					
+730	src/reconstruction/refinement/setRxnSubSystems.m	2	PENDING					
+731	src/visualization/SAMMIM/expa.m	2	EXCLUDED	interactive input				
+732	src/visualization/cellDesigner/addAnnotation.m	2	EXCLUDED	interactive input				
+733	src/visualization/cellDesigner/addFlux.m	2	PENDING					
+734	src/visualization/cellDesigner/addMiriam.m	2	EXCLUDED	interactive input				
+735	src/visualization/cellDesigner/cmpMet.m	2	PENDING					
+736	src/visualization/cellDesigner/cmpRxn.m	2	PENDING					
+737	src/visualization/cellDesigner/intergrate.m	2	EXCLUDED	does not parse: Syntax Error: L 1 (C 11): SYNER: Parse error at '~': usage might be invalid MATLAB syntax. 				
+738	src/visualization/entropicFBA/calculateGeneWeight.m	2	PENDING					
+739	src/visualization/maps/ReconMap/buildFluxDistLayout.m	2	PENDING				postMINERVArequest	
+740	src/visualization/metabolicCartography/addFluxFBA.m	2	PENDING				createColorsMap	
+741	src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m	2	PENDING				createColorsMap	
+742	src/visualization/metabolicCartography/addNotes.m	2	PENDING					
+743	src/visualization/metabolicCartography/compareModelMapFormulas.m	2	PENDING				mapFormula	checkCDerrors
+744	src/visualization/metabolicCartography/checkCDerrors.m	2	PENDING				compareModelMapFormulas	
+745	src/visualization/metabolicCartography/colorRxnsFromGenes.m	2	PENDING				buildRxnGeneMat,createColorsMap	
+746	src/visualization/metabolicCartography/colorSubsystemCD.m	2	PENDING				createColorsMap	
+747	src/visualization/metabolicCartography/uniqueMetabolites.m	2	PENDING					
+748	src/analysis/FBA/enumerateOptimalSolutions.m	3	PENDING				getCobraSolverParams	
+749	src/analysis/FBA/randomObjFBASol.m	3	PENDING					
+750	src/analysis/MOMA/linearMOMA.m	3	PENDING					doubleGeneDeletion,fluxVariability,singleGeneDeletion,singleRxnDeletion
+751	src/analysis/thermo/thermoFBA/processingLLCs.m	3	PENDING					fluxVariability
+752	src/analysis/sparseFBA/sparseFBA.m	3	PENDING				getCobraSolverParams	compareModelsFeatures,fluxVariability
+753	src/analysis/exploration/findBlockedIrrRxns.m	3	PENDING					fluxVariability
+754	src/analysis/FVA/fluxVariability.m	3	PENDING				addCOBRAConstraints,checkSolFeas,findBlockedIrrRxns,findRxnIDs,getCobraSolverParams,getEnvironment,linearMOMA,processingLLCs,restoreEnvironment,sparseFBA	FVAOptForce,bio_draw_by_rxn,buildModelStorage,compareDietPerformance,computeUptakeSecretion,createContextSpecificModel,deleteSeedGapfilledReactions,detMinSpan,draw_by_rxn,ecosystemQualitativeFVA,extractConditionSpecificModel,findBlockedReaction,findOptExchRxns,generateIsotopomerSolver,guidedSim,pFBA,predictMicrobeContributions,quantitativeFluxCoupling,rumba,setEcosystemClusterReactions,setQuantConstraints,summarizeSamplingResults,testAromaticAADegradation,testBileAcidBiosynthesis,testCarbonSources,testDrugMetabolism,testFermentationProducts,testMetaboliteUptake,testPutrefactionPathways,testSecretionProducts,verifyModel
+755	src/analysis/ICONGEMs/ICONGEMs.m	3	PENDING				convertToIrreversible,findRxnIDs	
+756	src/analysis/QFCA/directionallyCoupled.m	3	PENDING					QFCA,blockedReac
+757	src/analysis/QFCA/blockedReac.m	3	PENDING				directionallyCoupled	QFCA
+758	src/analysis/ROOM/linearROOM.m	3	PENDING				addCOBRAConstraints,addCOBRAVariables	
+759	src/analysis/deletion/Syntheticlethals/Fast-SL/singleSL.m	3	PENDING					doubleSL,fastSL,tripleSL
+760	src/analysis/deletion/Syntheticlethals/Fast-SL/doubleSL.m	3	PENDING				singleSL	fastSL
+761	src/analysis/deletion/Syntheticlethals/Fast-SL/tripleSL.m	3	PENDING				singleSL	fastSL
+762	src/analysis/deletion/Syntheticlethals/Fast-SL/fastSL.m	3	PENDING				doubleSL,singleSL,tripleSL	
+763	src/analysis/deletion/singleGeneDeletion.m	3	PENDING				buildRxnGeneMat,deleteModelGenes,linearMOMA	analyzeSingleGeneDeletion,deleteInactiveGenes,doubleGeneDeletion,pFBA,performSanityChecksonRecon
+764	src/analysis/deletion/doubleGeneDeletion.m	3	PENDING				buildRxnGeneMat,linearMOMA,singleGeneDeletion	
+765	src/analysis/deletion/singleRxnDeletion.m	3	PENDING				linearMOMA	curateGrowthRequirements,doubleCheckGapfilledReactions,essentialRxn4MultipleModels,pFBA,targetedGapFilling
+766	src/analysis/ecosystem/buildEcosystemGrid.m	3	PENDING					
+767	src/analysis/ecosystem/checkEcosystemGridFeasibility.m	3	PENDING					loadEcosystemScenario
+768	src/analysis/ecosystem/setEcosystemClusterReactions.m	3	PENDING				fluxVariability	ecosystemQualitativeFVA
+769	src/analysis/ecosystem/ecosystemQualitativeFVA.m	3	PENDING				fluxVariability,getQualitativeFluxStates,setEcosystemClusterReactions	
+770	src/analysis/ecosystem/loadEcosystemScenario.m	3	PENDING				checkEcosystemGridFeasibility,readCobrapyJSONModel,readNumpyArray,readPythonPickle	
+771	src/analysis/ecosystem/quantitativeFluxCoupling.m	3	PENDING				fluxVariability	
+772	src/analysis/exploration/essentialRxn4MultipleModels.m	3	PENDING				singleRxnDeletion	
+773	src/analysis/exploration/findGenesFromMets.m	3	PENDING				buildRxnGeneMat,getCorrespondingCols	
+774	src/analysis/exploration/findTrspRxnFromMet.m	3	PENDING				parseRxnFormula	
+775	src/analysis/exploration/identifyFastBlockedRxns.m	3	PENDING					connectRxnGapfilling,findFluxConsistentSubset,prepareFastGapFill,runTestsOnModel
+776	src/analysis/gMCS/calculateMCS.m	3	PENDING				setCplexParam	buildGmatrix
+777	src/analysis/gMCS/buildGmatrix.m	3	PENDING				GPR2models,calculateMCS	calculateGeneMCS
+778	src/analysis/gMCS/calculateGeneMCS.m	3	PENDING				buildGmatrix,prepareModelNutrientGeneMCS,setCplexParam	
+779	src/analysis/gMCS/checkGeneMCS.m	3	PENDING				deleteModelGenes,getCobraSolverParams	
+780	src/analysis/igemRNA/inactiveGeneDeletion/deleteInactiveGenes.m	3	PENDING				deleteModelGenes,findGenesBelowThresholdLocal1,findGenesBelowThresholdLocal2,singleGeneDeletion	createContextSpecificModel
+781	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComFVAgr.m	3	PENDING				SteadyComSubroutines,checkSolFeas,findRxnIDs,getEnvironment,restoreEnvironment,setCplexParam	SteadyComFVA,SteadyComPOAgr
+782	src/analysis/multiSpecies/SteadyCom/SteadyComFVA.m	3	PENDING				SteadyComFVAgr,SteadyComSubroutines,checkSolFeas,setCplexParam	
+783	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComPOAgr.m	3	PENDING				SteadyComFVAgr,SteadyComSubroutines,checkSolFeas,setCplexParam	SteadyComPOA
+784	src/analysis/multiSpecies/SteadyCom/SteadyComPOA.m	3	PENDING				SteadyComPOAgr,SteadyComSubroutines,checkSolFeas,setCplexParam	
+785	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComCplex.m	3	PENDING				SteadyComSubroutines,checkSolFeas,getCobraSolverParams,setCplexParam	SteadyCom
+786	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/analyseObjectiveShadowPrices.m	3	PENDING				getEnvironment,parsave,restoreEnvironment	
+787	src/visualization/paint4Net/Draw_by_rxn/draw_by_rxn.m	3	PENDING				findMetIDs,findRxnIDs,fluxVariability	drawSecPot,draw_by_met,runFindSparsePathway
+788	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/drawSecPot.m	3	PENDING				draw_by_rxn	
+789	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/adaptVMHDietToAGORA.m	3	PENDING				useDiet	microbiotaModelSimulator
+790	src/reconstruction/refinement/removeCOBRAConstraints.m	3	PENDING					removeRxns
+791	src/reconstruction/refinement/removeMetabolites.m	3	PENDING			removeMetabolites,removeRxns	getCorrespondingCols,removeRxns	convertOldCouplingFormat,efmSubmodelExtractionAsSBML,extractSubNetwork,findStoichConsistentSubset,findThermoConsistentFluxSubset,generateFullRowRankFR,removeRxns,removeTrivialStoichiometry,runFindSparsePathway
+792	src/reconstruction/refinement/removeRxns.m	3	PENDING			removeMetabolites,removeRxns	getCorrespondingRows,removeCOBRAConstraints,removeMetabolites	GIMME,INIT,MBA,XomicsToModel,buildModelStorage,buildUFBAmodel,carbonSourceGapfill,checkDuplicateRxn,combineHarveyMicrotiota,connectRxnGapfilling,createModelNewCompartment,createMultipleSpeciesModel,createPanModels,createPeriplasmaticSpace,createPersonalizedModel,createTissueSpecificModel,curateAgainstBacDiveData,curateGrowthRequirements,debugCouplingConstraints,deleteSeedGapfilledReactions,detMinSpan,doubleCheckGapfilledReactions,efmSubmodelExtractionAsSBML,extractConditionSpecificModel,extractSubNetwork,fastSetupCreator,fastcore,fermentationPathwayGapfill,findFluxConsistentSubset,findSignedCyclicFluxConsistentSubset,findStoichConsistentSubset,findThermoConsistentFluxSubset,findTransportersWithoutExchanges,findUnusedExchangeReactions,generateFullRowRankFR,generateMetaboScore,iMAT,keepCompartment,nutritionAlgorithmWBM,pFBA,prepareFastGapFill,putrefactionPathwaysGapfilling,rFastcormics,rebuildBiomassReaction,rebuildModel,reduceModel,refinementPipeline,regulariseMitochondrialReactions,removeDeadEnds,removeFutileCycles,removeGenesFromModel,removeMetabolites,removeTrivialStoichiometry,removeUnannotatedReactions,sammi,swiftcore,thermoKernel,translateDraftReconstruction,translateKBaseModel2VMHModel,untargetedGapFilling,verifyGapfilledReactions
+793	src/reconstruction/refinement/extractSubNetwork.m	3	PENDING				buildRxnGeneMat,removeMetabolites,removeRxns	extractCompModel,extractMetModel,extractSubSysModel,identifyBlockedRxns,makeSummaryModels,pruneModel
+794	src/reconstruction/fastGapFill/identifyBlockedRxns.m	3	PENDING				extractSubNetwork,getCobraSolverParams	buildModelStorage,prepareFastGapFill,pruneModel
+795	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/createPersonalizedModel.m	3	PENDING				detectOutput,parsave,removeRxns	mgPipe
+796	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/guidedSim.m	3	PENDING				fluxVariability	getPanSpeciesMetProdCapacity,microbiotaModelSimulator
+797	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/microbiotaModelSimulator.m	3	PENDING				adaptVMHDietToAGORA,detectOutput,getEnvironment,guidedSim,parsave,readInputTableForPipeline,restoreEnvironment,setDietConstraints,useDiet	mgPipe
+798	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeParetoOptimality.m	3	PENDING					
+799	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeRescuedGenes.m	3	PENDING				buildRxnGeneMat,deleteModelGenes	
+800	src/analysis/nutritionAlgorithm/nutritionAlgorithm.m	3	PENDING				addDemandReaction,addMetabolite,addMultipleReactions,addSinkReactions	
+801	src/base/solvers/getSetSolver/getCobraSolver.m	3	PENDING					SteadyCom,optimizeWBModel
+802	src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m	3	PENDING				getCobraSolver,getCobraSolverParams	analyseWBMs,checkIEM_WBM,ensureWBMfeasibility,findOptimalCoreCount,findViableDiet,getMissingDietPersephone,individualizedLabReport,interrogateWBmodelsQP,nutritionAlgorithmWBM,organEssentiality,perform_BMR_newData,perform_sensi_BMR_all,robustnessAnalysisWB
+803	src/analysis/persephone/additionalFunctions/findOptimalCoreCount.m	3	PENDING				getEnvironment,optimizeWBModel,restoreEnvironment	
+804	src/analysis/persephone/additionalFunctions/getPanSpeciesMetProdCapacity.m	3	EXCLUDED	script (no function to call)			getEnvironment,guidedSim,restoreEnvironment	
+805	src/analysis/persephone/analyseWBMs.m	3	PENDING				addDemandReaction,analyseWBMsol,getEnvironment,loadMinimalWBM,optimizeWBModel,restoreEnvironment,slimDownFBAresults	runPersephone
+806	src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/combineHarveyMicrotiota.m	3	PENDING				addReaction,removeRxns	createMWBM,runIEM_HH
+807	src/analysis/persephone/createMWBM.m	3	PENDING				combineHarveyMicrotiota,setDietConstraints	createBatchMWBM
+808	src/analysis/persephone/getMissingDietPersephone.m	3	PENDING				optimizeWBModel	ensureWBMfeasibility
+809	src/analysis/persephone/ensureWBMfeasibility.m	3	PENDING				getMissingDietPersephone,loadMinimalWBM,optimizeWBModel,setDietConstraints	createBatchMWBM,persWBM,setInSilicoDiet
+810	src/analysis/rMTA/MTA_MIQP.m	3	PENDING					MTA,rMTA
+811	src/analysis/rMTA/rMTA.m	3	PENDING				MTA_MIQP,calculateGeneKOMatrix	
+812	src/analysis/relaxedFBA/relaxFBA_cappedL1.m	3	PENDING				getCobraSolverParams	relaxedFBA
+813	src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m	3	PENDING				findRxnIDs	
+814	src/analysis/robustnessAnalysis/phenotypePhasePlane.m	3	PENDING				changeCobraSolverParams,findRxnIDs	
+815	src/analysis/robustnessAnalysis/robustnessAnalysisWB.m	3	PENDING				findRxnIDs,optimizeWBModel	
+816	src/analysis/rumba/normalizePoints.m	3	PENDING				buildRxnGeneMat,findRxnIDs	rumba
+817	src/analysis/rumba/rumba.m	3	PENDING				classifyRxns,findExcRxns,fluxVariability,normalizePoints	
+818	src/analysis/sampling/ACHR/createHRWarmup.m	3	PENDING					gpSampler,performSampling,sampleCbModel
+819	src/analysis/subspaces/detMinSpan.m	3	PENDING				fluxVariability,getNullSpace,removeRxns	
+820	src/reconstruction/refinement/removeUnusedGenes.m	3	PENDING				buildRxnGeneMat	MBA,XomicsToModel,createTissueSpecificModel,efmSubmodelExtractionAsSBML,fastcore,findFluxConsistentSubset,findSignedCyclicFluxConsistentSubset,findStoichConsistentSubset,findThermoConsistentFluxSubset,generateFullRowRankFR,swiftcore,thermoKernel,updateGenes
+821	src/dataIntegration/transcriptomics/SWIFTCORE/blocked.m	3	PENDING					swiftcc
+822	src/dataIntegration/transcriptomics/SWIFTCORE/swiftcc.m	3	PENDING				blocked	findFluxConsistentSubset,partition
+823	src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m	3	PENDING				getCobraSolverParams	checkThermoFeasibility,findFluxConsistentSubset,findMassLeaksAndSiphons,findMinimalLeakageMode,findMinimalLeakageModeMet,findMinimalLeakageModeRxn,findRxnsFromMets,findSparsePathway,fitExperimentalFlux,leakTest,maxCardinalityConservationVector,minCardinalityConservationRelaxationVector,optCardThermo,optimalConservationVectors,optimizeCbModel
+824	src/reconstruction/modelGeneration/fluxConsistency/findFluxConsistentSubset.m	3	PENDING				getCobraSolverParams,getCorrespondingRows,getNullSpace,identifyFastBlockedRxns,optimizeCardinality,prepareTest,removeRxns,removeUnusedGenes,swiftcc	MBA,XomicsToModel,checkModelPreFBA,checkModelProperties,computeFluxConsistentReactionPresence,computeReconstructionFeatures,createDummyModel,createTissueSpecificModel,findThermoConsistentFluxSubset,modelExtraction,optCardThermo,performSanityChecksonRecon,thermoKernel
+825	src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m	3	PENDING				getCobraSolverParams,getCorrespondingCols,optimizeCardinality	checkModelPreFBA,checkStoichiometricConsistency,findStoichConsistentSubset
+826	src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m	3	PENDING				getCobraSolverParams,optimizeCardinality	findStoichConsistentSubset
+827	src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m	3	PENDING				getCobraSolverParams,getCorrespondingCols,optimizeCardinality	checkModelPreFBA,checkModelProperties,findStoichConsistentSubset
+828	src/reconstruction/modelGeneration/stoichConsistency/findStoichConsistentSubset.m	3	PENDING				checkMassChargeBalance,findMassLeaksAndSiphons,findSExRxnInd,getCobraSolverParams,getCorrespondingCols,getCorrespondingRows,maxCardinalityConservationVector,minCardinalityConservationRelaxationVector,removeMetabolites,removeRxns,removeUnusedGenes	XomicsToModel,checkModelPreFBA,checkModelProperties,checkNullspaceBasis,checkStoichiometricConsistency,computeReconstructionFeatures,createDummyModel,cycleFreeFlux,detectDeadEnds,driver_testThermoQP,entropicFluxBalanceAnalysis,findThermoConsistentFluxSubset,greedyExtremeRayBasis,optCardThermo,processFluxConstraints,rankMetabolicConnectivity,thermoFlux2QNty,thermoKernel,verifyModel
+829	src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/thermoFlux2QNty.m	3	PENDING				findSExRxnInd,findStoichConsistentSubset	checkThermoFeasibility,driver_testThermoQP
+830	src/analysis/thermo/optCardThermo/checkThermoFeasibility.m	3	PENDING				getCobraSolverParams,optimizeCardinality,thermoFlux2QNty	optCardThermo
+831	src/analysis/thermo/optCardThermo/optCardThermo.m	3	PENDING				changeCobraSolverParams,checkThermoFeasibility,findFluxConsistentSubset,findSExRxnInd,findStoichConsistentSubset,getCobraSolverParams,optimizeCardinality	findThermoConsistentFluxSubset,thermoKernel
+832	src/analysis/thermo/findThermoConsistentFluxSubset/findThermoConsistentFluxSubset.m	3	PENDING				findFluxConsistentSubset,findSExRxnInd,findStoichConsistentSubset,getCobraSolverParams,getCorrespondingRows,optCardThermo,removeMetabolites,removeRxns,removeUnusedGenes	XomicsToModel,checkModelProperties,thermoKernel
+833	src/analysis/thermo/thermoDirectionality/setThermoReactionDirectionalityiAF1260.m	3	PENDING				changeCobraSolverParams	secondPassDirectionalityAssignment
+834	src/analysis/thermo/thermoDirectionality/secondPassDirectionalityAssignment.m	3	PENDING				setThermoReactionDirectionalityiAF1260	
+835	src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m	3	PENDING					testCheckThermodynamicConsistency
+836	src/analysis/thermo/thermoFBA/consistentPotentials.m	3	PENDING				findSExRxnInd	
+837	src/analysis/thermo/thermoFBA/fastSNP.m	3	PENDING				checkSolFeas,getCobraSolverParams	addLoopLawConstraints
+838	src/analysis/thermo/thermoFBA/findMinNull.m	3	PENDING				checkSolFeas,getCobraSolverParams	addLoopLawConstraints
+839	src/analysis/thermo/thermoFBA/testCheckThermodynamicConsistency.m	3	EXCLUDED	script (no function to call)			checkThermodynamicConsistency	
+840	src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m	3	PENDING					checkStoichiometricConsistency
+841	src/reconstruction/modelGeneration/stoichConsistency/checkStoichiometricConsistency.m	3	PENDING				findSExRxnInd,findStoichConsistentSubset,getCobraSolverParams,getCorrespondingCols,maxCardinalityConservationVector,maxEntConsVector	checkFullRowRankFRK,checkRankFR,generateMetaboScore,rowRankSufficientFR
+842	src/analysis/topology/FR/checkFullRowRankFRK.m	3	EXCLUDED	script (no function to call)			checkStoichiometricConsistency	
+843	src/analysis/topology/FR/checkRankFR.m	3	PENDING				checkMassChargeBalance,checkStoichiometricConsistency,findSExRxnInd,getCobraSolverParams,getRankLUSOL	
+844	src/analysis/topology/FR/rowRankSufficientFR.m	3	EXCLUDED	script (no function to call)			checkStoichiometricConsistency	
+845	src/analysis/topology/conservedMoieties/decomposeMoietyVectors.m	3	PENDING					
+846	src/reconstruction/modelGeneration/removeDeadEnds.m	3	PENDING				removeRxns	computeMetFormulae,findElementaryMoietyVectors
+847	src/analysis/topology/conservedMoieties/findElementaryMoietyVectors.m	3	PENDING				findMetIDs,removeDeadEnds	biomassPrecursorCheck,computeMetFormulae
+848	src/analysis/topology/conservedMoieties/relateConservedMoietiesToConservationRelations.m	3	PENDING					
+849	src/analysis/topology/extremeRays/optimalRays/findExtremePool.m	3	PENDING				getCobraSolverParams	greedyExtremeRayBasis,optimalExtremePoolDriver
+850	src/analysis/topology/extremeRays/optimalRays/optimalExtremePoolDriver.m	3	EXCLUDED	script (no function to call)			findExtremePool,findSExRxnInd	
+851	src/analysis/topology/rankMetabolicConnectivity.m	3	PENDING				findStoichConsistentSubset	modelExtraction
+852	src/analysis/topology/reactingMoieties/identifyConservedReactingMoieties.m	3	PENDING				getElementalComposition,getRankLUSOL,identifyIsomorphicClasses	
+853	src/analysis/topology/testForTypeIIIPathways.m	3	PENDING		external-program			
+854	src/analysis/uFBA/buildUFBAmodel.m	3	PENDING				addReaction,addSinkReactions,findMetIDs,findRxnIDs,getModelFieldsForType,removeRxns	
+855	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDietPerformance.m	3	PENDING				fluxVariability	
+856	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/findViableDiet.m	3	PENDING				addMetabolite,addMultipleReactions,optimizeWBModel	
+857	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/nutritionAlgorithmWBM.m	3	PENDING				addDemandReaction,addMetabolite,addMultipleReactions,addSinkReactions,findRxnIDs,getNutritionDatabaseFile,loadVMHDatabase,optimizeWBModel,removeRxns,setFoodRxnsWbm	
+858	src/analysis/wholeBody/PSCMToolbox/setConstraints/individualizedLabReport.m	3	PENDING				loadVMHDatabase,optimizeWBModel,physiologicalConstraintsHMDBbased	perform_BMR_newData,perform_sensi_BMR_all
+859	src/analysis/wholeBody/PSCMToolbox/BMRcalculations/perform_BMR_newData.m	3	EXCLUDED	script (no function to call)			EUAverageDietNew,calcOrganFract,individualizedLabReport,optimizeWBModel,physiologicalConstraintsHMDBbased,setDietConstraints,standardPhysiolDefaultParameters	
+860	src/analysis/wholeBody/PSCMToolbox/LeakTestRecon.m	3	EXCLUDED	script (no function to call)				performSanityChecksonRecon
+861	src/analysis/wholeBody/PSCMToolbox/Test4HumanFctExtv5.m	3	PENDING				addDemandReaction,addReaction,addSinkReactions	performSanityChecksonRecon
+862	src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m	3	PENDING				optimizeWBModel	performIEMAnalysis,runIEM_HH
+863	src/reconstruction/modelGeneration/testATPYieldFromCsources.m	3	PENDING				addReaction	performSanityChecksonRecon
+864	src/analysis/wholeBody/PSCMToolbox/performSanityChecksonRecon.m	3	PENDING				LeakTestRecon,Test4HumanFctExtv5,addDemandReaction,addReaction,findFluxConsistentSubset,getCobraSolverParams,singleGeneDeletion,testATPYieldFromCsources	getOrgansFromHarvey
+865	src/analysis/wholeBody/PSCMToolbox/getOrgansFromHarvey.m	3	PENDING				OrganLists,addExchangeRxn,addReaction,annotateModel,changeGeneAssociation,performSanityChecksonRecon	
+866	src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/analyzeHMmodel.m	3	PENDING				EUAverageDietNew,HighFiberDiet,HighProteinDiet,UnhealthyDiet,VegetarianDiet,physiologicalConstraintsHMDBbased,setDietConstraints,standardPhysiolDefaultParameters	
+867	src/analysis/wholeBody/PSCMToolbox/organEssentiality.m	3	PENDING				OrganLists,getOrganWeightFraction,optimizeWBModel	
+868	src/analysis/wholeBody/PSCMToolbox/performIEMAnalysis.m	3	PENDING				addDemandReaction,checkIEM_WBM	
+869	src/analysis/wholeBody/PSCMToolbox/runFindSparsePathway.m	3	PENDING				OrganLists,addReaction,draw_by_rxn,removeMetabolites	
+870	src/base/io/python/cobrapy/writeModelinJSON.m	3	PENDING				get_py_path,initPythonEnvironment,py_addpath	test_writeModelinJSON
+871	src/base/io/python/cobrapy/test_writeModelinJSON.m	3	EXCLUDED	script (no function to call)			writeModelinJSON	
+872	src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m	3	PENDING					findMinimalSetOfRxns,main_norm0
+873	src/base/solvers/cardOpt/smoothConcave/findMinimalSetOfRxns.m	3	PENDING				SparseLP_old	
+874	src/base/solvers/cardOpt/smoothConcave/main_norm0.m	3	EXCLUDED	script (no function to call)			SparseLP_old	
+875	src/base/solvers/cplex/CPLEXParamSet.m	3	PENDING					
+876	src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m	3	PENDING				getCobraSolverParams	solveCobraLP,solveCobraMILP,solveCobraMIQP,solveCobraQP
+877	src/base/solvers/cplex/solveCobraLPCPLEX_2018.m	3	PENDING				setCplexParam	
+878	src/base/solvers/cplex/solveCobraLPCPLEXcard.m	3	PENDING					findMinCardModel
+879	src/base/solvers/cplex/tuneParamForModel.m	3	PENDING					
+880	src/base/solvers/entropicFBA/debugInfeasibleEntropyFBA.m	3	PENDING					
+881	src/base/solvers/entropicFBA/processFluxConstraints.m	3	PENDING				findStoichConsistentSubset	entropicFluxBalanceAnalysis
+882	src/base/solvers/optarrow/testOptArrowBackend.m	3	PENDING					
+883	src/base/solvers/optarrow/testOptArrowQPBackend.m	3	PENDING					
+884	src/dataIntegration/XomicsToModel/oneRxnPerActiveGene/createDummyModel.m	3	PENDING				findFluxConsistentSubset,findStoichConsistentSubset,getCobraSolverParams	XomicsToModel
+885	src/dataIntegration/XomicsToModel/metabolomics/metabolomicsTomodel.m	3	PENDING				addSinkReactions,findExcRxns,findSExRxnInd,getCobraSolverParams	XomicsToModel
+886	src/dataIntegration/XomicsToModel/metabolomics/growthMediaToModel.m	3	PENDING				findSExRxnInd	XomicsToModel
+887	src/dataIntegration/XomicsToModel/analysis/debugXomicsToModel.m	3	PENDING					XomicsToModel
+888	src/dataIntegration/transcriptomics/INIT/INIT.m	3	PENDING				issueConfirmationWarning,removeRxns	createTissueSpecificModel
+889	src/dataIntegration/transcriptomics/GIMME/GIMME.m	3	PENDING				convertToIrreversible,removeRxns	createTissueSpecificModel
+890	src/dataIntegration/transcriptomics/iMAT/iMAT.m	3	PENDING				issueConfirmationWarning,removeRxns	createTissueSpecificModel
+891	src/dataIntegration/transcriptomics/MBA/MBA.m	3	PENDING				findFluxConsistentSubset,removeRxns,removeUnusedGenes	createTissueSpecificModel
+892	src/dataIntegration/XomicsToModel/thermoKernel/thermoKernel.m	3	PENDING				findFluxConsistentSubset,findSExRxnInd,findStoichConsistentSubset,findThermoConsistentFluxSubset,getCobraSolverParams,getCorrespondingCols,getCorrespondingRows,optCardThermo,plotThermoKernelStats,plotThermoKernelWeights,removeRxns,removeUnusedGenes	createTissueSpecificModel,extractSemiSteadyStateModel
+893	src/dataIntegration/transcriptomics/createTissueSpecificModel.m	3	PENDING				GIMME,INIT,MBA,findFluxConsistentSubset,getCobraSolverParams,iMAT,prepareTest,removeRxns,removeUnusedGenes,thermoKernel	modelExtraction
+894	src/dataIntegration/XomicsToModel/modelExtraction.m	3	EXCLUDED	script (no function to call)			createTissueSpecificModel,findFluxConsistentSubset,getCorrespondingCols,getCorrespondingRows,rankMetabolicConnectivity	XomicsToModel
+895	src/dataIntegration/XomicsToModel/XomicsToModel.m	3	PENDING				activeProteinList,addCOBRAConstraints,addReaction,addSinkReactions,buildRxnGeneMat,createDummyModel,debugXomicsToModel,deleteModelGenes,findExcRxns,findFluxConsistentSubset,findRxnIDs,findSExRxnInd,findStoichConsistentSubset,findThermoConsistentFluxSubset,getCobraSolverParams,getCorrespondingCols,growthMediaToModel,mapExpressionToReactions,metabolomicsTomodel,modelExtraction,printCouplingConstraints,removeRxns,removeUnusedGenes	XomicsToMultipleModels
+896	src/dataIntegration/XomicsToModel/XomicsToMultipleModels.m	3	PENDING				XomicsToModel	
+897	src/dataIntegration/modelMultipleObjectives.m	3	PENDING					compareModelsFeatures,modelPredictiveCapacity
+898	src/dataIntegration/modelPredictiveCapacity.m	3	PENDING				findRxnIDs,getCobraSolverParams,modelMultipleObjectives	compareModelsFeatures
+899	src/dataIntegration/XomicsToModel/analysis/compareModelsFeatures.m	3	PENDING				modelMultipleObjectives,modelPredictiveCapacity,sparseFBA	
+900	src/dataIntegration/XomicsToModel/metabolomics/exoMetLOOCV.m	3	PENDING				addExoMetToEFBA	
+901	src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m	3	PENDING				getCobraSolverParams,optimizeCardinality	constrainRxns
+902	src/dataIntegration/XomicsToModel/metabolomics/mediaConstraints.m	3	PENDING				findExcRxns	
+903	src/dataIntegration/XomicsToModel/thermoKernel/extractSemiSteadyStateModel.m	3	PENDING				thermoKernel	
+904	src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/driver_testThermoQP.m	3	EXCLUDED	script (no function to call)			findStoichConsistentSubset,getCobraSolverParams,thermoFlux2QNty	
+905	src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/thermoQP.m	3	PENDING					
+906	src/dataIntegration/fluxomics/defineLinearConstraints.m	3	PENDING					C13ConfidenceInterval,fitC13Data
+907	src/dataIntegration/fluxomics/C13ConfidenceInterval.m	3	PENDING				defineLinearConstraints,errorComputation2,findRxnIDs	
+908	src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m	3	PENDING				fluxVariability	
+909	src/dataIntegration/fluxomics/goodInitialPoint.m	3	PENDING					generateRandomSample
+910	src/dataIntegration/fluxomics/generateRandomSample.m	3	PENDING				goodInitialPoint	runHiLoExp
+911	src/dataIntegration/fluxomics/runHiLoExp.m	3	PENDING				calcMDVfromSamp,generateRandomSample,score_KS	
+912	src/dataIntegration/metabotools/analyzeSingleGeneDeletion.m	3	PENDING				singleGeneDeletion	
+913	src/dataIntegration/metabotools/checkEffectRxnKO.m	3	PENDING					
+914	src/dataIntegration/metabotools/findMinCardModel.m	3	PENDING				convertToIrreversible,solveCobraLPCPLEXcard	generateCompactExchModel
+915	src/dataIntegration/metabotools/findOptExchRxns.m	3	PENDING				fluxVariability	generateCompactExchModel
+916	src/dataIntegration/metabotools/generateCompactExchModel.m	3	PENDING				findMinCardModel,findOptExchRxns	predictGrowthRequirements,setQuantConstraints
+917	src/dataIntegration/metabotools/makeSummaryModels.m	3	PENDING				extractSubNetwork	
+918	src/dataIntegration/metabotools/performPPP.m	3	PENDING					
+919	src/dataIntegration/metabotools/performSampling.m	3	PENDING				ACHRSampler,createHRWarmup	
+920	src/dataIntegration/metabotools/predictFluxSplits.m	3	PENDING					
+921	src/dataIntegration/metabotools/prepIntegrationQuant.m	3	PENDING					
+922	src/dataIntegration/metabotools/setQuantConstraints.m	3	PENDING				fluxVariability,generateCompactExchModel	
+923	src/dataIntegration/metabotools/summarizeSamplingResults.m	3	PENDING				fluxVariability,loadSamples	
+924	src/dataIntegration/transcriptomics/FASTCORE/LP10.m	3	PENDING					findSparseMode
+925	src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m	3	PENDING					
+926	src/dataIntegration/transcriptomics/FASTCORE/LP3.m	3	PENDING					fastcc
+927	src/dataIntegration/transcriptomics/FASTCORE/LP7.m	3	PENDING					fastcc,fastcc_nonconvex,findSparseMode,findSparseModeWeighted
+928	src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m	3	PENDING					findSparseModeWeighted
+929	src/dataIntegration/transcriptomics/FASTCORE/findSparseModeWeighted.m	3	PENDING				LP7,LP9weighted	fastCoreWeighted
+930	src/dataIntegration/transcriptomics/FASTCORE/fastCoreWeighted.m	3	PENDING				findSparseModeWeighted,getCobraSolverParams	fastGapFill
+931	src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m	3	PENDING				LP10,LP7,getCobraSolverParams	fastcore
+932	src/dataIntegration/transcriptomics/SWIFTCORE/core.m	3	PENDING					swiftcore
+933	src/dataIntegration/transcriptomics/rFASTCORMICS/constrainModelOnMedium.m	3	PENDING					rFastcormics
+934	src/design/testOptKnockSol.m	3	PENDING					GetOptGeneSol
+935	src/design/GetOptGeneSol.m	3	PENDING				deleteModelGenes,testOptKnockSol	optGene
+936	src/design/TrimGdel/GRPRchecker.m	3	PENDING					
+937	src/design/TrimGdel/example1.m	3	PENDING					
+938	src/design/TrimGdel/example2.m	3	PENDING					
+939	src/design/TrimGdel/example3.m	3	PENDING					
+940	src/design/TrimGdel/example4.m	3	PENDING					
+941	src/design/TrimGdel/example5.m	3	PENDING					
+942	src/design/TrimGdel/gDel_minRN.m	3	PENDING		external-program		readGeneRules	TrimGdel
+943	src/design/TrimGdel/step2and3.m	3	PENDING				readGeneRules	TrimGdel
+944	src/design/analyzeOptKnock.m	3	PENDING				deleteModelGenes	
+945	src/design/doubleProductionEnvelope.m	3	PENDING				deleteModelGenes	
+946	src/design/optEnvelope/addEnv.m	3	PENDING				buildRxnGeneMat,deleteModelGenes	milpOEReinserts,optEnvelope
+947	src/design/optEnvelope/milpOEReinserts.m	3	PENDING				addEnv,convertToIrreversible,findRxnIDs	optEnvelope
+948	src/design/optEnvelope/minActiveRxns.m	3	PENDING				buildRxnGeneMat	optEnvelope
+949	src/design/optEnvelope/sequentialOEReinserts.m	3	PENDING				buildRxnGeneMat,deleteModelGenes	optEnvelope
+950	src/design/optForce/FVAOptForce.m	3	PENDING				fluxVariability	
+951	src/design/optForce/analyzeOptForceSol.m	3	PENDING					optForce,optForceWithGAMS
+952	src/design/optForce/findMustL.m	3	PENDING				saveInputsMustSetsFirstOrder	
+953	src/design/optForce/findMustLL.m	3	PENDING				saveInputsMustSetsSecondOrder	
+954	src/design/optForce/findMustU.m	3	PENDING				saveInputsMustSetsFirstOrder	
+955	src/design/optForce/findMustUL.m	3	PENDING				saveInputsMustSetsSecondOrder	
+956	src/design/optForce/findMustUU.m	3	PENDING				saveInputsMustSetsSecondOrder	
+957	src/design/optForceGAMS/optForceWithGAMS.m	3	PENDING		external-program		analyzeOptForceSol,checkGAMSSolvers,exportInputsOptForceToGAMS	
+958	src/design/optGeneFitness.m	3	PENDING				buildRxnGeneMat,deleteModelGenes,findRxnIDs	
+959	src/design/optGeneFitnessTilt.m	3	PENDING				buildRxnGeneMat,deleteModelGenes	optGene
+960	src/design/randomKO.m	3	PENDING				findExcRxns	
+961	src/reconstruction/demeter/src/debugging/untargetedGapFilling.m	3	PENDING				addReaction,createModel,removeRxns	debugCouplingConstraints,refinementPipeline,runGapfillingFunctions
+962	src/reconstruction/demeter/src/debugging/debugCouplingConstraints.m	3	PENDING				addReaction,removeRxns,untargetedGapFilling	refinementPipeline
+963	src/reconstruction/demeter/src/refinement/rebuildModel.m	3	PENDING				addReaction,data2model,removeRxns	createPanModels,debugModel,performDataDrivenRefinement,refinementPipeline,translateKBaseModel2VMHModel
+964	src/reconstruction/demeter/src/refinement/anaerobicGrowthGapfill.m	3	PENDING				addReaction	debugModel,refinementPipeline
+965	src/reconstruction/demeter/suite/tests/testGrowth.m	3	PENDING				useDiet	computeReconstructionFeatures,debugModel,plotBiomassTestResults,refinementPipeline,reportPDF
+966	src/reconstruction/demeter/src/debugging/verifyGapfilledReactions.m	3	PENDING				removeRxns	runGapfillingFunctions
+967	src/reconstruction/demeter/src/debugging/targetedGapFilling.m	3	PENDING				addReaction,addSinkReactions,singleRxnDeletion	curateGrowthRequirements,runGapfillingFunctions
+968	src/reconstruction/demeter/src/debugging/runGapfillingFunctions.m	3	PENDING				targetedGapFilling,untargetedGapFilling,verifyGapfilledReactions	debugModel,performDataDrivenRefinement,refinementPipeline
+969	src/reconstruction/demeter/src/debugging/removeFutileCycles.m	3	PENDING				addReaction,removeRxns,useDiet	createMultipleSpeciesModel,debugModel,refinementPipeline
+970	src/reconstruction/demeter/suite/tests/testATP.m	3	PENDING				addReaction,useDiet	computeReconstructionFeatures,debugModel,plotATPTestResults,refinementPipeline,reportPDF
+971	src/reconstruction/demeter/src/refinement/createPeriplasmaticSpace.m	3	PENDING				addMetabolite,addReaction,removeRxns	debugModel,refinementPipeline
+972	src/reconstruction/demeter/suite/tests/testGrowthOnDefinedMedia.m	3	PENDING				readInputTableForPipeline,useDiet	debugModel,doubleCheckGapfilledReactions,refinementPipeline,removeUnannotatedReactions,reportPDF,runTestsOnModel
+973	src/reconstruction/demeter/src/debugging/debugModel.m	3	PENDING				anaerobicGrowthGapfill,createPeriplasmaticSpace,loadVMHDatabase,readInputTableForPipeline,rebuildModel,removeFutileCycles,runGapfillingFunctions,testATP,testGrowth,testGrowthOnDefinedMedia,useDiet	runDebuggingTools
+974	src/reconstruction/demeter/src/debugging/findFutileCycle.m	3	PENDING					
+975	src/reconstruction/demeter/src/debugging/identifyFutileCycles.m	3	PENDING				useDiet	
+976	src/reconstruction/demeter/suite/tests/testMetaboliteUptake.m	3	PENDING				fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,reportPDF,runTestsOnModel
+977	src/reconstruction/demeter/suite/tests/testSecretionProducts.m	3	PENDING				fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,reportPDF,runTestsOnModel
+978	src/reconstruction/demeter/suite/tests/testDrugMetabolism.m	3	PENDING				fluxVariability,readInputTableForPipeline	runTestsOnModel
+979	src/reconstruction/demeter/suite/tests/testFermentationProducts.m	3	PENDING				fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,reportPDF,runTestsOnModel
+980	src/reconstruction/demeter/suite/tests/testAromaticAADegradation.m	3	PENDING				fluxVariability,readInputTableForPipeline	runTestsOnModel
+981	src/reconstruction/demeter/suite/tests/testBileAcidBiosynthesis.m	3	PENDING				fluxVariability,readInputTableForPipeline	reportPDF,runTestsOnModel
+982	src/reconstruction/demeter/suite/tests/testLeakingMetabolites.m	3	PENDING				findExcRxns	reportPDF,runTestsOnModel
+983	src/reconstruction/demeter/suite/tests/testCarbonSources.m	3	PENDING				fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,reportPDF,runTestsOnModel
+984	src/reconstruction/demeter/suite/tests/validateCompartments.m	3	PENDING					runTestsOnModel
+985	src/reconstruction/demeter/suite/tests/testPutrefactionPathways.m	3	PENDING				fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,runTestsOnModel
+986	src/reconstruction/demeter/suite/tests/runTestsOnModel.m	3	PENDING				addReaction,identifyFastBlockedRxns,loadVMHDatabase,testAromaticAADegradation,testBileAcidBiosynthesis,testCarbonSources,testDrugMetabolism,testFermentationProducts,testGeneRules,testGrowthOnDefinedMedia,testLeakingMetabolites,testMetaboliteUptake,testModelMassChargeBalance,testPutrefactionPathways,testRefinedReactions,testSecretionProducts,useDiet,validateCompartments	batchTestAllReconstructionFunctions
+987	src/reconstruction/demeter/src/properties/predictGrowthRequirements.m	3	PENDING				generateCompactExchModel	
+988	src/reconstruction/demeter/src/refinement/carbonSourceGapfill.m	3	PENDING				addReaction,readInputTableForPipeline,removeRxns	performDataDrivenRefinement
+989	src/reconstruction/demeter/src/refinement/connectRxnGapfilling.m	3	PENDING				addReaction,identifyFastBlockedRxns,removeRxns	refinementPipeline
+990	src/reconstruction/demeter/src/refinement/curateAgainstBacDiveData.m	3	PENDING				addReaction,readInputTableForPipeline,removeRxns	refinementPipeline
+991	src/reconstruction/demeter/src/refinement/curateGrowthRequirements.m	3	PENDING				addReaction,readInputTableForPipeline,removeRxns,singleRxnDeletion,targetedGapFilling,useDiet	doubleCheckGapfilledReactions,refinementPipeline
+992	src/reconstruction/demeter/src/refinement/deleteSeedGapfilledReactions.m	3	PENDING				fluxVariability,removeRxns,useDiet	refinementPipeline
+993	src/reconstruction/demeter/src/refinement/doubleCheckGapfilledReactions.m	3	PENDING				curateGrowthRequirements,removeRxns,singleRxnDeletion,testGrowthOnDefinedMedia,useDiet	refinementPipeline
+994	src/reconstruction/demeter/src/refinement/fermentationPathwayGapfill.m	3	PENDING				addReaction,readInputTableForPipeline,removeRxns	performDataDrivenRefinement
+995	src/reconstruction/demeter/src/refinement/findTransportersWithoutExchanges.m	3	PENDING				removeRxns	refinementPipeline
+996	src/reconstruction/demeter/src/refinement/findUnusedExchangeReactions.m	3	PENDING				removeRxns	refinementPipeline
+997	src/reconstruction/demeter/src/refinement/putrefactionPathwaysGapfilling.m	3	PENDING				addReaction,readInputTableForPipeline,removeRxns	performDataDrivenRefinement
+998	src/reconstruction/demeter/src/refinement/performDataDrivenRefinement.m	3	PENDING				addExchangeRxn,carbonSourceGapfill,fermentationPathwayGapfill,putrefactionPathwaysGapfilling,rebuildModel,runGapfillingFunctions,secretionProductGapfill,testCarbonSources,testFermentationProducts,testMetaboliteUptake,testPutrefactionPathways,testSecretionProducts,uptakeMetaboliteGapfill	refinementPipeline
+999	src/reconstruction/demeter/src/refinement/translateKBaseModel2VMHModel.m	3	PENDING				addReaction,creategrRulesField,readInputTableForPipeline,rebuildModel,removeRxns	refinementPipeline
+1000	src/reconstruction/demeter/src/refinement/removeUnannotatedReactions.m	3	PENDING				removeRxns,testGrowthOnDefinedMedia,useDiet	refinementPipeline
+1001	src/reconstruction/demeter/src/refinement/refinementPipeline.m	3	PENDING				addReaction,anaerobicGrowthGapfill,connectRxnGapfilling,createPeriplasmaticSpace,curateAgainstBacDiveData,curateGrowthRequirements,debugCouplingConstraints,deleteSeedGapfilledReactions,doubleCheckGapfilledReactions,findTransportersWithoutExchanges,findUnusedExchangeReactions,loadVMHDatabase,performDataDrivenRefinement,readInputTableForPipeline,rebuildModel,refineGenomeAnnotation,removeFutileCycles,removeRxns,removeUnannotatedReactions,runGapfillingFunctions,testATP,testGrowth,testGrowthOnDefinedMedia,translateKBaseModel2VMHModel,untargetedGapFilling,useDiet	runDemeter
+1002	src/reconstruction/demeter/src/refinement/translateDraftReconstruction.m	3	PENDING				addReaction,loadVMHDatabase,removeRxns	runDemeter
+1003	src/reconstruction/demeter/suite/reports/reportPDF.m	3	PENDING		external-program		loadVMHDatabase,parseNCBItaxonomy,testATP,testBileAcidBiosynthesis,testCarbonSources,testFermentationProducts,testGrowth,testGrowthOnDefinedMedia,testLeakingMetabolites,testMetaboliteUptake,testModelMassChargeBalance,testSecretionProducts	runTestSuiteTools
+1004	src/reconstruction/fastGapFill/AuxillaryFiles/generateSUXComp.m	3	PENDING				createUniversalReactionModel2,createXMatrix2,transformKEGG2Model	prepareFastGapFill
+1005	src/reconstruction/fastGapFill/generateSUXMatrix.m	3	PENDING				convertToIrreversible,createUniversalReactionModel,transformKEGG2Model	growthExpMatch
+1006	src/reconstruction/fastGapFill/postProcessGapFillSolutions.m	3	PENDING				addReaction	submitGapFill
+1007	src/reconstruction/fastGapFill/prepareFastGapFill.m	3	PENDING				addReaction,generateSUXComp,identifyBlockedRxns,identifyFastBlockedRxns,issueConfirmationWarning,removeRxns	submitGapFill
+1008	src/reconstruction/fastGapFill/swiftGapFill.m	3	PENDING					submitGapFill
+1009	src/reconstruction/metaboRePort/generateMetaboScore.m	3	PENDING				checkMassChargeBalance,checkStoichiometricConsistency,findSExRxnInd,removeRxns,setWorkerCount	tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m
+1010	src/reconstruction/metaboRePort/tutorial_MetaboRePort.m	3	EXCLUDED	script (no function to call)			annotateSBOTerms,generateMetaboScore,populateModelMetStr,populateModelwithRxnIDs,populateModelwithRxnIDs	
+1011	src/reconstruction/metaboRePort/tutorial_MetaboRePort_APOLLO.m	3	EXCLUDED	script (no function to call)			annotateSBOTerms,generateMetaboScore,populateModelMetStr,populateModelwithRxnIDs,populateModelwithRxnIDs	
+1012	src/reconstruction/metaboRePort/tutorial_MetaboRePort_m.m	3	EXCLUDED	script (no function to call)			annotateSBOTerms,generateMetaboScore,parseHmdbWebPage,populateModelMetStr,populateModelwithRxnIDs,populateModelwithRxnIDs	
+1013	src/reconstruction/modelGeneration/fluxConsistency/DCA/fastcc_nonconvex.m	3	PENDING				LP7	
+1014	src/reconstruction/modelGeneration/fluxConsistency/GREEDY/checkFluxConsistency.m	3	PENDING					testFluxConsistency
+1015	src/reconstruction/modelGeneration/fluxConsistency/GREEDY/testFluxConsistency.m	3	EXCLUDED	script (no function to call)			checkFluxConsistency	
+1016	src/reconstruction/modelGeneration/fluxConsistency/findSignedCyclicFluxConsistentSubset.m	3	PENDING				getCobraSolverParams,getCorrespondingRows,getNullSpace,removeRxns,removeUnusedGenes	
+1017	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m	3	PENDING				optimizeCardinality	
+1018	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m	3	PENDING				getCobraSolverParams,optimizeCardinality	
+1019	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m	3	PENDING				getCobraSolverParams,optimizeCardinality,printMinimalLeakageMode	
+1020	src/reconstruction/modelGeneration/stoichConsistency/leakTest.m	3	PENDING				optimizeCardinality	
+1021	src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m	3	PENDING				optimizeCardinality	
+1022	src/reconstruction/refinement/convertToReversible.m	3	PENDING					
+1023	src/reconstruction/refinement/reduceModel.m	3	PENDING				removeRxns	sampleCbModel
+1024	src/reconstruction/refinement/removeGenesFromModel.m	3	PENDING				FormulaParser,creategrRulesField,removeRxns	
+1025	src/reconstruction/refinement/removeTrivialStoichiometry.m	3	PENDING				removeMetabolites,removeRxns	generateFullRowRankFR
+1026	src/reconstruction/testPathway.m	3	PENDING				addReaction	
+1027	src/visualization/EscherMap/flux2json.m	3	PENDING				mosekParamSetEFBA	
+1028	src/visualization/entropicFBA/plotyy_eFBA.m	3	PENDING				findRxnIDs,mosekParamSetEFBA	
+1029	src/visualization/metabolicCartography/removeMapReactions.m	3	PENDING				getCorrespondingCols,getCorrespondingRows,getMapMatrices	
+1030	src/visualization/metabolicCartography/removeMapSpecies.m	3	PENDING				getCorrespondingCols,getCorrespondingRows,getMapMatrices	
+1031	src/visualization/metabolicCartography/removeMapSpeciesOnly.m	3	PENDING				getCorrespondingCols,getMapMatrices	
+1032	src/visualization/paint4Net/Draw_by_met/findNearRxns.m	3	PENDING				findMetIDs,findRxnIDs	bio_draw_by_met,draw_by_met
+1033	src/visualization/paint4Net/Draw_by_met/draw_by_met.m	3	PENDING				draw_by_rxn,findMetIDs,findNearRxns,findRxnIDs	
+1034	src/visualization/paint4net/bio_paint4Net/bio_draw_by_rxn/bio_draw_by_rxn.m	3	PENDING				findMetIDs,findRxnIDs,fluxVariability	bio_draw_by_met
+1035	src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_draw_by_met.m	3	PENDING				bio_draw_by_rxn,findMetIDs,findNearRxns,findRxnIDs	
+1036	src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m	3	PENDING				findMetIDs,findRxnIDs	
+1037	src/base/io/readCbModel.m	4	EXCLUDED	interactive input			readSimPhenyCMPD,readSimPhenyGPR,readSimPhenyGprText	ReconstructionCreator,addmetabolites,batchTestAllReconstructionFunctions,buildModelStorage,calculateReactionAbundance,calculateReactionMasses,changeMapMetIDToName,checkModelPreFBA,completeSpeciesFolder,computeFluxConsistentReactionPresence,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createContextSpecificModel,createPanModels,createSBMLFiles,extractReconstructionResourceSubset,fastCalculateReactionAbundance,fastSetupCreator,getDistributedModel,getMappingInfo,getReactionMetabolitePresence,joinModelsPairwiseFromList,loadBiGGModel,loadPSCMfile,loadUncModels,mgPipe,model2MetStructure,plotATPTestResults,plotBiomassTestResults,predictMicrobeContributions,printReconstructionContent,runDebuggingTools,runDemeter,runTestSuiteTools,sbmlTestModelToMat,simulatePairwiseInteractions,submitGapFill
+1038	src/analysis/igemRNA/modelCreation/createContextSpecificModel.m	4	PENDING				deleteInactiveGenes,fluxVariability,readCbModel	
+1039	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateReactionAbundance.m	4	PENDING				readCbModel,readInputTableForPipeline	
+1040	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/fastCalculateReactionAbundance.m	4	PENDING				readCbModel,readInputTableForPipeline	mgPipe
+1041	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/predictMicrobeContributions.m	4	PENDING				changeCobraSolverParams,fluxVariability,getEnvironment,readCbModel,restoreEnvironment	
+1042	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/buildModelStorage.m	4	PENDING				addMultipleMetabolites,addMultipleReactions,createModel,findExcRxns,fluxVariability,identifyBlockedRxns,readCbModel,removeRxns	mgPipe
+1043	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/fastSetupCreator.m	4	PENDING				addMultipleMetabolites,addMultipleReactions,createModel,findSExRxnInd,readCbModel,removeRxns	mgPipe
+1044	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/getMappingInfo.m	4	PENDING				readCbModel	
+1045	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/initMgPipe.m	4	PENDING				readInputTableForPipeline	calculateCorrelations,runPersephone
+1046	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/loadUncModels.m	4	PENDING				findExcRxns,getEnvironment,readCbModel,restoreEnvironment	
+1047	src/analysis/persephone/additionalFunctions/completeSpeciesFolder.m	4	PENDING				parsave,readCbModel	
+1048	src/analysis/wholeBody/PSCMToolbox/io/loadPSCMfile.m	4	PENDING				readCbModel	annotateHH,createBatchMWBM,filterMetabolitesNotPresentInWBMmodel,interrogateWBmodelsQP,perform_sensi_BMR_all,persWBM,runIEM_HH,setInSilicoDiet
+1049	src/analysis/persephone/additionalFunctions/filterMetabolitesNotPresentInWBMmodel.m	4	PENDING				loadPSCMfile	
+1050	src/analysis/persephone/additionalFunctions/interrogateWBmodelsQP.m	4	PENDING				loadPSCMfile,optimizeWBModel	
+1051	src/analysis/persephone/createBatchMWBM.m	4	PENDING				createMWBM,ensureWBMfeasibility,getEnvironment,loadPSCMfile,readMetadataForPersephone,restoreEnvironment	runPersephone
+1052	src/analysis/persephone/persWBM.m	4	PENDING				calcOrganFract,ensureWBMfeasibility,loadPSCMfile,persWBMmetabolomics,physiologicalConstraintsHMDBbased,setDietConstraints,standardPhysiolDefaultParameters	runPersephone
+1053	src/analysis/persephone/runPersephone.m	4	PENDING				analyseWBMs,createBatchMWBM,initMgPipe,initPersephone,performStatsPersephone,persWBM,runMars,runSeqC,validateDietPath	
+1054	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/setInSilicoDiet.m	4	PENDING				ensureWBMfeasibility,findRxnIDs,generateInSilicoDiet,loadPSCMfile,setDietConstraints,setFoodRxnsWbm	
+1055	src/analysis/wholeBody/PSCMToolbox/BMRcalculations/perform_sensi_BMR_all.m	4	EXCLUDED	script (no function to call)			EUAverageDietNew,calcOrganFract,individualizedLabReport,loadPSCMfile,optimizeWBModel,physiologicalConstraintsHMDBbased,setDietConstraints,standardPhysiolDefaultParameters	
+1056	src/analysis/wholeBody/PSCMToolbox/annotateHH.m	4	EXCLUDED	script (no function to call)			annotateModel,loadPSCMfile	
+1057	src/analysis/wholeBody/PSCMToolbox/hostMicrobeInteraction/calculateCorrelations.m	4	EXCLUDED	script (no function to call)			correlateFluxWithTaxonAbundance,initMgPipe	
+1058	src/analysis/wholeBody/PSCMToolbox/runIEM_HH.m	4	EXCLUDED	script (no function to call)			EUAverageDietNew,addDemandReaction,addExchangeRxn,checkIEM_WBM,combineHarveyMicrotiota,loadPSCMfile,physiologicalConstraintsHMDBbased,setDietConstraints,standardPhysiolDefaultParameters	
+1059	src/base/io/utilities/getDistributedModel.m	4	PENDING				getDistributedModelFolder,readCbModel	testOptArrowEcoliCoreFBA,testOptArrowEcoliCoreHttpFBA
+1060	src/base/solvers/optarrow/testOptArrowEcoliCoreFBA.m	4	PENDING				getDistributedModel	
+1061	src/base/solvers/optarrow/testOptArrowEcoliCoreHttpFBA.m	4	PENDING				getDistributedModel	
+1062	src/dataIntegration/metaboAnnotator/buildMetStruct/model2MetStructure.m	4	PENDING				assignAGORAReconPresence,assignClassyFire,checkAbbrExists,generateInchiFromMol,getIDfromMetStructure,getMissingDrugMolForm,getMissingHMDBMolForm,getMolFilesMultipleSources,getStatsMetStruct,parseDBCollection,parseVMH4IDs,readCbModel	
+1063	src/reconstruction/demeter/suite/tests/plotBiomassTestResults.m	4	PENDING				getEnvironment,readCbModel,restoreEnvironment,testGrowth	runDebuggingTools,runTestSuiteTools
+1064	src/reconstruction/demeter/suite/tests/plotATPTestResults.m	4	PENDING				getEnvironment,readCbModel,restoreEnvironment,testATP	runDebuggingTools,runTestSuiteTools
+1065	src/reconstruction/demeter/suite/tests/batchTestAllReconstructionFunctions.m	4	PENDING				changeCobraSolverParams,getEnvironment,readCbModel,readInputTableForPipeline,restoreEnvironment,runTestsOnModel	runDebuggingTools,runTestSuiteTools
+1066	src/reconstruction/demeter/src/debugging/runDebuggingTools.m	4	PENDING				batchTestAllReconstructionFunctions,debugModel,getEnvironment,plotATPTestResults,plotBiomassTestResults,plotTestSuiteResults,readCbModel,readInputTableForPipeline,restoreEnvironment	
+1067	src/reconstruction/demeter/src/properties/computeFluxConsistentReactionPresence.m	4	PENDING				findFluxConsistentSubset,readCbModel,readInputTableForPipeline	
+1068	src/reconstruction/demeter/src/properties/computeInternalMetaboliteProduction.m	4	PENDING				addDemandReaction,changeCobraSolverParams,getEnvironment,readCbModel,readInputTableForPipeline,restoreEnvironment	computeModelProperties
+1069	src/reconstruction/demeter/src/properties/printReconstructionContent.m	4	PENDING				changeCobraSolverParams,getEnvironment,loadVMHDatabase,readCbModel,restoreEnvironment	computeModelProperties
+1070	src/reconstruction/demeter/src/properties/getReactionMetabolitePresence.m	4	PENDING				readCbModel,readInputTableForPipeline	computeModelProperties
+1071	src/reconstruction/demeter/src/properties/computeUptakeSecretion.m	4	PENDING				changeCobraSolverParams,fluxVariability,getEnvironment,readCbModel,readInputTableForPipeline,restoreEnvironment	computeModelProperties
+1072	src/reconstruction/demeter/src/properties/computeReconstructionFeatures.m	4	PENDING				changeCobraSolverParams,findFluxConsistentSubset,findStoichConsistentSubset,getCobraSolverParams,getEnvironment,readCbModel,restoreEnvironment,testATP,testGrowth	computeModelProperties
+1073	src/reconstruction/demeter/src/properties/computeModelProperties.m	4	PENDING				computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,getReactionMetabolitePresence,getSubsystemPresence,printReconstructionContent,producetSNEPlots,rankFeaturesByIncidence	
+1074	src/reconstruction/demeter/src/properties/extractReconstructionResourceSubset.m	4	PENDING				readCbModel,readInputTableForPipeline	
+1075	src/reconstruction/demeter/src/refinement/createSBMLFiles.m	4	PENDING				readCbModel	runDemeter
+1076	src/reconstruction/demeter/src/refinement/runDemeter.m	4	PENDING				createSBMLFiles,getEnvironment,readCbModel,refinementPipeline,restoreEnvironment,translateDraftReconstruction	
+1077	src/reconstruction/demeter/suite/tests/runTestSuiteTools.m	4	PENDING				batchTestAllReconstructionFunctions,plotATPTestResults,plotBiomassTestResults,plotTestSuiteResults,printRefinementReport,readCbModel,reportPDF	
+1078	src/reconstruction/fastGapFill/submitGapFill.m	4	PENDING				getCobraSolverParams,postProcessGapFillSolutions,prepareFastGapFill,readCbModel,swiftGapFill	
+1079	src/reconstruction/rBioNet/addmetabolites.m	4	EXCLUDED	GUI			addreactions,creategrRulesField,met_charge_formula,metabolites_in_database,readCbModel	ReconstructionTool,addmissing
+1080	src/reconstruction/rBioNet/ReconstructionCreator.m	4	EXCLUDED	GUI		ReconstructionCreator,ReconstructionTool,model_stats	CreateGPR,GenesAndReactions,GenesReactions,ReconstructionTool,creategrRulesField,data2model,load_reaction,model_description,model_stats,rBioNetAbout,rBioNet_search,readCbModel,webDatabases,webKeggMapper	ReconstructionTool,model_stats
+1081	src/reconstruction/rBioNet/ReconstructionTool.m	4	EXCLUDED	GUI		ReconstructionCreator,ReconstructionTool,model_stats	BalancePrep,ReconstructionCreator,addmetabolites,addreactions,balancecheck,compartment,rBioNetAbout,rBioNetSettings,rBioNet_search,sim_general,similarities,unbalanced,webDatabases,webKeggMapper	ReconstructionCreator
+1082	src/reconstruction/rBioNet/model_stats.m	4	EXCLUDED	GUI		ReconstructionCreator,ReconstructionTool,model_stats	ReconstructionCreator,data2model,webDatabases,webKeggMapper	ReconstructionCreator
+1083	src/reconstruction/rBioNet/addmissing.m	4	EXCLUDED	GUI			addmetabolites,addreactions	
+1084	src/visualization/entropicFBA/calculateReactionMasses.m	4	PENDING				computeMW,findMetIDs,findRxnIDs,readCbModel	
+1085	src/visualization/metabolicCartography/changeMapMetIDToName.m	4	PENDING				readCbModel,transformMap2XML,transformXML2Map	
