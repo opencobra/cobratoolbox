@@ -34,15 +34,15 @@ A wave is formed, written, verified and committed as follows (research R4–R7, 
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-- [ ] T001 Copy the coverage tool of feature 20261104-115314-test-coverage-100 to `$F/tools/measureCoverage.m` (header names both features) and add `$F/tools/run_coverage.sh <list> <out>` that runs it through the memory-capped wrapper
-- [ ] T002 Sync the local `test/models` checkout to the recorded commit 75c070d01 (local only, research R8) and verify every `test/models/mat/*.mat` is a MAT file; record the result in `$F/inventory/environment.md`
-- [ ] T003 Write `$F/tools/update_ledger.py` (adds the data-model fields to `$F/inventory/ledger.tsv`; `--next-wave`, `--apply`, `--check`, `--summary`; blocking propagation R6; generates `$F/inventory/quarantine.md` and `$F/inventory/summary.md`)
+- [X] T001 Copy the coverage tool of feature 20261104-115314-test-coverage-100 to `$F/tools/measureCoverage.m` (header names both features) and add `$F/tools/run_coverage.sh <list> <out>` that runs it through the memory-capped wrapper
+- [X] T002 Sync the local `test/models` checkout to the recorded commit 75c070d01 (local only, research R8) and verify every `test/models/mat/*.mat` is a MAT file; record the result in `$F/inventory/environment.md`
+- [X] T003 Write `$F/tools/update_ledger.py` (adds the data-model fields to `$F/inventory/ledger.tsv`; `--next-wave`, `--apply`, `--check`, `--summary`; blocking propagation R6; generates `$F/inventory/quarantine.md` and `$F/inventory/summary.md`)
 - [ ] T004 [P] Coverage baseline (R10): executable-line counts of the 1085 untested files from one coverage run with an empty test, and covered lines of the 557 tested files from `specs/20261104-115314-test-coverage-100/coverage-runs/zz-final-*.jsonl` → `$F/inventory/coverage-before.tsv`
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-- [ ] T005 Write the helper brief `$F/inventory/agent-brief.md`: constitution sections to read (III, III-Naming, III-Coverage, III-Defects incl. quarantine, VII), `contracts/test-file.md`, `contracts/agent-result.md`, severity rule FR-007, defect criteria (research R5), test placement (R8), fixtures, the MATLAB wrapper and slot discipline, what never to touch (src/, other tests, ledger, git)
-- [ ] T006 Pilot: the lead runs procedure W on the first 5 Tier 1 rows itself (wave 01), checks tools, brief and contracts end to end, and corrects them before any agent is launched
+- [X] T005 Write the helper brief `$F/inventory/agent-brief.md`: constitution sections to read (III, III-Naming, III-Coverage, III-Defects incl. quarantine, VII), `contracts/test-file.md`, `contracts/agent-result.md`, severity rule FR-007, defect criteria (research R5), test placement (R8), fixtures, the MATLAB wrapper and slot discipline, what never to touch (src/, other tests, ledger, git)
+- [X] T006 Pilot: the lead runs procedure W on the first 5 Tier 1 rows itself (wave 01), checks tools, brief and contracts end to end, and corrects them before any agent is launched
 
 **Checkpoint**: tools, brief and contracts proven on 5 functions.
 

@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-253 known defects in 135 functions (93 wrong-result, 85 error, 22 unusable-option, 28 cosmetic, 25 limitation).
+255 known defects in 137 functions (93 wrong-result, 85 error, 22 unusable-option, 28 cosmetic, 27 limitation).
 
 ## Summary
 
@@ -145,7 +145,9 @@
 | `src/base/solvers/varKin/optimizeVKmodel0.m` | wrong-result | The steady state is dropped when the QR factor is a vector with a negative entry | `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` |
 | `src/base/solvers/verifyCobraProblem.m` | error | A NaN in x stops a call with more than one output | `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m` |
 | `src/base/solvers/verifyCobraProblem.m` | wrong-result | invalidConstraints names the wrong rows when senses are mixed | `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m` |
+| `src/base/utilities/getGlobalValue.m` | limitation | The value of a global named globalName cannot be read | `test/verifiedTests/base/testUtilities/testGetGlobalValue.m` |
 | `src/base/utilities/removeIndicesInDimenion.m` | cosmetic | The help text says the given indices are removed, but they are the ones kept | `test/verifiedTests/base/testTools/testRemoveIndicesInDimenion.m` |
+| `src/base/utilities/setGlobal.m` | limitation | A global named globalName cannot be set | `test/verifiedTests/base/testUtilities/testSetGlobal.m` |
 | `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
 | `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` | wrong-result | A given list of deleted metabolites is discarded when the old model is empty and no deleted reactions are given | `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | error | A reaction listed three times stops the constraint step | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
@@ -1649,6 +1651,17 @@
 - **Source lines**: 335, 341, 347
 - **Documented in**: `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m`
 
+### `src/base/utilities/getGlobalValue.m`
+
+#### The value of a global named globalName cannot be read
+
+- **Severity**: limitation
+- **Trigger**: getGlobalValue('globalName')
+- **Observed**: the function declares its own argument variable global, so the text it then evaluates is no longer the name; MATLAB raises MATLAB:m_illegal_character
+- **Expected**: the value of the global variable globalName, as for any other name
+- **Source lines**: 13-14
+- **Documented in**: `test/verifiedTests/base/testUtilities/testGetGlobalValue.m`
+
 ### `src/base/utilities/removeIndicesInDimenion.m`
 
 #### The help text says the given indices are removed, but they are the ones kept
@@ -1659,6 +1672,17 @@
 - **Expected**: a help text that describes the indices as the entries to keep (the code is consistent with its caller)
 - **Source lines**: 2-16
 - **Documented in**: `test/verifiedTests/base/testTools/testRemoveIndicesInDimenion.m`
+
+### `src/base/utilities/setGlobal.m`
+
+#### A global named globalName cannot be set
+
+- **Severity**: limitation
+- **Trigger**: setGlobal('globalName', value)
+- **Observed**: the function declares its own argument variable global, so the text it then evaluates is no longer the name; MATLAB raises MATLAB:m_illegal_character
+- **Expected**: the global variable globalName set to value, as for any other name
+- **Source lines**: 13-14
+- **Documented in**: `test/verifiedTests/base/testUtilities/testSetGlobal.m`
 
 ### `src/base/utilities/updateStructData.m`
 
