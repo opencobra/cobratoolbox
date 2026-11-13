@@ -195,12 +195,17 @@ def strong(v):
 for v in sorted(U):
     if v not in index:
         strong(v)
-# Tarjan emits components callees-first; a component's tier is the highest tier in it
+# Tarjan emits components callees-first. A component's tier is the highest tier in it and in
+# every untested component it calls (effective tier, analysis F1): a caller is never taken in a
+# lower tier than an untested callee, so callees always come first in the campaign order.
 position = {}
 for i, comp in enumerate(comps):
     for v in comp:
         position[v] = i
-comp_tier = {i: max(tiers[v] for v in comp) for i, comp in enumerate(comps)}
+comp_tier = {}
+for i, comp in enumerate(comps):
+    callee_tiers = [comp_tier[position[w]] for v in comp for w in edges[v] & U if position[w] != i]
+    comp_tier[i] = max([tiers[v] for v in comp] + callee_tiers)
 for i, comp in enumerate(comps):
     for v in comp:
         tiers[v] = comp_tier[i]

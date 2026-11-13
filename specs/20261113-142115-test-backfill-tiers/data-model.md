@@ -6,7 +6,7 @@
 |---|---|
 | `order` | position in the campaign order (tier, then callees before callers) |
 | `file` | repository-relative path of the source file |
-| `tier` | 1, 2, 3 or 4 (Tier 4/5); initial from R2, final as set by the test |
+| `tier` | effective tier 1, 2, 3 or 4 (`4` means Tier 4/5); initial from R2, final as set by the test |
 | `status` | PENDING, TESTED, QUARANTINED, BLOCKED, EXCLUDED |
 | `reason` | EXCLUDED: why; QUARANTINED: defect title; BLOCKED: `blocked by <f>[, <g>]` |
 | `flags` | `external-program`, `shadowed-name` (informational) |
@@ -30,9 +30,11 @@ PENDING ──calls a QUARANTINED function────────────�
 PENDING ──cannot be tested here (R1, found at writing)─▶ EXCLUDED
 ```
 
-No other transition exists in this feature. TESTED, QUARANTINED, BLOCKED and EXCLUDED are final
-(R6 covers a TESTED file that reaches a quarantine through a late-discovered edge: its row stays
-TESTED and gets a note).
+TESTED ──late-discovered call to a QUARANTINED function (R6)──▶ BLOCKED (its new test removed;
+its TESTED callers follow)
+
+No other transition exists in this feature. QUARANTINED, BLOCKED and EXCLUDED are final; TESTED is
+final unless the late-edge rule applies.
 
 ## Defect (in a test header, III-Defects format)
 
@@ -44,6 +46,12 @@ DEFECT, SEVERITY, TRIGGER, OBSERVED, EXPECTED, LINES; plus, in the ledger, `quar
 Set of PENDING rows of the lowest remaining tier whose untested callees are all final and not
 QUARANTINED/BLOCKED (those would make the row BLOCKED instead). Split into slices of ≤ 10 rows,
 one per helper agent.
+
+## Existing-defective list (`inventory/existing-defective.tsv`)
+
+Already-tested functions (outside the 1085) in which a quarantining defect was found (FR-012):
+function, existing test, defect title, rows it blocks. Their tests keep their assertions and record
+the defect by the input-level rule.
 
 ## Quarantine list (`inventory/quarantine.md`, generated)
 

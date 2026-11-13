@@ -106,7 +106,7 @@ generated known-defects registry contains every defect.
    quarantined function, **Then** g's test is not added and g becomes BLOCKED.
 3. **Given** a defect found in a function h that already has a test (outside the 1085), **When**
    recorded, **Then** the defect is added to h's existing test header (its passing assertions stay)
-   and h is treated as quarantined for this feature: its untested callers become BLOCKED.
+   and h is listed as existing-defective: its untested callers become BLOCKED.
 
 ---
 
@@ -187,9 +187,10 @@ of blocked callers, and the coverage gain.
   resources reach all its lines on the reference machine: no model and no solver → Tier 1; a model
   but no solver → Tier 2; a solver → Tier 3; a distributed model or first-run reference values
   needed → Tier 4/5.
-- **FR-003**: The order MUST be by tier, then bottom-up in the call graph (callees before callers;
-  cycles taken together), so that no function is tested before a function it calls that is in the
-  same or a lower tier and still PENDING.
+- **FR-003**: The order MUST be bottom-up in the call graph (callees before callers, cycles taken
+  together) and then by tier: a function's effective tier is the highest tier among itself and every
+  untested function it calls, so no function is tested before an untested function it calls, in
+  any tier.
 - **FR-004**: The call graph MUST include static calls and text references to function names
   (handles, names passed to `feval`/`str2func`), restricted to functions in `src/`.
 - **FR-005**: A file MUST be EXCLUDED, with its reason, when it is a script without a function, a
@@ -206,13 +207,18 @@ of blocked callers, and the coverage gain.
 - **FR-008**: A QUARANTINED function's test file MUST follow III-Defects quarantine: header with the
   defect entry, every line exempt, body `prepareTest()` only.
 - **FR-009**: Every function that calls a QUARANTINED function, directly or indirectly, MUST be
-  BLOCKED by it and get no new test in this feature; the ledger names the blocking function.
+  BLOCKED by it and get no new test in this feature; the ledger names the blocking function. If such
+  a call is found only after the caller was TESTED (a dependency found at run time), the caller's
+  new test is removed and the caller, and every TESTED caller of it, becomes BLOCKED.
 - **FR-010**: No source function MAY be changed (III-Characterization).
 - **FR-011**: New tests MUST NOT suppress output (`evalc`) or warnings (Principle VII), MUST fix
-  random seeds, and MUST leave no files, figures, global state or path changes behind.
-- **FR-012**: When a defect is found in a function that already has a test, the defect MUST be
-  added to that test's header and the function treated as quarantined for this feature (User Story
-  3, scenario 3); its existing passing assertions stay.
+  random seeds, and MUST leave no files, figures, global state or path changes behind (checked when
+  each wave's tests are run together).
+- **FR-012**: When a defect of a quarantining severity is found in a function that already has a
+  test (outside the 1085), the defect MUST be added to that test's header by the input-level rule
+  (its existing passing assertions stay; it is not rewritten into the quarantine layout), the
+  function is listed as EXISTING-DEFECTIVE, and its untested callers become BLOCKED by it (User
+  Story 3, scenario 3).
 - **FR-013**: `test/known-defects.md` MUST be regenerated with the repository's generator after
   the last defect is recorded.
 - **FR-014**: Every new test MUST be run with line coverage measurement on the reference machine;
@@ -239,6 +245,8 @@ of blocked callers, and the coverage gain.
 - **Call graph**: functions in `src/` and who calls whom (static calls and name references).
 - **Defect entry**: III-Defects fields, in the test header of the defective function.
 - **Quarantine list**: quarantined functions with their defect and the blocked callers.
+- **Existing-defective list**: already-tested functions in which a quarantining defect was found
+  (FR-012), with the defect and the callers they block; not rows of the 1085.
 
 ## Existing Contract *(characterization mode)*
 

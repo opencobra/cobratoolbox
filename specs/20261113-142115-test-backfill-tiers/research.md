@@ -13,6 +13,9 @@ orders the untested files, and writes `inventory/ledger.tsv`.
 Measured: 1642 files (1551 functions, 70 scripts, 20 classes, 1 parse failure); 557 with a test,
 **1085 untested**:
 
+(Tiers in this table are before the effective-tier rule of R4, which moves 20 rows from Tier 1 to
+Tier 2.)
+
 | Initial status | Tier 1 | Tier 2 | Tier 3 | Tier 4/5 | Total |
 |---|---|---|---|---|---|
 | PENDING | 391 | 226 | 274 | 39 | 930 |
@@ -64,7 +67,11 @@ patterns in this code base without running it.
 
 ## R4 — Order
 
-**Decision**: order = tier, then Tarjan's component order (callees before callers), then path.
+**Decision**: each call-graph component gets an effective tier = the highest tier in it and in
+every untested component it calls (16 caller→callee pairs crossed tiers upward before this rule,
+e.g. `GPR2models` (Tier 1) → `createModel` (Tier 2)); order = effective tier, then Tarjan's
+component order (callees before callers), then path. Result: Tier 1 371, Tier 2 246, Tier 3 274,
+Tier 4/5 39 PENDING.
 A function's test is written only when every untested function it calls is no longer PENDING. The
 work proceeds in **waves**: a wave is the set of PENDING functions (lowest tier first) whose
 untested callees are all TESTED (or EXCLUDED for a reason other than a defect). After each wave the
@@ -91,10 +98,10 @@ reading keeps quarantines evidence-based.
 
 **Decision**: when f is QUARANTINED: every PENDING file that reaches f through the graph becomes
 BLOCKED with `blocked_by = f` (several blockers listed if several apply). Files already TESTED in an
-earlier wave cannot call f (they were tested after f's tier and callees by construction, R4), except
-through edges discovered later (R3); such a file is re-examined: if its test exercises f's defect
-path, its affected inputs are skipped and documented (input-level, since its test passed and pins
-behaviour independent of the defect) and this is listed in the ledger. Functions outside the 1085
+earlier wave cannot call f (they were tested after f and their other callees by construction, R4),
+except through edges discovered later (R3). For such a file the constitution's quarantine clause
+applies unchanged: its new test is removed and it becomes BLOCKED by f, and so does every TESTED
+file that calls it (analysis C1). Functions outside the 1085
 (already tested) are never BLOCKED; FR-012 handles defects found in them.
 
 ## R7 — Execution: writers, MATLAB sessions, memory

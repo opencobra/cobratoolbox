@@ -26,7 +26,9 @@ A wave is formed, written, verified and committed as follows (research R4–R7, 
 4. `python3 $F/tools/update_ledger.py $F --apply $F/inventory/results/wave<NN>-*.jsonl` updates rows,
    adds extra edges, propagates BLOCKED (R6) and rewrites `$F/inventory/quarantine.md`.
 5. All tests of the wave run together once with coverage → `$F/inventory/coverage/wave<NN>.jsonl`;
-   a failure or an undocumented missed line is fixed before step 6.
+   the run compares the MATLAB path, global variables, open figures, the working folder and the
+   temporary folder before and after (FR-011); a failure, leftover state or an undocumented missed
+   line is fixed before step 6.
 6. `python3 .github/scripts/known_defects.py` (if any defect was recorded); privacy scan of staged
    files; commit as the maintainer without co-author line, never staging submodule pointers.
 
@@ -66,7 +68,7 @@ with complete or documented coverage.
 finds a confirmed defect for every QUARANTINED row and a quarantined reach for every BLOCKED row.
 
 - [ ] T011 [US3] After each tier checkpoint, regenerate `$F/inventory/quarantine.md` (ranking by files blocked) and check every quarantine has a second-reader confirmation in the ledger
-- [ ] T012 [US3] FR-012: for a defect found in an already-tested function, add the entry to that function's existing test header (assertions unchanged), mark it quarantined for this feature in `$F/inventory/ledger.tsv` (extra row type `EXISTING-QUARANTINED`) and propagate blocking
+- [ ] T012 [US3] FR-012: for a quarantining defect found in an already-tested function, add the entry to that function's existing test header by the input-level rule (assertions unchanged), list it in `$F/inventory/existing-defective.tsv` and propagate blocking to its untested callers; apply the late-edge rule (FR-009, research R6) when `--apply` adds an edge from a TESTED row to a QUARANTINED one
 
 ## Phase 6: User Story 4 — Tier 2 tests (Priority: P2)
 

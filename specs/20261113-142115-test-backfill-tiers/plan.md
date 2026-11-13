@@ -39,8 +39,8 @@ PR when the maintainer asks.
 quarantine rules (III-Defects 1.8.0, FR-007); no output or warning suppression (VII); no submodule
 pointer commits; push only when asked.
 
-**Scale/Scope**: 1085 untested files: 930 PENDING (Tier 1: 391, Tier 2: 226, Tier 3: 274,
-Tier 4/5: 39) and 155 EXCLUDED at inventory (R1); 4 call cycles.
+**Scale/Scope**: 1085 untested files: 930 PENDING by effective tier (Tier 1: 371, Tier 2: 246,
+Tier 3: 274, Tier 4/5: 39) and 155 EXCLUDED at inventory (R1, R4); 4 call cycles.
 
 ## Constitution Check
 
