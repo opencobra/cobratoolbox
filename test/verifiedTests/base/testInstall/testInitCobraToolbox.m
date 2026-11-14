@@ -7,7 +7,11 @@
 %     Test 1 (regression): mode omitted — globals set, sslVerify unchanged.
 %     Test 2 (agent mode): initCobraToolbox(false, 'agent') sets CBTDIR,
 %       SOLVERS, OPT_PROB_TYPES; leaves global http.sslVerify unchanged;
-%       leaves a usable default LP solver.
+%       marks glpk, pdco, mosek and matlab installed and working exactly when
+%       their local file or license check holds; sets CBT_NLP_SOLVER to
+%       'matlab' only when the Optimization Toolbox is present; leaves no
+%       thermochemistry new/ folder on the path; and, where mosek is present,
+%       leaves mosek selectable as LP solver.
 %     Test 3 (invalid mode): initCobraToolbox(false, 'nope') raises
 %       initCobraToolbox:invalidMode.
 %     Test 4 (runmat mode arguments): the invalid-mode message lists
@@ -22,12 +26,11 @@
 % Authors:
 %     - Ronan M.T. Fleming, June 2026
 %     - 'runmat' mode tests: feature 20261104-001324-runmat-init-mode, November 2026
+%     - agent-mode solver flags and new/ folders: feature
+%       20261107-133937-r2026a-test-failures, November 2026
 %
 
-global CBTDIR SOLVERS OPT_PROB_TYPES ENV_VARS CBT_INITIALIZED
-
-% Test 2 hard-asserts mosek is selectable; require it and skip gracefully if absent
-prepareTest('requiredSolvers', {'mosek'});
+global CBTDIR SOLVERS OPT_PROB_TYPES ENV_VARS CBT_INITIALIZED CBT_NLP_SOLVER
 
 fprintf('Testing initCobraToolbox agent mode ...\n');
 
@@ -84,6 +87,8 @@ fprintf('PASSED\n');
 % -------------------------------------------------------------------------
 fprintf('  Test 2: initCobraToolbox(false, ''agent'') ...\n');
 
+% reset the idempotency guard so that agent mode really runs here
+CBT_INITIALIZED = false;
 initCobraToolbox(false, 'agent');
 
 % globals must be set
@@ -98,9 +103,38 @@ assert(strcmp(sslBefore, sslAfterAgent), ...
     'http.sslVerify was modified by agent mode (before=''%s'', after=''%s'')', ...
     sslBefore, sslAfterAgent);
 
-% a default LP solver must be selectable without validation
-[solverOK, ~] = changeCobraSolver('mosek', 'LP', 0);
-assert(solverOK == 1, 'changeCobraSolver(''mosek'',''LP'',0) failed after agent init');
+% solver flags must match the local checks: a solver that is not present must
+% not be reported installed or working (otherwise tests fail instead of skip)
+solverPresent = struct( ...
+    'glpk', exist('glpkmex', 'file') >= 2, ...
+    'pdco', exist('pdco', 'file') >= 2, ...
+    'mosek', exist('mosekopt', 'file') >= 2, ...
+    'matlab', ~isempty(ver('optim')) && license('test', 'Optimization_Toolbox'));
+for solverName = fieldnames(solverPresent)'
+    sname = solverName{1};
+    assert(isequal(SOLVERS.(sname).installed, solverPresent.(sname)) ...
+        && isequal(SOLVERS.(sname).working, solverPresent.(sname)), ...
+        'Agent mode: SOLVERS.%s installed=%d working=%d, but the local check gives %d', ...
+        sname, SOLVERS.(sname).installed, SOLVERS.(sname).working, solverPresent.(sname));
+end
+
+% the NLP default is set only when its solver is present
+assert(isequal(strcmp(CBT_NLP_SOLVER, 'matlab'), solverPresent.matlab), ...
+    'Agent mode: CBT_NLP_SOLVER is ''%s'' but the Optimization Toolbox check gives %d', ...
+    CBT_NLP_SOLVER, solverPresent.matlab);
+
+% no thermochemistry new/ folder may remain on the path (as in default mode)
+thermoBase = strrep(which('initVonBertalanffy'), ['vonBertalanffy' filesep 'initVonBertalanffy.m'], '');
+pathEntries = strsplit(path, pathsep);
+newFolders = pathEntries(startsWith(pathEntries, thermoBase) & contains(pathEntries, [filesep 'new']));
+assert(isempty(newFolders), 'Agent mode left %d thermochemistry new/ folder(s) on the path, e.g. %s', ...
+    numel(newFolders), strjoin(newFolders(1:min(1, end)), ''));
+
+% where mosek is present, it must be selectable as LP solver without validation
+if solverPresent.mosek
+    [solverOK, ~] = changeCobraSolver('mosek', 'LP', 0);
+    assert(solverOK == 1, 'changeCobraSolver(''mosek'',''LP'',0) failed after agent init');
+end
 
 fprintf('  Test 2: PASSED\n');
 

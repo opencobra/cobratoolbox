@@ -133,6 +133,20 @@ for k = 1:numel(solvers.LP)
         % qualitative FVA of the exchange reactions, clustering and representative states
         ecoK.rxn2cluster = ecoK.rxn2cluster(contains(ecoK.rxn2cluster, 'EX_'));
         ecoK = ecosystemQualitativeFVA(ecoK, 'printLevel', 0);
+
+        % default zero threshold (feature 20261107-133937-r2026a-test-failures): omitting
+        % 'delta' must give the same states as passing the LP solver's feasTol explicitly,
+        % which proves the default is that tolerance for the current solver
+        deltaMask = false(size(ecoK.points, 1), 1);
+        deltaMask(ecoK.qualPointIndex(1:3)) = true;
+        deltaArgs = {'pointIndex', deltaMask, 'rxnList', {'EX_A_e', 'EX_B_e'}, 'updateBounds', false, 'printLevel', 0};
+        ecoDefaultDelta = ecosystemQualitativeFVA(ecoK, deltaArgs{:});
+        ecoFeasTolDelta = ecosystemQualitativeFVA(ecoK, deltaArgs{:}, 'delta', getCobraSolverParams('LP', 'feasTol'));
+        assert(isequal(ecoDefaultDelta.qualVectors, ecoFeasTolDelta.qualVectors));
+        % an explicit delta is still accepted and used as before (old default 1e-9)
+        ecoOldDelta = ecosystemQualitativeFVA(ecoK, deltaArgs{:}, 'delta', 1e-9);
+        assert(isequal(size(ecoOldDelta.qualVectors), [3 2]) && all(ismember(ecoOldDelta.qualVectors(:), -3:5)));
+
         ecoK = clusterEcosystemPoints(ecoK, 'k', 8, 'printLevel', 0);
         [repTable, repValues, rxnIds] = getEcosystemClusterReactionValues(ecoK, 'thr', 0.8);
         assert(isequal(rxnIds, {'EX_A_e'; 'EX_B_e'; 'EX_biom1_c'; 'EX_biom2_c'; 'org1_EX_A'; 'org1_EX_B'; 'org2_EX_A'; 'org2_EX_B'}));

@@ -29,11 +29,18 @@
 %       small graphs and digraphs (simple, multigraphs with self-loops, cycles) and the empty
 %       and single-node graphs must be classified as isisomorphic classifies them; and the
 %       'getFallbackCount' action must be reset by 'resetCallCount'.
+%     - Error parity across MATLAB releases (feature 20261107-133937-r2026a-test-failures,
+%       spec FR-004, FR-005): the recorded errors were captured under R2024b. A later
+%       release may report the same failure with a different built-in identifier or
+%       message, so isRecordedError also accepts the reviewed, release-annotated
+%       equivalents listed in it, and nothing else. A self-check asserts that it still
+%       rejects a foreign identifier and a changed message for every recorded error.
 %
 % Authors:
 %     - COBRA Toolbox, feature 021-prefilter-isomorphism-classification.
 %     - COBRA Toolbox, feature 20260930-102230-isomorphism-label-only-copies (reference cases).
 %     - COBRA Toolbox, feature 20261012-093525-symmetric-iso-zero-bond (exact unlabelled cases).
+%     - COBRA Toolbox, feature 20261107-133937-r2026a-test-failures (error parity).
 
 % N == 0: all outputs empty, no error, no division by zero or indexing
 % out of range.
@@ -126,8 +133,7 @@ for k = 1:numel(reference.errorCases)
         classifySubgraphIsomorphism(errorCase.subgraphs, errorCase.options{:});
     catch ME
         errorRaised = true;
-        assert(strcmp(ME.identifier, errorCase.errorIdentifier) && ...
-            strcmp(ME.message, errorCase.errorMessage), ...
+        assert(isRecordedError(ME, errorCase.errorIdentifier, errorCase.errorMessage), ...
             sprintf(['classifySubgraphIsomorphism raised a different error from the pre-change ' ...
             'helper (error case %d): expected %s: %s; got %s: %s (%s:%d).'], k, ...
             errorCase.errorIdentifier, errorCase.errorMessage, ME.identifier, ME.message, ...
@@ -136,6 +142,23 @@ for k = 1:numel(reference.errorCases)
     assert(errorRaised, sprintf(['classifySubgraphIsomorphism returned normally, but the ' ...
         'pre-change helper raised %s (error case %d).'], errorCase.errorIdentifier, k));
 end
+
+% Self-check: the error-parity check still rejects different errors
+nRejected = 0;
+for k = 1:numel(reference.errorCases)
+    errorCase = reference.errorCases(k);
+    foreignError = MException('testClassifySubgraphIsomorphism:foreignError', 'A different failure.');
+    changedMessage = MException(errorCase.errorIdentifier, '%s', [errorCase.errorMessage ' (changed)']);
+    assert(~isRecordedError(foreignError, errorCase.errorIdentifier, errorCase.errorMessage), ...
+        sprintf('Error-parity check accepted a foreign identifier (error case %d).', k));
+    assert(~isRecordedError(changedMessage, errorCase.errorIdentifier, errorCase.errorMessage), ...
+        sprintf('Error-parity check accepted a changed message (error case %d).', k));
+    nRejected = nRejected + 2;
+end
+assert(nRejected == 2 * numel(reference.errorCases) && nRejected > 0, ...
+    'Error-parity self-check did not run for every recorded error.');
+fprintf('Error-parity self-check: %d synthetic errors rejected for %d recorded error cases.\n', ...
+    nRejected, numel(reference.errorCases));
 
 % Exact unlabelled classification of near-symmetric components (feature
 % 20261012-093525-symmetric-iso-zero-bond, spec FR-001, FR-002, SC-001)
@@ -248,5 +271,31 @@ if isDirected
     testGraph = digraph(sourceNodes, targetNodes, [], numNodes);
 else
     testGraph = graph(sourceNodes, targetNodes, [], numNodes);
+end
+end
+
+function isRecorded = isRecordedError(ME, recordedIdentifier, recordedMessage)
+% True when the caught error ME is the recorded (R2024b) error, or one of the reviewed
+% equivalents below that a later MATLAB release raises for the same failure.
+% Each row: recorded identifier, recorded message, equivalent identifier, equivalent
+% message, MATLAB release that introduced the equivalent.
+equivalents = {
+    'MATLAB:table:IllegalVarSubscript', 'Table variable names must be strings or character vectors.', ...
+    'MATLAB:table:IllegalVarSubscript', 'A table variable name must be a string scalar or a character vector.', ...
+    'R2025a'
+    'MATLAB:table:IllegalVarSubscript', 'Table variable names must be strings or character vectors.', ...
+    'MATLAB:table:IllegalMultipleVarDotSubscript', ['Dot subscripting on a table extracts one ' ...
+    'variable from, or inserts one variable into, the table. Provide only one variable name or ' ...
+    'real positive integer variable index when using the syntax t.(i).'], ...
+    'R2026a'
+    };
+isRecorded = strcmp(ME.identifier, recordedIdentifier) && strcmp(ME.message, recordedMessage);
+for row = 1:size(equivalents, 1)
+    if isRecorded
+        return
+    end
+    isRecorded = strcmp(recordedIdentifier, equivalents{row, 1}) ...
+        && strcmp(recordedMessage, equivalents{row, 2}) ...
+        && strcmp(ME.identifier, equivalents{row, 3}) && strcmp(ME.message, equivalents{row, 4});
 end
 end

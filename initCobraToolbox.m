@@ -235,8 +235,10 @@ if ENV_VARS.printLevel
     fprintf(' > Checking if the repository is tracked using git ... ');
 end
 
-% check if the directory is a git-tracked folder
-if installedGit && exist([CBTDIR filesep '.git'], 'dir') ~= 7
+% check if the directory is a git-tracked folder; in a linked worktree (git
+% worktree add) .git is a file, not a folder, and is a checkout all the same
+gitPath = [CBTDIR filesep '.git'];
+if installedGit && ~isfolder(gitPath) && ~isfile(gitPath)
     % initialize the directory
     [status_gitInit, result_gitInit] = system('git init');
 
@@ -610,14 +612,17 @@ if ~agentMode
         SOLVERS.(supportedSolversNames{i}).installed = solverInstalled;
     end
 else
-    % in agent mode skip solver probing; mark expected defaults installed/working
-    % without network or file-system validation (machine assumed already set up).
+    % in agent mode skip solver probing (no test solves, no network); mark the
+    % expected defaults installed/working only when the local file or license
+    % check that changeCobraSolver itself uses holds, so tests that need a
+    % missing solver are skipped rather than failed.
     % changeCobraSolver with validate=0 requires installed=true to set globals.
     for agentSolver = {'glpk', 'pdco', 'mosek', 'matlab'}
         sname = agentSolver{1};
         if isfield(SOLVERS, sname)
-            SOLVERS.(sname).installed = true;
-            SOLVERS.(sname).working = true;
+            solverPresent = isAgentSolverInstalled(sname);
+            SOLVERS.(sname).installed = solverPresent;
+            SOLVERS.(sname).working = solverPresent;
         end
     end
     % honour gurobi if its MEX interface is already on the path (local check only)
@@ -648,13 +653,18 @@ if ENV_VARS.printLevel
 elseif agentMode
     % set default solvers silently; no validation, no path save
     % EP/CLP/NLP are set directly to avoid test-solve output from changeCobraSolver
-    % (SOLVERS flags already marked working above; machine assumed configured)
+    % (SOLVERS flags set above from local checks; a default is set only for a
+    % solver found there, otherwise it stays empty)
     changeCobraSolver('glpk', 'LP', 0);
     changeCobraSolver('glpk', 'MILP', 0);
     changeCobraSolver('pdco', 'QP', 0);
-    CBT_EP_SOLVER = 'mosek';
-    CBT_CLP_SOLVER = 'mosek';
-    CBT_NLP_SOLVER = 'matlab';
+    if SOLVERS.mosek.working
+        CBT_EP_SOLVER = 'mosek';
+        CBT_CLP_SOLVER = 'mosek';
+    end
+    if SOLVERS.matlab.working
+        CBT_NLP_SOLVER = 'matlab';
+    end
 end
 
 if ~agentMode
@@ -836,7 +846,7 @@ end
 % set up the COBRA System path
 addCOBRABinaryPathToSystemPath();
 
-%remove /new thermo folders from path (skipped in agent mode: paths assumed clean)
+%remove /new thermo folders from path
 if ~agentMode
     %TODO resolve issues with new file versions
     aPath = which('initVonBertalanffy');
@@ -845,6 +855,18 @@ if ~agentMode
     folderPattern=[filesep 'new'];
     method = 'remove';
     editCobraToolboxPath(basePath,folderPattern,method)
+else
+    % agent mode: same result without walking the disk or printing; filter the
+    % path string (genpath of src/ above has already added the new/ folders)
+    aPath = which('initVonBertalanffy');
+    if ~isempty(aPath)
+        basePath = strrep(aPath,['vonBertalanffy' filesep 'initVonBertalanffy.m'],'');
+        pathEntries = strsplit(path, pathsep);
+        isNewFolder = startsWith(pathEntries, basePath) & contains(pathEntries, [filesep 'new']);
+        if any(isNewFolder)
+            rmpath(pathEntries{isNewFolder});
+        end
+    end
 end
 
 if exist([CBTDIR filesep 'binary' filesep 'glnxa64' filesep 'lib_old'],'dir')
@@ -1061,5 +1083,36 @@ else
             fprintf(' (unsuccessful - no internet connection).\n');
         end
     end
+end
+end
+
+function solverOK = isAgentSolverInstalled(solverName)
+% Local check, used in agent mode, of whether a default solver is present.
+% It applies the same file or license test that changeCobraSolver uses to
+% decide that a solver is installed, without a test solve or network access.
+%
+% USAGE:
+%
+%    solverOK = isAgentSolverInstalled(solverName)
+%
+% INPUT:
+%    solverName:    one of 'glpk', 'mosek', 'pdco' or 'matlab'
+%
+% OUTPUT:
+%    solverOK:      true if the solver's interface (or, for 'matlab', the
+%                   Optimization Toolbox and its license) is available;
+%                   false for any other name
+
+switch solverName
+    case 'glpk'
+        solverOK = exist('glpkmex', 'file') >= 2;
+    case 'mosek'
+        solverOK = exist('mosekopt', 'file') >= 2;
+    case 'pdco'
+        solverOK = exist('pdco', 'file') >= 2;
+    case 'matlab'
+        solverOK = ~isempty(ver('optim')) && license('test', 'Optimization_Toolbox');
+    otherwise
+        solverOK = false;
 end
 end

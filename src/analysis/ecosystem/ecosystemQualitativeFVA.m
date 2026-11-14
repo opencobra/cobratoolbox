@@ -23,7 +23,13 @@ function [eco, qualVectors, fvaResults] = ecosystemQualitativeFVA(eco, varargin)
 %                    `setEcosystemClusterReactions` if empty)
 %    delta:          (double) threshold to consider fluxes as zero when
 %                    translating flux ranges into qualitative states
-%                    (Default = 1e-9)
+%                    (Default = the LP solver's primal feasibility tolerance,
+%                    `getCobraSolverParams('LP', 'feasTol')`, read at call
+%                    time: a flux within that tolerance of zero cannot be
+%                    told apart from zero by the solver. Interior-point
+%                    solvers such as mosek return such fluxes as small
+%                    nonzero values. Until November 2026 the default was
+%                    1e-9; pass 'delta', 1e-9 for the old behaviour)
 %    pointIndex:     (double) indices of the grid points to analyze
 %                    (Default = feasible points or all points)
 %    threads:        (double) number of threads passed to `fluxVariability`.
@@ -59,12 +65,13 @@ function [eco, qualVectors, fvaResults] = ecosystemQualitativeFVA(eco, varargin)
 %    error.
 %
 % .. Author: - Sebastián N. Mendoza, 13/10/2026, MATLAB implementation based on the Python code of N.E. Jiménez et al.
+%            - 14/11/2026, default delta is the LP feasTol (feature 20261107-133937-r2026a-test-failures)
 
 parser = inputParser();
 parser.addRequired('eco', @(x) isstruct(x) && isfield(x, 'model') && isfield(x, 'points'));
 parser.addParameter('updateBounds', true, @(x) islogical(x) || isnumeric(x));
 parser.addParameter('rxnList', {}, @(x) iscellstr(x) || isstring(x));
-parser.addParameter('delta', 1e-9, @(x) isnumeric(x) && isscalar(x) && x >= 0);
+parser.addParameter('delta', [], @(x) isempty(x) || (isnumeric(x) && isscalar(x) && x >= 0));
 parser.addParameter('pointIndex', [], @(x) isnumeric(x) || islogical(x));
 parser.addParameter('threads', [], @(x) isempty(x) || (isnumeric(x) && isscalar(x)));
 parser.addParameter('printLevel', 1, @(x) isnumeric(x) || islogical(x));
@@ -73,6 +80,10 @@ eco = parser.Results.eco;
 updateBounds = parser.Results.updateBounds;
 rxnList = cellstr(parser.Results.rxnList);
 delta = parser.Results.delta;
+if isempty(delta)
+    % default: the LP solver's feasibility tolerance (see the help text)
+    delta = getCobraSolverParams('LP', 'feasTol');
+end
 pointIndex = parser.Results.pointIndex;
 threads = parser.Results.threads;
 printLevel = parser.Results.printLevel;

@@ -20,10 +20,17 @@
 %       conncomp(ATG), and an input whose atom index exceeds numnodes(BIG), which must
 %       raise the same error. The subgraph/rmedge ordering rules the rewrite relies on
 %       are asserted directly, so a MATLAB release that changes them fails here.
+%     - Error parity across MATLAB releases (feature 20261107-133937-r2026a-test-failures,
+%       spec FR-004, FR-005): the recorded errors were captured under R2024b. A later
+%       release may report the same failure with a different built-in identifier or
+%       message, so isRecordedError also accepts the reviewed, release-annotated
+%       equivalents listed in it, and nothing else. A self-check asserts that it still
+%       rejects a foreign identifier and a changed message for every recorded error.
 %
 % Authors:
 %     - COBRA Toolbox, feature 20260921-154310-reacting-moiety-optimisation
 %     - COBRA Toolbox, feature 20260928-100409-extract-bond-subgraphs-local-peeling
+%     - COBRA Toolbox, feature 20261107-133937-r2026a-test-failures (error parity)
 
 % only base MATLAB graph functions are used: no solver or toolbox requirement
 prepareTest();
@@ -58,8 +65,7 @@ for k = 1:numel(fallbackCases)
             extractBondSubgraphs(fallbackCase.BIG, fallbackCase.ATG);
         catch ME
             errorRaised = true;
-            assert(strcmp(ME.identifier, fallbackCase.errorIdentifier) && ...
-                strcmp(ME.message, fallbackCase.errorMessage), ...
+            assert(isRecordedError(ME, fallbackCase.errorIdentifier, fallbackCase.errorMessage), ...
                 sprintf(['extractBondSubgraphs raised a different error from the pre-change ' ...
                 'function (%s): expected %s: %s; got %s: %s (%s:%d).'], fallbackCase.name, ...
                 fallbackCase.errorIdentifier, fallbackCase.errorMessage, ME.identifier, ...
@@ -109,8 +115,7 @@ for k = 1:numel(peeling.peelingCases)
             extractBondSubgraphs(peelingCase.BIG, peelingCase.ATG);
         catch ME
             errorRaised = true;
-            assert(strcmp(ME.identifier, peelingCase.errorIdentifier) && ...
-                strcmp(ME.message, peelingCase.errorMessage), ...
+            assert(isRecordedError(ME, peelingCase.errorIdentifier, peelingCase.errorMessage), ...
                 sprintf(['extractBondSubgraphs raised a different error from the pre-change ' ...
                 'function (%s): expected %s: %s; got %s: %s (%s:%d).'], peelingCase.name, ...
                 peelingCase.errorIdentifier, peelingCase.errorMessage, ME.identifier, ...
@@ -128,6 +133,27 @@ if isfield(peeling, 'n332Inputs')
         isequal(edgeIndex332, peeling.n332Expected.bmgEdgeIndex), ...
         'extractBondSubgraphs output differs from the pre-change reference (332-reaction subset).');
 end
+
+% --- self-check: the error-parity check still rejects different errors ---
+fallbackErrors = fallbackCases(~strcmp({fallbackCases.outcome}, 'ok'));
+peelingErrors = peeling.peelingCases(~strcmp({peeling.peelingCases.outcome}, 'ok'));
+recordedNames = [{fallbackErrors.name}, {peelingErrors.name}];
+recordedIdentifiers = [{fallbackErrors.errorIdentifier}, {peelingErrors.errorIdentifier}];
+recordedMessages = [{fallbackErrors.errorMessage}, {peelingErrors.errorMessage}];
+nRejected = 0;
+for k = 1:numel(recordedNames)
+    foreignError = MException('testExtractBondSubgraphs:foreignError', 'A different failure.');
+    changedMessage = MException(recordedIdentifiers{k}, '%s', [recordedMessages{k} ' (changed)']);
+    assert(~isRecordedError(foreignError, recordedIdentifiers{k}, recordedMessages{k}), ...
+        sprintf('Error-parity check accepted a foreign identifier (%s).', recordedNames{k}));
+    assert(~isRecordedError(changedMessage, recordedIdentifiers{k}, recordedMessages{k}), ...
+        sprintf('Error-parity check accepted a changed message (%s).', recordedNames{k}));
+    nRejected = nRejected + 2;
+end
+assert(nRejected == 2 * numel(recordedNames) && nRejected > 0, ...
+    'Error-parity self-check did not run for every recorded error.');
+fprintf('Error-parity self-check: %d synthetic errors rejected for %d recorded error cases.\n', ...
+    nRejected, numel(recordedNames));
 
 % --- the subgraph/rmedge ordering rules the rewrite relies on ---
 checkSubgraphOrderingContract();
@@ -183,6 +209,27 @@ for g = 1:numel(graphs)
     assert(isequal(R.Edges, G.Edges(setdiff(1:numedges(G), removed), :)), ...
         sprintf('Ordering rule 5 (%s): rmedge does not keep the relative order of the other rows.', ...
         class(G)));
+end
+end
+
+function isRecorded = isRecordedError(ME, recordedIdentifier, recordedMessage)
+% True when the caught error ME is the recorded (R2024b) error, or one of the reviewed
+% equivalents below that a later MATLAB release raises for the same failure.
+% Each row: recorded identifier, recorded message, equivalent identifier, equivalent
+% message, MATLAB release that introduced the equivalent.
+equivalents = {
+    'MATLAB:UndefinedFunction', 'Undefined function ''eq'' for input arguments of type ''cell''.', ...
+    'MATLAB:math:mustBeNumericCharOrLogical', 'Invalid data type. Argument must be numeric, char, or logical.', ...
+    'R2026a'
+    };
+isRecorded = strcmp(ME.identifier, recordedIdentifier) && strcmp(ME.message, recordedMessage);
+for row = 1:size(equivalents, 1)
+    if isRecorded
+        return
+    end
+    isRecorded = strcmp(recordedIdentifier, equivalents{row, 1}) ...
+        && strcmp(recordedMessage, equivalents{row, 2}) ...
+        && strcmp(ME.identifier, equivalents{row, 3}) && strcmp(ME.message, equivalents{row, 4});
 end
 end
 

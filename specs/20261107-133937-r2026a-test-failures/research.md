@@ -125,8 +125,9 @@ Six recorded error cases exist in total. Their state on R2026a:
   Callers who need the old behaviour pass `'delta', 1e-9`. The help text states the new default and that recipe.
 - **External-solver configuration audit**: no solver option is changed. The surface that matters here is each
   solver's primal feasibility tolerance as set from `feasTol`. Verified: glpk `tolbnd` (`solveCobraLP.m:591`) and
-  mosek `MSK_DPAR_INTPNT_TOL_PFEAS` (`setMosekParam.m:414`, `:429`). Gurobi's mapping is not located in
-  `solveCobraLP.m` and is to be confirmed when implementing. `getCobraSolverParams('LP', 'feasTol')` returns 1e-6
+  mosek `MSK_DPAR_INTPNT_TOL_PFEAS` (`setMosekParam.m:414`, `:429`). Gurobi: `solveCobraLP.m:827` calls
+  `setGurobiParam(param)`, which sets `FeasibilityTol = feasTol` when not given (`setGurobiParam.m:205`, `:214`;
+  confirmed in T004). `getCobraSolverParams('LP', 'feasTol')` returns 1e-6
   for all three on this machine. Mosek returns interior (non-vertex) LP solutions, so zero fluxes come back as values below
   `feasTol`, not as exact zeros. Deriving `delta` from `feasTol` matches the threshold to that profile. The problem
   data are 23-reaction toy community LPs (sparse, continuous, well scaled).
