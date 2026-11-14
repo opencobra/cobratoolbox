@@ -1,7 +1,7 @@
 # Human Loop State
 
 ## Current State
-- Status: implemented and committed locally (T001-T026); Gate 3 pending
+- Status: closed at Gate 3 (accepted); branch pushed, PR opened to opencobra develop
 - Active feature directory: specs/20261107-133937-r2026a-test-failures
 - Last completed bundle: 3 (implementation); Bundle 4 verification done
 - Source code modified by this workflow: yes
@@ -23,6 +23,7 @@
 | 2026-11-12 | Plan (US3 option, Principle IV solver policy) | Default delta from solver | ecosystemQualitativeFVA default delta = LP feasTol; spec FR-006/FR-007 amended |
 | 2026-11-13 | — | "speckit human loop the remaining" | Bundle 2 (tasks, analyze, review) run; Gate 2 next |
 | 2026-11-14 | — | `/speckit-implement` | T001-T026 executed; no regressions in either start-up mode; see receipt |
+| 2026-11-14 | Gate 3 | Accept, then push + PR; Edit startup.m (Recommended) | Maintainer's startup.m: mosek addpath moved above initCobraToolbox (verified: mosek installed and the default for LP, QP and EP); branch pushed and PR opened |
 | 2026-11-13 | Gate 2 | Fix spec, approve all (Recommended); path /speckit-implement | I1/U1/A1 applied to spec.md; T001–T026 approved; C1 recorded as a receipt follow-up; push/PR need separate confirmation |
 
 ## Approved Implementation Scope
@@ -42,5 +43,5 @@
 - Analyze C1: legacy test headers predate III-Coverage.
 - Spec Background originally misdiagnosed the mosek failure as a NaN; corrected 2026-11-12.
 - Implementation deviation: the file-level `prepareTest` mosek guard was removed from testInitCobraToolbox (the mosek assertion is now conditional).
-- The maintainer's startup.m adds mosek to the path after the agent start-up, so mosek stops being the default; to be decided at Gate 3.
+- The maintainer's startup.m added mosek to the path after the agent start-up, so mosek stopped being the default: fixed at Gate 3 by moving the addpath (outside the repo). Other users with the same ordering will see the same effect.
 - Not verified: RunMat (binary broken), R2024b, and E1 (Optimization Toolbox present).
