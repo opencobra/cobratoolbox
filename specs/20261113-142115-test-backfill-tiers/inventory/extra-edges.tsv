@@ -5,3 +5,6 @@ src/reconstruction/refinement/GPRLogic/OrNode.m	src/reconstruction/refinement/GP
 src/base/solvers/param/changeCobraSolverParams.m	src/base/solvers/getSetSolver/CobraSolverState.m
 src/reconstruction/refinement/GPRLogic/Node.m	src/reconstruction/refinement/GPRLogic/AndNode.m
 src/reconstruction/refinement/GPRLogic/Node.m	src/reconstruction/refinement/GPRLogic/OrNode.m
+src/analysis/persephone/performRegressions.m	src/base/utilities/toolboxFree/cobraGeneralizedLinearModel.m
+src/analysis/rMTA/calculateEPSILON.m	src/base/utilities/toolboxFree/cobraTinv.m
+src/reconstruction/refinement/GPRLogic/FormulaParser.m	src/reconstruction/refinement/GPRLogic/Node.m

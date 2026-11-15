@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-313 known defects in 169 functions (111 wrong-result, 96 error, 22 unusable-option, 42 cosmetic, 42 limitation).
+357 known defects in 194 functions (124 wrong-result, 108 error, 24 unusable-option, 52 cosmetic, 49 limitation).
 
 ## Summary
 
@@ -62,15 +62,32 @@
 | `src/analysis/igemRNA/filterNonFluxReactions/filterNonFluxReactions.m` | wrong-result | The result file is written next to the result folder, not into it | `test/verifiedTests/analysis/testFilterNonFluxReactions/testFilterNonFluxReactions.m` |
 | `src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m` | limitation | Errors when the source sheet holds no gene | `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m` |
 | `src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m` | limitation | Genes are matched by row position, not by gene ID | `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m` | error | Every call stops with an error when the taxonomy is prepared for export | `test/verifiedTests/analysis/testAdditionalAnalysis/testCorrelateFluxWithTaxonAbundance.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m` | cosmetic | Box plots print the handle array of every plot | `test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m` | limitation | Features with negative values are dropped as if they were all zero | `test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/performStatisticalAnalysis.m` | cosmetic | Fecal exchange features never get a metabolite description | `test/verifiedTests/analysis/testAdditionalAnalysis/testPerformStatisticalAnalysis.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/performStatisticalAnalysis.m` | wrong-result | Samples whose values are all zero are not removed | `test/verifiedTests/analysis/testAdditionalAnalysis/testPerformStatisticalAnalysis.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/plotFluxesAgainstOrganismAbundances.m` | cosmetic | The current folder stays Metabolite_plots after an error | `test/verifiedTests/analysis/testAdditionalAnalysis/testPlotFluxesAgainstOrganismAbundances.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/plotFluxesAgainstOrganismAbundances.m` | error | The documented orientation of the flux table and relative file paths stop with an error | `test/verifiedTests/analysis/testAdditionalAnalysis/testPlotFluxesAgainstOrganismAbundances.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/addMicrobeCommunityBiomass.m` | wrong-result | Abundance weights are rounded to six significant digits | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddMicrobeCommunityBiomass.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/extractFullRes.m` | error | Errors when the first sample is infeasible and a later one is feasible | `test/verifiedTests/analysis/testMgPipe/testExtractFullRes.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m` | wrong-result | The feasibility of every diet is read from the last diet | `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m` | limitation | Two samples stop with an error in the PCoA | `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m` | wrong-result | Uptake of an exchange missing from a sample is copied from the previous sample | `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m` | limitation | A structure without a rxns field is silently not saved | `test/verifiedTests/analysis/testMgPipe/testParsave.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m` | error | The documented matrix inputs stop with an error | `test/verifiedTests/analysis/testMgPipe/testPlotMappingInfo.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m` | wrong-result | The heatmap shows only the first four individuals | `test/verifiedTests/analysis/testMgPipe/testPlotMappingInfo.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m` | wrong-result | Abundances read from a tsv file are added and normalized as text | `test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/updateTaxonomyInfoAGORA.m` | cosmetic | The row counter is printed for every strain | `test/verifiedTests/analysis/testMgPipe/testUpdateTaxonomyInfoAGORA.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m` | error | Errors when the taxon table has fewer rows than columns | `test/verifiedTests/analysis/testMultiSpeciesModelling/testCalculateInteractionsByTaxon.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/joinModelsPairwiseFromList.m` | error | Two models whose file names start with the same model name stop the function | `test/verifiedTests/analysis/testMultiSpeciesModelling/testJoinModelsPairwiseFromList.m` |
 | `src/analysis/parsimoniousFBA/pFBA.m` | error | A call with one output stops with an error | `test/verifiedTests/analysis/testpFBA/testpFBA.m` |
 | `src/analysis/persephone/additionalFunctions/combineFluxResults.m` | error | Errors for a common germ-free sample preceded by a sample of the first run only | `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m` |
 | `src/analysis/persephone/additionalFunctions/combineFluxResults.m` | wrong-result | Shadow prices of the second run are dropped when the folders hold different samples | `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m` |
+| `src/analysis/persephone/additionalFunctions/convertVMHIDName.m` | wrong-result | Names of unknown IDs are dropped, so names and IDs do not line up | `test/verifiedTests/analysis/testPersephone/testConvertVMHIDName.m` |
+| `src/analysis/persephone/additionalFunctions/convertVMHIDName.m` | error | The numeric skip flag 0 for metNames raises an error | `test/verifiedTests/analysis/testPersephone/testConvertVMHIDName.m` |
+| `src/analysis/persephone/additionalFunctions/convertVMHIDName.m` | error | The skip flag 0 for VMHIDs raises an error | `test/verifiedTests/analysis/testPersephone/testConvertVMHIDName.m` |
+| `src/analysis/persephone/additionalFunctions/convertVMHIDName.m` | error | similarMets is never assigned from the suggestions | `test/verifiedTests/analysis/testPersephone/testConvertVMHIDName.m` |
 | `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | limitation | A text (cell array) variable of interest is not supported | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
 | `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | error | Errors when the regression of a metadata variable gives a warning | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
 | `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | cosmetic | The loadings figure of PC 1 is saved as Loadings_PC11.png | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
@@ -81,16 +98,41 @@
 | `src/analysis/persephone/additionalFunctions/generatePanDatabase.m` | wrong-result | Coefficients of new reactions are written to the wrong columns | `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m` |
 | `src/analysis/persephone/additionalFunctions/generatePanDatabase.m` | limitation | The documented default inputDir needs an explicit empty argument | `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m` |
 | `src/analysis/persephone/additionalFunctions/generateStackedBarPlot.m` | error | Errors for a single sample | `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot.m` |
+| `src/analysis/persephone/additionalFunctions/getVMHID.m` | wrong-result | Suggestions are misaligned after a found name | `test/verifiedTests/analysis/testPersephone/testGetVMHID.m` |
+| `src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m` | cosmetic | An unlabelled count is printed | `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m` |
+| `src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m` | wrong-result | Taxa whose name contains "pan" are counted as unmapped | `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m` |
+| `src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m` | cosmetic | The sheet of unmapped taxa is named 'Umapped' | `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m` |
+| `src/analysis/persephone/additionalFunctions/plotAbsentTaxaEffectOnMARScoverage.m` | wrong-result | The genus+epithet curve starts at the standard deviation of the base coverage | `test/verifiedTests/analysis/testPersephone/testPlotAbsentTaxaEffectOnMARScoverage.m` |
+| `src/analysis/persephone/additionalFunctions/setResultPath.m` | error | On Linux and macOS the results folder is placed at the file-system root | `test/verifiedTests/analysis/testPersephone/testSetResultPath.m` |
+| `src/analysis/persephone/additionalFunctions/slimDownFBAresults.m` | cosmetic | The call leaves every MATLAB warning switched on | `test/verifiedTests/analysis/testPersephone/testSlimDownFBAresults.m` |
+| `src/analysis/persephone/additionalFunctions/validateDietPath.m` | error | A diet file path stops with an error | `test/verifiedTests/analysis/testPersephone/testValidateDietPath.m` |
+| `src/analysis/persephone/analyseWBMsol.m` | error | Errors for germ-free and microbiome-personalised iWBMs with analyseGF | `test/verifiedTests/analysis/testPersephone/testAnalyseWBMsol.m` |
+| `src/analysis/persephone/analyseWBMsol.m` | error | Errors when the reaction list contains a duplicate | `test/verifiedTests/analysis/testPersephone/testAnalyseWBMsol.m` |
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
+| `src/analysis/persephone/generateStackedBarPlot_PhylumMARScoverage.m` | error | Errors for more than seven phyla | `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot_PhylumMARScoverage.m` |
+| `src/analysis/persephone/performRegressions.m` | wrong-result | The MATLAB version check reads the first product listed by ver | `test/verifiedTests/analysis/testPersephone/testPerformRegressions.m` |
+| `src/analysis/persephone/readMetadataForPersephone.m` | cosmetic | All warnings are switched on after the call | `test/verifiedTests/analysis/testPersephone/testReadMetadataForPersephone.m` |
+| `src/analysis/persephone/readMetadataForPersephone.m` | wrong-result | The units line is dropped instead of being stored in VariableUnits | `test/verifiedTests/analysis/testPersephone/testReadMetadataForPersephone.m` |
+| `src/analysis/persephone/runMars.m` | wrong-result | The processed and mapped summary sheets hold the original data | `test/verifiedTests/analysis/testPersephone/testRunMars.m` |
+| `src/analysis/persephone/runNonparametricTests.m` | wrong-result | A comparison skipped for missing values gets p-value 0 and FDR 0 | `test/verifiedTests/analysis/testPersephone/testRunNonparametricTests.m` |
+| `src/analysis/persephone/runNonparametricTests.m` | limitation | The predictor name is accepted in any case but used as given | `test/verifiedTests/analysis/testPersephone/testRunNonparametricTests.m` |
 | `src/analysis/persephone/validatePersephoneInputs.m` | error | A column reaction list with two or more duplicates fails while the message is built | `test/verifiedTests/analysis/testPersephone/testValidatePersephoneInputs.m` |
 | `src/analysis/rFBA/solveBooleanRegModel.m` | error | A name that is contained in a later name of the same rule stops with an error | `test/verifiedTests/analysis/testrFBA/testSolveBooleanRegModel.m` |
+| `src/analysis/rMTA/calculateEPSILON.m` | limitation | 'unique_epsilon' stops with an error when no reaction changes | `test/verifiedTests/analysis/testRMTA/testCalculateEPSILON.m` |
+| `src/analysis/rMTA/calculateEPSILON.m` | cosmetic | The documented codes of rxnFBS do not match the code | `test/verifiedTests/analysis/testRMTA/testCalculateEPSILON.m` |
+| `src/analysis/rMTA/rMTAsaveInExcel.m` | unusable-option | The documented default of alpha_values cannot be used | `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m` |
+| `src/analysis/rMTA/rMTAsaveInExcel.m` | limitation | The sheets written with xlswrite need Microsoft Excel | `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m` |
 | `src/analysis/relaxedFBA/relaxedFBA.m` | limitation | A generic LP without rxns and mets stops with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m` |
 | `src/analysis/relaxedFBA/relaxedFBA.m` | error | Extra variables given only by model.D stop with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
+| `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m` | cosmetic | A log file is written into the current folder | `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m` |
+| `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m` | unusable-option | The parallel mode cannot start its worker processes on Linux and macOS | `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m` |
 | `src/analysis/sampling/ACHR/convRevSamples.m` | wrong-result | Bounds of a reverse-only reaction are not exchanged correctly | `test/verifiedTests/analysis/testSampling/testConvRevSamples.m` |
 | `src/analysis/sampling/ACHR/gpSampler.m` | unusable-option | A bias distribution stops with an error | `test/verifiedTests/analysis/testSampling/testGpSampler.m` |
 | `src/analysis/sampling/ACHR/gpSampler.m` | error | A problem given by A without S stops with an error | `test/verifiedTests/analysis/testSampling/testGpSampler.m` |
 | `src/analysis/sampling/ACHR/gpSampler.m` | unusable-option | The distributed sampler does not exist | `test/verifiedTests/analysis/testSampling/testGpSampler.m` |
+| `src/analysis/sampling/ACHR/verifyPoints.m` | error | One point stops with an error when a sense has a single row | `test/verifiedTests/analysis/testSampling/testVerifyPoints.m` |
+| `src/analysis/sampling/ACHR/verifyPoints.m` | wrong-result | errorsA gives row numbers within the constraints of one sense, not rows of A | `test/verifiedTests/analysis/testSampling/testVerifyPoints.m` |
 | `src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m` | error | step_size fails for more than one point | `test/verifiedTests/analysis/testSampling/testTwoSidedBarrier.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | error | A format without a width gives a NaN length and header fails | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | wrong-result | The blank that separates the columns is dropped | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
@@ -282,6 +324,8 @@
 | `src/reconstruction/rBioNet/rBioNetSaveLoad.m` | cosmetic | Saving prints the whole database | `test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m` |
 | `src/reconstruction/refinement/GPRLogic/AndNode.m` | limitation | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m` |
 | `src/reconstruction/refinement/GPRLogic/AndNode.m` | limitation | convertToDNF of an AndNode without children stops with an error | `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m` |
+| `src/reconstruction/refinement/GPRLogic/FormulaParser.m` | limitation | An empty rule stops with an error | `test/verifiedTests/reconstruction/testGPRLogic/testFormulaParser.m` |
+| `src/reconstruction/refinement/GPRLogic/FormulaParser.m` | limitation | createNodeStructure fails for a text with spaced operators that is not a stored key | `test/verifiedTests/reconstruction/testGPRLogic/testFormulaParser.m` |
 | `src/reconstruction/refinement/GPRLogic/Node.m` | limitation | contains stops with an error on a node without children | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
 | `src/reconstruction/refinement/GPRLogic/Node.m` | wrong-result | isequal is false for a tree with a repeated clause, and not symmetric | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
 | `src/reconstruction/refinement/GPRLogic/Node.m` | wrong-result | isequal is false for equivalent trees with different literals | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
@@ -864,6 +908,77 @@
 - **Source lines**: 30-32
 - **Documented in**: `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m`
 
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m`
+
+#### Every call stops with an error when the taxonomy is prepared for export
+
+- **Severity**: error
+- **Trigger**: any input that reaches line 262, for example abundance file 'ID,S1,S2,S3,S4,S5' with Bact_a 0.1..0.5, Bact_b 0.5..0.1, Esch_c 0.4 in every sample; taxonomy file 'MicrobeID,Phylum,Class,Order,Family,Genus,Species' with Bact_a P1,C1,O1,F1,G1,Sp1, Bact_b P1,C1,O1,F1,G1,Sp2, Esch_c P2,C2,O2,F2,G2,Sp3; flux file 'ID,EX_ac[fe],EX_but[fe]' with samples S1-S5 as rows; correlateFluxWithTaxonAbundance(abundancePath, fluxPath, infoFilePath)
+- **Observed**: MATLAB:colon:operandsNotRealScalar, Colon operands must be real scalars. Line 260 sets taxonCol = 'Phylum' and line 262 indexes taxonomy(:, taxonCol+1:end) with a character vector as colon operand (MATLAB R2025a). The folder Taxon_Flux_Correlations is already created in the current folder.
+- **Expected**: the correlations, p-values and taxonomy information returned and written to Taxon_Flux_Correlations
+- **Source lines**: 260-262
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testCorrelateFluxWithTaxonAbundance.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m`
+
+#### Box plots print the handle array of every plot
+
+- **Severity**: cosmetic
+- **Trigger**: makeViolinPlots(sampleData, {}, 'plotType', 'Boxplot') with a plotted feature
+- **Observed**: "ans = 7x1 Line array" (7x<groups> with stratification) is printed for every plot: the calls to cobraBoxplot have no semicolon
+- **Expected**: no console output
+- **Source lines**: 102, 199
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m`
+
+#### Features with negative values are dropped as if they were all zero
+
+- **Severity**: limitation
+- **Trigger**: a row of sampleData whose values sum below 1e-4, for example {'EX_glc_D[fe]', -1, -2, -3, -4, -5, -6}
+- **Observed**: the row is removed (line 63 tests sum(...) < 0.0001) and no plot is drawn; likewise a group whose values sum to zero is overwritten with 1e-7 (lines 188-189)
+- **Expected**: only features that are all zero removed (code comment "remove fluxes that are all zeros"); data of any sign plotted
+- **Source lines**: 63, 188-189
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/performStatisticalAnalysis.m`
+
+#### Fecal exchange features never get a metabolite description
+
+- **Severity**: cosmetic
+- **Trigger**: the call above; the metabolite ac (Acetate) is in the VMH database
+- **Observed**: the Description of EX_ac[fe] is 'NA'. The condition on line 230 includes the header 'Feature' of Statistics(:,1), which never contains '[fe]', so the prefix and suffix are never stripped.
+- **Expected**: 'Acetate'
+- **Source lines**: 230-232
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testPerformStatisticalAnalysis.m`
+
+#### Samples whose values are all zero are not removed
+
+- **Severity**: wrong-result
+- **Trigger**: sampleData = {'', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7'; 'EX_ac[fe]', 1, 2, 3, 10, 11, 12, 0; 'ATPM', 5, 6, 7, 1, 2, 3, 0}; sampleInformation = {'ID', 'Group'; 'S1', 'A'; 'S2', 'A'; 'S3', 'A'; 'S4', 'B'; 'S5', 'B'; 'S6', 'B'; 'S7', 'A'}; performStatisticalAnalysis(sampleData, sampleInformation, 'BHFDR', true)
+- **Observed**: the all-zero sample S7 stays in significantFeatures and in the tests: p-values before correction 0.0518 and 0.3768, Average_A 1.5 and 4.5 (without S7: 0.0809, 0.0809, 2 and 6). Line 75 applies str2double to numeric cells, which gives NaN, so the all-zero condition never holds (MATLAB R2025a).
+- **Expected**: S7 removed (code comment "delete columns that are all zeros") and the statistics of S1 to S6
+- **Source lines**: 75-77
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testPerformStatisticalAnalysis.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/plotFluxesAgainstOrganismAbundances.m`
+
+#### The current folder stays Metabolite_plots after an error
+
+- **Severity**: cosmetic
+- **Trigger**: abundance and flux tables with different samples
+- **Observed**: after the error of line 38, pwd is <current folder>/Metabolite_plots (the cd .. of line 90 is not reached)
+- **Expected**: the current folder of the caller
+- **Source lines**: 26, 38, 90
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testPlotFluxesAgainstOrganismAbundances.m`
+
+#### The documented orientation of the flux table and relative file paths stop with an error
+
+- **Severity**: error
+- **Trigger**: a flux file with sample IDs as rows and reactions as columns, as documented ('ID,EX_ac[fe],EX_but[fe]' then 'S1,1,3', 'S2,2,1', 'S3,3,2') with an abundance file 'ID,S1,S2,S3' / 'panBact_a,0.1,0.2,0.3' / 'Esch_c,0.9,0.8,0.7'; or the file names relative to the current folder: plotFluxesAgainstOrganismAbundances('abun2.csv', 'flux2.csv')
+- **Observed**: Sample IDs in abundance and flux files do not agree! (line 37 compares the first row of the flux table with the samples; no transposition as in correlateFluxWithTaxonAbundance). Relative names: Unable to find or open 'abun2.csv'. Check the path and filename or file permissions., because line 26 changes to Metabolite_plots before the files are read.
+- **Expected**: the plots of the documented layout (sample IDs as rows) and of files given relative to the current folder
+- **Source lines**: 26, 29, 37-39
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testPlotFluxesAgainstOrganismAbundances.m`
+
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/addMicrobeCommunityBiomass.m`
 
 #### Abundance weights are rounded to six significant digits
@@ -886,6 +1001,35 @@
 - **Source lines**: 70-76
 - **Documented in**: `test/verifiedTests/analysis/testMgPipe/testExtractFullRes.m`
 
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m`
+
+#### The feasibility of every diet is read from the last diet
+
+- **Severity**: wrong-result
+- **Trigger**: rDiet = 1, pDiet = 0, three samples with rich-diet and input-diet results, except netProduction{2,3} = {} and netUptake{2,3} = {} (input diet infeasible for S3); mgSimResCollect([resDir filesep], {'S1'; 'S2'; 'S3'}, exchanges, 1, 0, '', netProduction, netUptake, '-dpng')
+- **Observed**: rich_net_secretion_fluxes.csv holds NaN for S3 although netProduction{1,3} holds its rich-diet results: line 72 tests isempty(netProduction{fl,k}) (the last diet) instead of netProduction{j,k}. With the opposite pattern (last diet filled, an earlier diet empty) line 83 indexes an empty cell.
+- **Expected**: the rich-diet values of S3
+- **Source lines**: 72
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m`
+
+#### Two samples stop with an error in the PCoA
+
+- **Severity**: limitation
+- **Trigger**: the first call above with two samples {'S1'; 'S2'} (cells of S1 and S2 only)
+- **Observed**: cobraCmdscale: D must have a zero diagonal (or ones for a similarity matrix). cobraPdist of two samples returns one distance, a scalar that is read as a 1-by-1 matrix; the check on line 125 ("too few individuals to plot") is not reached.
+- **Expected**: no PCoA, as for too few individuals, and the flux tables written
+- **Source lines**: 119-120
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m`
+
+#### Uptake of an exchange missing from a sample is copied from the previous sample
+
+- **Severity**: wrong-result
+- **Trigger**: exchanges = {'EX_ac[fe]'; 'EX_glc_D[fe]'}; netProduction = cell(3, 3); netUptake = cell(3, 3); netProduction{2,1} = {'EX_ac[fe]', -1, 3; 'EX_glc_D[fe]', -2, 5}; netUptake{2,1} = {'EX_ac[fe]', 4, -1; 'EX_glc_D[fe]', 7, -1}; netProduction{2,2} = {'EX_ac[fe]', -1, 2; 'EX_glc_D[fe]', [], []}; netUptake{2,2} = {'EX_ac[fe]', 6, -1; 'EX_glc_D[fe]', [], []}; netProduction{2,3} = {'EX_ac[fe]', -1, 9; 'EX_glc_D[fe]', -2, 1}; netUptake{2,3} = {'EX_ac[fe]', 2, -1; 'EX_glc_D[fe]', 3, -1}; [sec, upt] = mgSimResCollect([resDir filesep], {'S1'; 'S2'; 'S3'}, exchanges, 0, 0, '', netProduction, netUptake, '-dpng')
+- **Observed**: upt{3,3} (EX_glc_D[fe] in S2, absent from that sample) is 6, the value |7 + -1| of S1, while sec{3,3} is 0. Only sp is reset for each sample (line 81); up keeps the values of the previous sample where the FVA value is empty.
+- **Expected**: 0 for the missing exchange, as for the net secretion
+- **Source lines**: 81, 95-97
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m`
+
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m`
 
 #### A structure without a rxns field is silently not saved
@@ -897,6 +1041,26 @@
 - **Source lines**: 15
 - **Documented in**: `test/verifiedTests/analysis/testMgPipe/testParsave.m`
 
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m`
+
+#### The documented matrix inputs stop with an error
+
+- **Severity**: error
+- **Trigger**: plotMappingInfo([resDir filesep], [2 2 2 2 2 2], [1 2 3 4 5 6; 6 5 4 3 2 1], [1 0 1; 0 1 1; 1 1 0; 1 0 0; 0 0 1; 1 1 1], [3 4 5 3 4 5], '', '-dpng')
+- **Observed**: MATLAB:table2cell:NonTable, Input argument must be a table. (line 48; the PCoA lines 101 and 169 also call table2cell on reacTab)
+- **Expected**: reacPat and reacTab are documented as a matrix and a binary matrix
+- **Source lines**: 48, 101, 169
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testPlotMappingInfo.m`
+
+#### The heatmap shows only the first four individuals
+
+- **Severity**: wrong-result
+- **Trigger**: reacPat = cell2table({'org1', 1, 2, 3, 4, 5, 6; 'org2', 6, 5, 4, 3, 2, 1}); reacTab = cell2table({'s1', 1, 0, 1; 's2', 0, 1, 1; 's3', 1, 1, 0; 's4', 1, 0, 0; 's5', 0, 0, 1; 's6', 1, 1, 1}); plotMappingInfo([resDir filesep], [2 2 2 2 2 2], reacPat, reacTab, [3 4 5 3 4 5], '', '-dpng')
+- **Observed**: the image of the heatmap figure has CData of size 2-by-4: line 48 plots columns 2:5 of reacPat (hard-coded), so individuals 5 and 6 are missing while the x axis has six ticks.
+- **Expected**: a 2-by-6 heatmap, one column per individual
+- **Source lines**: 48
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testPlotMappingInfo.m`
+
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m`
 
 #### Abundances read from a tsv file are added and normalized as text
@@ -907,6 +1071,17 @@
 - **Expected**: the abundances are summed and normalized as numbers
 - **Source lines**: 224, 258
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/updateTaxonomyInfoAGORA.m`
+
+#### The row counter is printed for every strain
+
+- **Severity**: cosmetic
+- **Trigger**: updateTaxonomyInfoAGORA() with information tables of one or more strains
+- **Observed**: "i = 2", "i = 3", ... printed for every row of both tables (the statement i has no semicolon)
+- **Expected**: no console output, or progress gated behind a print level
+- **Source lines**: 38, 87
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testUpdateTaxonomyInfoAGORA.m`
 
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m`
 
@@ -960,6 +1135,44 @@
 - **Expected**: shadowPriceBIO [10 20], as for any non-GF sample
 - **Source lines**: 93-96
 - **Documented in**: `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m`
+
+### `src/analysis/persephone/additionalFunctions/convertVMHIDName.m`
+
+#### Names of unknown IDs are dropped, so names and IDs do not line up
+
+- **Severity**: wrong-result
+- **Trigger**: [ids, names] = convertVMHIDName(false, {'atp', 'notAnId', 'h2o'}, 0)
+- **Observed**: names = {'ATP'; 'Water'}, two names for three IDs (intersect with 'stable' on line 72 drops the unknown ID and duplicates)
+- **Expected**: one entry per ID, in the order of the IDs (empty for an unknown ID)
+- **Source lines**: 72-73
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testConvertVMHIDName.m`
+
+#### The numeric skip flag 0 for metNames raises an error
+
+- **Severity**: error
+- **Trigger**: convertVMHIDName(0, {'atp'}, 0)
+- **Observed**: the numeric 0 is not logical, so it is treated as a list of names (line 107) and brace indexing fails on line 129: MATLAB:cellRefFromNonCell, Brace indexing is not supported for variables of this type.
+- **Expected**: 0 skips the conversion, as the header says (false works)
+- **Source lines**: 107, 183
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testConvertVMHIDName.m`
+
+#### The skip flag 0 for VMHIDs raises an error
+
+- **Severity**: error
+- **Trigger**: convertVMHIDName(false, 0, 0) or convertVMHIDName({'ATP'}, 0, 0)
+- **Observed**: prints 'VMH IDs provided, finding corresponding names from VMH', then MATLAB:cellRefFromNonCell, Brace indexing is not supported for variables of this type. (line 52; MATLAB R2025a): exist('VMHIDs', 'var') is true for any passed value, and the skip branch tests the undefined name VMHIDS
+- **Expected**: the conversion of IDs to names skipped, as the header documents for the flag 0
+- **Source lines**: 38, 50-53, 97
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testConvertVMHIDName.m`
+
+#### similarMets is never assigned from the suggestions
+
+- **Severity**: error
+- **Trigger**: [ids, names, similar] = convertVMHIDName({'ATP', 'lactate'}, {'atp'}, 1)
+- **Observed**: MATLAB:unassignedOutputs, Output argument "similarMets" (and possibly others) not assigned a value: line 179 tests ischar('similarMets'), the literal text, which is always true
+- **Expected**: similarMets holds the suggestions for the names not found
+- **Source lines**: 179-181
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testConvertVMHIDName.m`
 
 ### `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m`
 
@@ -1059,6 +1272,110 @@
 - **Source lines**: 51, 77-79
 - **Documented in**: `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot.m`
 
+### `src/analysis/persephone/additionalFunctions/getVMHID.m`
+
+#### Suggestions are misaligned after a found name
+
+- **Severity**: wrong-result
+- **Trigger**: [metIDs, suggestedMets] = getVMHID({'ATP', 'lactate'}, 1) with the VMH database (ATP is found, lactate is not)
+- **Observed**: suggestedMets is a 23x2 cell array (MATLAB R2025a) whose first column is {'lactate'; []; []; ...} and whose second column is {[]; 'D-lactate'; 'L-lactate'; 'Indolelactate'; ...}: the column of the found name is deleted (line 63), so the suggestions of the i-th name are written into column i of the shrunken array, next to their name instead of below it. getVMHID({'lactate'}, 1) gives the correct 23x1 column.
+- **Expected**: one column per name not found, the name in row 1 and its suggestions below it: {'lactate'; 'D-lactate'; 'L-lactate'; 'Indolelactate'; ...}
+- **Source lines**: 60-64, 79-80
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGetVMHID.m`
+
+### `src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m`
+
+#### An unlabelled count is printed
+
+- **Severity**: cosmetic
+- **Trigger**: the call above
+- **Observed**: 'ans = 2' is printed (statement without semicolon)
+- **Expected**: no output, or output gated behind a verbose flag
+- **Source lines**: 122
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m`
+
+#### Taxa whose name contains "pan" are counted as unmapped
+
+- **Severity**: wrong-result
+- **Trigger**: raw.csv = table Taxon = {'Bacteroides fragilis'; 'Ruminococcus champanellensis'; 'Lactobacillus panis'; 'Unknown species'; ''}, S1 = [60; 20; 10; 10; 5], S2 = [0; 30; 20; 50; 5], S3 = [1; 1; 1; 1; 1]; mars.csv = table Taxon = {'panBacteroides fragilis'; 'panRuminococcus chamellensis'; 'panLactobacillus panis'}, S1 = [1; 2; 3]; meta.csv = table ID = {'S1'; 'S2'}, age = [30; 40]; microbiomeMappingStats('raw.csv', 'mars.csv', outDir, 'meta.csv')
+- **Observed**: erase(MARS.Taxon, 'pan') also removes the "pan" inside the species name ('panLactobacillus panis' becomes 'Lactobacillus is'), so Lactobacillus panis is flagged unmapped: alphaDiversities.csv gives 'alpha mapped' 2 for S1 and 1 for S2, and the sheet Mapped of speciesRelAbunStats.xlsx lists only Ruminococcus chamellensis and Bacteroides fragilis
+- **Expected**: only the prefix 'pan' is removed: 'alpha mapped' 3 for S1 and 2 for S2, Lactobacillus panis in the sheet Mapped
+- **Source lines**: 118
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m`
+
+#### The sheet of unmapped taxa is named 'Umapped'
+
+- **Severity**: cosmetic
+- **Trigger**: the call above
+- **Observed**: speciesRelAbunStats.xlsx has the sheets Total, Umapped and Mapped
+- **Expected**: a sheet named Unmapped
+- **Source lines**: 205
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m`
+
+### `src/analysis/persephone/additionalFunctions/plotAbsentTaxaEffectOnMARScoverage.m`
+
+#### The genus+epithet curve starts at the standard deviation of the base coverage
+
+- **Severity**: wrong-result
+- **Trigger**: pre = table({'Alpha one'; 'Beta two'; 'Gamma three'}, [10; 5; 1], [20; 0; 2], 'VariableNames', {'Taxon', 's1', 's2'}); absent = table({'Alpha_one'; 'Beta_two'}, [0.3; 0.1], 'VariableNames', {'Taxon', 'mean'}); rc = table({'pre'; 'post'}, [100; 50], [100; 70], 'VariableNames', {'Var', 's1', 's2'}); plotAbsentTaxaEffectOnMARScoverage(pre, absent, rc, [tmpDir filesep], 'numAbsentTaxaToInvestigate', 3), with the default figure CloseRequestFcn set to hide the figure so that the YData of the two plotted lines can be read
+- **Observed**: 'All absent taxa' YData [0.6 0.75 0.775]; 'Absent taxa with standard nomenclature (genus+epithet)' YData [0.141421 0.75 0.775]: line 79 writes stdCov_readCounts(1) into meanCov_readCounts_onlyNamedTaxa(1), overwriting the mean set on line 78, instead of into stdCov_readCounts_onlyNamedTaxa(1)
+- **Expected**: both curves start at the base mean coverage 0.6 (mean of 50/100 and 70/100)
+- **Source lines**: 79
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testPlotAbsentTaxaEffectOnMARScoverage.m`
+
+### `src/analysis/persephone/additionalFunctions/setResultPath.m`
+
+#### On Linux and macOS the results folder is placed at the file-system root
+
+- **Severity**: error
+- **Trigger**: on Linux: setResultPath(fullfile(tempname, 'sol'))
+- **Observed**: prints 'Create new folder:/Results_sol' and stops with 'Permission denied' (setResultPath:27); the non-Windows branch (line 19) looks for the text before the last backslash, which a path with '/' separators does not have, so the parent folder is empty
+- **Expected**: the folder <tempname>/Results_sol is created and returned
+- **Source lines**: 19
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testSetResultPath.m`
+
+### `src/analysis/persephone/additionalFunctions/slimDownFBAresults.m`
+
+#### The call leaves every MATLAB warning switched on
+
+- **Severity**: cosmetic
+- **Trigger**: w = warning; slimDownFBAresults(folder); w2 = warning
+- **Observed**: in a fresh MATLAB session 6 warnings are off before the call and 0 after it: line 35 switches all warnings off and line 44 switches all of them on instead of restoring the previous state
+- **Expected**: the warning state of the caller is restored
+- **Source lines**: 35, 44
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testSlimDownFBAresults.m`
+
+### `src/analysis/persephone/additionalFunctions/validateDietPath.m`
+
+#### A diet file path stops with an error
+
+- **Severity**: error
+- **Trigger**: a file myDiet.txt holding the line 'EX_a<TAB>1' in tmpDir; validateDietPath(fullfile(tmpDir, 'myDiet.txt'), tmpDir)
+- **Observed**: error "Unrecognized function or variable 'diet'." (validateDietPath:50); the file branch and the final else use the undefined lower-case variable diet instead of Diet
+- **Expected**: the input path is returned (documented: '.txt' files are skipped)
+- **Source lines**: 50-53, 65
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testValidateDietPath.m`
+
+### `src/analysis/persephone/analyseWBMsol.m`
+
+#### Errors for germ-free and microbiome-personalised iWBMs with analyseGF
+
+- **Severity**: error
+- **Trigger**: a folder with FBA_sol_gfiWBM_S1_male.mat, FBA_sol_gfiWBM_S2_female.mat, FBA_sol_miWBM_S1_male.mat and FBA_sol_miWBM_S2_female.mat, each saved with save(file, '-struct', 's') from s = struct('rxns', {{'r1', 'r2', 'r3'}}, 'ID', "<model name>", 'sex', {{'<sex>'}}, 'f', <1x3 fluxes>, 'stat', [1 1 1]) (the miWBM files also with taxonNames {'panA_biomass[c]'; 'panB_biomass[c]'} and relAbundances [61; 41]); analyseWBMsol(folder, struct('rxnRemovalCutoff', {{'count', 0}}), outFolder, true)
+- **Observed**: MATLAB:table:RowDimensionMismatch, To assign to or create a variable in a table, the number of rows must match the height of the table (describeFluxes, line 598; MATLAB R2025a). meanSd takes the mean over the first dimension of the transposed reactions-by-samples germ-free array, i.e. over the reactions, and returns one value per germ-free sample (here 1) instead of one per reaction (3). With two male germ-free samples, two reactions and no female sample it stops on line 599 with MATLAB:string:MustBeCharCellArrayOrString, Input must be text.
+- **Expected**: the per-reaction mean (SD) of the male and female germ-free fluxes in the scaled flux summary table, and all results written
+- **Source lines**: 598-599
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testAnalyseWBMsol.m`
+
+#### Errors when the reaction list contains a duplicate
+
+- **Severity**: error
+- **Trigger**: one file FBA_sol_WBM_S1_male.mat saved from s = struct('rxns', {{'r1', 'r2', 'r1'}}, 'ID', "WBM_S1_male", 'sex', {{'male'}}, 'f', [1 2 1], 'stat', [1 1 1]); analyseWBMsol(folder, struct(), outFolder, false)
+- **Observed**: MATLAB:table:WrongNumberRHSCols, The value on the right-hand side of the assignment has the wrong width. The assignment requires a value whose width is 2. (line 111): the duplicate is removed from rxns and f (lines 84 and 105) but not from stat
+- **Expected**: the duplicate removed from stat as well and the results written for r1 and r2, as the duplicate handling of lines 81-84 intends
+- **Source lines**: 105-111
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testAnalyseWBMsol.m`
+
 ### `src/analysis/persephone/calculateMetrics.m`
 
 #### Bray-Curtis wrong for a single taxon
@@ -1069,6 +1386,79 @@
 - **Expected**: Bray-Curtis = 1 - 2*sum(min)/(a+b), that is 1/2 and 2/3 for the same counts
 - **Source lines**: 38, 66-67
 - **Documented in**: `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m`
+
+### `src/analysis/persephone/generateStackedBarPlot_PhylumMARScoverage.m`
+
+#### Errors for more than seven phyla
+
+- **Severity**: error
+- **Trigger**: pre.csv and post.csv written from table({'p1'; 'p2'; 'p3'; 'p4'; 'p5'; 'p6'; 'p7'; 'p8'}, [0.3; 0.2; 0.15; 0.1; 0.1; 0.05; 0.05; 0.05], 'VariableNames', {'Taxon', 'mean'}); generateStackedBarPlot_PhylumMARScoverage('pre.csv', 'post.csv', tempdirPath)
+- **Observed**: MATLAB:UndefinedFunction, Unrecognized function or variable 'base_colors'. (line 121; MATLAB R2025a): with 8 phyla and 'Others' num_taxa is 9 > 7, and the interpolation branch uses base_colors and num_colors, which are never defined
+- **Expected**: a palette of num_taxa colours interpolated from the seven base colours and the figure saved, as the comment of the branch says
+- **Source lines**: 118-123
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot_PhylumMARScoverage.m`
+
+### `src/analysis/persephone/performRegressions.m`
+
+#### The MATLAB version check reads the first product listed by ver
+
+- **Severity**: wrong-result
+- **Trigger**: any call in a session where ver does not list MATLAB first, e.g. after initCobraToolbox (MATLAB R2025a lists 'M2HTML Toolbox' version 1.5 first)
+- **Observed**: matlabVersion(1) is 1.5, so firthRegression stays false and the logistic fits are not penalised on R2025a; a perfectly separated reaction is then dropped (warning in cobraFitglm, NaN row) instead of being fitted
+- **Expected**: the version of MATLAB itself (ver('MATLAB')), so that R2024b and newer use the Firth regression as the code comment states
+- **Source lines**: 137-143
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testPerformRegressions.m`
+
+### `src/analysis/persephone/readMetadataForPersephone.m`
+
+#### All warnings are switched on after the call
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. readMetadataForPersephone('metadata.csv')
+- **Observed**: warning('off') and warning('on') replace the warning state of the caller; the state had 11 entries before the call and one ('all', 'on') after it, so the warnings that MATLAB disables by default are enabled
+- **Expected**: the warning state of the caller restored after reading
+- **Source lines**: 39, 43
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testReadMetadataForPersephone.m`
+
+#### The units line is dropped instead of being stored in VariableUnits
+
+- **Severity**: wrong-result
+- **Trigger**: a metadata file whose second line starts with units, e.g. the lines 'ID,Age' / 'units,years' / 'S1,30' / 'S2,40'
+- **Observed**: the units line is not in the table (when a numeric column has text in that line the reader already skips it; otherwise line 54 removes it), but metadata.Properties.VariableUnits is an empty 0x0 cell array (MATLAB R2025a); the units of numeric columns are lost
+- **Expected**: the units kept in the VariableUnits property of the table, as the header (DESCRIPTION and OUTPUTS) states
+- **Source lines**: 52-55
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testReadMetadataForPersephone.m`
+
+### `src/analysis/persephone/runMars.m`
+
+#### The processed and mapped summary sheets hold the original data
+
+- **Severity**: wrong-result
+- **Trigger**: reads.xlsx written from table({'k__Bacteria;p__Bacillota;c__Bacilli; o__Lactobacillales;f__Lactobacillaceae;g__Lactobacillus;s__acidophilus'; 'k__Bacteria;p__Bacteroidota;c__Bacteroidia;o__Bacteroidales;f__Bacteroidaceae; g__Bacteroides;s__fragilis'; 'k__Bacteria;p__Bacteroidota;c__Bacteroidia; o__Bacteroidales;f__Bacteroidaceae;g__Bacteroides;s__'}, [100; 60; 40], [50; 30; 20], 'VariableNames', {'Taxon', 'S1', 'S2'}) (taxon strings without line breaks) and db.csv with the columns Kingdom to Species of Lactobacillus acidophilus and Bacteroides fragilis; runMars('reads.xlsx', 'reconstructionDb', 'user_db', 'userDbPath', 'db.csv', 'outputPathMars', outFolder)
+- **Observed**: the sheets processedData and mappedData of metrics/Species/taxonSummary.xlsx are identical to originalData (MATLAB R2025a): they list the row 'NaN' (the reads without a species, mean 30) that processed/processed_Species.csv does not contain. Lines 474-475 (and 479-480 for brayCurtisDissimilarity.xlsx) write taxonSummary.originalData (brayCurtis.originalData) to all three sheets.
+- **Expected**: the processed and mapped summaries (taxonSummary.processed and taxonSummary.mapped, brayCurtis.processed and brayCurtis.mapped) in the sheets of the same names
+- **Source lines**: 474-475, 479-480
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testRunMars.m`
+
+### `src/analysis/persephone/runNonparametricTests.m`
+
+#### A comparison skipped for missing values gets p-value 0 and FDR 0
+
+- **Severity**: wrong-result
+- **Trigger**: data = table({'s1'; 's2'; 's3'; 's4'; 's5'; 's6'}, [1; 2; 3; 4; 5; 6], [NaN; NaN; 3; 4; 5; 6], 'VariableNames', {'ID', 'r1', 'r2'}); metadata = table({'s1'; 's2'; 's3'; 's4'; 's5'; 's6'}, {'a'; 'a'; 'a'; 'b'; 'b'; 'b'}, 'VariableNames', {'ID', 'Grp'}); runNonparametricTests(data, metadata, 'Flux', 'Grp')
+- **Observed**: r2 (two of the three values of group a missing, test skipped on lines 160-162) has statistic NaN, p-value 0 and FDR 0 and is sorted first, ahead of r1 (p-value 0.1): the p-value column of the preallocated table keeps its 0.
+- **Expected**: p-value and FDR NaN for a comparison that is not performed
+- **Source lines**: 160-162, 203-206
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testRunNonparametricTests.m`
+
+#### The predictor name is accepted in any case but used as given
+
+- **Severity**: limitation
+- **Trigger**: runNonparametricTests(data, metadata, 'flux', 'Grp') with the tables above
+- **Observed**: Unrecognized table variable name 'flux'. Variable names are case sensitive. The switch on line 78 uses lower(predictor) and names the stacked column 'Flux', but line 134 reads dataGroup.(predictor).
+- **Expected**: the result of the call with 'Flux'
+- **Source lines**: 78, 134
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testRunNonparametricTests.m`
 
 ### `src/analysis/persephone/validatePersephoneInputs.m`
 
@@ -1091,6 +1481,46 @@
 - **Expected**: the value of the rule
 - **Source lines**: 115
 - **Documented in**: `test/verifiedTests/analysis/testrFBA/testSolveBooleanRegModel.m`
+
+### `src/analysis/rMTA/calculateEPSILON.m`
+
+#### 'unique_epsilon' stops with an error when no reaction changes
+
+- **Severity**: limitation
+- **Trigger**: calculateEPSILON([1 2 3 4; 0 0 1 1], [0; 0], 'unique_epsilon', true)
+- **Observed**: error 'Array indices must be positive integers or logical values.' (calculateEPSILON:51): int64(0 * 0.7) = 0 is used as an index
+- **Expected**: epsilon = [0; 0] (no reaction is changed)
+- **Source lines**: 51
+- **Documented in**: `test/verifiedTests/analysis/testRMTA/testCalculateEPSILON.m`
+
+#### The documented codes of rxnFBS do not match the code
+
+- **Severity**: cosmetic
+- **Trigger**: reading the help of calculateEPSILON
+- **Observed**: the help lists "Forward, Backward and Unchanged (+1;0;-1)", i.e. 0 for a backward change, while the code (and rMTA) treat rxnFBS == 0 as unchanged and -1 as backward
+- **Expected**: Forward, Backward and Unchanged (+1;-1;0)
+- **Source lines**: 15-17
+- **Documented in**: `test/verifiedTests/analysis/testRMTA/testCalculateEPSILON.m`
+
+### `src/analysis/rMTA/rMTAsaveInExcel.m`
+
+#### The documented default of alpha_values cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: TS.bTS = [1 2; 3 4]; TS.mTS = [1; 1]; TS.wTS = TS.bTS; TS.rTS = TS.bTS; rMTAsaveInExcel(fullfile(tmpDir, 'r.xlsx'), TS, {'g1'; 'g2'}), then the same call with alpha_values = -1
+- **Observed**: without alpha_values: error 'Not enough input arguments.' (rMTAsaveInExcel:47; alpha_values is a named argument of the signature, so the addOptional default -1 is never used); with -1: the file has only the sheet 'alpha = 1', because num_alphas = numel(-1) = 1 is set on line 51 before line 53 replaces alpha_values by 1:2
+- **Expected**: the documented default alpha_1, alpha_2, ...: one sheet per column of TSscore.bTS ('alpha = 1' and 'alpha = 2')
+- **Source lines**: 41, 47, 51-53
+- **Documented in**: `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m`
+
+#### The sheets written with xlswrite need Microsoft Excel
+
+- **Severity**: limitation
+- **Trigger**: on Linux: genes = {'g1'; 'g2'; 'g3'; 'g4'}; TS.bTS = [3 2; 1 4; -Inf -Inf; 2 1]; TS.mTS = [0.5; 0.7; -Inf; -0.2]; TS.wTS = [1 1; -2 0.5; -Inf -Inf; 0 1]; TS.rTS = [2 -1; 1 3; -Inf -Inf; -0.5 0.5]; gi = table(genes, {'A'; 'B'; 'C'; 'D'}, 'VariableNames', {'gene', 'name'}); dg = table({'g2'; 'g4'; 'g9'; ''; 'g2'}, [1.5; -0.3; 2; 0; 1.5], 'VariableNames', {'gene', 'logFC'}); rMTAsaveInExcel(fullfile(tmpDir, 'res.xlsx'), TS, genes, [0.5 1], 'gene_info', gi, 'differ_genes', dg, 'RankingGeneID', 'g2')
+- **Observed**: every xlswrite call warns 'Unable to write to Excel format, attempting to write file to CSV format.' (the ranking cells, TOP_GENES_ID and TOP_GENES_diff_expr go to CSV files, not to sheets of res.xlsx) and the SUMMARY write stops with 'An error occurred while writing file to CSV format. To write to an Excel file, convert your data to a table and use writetable.' (xlswrite:112, called on line 199)
+- **Expected**: all sheets in res.xlsx on every platform (writetable, as used for the alpha sheets), or a documented Windows/Excel requirement
+- **Source lines**: 98-103, 116-117, 133-134, 199
+- **Documented in**: `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m`
 
 ### `src/analysis/relaxedFBA/relaxedFBA.m`
 
@@ -1122,6 +1552,26 @@
 - **Expected**: the minimum over all compared metabolites
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/analysis/testRumba/testCompareConditions.m`
+
+### `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m`
+
+#### A log file is written into the current folder
+
+- **Severity**: cosmetic
+- **Trigger**: from an empty folder, with sampleStruct.warmupPts = [0.2 0.8 0.5 0.4; 0.3 0.1 0.6 0.9] and sampleStruct.internal with offset [0; 0], ubnew [1; 1], lbnew [0; 0], Anew zeros(0, 2), Cnew zeros(0, 2), Dnew zeros(0, 1), fixed []: ACHRSamplerParallelGeneral(sampleStruct, 1, 10, 60) (serial mode)
+- **Observed**: the folder then holds ACHRParallelError.txt (opened on line 115), left there after the call
+- **Expected**: no undocumented file, or a documented location
+- **Source lines**: 115
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m`
+
+#### The parallel mode cannot start its worker processes on Linux and macOS
+
+- **Severity**: unusable-option
+- **Trigger**: on Linux, ACHRSamplerParallelGeneral(sampleStruct, 1, 10, 60, 2) (proc = 2, as gpSampler calls it with threads = 2), any sampleStruct
+- **Observed**: line 126 builds the shell command 'matlab -singleCompThread -automation -nojvm -r ACHRSamplerParallelGeneral([],1,10,0,-1,'<pwd>');exit; &' with the -r argument unquoted; sh -c on this text prints 'sh: 1: Syntax error: "(" unexpected' and MATLAB system() on the same text (matlab replaced by echo) returns status 2, so no worker starts; the master then waits for xxRoundAck1x1.mat in the loop of lines 286-296, which only a worker writes (read from the code; the master was not run here because it calls system('matlab ...'))
+- **Expected**: the workers start (the -r argument quoted for the shell) and the sampling finishes
+- **Source lines**: 126, 128
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m`
 
 ### `src/analysis/sampling/ACHR/convRevSamples.m`
 
@@ -1162,6 +1612,26 @@
 - **Expected**: sampling with the distributed toolbox
 - **Source lines**: 205
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testGpSampler.m`
+
+### `src/analysis/sampling/ACHR/verifyPoints.m`
+
+#### One point stops with an error when a sense has a single row
+
+- **Severity**: error
+- **Trigger**: s.A = [1 1; 1 0]; s.b = [2; 0.5]; s.csense = ['E'; 'L']; s.lb = [0; 0]; s.ub = [5; 5]; s.points = [1.5; 0.5]; s.warmupPts = [20; 20]; verifyPoints(s)
+- **Observed**: error 'Unable to perform assignment because the indices on the left side are not compatible with the size of the right side.' (verifyPoints:58)
+- **Expected**: errorsA = [2 1] (row 2: 1.5 > 0.5 + 0.01), errorsLUB empty
+- **Source lines**: 56-58
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testVerifyPoints.m`
+
+#### errorsA gives row numbers within the constraints of one sense, not rows of A
+
+- **Severity**: wrong-result
+- **Trigger**: s.A = [1 0; 0 1; 1 1]; s.b = [1; 1; 1]; s.csense = ['E'; 'E'; 'L']; s.lb = [0; 0]; s.ub = [5; 5]; s.points = [1 1; 1 1]; s.warmupPts = [20 1; 20 1]; errorsA = verifyPoints(s)
+- **Observed**: errorsA = [1 1; 1 2]; the violated constraint is row 3 (x1 + x2 = 2 > 1); lines 56-58 search the rows of one sense only and line 63 stacks the results
+- **Expected**: [3 1; 3 2] (row 3 of A for points 1 and 2), the "row index of the constraint in sampleStruct" of the help
+- **Source lines**: 56-58, 63
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testVerifyPoints.m`
 
 ### `src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m`
 
@@ -3079,6 +3549,26 @@
 - **Expected**: a DNF node (the class does not define the meaning of an empty node)
 - **Source lines**: 125-126, 188-189
 - **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m`
+
+### `src/reconstruction/refinement/GPRLogic/FormulaParser.m`
+
+#### An empty rule stops with an error
+
+- **Severity**: limitation
+- **Trigger**: fp = FormulaParser(); fp.parseFormula('')
+- **Observed**: error "Unrecognized function or variable 'finalid'." (FormulaParser.parseFormula:84); no sub-formula is stored for an empty text
+- **Expected**: an empty tree (or a documented error); the callers in the toolbox skip empty rules before calling parseFormula
+- **Source lines**: 84
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testFormulaParser.m`
+
+#### createNodeStructure fails for a text with spaced operators that is not a stored key
+
+- **Severity**: limitation
+- **Trigger**: fp = FormulaParser(); fp.createNodeStructure('1 | 2 & 3') (a direct call of the method its header marks as a private function)
+- **Observed**: the branch of lines 143-175 is the only way in, and line 172 reads andliterals, which that branch never defines
+- **Expected**: the node tree of the text, as for the stored sub-formulas
+- **Source lines**: 143-175
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testFormulaParser.m`
 
 ### `src/reconstruction/refinement/GPRLogic/Node.m`
 
