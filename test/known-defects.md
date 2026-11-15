@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-434 known defects in 247 functions (150 wrong-result, 119 error, 36 unusable-option, 68 cosmetic, 61 limitation).
+485 known defects in 268 functions (167 wrong-result, 124 error, 48 unusable-option, 80 cosmetic, 66 limitation).
 
 ## Summary
 
@@ -204,6 +204,7 @@
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getMetaboliteFlux.m` | error | addStarch fails when a macro value of the food equals a looked-up nutrient id | `test/verifiedTests/analysis/testWholeBody/testGetMetaboliteFlux.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m` | limitation | The shipped USDA food items file is not found | `test/verifiedTests/analysis/testWholeBody/testGetNutritionDatabaseFile.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m` | limitation | Identifiers with surrounding blanks are rejected although they are trimmed for the other checks | `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/normalizeDiet.m` | error | Every call fails because fdTable.mat is not shipped | `test/verifiedTests/analysis/testWholeBody/testNormalizeDiet.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m` | unusable-option | Non-iterative search type cannot run | `test/verifiedTests/analysis/testWholeBody/testSearcher.m` |
 | `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | error | Reactions missing from a model are collected in a character matrix, which fails for names of different lengths | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
 | `src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m` | limitation | All MATLAB warnings are switched off and never switched back on | `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m` |
@@ -221,6 +222,9 @@
 | `src/base/codeConsistency/printFunctionIO.m` | wrong-result | Fields of the second and later outputs are missed when the reference starts a line | `test/verifiedTests/base/testCodeConsistency/testPrintFunctionIO.m` |
 | `src/base/generateSystemConfigReport.m` | error | A short answer from curl stops the report at the summary | `test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m` |
 | `src/base/install/adaptMacPath.m` | wrong-result | pre-Sierra macOS versions with a patch number or a one-digit minor select postSierra | `test/verifiedTests/base/testInstall/testAdaptMacPath.m` |
+| `src/base/install/getFilesInDir.m` | wrong-result | An empty git listing returns the folder itself as a file | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
+| `src/base/install/getFilesInDir.m` | wrong-result | Folders are listed as files in folders not under git | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
+| `src/base/install/getFilesInDir.m` | wrong-result | The default checkSubFolders omits subfolders in folders not under git | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
 | `src/base/install/prepareTest.m` | unusable-option | needsLinux makes every test skip on Linux | `test/verifiedTests/base/testInstall/testPrepareTest.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A dictionary abbreviation with several entries stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A metabolite without compartment that is in the dictionary stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
@@ -299,6 +303,37 @@
 | `src/base/solvers/varKin/BDCAmethods/BDCA.m` | unusable-option | The documented line search Quadratic_interpolation cannot be used | `test/verifiedTests/base/testSolvers/testBDCA.m` |
 | `src/base/solvers/varKin/BDCAmethods/BDCA.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testBDCA.m` |
 | `src/base/solvers/varKin/BDCAmethods/BDCA.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testBDCA.m` |
+| `src/base/solvers/varKin/BDCAmethods/DCA.m` | cosmetic | The display format is switched to longG and Niter and the status are printed | `test/verifiedTests/base/testSolvers/testDCA.m` |
+| `src/base/solvers/varKin/BDCAmethods/DCA.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testDCA.m` |
+| `src/base/solvers/varKin/BDCAmethods/DCA.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testDCA.m` |
+| `src/base/solvers/varKin/derFreeMethods/BDF.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testBDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/BDF.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testBDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/BDF.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testBDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/CSDF.m` | cosmetic | The display format is switched to longG and Niter and the status are printed | `test/verifiedTests/base/testSolvers/testCSDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/CSDF.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testCSDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/CSDF.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testCSDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/DBDF.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testDBDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/DBDF.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testDBDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/DBDF.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testDBDF.m` |
+| `src/base/solvers/varKin/levMarMethods/GLM_FY.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testGLM_FY.m` |
+| `src/base/solvers/varKin/levMarMethods/GLM_FY.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testGLM_FY.m` |
+| `src/base/solvers/varKin/levMarMethods/GLM_FY.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testGLM_FY.m` |
+| `src/base/solvers/varKin/levMarMethods/GLM_YF.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testGLM_YF.m` |
+| `src/base/solvers/varKin/levMarMethods/GLM_YF.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testGLM_YF.m` |
+| `src/base/solvers/varKin/levMarMethods/GLM_YF.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testGLM_YF.m` |
+| `src/base/solvers/varKin/levMarMethods/LLM.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testLLM.m` |
+| `src/base/solvers/varKin/levMarMethods/LLM.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testLLM.m` |
+| `src/base/solvers/varKin/levMarMethods/LLM.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testLLM.m` |
+| `src/base/solvers/varKin/levMarMethods/LMLS.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testLMLS.m` |
+| `src/base/solvers/varKin/levMarMethods/LMLS.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testLMLS.m` |
+| `src/base/solvers/varKin/levMarMethods/LMLS.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testLMLS.m` |
+| `src/base/solvers/varKin/levMarMethods/LMTR.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testLMTR.m` |
+| `src/base/solvers/varKin/levMarMethods/LMTR.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testLMTR.m` |
+| `src/base/solvers/varKin/levMarMethods/LMTR.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testLMTR.m` |
+| `src/base/solvers/varKin/levMarMethods/LevMar.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testLevMar.m` |
+| `src/base/solvers/varKin/levMarMethods/LevMar.m` | wrong-result | The number of gradient evaluations is always reported as 1 | `test/verifiedTests/base/testSolvers/testLevMar.m` |
+| `src/base/solvers/varKin/levMarMethods/LevMar.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testLevMar.m` |
+| `src/base/solvers/varKin/levMarMethods/LevMar.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testLevMar.m` |
 | `src/base/solvers/varKin/optimizeVKmodel0.m` | error | F equal to R with a moiety basis returns without the output | `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` |
 | `src/base/solvers/varKin/optimizeVKmodel0.m` | cosmetic | The display format is switched to long E and never restored | `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` |
 | `src/base/solvers/varKin/optimizeVKmodel0.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` |
@@ -306,12 +341,18 @@
 | `src/base/solvers/verifyCobraProblem.m` | error | A NaN in x stops a call with more than one output | `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m` |
 | `src/base/solvers/verifyCobraProblem.m` | wrong-result | invalidConstraints names the wrong rows when senses are mixed | `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m` |
 | `src/base/utilities/duplicates.m` | limitation | A cell array with more than one column is compared element by element, so M is not m x m | `test/verifiedTests/base/testTools/testDuplicates.m` |
+| `src/base/utilities/generateStructFunction.m` | limitation | A char matrix with more than one row is written column by column | `test/verifiedTests/base/testUtilities/testGenerateStructFunction.m` |
+| `src/base/utilities/generateStructFunction.m` | limitation | A char value with a quote gives a script that cannot run | `test/verifiedTests/base/testUtilities/testGenerateStructFunction.m` |
+| `src/base/utilities/generateStructFunction.m` | limitation | A numeric array with more than two dimensions stops with an error and leaves the file open | `test/verifiedTests/base/testUtilities/testGenerateStructFunction.m` |
+| `src/base/utilities/generateStructFunction.m` | limitation | Numeric values lose their class and digits beyond the 15th | `test/verifiedTests/base/testUtilities/testGenerateStructFunction.m` |
 | `src/base/utilities/getGlobalValue.m` | limitation | The value of a global named globalName cannot be read | `test/verifiedTests/base/testUtilities/testGetGlobalValue.m` |
+| `src/base/utilities/issueConfirmationWarning.m` | wrong-result | The confirmation is asked only on a jenkins home, the opposite of the documentation | `test/verifiedTests/base/testUtilities/testIssueConfirmationWarning.m` |
 | `src/base/utilities/removeIndicesInDimenion.m` | cosmetic | The help text says the given indices are removed, but they are the ones kept | `test/verifiedTests/base/testTools/testRemoveIndicesInDimenion.m` |
 | `src/base/utilities/restoreEnvironment.m` | cosmetic | The printed path is cut at a folder name with a % sign | `test/verifiedTests/base/testUtilities/testRestoreEnvironment.m` |
 | `src/base/utilities/setGlobal.m` | limitation | A global named globalName cannot be set | `test/verifiedTests/base/testUtilities/testSetGlobal.m` |
 | `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
 | `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` | wrong-result | A given list of deleted metabolites is discarded when the old model is empty and no deleted reactions are given | `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` |
+| `src/dataIntegration/XomicsToModel/analysis/plotOverlapResults.m` | unusable-option | The optional input savepath cannot be used | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotOverlapResults.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | error | A reaction listed three times stops the constraint step | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | wrong-result | A tiny bound of the unusual sign changes sign | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | error | An unknown varID stops the mode allConstraints on a model without extra variables | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
@@ -320,12 +361,22 @@
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | cosmetic | The message about a feasible fit is never printed | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | error | The mode allConstraints needs the extra variable fields it treats as optional | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | cosmetic | The session display format is changed | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
+| `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m` | unusable-option | The option saveFigures cannot be used | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m` |
+| `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m` | error | extraFluxes without otherFluxes stops with an error | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m` |
+| `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m` | limitation | predictedFluxes without lb and ub stops with an error | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m` |
+| `src/dataIntegration/XomicsToModel/metabolomics/summaryConcentrations.m` | wrong-result | A compound whose name contains another compound's name receives that metabolite | `test/verifiedTests/dataIntegration/testXomicsToModel/testSummaryConcentrations.m` |
+| `src/dataIntegration/XomicsToModel/metabolomics/summaryConcentrations.m` | error | param.metLookupTable without param.model stops with an undefined variable | `test/verifiedTests/dataIntegration/testXomicsToModel/testSummaryConcentrations.m` |
+| `src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m` | cosmetic | The histogram marks the threshold at 2 whatever threshold is given | `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m` |
+| `src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m` | wrong-result | The inactive proteins are those above the threshold | `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m` |
+| `src/dataIntegration/chemoInformatics/RXN/writeRxnfile.m` | cosmetic | The reaction equation drops every "1 " it contains, not only unit coefficients | `test/verifiedTests/dataIntegration/testChemoInformatics/testWriteRxnfile.m` |
+| `src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m` | error | A system without java stops with an undefined variable options | `test/verifiedTests/dataIntegration/testChemoInformatics/testCheckChemoinformaticDependencies.m` |
 | `src/dataIntegration/chemoInformatics/deleteProtons.m` | wrong-result | Reactions that carried only protons are removed from the reaction fields but not from S | `test/verifiedTests/dataIntegration/testChemoInformatics/testDeleteProtons.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m` | error | An empty component of a multi-component charge layer stops with an error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetChargeFromInChI.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m` | wrong-result | A formula that loses all its hydrogen atoms keeps one H | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m` | wrong-result | Element counts are assigned to the wrong elements on the combining path | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
+| `src/dataIntegration/chemoInformatics/metabolites/standardiseMolDatabase.m` | error | No selected MOL file stops with an undefined variable standardised | `test/verifiedTests/dataIntegration/testChemoInformatics/testStandardiseMolDatabase.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m` | wrong-result | A metabolite with a hyphen is overwritten by its next compartment | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
@@ -2447,6 +2498,17 @@
 - **Source lines**: 28
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m`
 
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/normalizeDiet.m`
+
+#### Every call fails because fdTable.mat is not shipped
+
+- **Severity**: error
+- **Trigger**: any call, for example normalizeDiet({'167512', 100}, 2000, {})
+- **Observed**: (R2025a, 2026-11-15) error MATLAB:load:couldNotReadFile "Unable to find file or directory 'fdTable.mat'." at line 20; no fdTable.mat exists in the repository (getDietEnergy, which normalizeDiet calls, dropped the fdTable food names in 2024 and now reads USDA, Frida or BLS food IDs)
+- **Expected**: the diet with the amounts of its food items scaled so that its energy equals the calories argument
+- **Source lines**: 20-54
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testNormalizeDiet.m`
+
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m`
 
 #### Non-iterative search type cannot run
@@ -2623,6 +2685,35 @@
 - **Expected**: preSierra for every macOS version below 10.12 (the help text: "Sierra/High Sierra or higher and Anything below"), e.g. 10.11.6 (the last El Capitan release) and 10.9.5; the version should be compared component by component
 - **Source lines**: 20-21
 - **Documented in**: `test/verifiedTests/base/testInstall/testAdaptMacPath.m`
+
+### `src/base/install/getFilesInDir.m`
+
+#### An empty git listing returns the folder itself as a file
+
+- **Severity**: wrong-result
+- **Trigger**: d = tempname; mkdir(d); system(['cd ' d ' && git init -q .']); getFilesInDir('dirToList', d, 'type', 'tracked') (likewise type untracked in a repository without untracked files, and type all in an empty repository)
+- **Observed**: (R2025a, 2026-11-15) a 1 x 1 cell {[d '/']} for tracked and two copies of [d '/'] for all: strsplit(strtrim(''), '\n') gives {''}, which is then prefixed with the folder path
+- **Expected**: an empty cell array, since no file matches
+- **Source lines**: 98-100, 113, 117, 120, 150
+- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
+
+#### Folders are listed as files in folders not under git
+
+- **Severity**: wrong-result
+- **Trigger**: same folder as above; getFilesInDir('dirToList', d, 'checkSubFolders', true)
+- **Observed**: (R2025a, 2026-11-15) {[d '/sub'], [d '/a.txt'], [d '/sub/b.txt']}: rdir returns folders too, and they are kept
+- **Expected**: only files, {[d '/a.txt'], [d '/sub/b.txt']}, as in a git repository
+- **Source lines**: 107-108, 129-130
+- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
+
+#### The default checkSubFolders omits subfolders in folders not under git
+
+- **Severity**: wrong-result
+- **Trigger**: a folder d outside any git repository holding a.txt and sub/b.txt; getFilesInDir('dirToList', d)
+- **Observed**: (R2025a, 2026-11-15) {[d '/sub'], [d '/a.txt']}: the default of checkSubFolders is '' (false in the if at line 102), so rdir lists only the top level; with checkSubFolders = true the list also holds [d '/sub/b.txt']; in a git repository the same default lists the files of subfolders
+- **Expected**: the files of the subfolders as well, as the documented default true says
+- **Source lines**: 58, 102-106
+- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
 
 ### `src/base/install/prepareTest.m`
 
@@ -3412,6 +3503,305 @@
 - **Source lines**: 186-193
 - **Documented in**: `test/verifiedTests/base/testSolvers/testBDCA.m`
 
+### `src/base/solvers/varKin/BDCAmethods/DCA.m`
+
+#### The display format is switched to longG and Niter and the status are printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the lines Niter = Niter+1 and Status without semicolon print the iteration counter at every iteration and the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 61, 144, 175
+- **Documented in**: `test/verifiedTests/base/testSolvers/testDCA.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], kin = zeros(4, 1), x0 = [0.5; -0.3] and mapp = @(x) [F - R, R - F] * exp(kin + [F, R]' * x)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 158; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 99-101, 157-159, 189-191
+- **Documented in**: `test/verifiedTests/base/testSolvers/testDCA.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 3, options.Stopping_Crit = 2 (same model as above)
+- **Observed**: (R2025a, 2026-11-15) out.Niter = 3, out.Xk has 3 columns, out.x_error = [0.9849 0 0.9603 0.9449] and out.Time = [0 0 0.00429 0.00608]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned
+- **Expected**: one entry per point of out.Xk (x0 and each iterate), x_error(k) the relative error of Xk(:, k)
+- **Source lines**: 148-155, 186-188, 192-194
+- **Documented in**: `test/verifiedTests/base/testSolvers/testDCA.m`
+
+### `src/base/solvers/varKin/derFreeMethods/BDF.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 51, 168
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBDF.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], kin = zeros(4, 1), x0 = [0.5; -0.3] and mapp = @(x) [F - R, R - F] * exp(kin + [F, R]' * x)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 151; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 89-91, 150-152, 182-184
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBDF.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 3, options.Stopping_Crit = 2 (same model as above)
+- **Observed**: (R2025a, 2026-11-15) out.Niter = 3, out.x_error = [0.9849 0 0.9154 0.9023] and out.Time = [0 0 0.000576 0.00144]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point
+- **Source lines**: 141-148, 179-181, 185-187
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBDF.m`
+
+### `src/base/solvers/varKin/derFreeMethods/CSDF.m`
+
+#### The display format is switched to longG and Niter and the status are printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the lines Niter = Niter+1 and Status without semicolon print the iteration counter at every iteration and the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 53, 123, 158
+- **Documented in**: `test/verifiedTests/base/testSolvers/testCSDF.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], kin = zeros(4, 1), x0 = [0.5; -0.3] and mapp = @(x) [F - R, R - F] * exp(kin + [F, R]' * x)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 141; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 91-93, 140-142, 172-174
+- **Documented in**: `test/verifiedTests/base/testSolvers/testCSDF.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 3, options.Stopping_Crit = 2 (same model as above)
+- **Observed**: (R2025a, 2026-11-15) out.Niter = 3, out.x_error = [0.9849 0 0.9777 0.971] and out.Time = [0 0 9.8e-05 0.000397]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point
+- **Source lines**: 131-138, 169-171, 175-177
+- **Documented in**: `test/verifiedTests/base/testSolvers/testCSDF.m`
+
+### `src/base/solvers/varKin/derFreeMethods/DBDF.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 55, 176
+- **Documented in**: `test/verifiedTests/base/testSolvers/testDBDF.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], kin = zeros(4, 1), x0 = [0.5; -0.3] and mapp = @(x) [F - R, R - F] * exp(kin + [F, R]' * x)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 159; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 93-95, 158-160, 190-192
+- **Documented in**: `test/verifiedTests/base/testSolvers/testDBDF.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 3, options.Stopping_Crit = 2 (same model as above)
+- **Observed**: (R2025a, 2026-11-15) out.Niter = 3, out.x_error = [0.9849 0 0.9016 0.9] and out.Time = [0 0 0.000214 0.00115]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point
+- **Source lines**: 149-156, 187-189, 193-195
+- **Documented in**: `test/verifiedTests/base/testSolvers/testDBDF.m`
+
+### `src/base/solvers/varKin/levMarMethods/GLM_FY.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason; the line Niter = Niter+1 without semicolon in the line-search branch prints the iteration count
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 60, 173, 211
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGLM_FY.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], opt = struct('FR', [F, R], 'FR_RF', [F - R, R - F], 'k', zeros(4, 1)), mapp = @(varargin) Rate_function1(opt, varargin{:}), lin_sym_solver = @(varargin) lin_sym_solver_mldivide(varargin{:}), x0 = [0.5; -0.3], options = struct('MaxNumIter', 50, 'lambda', 1, 'xi_k', 1, 'adaptive', 0)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 194; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 108-110, 193-195, 225-227
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGLM_FY.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 4, options.Stopping_Crit = 3 (same model and start as above)
+- **Observed**: out.Niter = 4, out.x_error = [0.9849 0 1.02 1.024 1.024] and out.Time = [0 0 5.1e-05 0.00149 0.00203]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned and the vectors hold one entry more than the points x0, x_2, ..., x_Niter
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point and Time(k) its time
+- **Source lines**: 117, 153, 173, 184-191
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGLM_FY.m`
+
+### `src/base/solvers/varKin/levMarMethods/GLM_YF.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason; the line Niter = Niter+1 without semicolon in the line-search branch prints the iteration count
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 60, 173, 211
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGLM_YF.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], opt = struct('FR', [F, R], 'FR_RF', [F - R, R - F], 'k', zeros(4, 1)), mapp = @(varargin) Rate_function1(opt, varargin{:}), lin_sym_solver = @(varargin) lin_sym_solver_mldivide(varargin{:}), x0 = [0.5; -0.3], options = struct('MaxNumIter', 50, 'lambda', 1, 'xi_k', 1, 'adaptive', 0)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 194; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 108-110, 193-195, 225-227
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGLM_YF.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 4, options.Stopping_Crit = 3 (same model and start as above)
+- **Observed**: out.Niter = 4, out.x_error = [0.9849 0 1.01 1.018 1.018] and out.Time = [0 0 0.00131 0.00264 0.00305]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned and the vectors hold one entry more than the points x0, x_2, ..., x_Niter
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point and Time(k) its time
+- **Source lines**: 117, 153, 173, 184-191
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGLM_YF.m`
+
+### `src/base/solvers/varKin/levMarMethods/LLM.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 61, 201
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLLM.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], opt = struct('FR', [F, R], 'FR_RF', [F - R, R - F], 'k', zeros(4, 1)), mapp = @(varargin) Rate_function1(opt, varargin{:}), lin_sym_solver = @(varargin) lin_sym_solver_mldivide(varargin{:}), x0 = [0.5; -0.3], options = struct('MaxNumIter', 50, 'lambda', 1, 'xi_k', 1, 'adaptive', 0)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 183; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 109-111, 182-184, 216-218
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLLM.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 4, options.Stopping_Crit = 3 (same model and start as above)
+- **Observed**: out.Niter = 4, out.x_error = [0.9849 0 1.02 1.024 1.024] and out.Time = [0 0 4.9e-05 0.00212 0.00262]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned and the vectors hold one entry more than the points x0, x_2, ..., x_Niter
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point and Time(k) its time
+- **Source lines**: 120, 153, 173-180
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLLM.m`
+
+### `src/base/solvers/varKin/levMarMethods/LMLS.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 62, 225
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLMLS.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], opt = struct('FR', [F, R], 'FR_RF', [F - R, R - F], 'k', zeros(4, 1)), mapp = @(varargin) Rate_function1(opt, varargin{:}), lin_sym_solver = @(varargin) lin_sym_solver_mldivide(varargin{:}), x0 = [0.5; -0.3], options = struct('MaxNumIter', 50, 'lambda', 1, 'xi_k', 1, 'adaptive', 0)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 205; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 110-112, 204-206, 239-241
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLMLS.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 4, options.Stopping_Crit = 3 (same model and start as above)
+- **Observed**: out.Niter = 4, out.x_error = [0.9849 0 1.02 1.024 1.024] and out.Time = [0 0 3.7e-05 0.00186 0.00231]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned and the vectors hold one entry more than the points x0, x_2, ..., x_Niter
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point and Time(k) its time
+- **Source lines**: 119, 174, 195-202
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLMLS.m`
+
+### `src/base/solvers/varKin/levMarMethods/LMTR.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 62, 244
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLMTR.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], opt = struct('FR', [F, R], 'FR_RF', [F - R, R - F], 'k', zeros(4, 1)), mapp = @(varargin) Rate_function1(opt, varargin{:}), lin_sym_solver = @(varargin) lin_sym_solver_mldivide(varargin{:}), x0 = [0.5; -0.3], options = struct('MaxNumIter', 50, 'lambda', 1, 'xi_k', 1, 'adaptive', 0)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 227; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 110-112, 226-228, 258-260
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLMTR.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 4, options.Stopping_Crit = 3 (same model and start as above)
+- **Observed**: out.Niter = 4, out.x_error = [0.9849 0 1.028 1.031 1.031] and out.Time = [0 0 0.00158 0.00329 0.00373]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned and the vectors hold one entry more than the points x0, x_2, ..., x_Niter
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point and Time(k) its time
+- **Source lines**: 119, 194, 217-224
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLMTR.m`
+
+### `src/base/solvers/varKin/levMarMethods/LevMar.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 61, 229
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLevMar.m`
+
+#### The number of gradient evaluations is always reported as 1
+
+- **Severity**: wrong-result
+- **Trigger**: any call that iterates, for example the model and options of the first entry
+- **Observed**: out.Niter = 7, out.Nmap = 13 and out.Ngmap = 1, although the Jacobian is evaluated in every iteration ([hxk, ghxk] = mapp(xk)) without Ngmap being incremented, so the stopping rule MaxNumGmapEval (Stopping_Crit = 5) never stops the solver
+- **Expected**: out.Ngmap, the documented total number of mapping gradient evaluations
+- **Source lines**: 128, 194-195, 237
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLevMar.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0, for example with F = [1 0; 0 1], R = [0 1; 1 0], opt = struct('FR', [F, R], 'FR_RF', [F - R, R - F], 'k', zeros(4, 1)), mapp = @(varargin) Rate_function1(opt, varargin{:}), lin_sym_solver = @(varargin) lin_sym_solver_mldivide(varargin{:}), x0 = [0.5; -0.3], options = struct('MaxNumIter', 50, 'lambda', 1, 'xi_k', 1, 'adaptive', 0)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 212; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 109-111, 211-213, 243-245
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLevMar.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 4, options.Stopping_Crit = 3 (same model and start as above)
+- **Observed**: out.Niter = 4, out.x_error = [0.9849 0 1 1.008 1.009] and out.Time = [0 0 3e-05 0.000579 0.000734]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned and the vectors hold one entry more than the points x0, x_2, ..., x_Niter
+- **Expected**: one entry per point (x0 and each iterate), x_error(k) the relative error of the k-th point and Time(k) its time
+- **Source lines**: 125, 177, 182, 202-209
+- **Documented in**: `test/verifiedTests/base/testSolvers/testLevMar.m`
+
 ### `src/base/solvers/varKin/optimizeVKmodel0.m`
 
 #### F equal to R with a moiety basis returns without the output
@@ -3481,6 +3871,44 @@
 - **Source lines**: 50
 - **Documented in**: `test/verifiedTests/base/testTools/testDuplicates.m`
 
+### `src/base/utilities/generateStructFunction.m`
+
+#### A char matrix with more than one row is written column by column
+
+- **Severity**: limitation
+- **Trigger**: generateStructFunction(struct('h', ['ab'; 'cd']), 'myStruct')
+- **Observed**: the line myStruct.h = 'acbd'; is written (fprintf reads the matrix in column order), so the script recreates a different 1 x 4 value (R2025a, 2026-11-15)
+- **Expected**: the 2 x 2 char matrix recreated, for example through mat2str
+- **Source lines**: 33
+- **Documented in**: `test/verifiedTests/base/testUtilities/testGenerateStructFunction.m`
+
+#### A char value with a quote gives a script that cannot run
+
+- **Severity**: limitation
+- **Trigger**: generateStructFunction(struct('f', 'it''s'), 'myStruct')
+- **Observed**: the line myStruct.f = 'it's'; is written without doubling the quote, and running the script stops with "Invalid expression. Check for missing multiplication operator, missing or unbalanced delimiters, or other syntax error." (R2025a, 2026-11-15)
+- **Expected**: the quote doubled (myStruct.f = 'it''s';), so that the value is recreated
+- **Source lines**: 33
+- **Documented in**: `test/verifiedTests/base/testUtilities/testGenerateStructFunction.m`
+
+#### A numeric array with more than two dimensions stops with an error and leaves the file open
+
+- **Severity**: limitation
+- **Trigger**: generateStructFunction(struct('z', ones(2, 2, 2)), 'nd')
+- **Observed**: "Input matrix must be 2-D." (MATLAB:mat2str:TwoDInput, line 30; R2025a, 2026-11-15); the file nd_init.m opened at line 24 stays open (openedFiles lists it)
+- **Expected**: the field written (for example through reshape) or skipped, and the file closed
+- **Source lines**: 24, 30, 36
+- **Documented in**: `test/verifiedTests/base/testUtilities/testGenerateStructFunction.m`
+
+#### Numeric values lose their class and digits beyond the 15th
+
+- **Severity**: limitation
+- **Trigger**: generateStructFunction(struct('d', pi, 'e', int8(5)), 'myStruct')
+- **Observed**: the lines myStruct.d = 3.14159265358979; and myStruct.e = 5; are written (mat2str with its default precision of 15 digits and without the 'class' option), so the script recreates pi - 3.2e-15 and a double 5 (R2025a, 2026-11-15)
+- **Expected**: the values recreated as they were (mat2str(val, 17, 'class'))
+- **Source lines**: 30
+- **Documented in**: `test/verifiedTests/base/testUtilities/testGenerateStructFunction.m`
+
 ### `src/base/utilities/getGlobalValue.m`
 
 #### The value of a global named globalName cannot be read
@@ -3491,6 +3919,17 @@
 - **Expected**: the value of the global variable globalName, as for any other name
 - **Source lines**: 13-14
 - **Documented in**: `test/verifiedTests/base/testUtilities/testGetGlobalValue.m`
+
+### `src/base/utilities/issueConfirmationWarning.m`
+
+#### The confirmation is asked only on a jenkins home, the opposite of the documentation
+
+- **Severity**: wrong-result
+- **Trigger**: any call, for example issueConfirmationWarning('probe message') on a machine whose HOME does not contain 'jenkins'
+- **Observed**: the warning is issued and the function returns at once without asking for a confirmation; with HOME set to '/var/lib/jenkins' (setenv) it calls input and, in a -batch session, stops with "Support for user input is required, which is not available on this platform." (MATLAB:services:MissingRequiredCapability, line 22; R2025a, 2026-11-15)
+- **Expected**: as the help text ("blocks execution until confirmation by the user") and the comment of line 21 ("stall only if we are NOT on jenkins! I.e. not on the CI") say, ask for a confirmation outside jenkins and continue without asking on jenkins
+- **Source lines**: 20-26
+- **Documented in**: `test/verifiedTests/base/testUtilities/testIssueConfirmationWarning.m`
 
 ### `src/base/utilities/removeIndicesInDimenion.m`
 
@@ -3546,6 +3985,17 @@
 - **Expected**: the given deletedMets is kept
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m`
+
+### `src/dataIntegration/XomicsToModel/analysis/plotOverlapResults.m`
+
+#### The optional input savepath cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: plotOverlapResults(overlapResults, statistic, savepath) with [overlapResults, statistic] = compareXomicsModels(models), models.mA = struct('mets', {{'a'; 'b'; 'c'}}, 'rxns', {{'r1'; 'r2'}}, 'genes', {{'g1'}}), models.mB = struct('mets', {{'b'; 'c'; 'd'; 'e'}}, 'rxns', {{'r2'; 'r3'}}, 'genes', {{'g1'; 'g2'}}) and savepath an existing folder fullfile(tempname, 'models_test')
+- **Observed**: the call stops with "Unrecognized function or variable 'ax'." (MATLAB:UndefinedFunction, line 64; R2025a, 2026-11-15): the axes handle ax exists only in the local function plotHeatmapWithLabels; before the error, cd(savepath) has changed the working directory of the session to savepath, and no file is written
+- **Expected**: the figure saved as overlap_test.fig in savepath, with the working directory of the session unchanged
+- **Source lines**: 60-65
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotOverlapResults.m`
 
 ### `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m`
 
@@ -3621,6 +4071,97 @@
 - **Source lines**: 1244
 - **Documented in**: `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m`
 
+### `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m`
+
+#### The option saveFigures cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: plotPredictedExchange(predictedFluxes, [], [], struct('saveFigures', 1)) with predictedFluxes = table({'EX_a'; 'EX_b'; 'EX_c'}, [-2; 0; 3], [-5; -1; 0], [0; 1; 5], {'A'; 'B'; 'C'}, 'VariableNames', {'rxns', 'v', 'lb', 'ub', 'metNames'}) and predictedFluxes.Properties.Description = 'pred'
+- **Observed**: after the plot is drawn the call stops with "Unrecognized function or variable 'names'." (MATLAB:UndefinedFunction, line 421; R2025a, 2026-11-15); the file name is built from a variable that is never set
+- **Expected**: the figure saved as .fig and .png in the current directory
+- **Source lines**: 420-423
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m`
+
+#### extraFluxes without otherFluxes stops with an error
+
+- **Severity**: error
+- **Trigger**: plotPredictedExchange(predictedFluxes, [], extraFluxes) with predictedFluxes as above and extraFluxes = table({'EX_a'; 'EX_b'; 'EX_c'}, [-1; 0; 2], [0.1; 0.1; 0.1], 'VariableNames', {'rxns', 'mean', 'SD'}), Description 'extra'
+- **Observed**: "Unrecognized function or variable 'v2'." (MATLAB:UndefinedFunction, line 241; R2025a, 2026-11-15): the limits and the NaN filter of the extra fluxes use the transformed otherFluxes, which exist only when otherFluxes is given
+- **Expected**: the predicted and the extra fluxes plotted (both inputs are documented as optional)
+- **Source lines**: 241-244
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m`
+
+#### predictedFluxes without lb and ub stops with an error
+
+- **Severity**: limitation
+- **Trigger**: plotPredictedExchange(predictedFluxes(:, {'rxns', 'v', 'metNames'})) with predictedFluxes as above
+- **Observed**: "Unable to resolve the name 'measuredFluxes.mean'." (MATLAB:undefinedVarOrClass, line 170; R2025a, 2026-11-15): the branch for tables without bounds uses the undefined variables measuredFluxes and x
+- **Expected**: the documented input lists lb and ub; without them, a plot without bounds or an explicit error message
+- **Source lines**: 170-173
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m`
+
+### `src/dataIntegration/XomicsToModel/metabolomics/summaryConcentrations.m`
+
+#### A compound whose name contains another compound's name receives that metabolite
+
+- **Severity**: wrong-result
+- **Trigger**: the table above with param.model.mets = {'cit[e]'; 'icit[c]'} and param.model.metNames = {'Citrate'; 'Isocitrate'}
+- **Observed**: summaryConc.avr_A.mets = ["cit[e]"; "cit[e]"] (R2025a, 2026-11-15): line 73 selects every compound that contains "citrate", including "isocitrate", and the isocitrate pass does not reset it because Isocitrate has no [e] form
+- **Expected**: ["cit[e]"; ""] - isocitrate has no extracellular metabolite in the model
+- **Source lines**: 73
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testSummaryConcentrations.m`
+
+#### param.metLookupTable without param.model stops with an undefined variable
+
+- **Severity**: error
+- **Trigger**: summaryConcentrations(T, param) with param.metLookupTable = table({'citrate'}, {'cit'}, {'cit[e]'}, 'VariableNames', {'ChemicalName', 'AlternativeName', 'Mets'}) and no param.model; T a table with string columns sample, type, compound, concentration, group, perturbation and compounds "citrate" and "isocitrate"
+- **Observed**: Unrecognized function or variable 'model'. (line 97; R2025a, 2026-11-15)
+- **Expected**: the documentation allows the lookup table alone ("either ... or/and"); the compound citrate mapped to cit[e]
+- **Source lines**: 97, 102
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testSummaryConcentrations.m`
+
+### `src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m`
+
+#### The histogram marks the threshold at 2 whatever threshold is given
+
+- **Severity**: cosmetic
+- **Trigger**: activeProteinList(proteomicsEx, proteomicsGenes, 5, 3)
+- **Observed**: the red line and the label Threshold are drawn at x = 2 (lines 29-30 use the constant 2)
+- **Expected**: the line at x = treshold
+- **Source lines**: 29-30
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m`
+
+#### The inactive proteins are those above the threshold
+
+- **Severity**: wrong-result
+- **Trigger**: [active, inactive] = activeProteinList([1; 2; 3], {'a'; 'b'; 'c'}, 2, 0)
+- **Observed**: active = {'b'; 'c'}, inactive = {'c'} (R2025a, 2026-11-15); line 39 uses proteomicsEx > treshold
+- **Expected**: inactive = {'a'}, the proteins whose expression is below the threshold, the complement of the active set
+- **Source lines**: 39
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m`
+
+### `src/dataIntegration/chemoInformatics/RXN/writeRxnfile.m`
+
+#### The reaction equation drops every "1 " it contains, not only unit coefficients
+
+- **Severity**: cosmetic
+- **Trigger**: writeRxnfile([-11; 1], {'met1'; 'met2'}, {'met1'; 'met2'}, d, 'r2', d)
+- **Observed**: equation line "1met1 -> met2" (R2025a, 2026-11-15); a coefficient 11 or 21, or a metabolite id ending in 1 followed by " + ", loses the "1 "
+- **Expected**: "11 met1 -> met2"; only the equation (comment) line is affected, the counts line and the $MOL blocks are right
+- **Source lines**: 76, 80
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testWriteRxnfile.m`
+
+### `src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m`
+
+#### A system without java stops with an undefined variable options
+
+- **Severity**: error
+- **Trigger**: checkChemoinformaticDependencies() when java is not on the system path (reproduced with setenv('PATH', <empty temporary folder>))
+- **Observed**: Unable to resolve the name 'options.atomMapping'. (line 39; R2025a, 2026-11-15), after the messages cxcalc is not installed and obabel is not installed
+- **Expected**: javaInstalled = false and the message java is not installed
+- **Source lines**: 39-41
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testCheckChemoinformaticDependencies.m`
+
 ### `src/dataIntegration/chemoInformatics/deleteProtons.m`
 
 #### Reactions that carried only protons are removed from the reaction fields but not from S
@@ -3684,6 +4225,17 @@
 - **Expected**: netCharge -1
 - **Source lines**: 69
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m`
+
+### `src/dataIntegration/chemoInformatics/metabolites/standardiseMolDatabase.m`
+
+#### No selected MOL file stops with an undefined variable standardised
+
+- **Severity**: error
+- **Trigger**: standardiseMolDatabase(molDir, {'nothing'}, outDir) where molDir holds met1.mol and met2.mol (or an empty molDir), PATH without obabel and cxcalc
+- **Observed**: Standardizing 0 MOL files ... then Unrecognized function or variable 'standardised'. (line 221; R2025a, 2026-11-15); nonStandardised and InChIs are initialised at lines 108-109 but standardised is not
+- **Expected**: a report with an empty standardised list
+- **Source lines**: 221
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testStandardiseMolDatabase.m`
 
 ### `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m`
 
