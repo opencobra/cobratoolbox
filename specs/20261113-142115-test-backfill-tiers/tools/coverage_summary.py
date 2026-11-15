@@ -87,10 +87,14 @@ with open(os.path.join(INV, 'coverage-summary.md'), 'w') as f:
     f.write('|---|---|---|---|---|\n')
     f.write('| Before | %d | %d | %.1f%% | %d |\n' % (bl, bc, 100.0 * bc / bl, bf))
     f.write('| After | %d | %d | %.1f%% | %d |\n' % (al, ac, 100.0 * ac / al, af))
-generated = [k for k in after if os.path.basename(k).startswith('slvrCumomer')]
-gb = sum(before[k][0] for k in generated)
+# generated c13 solver files (slvrCumomer*, slvrEMU*) dominate the line count: report without them
+generated = [k for k in after if os.path.basename(k).startswith(('slvrCumomer', 'slvrEMU'))]
+gbl = sum(before[k][0] for k in generated)
+gbc = sum(before[k][1] for k in generated)
+gal = sum(after[k][0] for k in generated)
+gac = sum(after[k][1] for k in generated)
 with open(os.path.join(INV, 'coverage-summary.md'), 'a') as f:
-    f.write('\nWithout the two generated solver files (%s, %d executable lines): before %.1f%%, '
-            'after %.1f%%.\n' % (', '.join(sorted(os.path.basename(k) for k in generated)), gb,
-                               100.0 * bc / (bl - gb), 100.0 * ac / (al - gb)))
+    f.write('\nWithout the generated c13 solver files (%s, %d executable lines): before %.1f%%, '
+            'after %.1f%%.\n' % (', '.join(sorted(os.path.basename(k) for k in generated)), gal,
+                               100.0 * (bc - gbc) / (bl - gbl), 100.0 * (ac - gac) / (al - gal)))
 print('before %d/%d (%.1f%%), after %d/%d (%.1f%%)' % (bc, bl, 100.0 * bc / bl, ac, al, 100.0 * ac / al))
