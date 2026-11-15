@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-577 known defects in 323 functions (189 wrong-result, 157 error, 52 unusable-option, 99 cosmetic, 80 limitation).
+595 known defects in 331 functions (192 wrong-result, 164 error, 52 unusable-option, 106 cosmetic, 81 limitation).
 
 ## Summary
 
@@ -514,6 +514,10 @@
 | `src/reconstruction/modelGeneration/test4HumanFctExt.m` | error | three tests stop with an error when their objective reaction is missing | `test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m` |
 | `src/reconstruction/rBioNet/LegalRxnFormula.m` | wrong-result | An empty formula is accepted when more than one formula is checked | `test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m` |
 | `src/reconstruction/rBioNet/LegalRxnFormula.m` | cosmetic | The message has a spelling error | `test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m` |
+| `src/reconstruction/rBioNet/ReactionChecks.m` | cosmetic | A metabolite without charged formula raises an error after BalancePrep's message | `test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m` |
+| `src/reconstruction/rBioNet/ReactionChecks.m` | cosmetic | A new reaction identical to a database reaction leaves an empty row in data | `test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m` |
+| `src/reconstruction/rBioNet/ReactionChecks.m` | cosmetic | The balance check prints ans = [] for every new reaction | `test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m` |
+| `src/reconstruction/rBioNet/ReactionChecks.m` | cosmetic | The missing-formula message is never shown; an empty formula raises an index error | `test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m` |
 | `src/reconstruction/rBioNet/balancecheck.m` | limitation | Elements outside the fixed list of twelve are not checked | `test/verifiedTests/reconstruction/testRBioNet/testBalancecheck.m` |
 | `src/reconstruction/rBioNet/model2data.m` | error | A model whose description is missing or is not a text or a structure of seven fields stops | `test/verifiedTests/reconstruction/testRBioNet/testModel2data.m` |
 | `src/reconstruction/rBioNet/model2data.m` | wrong-result | A model without grRules is reported as incomplete although the field is created | `test/verifiedTests/reconstruction/testRBioNet/testModel2data.m` |
@@ -575,14 +579,28 @@
 | `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m` | limitation | Numeric reaction IDs of different lengths do not match the map | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFromFileWidthAndColor.m` |
 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
 | `src/visualization/metabolicCartography/changeNodesArea.m` | error | The optional areaWidth is not defaulted when areaHeight is given | `test/verifiedTests/visualization/testMetabolicCartography/testChangeNodesArea.m` |
+| `src/visualization/metabolicCartography/colorProtein.m` | error | The default colour 'Red' is not a key of createColorsMap | `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m` |
+| `src/visualization/metabolicCartography/defaultColorCD.m` | error | Secondary reaction lines are coloured with the undefined function Colors | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultColorCD.m` |
+| `src/visualization/metabolicCartography/defaultLookMap.m` | wrong-result | An included species named as an ion makes the main species of the same index an ION | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultLookMap.m` |
+| `src/visualization/metabolicCartography/findRxnsInMap.m` | error | A list with a reaction name absent from the map is an error | `test/verifiedTests/visualization/testMetabolicCartography/testFindRxnsInMap.m` |
+| `src/visualization/metabolicCartography/findRxnsInMap.m` | error | A single reaction name found once leaves the output rxnIDref unassigned | `test/verifiedTests/visualization/testMetabolicCartography/testFindRxnsInMap.m` |
 | `src/visualization/metabolicCartography/mapFormula.m` | limitation | Fails instead of returning empty lists when no listed reaction is in the map | `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m` |
 | `src/visualization/metabolicCartography/mapFormula.m` | cosmetic | The help text describes absentRxns as reactions of the map not in the model | `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | wrong-result | Aliases of a removed reaction are removed even when kept reactions use them | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | limitation | Reactions keep a removed alias of a species that has other aliases | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
+| `src/visualization/metabolicCartography/transformFullMap2XML.m` | error | A map with exactly one complex or one included species cannot be written | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
+| `src/visualization/metabolicCartography/transformFullMap2XML.m` | cosmetic | Included species without notes are written with empty notes | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
+| `src/visualization/metabolicCartography/transformFullMap2XML.m` | wrong-result | The complex aliases and complex species of the map are not written | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
+| `src/visualization/metabolicCartography/transformFullMap2XML.m` | cosmetic | The run time is printed on every call | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
+| `src/visualization/metabolicCartography/transformFullXML2Map.m` | error | A map with exactly one complex species alias cannot be read | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m` |
+| `src/visualization/metabolicCartography/transformFullXML2Map.m` | error | Reaction notes written inside XHTML elements cannot be read | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m` |
+| `src/visualization/metabolicCartography/transformFullXML2Map.m` | limitation | The field compartName is missing for a map without compartments | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m` |
+| `src/visualization/metabolicCartography/transformFullXML2Map.m` | cosmetic | The run time is printed on every call | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m` |
 | `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | Every '~' of the file name is replaced by the home folder | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | Map information can be added or changed but not removed | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | The check for a removed only reactant or product compares with the whole alias list | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/metabolicCartography/transformMap2XML.m` | cosmetic | The error for a single secondary reactant or product link with several map aliases says 'should not be cell' | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
+| `src/visualization/metabolicCartography/unifyMetabolicPPImapCD.m` | wrong-result | Secondary links are recoloured by position, not by the index of the non-empty entries | `test/verifiedTests/visualization/testMetabolicCartography/testUnifyMetabolicPPImapCD.m` |
 | `src/visualization/upsetPlot/upsetPlot.m` | error | Sets without any element stop with an index error | `test/verifiedTests/visualization/testUpsetPlot/testUpsetPlot.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | error | A reaction with several subsystems stops with an error | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | wrong-result | Only the last reaction of a gene gives its subsystem | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
@@ -5706,6 +5724,44 @@
 - **Source lines**: 69
 - **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m`
 
+### `src/reconstruction/rBioNet/ReactionChecks.m`
+
+#### A metabolite without charged formula raises an error after BalancePrep's message
+
+- **Severity**: cosmetic
+- **Trigger**: a metab row {'nochg', 'no charged formula', 'H', '', '0'} and ReactionChecks(rxn, metab, compartments, {'NOC', 'x', 'nochg[c] -> h[c]', 1, 0}, [])
+- **Observed**: (R2025a, 2026-11-15) BalancePrep opens the box 'Reaction cannot be created with metabolites that are missing the charged formula.' and returns [], then ReactionChecks fails with 'Brace indexing is not supported for variables of this type.' at line 150
+- **Expected**: the output [] after the box
+- **Source lines**: 149-150
+- **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m`
+
+#### A new reaction identical to a database reaction leaves an empty row in data
+
+- **Severity**: cosmetic
+- **Trigger**: newrxns {'ENO2', 'x', '2pg[c] -> h2o[c] + pep[c]', 0, 0; 'ENO_DUP', 'x', '2pg[c] <=> h2o[c] + pep[c]', 1, 0; 'GLCt', 'x', 'glc-D[e] <=> glc-D[c]', 1, 0; 'PGIe', 'x', 'g6p[c] <=> f6p[e]', 1, 0} with the database rows ENO and PGI of this test
+- **Observed**: (R2025a, 2026-11-15) data = {'ENO2', ENO row; [], []; 'PGIe', PGI row}: the rows of data follow the rows of the similarity list, and the row of the removed reaction ENO_DUP stays empty when a later new reaction has similar reactions
+- **Expected**: one row of data per remaining new reaction with similar reactions
+- **Source lines**: 318-319
+- **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m`
+
+#### The balance check prints ans = [] for every new reaction
+
+- **Severity**: cosmetic
+- **Trigger**: any call that reaches the balance check, for example the first section below
+- **Observed**: (R2025a, 2026-11-15) "ans =" and "[]" printed once per new reaction, because the call showprogress(i/S_nrxns(1)) has no semicolon and showprogress returns []
+- **Expected**: only the progress bar printed
+- **Source lines**: 142
+- **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m`
+
+#### The missing-formula message is never shown; an empty formula raises an index error
+
+- **Severity**: cosmetic
+- **Trigger**: ReactionChecks(rxn, metab, compartments, {'NOF', 'no formula', '', 1, 0}, []) with the tables of this test
+- **Observed**: (R2025a, 2026-11-15) error 'Index exceeds array bounds.' at line 144: isempty(newrxns(i,3)) on line 117 tests a 1 x 1 cell, which is never empty, so the box 'is missing the formula' is never opened and LoadReaction returns an empty 0 x 6 cell for the empty formula
+- **Expected**: the box of line 118 and the output []
+- **Source lines**: 117-122
+- **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m`
+
 ### `src/reconstruction/rBioNet/balancecheck.m`
 
 #### Elements outside the fixed list of twelve are not checked
@@ -6319,6 +6375,59 @@
 - **Source lines**: 24-27, 42
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testChangeNodesArea.m`
 
+### `src/visualization/metabolicCartography/colorProtein.m`
+
+#### The default colour 'Red' is not a key of createColorsMap
+
+- **Severity**: error
+- **Trigger**: map.specName = {'hk'}; map.specMetaID = {'s5'}; map.specIncName = cell(0, 1); map.specIncID = cell(0, 1); map.molID = {'s5'}; map.molColor = {'ffccff66'}; colorProtein(map, {'hk'})
+- **Observed**: (R2025a, 2026-11-15) error 'The specified key is not present in this container.' raised by colorProtein line 49; the same call with 'RED' or 'BLUE' as third input returns molColor {'FF0000FF'} for 'BLUE'
+- **Expected**: the protein node coloured 'FFFF0000' (RED), the documented default
+- **Source lines**: 32
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m`
+
+### `src/visualization/metabolicCartography/defaultColorCD.m`
+
+#### Secondary reaction lines are coloured with the undefined function Colors
+
+- **Severity**: error
+- **Trigger**: map.rxnName = {'R1'}; map.rxnColor = {'ffff0000'}; map.rxnWidth = {'3.0'}; map.rxnReactantLineColor = {{'ffff0000'}}; map.rxnReactantLineWidth = {{'3.0'}}; map.rxnProductLineColor = {''}; map.rxnProductLineWidth = {''}; defaultColorCD(map)
+- **Observed**: (R2025a, 2026-11-15) error "Undefined function 'Colors' for input arguments of type 'char'." raised by defaultColorCD line 36 (line 42 for product lines); a map without the four line fields is returned with rxnColor {'ff000000'} and rxnWidth {1}
+- **Expected**: the secondary reactant and product lines set to 'ff000000' with width 1, as the header and the comment of the function say
+- **Source lines**: 36, 42
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testDefaultColorCD.m`
+
+### `src/visualization/metabolicCartography/defaultLookMap.m`
+
+#### An included species named as an ion makes the main species of the same index an ION
+
+- **Severity**: wrong-result
+- **Trigger**: a map with the complete structure (field rxnReactantLineColor present) with specID = {'s1'; 's2'; 's3'}, specName = {'glc[c]'; 'hk'; 'cplx'}, specType = {'SIMPLE_MOLECULE'; 'PROTEIN'; 'COMPLEX'}, specIncID = {'s4'}, specIncName = {'Na_plus_'}, specIncType = {'ION'} (full map in the notes of the feature's result record), then newmap = defaultLookMap(map)
+- **Observed**: (R2025a, 2026-11-15) newmap.specType = {'ION', 'PROTEIN', 'COMPLEX'}: line 166 writes newmap.specType{m}, where m indexes specIncName, so glc[c] (species 1) becomes an ION; with more included ions than species, specType also grows
+- **Expected**: newmap.specType{1} stays 'SIMPLE_MOLECULE' and newmap.specIncType{1} is 'ION' (as lines 188-190 do for included non-ions)
+- **Source lines**: 165-167
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testDefaultLookMap.m`
+
+### `src/visualization/metabolicCartography/findRxnsInMap.m`
+
+#### A list with a reaction name absent from the map is an error
+
+- **Severity**: error
+- **Trigger**: the same map; [rxnID, rxnIDref] = findRxnsInMap(map, {'B'; 'Z'})
+- **Observed**: (R2025a, 2026-11-15) error MATLAB:badsubscript 'Array indices must be positive integers or logical values.': ismember returns index 0 for 'Z' and line 24 indexes map.rxnID with it
+- **Expected**: rxnID = [2; 0] without an error, as the single-name form returns 0 for a name that is not in the map
+- **Source lines**: 23-24
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testFindRxnsInMap.m`
+
+#### A single reaction name found once leaves the output rxnIDref unassigned
+
+- **Severity**: error
+- **Trigger**: map.rxnName = {'A'; 'B'; 'A'}; map.rxnID = {'r1'; 'r2'; 'r3'}; [rxnID, rxnIDref] = findRxnsInMap(map, 'B')
+- **Observed**: (R2025a, 2026-11-15) error MATLAB:unassignedOutputs 'Output argument "rxnIDref" (and possibly others) not assigned a value in the execution with "findRxnsInMap" function.': the character-vector branch sets rxnIDref only when the name is absent or found more than once
+- **Expected**: rxnID = 2 and rxnIDref = {'r2'}
+- **Source lines**: 26-34
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testFindRxnsInMap.m`
+
 ### `src/visualization/metabolicCartography/mapFormula.m`
 
 #### Fails instead of returning empty lists when no listed reaction is in the map
@@ -6359,6 +6468,82 @@
 - **Source lines**: 80, 87
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m`
 
+### `src/visualization/metabolicCartography/transformFullMap2XML.m`
+
+#### A map with exactly one complex or one included species cannot be written
+
+- **Severity**: error
+- **Trigger**: an xmlStruct whose listOfComplexSpeciesAliases holds one complexSpeciesAlias (a struct, as xml2struct returns a single element) and map.complexAlias = {'csa1'}; or one included species in both
+- **Observed**: (R2025a, 2026-11-15) error MATLAB:cellRefFromNonCell 'Brace indexing is not supported for variables of this type.' at line 123; with one included species 'Unable to perform assignment because brace indexing is not supported for variables of this type.' A single species alias, species or reaction meets the same {k} indexing at lines 89, 106 and 159
+- **Expected**: the file is written, as lines 272-274 do for a single compartment
+- **Source lines**: 89, 106, 123, 143, 159
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m`
+
+#### Included species without notes are written with empty notes
+
+- **Severity**: cosmetic
+- **Trigger**: a map with two included species, one with notes and one with specIncNotes{2} = ''
+- **Observed**: (R2025a, 2026-11-15) line 148 tests the whole list, not the entry, so an empty notes element is written for the second species, read back as a 1x0 char instead of the 0x0 char read from the original file
+- **Expected**: no notes element for an included species without notes (as lines 112-114 do for species)
+- **Source lines**: 148-149
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m`
+
+#### The complex aliases and complex species of the map are not written
+
+- **Severity**: wrong-result
+- **Trigger**: [xmlStruct, map] = transformFullXML2Map(fileName) for a file with two complexSpeciesAlias elements csa1 and csa2; map.complexAlias{2} = 'csaX'; map.complexColor{2} = 'ff123456'; transformFullMap2XML(xmlStruct, map, outFile); [~, mapBack] = transformFullXML2Map(outFile)
+- **Observed**: (R2025a, 2026-11-15) mapBack.complexAlias = {'csa1', 'csa2'} while mapBack.complexColor = {'fff7f7f7', 'ff123456'}: lines 123-124 copy the values of xmlStruct into the local map instead of the map values into xmlStruct
+- **Expected**: mapBack.complexAlias = {'csa1'; 'csaX'} (the map information is transferred)
+- **Source lines**: 123-124
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m`
+
+#### The run time is printed on every call
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: (R2025a, 2026-11-15) 'Elapsed time is 0.185330 seconds.' printed by tic/toc
+- **Expected**: no console output, or output gated behind a printLevel
+- **Source lines**: 84, 287
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m`
+
+### `src/visualization/metabolicCartography/transformFullXML2Map.m`
+
+#### A map with exactly one complex species alias cannot be read
+
+- **Severity**: error
+- **Trigger**: a CellDesigner file whose celldesigner:listOfComplexSpeciesAliases holds one celldesigner:complexSpeciesAlias (every other list with two or more entries), then [xmlStruct, map] = transformFullXML2Map(fileName)
+- **Observed**: (R2025a, 2026-11-15) error MATLAB:cellRefFromNonCell 'Brace indexing is not supported for variables of this type.' at line 140: xml2struct returns a struct, not a cell, for a single element and the loop indexes it with {k}. A file with one species alias fails the same way at line 99 (observed); one species, included species or reaction meets the same indexing at lines 118, 171 and 194
+- **Expected**: map.complexAlias = {'csa1'} and the other fields, as lines 344-346 do for a single compartment
+- **Source lines**: 98-99, 117-118, 139-140, 170-171, 192-194
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m`
+
+#### Reaction notes written inside XHTML elements cannot be read
+
+- **Severity**: error
+- **Trigger**: a reaction with the notes '<notes><html xmlns="http://www.w3.org/1999/xhtml"><body><p>hexokinase</p></body></html></notes>'
+- **Observed**: (R2025a, 2026-11-15) error 'Unrecognized field name "Text".' at line 334; species notes of the same form are read as '' (lines 124-127)
+- **Expected**: no error; rxnNotes read as the species notes are
+- **Source lines**: 334
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m`
+
+#### The field compartName is missing for a map without compartments
+
+- **Severity**: limitation
+- **Trigger**: a file with an empty celldesigner:listOfCompartmentAliases
+- **Observed**: (R2025a, 2026-11-15) map.compartAlias = '' and map has no field compartName
+- **Expected**: map.compartName = '' (documented as empty if no info)
+- **Source lines**: 356-357
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m`
+
+#### The run time is printed on every call
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: (R2025a, 2026-11-15) 'Elapsed time is 0.732667 seconds.' printed by tic/toc
+- **Expected**: no console output, or output gated behind a printLevel
+- **Source lines**: 91, 360
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m`
+
 ### `src/visualization/metabolicCartography/transformMap2XML.m`
 
 #### Every '~' of the file name is replaced by the home folder
@@ -6396,6 +6581,17 @@
 - **Expected**: a message naming the inconsistent reactant (product) aliases
 - **Source lines**: 211, 245
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
+
+### `src/visualization/metabolicCartography/unifyMetabolicPPImapCD.m`
+
+#### Secondary links are recoloured by position, not by the index of the non-empty entries
+
+- **Severity**: wrong-result
+- **Trigger**: a map whose reactions with secondary links are not the first ones, as transformFullXML2Map produces ('' for reactions without links), e.g. map.rxnName = {'r1'; 'r2'; 'r3'}; map.rxnColor = {'FF000000'; 'FF000000'; 'FF000000'}; map.rxnWidth = {5; 5; 5}; map.molColor = {'FF00FF00'}; map.complexColor = {'FF0000FF'}; map.rxnProductLineColor = {''; {'FFFF0000'}; ''}; map.rxnProductLineWidth = {''; {5}; ''}; map.rxnReactantLineColor = {''; ''; {'FFFF0000'; 'FFFF0000'}}; map.rxnReactantLineWidth = {''; ''; {5; 5}}; map2 = unifyMetabolicPPImapCD(map)
+- **Observed**: MATLAB R2025a: map2.rxnReactantLineColor{3} is still {'FFFF0000'; 'FFFF0000'} and map2.rxnProductLineColor{2} is still {'FFFF0000'}: the loops run t (r) = 1:length(index) and read entry t (r) instead of index(t) (index(r)), so they visit the empty first entries and never the non-empty ones
+- **Expected**: every non-empty secondary link colour 'FFDCDCDC' with width 1 (OUTPUT)
+- **Source lines**: 51-60, 67-76
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testUnifyMetabolicPPImapCD.m`
 
 ### `src/visualization/upsetPlot/upsetPlot.m`
 
