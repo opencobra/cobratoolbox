@@ -1,5 +1,26 @@
 <!--
 Sync Impact Report
+Version change: 1.8.0 -> 1.8.1
+Modified principles:
+- III-Defects, quarantine (clarification, no new obligation class): "every function that calls
+  f, directly or indirectly" is stated precisely as "every function that reaches f's defective
+  behaviour": through any chain of calls, including chains through already-tested functions;
+  when the defect is confined to a recognisable input or call form, only calls using that form
+  reach it. Maintainer decisions 2026-11-15 (feature 20261113-142115-test-backfill-tiers, on
+  the getCobraSolverParams two-input defect): blocking follows reach of the defect, through any
+  path, and the resulting 308 blocked functions are accepted.
+Modified sections: III-Defects. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate defect handling (Principle X).
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers; no change.
+Rationale for PATCH bump: clarifies how an existing rule is applied (which callers count as
+calling f); no principle added, removed or redefined.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.7.1 -> 1.8.0
 Modified principles:
 - III-Defects (expanded, no new principle): adds QUARANTINE, an option a test back-fill
@@ -543,8 +564,13 @@ defective input. When a defect is found in a function f:
   above, and its "Coverage exemptions" state that every line is exempt because f is
   quarantined for that defect. Its body is the standard opening with `prepareTest()`
   only; it asserts nothing about f.
-* Every function that calls f, directly or indirectly, gets no test in that feature.
-  The feature lists each such function in its quarantine ledger with the blocking defect.
+* Every function that reaches f's defective behaviour, directly or indirectly, gets no test
+  in that feature. A function reaches it when it calls f, or calls a function that reaches
+  it, through any chain of calls, including chains through functions that already have a
+  test. When the defect is confined to one way of calling f (an input form or call form
+  that can be recognised in the calling code), only the calls that use that form reach it;
+  otherwise every call of f does. The feature lists each such function in its quarantine
+  ledger with the blocking defect.
 * When the defect is fixed (a separate, spec-driven change), f and its callers are tested
   normally and the quarantine entries are removed.
 
@@ -1096,4 +1122,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.8.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-13
+**Version**: 1.8.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-15
