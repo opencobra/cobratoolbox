@@ -104,3 +104,11 @@ setGurobiParam	src/base/solvers/solveCobraLP.m
 setGurobiParam	src/base/solvers/solveCobraQP.m
 # getDietComposition: only the documented model (struct) input fails; all callers pass cell arrays.
 getDietComposition	NONE
+# calcMDVfromSamp: only a non-empty glc reaches convert_input; runHiLoExp passes one.
+calcMDVfromSamp	src/dataIntegration/fluxomics/runHiLoExp.m
+# getElementalWeightMatrix: only the documented printWarning input fails; callers pass 0 or 1 argument.
+getElementalWeightMatrix	NONE
+# changeCobraSolverParams: only omitting the documented-optional solverType fails; callers pass all three arguments.
+changeCobraSolverParams	NONE
+# addAnnotations: only the documented option annotationVerification is ignored; no caller passes it.
+addAnnotations	NONE

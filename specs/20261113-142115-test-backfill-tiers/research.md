@@ -88,6 +88,10 @@ from the literature) or MATLAB semantics the code evidently intends — found wi
 documentation allows. Severities as III-Defects. Per FR-007 (clarified): `wrong-result`, `error`,
 `unusable-option` quarantine; `cosmetic`, `limitation` use the input-level rule. Inputs the
 documentation does not allow are not defects (they are not tested, or tested as documented errors).
+Consistency rule (applied from wave 09, earlier waves revised): a documented input, option or
+argument that fails when used (including an argument documented as optional that cannot be
+omitted, or a documented argument the function does not accept) is `error` or `unusable-option`;
+documentation that misdescribes something without making any call fail stays `cosmetic`.
 A test writer who suspects a defect records the evidence (input, observed, expected, source lines);
 every quarantine is checked by a second reader (R9) before callers are blocked.
 

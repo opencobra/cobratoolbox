@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-485 known defects in 268 functions (167 wrong-result, 124 error, 48 unusable-option, 80 cosmetic, 66 limitation).
+512 known defects in 283 functions (172 wrong-result, 132 error, 51 unusable-option, 86 cosmetic, 71 limitation).
 
 ## Summary
 
@@ -286,7 +286,7 @@
 | `src/base/solvers/minos/DQQCleanup.m` | limitation | fort.* and *.sol files are kept when the results folder is missing | `test/verifiedTests/base/testSolvers/testDQQCleanup.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
 | `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | The error for a parameter that is not allowed always names LP solvers | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
-| `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | solverType is documented as optional with default 'LP' but cannot be omitted | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
+| `src/base/solvers/param/changeCobraSolverParams.m` | unusable-option | solverType is documented as optional with default 'LP' but cannot be omitted | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
 | `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | The global solver parameters are ignored when no paramStructure is given | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/param/getCobraSolverParams.m` | cosmetic | The structure output keeps the fields named in paramNames | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | paramStructure 'default' returns the global values instead of the defaults | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
@@ -377,8 +377,33 @@
 | `src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m` | wrong-result | Element counts are assigned to the wrong elements on the combining path | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/chemoInformatics/metabolites/standardiseMolDatabase.m` | error | No selected MOL file stops with an undefined variable standardised | `test/verifiedTests/dataIntegration/testChemoInformatics/testStandardiseMolDatabase.m` |
+| `src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/getElementalWeightMatrix.m` | unusable-option | The help text documents an optional input printWarning that the function does not have | `test/verifiedTests/dataIntegration/testMolecularMass/testGetElementalWeightMatrix.m` |
+| `src/dataIntegration/fluxomics/calcMDVfromSamp.m` | error | A non-empty substrate label distribution glc stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCalcMDVfromSamp.m` |
+| `src/dataIntegration/fluxomics/getBinsOfFluxes.m` | error | Every call with at least 200 samples stops with an error instead of returning the bins | `test/verifiedTests/dataIntegration/testFluxomics/testGetBinsOfFluxes.m` |
+| `src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m` | error | A suggestion list with fewer rows than columns stops with an index error | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m` |
+| `src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m` | wrong-result | IDsAdded keeps only the last accepted suggestion | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m` |
+| `src/dataIntegration/metaboAnnotator/analyseMetStruct/addAnnotations.m` | cosmetic | An empty field receives NaN with a source when the table cell is NaN | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddAnnotations.m` |
+| `src/dataIntegration/metaboAnnotator/analyseMetStruct/addAnnotations.m` | unusable-option | The option annotationVerification has no effect | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddAnnotations.m` |
+| `src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m` | cosmetic | A repeated entry is used as the format of its message | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCheck4DuplicatesInList.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m` | wrong-result | A metabolite with a hyphen is overwritten by its next compartment | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m` |
+| `src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m` | limitation | A table without a name column stops on an undefined variable | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m` |
+| `src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m` | wrong-result | The formula columns of the documented input format are dropped | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m` | wrong-result | A KEGG, BioCyc or BiGG id is never found when its column has a blank cell | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetIds2VMH.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m` | cosmetic | The metabolite counter is printed for every identifier looked up | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetIds2VMH.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/getSeed2Kegg.m` | limitation | A blank KEGG cell read as NaN stops the mapping with an error | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetSeed2Kegg.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m` | wrong-result | A ChEBI cross-reference stops the processing of the answer | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m` | wrong-result | A mismatch needs a field fullName and otherwise stops the processing of the answer | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m` | limitation | Numeric identifiers are never queried | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m` | cosmetic | The progress shown exceeds 100 percent when startSearch is above 1 | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m` |
+| `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | error | An empty difference set is not assigned, so a call requesting it stops | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
+| `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | error | No uptake or no secretion exchange common to both conditions stops the call | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
+| `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | Fewer than four exchanges stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
+| `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | The documented essAA_excl flag and its default stop the call | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
+| `src/dataIntegration/metabotools/illustrate_ppp.m` | error | More than two metabolite pairs stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
+| `src/dataIntegration/metabotools/make3Dplot.m` | limitation | Only the first two phenotypes are plotted | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
+| `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The colour order is changed for every later figure of the session | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
+| `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The coordinates of every phenotype are printed to the console | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
 | `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m` | wrong-result | The json format writes colour names without quotes | `test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m` |
 | `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` | wrong-result | With minSum the reported gene does not belong to the selected alternative | `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` |
@@ -409,6 +434,8 @@
 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | wrong-result | Positions of duplicates are printed as character codes | `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m` |
 | `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m` | wrong-result | A rule with a present- and an absent-condition applies when only the absent reaction is missing | `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m` |
 | `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m` | wrong-result | The lower bound is not changed for a rule whose present-condition uses OR | `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m` |
+| `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m` | limitation | A metabolite without time stamp stops the conversion with an error | `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m` |
+| `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m` | cosmetic | The call saves the whole MATLAB path to pathdef.m | `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m` |
 | `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | limitation | Biomass coefficients are rounded to about five significant digits | `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m` |
 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | error | Rebuilding the biomass of Archaea stops with an error | `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m` |
@@ -3336,7 +3363,7 @@
 
 #### solverType is documented as optional with default 'LP' but cannot be omitted
 
-- **Severity**: cosmetic
+- **Severity**: unusable-option
 - **Trigger**: changeCobraSolverParams('feasTol', 1e-9)
 - **Observed**: error 'Solver type feasTol is not supported by the COBRA Toolbox' (the first input is always the solver type; USAGE lists three inputs)
 - **Expected**: per INPUTS ("solverType: Solver type, 'LP' or 'MILP' (opt, default, 'LP')"), the LP parameter feasTol set; the USAGE line and the code agree that the input is required, so the INPUTS text is the likely error
@@ -4237,6 +4264,90 @@
 - **Source lines**: 221
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testStandardiseMolDatabase.m`
 
+### `src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/getElementalWeightMatrix.m`
+
+#### The help text documents an optional input printWarning that the function does not have
+
+- **Severity**: unusable-option
+- **Trigger**: getElementalWeightMatrix(true, true), the second documented optional input
+- **Observed**: (R2025a, 2026-11-15) "Too many input arguments." (MATLAB:TooManyInputs); the signature has one input, and unknown elements in isotopeAbundance always raise an error (there is no warning to switch)
+- **Expected**: the documented optional input printWarning accepted (a warning instead of an error for unknown elements), or a help text that lists only isotopeAbundance
+- **Source lines**: 16
+- **Documented in**: `test/verifiedTests/dataIntegration/testMolecularMass/testGetElementalWeightMatrix.m`
+
+### `src/dataIntegration/fluxomics/calcMDVfromSamp.m`
+
+#### A non-empty substrate label distribution glc stops with an error
+
+- **Severity**: error
+- **Trigger**: with the fixtures of testFitC13Data, load('point.mat', 'v0'); load('expdata.mat', 'expdata'); calcMDVfromSamp(expdata.input, [v0 v0], expdata)
+- **Observed**: (R2025a, 2026-11-15) "Undefined function 'convert_input' for input arguments of type 'double'." (MATLAB:UndefinedFunction) at line 34; no function convert_input exists in the toolbox, so every call with a non-empty glc fails; an empty experiment needs a non-empty glc, so the branches for an empty experiment cannot run either
+- **Expected**: glc converted to the fragment label input of slvrEMU_fast (as convertCarbonInput does) and the MDVs of every sample returned
+- **Source lines**: 34, 37-38, 54-57, 68
+- **Documented in**: `test/verifiedTests/dataIntegration/testFluxomics/testCalcMDVfromSamp.m`
+
+### `src/dataIntegration/fluxomics/getBinsOfFluxes.m`
+
+#### Every call with at least 200 samples stops with an error instead of returning the bins
+
+- **Severity**: error
+- **Trigger**: samp.points = reshape(1:1200, 3, 400); getBinsOfFluxes(samp, 100, 2) (also getBinsOfFluxes(samp, [], 3))
+- **Observed**: (R2025a, 2026-11-15) after printing the bins, "Unable to perform assignment because dot indexing is not supported for variables of this type." (MATLAB:structAssToNonStruct) at line 142: output is initialised as the number 0 at line 21 and line 142 assigns the field samps to it
+- **Expected**: output.samps, a struct array with one element per bin holding the points of that bin
+- **Source lines**: 21, 142
+- **Documented in**: `test/verifiedTests/dataIntegration/testFluxomics/testGetBinsOfFluxes.m`
+
+### `src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m`
+
+#### A suggestion list with fewer rows than columns stops with an index error
+
+- **Severity**: error
+- **Trigger**: acceptIDsSuggested(ms, S(1:2, :)) with ms and S as above (2 rows, 6 columns)
+- **Observed**: "Index in position 1 exceeds array bounds. Index must not exceed 2." (MATLAB:badsubscript, line 38): the loop runs to length(IDsSuggested), which is the number of columns (6) when the list has fewer rows than columns (R2025a, 2026-11-15)
+- **Expected**: the two suggestions accepted, the loop running over the rows (size(IDsSuggested, 1))
+- **Source lines**: 37-38
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m`
+
+#### IDsAdded keeps only the last accepted suggestion
+
+- **Severity**: wrong-result
+- **Trigger**: ms.VMH_glc_D = struct('keggId', NaN, 'hmdb', NaN); ms.VMH_atp = ms.VMH_glc_D; S = [{'VMH_glc_D', 'x', 'keggId:C00031', '', '', 'accepted'; 'VMH_atp', 'x', 'hmdb:HMDB0000538', '', '', 'accepted'}; repmat({'VMH_atp', 'x', 'keggId:C00002', '', '', 'rejected'}, 5, 1)]; [o, IDsAdded] = acceptIDsSuggested(ms, S, 'curator (test)')
+- **Observed**: o.VMH_glc_D.keggId = 'C00031' and o.VMH_atp.hmdb = 'HMDB0000538' are both added, but IDsAdded = {'VMH_atp', 'hmdb', 'HMDB0000538', 'added based on accepted suggestion'} (1 x 4): the row counter a is set to 1 and never incremented, so each accepted suggestion overwrites row 1 (R2025a, 2026-11-15)
+- **Expected**: one row of IDsAdded per accepted suggestion (two rows here)
+- **Source lines**: 35, 42-45
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m`
+
+### `src/dataIntegration/metaboAnnotator/analyseMetStruct/addAnnotations.m`
+
+#### An empty field receives NaN with a source when the table cell is NaN
+
+- **Severity**: cosmetic
+- **Trigger**: the call above (field hmdb = '' and table cell hmdb = NaN)
+- **Observed**: o.VMH_glc_minus_D.hmdb = NaN and hmdb_source = 'src:manual:<date>': the test isempty(field) || hasNaN(field) && ~isnan(cell) applies the NaN check of the table cell only to NaN fields (&& binds tighter than ||), and NaN passes the text checks of line 60 (R2025a, 2026-11-15)
+- **Expected**: missing table values not copied and no source written for them
+- **Source lines**: 59-62
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddAnnotations.m`
+
+#### The option annotationVerification has no effect
+
+- **Severity**: unusable-option
+- **Trigger**: ms.VMH_glc_minus_D = struct('keggId', NaN, 'hmdb', '', 'charge', NaN, 'lipidmaps', NaN, 'cheBIId', 'old', 'pubChemId', NaN); RAW = {'VMH', 'keggId', 'hmdb', 'charge', 'lmId', 'cheBlId', 'pubChemId'; 'glc-D', 'C00031', NaN, '0', 'LM1', 'CHEBI:1', '0'}; o = addAnnotations(ms, RAW, 'src', 'manual', 'verified by curator')
+- **Observed**: o.VMH_glc_minus_D.keggId_source = 'src:manual:15-Nov-2026 19:29:05'; the verification given as fifth argument appears nowhere: it is set to a default (lines 42-44) and never read (R2025a, 2026-11-15)
+- **Expected**: the verification recorded with each annotation, as acceptIDsSuggested records 'source:type:verification:date'
+- **Source lines**: 42-44, 62
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddAnnotations.m`
+
+### `src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m`
+
+#### A repeated entry is used as the format of its message
+
+- **Severity**: cosmetic
+- **Trigger**: check4DuplicatesInList({'a%d'; 'b'; 'a%d'}) or check4DuplicatesInList({'a\nb'; 'a\nb'})
+- **Observed**: the first prints only "a" (printing stops at the conversion %d, no newline); the second prints "a", a line break and "b appears more than once."; the returned list is right ({'a%d', '3'} and {'a\nb', '2'}) (R2025a, 2026-11-15)
+- **Expected**: the entry printed verbatim, e.g. fprintf('%s appears more than once.\n', entry)
+- **Source lines**: 25
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCheck4DuplicatesInList.m`
+
 ### `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m`
 
 #### A metabolite with a hyphen is overwritten by its next compartment
@@ -4248,6 +4359,26 @@
 - **Source lines**: 36, 38
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m`
 
+### `src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m`
+
+#### A table without a name column stops on an undefined variable
+
+- **Severity**: limitation
+- **Trigger**: createNewMetaboliteStructure({'VMH ID' 'HMDB'; 'cot' 'HMDB0001046'}, 'src')
+- **Observed**: "Unrecognized function or variable 'metList'." (MATLAB:UndefinedFunction, line 64), in the branch written for a table without name column; the documentation requires the name column (R2025a, 2026-11-15)
+- **Expected**: the branch adds the column metNames or reports the missing column
+- **Source lines**: 62-64
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m`
+
+#### The formula columns of the documented input format are dropped
+
+- **Severity**: wrong-result
+- **Trigger**: createNewMetaboliteStructure({'VMH ID' 'metabolite_name' 'HMDB' 'inchistring' 'neutral_formula' 'charged_formula' 'charge'; 'cot' 'Cotinine' 'HMDB0001046' '' 'C10H12N2O' 'C10H12N2O' '0'; 'coto' 'Cotinine n-oxide' 'HMDB0001411' '' '' '' ''}, 'test source'), the example of the function's documentation
+- **Observed**: s.VMH_cot.neutralFormula = NaN and s.VMH_cot.chargedFormula = NaN although the table gives C10H12N2O; a header is used only when a field name of metaboliteStructureFieldNames contains it after blanks are replaced by '_' or removed, so 'neutral_formula' and 'charged_formula' match no field and their columns are ignored without notice; likewise the header 'smiles' that createrBioNetStructure passes does not match the field 'smile' (R2025a, 2026-11-15)
+- **Expected**: the documented columns stored in neutralFormula and chargedFormula
+- **Source lines**: 108-110
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m`
+
 ### `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m`
 
 #### Identifiers of 12 or more characters give an empty result
@@ -4258,6 +4389,155 @@
 - **Expected**: the identifier returned unchanged or an error
 - **Source lines**: 19-28
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m`
+
+### `src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m`
+
+#### A KEGG, BioCyc or BiGG id is never found when its column has a blank cell
+
+- **Severity**: wrong-result
+- **Trigger**: with the shipped pnas.1401329111.sd01.xlsx on the path, getIds2VMH(struct('byKegg', struct('seed', NaN, 'keggId', 'C00080', 'biocyc', NaN, 'biggId', 'h'))) (biggId set so that no web request is made)
+- **Observed**: IDsAdded is empty and seed and biocyc stay NaN (R2025a, 2026-11-15). xlsread returns NaN for the 10211 blank KEGG, 13988 blank BioCyc and 25171 blank BiGG cells, and strmatch('C00080', RAW(:, 5), 'exact') then returns [] although row 2 holds C00080; only the SEED column (no blank) is searched successfully. The same input with seed 'cpd00067' instead adds keggId C00080 and biocyc PROTON.
+- **Expected**: seed 'cpd00067' and biocyc 'PROTON' added from row 2 of the Compounds sheet
+- **Source lines**: 50
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetIds2VMH.m`
+
+#### The metabolite counter is printed for every identifier looked up
+
+- **Severity**: cosmetic
+- **Trigger**: any metabolite with an identifier, e.g. the call above
+- **Observed**: i = 1 is printed once per non-empty identifier (line 48 has no semicolon; R2025a, 2026-11-15)
+- **Expected**: no console output
+- **Source lines**: 48
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetIds2VMH.m`
+
+### `src/dataIntegration/metaboAnnotator/connect2resources/getSeed2Kegg.m`
+
+#### A blank KEGG cell read as NaN stops the mapping with an error
+
+- **Severity**: limitation
+- **Trigger**: compounds.xlsx written with writecell({'DATABASE', 'PRIMARY NAME', 'ABBREVIATION', 'NAMES', 'KEGG ID(S)'; 'cpd3', 'c', 'c', 'c', ''}) and getSeed2Kegg(struct('m3', struct('keggId', NaN, 'seed', 'cpd3')))
+- **Observed**: First argument must be text. (line 43; R2025a, 2026-11-15): xlsread returns NaN for the blank cell and contains is called on it before the emptiness check of line 46. The shipped compounds.xlsx stores its 1743 blank KEGG cells as empty text, so the shipped file does not trigger it; the input is skipped below.
+- **Expected**: the metabolite is left without KEGG id, as for an empty text cell
+- **Source lines**: 43
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetSeed2Kegg.m`
+
+### `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m`
+
+#### A ChEBI cross-reference stops the processing of the answer
+
+- **Severity**: wrong-result
+- **Trigger**: s.VMH_glc_D with keggId = 'C00031' and NaN hmdb, wikidata, cheBIId, chemspider (plus the fields read by cleanUpMetabolite_structure), BridgeDb answer "C00031<TAB>KEGG Compound<TAB>Ch:HMDB0000122,Wd:Q37525,Ce:CHEBI:4167,Cs:5589" (stand-in curl); [o, IDsAdded] = parseBridgeDb(s)
+- **Observed**: IDsAdded lists hmdb HMDB0000122 and wikidata Q37525 only; cheBIId and chemspider stay NaN: cheBIId is listed twice in the mapping table, so the code 'Ce' matches two rows, the dynamic field name of line 120 is a list and the error is swallowed by the try without catch (line 92), which skips every later item of the answer (R2025a, 2026-11-15)
+- **Expected**: cheBIId = '4167' and chemspider = '5589' added
+- **Source lines**: 58, 61, 92, 118-121
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m`
+
+#### A mismatch needs a field fullName and otherwise stops the processing of the answer
+
+- **Severity**: wrong-result
+- **Trigger**: s.VMH_atp with keggId = 'C00002', hmdb = 'HMDB9999999' and no field fullName (metaboliteStructureFieldNames has none), answer "C00002<TAB>KEGG Compound<TAB>Ch:HMDB0000538,Wd:Q80863,Cs:5742"; [o, IDsAdded, IdsMismatch] = parseBridgeDb(s)
+- **Observed**: IdsMismatch is empty and wikidata and chemspider of VMH_atp are not added: line 131 reads metabolite_structure.(met).fullName, the error is swallowed by the try (line 92); with a field fullName = 'ATP' the mismatch is listed and Q80863 and 5742 are added (R2025a, 2026-11-15)
+- **Expected**: the mismatch listed (with metNames) and the other cross-references added
+- **Source lines**: 92, 131
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m`
+
+#### Numeric identifiers are never queried
+
+- **Severity**: limitation
+- **Trigger**: a metabolite whose pubChemId, cheBIId or chemspider is numeric, as cleanUpMetabolite_structure and sanityCheckMetIds make them
+- **Observed**: regexprep(5793, ',', ';') at line 95 raises "The 'STRING' input must be either a char row vector, a cell array of char row vectors, or a string array.", swallowed by the try (line 92), so the identifier is skipped (R2025a, 2026-11-15)
+- **Expected**: numeric identifiers converted to text and queried
+- **Source lines**: 95
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m`
+
+#### The progress shown exceeds 100 percent when startSearch is above 1
+
+- **Severity**: cosmetic
+- **Trigger**: parseBridgeDb(s, 2, 3) for a structure of three metabolites
+- **Observed**: prints "100 percent ..." and "150 percent ..." (progress = i/(endSearch - startSearch + 1)) (R2025a, 2026-11-15)
+- **Expected**: 50 and 100 percent ((i - startSearch + 1)/(endSearch - startSearch + 1))
+- **Source lines**: 87
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m`
+
+### `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m`
+
+#### An empty difference set is not assigned, so a call requesting it stops
+
+- **Severity**: error
+- **Trigger**: r = {'EX_a'; 'EX_b'}; [a, b] = calculateQuantitativeDiffs(r, [0.5; 1.5], r, [1; 2], {'EX_a'}, {'EX_a'}, {'EX_a'}, {'EX_a'}) (the only common uptake has ratio 0.5, so no exchange has higher uptake in condition 2); the documented call with all eight outputs fails whenever any of the four sets is empty
+- **Observed**: Output argument "cond2_upt_higher" (and possibly others) not assigned a value in the execution with "calculateQuantitativeDiffs" function. (R2025a, 2026-11-15)
+- **Expected**: an empty cell array for an empty difference set
+- **Source lines**: 84, 90, 104, 110
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m`
+
+#### No uptake or no secretion exchange common to both conditions stops the call
+
+- **Severity**: error
+- **Trigger**: r = {'EX_a'; 'EX_b'}; calculateQuantitativeDiffs(r, [0.5; 1.5], r, [1; 2], {'EX_a'}, {'EX_b'}, {'EX_a'}, {'EX_a'}) (no common uptake), or the same call with uptake {'EX_a'}, {'EX_a'} and secretion {'EX_a'}, {'EX_b'} (no common secretion)
+- **Observed**: Unrecognized function or variable 'common_slope_upt'. (line 81), and Unrecognized function or variable 'common_slope_secr'. (line 101) (R2025a, 2026-11-15)
+- **Expected**: empty difference sets for the side without common exchanges
+- **Source lines**: 81, 101
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m`
+
+### `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m`
+
+#### Fewer than four exchanges stop the call with an index error
+
+- **Severity**: error
+- **Trigger**: defineUptakeSecretionProfiles(ones(3, 4), ones(3, 4), {'EX_a'; 'EX_b'; 'EX_c'}, 0.05, {'EX_x'})
+- **Observed**: Index in position 1 exceeds array bounds. Index must not exceed 3. (line 57; R2025a, 2026-11-15): the loop runs to length(input_A), which is 4 for a 3 x 4 matrix
+- **Expected**: the profiles of the three exchanges (one row per exchange)
+- **Source lines**: 55
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m`
+
+#### The documented essAA_excl flag and its default stop the call
+
+- **Severity**: error
+- **Trigger**: A = ones(5, 4); defineUptakeSecretionProfiles(A, A, {'EX_a'; 'EX_b'; 'EX_c'; 'EX_d'; 'EX_e'}, 0.05) (default essAA_excl = 0), or the same call with essAA_excl 0 or 1
+- **Observed**: Input A of class cell and input B of class double must be cell arrays of character vectors, unless one is a character vector. (ismember, called at line 89; R2025a, 2026-11-15). The flag is passed to ismember as the list of exchanges to remove; only a cell array of exchange names (as the MetaboTools tutorial passes) works.
+- **Expected**: with 0 nothing removed; with 1 the nine essential amino acid exchanges of the help removed from the secretion profiles
+- **Source lines**: 45-47, 87-92
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m`
+
+### `src/dataIntegration/metabotools/illustrate_ppp.m`
+
+#### More than two metabolite pairs stop the call with an index error
+
+- **Severity**: error
+- **Trigger**: R.S1.modelPruned = struct('rxns', {{'EX_glc(e)'; 'EX_o2(e)'}}, 'lb', [-10; -20], 'ub', [0; 0]); R.S1.maxBiomass.f = 1; R.S1.<name> = struct('growthRates', [0.1 0.2; 0.3 0.4], 'bounds', [-1 -2; -2 -4]) for <name> phasePlane_EX_glc_EX_o2, phasePlane_EX_glc_EX_glc and phasePlane_EX_o2_EX_o2; illustrate_ppp(R, {'EX_glc(e)', 'EX_glc(e)', 'EX_o2(e)'; 'EX_o2(e)', 'EX_glc(e)', 'EX_o2(e)'}, tempname-folder, {'S1'}, {'x'; 'y'; 'z'}, 10, 1e-6)
+- **Observed**: Index in position 1 exceeds array bounds. Index must not exceed 2. (line 28; R2025a, 2026-11-15) after the PDFs of the first two pairs: line 28 tests mets{p, 1} (row p) where the pair is column p (mets{1, p}, as lines 29-31 use)
+- **Expected**: one PDF per pair
+- **Source lines**: 28
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m`
+
+### `src/dataIntegration/metabotools/make3Dplot.m`
+
+#### Only the first two phenotypes are plotted
+
+- **Severity**: limitation
+- **Trigger**: make3Dplot({'s1', 'A'; 's2', 'B'; 's3', 'C'}, rand(3, 7), 10, tempname-folder)
+- **Observed**: the axes hold two scatter series (A and B); phenotype C is computed into x3, y3, z3 but never plotted and not in the legend (R2025a, 2026-11-15). The input is skipped below.
+- **Expected**: one series per phenotype, as the commented-out loop of lines 48-55 intends
+- **Source lines**: 60-64
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m`
+
+#### The colour order is changed for every later figure of the session
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the first section below
+- **Observed**: set(0, 'DefaultAxesColorOrder', ...) stays in force after the call (R2025a, 2026-11-15); the test restores the previous root default
+- **Expected**: the colour order applied to this figure only
+- **Source lines**: 46
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m`
+
+#### The coordinates of every phenotype are printed to the console
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the first section below
+- **Observed**: x1 = ..., y1 = ..., z1 = ... are printed for every phenotype (the eval strings have no semicolon; R2025a, 2026-11-15)
+- **Expected**: no console output
+- **Source lines**: 37-39
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m`
 
 ### `src/dataIntegration/metanetxMapper/metanetxMapper.m`
 
@@ -4556,6 +4836,26 @@
 - **Expected**: the lower bound of each listed reaction that is in the model set to 0
 - **Source lines**: 36, 51, 400-402
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m`
+
+### `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m`
+
+#### A metabolite without time stamp stops the conversion with an error
+
+- **Severity**: limitation
+- **Trigger**: MetaboliteDatabase.txt with a row whose 12th column is empty, e.g. the rows 'atp ATP C C -4 C00002 5957 15422 . . H 19/09/2018 N' and 'h2o W H2O H2O 0 C00001 962 15377 . . H . .' (tab-separated, '.' an empty field), then createRBioNetDBFromVMHDB('rBioNetDBFolder', tempname-folder)
+- **Observed**: Failed to convert date number to date vector. Date number out of range. (datestr of NaT at line 26; R2025a, 2026-11-15). The shipped database has a time stamp on every row read, so it does not trigger it; the input is skipped below.
+- **Expected**: the missing time stamp kept, as lines 37-41 do for reactions
+- **Source lines**: 26
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m`
+
+#### The call saves the whole MATLAB path to pathdef.m
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: savepath is called after addpath(rBioNetDBFolder) (line 61), so every folder on the path of the session is written to the user's pathdef.m; the help does not mention it
+- **Expected**: the documented outputs only, or the side effect documented
+- **Source lines**: 61
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m`
 
 ### `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m`
 
