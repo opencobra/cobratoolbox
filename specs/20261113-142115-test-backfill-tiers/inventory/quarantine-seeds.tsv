@@ -112,3 +112,7 @@ getElementalWeightMatrix	NONE
 changeCobraSolverParams	NONE
 # addAnnotations: only the documented option annotationVerification is ignored; no caller passes it.
 addAnnotations	NONE
+# addInfoFromMolFiles: only the second output IDAdded is unassigned; every caller requests one output.
+addInfoFromMolFiles	NONE
+# optimalScores: only an rxnList with exactly one matched reaction fails; only reactionCompareGUI (EXCLUDED, GUI) passes rxnList.
+optimalScores	src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m

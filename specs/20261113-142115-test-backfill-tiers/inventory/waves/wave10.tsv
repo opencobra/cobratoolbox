@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	241	src/base/install/updateCobraToolbox.m	1	external-program		updateGitBash		
+a	309	src/dataIntegration/metaboAnnotator/analyseMetStruct/addInfoFromMolFiles.m	1	external-program		convertInchiString2format	createrBioNetStructure,list2MetaboliteStructure	
+a	340	src/dataIntegration/metaboAnnotator/connect2resources/assignAGORAReconPresence.m	1			getIDfromMetStructure	createrBioNetStructure,list2MetaboliteStructure,model2MetStructure	
+a	349	src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m	1			getIDfromMetStructure	createrBioNetStructure	
+a	350	src/dataIntegration/metaboAnnotator/connect2resources/VMH2Seed.m	1			getIDfromMetStructure	createrBioNetStructure	
+a	357	src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m	1			convertInchiString2format		
+a	363	src/dataIntegration/metabotools/mkTableOfAddedExchanges.m	1					
+a	364	src/dataIntegration/metabotools/statisticsAddedExchanges.m	1					
+a	366	src/dataIntegration/transcriptomics/rFASTCORMICS/createFitL.m	1				discretizeFPKM	
+a	367	src/dataIntegration/transcriptomics/rFASTCORMICS/createFitR.m	1				discretizeFPKM	
+b	368	src/reconstruction/comparison/modelBorgifier/TmodelStats.m	1				mergeModelsBorg	
+b	370	src/reconstruction/comparison/modelBorgifier/cleanTmodel.m	1				addToTmodel,mergeModelsBorg	reclassified testable (T008): the input() prompts run only in 'Verbose' mode (and the per-item prompts only when the user answers 'a'); the default call merges identical reactions and beautifies names non-interactively and is testable on a small hand-built Tmodel
+b	372	src/reconstruction/comparison/modelBorgifier/findMetMatch.m	1				metCompare,metCompareGUI	
+b	376	src/reconstruction/comparison/modelBorgifier/compareAllMets.m	1					
+b	377	src/reconstruction/comparison/modelBorgifier/mapMatch.m	1				compareCbModels	
+b	378	src/reconstruction/comparison/modelBorgifier/optimalScores.m	1				compareCbModels,reactionCompare,reactionCompareGUI	
+b	385	src/reconstruction/demeter/src/integration/getCurationStatus.m	1			readInputTableForPipeline		
+b	386	src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m	1			readInputTableForPipeline	prepareInputData	
+b	387	src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m	1			loadVMHDatabase,parseRxnFormula		
+b	388	src/reconstruction/demeter/src/integration/writeReactionsFromPubSeedSpreadsheets.m	1			loadVMHDatabase,readInputTableForPipeline	prepareInputData	
+c	390	src/reconstruction/demeter/src/integration/printRefinedModelIDs.m	1					
+c	393	src/reconstruction/demeter/src/integration/updateAGORATaxonomyFile.m	1			parseNCBItaxonomy,readInputTableForPipeline		
+c	394	src/reconstruction/demeter/src/properties/computeMetabolicDistance.m	1			readInputTableForPipeline		
+c	395	src/reconstruction/demeter/src/properties/producetSNEPlots.m	1			readInputTableForPipeline	computeModelProperties	
+c	396	src/reconstruction/demeter/src/properties/getSubsystemPresence.m	1			readInputTableForPipeline	computeModelProperties	
+c	397	src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m	1			loadVMHDatabase,readInputTableForPipeline	computeModelProperties	
+c	398	src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m	1					
+c	399	src/reconstruction/demeter/src/properties/summarizeFeaturesOnTaxonLevels.m	1			readInputTableForPipeline		
+c	382	src/reconstruction/demeter/suite/tests/testRefinedReactions.m	1				runTestsOnModel	
+c	383	src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m	1				runDebuggingTools,runTestSuiteTools	

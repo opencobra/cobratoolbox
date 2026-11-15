@@ -1,0 +1,21 @@
+{
+ "updateCobraToolbox": "lead (writer's reproduction with a stand-in git, no network: when git cannot count commits, line 85 reads an undefined variable)",
+ "addInfoFromMolFiles": "lead (writer's MATLAB reproduction: the IDAdded output is never assigned when nothing is added)",
+ "VMH2Metabolon": "lead (writer's MATLAB reproductions: an unmatched row overwrites the previous match; an unmatched first row and a missing comma-separated id error)",
+ "mkTableOfAddedExchanges": "lead (source read: Added_all sized with length(Ex_added_all_unique), line 19, which is the column count when there are fewer rows than columns)",
+ "statisticsAddedExchanges": "lead (source read: line 76 sorts Ex_added_all_unique, not the frequency table built in EX_added_all_unique on line 74)",
+ "printRefinedModelIDs": "lead (writer's MATLAB reproduction: the filter at line 27 keeps files that are neither SBML nor .mat)",
+ "computeMetabolicDistance": "lead (source read: parfor k = j:j+99 runs past the last row, line 38; line 52 reads comDist, never assigned)",
+ "producetSNEPlots": "lead (writer's MATLAB reproductions: an error at line 160 for 16-19 taxa without any toolbox; line 263 assigns 3 columns into 2)",
+ "rankFeaturesByIncidence": "lead (source read: the column labelled 'Percentage of reconstructions' holds B/max(B), lines 59 and 75)",
+ "plotMetaboliteProducersConsumers": "lead (writer's MATLAB reproductions: readtable drops the header row of numeric flux files, error at line 79; the default metsToAnalyze analyses nothing)",
+ "summarizeFeaturesOnTaxonLevels": "lead (writer's MATLAB reproductions on R2025a: errors at lines 49 and 105; line 126 reads the undefined ddataByFeature, as recorded by the earlier research)",
+ "plotTestSuiteResults": "lead (writer's MATLAB reproduction: a growsOnDefinedMedium file of 0/1 values is read as NaN)",
+ "cleanTmodel": "lead (writer's MATLAB reproduction: nowArray(end:nRxns)=0, line 97, zeroes the last real lb/ub/c value when lengthening a short array)",
+ "compareAllMets": "lead (writer's reproduction: line 165 calls the undefined zeroes when no pair scores above 0)",
+ "mapMatch": "lead (writer's MATLAB reproduction: line 81 takes min along the row for a 1-metabolite reaction where the other branch averages; evident intent contradicted)",
+ "optimalScores": "lead (writer's MATLAB reproduction: one matched reaction gives length(hitPos) = 2 for a 1x2 index, line 75)",
+ "getCurationStatus": "lead (writer's MATLAB reproduction: abs(sum(...))>0 at line 70 lets 1 and -1 cancel)",
+ "getUnannotatedReactionsFromPubSeedSpreadsheets": "lead (writer's MATLAB reproduction: no unannotated reaction fails at line 84 instead of returning an empty list)",
+ "mapKBaseToVMHReactions": "lead (writer's MATLAB reproduction: the documented 'or vice versa' case is never found)"
+}

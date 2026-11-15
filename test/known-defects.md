@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-512 known defects in 283 functions (172 wrong-result, 132 error, 51 unusable-option, 86 cosmetic, 71 limitation).
+547 known defects in 305 functions (182 wrong-result, 148 error, 52 unusable-option, 93 cosmetic, 72 limitation).
 
 ## Summary
 
@@ -226,6 +226,7 @@
 | `src/base/install/getFilesInDir.m` | wrong-result | Folders are listed as files in folders not under git | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
 | `src/base/install/getFilesInDir.m` | wrong-result | The default checkSubFolders omits subfolders in folders not under git | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
 | `src/base/install/prepareTest.m` | unusable-option | needsLinux makes every test skip on Linux | `test/verifiedTests/base/testInstall/testPrepareTest.m` |
+| `src/base/install/updateCobraToolbox.m` | error | A commit count that git cannot compute stops the function with an undefined variable instead of the intended warning | `test/verifiedTests/base/testInstall/testUpdateCobraToolbox.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A dictionary abbreviation with several entries stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A metabolite without compartment that is in the dictionary stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
 | `src/base/io/KEGG/mapMetName2KEGGID.m` | error | A metabolite without compartment that is in the dictionary stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapMetName2KEGGID.m` |
@@ -384,10 +385,15 @@
 | `src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m` | wrong-result | IDsAdded keeps only the last accepted suggestion | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m` |
 | `src/dataIntegration/metaboAnnotator/analyseMetStruct/addAnnotations.m` | cosmetic | An empty field receives NaN with a source when the table cell is NaN | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddAnnotations.m` |
 | `src/dataIntegration/metaboAnnotator/analyseMetStruct/addAnnotations.m` | unusable-option | The option annotationVerification has no effect | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddAnnotations.m` |
+| `src/dataIntegration/metaboAnnotator/analyseMetStruct/addInfoFromMolFiles.m` | error | The documented output IDAdded is not assigned when nothing is added, so a call requesting it stops | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddInfoFromMolFiles.m` |
 | `src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m` | cosmetic | A repeated entry is used as the format of its message | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCheck4DuplicatesInList.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m` | wrong-result | A metabolite with a hyphen is overwritten by its next compartment | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m` | limitation | A table without a name column stops on an undefined variable | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m` | wrong-result | The formula columns of the documented input format are dropped | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m` | error | A comma-separated VMH id that is not in the structure stops the function | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m` | wrong-result | A row whose VMH id is not in the structure overwrites the metabolite of the previous matched row | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m` | error | A table whose first row with a VMH id has no matching metabolite stops the function | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m` |
+| `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Seed.m` | cosmetic | A blank SEED cell overwrites the SEED id with NaN and writes a source | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Seed.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m` | wrong-result | A KEGG, BioCyc or BiGG id is never found when its column has a blank cell | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetIds2VMH.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m` | cosmetic | The metabolite counter is printed for every identifier looked up | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetIds2VMH.m` |
@@ -396,6 +402,7 @@
 | `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m` | wrong-result | A mismatch needs a field fullName and otherwise stops the processing of the answer | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m` | limitation | Numeric identifiers are never queried | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m` | cosmetic | The progress shown exceeds 100 percent when startSearch is above 1 | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m` |
+| `src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m` | cosmetic | The metabolite counter is printed for every metabolite | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGenerateInchiKeysSmilesFromInchiStrings.m` |
 | `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | error | An empty difference set is not assigned, so a call requesting it stops | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
 | `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | error | No uptake or no secretion exchange common to both conditions stops the call | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | Fewer than four exchanges stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
@@ -404,6 +411,9 @@
 | `src/dataIntegration/metabotools/make3Dplot.m` | limitation | Only the first two phenotypes are plotted | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The colour order is changed for every later figure of the session | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The coordinates of every phenotype are printed to the console | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
+| `src/dataIntegration/metabotools/mkTableOfAddedExchanges.m` | error | An exchange list with fewer rows than columns stops the function | `test/verifiedTests/dataIntegration/testMetaboTools/testMkTableOfAddedExchanges.m` |
+| `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | cosmetic | The sample counter is printed for every sample | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
+| `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | wrong-result | The table is not ordered by frequency as documented; the sorted copy goes to a differently spelled variable | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
 | `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m` | wrong-result | The json format writes colour names without quotes | `test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m` |
 | `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` | wrong-result | With minSum the reported gene does not belong to the selected alternative | `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` |
@@ -429,17 +439,42 @@
 | `src/design/simpleOptKnock.m` | limitation | Single-deletion growth is stored in the first column in double-deletion mode | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/simpleOptKnock.m` | wrong-result | The wild-type minimum production is the maximum | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/reconstruction/comparison/modelBorgifier/charpos.m` | wrong-result | The letters i and j count as digits | `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` |
+| `src/reconstruction/comparison/modelBorgifier/cleanTmodel.m` | wrong-result | Lengthening a short lb, ub or c array overwrites its last value with 0 | `test/verifiedTests/reconstruction/testModelBorgifier/testCleanTmodel.m` |
+| `src/reconstruction/comparison/modelBorgifier/compareAllMets.m` | error | Models with no positively scored metabolite pair stop with an undefined-function error | `test/verifiedTests/reconstruction/testModelBorgifier/testCompareAllMets.m` |
 | `src/reconstruction/comparison/modelBorgifier/countC.m` | wrong-result | Elements whose symbol starts with C are counted as carbon | `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m` |
+| `src/reconstruction/comparison/modelBorgifier/findMetMatch.m` | limitation | Names and identifiers are used as regular expressions without escaping | `test/verifiedTests/reconstruction/testModelBorgifier/testFindMetMatch.m` |
 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | error | An empty list stops with an error | `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m` |
 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | wrong-result | Positions of duplicates are printed as character codes | `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m` |
+| `src/reconstruction/comparison/modelBorgifier/mapMatch.m` | wrong-result | 'noSeed' score of a single-metabolite compared reaction uses the minimum over the template metabolites | `test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m` |
+| `src/reconstruction/comparison/modelBorgifier/optimalScores.m` | error | A training list with exactly one matched reaction stops with an index error | `test/verifiedTests/reconstruction/testModelBorgifier/testOptimalScores.m` |
 | `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m` | wrong-result | A rule with a present- and an absent-condition applies when only the absent reaction is missing | `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m` |
 | `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m` | wrong-result | The lower bound is not changed for a rule whose present-condition uses OR | `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m` |
 | `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m` | limitation | A metabolite without time stamp stops the conversion with an error | `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m` |
 | `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m` | cosmetic | The call saves the whole MATLAB path to pathdef.m | `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m` |
 | `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
+| `src/reconstruction/demeter/src/integration/getCurationStatus.m` | wrong-result | Data entries 1 and -1 cancel out and the organism is reported without experimental data | `test/verifiedTests/reconstruction/testDemeter/testGetCurationStatus.m` |
+| `src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m` | error | Spreadsheets with no unannotated reaction stop with an index error | `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m` |
+| `src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m` | wrong-result | A KBase reaction irreversible where the VMH reaction is reversible is not reported as similar | `test/verifiedTests/reconstruction/testDemeter/testMapKBaseToVMHReactions.m` |
+| `src/reconstruction/demeter/src/integration/printRefinedModelIDs.m` | wrong-result | files that are not SBML or .mat files are returned as model identifiers | `test/verifiedTests/reconstruction/testDemeter/testPrintRefinedModelIDs.m` |
+| `src/reconstruction/demeter/src/properties/computeMetabolicDistance.m` | error | the blocks of 100 rows run past the last strain | `test/verifiedTests/reconstruction/testDemeter/testComputeMetabolicDistance.m` |
+| `src/reconstruction/demeter/src/properties/computeMetabolicDistance.m` | error | the distances are stored in comDistTmp but read from the undefined comDist | `test/verifiedTests/reconstruction/testDemeter/testComputeMetabolicDistance.m` |
+| `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m` | unusable-option | the default metsToAnalyze analyses no metabolite | `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m` |
+| `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m` | error | the header row of a numeric flux file is dropped by readtable | `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m` |
+| `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m` | cosmetic | the metabolite counter is printed | `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m` |
+| `src/reconstruction/demeter/src/properties/producetSNEPlots.m` | error | 16 to 19 taxa with few singletons raise an index error | `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m` |
+| `src/reconstruction/demeter/src/properties/producetSNEPlots.m` | cosmetic | the custom-feature branch filters on the taxa of the last taxon level | `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m` |
+| `src/reconstruction/demeter/src/properties/producetSNEPlots.m` | error | three t-SNE coordinates are stored in two columns | `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m` |
+| `src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m` | cosmetic | metabolite and uptake/secretion features are looked up in the reaction database | `test/verifiedTests/reconstruction/testDemeter/testRankFeaturesByIncidence.m` |
+| `src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m` | wrong-result | the percentage of reconstructions is divided by the count of the most common feature | `test/verifiedTests/reconstruction/testDemeter/testRankFeaturesByIncidence.m` |
+| `src/reconstruction/demeter/src/properties/summarizeFeaturesOnTaxonLevels.m` | wrong-result | numeric presence values become NaN on R2020a and newer | `test/verifiedTests/reconstruction/testDemeter/testSummarizeFeaturesOnTaxonLevels.m` |
+| `src/reconstruction/demeter/src/properties/summarizeFeaturesOnTaxonLevels.m` | error | the row range is built from size(getTax), a two-element vector | `test/verifiedTests/reconstruction/testDemeter/testSummarizeFeaturesOnTaxonLevels.m` |
+| `src/reconstruction/demeter/src/properties/summarizeFeaturesOnTaxonLevels.m` | error | the table of taxon level i is named with the file prefix of row i | `test/verifiedTests/reconstruction/testDemeter/testSummarizeFeaturesOnTaxonLevels.m` |
+| `src/reconstruction/demeter/src/properties/summarizeFeaturesOnTaxonLevels.m` | error | undefined variable ddataByFeature | `test/verifiedTests/reconstruction/testDemeter/testSummarizeFeaturesOnTaxonLevels.m` |
 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | limitation | Biomass coefficients are rounded to about five significant digits | `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m` |
 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | error | Rebuilding the biomass of Archaea stops with an error | `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m` |
 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | wrong-result | The model has no objective after rebuilding the biomass of Tenericutes | `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m` |
+| `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | wrong-result | growth on the defined medium is lost when the file holds only numbers | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
+| `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | cosmetic | the sensitivity column header loses its blank | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | A SUX structure without exchange reactions cannot be solved | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | An empty objective stops with an undefined variable | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
@@ -2753,6 +2788,17 @@
 - **Source lines**: 177-179
 - **Documented in**: `test/verifiedTests/base/testInstall/testPrepareTest.m`
 
+### `src/base/install/updateCobraToolbox.m`
+
+#### A commit count that git cannot compute stops the function with an undefined variable instead of the intended warning
+
+- **Severity**: error
+- **Trigger**: updateCobraToolbox(true) in a clone whose remote.origin.url contains opencobra/cobratoolbox, on a branch, with a local master branch, where 'git rev-list --left-right --count master...origin/master' fails (for example when origin/master was never fetched); reproduced with a stand-in git executable first on PATH (fetch and show-ref succeed, that rev-list exits with status 128)
+- **Observed**: (R2025a, 2026-11-15) "Unrecognized function or variable 'commitsAheadBehindMaster'." at line 85: the counts are assigned only when rev-list succeeds (lines 56-58). With the master count 0/0 and a failing develop count the error is "Unrecognized function or variable 'commitsAheadBehindDevelop'." (line 85); the warning of lines 157-158 is reached only when master is ahead, because || stops before the develop count is read
+- **Expected**: the message of line 157 and the warning 'Eventual changes of the <master> branch of The COBRA Toolbox could not be counted.' (lines 157-158)
+- **Source lines**: 56-58, 73-75, 85, 157-158
+- **Documented in**: `test/verifiedTests/base/testInstall/testUpdateCobraToolbox.m`
+
 ### `src/base/io/KEGG/mapKEGGID2Model.m`
 
 #### A dictionary abbreviation with several entries stops with an error
@@ -4337,6 +4383,17 @@
 - **Source lines**: 42-44, 62
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddAnnotations.m`
 
+### `src/dataIntegration/metaboAnnotator/analyseMetStruct/addInfoFromMolFiles.m`
+
+#### The documented output IDAdded is not assigned when nothing is added, so a call requesting it stops
+
+- **Severity**: error
+- **Trigger**: [ms, IDAdded] = addInfoFromMolFiles(struct('VMH_h2o', struct('VMHId', 'h2o', 'inchiString', 'InChI=1S/H2O/h1H2', 'inchiKey', 'XLYOFNOQVPJJNP-UHFFFAOYSA-N', 'smile', 'O')), tempname)
+- **Observed**: (R2025a, 2026-11-15) 'Output argument "IDAdded" (and possibly others) not assigned a value in the execution with "addInfoFromMolFiles" function.': IDAdded is assigned only inside the branches that add an identifier (lines 64-66, 82-84, 96-98) and is never initialised (line 46 initialises only the counter)
+- **Expected**: IDAdded returned empty when nothing is added
+- **Source lines**: 1, 46
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAddInfoFromMolFiles.m`
+
 ### `src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m`
 
 #### A repeated entry is used as the format of its message
@@ -4378,6 +4435,46 @@
 - **Expected**: the documented columns stored in neutralFormula and chargedFormula
 - **Source lines**: 108-110
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m`
+
+### `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m`
+
+#### A comma-separated VMH id that is not in the structure stops the function
+
+- **Severity**: error
+- **Trigger**: a table row with VMH ID 'h2o,zzz' and a structure holding only h2o
+- **Observed**: (R2025a, 2026-11-15) "Unable to perform assignment with 0 elements on the right-hand side." (line 47)
+- **Expected**: the ids found (h2o) receive the row, the others are skipped
+- **Source lines**: 47
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m`
+
+#### A row whose VMH id is not in the structure overwrites the metabolite of the previous matched row
+
+- **Severity**: wrong-result
+- **Trigger**: a table (writecell, headers CHEM_ID, INCHIKEY, INCHISTRING, CAS, CHEMSPIDER, HMDB, KEGG, PUBCHEM, VMH ID) with the rows {35, 'KEY1', 'InChI=1S/H2O/h1H2', ..., 'h2o'} and {50, 'KEY2', 'InChI=X', ..., 'notInStruct'}, and VMH2Metabolon(struct('VMH_h2o', struct('VMHId', 'h2o', 'metNames', 'Water')))
+- **Observed**: (R2025a, 2026-11-15) VMH_h2o.metabolon = 50, inchiKey = 'KEY2', inchiString = 'InChI=X' and the other identifiers of the second row: when no metabolite matches (line 54), vmhId keeps the value of the previous row and the loop of line 58 writes the row into that metabolite
+- **Expected**: VMH_h2o keeps the identifiers of its own row (metabolon 35, KEY1); rows without a match change nothing
+- **Source lines**: 53-58
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m`
+
+#### A table whose first row with a VMH id has no matching metabolite stops the function
+
+- **Severity**: error
+- **Trigger**: the same table with the two rows swapped, or the shipped table (its first row lists 1pyr5c) with VMH2Metabolon(struct('VMH_h2o', struct('VMHId', 'h2o', 'metNames', 'Water')))
+- **Observed**: (R2025a, 2026-11-15) "Unrecognized function or variable 'vmhId'." (line 58)
+- **Expected**: the row is skipped and the later matching rows are copied
+- **Source lines**: 53-58
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m`
+
+### `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Seed.m`
+
+#### A blank SEED cell overwrites the SEED id with NaN and writes a source
+
+- **Severity**: cosmetic
+- **Trigger**: MetaboliteTranslationTable.xlsx written with writecell({'VMHmetabolite', 'seed'; 'h2o', ''}) and VMH2Seed(struct('VMH_h2o', struct('VMHId', 'h2o', 'metNames', 'Water', 'seed', 'cpd00001')))
+- **Observed**: (R2025a, 2026-11-15) seed = NaN and seed_source = 'MetaboliteTranslationTable.xlsx:manual:<date>': xlsread returns NaN for the blank cell and line 39 only tests isempty, which is false for NaN. The shipped table has no blank SEED cell, so the shipped file does not trigger it; the input is skipped below.
+- **Expected**: a blank SEED cell leaves the metabolite unchanged
+- **Source lines**: 39-41
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Seed.m`
 
 ### `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m`
 
@@ -4459,6 +4556,17 @@
 - **Source lines**: 87
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m`
 
+### `src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m`
+
+#### The metabolite counter is printed for every metabolite
+
+- **Severity**: cosmetic
+- **Trigger**: any call with a non-empty metabolite structure
+- **Observed**: (R2025a, 2026-11-15) "i =" and the index are printed once per metabolite (line 40 has no semicolon)
+- **Expected**: no console output, or output gated behind a printLevel
+- **Source lines**: 40
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGenerateInchiKeysSmilesFromInchiStrings.m`
+
 ### `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m`
 
 #### An empty difference set is not assigned, so a call requesting it stops
@@ -4538,6 +4646,37 @@
 - **Expected**: no console output
 - **Source lines**: 37-39
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m`
+
+### `src/dataIntegration/metabotools/mkTableOfAddedExchanges.m`
+
+#### An exchange list with fewer rows than columns stops the function
+
+- **Severity**: error
+- **Trigger**: R.s1.Ex_RxnsAdded = {'EX_a'; 'EX_b'}; R.s1.MinMaxAddedRxns = [0 1; -1 0]; R.s2.Ex_RxnsAdded = {'EX_b'}; R.s2.MinMaxAddedRxns = [-1 0]; mkTableOfAddedExchanges(R, {'s1', 's2'}, statisticsAddedExchanges(R, {'s1', 's2'})) (a 2 x 4 list)
+- **Observed**: (R2025a, 2026-11-15) "Unable to perform assignment because the size of the left side is 4-by-1 and the size of the right side is 2-by-1." (line 20): line 19 sizes the table with length(Ex_added_all_unique), the larger of its rows and columns (up to 6 columns from statisticsAddedExchanges)
+- **Expected**: a 2 x 3 table, one row per exchange
+- **Source lines**: 19-20
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testMkTableOfAddedExchanges.m`
+
+### `src/dataIntegration/metabotools/statisticsAddedExchanges.m`
+
+#### The sample counter is printed for every sample
+
+- **Severity**: cosmetic
+- **Trigger**: any call with at least one sample
+- **Observed**: (R2025a, 2026-11-15) "i =" and the index are printed once per sample (line 32 has no semicolon)
+- **Expected**: no console output, or output gated behind a printLevel
+- **Source lines**: 32
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m`
+
+#### The table is not ordered by frequency as documented; the sorted copy goes to a differently spelled variable
+
+- **Severity**: wrong-result
+- **Trigger**: R.s1.Ex_RxnsAdded = {'EX_a'; 'EX_b'}; R.s1.MinMaxAddedRxns = [0 1; -1 0]; R.s2.Ex_RxnsAdded = {'EX_b'}; R.s2.MinMaxAddedRxns = [-1 0]; statisticsAddedExchanges(R, {'s1', 's2'})
+- **Observed**: (R2025a, 2026-11-15) rows {'EX_a', 1, 'secretion', []} then {'EX_b', 2, [], 'uptake'} (alphabetical order of unique): lines 74 and 76 assign to EX_added_all_unique, while the output is Ex_added_all_unique; sortrows(output, -2) itself returns the rows in the documented order
+- **Expected**: EX_b (2 occurrences) before EX_a (1 occurrence)
+- **Source lines**: 74-76
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m`
 
 ### `src/dataIntegration/metanetxMapper/metanetxMapper.m`
 
@@ -4786,6 +4925,28 @@
 - **Source lines**: 4-6
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m`
 
+### `src/reconstruction/comparison/modelBorgifier/cleanTmodel.m`
+
+#### Lengthening a short lb, ub or c array overwrites its last value with 0
+
+- **Severity**: wrong-result
+- **Trigger**: a template model with one model m1, rxns {'R1'; 'R2'; 'R3'}, mets {'a[c]'; 'b[c]'; 'd[c]'}, S = sparse([-1 0 -1; 1 -1 0; 0 1 1]), lb.m1 = [-10; -20] (one value short, as for the "old models" the code comment names), ub.m1 = [10; 20; 30], c.m1 = [0; 0; 1], Models.m1.rxns = true(3, 1), Models.m1.mets = true(3, 1), the other TmodelFields fields as empty texts, rxnID = rxns, metID = mets, metNames = {'A'; 'B'; 'D'}, metCharge = zeros(3, 1); out = cleanTmodel(T)
+- **Observed**: out.lb.m1 = [-10; 0; 0]: the lower bound -20 of R2 is replaced by 0, because line 97 assigns nowArray(end:nRxns) = 0 instead of nowArray(end + 1:nRxns) = 0 (the membership arrays use end + 1, lines 108 and 115) (R2025a, 2026-11-15)
+- **Expected**: out.lb.m1 = [-10; -20; 0]: the existing values kept and only the missing reaction padded with 0
+- **Source lines**: 97
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCleanTmodel.m`
+
+### `src/reconstruction/comparison/modelBorgifier/compareAllMets.m`
+
+#### Models with no positively scored metabolite pair stop with an undefined-function error
+
+- **Severity**: error
+- **Trigger**: C.mets = {'a[c]'}; C.metNames = {'alpha'}; C.metFormulas = {'C1'}; C.metCharge = 0; C.metKEGGID = {''}; C.metSEEDID = {''}; T.mets = {'b[e]'}; T.metID = {'b'}; T.metNames = {'beta'}; T.metFormulas = {'C2'}; T.metCharge = 1; T.metKEGGID = {''}; T.metSEEDID = {''}; compareAllMets(C, T)
+- **Observed**: "Undefined function 'zeroes' for input arguments of type 'double'." at line 165: the only pair scores -1 - 100 - 1 - 5 - 1 < 0, is clipped to 0, and the else branch calls zeroes (R2025a, 2026-11-15)
+- **Expected**: a zero score matrix of size 1 x 1 (zeros(size(metScores))), as the branch intends
+- **Source lines**: 165
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCompareAllMets.m`
+
 ### `src/reconstruction/comparison/modelBorgifier/countC.m`
 
 #### Elements whose symbol starts with C are counted as carbon
@@ -4796,6 +4957,17 @@
 - **Expected**: 0 carbon atoms
 - **Source lines**: 39-47
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m`
+
+### `src/reconstruction/comparison/modelBorgifier/findMetMatch.m`
+
+#### Names and identifiers are used as regular expressions without escaping
+
+- **Severity**: limitation
+- **Trigger**: a compared metabolite whose name (or identifier, formula, KEGG or SEED identifier) contains a regular-expression metacharacter, for example the name 'Water (pure)' against the identical template name 'Water (pure)'
+- **Observed**: regexpi({'Water (pure)'}, '(\||\<)Water (pure)(\>|\|)') finds no match ('(pure)' is a group matching 'pure'); a name such as '(R)-3-Hydroxybutanoyl-[acyl-carrier protein]' does not match itself either, so the name criterion adds nothing for such metabolites; '.' or '+' match other characters (R2025a, 2026-11-15)
+- **Expected**: the text matched literally (regexptranslate('escape', ...)), as the criterion compares names
+- **Source lines**: 84, 86, 113, 126, 151, 169
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testFindMetMatch.m`
 
 ### `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m`
 
@@ -4816,6 +4988,28 @@
 - **Expected**: the position of each duplicate printed as a number
 - **Source lines**: 97
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m`
+
+### `src/reconstruction/comparison/modelBorgifier/mapMatch.m`
+
+#### 'noSeed' score of a single-metabolite compared reaction uses the minimum over the template metabolites
+
+- **Severity**: wrong-result
+- **Trigger**: C.mets = {'c1'; 'c2'}; C.rxns = {'R1'; 'R2'}; C.S = sparse([1 -1; 0 1]); T.mets = {'t1'; 't2'; 't3'}; T.rxns = {'Q1'; 'Q2'}; T.S = sparse([-1 1; 1 0; 1 0]); T.Models.m1.mets = true(3, 1); rmatch = mapMatch(C, T, 'noSeed')
+- **Observed**: rmatch(1, 1) = 1. The differences in reaction counts between c1 and t1, t2, t3 are [0 1 1]; line 81 takes min(diffNumRxns(s1(:, ir1), s2(:, ir2))), which for one compared metabolite (a 1 x 3 row) is the minimum over the template metabolites (0) instead of the per-template-metabolite minimum over the compared metabolites that the same line computes for two or more compared metabolites; 0 * |3 - 1| gives 1 / (0 + 1) = 1 (R2025a, 2026-11-15)
+- **Expected**: mean([0 1 1]) = 2/3, times the metabolite-count difference 2, gives rmatch(1, 1) = 1 / (4/3 + 1) = 3/7, the value of the documented "average of the minimum difference" computed as for reactions with several metabolites (min(..., [], 1))
+- **Source lines**: 81
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m`
+
+### `src/reconstruction/comparison/modelBorgifier/optimalScores.m`
+
+#### A training list with exactly one matched reaction stops with an index error
+
+- **Severity**: error
+- **Trigger**: global SCORE CMODEL TMODEL; SCORE = rand(3, 3, 2); CMODEL.metNums = zeros(3, 5); TMODEL.metNums = zeros(3, 5); optimalScores([1; 0; -1], 'none')
+- **Observed**: "Index in position 1 exceeds array bounds. Index must not exceed 1." at line 75: hitPos is 1 x 2 ([row, match]) and length(hitPos) = 2 counts its columns, so the loop over the hits runs twice (also for 'svm', 'RF', 'linear' and 'exp', as the loop precedes the choice of optimizer) (R2025a, 2026-11-15)
+- **Expected**: one hit: hitVec of size 2 x 1, missVec of size 2 x 2, the weights and the normalized scoreTotal returned (size(hitPos, 1) instead of length(hitPos))
+- **Source lines**: 63, 68, 74-75
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testOptimalScores.m`
 
 ### `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m`
 
@@ -4868,6 +5062,186 @@
 - **Source lines**: 127
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m`
 
+### `src/reconstruction/demeter/src/integration/getCurationStatus.m`
+
+#### Data entries 1 and -1 cancel out and the organism is reported without experimental data
+
+- **Severity**: wrong-result
+- **Trigger**: in a temporary folder d, info.txt with the lines MicrobeID, orgA, orgB, and CarbonSourcesTable.txt, FermentationTable.txt, GrowthRequirementsTable.txt, secretionProductTable.txt and uptakeTable.txt each with the tab-separated lines 'MicrobeID X1 X2 Ref1', 'orgA 1 -1 PMID:1', 'orgB 1 0 PMID:2'; getCurationStatus(fullfile(d, 'info.txt'), d, false)
+- **Observed**: orgA gets 1 in every column and orgB gets 2: line 70 tests abs(sum(data)) > 0, and 1 + (-1) = 0 (R2025a, 2026-11-15). In the distributed GrowthRequirementsTable.txt (values 1, 0, -1) no strain has a zero sum (0 of 4750 strains with data), so the shipped resource is not affected
+- **Expected**: 2 for orgA as for orgB (the documented "2 indicates that the reconstruction was refined against available experimental data"): any non-zero entry, for example any(cell2mat(...) ~= 0)
+- **Source lines**: 70
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testGetCurationStatus.m`
+
+### `src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m`
+
+#### Spreadsheets with no unannotated reaction stop with an index error
+
+- **Severity**: error
+- **Trigger**: in a temporary folder d (also the current folder): info2.txt with the tab-separated lines 'MicrobeID PubSeedID' and 'orgA Org A (1.1)'; InReactions.txt 'PubSEED Abreviation VMH Abbreviation' and 'GeneX RXN1'; ReactionTranslationTable.txt 'TranslatedReaction VMHreaction' and 'rxn1 RXN1'; gapfilledGenomeAnnotation.txt 'orgB RXN9 gap_filled'; d/ss/a.tsv 'Organism GeneX' and 'Org A (1.1) 123' (every gene annotated); getUnannotatedReactionsFromPubSeedSpreadsheets(fullfile(d, 'info2.txt'), d, fullfile(d, 'ss'))
+- **Observed**: "Index in position 2 exceeds array bounds." at line 84: unannotatedRxns is the 0 x 0 cell {} and unannotatedRxns(:, 1) fails (R2025a, 2026-11-15)
+- **Expected**: an empty list of unannotated reactions returned
+- **Source lines**: 84
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m`
+
+### `src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m`
+
+#### A KBase reaction irreversible where the VMH reaction is reversible is not reported as similar
+
+- **Severity**: wrong-result
+- **Trigger**: current folder d holding MetaboliteDatabase.txt (one 13-column row) and ReactionDatabase.txt (12-column header and the rows RXNA 'a[c] + g[c] <=> b[c]' reversible 1, RXNB 'c[c] -> d[c]' reversible 0, RXNC 'e[c] <=> f[c] + h[c]' reversible 1); kb = {'k1', 'x', 'a[c] + g[c] -> b[c]'; 'k2', 'x', 'c[c] <=> d[c]'; 'k3', 'x', 'f[c] + h[c] <=> e[c]'}; [same, similar] = mapKBaseToVMHReactions(kb)
+- **Observed**: same holds k3/RXNC and similar holds k2/RXNB (reversible in KBase, irreversible in VMH), but k1/RXNA is in neither table: a reversible VMH reaction is written only with '<=>' (lines 80-87) and an irreversible KBase reaction only with '->', so the two strings never meet in the intersect of line 154 (R2025a, 2026-11-15)
+- **Expected**: k1/RXNA in similarReactions (irreversible in KBase, reversible in VMH: the documented "or vice versa" case)
+- **Source lines**: 80-87, 138-149
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testMapKBaseToVMHReactions.m`
+
+### `src/reconstruction/demeter/src/integration/printRefinedModelIDs.m`
+
+#### files that are not SBML or .mat files are returned as model identifiers
+
+- **Severity**: wrong-result
+- **Trigger**: a folder holding the empty files A_b.sbml and notes.txt, then printRefinedModelIDs(folder); or a folder holding only notes.txt and other.csv
+- **Observed**: (R2025a, 2026-11-15) {'A_b'; 'notes_txt'} for the first folder and {'other_csv'} for the second. Line 27 applies any() to the whole column returned by contains, so delInd is 1 when no file matches (only the first file is removed) and empty otherwise (no file is removed)
+- **Expected**: {'A_b'} for the first folder and no identifier for the second: every file whose name contains neither 'sbml' nor 'mat' removed (the comment of line 26)
+- **Source lines**: 27-28
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPrintRefinedModelIDs.m`
+
+### `src/reconstruction/demeter/src/properties/computeMetabolicDistance.m`
+
+#### the blocks of 100 rows run past the last strain
+
+- **Severity**: error
+- **Trigger**: the same two files with 3 strains x 2 features, then computeMetabolicDistance(d, 'v', 0)
+- **Observed**: (R2025a, 2026-11-15) error "Index in position 1 exceeds array bounds. Index must not exceed 4." at line 38 (the parfor over k = j:j+99 reads data(k, k+1:end))
+- **Expected**: one distance per pair of the 3 strains; the loop limited to the rows that exist (and the distance taken between strains, not along a diagonal of the table)
+- **Source lines**: 37-39
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testComputeMetabolicDistance.m`
+
+#### the distances are stored in comDistTmp but read from the undefined comDist
+
+- **Severity**: error
+- **Trigger**: ComputedFluxes/UptakeSecretion_v.txt and ReactionPresence/ReactionPresence_v.txt in a folder d, each with a header row and 101 strains x 3 features of 0/1, then computeMetabolicDistance(d, 'v', 0) run from d
+- **Observed**: (R2025a, 2026-11-15) error "Unrecognized function or variable 'comDist'." at line 52; comDistTmp.mat was written to the current folder first
+- **Expected**: the pairwise distances of the first file stored in column 3 of the table
+- **Source lines**: 38-41, 52, 54
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testComputeMetabolicDistance.m`
+
+### `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m`
+
+#### the default metsToAnalyze analyses no metabolite
+
+- **Severity**: unusable-option
+- **Trigger**: plotMetaboliteProducersConsumers(d, info, 'v') without metsToAnalyze
+- **Observed**: (code reading, R2025a source of 2026-11-15; not reachable while the defect above stops the function at line 79) the default {} makes setdiff of line 83 return every column, so line 84 deletes every metabolite column and nothing is listed or plotted
+- **Expected**: all computed metabolites (the help: "default: all computed metabolites")
+- **Source lines**: 30, 83-84
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m`
+
+#### the header row of a numeric flux file is dropped by readtable
+
+- **Severity**: error
+- **Trigger**: in folder d, ComputedFluxes/uptakeFluxes_v.txt, secretionFluxes_v.txt and internalProduction_v.txt, each {'', 'EX_glc_D(e)', 'EX_lac_L(e)'; 's1', -1, 0; 's2', 0, -2} written tab-separated; info3.txt with MicrobeID and taxon columns for s1-s3; plotMetaboliteProducersConsumers(d, 'd/info3.txt', 'v', 'metsToAnalyze', {'glc_D', 'lac_L'})
+- **Observed**: (R2025a, 2026-11-15) error "Cell elements must be character vectors." at line 79: readtable(..., 'ReadVariableNames', false) of line 74 detects the header line and skips it, so data(1, :) is {'s1', -1, 0} and strrep fails on the numbers; the current folder is left at d/Figures_Metabolites/uptakeFluxes
+- **Expected**: the metabolite header kept as row 1 (as readInputTableForPipeline returns it) and the lists and plots written
+- **Source lines**: 74-75, 79
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m`
+
+#### the metabolite counter is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call that reaches line 115
+- **Observed**: (code reading) "j = 2", "j = 3", ... printed for every metabolite (the statement j has no semicolon)
+- **Expected**: no console output, or progress gated behind a print level
+- **Source lines**: 115
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m`
+
+### `src/reconstruction/demeter/src/properties/producetSNEPlots.m`
+
+#### 16 to 19 taxa with few singletons raise an index error
+
+- **Severity**: error
+- **Trigger**: info.txt (tab-separated: MicrobeID, Phylum, Class, Order, Family, Genus, Species) for 32 strains m01..m32, every rank of strain k = P<ceil(k/2)> (16 taxa of 2 strains); ReactionMetabolitePresence/ReactionPresence_v.txt in folder d (header row, one row per strain, 3 positive features); producetSNEPlots(d, 'd/info.txt', 'v')
+- **Observed**: (R2025a, 2026-11-15) error "Index exceeds the number of array elements. Index must not exceed 16." at line 160 (uniqueXX = uniqueXX(1:20) with 16 taxa), before tsne is reached; the folder tSNE_Plots was created
+- **Expected**: all taxa kept when there are fewer than 20 (keep the min(20, n) largest)
+- **Source lines**: 155-160
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m`
+
+#### the custom-feature branch filters on the taxa of the last taxon level
+
+- **Severity**: cosmetic
+- **Trigger**: producetSNEPlots(d, info, 'v', {'Gram'}) with at least 10 strains
+- **Observed**: (code reading, R2025a source of 2026-11-15) lines 246-248 remove rows where taxa (the species list left by the taxon loop, already without 'N/A' and of another length) is 'N/A', so they never remove anything; the strains whose feature is 'N/A' are kept. Lines 66-67 already drop strains absent from the information table, so no 'N/A' feature arises unless the first header of the property file is itself an identifier of the information table
+- **Expected**: the filter applied to feats (strains with no information on the feature removed from data, red_orgs and feats)
+- **Source lines**: 246-248
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m`
+
+#### three t-SNE coordinates are stored in two columns
+
+- **Severity**: error
+- **Trigger**: customFeatures given and at least 10 strains with information, so that line 260 computes Y with 'NumDimensions' 3
+- **Observed**: (R2025a, 2026-11-15; tsne is not installed, so the assignment of line 263 was run alone with a 10 x 3 Y) error "Unable to perform assignment because the size of the left side is 10-by-2 and the size of the right side is 10-by-3."
+- **Expected**: columns 3:5 (or a two-dimensional embedding), as the header of line 296 names only an x and a y value
+- **Source lines**: 263
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m`
+
+### `src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m`
+
+#### metabolite and uptake/secretion features are looked up in the reaction database
+
+- **Severity**: cosmetic
+- **Trigger**: rankFeaturesByIncidence(d, 'v') with metabolite IDs (e.g. 'atp') in MetabolitePresence_v.txt and '<exchange>_uptake'/'<exchange>_secretion' columns (as computeUptakeSecretion writes them) in UptakeSecretion_v.txt
+- **Observed**: (code reading, R2025a source of 2026-11-15) for i < 4 (line 46) every feature is searched in database.reactions, so metabolite presence and uptake/secretion features never get a description, formula or subsystem
+- **Expected**: metabolite presence described from database.metabolites (as internal production is) and uptake/secretion features described from their exchange reaction
+- **Source lines**: 46, 51-56
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testRankFeaturesByIncidence.m`
+
+#### the percentage of reconstructions is divided by the count of the most common feature
+
+- **Severity**: wrong-result
+- **Trigger**: in folder d, ReactionMetabolitePresence/ReactionPresence_v.txt, ReactionMetabolitePresence/MetabolitePresence_v.txt, ComputedFluxes/UptakeSecretion_v.txt and ComputedFluxes/InternalProduction_v.txt, each with header {'Model_ID', 'ATPM', 'PGI'} and 20 strains, ATPM 1 in strains 1-10, PGI 1 in strains 1-4, 0 otherwise; rankFeaturesByIncidence(d, 'v')
+- **Observed**: (R2025a, 2026-11-15) Ranked_features/Reaction_presence_ranked_v.xls: ATPM "Number of reconstructions" '10', "Percentage of reconstructions" '1'; PGI '4' and '0.4' (lines 59 and 75 divide by max(B)); the plot (ylabel "Fraction of presence in tested reconstructions") shows the same values
+- **Expected**: 10/20 = 0.5 and 4/20 = 0.2, the fraction of the 20 reconstructions (or a percentage) as the column header and the plot label say
+- **Source lines**: 59, 75
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testRankFeaturesByIncidence.m`
+
+### `src/reconstruction/demeter/src/properties/summarizeFeaturesOnTaxonLevels.m`
+
+#### numeric presence values become NaN on R2020a and newer
+
+- **Severity**: wrong-result
+- **Trigger**: the first call above once line 49 is fixed
+- **Observed**: (R2025a, 2026-11-15) readInputTableForPipeline returns the presence values as numbers ({'m1', [1]}), and str2double({1, 0}) is [NaN NaN], so line 55 makes every taxon sum NaN, normalised to 0 by lines 72-78 (line 112 has the version branch that line 55 lacks)
+- **Expected**: the sums of the 0/1 presence values of the strains of each taxon
+- **Source lines**: 55
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testSummarizeFeaturesOnTaxonLevels.m`
+
+#### the row range is built from size(getTax), a two-element vector
+
+- **Severity**: error
+- **Trigger**: in folder d, Refined/ReactionMetabolitePresence/reactionPresence_v_refined.txt ({'', 'r1', 'r2'; 's1', 1, 0; 's2', 1, 1; 's3', 0, 1}) and info3.txt (MicrobeID, Phylum, Class, Order, Family, Genus, Species, Gram for s1-s3); summarizeFeaturesOnTaxonLevels(d, 'd/info3.txt', 'v'); and, with an information table of one strain, summarizeFeaturesOnTaxonLevels(d, 'd/info1.txt', 'v', {'Gram'})
+- **Observed**: (R2025a, 2026-11-15) error "Colon operands must be real scalars." at line 49 (taxon levels) and at line 105 (custom features)
+- **Expected**: rows 2:numel(getTax)+1 filled with the taxa
+- **Source lines**: 49, 105
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testSummarizeFeaturesOnTaxonLevels.m`
+
+#### the table of taxon level i is named with the file prefix of row i
+
+- **Severity**: error
+- **Trigger**: the first call above once line 49 is fixed (more than 4 taxon levels)
+- **Observed**: (code reading, R2025a source of 2026-11-15) line 91 indexes files{i,1} with the taxon-level index i = 1..6 although files has 4 rows: index error at the Class level, and the tables of every property file are written under the prefixes ReactionPresence_ to InternalProduction_ by taxon level, overwriting each other
+- **Expected**: files{f,1} (the prefix of the property file being summarised); the same applies to line 151
+- **Source lines**: 91, 151
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testSummarizeFeaturesOnTaxonLevels.m`
+
+#### undefined variable ddataByFeature
+
+- **Severity**: error
+- **Trigger**: customFeatures given, once line 105 is fixed
+- **Observed**: (code reading, R2025a source of 2026-11-15) line 126 reads size(ddataByFeature, 1); ddataByFeature is defined nowhere in the file, so the custom-feature branch raises "Unrecognized function or variable" and the heat map of line 140 is never drawn
+- **Expected**: size(dataByFeature, 1)
+- **Source lines**: 126
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testSummarizeFeaturesOnTaxonLevels.m`
+
 ### `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m`
 
 #### Biomass coefficients are rounded to about five significant digits
@@ -4896,6 +5270,26 @@
 - **Expected**: the rebuilt biomass reaction is the objective, as for all other organisms
 - **Source lines**: 97
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m`
+
+### `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m`
+
+#### growth on the defined medium is lost when the file holds only numbers
+
+- **Severity**: wrong-result
+- **Trigger**: in folder d/res_refined, growsOnDefinedMedium_v.txt {'s1', 1; 's2', 0; 's3', 1}, Carbon_sources_TruePositives_v.txt {'s1', 'glc'; 's2', ''; 's3', 'lac'} and Carbon_sources_FalseNegatives_v.txt {'s1', ''; 's2', 'fru'; 's3', ''} (written tab-separated as batchTestAllReconstructionFunctions writes them); plotTestSuiteResults('d/res_refined', 'v')
+- **Observed**: (R2025a, 2026-11-15) v_PercentagesAgreement.xls row growsOnDefinedMedium: StrainsWithData 0, PercentAgreeing missing (0/0 = NaN); readtable(..., 'format', 'auto') of line 46 reads the 0/1 column as numbers and str2double of a numeric cell is NaN (lines 68, 268-269); the violin plot of line 95 gets NaN data
+- **Expected**: StrainsWithData 3 and PercentAgreeing 2/3 (the file holds 2 growing and 1 non-growing strain), as for a file that also holds 'NA' (read as text)
+- **Source lines**: 46, 67-68, 268-269, 274
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m`
+
+#### the sensitivity column header loses its blank
+
+- **Severity**: cosmetic
+- **Trigger**: the call above
+- **Observed**: (R2025a, 2026-11-15) v_Properties.xls header 'Sensitivityv': strcat removes the trailing blank of 'Sensitivity '
+- **Expected**: 'Sensitivity v'
+- **Source lines**: 120
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m`
 
 ### `src/reconstruction/growthExpMatch/growthExpMatch.m`
 
