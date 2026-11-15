@@ -42,6 +42,14 @@ warmUpFile = [tempname '.png'];
 exportgraphics(gca, warmUpFile);
 delete(warmUpFile);
 close(warmUp);
+% reading XML makes MATLAB's Java create its attach socket .java_pid<pid> in tempdir once per
+% session: read one XML document before the first test so that it is not reported as a leftover
+warmUpXml = [tempname '.xml'];
+fid = fopen(warmUpXml, 'w');
+fprintf(fid, '<?xml version="1.0"?><warmup/>');
+fclose(fid);
+xmlread(warmUpXml);
+delete(warmUpXml);
 
 for i = 1:numel(pairs)
     parts = strsplit(strtrim(pairs{i}), '|');

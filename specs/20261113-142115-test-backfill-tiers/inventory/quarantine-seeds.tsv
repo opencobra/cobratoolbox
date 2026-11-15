@@ -116,3 +116,7 @@ addAnnotations	NONE
 addInfoFromMolFiles	NONE
 # optimalScores: only an rxnList with exactly one matched reaction fails; only reactionCompareGUI (EXCLUDED, GUI) passes rxnList.
 optimalScores	src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m
+# elementalMatrixToFormulae: only dMax = 0 drops counts of 1; every caller (computeMetFormulae) passes 10 and the default is 12.
+elementalMatrixToFormulae	NONE
+# changeNodesArea: only the documented three-input call fails; no src file calls it.
+changeNodesArea	NONE

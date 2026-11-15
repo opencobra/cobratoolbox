@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-547 known defects in 305 functions (182 wrong-result, 148 error, 52 unusable-option, 93 cosmetic, 72 limitation).
+577 known defects in 323 functions (189 wrong-result, 157 error, 52 unusable-option, 99 cosmetic, 80 limitation).
 
 ## Summary
 
@@ -442,6 +442,7 @@
 | `src/reconstruction/comparison/modelBorgifier/cleanTmodel.m` | wrong-result | Lengthening a short lb, ub or c array overwrites its last value with 0 | `test/verifiedTests/reconstruction/testModelBorgifier/testCleanTmodel.m` |
 | `src/reconstruction/comparison/modelBorgifier/compareAllMets.m` | error | Models with no positively scored metabolite pair stop with an undefined-function error | `test/verifiedTests/reconstruction/testModelBorgifier/testCompareAllMets.m` |
 | `src/reconstruction/comparison/modelBorgifier/countC.m` | wrong-result | Elements whose symbol starts with C are counted as carbon | `test/verifiedTests/reconstruction/testModelBorgifier/testCountC.m` |
+| `src/reconstruction/comparison/modelBorgifier/findMetMatch.m` | error | A SEED identifier given as a cell stops the function | `test/verifiedTests/reconstruction/testModelBorgifier/testFindMetMatch.m` |
 | `src/reconstruction/comparison/modelBorgifier/findMetMatch.m` | limitation | Names and identifiers are used as regular expressions without escaping | `test/verifiedTests/reconstruction/testModelBorgifier/testFindMetMatch.m` |
 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | error | An empty list stops with an error | `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m` |
 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | wrong-result | Positions of duplicates are printed as character codes | `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m` |
@@ -473,14 +474,20 @@
 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | limitation | Biomass coefficients are rounded to about five significant digits | `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m` |
 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | error | Rebuilding the biomass of Archaea stops with an error | `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m` |
 | `src/reconstruction/demeter/src/refinement/rebuildBiomassReaction.m` | wrong-result | The model has no objective after rebuilding the biomass of Tenericutes | `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m` |
+| `src/reconstruction/demeter/suite/reports/compareVersions.m` | error | Every comparison stops at a test function that does not exist in the toolbox | `test/verifiedTests/reconstruction/testDemeter/testCompareVersions.m` |
+| `src/reconstruction/demeter/suite/reports/compareVersions.m` | wrong-result | Metabolite content is reported as identical whenever the reactions are identical | `test/verifiedTests/reconstruction/testDemeter/testCompareVersions.m` |
+| `src/reconstruction/demeter/suite/reports/printRefinementReport.m` | wrong-result | Aromatic amino acid results are reported as bile acids, bile acids as drugs, drugs are left out | `test/verifiedTests/reconstruction/testDemeter/testPrintRefinementReport.m` |
 | `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | wrong-result | growth on the defined medium is lost when the file holds only numbers | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
 | `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | cosmetic | the sensitivity column header loses its blank | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | A SUX structure without exchange reactions cannot be solved | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | An empty objective stops with an undefined variable | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
+| `src/reconstruction/growthExpMatch/printSolutionGEM.m` | error | A log file name shorter than four characters stops the function | `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
+| `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m` | wrong-result | A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1 | `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m` |
 | `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m` | cosmetic | Formula numbers in error messages lose their zero padding inside parentheses | `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m` |
+| `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | error | Every formula stops with an error because the group name FULLR2 contains a digit | `test/verifiedTests/reconstruction/testModelGeneration/testIspolymer.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | A formula given as a cell or number stops with a MATLAB error, not the class error | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | Output is printed at printLevel 0 | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | limitation | Zero counts are replaced only when the formula holds a single zero | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
@@ -507,11 +514,13 @@
 | `src/reconstruction/modelGeneration/test4HumanFctExt.m` | error | three tests stop with an error when their objective reaction is missing | `test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m` |
 | `src/reconstruction/rBioNet/LegalRxnFormula.m` | wrong-result | An empty formula is accepted when more than one formula is checked | `test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m` |
 | `src/reconstruction/rBioNet/LegalRxnFormula.m` | cosmetic | The message has a spelling error | `test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m` |
+| `src/reconstruction/rBioNet/balancecheck.m` | limitation | Elements outside the fixed list of twelve are not checked | `test/verifiedTests/reconstruction/testRBioNet/testBalancecheck.m` |
 | `src/reconstruction/rBioNet/model2data.m` | error | A model whose description is missing or is not a text or a structure of seven fields stops | `test/verifiedTests/reconstruction/testRBioNet/testModel2data.m` |
 | `src/reconstruction/rBioNet/model2data.m` | wrong-result | A model without grRules is reported as incomplete although the field is created | `test/verifiedTests/reconstruction/testRBioNet/testModel2data.m` |
 | `src/reconstruction/rBioNet/model2data.m` | error | The two exits with a message box leave the output unassigned | `test/verifiedTests/reconstruction/testRBioNet/testModel2data.m` |
 | `src/reconstruction/rBioNet/rBioNetSaveLoad.m` | error | A wrong path of the compartment database is not detected | `test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m` |
 | `src/reconstruction/rBioNet/rBioNetSaveLoad.m` | cosmetic | Saving prints the whole database | `test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m` |
+| `src/reconstruction/rBioNet/rBioNet_search.m` | limitation | The default of exact is applied only when str is also missing | `test/verifiedTests/reconstruction/testRBioNet/testRBioNet_search.m` |
 | `src/reconstruction/refinement/GPRLogic/AndNode.m` | limitation | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m` |
 | `src/reconstruction/refinement/GPRLogic/AndNode.m` | limitation | convertToDNF of an AndNode without children stops with an error | `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m` |
 | `src/reconstruction/refinement/GPRLogic/FormulaParser.m` | limitation | An empty rule stops with an error | `test/verifiedTests/reconstruction/testGPRLogic/testFormulaParser.m` |
@@ -537,6 +546,14 @@
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | limitation | An order that repeats indices is accepted | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | unusable-option | The type proteins is accepted but always stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateGenes.m` | wrong-result | With two duplicated genes, different genes are merged | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m` |
+| `src/visualization/cellDesigner/addColour.m` | wrong-result | A reaction listed by an ID in the last row of r_info.ID is not coloured | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
+| `src/visualization/cellDesigner/addColour.m` | wrong-result | The html colours of the second column of listRxn_Color are ignored | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
+| `src/visualization/cellDesigner/addColour.m` | error | The second output is not assigned when no listed link has a non-zero width | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
+| `src/visualization/cellDesigner/correctMetName.m` | cosmetic | Debug output of the species row numbers | `test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m` |
+| `src/visualization/cellDesigner/parseCD.m` | cosmetic | Debug output of the keyword table, of every line read and of intermediate values | `test/verifiedTests/visualization/testCellDesigner/testParseCD.m` |
+| `src/visualization/cellDesigner/parseCD.m` | limitation | The input file is left open | `test/verifiedTests/visualization/testCellDesigner/testParseCD.m` |
+| `src/visualization/cellDesigner/position.m` | error | An attribute name that occurs more than once in the line stops the function | `test/verifiedTests/visualization/testCellDesigner/testPosition.m` |
+| `src/visualization/cellDesigner/position.m` | cosmetic | Debug output of the start index, the rest of the line and the end index | `test/verifiedTests/visualization/testCellDesigner/testPosition.m` |
 | `src/visualization/cellDesigner/readCD.m` | limitation | Attributes missing from the first reaction are dropped for all reactions | `test/verifiedTests/visualization/testCellDesigner/testReadCD.m` |
 | `src/visualization/cellDesigner/readCD.m` | cosmetic | Debug output of the attribute list and of the whole partial result | `test/verifiedTests/visualization/testCellDesigner/testReadCD.m` |
 | `src/visualization/cellDesigner/updateCD.m` | error | A text without "<species " lines stops with an error | `test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m` |
@@ -546,13 +563,26 @@
 | `src/visualization/cellDesigner/updateCD.m` | wrong-result | The second round pairs name lines with species rows by position and stops early | `test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m` |
 | `src/visualization/cellDesigner/updateCD.m` | wrong-result | changedStrLines lists only the lines changed in the second round | `test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m` |
 | `src/visualization/cellDesigner/updateCD.m` | wrong-result | number lists only the lines found in the second round | `test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m` |
+| `src/visualization/cellDesigner/writeTXT.m` | wrong-result | A '#RRGGBB' colour containing 'FF' is truncated | `test/verifiedTests/visualization/testCellDesigner/testWriteTXT.m` |
+| `src/visualization/cellDesigner/writeTXT.m` | error | A colour code without '#' or 'FF' in the first row stops with an error | `test/verifiedTests/visualization/testCellDesigner/testWriteTXT.m` |
+| `src/visualization/cellDesigner/writeTXT.m` | error | A one-column para stops with an error at the default colour | `test/verifiedTests/visualization/testCellDesigner/testWriteTXT.m` |
+| `src/visualization/createMetIntrcNetwork/hit_node.m` | cosmetic | The help text describes the fcont flag the wrong way round | `test/verifiedTests/visualization/testCreateMetIntrcNetwork/testHit_node.m` |
 | `src/visualization/efmviz/efmEnrichmentAnalysis.m` | error | Expression data without significance values stops with an error | `test/verifiedTests/visualization/testEFMviz/testEfmEnrichmentAnalysis.m` |
 | `src/visualization/efmviz/efmSubsystemsExtraction.m` | error | Every call with valid inputs stops with an error | `test/verifiedTests/visualization/testEFMviz/testEfmSubsystemsExtraction.m` |
+| `src/visualization/maps/ReconMap/generateSubsytemsLayout.m` | wrong-result | The overlay content is truncated to 'name' before it is sent | `test/verifiedTests/visualization/testReconMap/testGenerateSubsytemsLayout.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
 | `src/visualization/maps/ReconMap/printInRecon3Dmap.m` | cosmetic | The line width is written with a stray digit | `test/verifiedTests/visualization/testReconMap/testPrintInRecon3Dmap.m` |
+| `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m` | limitation | Numeric reaction IDs of different lengths do not match the map | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFromFileWidthAndColor.m` |
 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
+| `src/visualization/metabolicCartography/changeNodesArea.m` | error | The optional areaWidth is not defaulted when areaHeight is given | `test/verifiedTests/visualization/testMetabolicCartography/testChangeNodesArea.m` |
+| `src/visualization/metabolicCartography/mapFormula.m` | limitation | Fails instead of returning empty lists when no listed reaction is in the map | `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m` |
+| `src/visualization/metabolicCartography/mapFormula.m` | cosmetic | The help text describes absentRxns as reactions of the map not in the model | `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | wrong-result | Aliases of a removed reaction are removed even when kept reactions use them | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | limitation | Reactions keep a removed alias of a species that has other aliases | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
+| `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | Every '~' of the file name is replaced by the home folder | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
+| `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | Map information can be added or changed but not removed | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
+| `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | The check for a removed only reactant or product compares with the whole alias list | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
+| `src/visualization/metabolicCartography/transformMap2XML.m` | cosmetic | The error for a single secondary reactant or product link with several map aliases says 'should not be cell' | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/upsetPlot/upsetPlot.m` | error | Sets without any element stop with an index error | `test/verifiedTests/visualization/testUpsetPlot/testUpsetPlot.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | error | A reaction with several subsystems stops with an error | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | wrong-result | Only the last reaction of a gene gives its subsystem | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
@@ -4960,6 +4990,15 @@
 
 ### `src/reconstruction/comparison/modelBorgifier/findMetMatch.m`
 
+#### A SEED identifier given as a cell stops the function
+
+- **Severity**: error
+- **Trigger**: global CMODEL TMODEL with TMODEL the six template metabolites of testMetCompare (glc_D[c], atp[c], adp[c], g6p[c], h[c], glc_D[e] with metID, metNames, metFormulas, metCharge, metKEGGID, metSEEDID, S); CMODEL.mets = {'glc_D[c]'}, metNames = {'D-Glucose'}, metFormulas = {'C6H12O6'}, metCharge = 0, metKEGGID = {'C00031'}, metSEEDID = {{'cpd00027'}}; findMetMatch(1)
+- **Observed**: "Invalid data type. Argument must be numeric, char, or logical." at line 168: the KEGG branch converts a cell pipePos with cell2mat (lines 145-147) and accepts a cell identifier, the SEED branch does not (R2025a, 2026-11-15)
+- **Expected**: a cell SEED identifier handled as a cell KEGG identifier is
+- **Source lines**: 164-169
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testFindMetMatch.m`
+
 #### Names and identifiers are used as regular expressions without escaping
 
 - **Severity**: limitation
@@ -5271,6 +5310,37 @@
 - **Source lines**: 97
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testRebuildBiomassReaction.m`
 
+### `src/reconstruction/demeter/suite/reports/compareVersions.m`
+
+#### Every comparison stops at a test function that does not exist in the toolbox
+
+- **Severity**: error
+- **Trigger**: folders prev/ and new/ (passed with a trailing filesep) each holding mic1.mat with model = createModel({'EX_a', 'biomass_x'}, {'Ex a', 'biomass'}, {'a[e] <=>', 'a[e] ->'}) and model.genes = {'g1'} (lb of EX_a -5 in the new one), an existing report folder rep; compareVersions(prev, new, rep, 'mic1', [])
+- **Observed**: "Undefined function 'Test_MassChargeBalance' for input arguments of type 'struct'." at line 278, after the report was written up to the section 'Mass and charge balance'; the report file stays open (fopen of line 46, fclose only at line 878). None of Test_MassChargeBalance, Test_LeakingMetabolites, Test_ATP, Test_Growth, Test_CarbonSources, Test_FermentationProducts, Test_NutrientRequirements, Test_BvitaminBiosynthesis, Test_VitaminSecretion or Test_BileAcidBiosynthesis exists anywhere in the repository (R2025a, 2026-11-15)
+- **Expected**: the complete report, the summary table and the lists of the documented outputs
+- **Source lines**: 278, 280, 383-384, 412-413, 436-437, 463-464, 521-522, 580, 582, 699-700, 760-761, 819-820
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testCompareVersions.m`
+
+#### Metabolite content is reported as identical whenever the reactions are identical
+
+- **Severity**: wrong-result
+- **Trigger**: the two models of the entry above with the metabolite a[e] of the new model renamed b[e] (same reactions)
+- **Observed**: line 166 compares modelNew.rxns with modelPrevious.rxns, so the report says 'Metabolites are identical in both models.' and outputSummary(2, 3) is 'Unchanged' although the metabolites differ (read from the code; the report text up to line 278 confirms the message, R2025a, 2026-11-15)
+- **Expected**: metabolites compared (modelNew.mets with modelPrevious.mets), 'Changed' and the lists of metabolites only in one version
+- **Source lines**: 166-168
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testCompareVersions.m`
+
+### `src/reconstruction/demeter/suite/reports/printRefinementReport.m`
+
+#### Aromatic amino acid results are reported as bile acids, bile acids as drugs, drugs are left out
+
+- **Severity**: wrong-result
+- **Trigger**: <reconVersion>_PercentagesAgreement.xls written as plotTestSuiteResults writes it (header Feature/StrainsWithData/PercentAgreeing, then the rows Carbon_sources, Fermentation_products, PutrefactionPathways, Secretion_products, Metabolite_uptake, AromaticAminoAcidDegradation, Bile_acid_biosynthesis, Drug_metabolism, growsOnDefinedMedium with the numbers 10, 20, ..., 90 and fractions 0.1, ..., 0.9), ATP_from_O2_proj.txt with three models, then printRefinementReport(testResultsFolder, 'proj')
+- **Observed**: 'Bile acid pathways were refined for 60 reconstructions.' and the row 'Reconstructions with bile acids comparative genomic data' 60 / 0.6 (the AromaticAminoAcidDegradation row), 'Drug pathways were refined for 70 reconstructions.' and the row 'Reconstructions with drug comparative genomic data' 70 / 0.7 (the Bile_acid_biosynthesis row); the Drug_metabolism row (80) is not reported (R2025a, 2026-11-15)
+- **Expected**: bile acids 70 / 0.7, drugs 80 / 0.8, and the aromatic amino acid degradation row reported under its own name or not at all
+- **Source lines**: 85-96
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPrintRefinementReport.m`
+
 ### `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m`
 
 #### growth on the defined medium is lost when the file holds only numbers
@@ -5311,6 +5381,17 @@
 - **Source lines**: 126, 132
 - **Documented in**: `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m`
 
+### `src/reconstruction/growthExpMatch/printSolutionGEM.m`
+
+#### A log file name shorter than four characters stops the function
+
+- **Severity**: error
+- **Trigger**: MatricesSUX.MatrixPart = [1 2 2], MatricesSUX.rxns = {'r1'; 'r2'; 'r3'}, solution.cont = [1; 0; 2.5], solution.obj = 3; printSolutionGEM(MatricesSUX, solution, 'abc', 1) in an empty folder
+- **Observed**: "Array indices must be positive integers or logical values." at line 27 (logFile(end-3:end) of a 3-character name), after abc_solution_1.mat was saved and before anything was printed (R2025a, 2026-11-15); 'GEMLog' and 'GEMLog.txt' work
+- **Expected**: the log written to abc.txt, as for any other name without '.txt'
+- **Source lines**: 27
+- **Documented in**: `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m`
+
 ### `src/reconstruction/modelGeneration/checkDuplicateRxn.m`
 
 #### the 'FR' method removes the last reaction of a group after testing the first two
@@ -5342,6 +5423,17 @@
 - **Source lines**: 61
 - **Documented in**: `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m`
 
+### `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m`
+
+#### A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1
+
+- **Severity**: wrong-result
+- **Trigger**: elementalMatrixToFormulae([1 4], {'C', 'H'}, 0) (methane, no decimal places); elementalMatrixToFormulae([0.1 2], {'C', 'H'}, 1)
+- **Observed**: {'H4'} and {'H2'}: line 52 keeps a count only when abs(count) > 10^(-dMax), which is 1 for dMax = 0 and 0.1 for dMax = 1 (R2025a, 2026-11-15); with the default dMax the same call gives {'CH4'}
+- **Expected**: {'CH4'} and {'C0.1H2'} (dMax is documented as the maximum number of decimal places, so 0 and 1 are valid and 1 and 0.1 are written exactly at those precisions)
+- **Source lines**: 52
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m`
+
 ### `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m`
 
 #### Formula numbers in error messages lose their zero padding inside parentheses
@@ -5352,6 +5444,17 @@
 - **Expected**: the same width for every formula number ("#07:  (cD)")
 - **Source lines**: 252
 - **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m`
+
+### `src/reconstruction/modelGeneration/massBalance/ispolymer.m`
+
+#### Every formula stops with an error because the group name FULLR2 contains a digit
+
+- **Severity**: error
+- **Trigger**: ispolymer('C6H12O6'), ispolymer('C6H10O5X') or ispolymer('CH2R')
+- **Observed**: "Element must not contain numbers" from numAtomsOfElementInFormula (line 28), which rejects any element name with a digit before it translates FULLR2 and FULLR3; line 17 passes 'FULLR2' in the fourth turn of the loop for every formula (MATLAB prints 'FULLR2' before the error, R2025a, 2026-11-15)
+- **Expected**: false for 'C6H12O6' and true for 'C6H10O5X' and 'CH2R'
+- **Source lines**: 14, 17
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testIspolymer.m`
 
 ### `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m`
 
@@ -5603,6 +5706,17 @@
 - **Source lines**: 69
 - **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m`
 
+### `src/reconstruction/rBioNet/balancecheck.m`
+
+#### Elements outside the fixed list of twelve are not checked
+
+- **Severity**: limitation
+- **Trigger**: a reaction unbalanced only in an element that is not in the list C, H, O, P, S, N, Mg, X, Fe, Zn, Co, R, for example balancecheck({'na1', 'Sodium', 1, 'c', 'Substrate', 'Na'; 'h2o', 'Water', 1, 'c', 'Substrate', 'H2O'; 'h2o', 'Water', 1, 'c', 'Product', 'H2O'}) (sodium consumed, nothing produced from it)
+- **Observed**: [] (balanced), since Na, K, Cl, Ca, Cu, Mn, Se, I and every other element is never counted (R2025a, 2026-11-15)
+- **Expected**: the reaction reported as unbalanced, or the documentation naming the elements that are checked
+- **Source lines**: 26
+- **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testBalancecheck.m`
+
 ### `src/reconstruction/rBioNet/model2data.m`
 
 #### A model whose description is missing or is not a text or a structure of seven fields stops
@@ -5651,6 +5765,17 @@
 - **Expected**: no output
 - **Source lines**: 77, 87, 97
 - **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m`
+
+### `src/reconstruction/rBioNet/rBioNet_search.m`
+
+#### The default of exact is applied only when str is also missing
+
+- **Severity**: limitation
+- **Trigger**: rBioNet_search(table, column, str) with three inputs
+- **Observed**: (R2025a, 2026-11-15) the test is nargin < 3, so exact stays undefined and rBioNet_search({'a', 'Urea'}, 2, 'Urea') stops at line 45 with 'Not enough input arguments.' (all callers in the toolbox pass four inputs, as the USAGE line documents)
+- **Expected**: exact = 0 (partial match) when only exact is omitted
+- **Source lines**: 24-26
+- **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testRBioNet_search.m`
 
 ### `src/reconstruction/refinement/GPRLogic/AndNode.m`
 
@@ -5901,6 +6026,86 @@
 - **Source lines**: 43
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m`
 
+### `src/visualization/cellDesigner/addColour.m`
+
+#### A reaction listed by an ID in the last row of r_info.ID is not coloured
+
+- **Severity**: wrong-result
+- **Trigger**: parsed.r_info.ID = {'re1', 're1', 'HEX1'; 're2', 're2', 'PGI'}, fields re1 and re2 with width {'2.0'} and {5} and color cells, then [ref, list] = addColour(parsed, {'PGI'})
+- **Observed**: (R2025a, 2026-11-15) prints 'PGI' and 'error ! the listRxn{1}', re2.color is unchanged, and the call fails with 'Output argument "listRxnColour" (and possibly others) not assigned a value in the execution with "addColour" function.' The same call with {'HEX1'} (first row) maps to re1 and colours it 'ffdef595'. The strict comparisons id < m, id > rr*m and id < (rr+1)*m skip the last row of every column (and every row when r_info.ID has one row)
+- **Expected**: re2 coloured like any other row ('ff81c828' for width 5 in palette 2) and listed in the second output
+- **Source lines**: 110-118
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddColour.m`
+
+#### The html colours of the second column of listRxn_Color are ignored
+
+- **Severity**: wrong-result
+- **Trigger**: the structure above, then [ref, list] = addColour(parsed, {'re1', '#123456'})
+- **Observed**: (R2025a, 2026-11-15) re1.color becomes {'ffdef595', 'ffdef595'} (the palette colour for width 2) and list = {'re1', '#ffdef595'}; length(size(listRxn_Color)) is never below 2, so p is always 0 and the given colour is never read
+- **Expected**: re1 coloured '123456' as the help text documents for the second column
+- **Source lines**: 38-45, 179-180
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddColour.m`
+
+#### The second output is not assigned when no listed link has a non-zero width
+
+- **Severity**: error
+- **Trigger**: the structure above with re1.width = {'0'}, then [ref, list] = addColour(parsed, {'re1'})
+- **Observed**: (R2025a, 2026-11-15) 'Output argument "listRxnColour" (and possibly others) not assigned a value in the execution with "addColour" function.'; with one output re1 is coloured 'ffaed5fc'
+- **Expected**: an empty list of newly coloured reactions
+- **Source lines**: 173-177
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddColour.m`
+
+### `src/visualization/cellDesigner/correctMetName.m`
+
+#### Debug output of the species row numbers
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: line 41 lacks a terminating semicolon, so r_listN is printed on every call
+- **Expected**: no output
+- **Source lines**: 41
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m`
+
+### `src/visualization/cellDesigner/parseCD.m`
+
+#### Debug output of the keyword table, of every line read and of intermediate values
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: lines 74, 75, 140, 163 and 343 lack a terminating semicolon and line 173 calls disp, so toFD, the growing text structure (once per line of the file), ans, the keyword list of every line and ind_rem_color are printed
+- **Expected**: no output
+- **Source lines**: 74-75, 140, 163, 173, 343
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testParseCD.m`
+
+#### The input file is left open
+
+- **Severity**: limitation
+- **Trigger**: any call, e.g. parseCD('<file>.xml')
+- **Observed**: the identifier opened at line 32 (or 30) still appears in openedFiles() after the call; the function has no fclose
+- **Expected**: the file closed before the function returns
+- **Source lines**: 30, 32
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testParseCD.m`
+
+### `src/visualization/cellDesigner/position.m`
+
+#### An attribute name that occurs more than once in the line stops the function
+
+- **Severity**: error
+- **Trigger**: position({'<reaction metaid="re1" id="re2">'}, 'id') (id also occurs inside metaid)
+- **Observed**: (R2025a, 2026-11-15) prints 'p_st = 19 28' and fails with 'Colon operands must be real scalars.' at line 25: every match of strfind is kept, so p_st is a vector (older MATLAB releases took the first element of a colon operand and would return the value of metaid, 're1')
+- **Expected**: the value of the attribute id, 're2'
+- **Source lines**: 21-25, 33, 37
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testPosition.m`
+
+#### Debug output of the start index, the rest of the line and the end index
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. position({'<celldesigner:line width="1.0" color="ff000000"/>'}, 'color')
+- **Observed**: (R2025a, 2026-11-15) 'p_st = 39', 'ff000000"/>' and '46' are printed before the value 'ff000000' is returned
+- **Expected**: no output
+- **Source lines**: 23, 27, 34
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testPosition.m`
+
 ### `src/visualization/cellDesigner/readCD.m`
 
 #### Attributes missing from the first reaction are dropped for all reactions
@@ -5986,6 +6191,46 @@
 - **Source lines**: 56, 76-77
 - **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m`
 
+### `src/visualization/cellDesigner/writeTXT.m`
+
+#### A '#RRGGBB' colour containing 'FF' is truncated
+
+- **Severity**: wrong-result
+- **Trigger**: text = writeTXT({'R1', '#00FF00'}, '<folder>/b.txt')
+- **Observed**: (R2025a, 2026-11-15) text = {'name color'; 'R1 #00'}: the 'FF' inside the colour is taken for the CellDesigner prefix and everything up to it is removed
+- **Expected**: {'name color'; 'R1 #00FF00'}
+- **Source lines**: 57-60
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testWriteTXT.m`
+
+#### A colour code without '#' or 'FF' in the first row stops with an error
+
+- **Severity**: error
+- **Trigger**: writeTXT({'R1', '00AA00'}, '<folder>/a.txt')
+- **Observed**: (R2025a, 2026-11-15) 'Index in position 1 is invalid. Array indices must be positive integers or logical values.' at line 52: the branch without header row sets s = 1, so the loop reads para{0, 1}
+- **Expected**: one row per reaction ('R1 00AA00' or 'R1 #00AA00')
+- **Source lines**: 43-52
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testWriteTXT.m`
+
+#### A one-column para stops with an error at the default colour
+
+- **Severity**: error
+- **Trigger**: writeTXT({'R1'; 'R2'}, '<folder>/c.txt')
+- **Observed**: (R2025a, 2026-11-15) prints r = 2 and c = 1, then 'Colon operands must be real scalars.' at line 60: the default '#FF0000FF' (line 39) contains 'FF' twice, so st is [2 8]; the output file is left open
+- **Expected**: the header row and one row per reaction with the default colour (red, as the comment of line 39 says)
+- **Source lines**: 39, 57-60
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testWriteTXT.m`
+
+### `src/visualization/createMetIntrcNetwork/hit_node.m`
+
+#### The help text describes the fcont flag the wrong way round
+
+- **Severity**: cosmetic
+- **Trigger**: reading the OPTIONAL INPUTS of hit_node (varargin{11})
+- **Observed**: fcont is documented as true if fluxes were supplied to createMetIntrcNetwork; createMetIntrcNetwork sets fcont = 1 when the fluxes are the default all-ones vector, and hit_node draws flux colours only for fcont = 0.
+- **Expected**: fcont = 1 when no fluxes were supplied
+- **Source lines**: 44-45
+- **Documented in**: `test/verifiedTests/visualization/testCreateMetIntrcNetwork/testHit_node.m`
+
 ### `src/visualization/efmviz/efmEnrichmentAnalysis.m`
 
 #### Expression data without significance values stops with an error
@@ -6007,6 +6252,17 @@
 - **Expected**: the unique subsystems and their counts per EFM
 - **Source lines**: 30-31, 33-40
 - **Documented in**: `test/verifiedTests/visualization/testEFMviz/testEfmSubsystemsExtraction.m`
+
+### `src/visualization/maps/ReconMap/generateSubsytemsLayout.m`
+
+#### The overlay content is truncated to 'name' before it is sent
+
+- **Severity**: wrong-result
+- **Trigger**: any call, e.g. a model with rxns {'R1'; 'R2'} in subsystem 'S1' and generateSubsytemsLayout(minerva, model, 'S1') with minerva.map = 'ReconMap-2.01'
+- **Observed**: MATLAB R2025a: content = sprintf(content) on 'name%09reactionIdentifier%09lineWidth%09color%0D%09R1%095%09#009933%0D' returns 'name' (4 characters): '%09r' is read as an incomplete format specifier and sprintf stops there, so postMINERVArequest receives content 'name' and no reaction; buildFluxDistLayout sends the URL-encoded text unchanged.
+- **Expected**: content holding the header and one line per subsystem reaction
+- **Source lines**: 54-55
+- **Documented in**: `test/verifiedTests/visualization/testReconMap/testGenerateSubsytemsLayout.m`
 
 ### `src/visualization/maps/ReconMap/makeColorGradient.m`
 
@@ -6030,6 +6286,17 @@
 - **Source lines**: 87
 - **Documented in**: `test/verifiedTests/visualization/testReconMap/testPrintInRecon3Dmap.m`
 
+### `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m`
+
+#### Numeric reaction IDs of different lengths do not match the map
+
+- **Severity**: limitation
+- **Trigger**: CSV file 'rxnID,flux' / '1,5' / '10,10'; map.rxnName = {'1'; '10'} (aliases a -> b, b -> c); [map2, flux2, fluxMap] = addFluxFromFileWidthAndColor(map, csvFile)
+- **Observed**: MATLAB R2025a: flux2 = {' 1', 5, 5; '10', 10, 10} (cellstr(num2str([1; 10])) keeps the leading blank of ' 1'), so map reaction '1' is not matched: fluxMap = {'1', 1; '10', 10} and its colour is unchanged.
+- **Expected**: reaction '1' gets width 5 and colour 'FFff8787', and flux2 lists it as '1'
+- **Source lines**: 45
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFromFileWidthAndColor.m`
+
 ### `src/visualization/metabolicCartography/addFluxWidthAndColor.m`
 
 #### Map reactions without flux data get no colour entry
@@ -6040,6 +6307,37 @@
 - **Expected**: a default colour for every map reaction
 - **Source lines**: 102-105, 133
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m`
+
+### `src/visualization/metabolicCartography/changeNodesArea.m`
+
+#### The optional areaWidth is not defaulted when areaHeight is given
+
+- **Severity**: error
+- **Trigger**: map.specID = {'s1';'s2'}; map.specName = {'A';'B'}; map.molID = {'s1';'s2';'s1'}; map.molHeight = {'40';'40';'40'}; map.molWidth = {'80';'80';'80'}; changeNodesArea(map, {'A'}, 30)
+- **Observed**: MATLAB R2025a: error 'Not enough input arguments.' at changeNodesArea line 42; the default areaWidth = 70.0 is set only inside 'if nargin < 3', so it is never set for three inputs.
+- **Expected**: heights of the aliases of A set to 30 and widths to the default 70
+- **Source lines**: 24-27, 42
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testChangeNodesArea.m`
+
+### `src/visualization/metabolicCartography/mapFormula.m`
+
+#### Fails instead of returning empty lists when no listed reaction is in the map
+
+- **Severity**: limitation
+- **Trigger**: a map without the reactions of rxnList, e.g. mapFormula(map, {'RX'}) with the map of this test (also with the first output only)
+- **Observed**: MATLAB R2025a prints 'Attention : 1 reaction(s) not present in the map!!!' and raises 'Output argument "formulaList" (and possibly others) not assigned a value in the execution with "mapFormula" function.'; formulaList and rxnsList are assigned only inside the loop over the present reactions.
+- **Expected**: empty formulaList and rxnsList, absentRxns = {'RX'}, duplicatedRxns empty
+- **Source lines**: 51, 99-100
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m`
+
+#### The help text describes absentRxns as reactions of the map not in the model
+
+- **Severity**: cosmetic
+- **Trigger**: reading the OUTPUTS of mapFormula
+- **Observed**: absentRxns = setdiff(rxnList, map.rxnName), the reactions of rxnList that are not in the map
+- **Expected**: help text 'Reactions of rxnList not in the map'
+- **Source lines**: 30
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m`
 
 ### `src/visualization/metabolicCartography/removeMapMol.m`
 
@@ -6060,6 +6358,44 @@
 - **Expected**: the reaction removed, or its reference to the alias removed ("also removing the corresponding reaction if necessary")
 - **Source lines**: 80, 87
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m`
+
+### `src/visualization/metabolicCartography/transformMap2XML.m`
+
+#### Every '~' of the file name is replaced by the home folder
+
+- **Severity**: limitation
+- **Trigger**: a file name starting with '~' that contains another '~', e.g. '~/maps/a~b.xml'
+- **Observed**: strrep(fileName, '~', homePath) replaces each '~', not only the leading one
+- **Expected**: only the leading '~' expanded
+- **Source lines**: 69
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
+
+#### Map information can be added or changed but not removed
+
+- **Severity**: limitation
+- **Trigger**: a map in which a compartment alias of a molecule, species notes or reaction notes are emptied, or rxnReversibility is set to 'true' for a reaction read as reversible="false"
+- **Observed**: these values are written only when non-empty (or 'false'), so the value of xmlStruct stays in the file.
+- **Expected**: the file reflects the map
+- **Source lines**: 79-81, 99-101, 162-164, 281-283
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
+
+#### The check for a removed only reactant or product compares with the whole alias list
+
+- **Severity**: limitation
+- **Trigger**: a reaction with one species reference of reactants (or products) whose alias was removed from map.molAlias, or a map whose only molecule alias is that reference
+- **Observed**: strcmp(alias, map.molAlias) returns one logical per map alias and 'if' needs all of them true, so the error 'removing only substrate in reaction' (or '... product ...') is never raised for a map of two or more aliases (the removed reference is kept in the file) and is raised for a one-alias map in which nothing was removed.
+- **Expected**: the error only when the single reference's alias is not in map.molAlias
+- **Source lines**: 108-109, 126-127
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
+
+#### The error for a single secondary reactant or product link with several map aliases says 'should not be cell'
+
+- **Severity**: cosmetic
+- **Trigger**: a map with two secondary reactants (or products) for a reaction whose XML has one link (a struct, not a cell)
+- **Observed**: error 'should not be cell' although the link is not a cell
+- **Expected**: a message naming the inconsistent reactant (product) aliases
+- **Source lines**: 211, 245
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
 
 ### `src/visualization/upsetPlot/upsetPlot.m`
 
