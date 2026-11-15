@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	18	src/analysis/ecosystem/clusterEcosystemPoints.m	1			computeEcosystemDBSCAN,computeEcosystemDistances,computeEcosystemLinkage		
+a	20	src/analysis/ecosystem/compareEcosystemClusters.m	1			qualitativeStateLabels		
+a	21	src/analysis/ecosystem/getQualitativeFluxStates.m	1			qualitativeStateLabels	ecosystemQualitativeFVA	
+a	23	src/analysis/ecosystem/getEcosystemClusterDescriptor.m	1			qualitativeStateLabels		
+a	24	src/analysis/ecosystem/getEcosystemClusterReactionValues.m	1			qualitativeStateLabels		
+a	30	src/analysis/ecosystem/plotEcosystemGrid.m	1			qualitativeStateLabels		
+a	31	src/analysis/ecosystem/plotQualitativeStateOverlap.m	1			qualitativeStateLabels		
+a	49	src/analysis/igemRNA/LT2/findGenesAboveThresholdLocal2.m	1				findHighlyLowlyExpressedGenesLT2	
+a	50	src/analysis/igemRNA/LT2/findGenesBelowThresholdLocal2.m	1				deleteInactiveGenes,findHighlyLowlyExpressedGenesLT2	
+a	51	src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m	1					
+b	54	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m	1				analyseObjectiveShadowPrices,completeSpeciesFolder,createPersonalizedModel,microbiotaModelSimulator	
+b	65	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/detectOutput.m	1				createPersonalizedModel,mgPipe,microbiotaModelSimulator	
+b	66	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/extractFullRes.m	1					
+b	68	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/getIndividualSizeName.m	1				mgPipe	
+b	80	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m	1					
+b	83	src/analysis/persephone/additionalFunctions/combineFluxResults.m	1					
+b	85	src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m	1					
+b	88	src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m	1					
+b	89	src/analysis/persephone/additionalFunctions/generatePanDatabase.m	1					
+b	90	src/analysis/persephone/additionalFunctions/generateStackedBarPlot.m	1					
+c	81	src/analysis/thermo/vonBertalanffy/getCompartment.m	1				configureSetupThermoModelInputs,deltaG0concFluxConstraintBounds,efmSubmodelExtractionAsSBML,estimateDrGt0,getMultiSpeciesModelId,metUtilisation,model2JSON,setCommonZeroStandardGibbsEnergyOfFormation,thermodynamicAdjustmentToStoichiometry,transportReactionBool	
+c	64	src/analysis/topology/getCorrespondingRows.m	1				checkMassChargeBalance,checkModelProperties,cycleFreeFlux,detectDeadEnds,findFluxConsistentSubset,findSExRxnInd,findSignedCyclicFluxConsistentSubset,findStoichConsistentSubset,findThermoConsistentFluxSubset,modelExtraction,removeCDReactions,removeMapMol,removeMapReactions,removeMapSpecies,removeRxns,thermoKernel	
+c	28	src/base/io/utilities/readPythonPickle.m	1			numpyBufferToArray,resolvePickleProxies	loadEcosystemScenario	
+c	52	src/base/io/utilities/readSimPhenyGPR.m	1				readCbModel	
+c	53	src/base/io/utilities/readSimPhenyCMPD.m	1				readCbModel	
+c	63	src/base/solvers/param/changeCobraSolverParams.m	1			getCobraSolverParamsOptionsForType	batchTestAllReconstructionFunctions,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createPanModels,optCardThermo,phenotypePhasePlane,predictMicrobeContributions,printReconstructionContent,setThermoReactionDirectionalityiAF1260,simulatePairwiseInteractions	
+c	55	src/reconstruction/demeter/src/integration/readInputTableForPipeline.m	1				analyzeMgPipeResults,batchTestAllReconstructionFunctions,calculateReactionAbundance,calculateSubsystemAbundance,carbonSourceGapfill,computeFluxConsistentReactionPresence,computeInternalMetaboliteProduction,computeMetabolicDistance,computeUptakeSecretion,correlateFluxWithTaxonAbundance,createInfoFileDEMETER,createPanModels,curateAgainstBacDiveData,curateGrowthRequirements,debugModel,extractReconstructionResourceSubset,fastCalculateReactionAbundance,fermentationPathwayGapfill,getCurationStatus,getReactionMetabolitePresence,getSubsystemPresence,getUnannotatedReactionsFromPubSeedSpreadsheets,initMgPipe,mgSimResCollect,microbiotaModelSimulator,normalizeCoverage,plotFluxesAgainstOrganismAbundances,plotMappingInfo,prepareInputData,producetSNEPlots,propagateKBaseMetTranslationToRxns,putrefactionPathwaysGapfilling,rankFeaturesByIncidence,refineGenomeAnnotation,refinementPipeline,retrieveModelStats,runDebuggingTools,secretionProductGapfill,summarizeFeaturesOnTaxonLevels,testAromaticAADegradation,testBileAcidBiosynthesis,testCarbonSources,testDrugMetabolism,testFermentationProducts,testGrowthOnDefinedMedia,testMetaboliteUptake,testPutrefactionPathways,testSecretionProducts,translateKBaseModel2VMHModel,translateKBaseToVMHMets,translateMetagenome2AGORA,updateAGORATaxonomyFile,updateTaxonomyInfoAGORA,uptakeMetaboliteGapfill,writeReactionsFromPubSeedSpreadsheets	
+c	56	src/reconstruction/demeter/src/integration/loadVMHDatabase.m	1				calculateSubsystemAbundance,collectFoodItemInfo,convertVMHIDName,correlateFluxWithTaxonAbundance,createMultipleSpeciesModel,createPanModels,debugModel,getDietComposition,getDietEnergy,getVMHID,individualizedLabReport,makeViolinPlots,mapKBaseToVMHReactions,mgSimResCollect,nutritionAlgorithmWBM,performStatisticalAnalysis,performStatsPersephone,persWBMmetabolomics,plotFluxesAgainstOrganismAbundances,printReconstructionContent,rankFeaturesByIncidence,refinementPipeline,reportPDF,runTestsOnModel,translateDraftReconstruction,translateKBaseToVMHMets,writeReactionsFromPubSeedSpreadsheets	
+c	42	src/reconstruction/refinement/GPRLogic/LiteralNode.m	1		LiteralNode,Node	AndNode,Node,OrNode	FormulaParser,Node	
+c	43	src/reconstruction/refinement/GPRLogic/Node.m	1		LiteralNode,Node	LiteralNode	LiteralNode	

@@ -68,3 +68,8 @@ getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/findMi
 getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/findStoichConsistentSubset.m
 getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m
 getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m
+# Node: the defects are confined to the methods removeDuplicateLiterals (wrong children removed
+# when literal children are not the first children) and isequal. isequal is called on nodes
+# nowhere in src/; the only call of removeDuplicateLiterals (combineChildren.m:64) is on a CNF
+# clause flattened by reduce(), whose children are all literals, so no caller reaches the defects.
+Node	NONE

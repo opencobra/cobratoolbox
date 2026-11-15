@@ -27,8 +27,9 @@ A wave is formed, written, verified and committed as follows (research R4–R7, 
    adds extra edges, propagates BLOCKED (R6) and rewrites `$F/inventory/quarantine.md`.
 5. All tests of the wave run together once with coverage → `$F/inventory/coverage/wave<NN>.jsonl`;
    the run compares the MATLAB path, global variables, open figures, the working folder and the
-   temporary folder before and after (FR-011); a failure, leftover state or an undocumented missed
-   line is fixed before step 6.
+   temporary folder before and after (FR-011); `update_ledger.py $F --verify-coverage
+   $F/inventory/coverage/wave<NN>.jsonl` must report 0 problems (a failure, leftover state or an
+   undocumented missed line is fixed before step 6).
 6. `python3 .github/scripts/known_defects.py` (if any defect was recorded); privacy scan of staged
    files; commit as the maintainer without co-author line, never staging submodule pointers.
 

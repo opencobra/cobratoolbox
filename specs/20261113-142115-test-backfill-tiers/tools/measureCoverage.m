@@ -34,6 +34,15 @@ mkdir(wrapperDir);
 cleanWrapper = onCleanup(@() rmdir(wrapperDir, 's'));
 addpath(wrapperDir);
 
+% MATLAB's graphics create session folders in tempdir the first time a figure with axes, text and
+% an image is drawn; draw one before the first test so that they are not reported as leftovers
+warmUp = figure('Visible', 'off');
+plot(1:3); hold on; image(magic(4)); title('warm-up'); drawnow;
+warmUpFile = [tempname '.png'];
+exportgraphics(gca, warmUpFile);
+delete(warmUpFile);
+close(warmUp);
+
 for i = 1:numel(pairs)
     parts = strsplit(strtrim(pairs{i}), '|');
     testFile = fullfile(root, parts{1});

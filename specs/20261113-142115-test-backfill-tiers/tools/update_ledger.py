@@ -110,7 +110,10 @@ class Ledger:
                     listed[name].add(seed)
         roots = {name_of(r['file']): r['file'] for r in self.rows if r['status'] == 'QUARANTINED'}
         roots.update({n: v[0] for n, v in self.existing.items()})
-        return {n: (listed[n] if listed.get(n) else {f}) for n, f in roots.items()}
+        # a defect listed with the seed NONE is reached by no caller (every call site avoids the
+        # defective call or input form; the reason is in quarantine-seeds.tsv)
+        return {n: (set() if listed.get(n) == {'NONE'} else listed[n] if listed.get(n) else {f})
+                for n, f in roots.items()}
 
     def propagate(self):
         """Block every untested PENDING row (and, by the late-edge rule, every TESTED row) that
@@ -281,7 +284,8 @@ class Ledger:
         for r in self.rows:
             n = name_of(r['file'])
             for c in self.callees(r):
-                if c in pos and pos[c] > pos[n] and c not in self.cycle(r):
+                if (c in pos and pos[c] > pos[n] and c not in self.cycle(r)
+                        and self.by_name[c]['status'] == 'PENDING' and r['status'] != 'PENDING'):
                     issues.append('order: %s before its callee %s' % (n, c))
             if r['status'] == 'BLOCKED':
                 roots = self.root_blockers(n)
@@ -360,6 +364,7 @@ def main():
     p.add_argument('--reclassify', nargs='+')
     p.add_argument('--check', action='store_true')
     p.add_argument('--summary', action='store_true')
+    p.add_argument('--verify-coverage', help='joint-run JSON lines of a wave (W step 5)')
     a = p.parse_args()
     L = Ledger(a.feature)
     if a.existing_defect:
@@ -387,6 +392,33 @@ def main():
             print('  REMOVE TEST (late edge):', t)
         print('wave %02d: %d rows in %d slices -> %s' % (number, sum(map(len, slices)), len(slices),
                                                          out if slices else '(none)'))
+    if a.verify_coverage:
+        bad = 0
+        for line in open(a.verify_coverage):
+            if not line.strip():
+                continue
+            rec = json.loads(line)
+            r = L.by_file.get(rec['source'])
+            lines = rec.get('lines') if isinstance(rec.get('lines'), list) else [rec.get('lines')]
+            hits = rec.get('hits') if isinstance(rec.get('hits'), list) else [rec.get('hits')]
+            best = {}
+            for n, h in zip(lines, hits):
+                if n is not None:
+                    best[n] = max(best.get(n, 0), h)
+            missed = sorted(n for n, h in best.items() if h == 0)
+            problem = []
+            if rec.get('status') != 'passed':
+                problem.append('status ' + str(rec.get('status')))
+            if rec.get('leftover'):
+                problem.append('leftover ' + rec['leftover'])
+            if r is not None and r['status'] == 'TESTED':
+                exempt = set(int(x) for x in r['exempt'].split()) if r['exempt'] else set()
+                if set(missed) - exempt:
+                    problem.append('undocumented missed lines %s' % sorted(set(missed) - exempt))
+            if problem:
+                bad += 1
+                print('  VERIFY %s: %s' % (rec['source'], '; '.join(problem)))
+        print('verify-coverage: %d problem record(s)' % bad)
     if a.check:
         counts, issues = L.check()
         print('statuses:', dict(counts))

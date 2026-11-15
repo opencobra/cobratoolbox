@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-279 known defects in 150 functions (99 wrong-result, 89 error, 22 unusable-option, 35 cosmetic, 34 limitation).
+313 known defects in 169 functions (111 wrong-result, 96 error, 22 unusable-option, 42 cosmetic, 42 limitation).
 
 ## Summary
 
@@ -22,6 +22,9 @@
 | `src/analysis/MOMA/MOMA.m` | error | Models with different reaction sets stop with an error | `test/verifiedTests/analysis/testMOMA/testMOMA.m` |
 | `src/analysis/QFCA/QFCA.m` | error | A network that reduces to one metabolite stops with an error | `test/verifiedTests/analysis/testQFCA/testQFCA.m` |
 | `src/analysis/dynamicFBA/dynamicFBA.m` | cosmetic | The number of tracked exchange reactions is printed on every call | `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m` |
+| `src/analysis/ecosystem/clusterEcosystemPoints.m` | wrong-result | The hierarchical method returns the requested maximum k as the number of clusters | `test/verifiedTests/analysis/testEcosystem/testClusterEcosystemPoints.m` |
+| `src/analysis/ecosystem/getEcosystemClusterDescriptor.m` | cosmetic | The status variable is named status_c<id>, not status as documented | `test/verifiedTests/analysis/testEcosystem/testGetEcosystemClusterDescriptor.m` |
+| `src/analysis/ecosystem/getQualitativeFluxStates.m` | wrong-result | Zero band applied inconsistently to the maximum and to max - min | `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m` |
 | `src/analysis/ecosystem/matchEcosystemClusters.m` | wrong-result | clusters without points are matched to a reference cluster instead of NaN, and an empty reference cluster absorbs unmatched clusters | `test/verifiedTests/analysis/testEcosystem/testMatchEcosystemClusters.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | limitation | A compartment letter without brackets matches every identifier with that letter | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | error | A compartment without metabolites stops with an error | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
@@ -52,11 +55,32 @@
 | `src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m` | wrong-result | The local threshold is the sum divided by the row length minus one, not the mean | `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m` |
 | `src/analysis/igemRNA/LT1/findGenesBelowThresholdLocal1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testLT1/testFindGenesBelowThresholdLocal1.m` |
 | `src/analysis/igemRNA/LT1/findGenesBelowThresholdLocal1.m` | wrong-result | The local threshold is the sum divided by the row length minus one, not the mean | `test/verifiedTests/analysis/testLT1/testFindGenesBelowThresholdLocal1.m` |
+| `src/analysis/igemRNA/LT2/findGenesAboveThresholdLocal2.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testLT2/testFindGenesAboveThresholdLocal2.m` |
+| `src/analysis/igemRNA/LT2/findGenesAboveThresholdLocal2.m` | wrong-result | The local threshold is the sum divided by the row length minus one, not the mean | `test/verifiedTests/analysis/testLT2/testFindGenesAboveThresholdLocal2.m` |
+| `src/analysis/igemRNA/LT2/findGenesBelowThresholdLocal2.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testLT2/testFindGenesBelowThresholdLocal2.m` |
+| `src/analysis/igemRNA/LT2/findGenesBelowThresholdLocal2.m` | wrong-result | The local threshold is the sum divided by the row length minus one, not the mean | `test/verifiedTests/analysis/testLT2/testFindGenesBelowThresholdLocal2.m` |
 | `src/analysis/igemRNA/filterNonFluxReactions/filterNonFluxReactions.m` | wrong-result | The result file is written next to the result folder, not into it | `test/verifiedTests/analysis/testFilterNonFluxReactions/testFilterNonFluxReactions.m` |
+| `src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m` | limitation | Errors when the source sheet holds no gene | `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m` |
+| `src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m` | limitation | Genes are matched by row position, not by gene ID | `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/addMicrobeCommunityBiomass.m` | wrong-result | Abundance weights are rounded to six significant digits | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddMicrobeCommunityBiomass.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/extractFullRes.m` | error | Errors when the first sample is infeasible and a later one is feasible | `test/verifiedTests/analysis/testMgPipe/testExtractFullRes.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m` | limitation | A structure without a rxns field is silently not saved | `test/verifiedTests/analysis/testMgPipe/testParsave.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m` | wrong-result | Abundances read from a tsv file are added and normalized as text | `test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m` | error | Errors when the taxon table has fewer rows than columns | `test/verifiedTests/analysis/testMultiSpeciesModelling/testCalculateInteractionsByTaxon.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/joinModelsPairwiseFromList.m` | error | Two models whose file names start with the same model name stop the function | `test/verifiedTests/analysis/testMultiSpeciesModelling/testJoinModelsPairwiseFromList.m` |
 | `src/analysis/parsimoniousFBA/pFBA.m` | error | A call with one output stops with an error | `test/verifiedTests/analysis/testpFBA/testpFBA.m` |
+| `src/analysis/persephone/additionalFunctions/combineFluxResults.m` | error | Errors for a common germ-free sample preceded by a sample of the first run only | `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m` |
+| `src/analysis/persephone/additionalFunctions/combineFluxResults.m` | wrong-result | Shadow prices of the second run are dropped when the folders hold different samples | `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m` |
+| `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | limitation | A text (cell array) variable of interest is not supported | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
+| `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | error | Errors when the regression of a metadata variable gives a warning | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
+| `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | cosmetic | The loadings figure of PC 1 is saved as Loadings_PC11.png | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
+| `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | wrong-result | The regression figures pair the values of one variable with the name of another | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
+| `src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m` | cosmetic | Hard-coded personal input folder | `test/verifiedTests/analysis/testPersephone/testGeneratePanAGORA2database.m` |
+| `src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m` | wrong-result | Only the first three strains are processed | `test/verifiedTests/analysis/testPersephone/testGeneratePanAGORA2database.m` |
+| `src/analysis/persephone/additionalFunctions/generatePanDatabase.m` | wrong-result | Coefficients of new metabolites are written to the wrong rows | `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m` |
+| `src/analysis/persephone/additionalFunctions/generatePanDatabase.m` | wrong-result | Coefficients of new reactions are written to the wrong columns | `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m` |
+| `src/analysis/persephone/additionalFunctions/generatePanDatabase.m` | limitation | The documented default inputDir needs an explicit empty argument | `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m` |
+| `src/analysis/persephone/additionalFunctions/generateStackedBarPlot.m` | error | Errors for a single sample | `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot.m` |
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
 | `src/analysis/persephone/validatePersephoneInputs.m` | error | A column reaction list with two or more duplicates fails while the message is built | `test/verifiedTests/analysis/testPersephone/testValidatePersephoneInputs.m` |
 | `src/analysis/rFBA/solveBooleanRegModel.m` | error | A name that is contained in a later name of the same rule stops with an error | `test/verifiedTests/analysis/testrFBA/testSolveBooleanRegModel.m` |
@@ -92,6 +116,7 @@
 | `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m` | error | glpk, one of the solvers the routine falls back on, cannot run the search | `test/verifiedTests/analysis/testTopology/testGreedyExtremeRayBasis.m` |
 | `src/analysis/topology/findCyclicRxns.m` | wrong-result | The first output is not a per-reaction boolean | `test/verifiedTests/analysis/testTopology/testFindCyclicRxns.m` |
 | `src/analysis/topology/getCorrespondingCols.m` | cosmetic | The error for a colBool of the wrong length names rowBool | `test/verifiedTests/analysis/testTopology/testGetCorrespondingCols.m` |
+| `src/analysis/topology/getCorrespondingRows.m` | cosmetic | The error for a colBool of the wrong length names rowBool | `test/verifiedTests/analysis/testTopology/testGetCorrespondingRows.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | error | A reaction with an elemental mismatch stops the build instead of being skipped | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | wrong-result | Decompartmentalising the model keeps the opening bracket | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | error | The bond graph is not decompartmentalised | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
@@ -127,6 +152,9 @@
 | `src/base/io/utilities/getDefinedFieldProperties.m` | limitation | SpecificFields is ignored together with Descriptions or DataBaseFields | `test/verifiedTests/base/testIO/testUtilities/testGetDefinedFieldProperties.m` |
 | `src/base/io/utilities/initFBAFields.m` | limitation | The documented osense and csense fields are not created | `test/verifiedTests/base/testIO/testUtilities/testInitFBAFields.m` |
 | `src/base/io/utilities/readSBML.m` | error | The documented default of defaultBound does not exist | `test/verifiedTests/base/testIO/testReadSBML.m` |
+| `src/base/io/utilities/readSimPhenyCMPD.m` | limitation | A file without metabolite lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
+| `src/base/io/utilities/readSimPhenyCMPD.m` | cosmetic | Alternative names keep the blank that follows a '/' | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
+| `src/base/io/utilities/readSimPhenyGPR.m` | limitation | A file without reaction lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGPR.m` |
 | `src/base/io/utilities/writeSBML.m` | error | A model without reactions cannot be written | `test/verifiedTests/base/testIO/testWriteSBML.m` |
 | `src/base/io/utilities/writeSBML.m` | wrong-result | The compartments of the model and the given lists are replaced by the defaults | `test/verifiedTests/base/testIO/testWriteSBML.m` |
 | `src/base/io/utilities/writeSBML.m` | error | The model annotation cannot be written | `test/verifiedTests/base/testIO/testWriteSBML.m` |
@@ -147,6 +175,8 @@
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | The problem type is matched as a substring | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/isCompatible.m` | wrong-result | The distributed compatibility matrix is not understood by the parser | `test/verifiedTests/base/testSolvers/testIsCompatible.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
+| `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | The error for a parameter that is not allowed always names LP solvers | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
+| `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | solverType is documented as optional with default 'LP' but cannot be omitted | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
 | `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | The global solver parameters are ignored when no paramStructure is given | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/param/getCobraSolverParams.m` | cosmetic | The structure output keeps the fields named in paramNames | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | paramStructure 'default' returns the global values instead of the defaults | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
@@ -252,6 +282,10 @@
 | `src/reconstruction/rBioNet/rBioNetSaveLoad.m` | cosmetic | Saving prints the whole database | `test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m` |
 | `src/reconstruction/refinement/GPRLogic/AndNode.m` | limitation | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m` |
 | `src/reconstruction/refinement/GPRLogic/AndNode.m` | limitation | convertToDNF of an AndNode without children stops with an error | `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m` |
+| `src/reconstruction/refinement/GPRLogic/Node.m` | limitation | contains stops with an error on a node without children | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
+| `src/reconstruction/refinement/GPRLogic/Node.m` | wrong-result | isequal is false for a tree with a repeated clause, and not symmetric | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
+| `src/reconstruction/refinement/GPRLogic/Node.m` | wrong-result | isequal is false for equivalent trees with different literals | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
+| `src/reconstruction/refinement/GPRLogic/Node.m` | wrong-result | removeDuplicateLiterals removes the wrong children when a child that is not a literal comes before a literal | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | limitation | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | limitation | convertToCNF of an OrNode without children returns an empty AndNode, which evaluates to true, while the empty OrNode evaluates to false | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
@@ -419,6 +453,39 @@
 - **Expected**: no output
 - **Source lines**: 66
 - **Documented in**: `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m`
+
+### `src/analysis/ecosystem/clusterEcosystemPoints.m`
+
+#### The hierarchical method returns the requested maximum k as the number of clusters
+
+- **Severity**: wrong-result
+- **Trigger**: eco = struct('qualVectors', [1 0 0; 1 0 0; 0 3 0; 0 3 1]); [eco, clusters, k] = clusterEcosystemPoints(eco, 'printLevel', 0) (default k = 20)
+- **Observed**: clusters = [1 2 3 4], k = 20 and eco.k = 20; getEcosystemClusterReactionValues then returns 20 columns, 16 of them NaN for empty clusters, and with 'changing' true it counts the NaN of the empty clusters as a change
+- **Expected**: k = eco.k = 4, the number of clusters (OUTPUTS: "k: number of clusters", "eco.k (number of clusters)"), as the dbscan branch does with numel(unique(labels))
+- **Source lines**: 173, 185
+- **Documented in**: `test/verifiedTests/analysis/testEcosystem/testClusterEcosystemPoints.m`
+
+### `src/analysis/ecosystem/getEcosystemClusterDescriptor.m`
+
+#### The status variable is named status_c<id>, not status as documented
+
+- **Severity**: cosmetic
+- **Trigger**: getEcosystemClusterDescriptor([1 2; 0 0], {'a'; 'b'}, 1)
+- **Observed**: VariableNames {'status_c1', 'diff'}, so descriptorTable.status errors
+- **Expected**: a variable named status, as OUTPUT documents ("variables status ... and diff")
+- **Source lines**: 67
+- **Documented in**: `test/verifiedTests/analysis/testEcosystem/testGetEcosystemClusterDescriptor.m`
+
+### `src/analysis/ecosystem/getQualitativeFluxStates.m`
+
+#### Zero band applied inconsistently to the maximum and to max - min
+
+- **Severity**: wrong-result
+- **Trigger**: getQualitativeFluxStates([-1 2 -2], [0 2 -2], 0); and with the default band getQualitativeFluxStates([-1 2], [1e-9 2 + 1e-9], 1e-9)
+- **Observed**: [5 2 -2] ({'err', '++', '--'}) for delta = 0, and [5 2] for delta = 1e-9: the state -1 requires max < delta (not <= delta) and the fixed states -3 and 3 require |max - min| < delta (not <= delta), so with delta = 0 they cannot occur
+- **Expected**: [-1 3 -3] ({'-0', '+', '-'}) and [-1 3]: the documented table treats |x| <= delta, and a difference max - min within delta, as zero
+- **Source lines**: 68, 75, 85
+- **Documented in**: `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m`
 
 ### `src/analysis/ecosystem/matchEcosystemClusters.m`
 
@@ -726,6 +793,46 @@
 - **Source lines**: 66-67
 - **Documented in**: `test/verifiedTests/analysis/testLT1/testFindGenesBelowThresholdLocal1.m`
 
+### `src/analysis/igemRNA/LT2/findGenesAboveThresholdLocal2.m`
+
+#### Errors when no gene qualifies
+
+- **Severity**: error
+- **Trigger**: findGenesAboveThresholdLocal2(100, 200, workbook, 1) with the workbook above
+- **Observed**: MATLAB:unassignedOutputs, Output argument "genes" (and possibly others) not assigned a value in the execution with "findGenesAboveThresholdLocal2" function.
+- **Expected**: an empty list of genes
+- **Source lines**: 1, 52-76
+- **Documented in**: `test/verifiedTests/analysis/testLT2/testFindGenesAboveThresholdLocal2.m`
+
+#### The local threshold is the sum divided by the row length minus one, not the mean
+
+- **Severity**: wrong-result
+- **Trigger**: a workbook with sheets S1_P (g1 = 10, g2 = 2) and S2_P (g1 = 20, g2 = 2); findGenesAboveThresholdLocal2(5, 100, workbook, 1)
+- **Observed**: {"g1", 10, 'High', 'Local'}: avg = expressionSum/length(row)-1 is evaluated as (10 + 20) / 3 - 1 = 9 (the row also holds the gene ID), so 10 passes the local test
+- **Expected**: no gene: the local threshold of g1 is its mean over the two sheets, 15, and 10 < 15; g2 = 2 is below the lower threshold
+- **Source lines**: 67-68
+- **Documented in**: `test/verifiedTests/analysis/testLT2/testFindGenesAboveThresholdLocal2.m`
+
+### `src/analysis/igemRNA/LT2/findGenesBelowThresholdLocal2.m`
+
+#### Errors when no gene qualifies
+
+- **Severity**: error
+- **Trigger**: findGenesBelowThresholdLocal2(-100, -50, workbook, 1) with the workbook above
+- **Observed**: MATLAB:unassignedOutputs, Output argument "genes" (and possibly others) not assigned a value in the execution with "findGenesBelowThresholdLocal2" function.
+- **Expected**: an empty list of genes
+- **Source lines**: 1, 52-76
+- **Documented in**: `test/verifiedTests/analysis/testLT2/testFindGenesBelowThresholdLocal2.m`
+
+#### The local threshold is the sum divided by the row length minus one, not the mean
+
+- **Severity**: wrong-result
+- **Trigger**: a workbook with sheets S1_P (g1 = 10, g2 = 2) and S2_P (g1 = 20, g2 = 2); findGenesBelowThresholdLocal2(5, 100, workbook, 1)
+- **Observed**: {'g2', 2, 'Low', 'Global'} only: avg = expressionSum/length(row)-1 is evaluated as (10 + 20) / 3 - 1 = 9 for g1 (the row also holds the gene ID), and 10 is not below 9
+- **Expected**: also {'g1', 10, 'Low', 'Local'}: the local threshold of g1 is its mean over the two sheets, 15, and 10 < 15
+- **Source lines**: 67-68
+- **Documented in**: `test/verifiedTests/analysis/testLT2/testFindGenesBelowThresholdLocal2.m`
+
 ### `src/analysis/igemRNA/filterNonFluxReactions/filterNonFluxReactions.m`
 
 #### The result file is written next to the result folder, not into it
@@ -736,6 +843,26 @@
 - **Expected**: resultsPostOptimization/nonFluxReactions/nonFluxReactionsWT.xls
 - **Source lines**: 84
 - **Documented in**: `test/verifiedTests/analysis/testFilterNonFluxReactions/testFilterNonFluxReactions.m`
+
+### `src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m`
+
+#### Errors when the source sheet holds no gene
+
+- **Severity**: limitation
+- **Trigger**: findUpDownRegulatedGenes({'E'}, {'E'}, workbook) with a sheet E that has only the header Geneid, Data
+- **Observed**: MATLAB:unassignedOutputs, Output argument "result" (and possibly others) not assigned a value in the execution with "findUpDownRegulatedGenes" function.
+- **Expected**: an empty result
+- **Source lines**: 1, 29
+- **Documented in**: `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m`
+
+#### Genes are matched by row position, not by gene ID
+
+- **Severity**: limitation
+- **Trigger**: source sheet A (g1 = 1, g2 = 5, g3 = 3) and target sheet with the same genes in the order g3 = 3, g2 = 4, g1 = 2, or a target sheet with only g1 = 2
+- **Observed**: reordered target: {'g1', 1, 3, 'Up'; 'g2', 5, 4, 'Down'; 'g3', 3, 2, 'Down'} (the target values of g3 and g1 are swapped); shorter target: MATLAB:badsubscript is caught and displayed and {'g1', 1, 2, 'Up'; 'g2', 5, [], []} is returned
+- **Expected**: g1 compared with 2 and g3 with 3; a missing gene reported or rejected. The function assumes both sheets list the same genes in the same order
+- **Source lines**: 30-32
+- **Documented in**: `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m`
 
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/addMicrobeCommunityBiomass.m`
 
@@ -748,6 +875,28 @@
 - **Source lines**: 47-50
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddMicrobeCommunityBiomass.m`
 
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/extractFullRes.m`
+
+#### Errors when the first sample is infeasible and a later one is feasible
+
+- **Severity**: error
+- **Trigger**: ID = {'EX_a[fe]'; 'EX_b[fe]'}; fva = cell(3, 2); ns = cell(3, 2); fva{2, 2} = {'EX_a[fe]', -1, 2; 'EX_b[fe]', -3, 4}; ns{2, 2} = {'EX_a[fe]', -5, 6; 'EX_b[fe]', -7, 8}; extractFullRes([tempname filesep], ID, 'sDiet', {'s1'; 's2'}, fva, ns)
+- **Observed**: prints 'Jumping not feasible model', then MATLAB:catenate:dimensionMismatch, Dimensions of arrays being concatenated are not consistent. The 'Rxn' column name is added to the header only when k == 1, so the header row has 4 columns and the flux rows 5.
+- **Expected**: the infeasible sample s1 is skipped, as the message says, and the table Rxn, minUpt_s2, maxUpt_s2, minScr_s2, maxScr_s2 with the fluxes of s2 is returned and written
+- **Source lines**: 70-76
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testExtractFullRes.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m`
+
+#### A structure without a rxns field is silently not saved
+
+- **Severity**: limitation
+- **Trigger**: parsave(fullfile(tempname, 'x.mat'), struct('a', 1))
+- **Observed**: no file is written and no warning or error is raised (the isfield test on line 15 has no else branch)
+- **Expected**: per the header ('Saves a data variable (e.g., model)'), the structure is saved; the callers in the toolbox pass only models or cell arrays
+- **Source lines**: 15
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testParsave.m`
+
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m`
 
 #### Abundances read from a tsv file are added and normalized as text
@@ -758,6 +907,17 @@
 - **Expected**: the abundances are summed and normalized as numbers
 - **Source lines**: 224, 258
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m`
+
+#### Errors when the taxon table has fewer rows than columns
+
+- **Severity**: error
+- **Trigger**: pw = {'Pair', 'M1', 'M2', 'a', 'b', 'c', 'd', 'Outcome1', 'Outcome2'; 'A_B', 'A', 'B', 0, 0, 0, 0, 'Competition', 'Competition'}; tx = {'ModelID', 'Genus', 'Family', 'Order', 'Class', 'Phylum'; 'A', 'g1', 'f1', 'o1', 'c1', 'p1'; 'B', 'g2', 'f1', 'o1', 'c1', 'p1'}; calculateInteractionsByTaxon(pw, tx)
+- **Observed**: MATLAB:badsubscript, Index in position 1 exceeds array bounds. Index must not exceed 3. The loop on line 42 runs over length(taxonInformation), the larger dimension (6 columns), instead of the 3 rows, and line 43 reads row 4.
+- **Expected**: one Competition counted for each of g1 and g2, two for family f1 and for every higher level (the header requires six columns and any number of microbes)
+- **Source lines**: 42-43
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testCalculateInteractionsByTaxon.m`
 
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/joinModelsPairwiseFromList.m`
 
@@ -780,6 +940,124 @@
 - **Expected**: the gene classes
 - **Source lines**: 213
 - **Documented in**: `test/verifiedTests/analysis/testpFBA/testpFBA.m`
+
+### `src/analysis/persephone/additionalFunctions/combineFluxResults.m`
+
+#### Errors for a common germ-free sample preceded by a sample of the first run only
+
+- **Severity**: error
+- **Trigger**: folder d1 holds FBA_sol_A1.mat (all variables, shadowPriceBIO = 10) and FBA_sol_GF_female.mat (rxns, ID, sex, f, stat, OrigStat); folder d2 holds FBA_sol_GF_female.mat (rxns, f, stat, OrigStat); combineFluxResults(d1, d2, d3)
+- **Observed**: MATLAB:nonExistentField, Unrecognized field name "shadowPriceBIO". (line 95, reached because line 93 tests the non-GF file A1 instead of the GF sample)
+- **Expected**: the GF sample is merged without shadow prices
+- **Source lines**: 93-96
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m`
+
+#### Shadow prices of the second run are dropped when the folders hold different samples
+
+- **Severity**: wrong-result
+- **Trigger**: folder d1 holds FBA_sol_GF_female.mat (rxns, ID, sex, f, stat, OrigStat) and FBA_sol_S1.mat (rxns = {'r1'}, ID, sex, speciesBIO, shadowPriceBIO = 10, f = 1, stat, relAbundances, OrigStat); folder d2 holds FBA_sol_S1.mat (rxns = {'r2'}, shadowPriceBIO = 20, f = 2, stat, OrigStat); combineFluxResults(d1, d2, d3)
+- **Observed**: d3/S1.mat holds rxns {'r1' 'r2'} and f [1 2] but shadowPriceBIO 10. Line 93 tests pathsRun1(i) (here the GF file of the first run) instead of the path of the i-th common sample, pathsRun1_commonSamples(i).
+- **Expected**: shadowPriceBIO [10 20], as for any non-GF sample
+- **Source lines**: 93-96
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m`
+
+### `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m`
+
+#### A text (cell array) variable of interest is not supported
+
+- **Severity**: limitation
+- **Trigger**: M and s as in the first entry; meta = table((1:10)', [repmat({'a'}, 5, 1); repmat({'b'}, 5, 1)], 'VariableNames', {'V2', 'Group'}, 'RowNames', s'); (text as a cellstr, as readtable returns it by default) called with varOfInterest 'Group'
+- **Observed**: MATLAB:math:mustBeNumericCharOrLogical, Invalid data type. Argument must be numeric, char, or logical. (line 162 compares cells with ==); string and categorical variables pass this line
+- **Expected**: groups of a text variable are plotted as those of a categorical one
+- **Source lines**: 162
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m`
+
+#### Errors when the regression of a metadata variable gives a warning
+
+- **Severity**: error
+- **Trigger**: rng(1); s = arrayfun(@(k) sprintf('s%d', k), 1:10, 'UniformOutput', false); M = array2table(rand(6, 10) + 0.1, 'VariableNames', s, 'RowNames', {'t1', 't2', 't3', 't4', 't5', 't6'}); meta = table((1:10)', ones(10, 1), 'VariableNames', {'V2', 'Const'}, 'RowNames', s'); dimensionalityReductionAndMultivariateAnalysis(M, meta, 'V2', [tempname filesep], 'numLoadings', 3)
+- **Observed**: warning 'Regression design matrix is rank deficient to within machine precision.' from cobraFitlm (line 248) for the constant variable, then MATLAB:table:VarDimensionMismatch, The number of table variables in an assignment must match. (line 255 assigns 12 values to a row of the 10-column table)
+- **Expected**: the row of that variable holds its formula, predictor, regression type and NaN statistics (as the comment 'do not save the result' intends) and the analysis continues
+- **Source lines**: 255
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m`
+
+#### The loadings figure of PC 1 is saved as Loadings_PC11.png
+
+- **Severity**: cosmetic
+- **Trigger**: any call with inputDataType 'abundance' and PCofInterest 1
+- **Observed**: file Loadings_PC11.png (a literal '1' follows the PC number)
+- **Expected**: Loadings_PC1.png
+- **Source lines**: 229
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m`
+
+#### The regression figures pair the values of one variable with the name of another
+
+- **Severity**: wrong-result
+- **Trigger**: M as above (rng(1), 6 x 10); pc1 = first score column of cobraPca(clr(M)', 'Centered', false, 'Algorithm', 'als'); metadata V1 = rand, V2 = pc1 + 0.01 * randn, V3 = -pc1 + 0.3 * std(pc1) * randn (10 x 1 each); call with varOfInterest 'V2' and 'numLoadings', 3
+- **Observed**: the CSV table (sorted by p-value) holds V2 R2 0.99989 estimate 1.0014, V3 R2 0.91242 estimate -0.95694, V1 R2 0.0090745 estimate 0.37112; the R2 bar chart shows [0.9124 0.0091] and the coefficient chart [-0.9569 0.3711], both labelled {V2, V3}. significantIdx (line 285) comes from the unsorted p-values but indexes the table sorted on line 278; line 328 labels the sorted points with the unsorted names.
+- **Expected**: R2 [0.99989 0.91242] and coefficients [1.0014 -0.95694] labelled {V2, V3}
+- **Source lines**: 285-288, 328
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m`
+
+### `src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m`
+
+#### Hard-coded personal input folder
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: line 15 sets a folder under a Windows user profile (C:\Users\...), line 16 looks it up and line 17 overwrites the result with what('AGORA2')
+- **Expected**: no leftover machine-specific path (lines 15-16 have no effect)
+- **Source lines**: 15-16
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGeneratePanAGORA2database.m`
+
+#### Only the first three strains are processed
+
+- **Severity**: wrong-result
+- **Trigger**: a folder named AGORA2 on the MATLAB path holding strain1.mat to strain4.mat (each a struct model with rxns = {'r<k>'}, mets = {'x'}, S = sparse(1)); from a writable folder: p = generatePanAGORA2database(); s = load(p)
+- **Observed**: s.agoraStruct.strains = {'strain1'; 'strain2'; 'strain3'} and s.agoraStruct.rxns = {'r1'; 'r2'; 'r3'}; strain4 and r4 are missing (line 26 keeps strains(1:3))
+- **Expected**: all four strains and reactions, as the header says (which reactions and metabolites are present in which AGORA2 strains)
+- **Source lines**: 26
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGeneratePanAGORA2database.m`
+
+### `src/analysis/persephone/additionalFunctions/generatePanDatabase.m`
+
+#### Coefficients of new metabolites are written to the wrong rows
+
+- **Severity**: wrong-result
+- **Trigger**: folder d with mA.mat (struct model, rxns = {'r1'}, mets = {'x'}, S = sparse(1)) and mB.mat (rxns = {'r1'}, mets = {'x'; 'z'; 'y'}, S = sparse([1; 2; 3])); p = generatePanDatabase(d); s = load(p)
+- **Observed**: s.panModel.mets = {'x'; 'y'; 'z'} and full(s.panModel.S) = [1; 2; 3]. The new metabolites are appended in sorted order (setdiff, line 159) but their rows are taken from model 2 in its own order (matches, line 179).
+- **Expected**: [1; 3; 2] (y has the coefficient 3 and z the coefficient 2 in mB)
+- **Source lines**: 176-181
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m`
+
+#### Coefficients of new reactions are written to the wrong columns
+
+- **Severity**: wrong-result
+- **Trigger**: as above with mB.mat (rxns = {'r1'; 'r3'; 'r2'}, mets = {'x'}, S = sparse([1 3 2]))
+- **Observed**: s.panModel.rxns = {'r1' 'r2' 'r3'} and full(s.panModel.S) = [1 3 2] (setdiff on line 186 sorts, matches on line 207 keeps the order of model 2)
+- **Expected**: [1 2 3] (r2 has the coefficient 2 and r3 the coefficient 3 in mB)
+- **Source lines**: 203-208
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m`
+
+#### The documented default inputDir needs an explicit empty argument
+
+- **Severity**: limitation
+- **Trigger**: generatePanDatabase()
+- **Observed**: MATLAB:minrhs, Not enough input arguments. (line 18 reads inputDir); generatePanDatabase([]) uses the default 'AGORA2'
+- **Expected**: the call without argument uses the default 'AGORA2' given in the header
+- **Source lines**: 18
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m`
+
+### `src/analysis/persephone/additionalFunctions/generateStackedBarPlot.m`
+
+#### Errors for a single sample
+
+- **Severity**: error
+- **Trigger**: T = table({'t1'; 't2'; 't3'}, [0.5; 0.495; 0.005], 'VariableNames', {'Taxon', 's1'}); generateStackedBarPlot(T, tempname)
+- **Observed**: MATLAB:noPublicFieldForClass, Unrecognized property 'FaceColor' for class 'matlab.graphics.GraphicsPlaceholder'. For one sample bar (line 51) receives a 1-by-4 vector and draws a single Bar series, so b(2) on line 78 does not exist.
+- **Expected**: one stacked bar with the taxa t1, t2 and Others (the header says 'for single or multiple samples'), saved as .fig and .svg
+- **Source lines**: 51, 77-79
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot.m`
 
 ### `src/analysis/persephone/calculateMetrics.m`
 
@@ -1142,6 +1420,17 @@
 - **Source lines**: 68
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testGetCorrespondingCols.m`
 
+### `src/analysis/topology/getCorrespondingRows.m`
+
+#### The error for a colBool of the wrong length names rowBool
+
+- **Severity**: cosmetic
+- **Trigger**: getCorrespondingRows(eye(2), true(2, 1), true(3, 1), 'inclusive')
+- **Observed**: the error message is 'length of rowBool must equal size(A,2)'
+- **Expected**: a message naming colBool, 'length of colBool must equal size(A,2)'
+- **Source lines**: 72
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testGetCorrespondingRows.m`
+
 ### `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m`
 
 #### A reaction with an elemental mismatch stops the build instead of being skipped
@@ -1499,6 +1788,37 @@
 - **Source lines**: 310
 - **Documented in**: `test/verifiedTests/base/testIO/testReadSBML.m`
 
+### `src/base/io/utilities/readSimPhenyCMPD.m`
+
+#### A file without metabolite lines stops with an error
+
+- **Severity**: limitation
+- **Trigger**: readSimPhenyCMPD on an empty file (or one without lines of nine fields)
+- **Observed**: "Unrecognized function or variable 'mets'." (mets and metInfo are only created when a metabolite line is read)
+- **Expected**: empty outputs (no metabolite)
+- **Source lines**: 46
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m`
+
+#### Alternative names keep the blank that follows a '/'
+
+- **Severity**: cosmetic
+- **Trigger**: a line whose eighth field is "adenosine triphosphate / ATP"
+- **Observed**: altNames is {'adenosine triphosphate'; ' ATP'} (deblank removes trailing blanks only)
+- **Expected**: {'adenosine triphosphate'; 'ATP'}, the names without the blanks around the separator that the deblank loop is meant to remove
+- **Source lines**: 40
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m`
+
+### `src/base/io/utilities/readSimPhenyGPR.m`
+
+#### A file without reaction lines stops with an error
+
+- **Severity**: limitation
+- **Trigger**: readSimPhenyGPR on an empty file (or one without lines of eight fields)
+- **Observed**: "Unrecognized function or variable 'rxns'." (rxns and rxnInfo are only created when a reaction line is read)
+- **Expected**: empty outputs (no reaction, no gene)
+- **Source lines**: 48
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGPR.m`
+
 ### `src/base/io/utilities/writeSBML.m`
 
 #### A model without reactions cannot be written
@@ -1696,6 +2016,26 @@
 - **Expected**: a strict solve uses MSK_SOLVE_FREE, as the header of the function states
 - **Source lines**: 541-549
 - **Documented in**: `test/verifiedTests/base/testSolvers/testSetMosekParam.m`
+
+### `src/base/solvers/param/changeCobraSolverParams.m`
+
+#### The error for a parameter that is not allowed always names LP solvers
+
+- **Severity**: cosmetic
+- **Trigger**: changeCobraSolverParams('MILP', 'minNorm', 1)
+- **Observed**: the error message is 'Parameter name minNorm not allowed for LP solvers'
+- **Expected**: a message naming the solver type given, MILP
+- **Source lines**: 85
+- **Documented in**: `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m`
+
+#### solverType is documented as optional with default 'LP' but cannot be omitted
+
+- **Severity**: cosmetic
+- **Trigger**: changeCobraSolverParams('feasTol', 1e-9)
+- **Observed**: error 'Solver type feasTol is not supported by the COBRA Toolbox' (the first input is always the solver type; USAGE lists three inputs)
+- **Expected**: per INPUTS ("solverType: Solver type, 'LP' or 'MILP' (opt, default, 'LP')"), the LP parameter feasTol set; the USAGE line and the code agree that the input is required, so the INPUTS text is the likely error
+- **Source lines**: 80
+- **Documented in**: `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m`
 
 ### `src/base/solvers/param/getCobraSolverParams.m`
 
@@ -2739,6 +3079,44 @@
 - **Expected**: a DNF node (the class does not define the meaning of an empty node)
 - **Source lines**: 125-126, 188-189
 - **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m`
+
+### `src/reconstruction/refinement/GPRLogic/Node.m`
+
+#### contains stops with an error on a node without children
+
+- **Severity**: limitation
+- **Trigger**: n = OrNode(); r = n.contains('1')
+- **Observed**: "Output argument "res" (and possibly others) not assigned a value in the execution with "Node/contains" function."
+- **Expected**: false (an empty node contains no literal)
+- **Source lines**: 167-173
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testNode.m`
+
+#### isequal is false for a tree with a repeated clause, and not symmetric
+
+- **Severity**: wrong-result
+- **Trigger**: a = OrNode(); a.children = [LiteralNode('1'), LiteralNode('2')]; b = OrNode(); b.children = [LiteralNode('1'), LiteralNode('2'), LiteralNode('1')]; a.isequal(b)
+- **Observed**: a.isequal(b) is false and b.isequal(a) is true; the loop over the remaining clauses of otherNode compares geneSets{1} (already empty) instead of the remaining clause, so any repeated clause of otherNode makes the result false
+- **Expected**: true in both directions (header: "true, if this node is equal to the other node, i.e. it represents the same boolean truth table"; x1 or x2 or x1 = x1 or x2)
+- **Source lines**: 360-377
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testNode.m`
+
+#### isequal is false for equivalent trees with different literals
+
+- **Severity**: wrong-result
+- **Trigger**: x = AndNode(); x.children = [LiteralNode('1'), LiteralNode('2')]; a = OrNode(); a.children = [LiteralNode('1'), x]; b = OrNode(); b.children = LiteralNode('1'); a.isequal(b)
+- **Observed**: false (the literal sets {1, 2} and {1} differ, and DNF clauses are compared without absorption)
+- **Expected**: true, as x1 or (x1 and x2) has the truth table of x1 (header: "i.e. it represents the same boolean truth table")
+- **Source lines**: 321-326, 331-359
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testNode.m`
+
+#### removeDuplicateLiterals removes the wrong children when a child that is not a literal comes before a literal
+
+- **Severity**: wrong-result
+- **Trigger**: n = OrNode(); n.children = [LiteralNode('1'), AndNode(), LiteralNode('2')]; n.removeDuplicateLiterals()
+- **Observed**: n.toString() is '(x(1) or )': the literal 2, which has no duplicate, is removed; with n.children = [AndNode(), LiteralNode('1'), LiteralNode('1')] both literals 1 are removed (one child left, of class AndNode). The positions returned by unique count among the literal children only and are then compared with positions among all children
+- **Expected**: only repeated literal nodes are removed: x(1) and x(2) kept in the first case, one x(1) kept in the second (header: "Remove all duplicate literal nodes in this node")
+- **Source lines**: 199-201
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testNode.m`
 
 ### `src/reconstruction/refinement/GPRLogic/OrNode.m`
 
