@@ -22,6 +22,11 @@ letter `s` and gives the slice rows (file, tier, flags, untested callees, caller
    `src/`.
 2. Check that no test of that name exists: `find test -name 'test<Name>.m'` (Name = file name with
    the first letter capitalised). If one exists, stop for that row and report it in `notes`.
+   Also search for a legacy test that tests only your function under another name (for
+   example `testConvertHypergraph2BipartiteGraph.m` for convertHypergraphToBipartiteGraph):
+   `grep -rln "<name>(" test/verifiedTests`. If one exists, write no new file (III-Naming: one
+   test per function); report the row with status EXCLUDED, reason "already tested by <file>",
+   and put any defect you found, with its reproduction, in `notes` for the lead (FR-012).
 3. Place the test in the existing `test/verifiedTests/<category>/test<Area>/` folder that holds the
    tests of other files from the same `src/` folder (look them up with grep on "Function under
    test"); if none, use `test/verifiedTests/<category>/test<LastSrcFolder>/` (category = first

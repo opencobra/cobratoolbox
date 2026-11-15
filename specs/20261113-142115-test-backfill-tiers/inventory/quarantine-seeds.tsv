@@ -92,3 +92,15 @@ qdouble	NONE
 prepareTest	NONE
 # py_rmpath: only MATLAB_too = true fails; the only caller (initPythonEnvironment) passes 0.
 py_rmpath	NONE
+# writeLPProblem: the unusable outputFormat/writeMatrix-first forms are used by no caller; vartype is dropped only for problems with vartype and no solverParams, and the callers without solverParams write LP/QP problems.
+writeLPProblem	NONE
+# setCplexParametersForProblem: only the MIQP path is defective; solveCobraMIQP is the only caller that takes it.
+setCplexParametersForProblem	src/base/solvers/solveCobraMIQP.m
+# checkGAMSSolvers: only problem types GAMS does not list fail; all callers pass 'MIP'.
+checkGAMSSolvers	NONE
+# BDCA: x_error/Time are wrong on every call, so BDCA is its own seed (default: every caller reaches it).
+# setGurobiParam: the timelimit override depends on the user's parameters (both names set); solveCobraLP and solveCobraQP pass the user's parameters.
+setGurobiParam	src/base/solvers/solveCobraLP.m
+setGurobiParam	src/base/solvers/solveCobraQP.m
+# getDietComposition: only the documented model (struct) input fails; all callers pass cell arrays.
+getDietComposition	NONE

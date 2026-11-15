@@ -1,0 +1,15 @@
+{
+ "adaptMacPath": "lead (source read: str2double('10.11.6') is NaN and 10.9 > 10.12 numerically, lines 20-21, so older versions get postSierra)",
+ "convertCobraLP2mps": "lead (source read: A2(G) = -A2(G) with a logical row mask indexes linearly, line 72, so only the first column of each G row is negated)",
+ "writeLPProblem": "lead (writer's MATLAB reproductions: outputFormat unusable, writeMatrix first fails, vartype dropped without solverParams)",
+ "write4ti2": "lead (source read: integerizeS(SeFull) passes a matrix, line 17; integerizeS takes a model)",
+ "setCplexParametersForProblem": "lead (source read: for MIQP a text method is overwritten by lpmethod 4, line 302)",
+ "checkGAMSSolvers": "lead (writer's reproduction with stand-ins for gams: an unlisted problem type gives an index error at line 50 instead of {})",
+ "liftRows": "lead (writer's MATLAB reproduction: a well-scaled C with outputs requested ends with an unassigned output)",
+ "BDCA": "lead (writer's MATLAB reproductions: the documented options Quadratic_interpolation and flag_psi_error fail; x_error/Time get a spurious 0 in position 2)",
+ "setGurobiParam": "lead (source read: line 80 copies .timelimit to .TimeLimit unconditionally, the help says only if TimeLimit is absent; the help says all fields are optional but printLevel, feasTol, optTol are required); severities raised by the lead for consistency",
+ "getMetaboliteFlux": "lead (source read: the addStarch path, lines 222 and 268-272; the writer reproduced both errors in MATLAB)",
+ "getDietComposition": "lead (source read: parser.addRequired('input', @iscell), line 68, rejects the documented model struct)",
+ "getStatsOrganComp": "lead (writer's MATLAB reproduction: TableMetsNum_male/female keep stale entries between the two fills)",
+ "printFunctionIO": "lead (writer's MATLAB reproduction: field names matched without word boundaries; fields of the second and later outputs missed)"
+}

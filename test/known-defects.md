@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-404 known defects in 229 functions (142 wrong-result, 113 error, 30 unusable-option, 62 cosmetic, 57 limitation).
+434 known defects in 247 functions (150 wrong-result, 119 error, 36 unusable-option, 68 cosmetic, 61 limitation).
 
 ## Summary
 
@@ -199,6 +199,9 @@
 | `src/analysis/topology/reactingMoieties/readABRXNFile.m` | unusable-option | options.readBonds = 0 cannot be used | `test/verifiedTests/analysis/testReactingMoieties/testReadABRXNFile.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m` | cosmetic | The progress message has no space before the food source name | `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m` | unusable-option | brandedFoods = true always raises an error | `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietComposition.m` | error | A whole-body model (struct) input is rejected | `test/verifiedTests/analysis/testWholeBody/testGetDietComposition.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getMetaboliteFlux.m` | unusable-option | addStarch fails for every food of the shipped USDA database | `test/verifiedTests/analysis/testWholeBody/testGetMetaboliteFlux.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getMetaboliteFlux.m` | error | addStarch fails when a macro value of the food equals a looked-up nutrient id | `test/verifiedTests/analysis/testWholeBody/testGetMetaboliteFlux.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m` | limitation | The shipped USDA food items file is not found | `test/verifiedTests/analysis/testWholeBody/testGetNutritionDatabaseFile.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m` | limitation | Identifiers with surrounding blanks are rejected although they are trimmed for the other checks | `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m` | unusable-option | Non-iterative search type cannot run | `test/verifiedTests/analysis/testWholeBody/testSearcher.m` |
@@ -206,16 +209,25 @@
 | `src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m` | limitation | All MATLAB warnings are switched off and never switched back on | `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m` |
 | `src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m` | cosmetic | The names of the new transport reactions lose their blanks | `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m` |
 | `src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m` | limitation | rxnGeneMat is dropped when the original exchange reactions are removed | `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m` |
+| `src/analysis/wholeBody/PSCMToolbox/getStatsOrganComp.m` | wrong-result | The metabolite presence matrices keep entries of the compartment-free metabolite list | `test/verifiedTests/analysis/testWholeBody/testGetStatsOrganComp.m` |
+| `src/analysis/wholeBody/PSCMToolbox/getStatsOrganComp.m` | cosmetic | The results file named in the help text is never written | `test/verifiedTests/analysis/testWholeBody/testGetStatsOrganComp.m` |
 | `src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m` | unusable-option | The coupling factor given by the caller is ignored | `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m` |
 | `src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m` | wrong-result | rxnGeneMat is not updated for the gene rules of the added reactions | `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m` |
+| `src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m` | limitation | Flux values are rounded to the default precision of num2str | `test/verifiedTests/analysis/testWholeBody/testReadInDietFromVMH.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m` | cosmetic | The list of storable amino acids is printed on every call | `test/verifiedTests/analysis/testWholeBody/testSetFeedingFastingConstraints.m` |
+| `src/base/ci/addKeyToKnownHostsCT.m` | cosmetic | The error messages fail with a dot-indexing error when gitCmd is not set | `test/verifiedTests/base/testCi/testAddKeyToKnownHostsCT.m` |
+| `src/base/cobrarrow/COBRArrowSolver.m` | limitation | Copies of a solver object share one parameter map | `test/verifiedTests/base/testCobrarrow/testCOBRArrowSolver.m` |
+| `src/base/codeConsistency/printFunctionIO.m` | wrong-result | Fields of a variable whose name ends with an input name are listed as fields of the input | `test/verifiedTests/base/testCodeConsistency/testPrintFunctionIO.m` |
+| `src/base/codeConsistency/printFunctionIO.m` | wrong-result | Fields of the second and later outputs are missed when the reference starts a line | `test/verifiedTests/base/testCodeConsistency/testPrintFunctionIO.m` |
 | `src/base/generateSystemConfigReport.m` | error | A short answer from curl stops the report at the summary | `test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m` |
+| `src/base/install/adaptMacPath.m` | wrong-result | pre-Sierra macOS versions with a patch number or a one-digit minor select postSierra | `test/verifiedTests/base/testInstall/testAdaptMacPath.m` |
 | `src/base/install/prepareTest.m` | unusable-option | needsLinux makes every test skip on Linux | `test/verifiedTests/base/testInstall/testPrepareTest.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A dictionary abbreviation with several entries stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A metabolite without compartment that is in the dictionary stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
 | `src/base/io/KEGG/mapMetName2KEGGID.m` | error | A metabolite without compartment that is in the dictionary stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapMetName2KEGGID.m` |
 | `src/base/io/KEGG/mapMetName2KEGGID.m` | cosmetic | The message for a metabolite with several matches is never printed | `test/verifiedTests/base/testIO/testKEGG/testMapMetName2KEGGID.m` |
 | `src/base/io/convertCNAModelToCbModel.m` | error | Without CellNetAnalyzer an output is never assigned | `test/verifiedTests/base/testIO/testConvertCNAModelToCbModel.m` |
+| `src/base/io/convertCobraLP2mps.m` | wrong-result | only the first column of a 'G' row is negated | `test/verifiedTests/base/testIO/testConvertCobraLP2mps.m` |
 | `src/base/io/definitions/descFileRead.m` | wrong-result | An empty line ends the reading | `test/verifiedTests/base/testIO/testDescFileRead.m` |
 | `src/base/io/definitions/descFileRead.m` | limitation | Short entries are padded with null characters, not blanks | `test/verifiedTests/base/testIO/testDescFileRead.m` |
 | `src/base/io/python/pyPath/py_addpath.m` | wrong-result | A relative folder is added as given, not converted to an absolute path | `test/verifiedTests/base/testPyPath/testPy_addpath.m` |
@@ -234,11 +246,15 @@
 | `src/base/io/utilities/readSimPhenyCMPD.m` | limitation | A file without metabolite lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
 | `src/base/io/utilities/readSimPhenyCMPD.m` | cosmetic | Alternative names keep the blank that follows a '/' | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
 | `src/base/io/utilities/readSimPhenyGPR.m` | limitation | A file without reaction lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGPR.m` |
+| `src/base/io/utilities/write4ti2.m` | error | integerizeS is called with a matrix but needs a model structure | `test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m` |
 | `src/base/io/utilities/writeSBML.m` | error | A model without reactions cannot be written | `test/verifiedTests/base/testIO/testWriteSBML.m` |
 | `src/base/io/utilities/writeSBML.m` | wrong-result | The compartments of the model and the given lists are replaced by the defaults | `test/verifiedTests/base/testIO/testWriteSBML.m` |
 | `src/base/io/utilities/writeSBML.m` | error | The model annotation cannot be written | `test/verifiedTests/base/testIO/testWriteSBML.m` |
 | `src/base/io/writeCbModel.m` | unusable-option | The JSON format is not detected from the file extension | `test/verifiedTests/base/testIO/testWriteCbModel.m` |
 | `src/base/io/writeCbModel.m` | unusable-option | The file dialog offers an MPS export that does not exist | `test/verifiedTests/base/testIO/testWriteCbModel.m` |
+| `src/base/io/writeLPProblem.m` | unusable-option | the outputFormat option always fails validation | `test/verifiedTests/base/testIO/testWriteLPProblem.m` |
+| `src/base/io/writeLPProblem.m` | wrong-result | vartype is dropped from the default output | `test/verifiedTests/base/testIO/testWriteLPProblem.m` |
+| `src/base/io/writeLPProblem.m` | unusable-option | writeMatrix given as the first option is taken for a positional problem name | `test/verifiedTests/base/testIO/testWriteLPProblem.m` |
 | `src/base/parseMetNames.m` | limitation | Mixed or longer compartment notations are not parsed | `test/verifiedTests/base/testTools/testParseMetNames.m` |
 | `src/base/paths/comparePaths.m` | limitation | Python path entries with blanks are reported as differences | `test/verifiedTests/base/testPaths/testComparePaths.m` |
 | `src/base/removeGeneVersions.m` | error | A model without grRules stops after the warning | `test/verifiedTests/base/testRemoveGeneVersions/testRemoveGeneVersions.m` |
@@ -246,15 +262,24 @@
 | `src/base/solvers/buildOptProblemFromModel.m` | error | Missing coupling and extra-variable fields are never built | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
 | `src/base/solvers/buildOptProblemFromModel.m` | error | The form QRQP keeps the csense of the model only | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
 | `src/base/solvers/buildOptProblemFromModel.m` | wrong-result | The forms QRLP and QRQP lose the bounds of the extra variables | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
+| `src/base/solvers/cplex/setCplexParametersForProblem.m` | unusable-option | text values of problemTypeParams.method have no effect for MIQP | `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | cosmetic | Documented defaults for the concentration unit and the maximum concentration differ from the code | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | unusable-option | The case dxReplacement always stops with an error | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | wrong-result | The default row selection indexes the first row repeatedly | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | error | The parameter printLevel is required although it is documented as optional | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
+| `src/base/solvers/gams/checkGAMSSolvers.m` | error | A problem type that GAMS does not list stops with an index error | `test/verifiedTests/base/testSolvers/testCheckGAMSSolvers.m` |
+| `src/base/solvers/gams/checkGAMSSolvers.m` | cosmetic | The existence of licememo.gms is never checked | `test/verifiedTests/base/testSolvers/testCheckGAMSSolvers.m` |
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | error | A call without input stops instead of listing the defined solvers | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | A failed validation with printLevel above 0 keeps the failed solver selected | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | The problem type is matched as a substring | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/getAvailableSolversByType.m` | cosmetic | The output of initCobraToolbox is not silenced | `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m` |
+| `src/base/solvers/gurobi/setGurobiParam.m` | error | printLevel, feasTol and optTol are required although the fields are documented as optional | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
+| `src/base/solvers/gurobi/setGurobiParam.m` | cosmetic | the warning for an unknown lpmethod names param.qpmethod | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
+| `src/base/solvers/gurobi/setGurobiParam.m` | wrong-result | timelimit overrides TimeLimit although the help text says it is copied only when TimeLimit is absent | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
+| `src/base/solvers/init/configEnvVars.m` | cosmetic | GUROBI_PATH from an environment variable ending in linux64 or mac64 gets a double separator | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
+| `src/base/solvers/init/configEnvVars.m` | limitation | The call stops with an error when ENV_VARS.STATUS is not set | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
 | `src/base/solvers/isCompatible.m` | wrong-result | The distributed compatibility matrix is not understood by the parser | `test/verifiedTests/base/testSolvers/testIsCompatible.m` |
+| `src/base/solvers/minos/DQQCleanup.m` | limitation | fort.* and *.sol files are kept when the results folder is missing | `test/verifiedTests/base/testSolvers/testDQQCleanup.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
 | `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | The error for a parameter that is not allowed always names LP solvers | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
 | `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | solverType is documented as optional with default 'LP' but cannot be omitted | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
@@ -263,12 +288,17 @@
 | `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | paramStructure 'default' returns the global values instead of the defaults | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | error | A row with more than two variables cannot be lifted with the default options | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | cosmetic | The model identifier gets two suffixes | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
+| `src/base/solvers/rescale/liftRows.m` | error | A well-scaled matrix stops with an error instead of being returned | `test/verifiedTests/base/testLifting/testLiftRows.m` |
 | `src/base/solvers/solveCobraLP.m` | unusable-option | The option lifting stops on an undefined variable | `test/verifiedTests/base/testSolvers/testSolveCobraLP.m` |
 | `src/base/solvers/solveCobraMILP.m` | error | The legacy mps interface returns no output | `test/verifiedTests/base/testSolvers/testSolveCobraMILP.m` |
 | `src/base/solvers/solveCobraMILP.m` | error | gurobi does not accept an empty csense | `test/verifiedTests/base/testSolvers/testSolveCobraMILP.m` |
 | `src/base/solvers/solveCobraMIQP.m` | unusable-option | The option saveInput stops the call | `test/verifiedTests/base/testSolvers/testSolveCobraMIQP.m` |
 | `src/base/solvers/solveCobraQP.m` | error | A nonconvex QP solved to optimality by gurobi stops the function | `test/verifiedTests/base/testSolvers/testSolveCobraQP.m` |
 | `src/base/solvers/solveCobraQP.m` | error | The qpng interface reads the problem after it was cleared | `test/verifiedTests/base/testSolvers/testSolveCobraQP.m` |
+| `src/base/solvers/varKin/BDCAmethods/BDCA.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testBDCA.m` |
+| `src/base/solvers/varKin/BDCAmethods/BDCA.m` | unusable-option | The documented line search Quadratic_interpolation cannot be used | `test/verifiedTests/base/testSolvers/testBDCA.m` |
+| `src/base/solvers/varKin/BDCAmethods/BDCA.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testBDCA.m` |
+| `src/base/solvers/varKin/BDCAmethods/BDCA.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testBDCA.m` |
 | `src/base/solvers/varKin/optimizeVKmodel0.m` | error | F equal to R with a moiety basis returns without the output | `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` |
 | `src/base/solvers/varKin/optimizeVKmodel0.m` | cosmetic | The display format is switched to long E and never restored | `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` |
 | `src/base/solvers/varKin/optimizeVKmodel0.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` |
@@ -2364,6 +2394,37 @@
 - **Source lines**: 127, 133
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m`
 
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietComposition.m`
+
+#### A whole-body model (struct) input is rejected
+
+- **Severity**: error
+- **Trigger**: getDietComposition(struct('rxns', {{'Food_EX_x[d]'}}, 'lb', -1, 'ub', -1))
+- **Observed**: (R2025a, 2026-11-15) error MATLAB:InputParser:ArgumentFailedValidation "The value of 'input' is invalid. It must satisfy the function: iscell." - line 68 declares the required input with @iscell, so the model branch (lines 98-111) is never reached
+- **Expected**: the composition of the diet set by the model's Food_EX_ reactions, as the help text documents "Either a whole-body metabolic model (struct) or a diet given as an n x 2 cell array" and lines 98-111 handle a struct
+- **Source lines**: 68, 98-111
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testGetDietComposition.m`
+
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getMetaboliteFlux.m`
+
+#### addStarch fails for every food of the shipped USDA database
+
+- **Severity**: unusable-option
+- **Trigger**: getMetaboliteFlux({'167512', 100}, 'addStarch', true) with the shipped papers/2025_nutritionToolbox/usdaDatabase (edition 2024)
+- **Observed**: (R2025a, 2026-11-15) error MATLAB:TooManyOutputsDueToMissingBraces "Unable to perform assignment with 0 elements on the right-hand side." at line 222: the starch flux is looked up as Diet_EX_strch1[d], but the shipped USDA2024_100gFluxValue table names starch starch1200 (usda2024_infoFile: nutrient 1009 Starch, vmhID starch1200) and has no strch1 row; the same error for food 169951
+- **Expected**: the metabolite fluxes with the unmeasured starch added to the starch flux, as the help text documents for addStarch
+- **Source lines**: 222, 231
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testGetMetaboliteFlux.m`
+
+#### addStarch fails when a macro value of the food equals a looked-up nutrient id
+
+- **Severity**: error
+- **Trigger**: flux = table({'strch1'; 'glc_D'}, [10; 20], 'VariableNames', {'VMHID', '100001'}); macro = table([1009; 1005; 1063; 1079; 1104], [NaN; 50; 10; 5; 1009], 'VariableNames', {'nutrient_id', '100001'}); getMetaboliteFlux({'100001', 100}, 'addStarch', true, 'fluxTableUsda', flux, 'foodMacroUsda', macro)
+- **Observed**: (R2025a, 2026-11-15) error MATLAB:badsubscript "The logical indices in position 1 contain a true value outside of the array bounds." at line 272: macrosSpef == 1009 is compared over both columns [nutrient_id, value], so a value of 1009 selects a row beyond the table. With the value 7 instead of 1009 the call returns strch1 29.438 (10 + (50 - 10 - 5) / 1.8006). In the shipped USDA 2024 macros, food 169951 holds the value 1009 and food 167780 the value 2000 (nutrient 1104)
+- **Expected**: the comparison on the nutrient_id column only, and the starch flux computed
+- **Source lines**: 272, 278, 285-287, 299-301
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testGetMetaboliteFlux.m`
+
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m`
 
 #### The shipped USDA food items file is not found
@@ -2437,6 +2498,26 @@
 - **Source lines**: 97-99
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m`
 
+### `src/analysis/wholeBody/PSCMToolbox/getStatsOrganComp.m`
+
+#### The metabolite presence matrices keep entries of the compartment-free metabolite list
+
+- **Severity**: wrong-result
+- **Trigger**: mk = @(r, m, g) struct('modelAllComp', struct('rxns', {r}, 'mets', {m}, 'genes', {g}, 'grRules', {repmat({'g1'}, numel(r), 1)}, 'S', sparse(numel(m), numel(r)), 'subSystems', {repmat({'s'}, numel(r), 1)})); OC.sex = 'male'; OC.Liver = mk({'Liver_R1'; 'Liver_EX_glc(e)_[bc]'}, {'a[c]'; 'b[c]'}, {'1.1'; '2.1'}); OC.Brain = mk({'Brain_R2'}, {'b[m]'}, {'2.1'}); wbm.mets = {'a[bc]'; 'b[u]'; 'slack_1'; 'c[bp]'; 'd[bd]'; 'e[csf]'; 'f[d]'; 'g[fe]'; 'h[sw]'; 'i[a]'; 'j[mi]'}; wbm.rxns = {'R1'; 'R2'}; wbm.genes = {'1.1'}; wbm.subSystems = {'s'; 't'}; [~, ~, ~, TMf, TMm] = getStatsOrganComp(wbm, wbm, OC, OC)
+- **Observed**: (R2025a, 2026-11-15) TMm = TMf = [0 1 0; 0 1 1; 0 0 1] for the metabolites {'a[c]'; 'b[c]'; 'b[m]'} and the columns sex, Liver, Brain: b[c] is marked present in Brain. The matrix is first filled for the compartment-free list {'a'; 'b'} (lines 600, 1287) and is not cleared before it is filled again for the list with compartments (line 627 clears only TableMets_male, the female section clears nothing), so row 2 keeps the Brain entry of 'b'
+- **Expected**: [0 1 0; 0 1 0; 0 0 1] - b[c] is a metabolite of the Liver only; the metabolite counts in TableGRM (core / organ-specific / others) derive from it too
+- **Source lines**: 600, 627, 646, 654-672, 1287, 1315-1337
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testGetStatsOrganComp.m`
+
+#### The results file named in the help text is never written
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the call above
+- **Observed**: (R2025a, 2026-11-15) no Results_StatsOrganComp.mat is created: the save is inside "if 0" (lines 1508-1515); the call only sets the global resultsPath
+- **Expected**: Results_StatsOrganComp.mat "created at the end of this function", as the help text says, or a help text that does not announce it
+- **Source lines**: 1508-1515
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testGetStatsOrganComp.m`
+
 ### `src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m`
 
 #### The coupling factor given by the caller is ignored
@@ -2457,6 +2538,17 @@
 - **Source lines**: 60
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m`
 
+### `src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m`
+
+#### Flux values are rounded to the default precision of num2str
+
+- **Severity**: limitation
+- **Trigger**: a spreadsheet with the header row {'Flux', 'b', 'c', 'd', 'e', 'Reaction'} and the rows {0.123456789, 'x', 'y', 'z', 'w', 'EX_glc_D(e)'} and {0.5, 'x', 'y', 'z', 'w', 'EX_o2(e)'}, then readInDietFromVMH({fileName})
+- **Observed**: (R2025a, 2026-11-15) {'Diet_EX_glc_D[d]', '0.12346'; 'Diet_EX_o2[d]', '    0.5'}: num2str of the flux column keeps about five significant digits (relative to the largest value) and pads the shorter values with leading spaces
+- **Expected**: the flux values as given in the spreadsheet (e.g. '0.123456789')
+- **Source lines**: 32
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testReadInDietFromVMH.m`
+
 ### `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m`
 
 #### The list of storable amino acids is printed on every call
@@ -2468,6 +2560,48 @@
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testSetFeedingFastingConstraints.m`
 
+### `src/base/ci/addKeyToKnownHostsCT.m`
+
+#### The error messages fail with a dot-indexing error when gitCmd is not set
+
+- **Severity**: cosmetic
+- **Trigger**: with the global gitCmd empty (no toolbox function sets it) and a fake ssh-keyscan that prints nothing for the host: addKeyToKnownHostsCT('unreachable.invalid'); likewise with an ssh-keyscan that does not print its usage message
+- **Observed**: (R2025a, 2026-11-15) the call stops with "Dot indexing is not supported for variables of this type." instead of its own message
+- **Expected**: the error "... unreachable.invalid could not be added to the known hosts file in ~/.ssh/known_hosts" (or "... ssh-keyscan is not installed."), without depending on gitCmd
+- **Source lines**: 63, 72
+- **Documented in**: `test/verifiedTests/base/testCi/testAddKeyToKnownHostsCT.m`
+
+### `src/base/cobrarrow/COBRArrowSolver.m`
+
+#### Copies of a solver object share one parameter map
+
+- **Severity**: limitation
+- **Trigger**: o1 = COBRArrowSolver('GLPK'); o2 = o1; o2 = o2.setParameter('k', 1); o1.parameters.keys
+- **Observed**: (R2025a, 2026-11-15) {'k'}: COBRArrowSolver is a value class, but its parameters property is a containers.Map, which is a handle, so setParameter and removeParameter on a copy change the original too (clearParameters gives the copy a new map)
+- **Expected**: o1 keeps no parameters, as for a value object whose methods return the updated instance
+- **Source lines**: 36, 60, 72
+- **Documented in**: `test/verifiedTests/base/testCobrarrow/testCOBRArrowSolver.m`
+
+### `src/base/codeConsistency/printFunctionIO.m`
+
+#### Fields of a variable whose name ends with an input name are listed as fields of the input
+
+- **Severity**: wrong-result
+- **Trigger**: a function file probeIoTarget.m on the path with the lines "function [a, b] = probeIoTarget(model, x)", "submodel.rxns = 1;", "b.field = 2;", "a = x.y;", "end", then [inputs, outputs] = printFunctionIO('probeIoTarget', {}, 0)
+- **Observed**: (R2025a, 2026-11-15) inputs = {'model.rxns'; 'x.y'}: the pattern pattern('model') + '.' + alphanumerics matches inside "submodel.rxns"
+- **Expected**: inputs = {'model'; 'x.y'} - the source references no field of the input model
+- **Source lines**: 71-72
+- **Documented in**: `test/verifiedTests/base/testCodeConsistency/testPrintFunctionIO.m`
+
+#### Fields of the second and later outputs are missed when the reference starts a line
+
+- **Severity**: wrong-result
+- **Trigger**: the same call as above (signature "[a, b]" with a space after the comma, the layout the openCOBRA style guide requires, and "b.field = 2;" at the start of a line)
+- **Observed**: (R2025a, 2026-11-15) outputs = {'a'; 'b'}: split at line 115 keeps ' b' with its leading space and the search pattern at line 131 then needs a space before "b."
+- **Expected**: outputs = {'a'; 'b.field'}
+- **Source lines**: 115, 131-132
+- **Documented in**: `test/verifiedTests/base/testCodeConsistency/testPrintFunctionIO.m`
+
 ### `src/base/generateSystemConfigReport.m`
 
 #### A short answer from curl stops the report at the summary
@@ -2478,6 +2612,17 @@
 - **Expected**: the report finishes and shows that the curl version is not known
 - **Source lines**: 65-66
 - **Documented in**: `test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m`
+
+### `src/base/install/adaptMacPath.m`
+
+#### pre-Sierra macOS versions with a patch number or a one-digit minor select postSierra
+
+- **Severity**: wrong-result
+- **Trigger**: CBTDIR set to a temporary folder holding binary/maci64/bin/preSierra and postSierra (both on the MATLAB path), a fake sw_vers first on PATH that prints "ProductName:\tMac OS X\nProductVersion:\t10.11.6\nBuildVersion:\t15G31\n", then adaptMacPath()
+- **Observed**: (R2025a, 2026-11-15) postSierra on the path and preSierra removed for ProductVersion 10.11.6, 10.9.5 and 10.9; preSierra only for 10.11. Line 20 gives str2double('10.11.6') = NaN, and NaN < 10.12 is false; '10.9' becomes 10.9, which is larger than 10.12 as a decimal number
+- **Expected**: preSierra for every macOS version below 10.12 (the help text: "Sierra/High Sierra or higher and Anything below"), e.g. 10.11.6 (the last El Capitan release) and 10.9.5; the version should be compared component by component
+- **Source lines**: 20-21
+- **Documented in**: `test/verifiedTests/base/testInstall/testAdaptMacPath.m`
 
 ### `src/base/install/prepareTest.m`
 
@@ -2540,6 +2685,17 @@
 - **Expected**: an error that says CellNetAnalyzer is needed
 - **Source lines**: 31
 - **Documented in**: `test/verifiedTests/base/testIO/testConvertCNAModelToCbModel.m`
+
+### `src/base/io/convertCobraLP2mps.m`
+
+#### only the first column of a 'G' row is negated
+
+- **Severity**: wrong-result
+- **Trigger**: LP.A = sparse([1 2; 3 4]); LP.b = [5; 6]; LP.c = [1; 1]; LP.lb = [0; 0]; LP.ub = [10; 10]; LP.csense = ['G'; 'L']; LP.osense = 1; convertCobraLP2mps(LP, 'conv')
+- **Observed**: (R2025a, 2026-11-15) conv.mps holds row LE1 = -1*X1 + 2*X2 with RHS -5, that is -x1 + 2*x2 <= -5. Line 72 indexes A2 with the m x 1 logical G, which selects elements of the first column only (linear indexing), while line 73 negates b correctly
+- **Expected**: -x1 - 2*x2 <= -5 (the G row x1 + 2*x2 >= 5 multiplied by -1, as the comment "need to change sign of A*x >= b constraints" says); writeLPProblem writes LE2 = -1*X1 - 2*X2 <= -5 for the same problem (whole row negated)
+- **Source lines**: 72
+- **Documented in**: `test/verifiedTests/base/testIO/testConvertCobraLP2mps.m`
 
 ### `src/base/io/definitions/descFileRead.m`
 
@@ -2725,6 +2881,17 @@
 - **Source lines**: 48
 - **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGPR.m`
 
+### `src/base/io/utilities/write4ti2.m`
+
+#### integerizeS is called with a matrix but needs a model structure
+
+- **Severity**: error
+- **Trigger**: write4ti2([1 -1; 0 1], 'x', 0) (also with uni = 1)
+- **Observed**: (R2025a, 2026-11-15) error "Dot indexing is not supported for variables of this type." raised in integerizeS line 39 (size(model.S)); line 17 passes the matrix SeFull, and the comment there says integerizeS is not defined in the toolbox, while src/analysis/topology/integerizeS.m now takes a model and returns a model
+- **Expected**: the documented input "SeFull: full stoichiometric matrix" is integerised and written, e.g. integerizeS(struct('S', SeFull), 0, 0) and its .S field
+- **Source lines**: 17
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m`
+
 ### `src/base/io/utilities/writeSBML.m`
 
 #### A model without reactions cannot be written
@@ -2773,6 +2940,35 @@
 - **Expected**: an MPS file, or no such choice in the dialog
 - **Source lines**: 280-281
 - **Documented in**: `test/verifiedTests/base/testIO/testWriteCbModel.m`
+
+### `src/base/io/writeLPProblem.m`
+
+#### the outputFormat option always fails validation
+
+- **Severity**: unusable-option
+- **Trigger**: LP.A = sparse([1 2; 3 4]); LP.b = [5; 6]; LP.c = [1; 1]; LP.lb = [0; 0]; LP.ub = [10; 10]; LP.csense = ['G'; 'L']; LP.osense = 1; writeLPProblem(LP, 'outputFormat', 'mps')
+- **Observed**: (R2025a, 2026-11-15) error "The value of 'outputFormat' is invalid. Not enough input arguments."; the same error for the positional form writeLPProblem(LP, 'p1', 'f1', struct(), 'mps'). The validator on line 84 calls strcmpi(acceptedTypes) with one argument
+- **Expected**: 'mps' is accepted (OPTIONAL INPUT: "Currently only 'mps' is supported (and default)"), i.e. any(strcmpi(x, acceptedTypes))
+- **Source lines**: 84
+- **Documented in**: `test/verifiedTests/base/testIO/testWriteLPProblem.m`
+
+#### vartype is dropped from the default output
+
+- **Severity**: wrong-result
+- **Trigger**: MILP = LP; MILP.vartype = ['I'; 'C']; writeLPProblem(MILP, 'fileName', 'milp1.mps') with LP as above
+- **Observed**: (R2025a, 2026-11-15) the BOUNDS section of milp1.mps reads "UP BND1 X1 10" (continuous); with a non-default solverParams, e.g. 'solverParams', struct('x', 1), the same problem gives "UI BND1 X1 10" (integer). Line 206 calls BuildMPS without the 'Integer' and 'Binary' index lists that lines 186-187 build
+- **Expected**: the documented .vartype is "used to build the integer/binary index lists passed to the MPS writer", so x1 is written as an integer variable in both cases
+- **Source lines**: 205-207
+- **Documented in**: `test/verifiedTests/base/testIO/testWriteLPProblem.m`
+
+#### writeMatrix given as the first option is taken for a positional problem name
+
+- **Severity**: unusable-option
+- **Trigger**: writeLPProblem(LP, 'writeMatrix', false) with LP as above
+- **Observed**: (R2025a, 2026-11-15) error "The value of 'fileName' is invalid. It must satisfy the function: ischar."; 'writeMatrix' is missing from optionalArgumentList (line 57), so lines 66-75 rewrite the call to problemName = 'writeMatrix', fileName = false
+- **Expected**: writeMatrix is a documented name-value parameter and is accepted in any position
+- **Source lines**: 57, 66-75
+- **Documented in**: `test/verifiedTests/base/testIO/testWriteLPProblem.m`
 
 ### `src/base/parseMetNames.m`
 
@@ -2845,6 +3041,17 @@
 - **Source lines**: 255-256, 258, 301-302, 304
 - **Documented in**: `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m`
 
+### `src/base/solvers/cplex/setCplexParametersForProblem.m`
+
+#### text values of problemTypeParams.method have no effect for MIQP
+
+- **Severity**: unusable-option
+- **Trigger**: cp.setDefault = []; cp.Param = struct(); cp.DisplayFunc = @disp; ptp = struct('printLevel', 0, 'logFile', 0, 'feasTol', 1e-6, 'optTol', 1e-6, 'relMipGapTol', 1e-4, 'intTol', 1e-5, 'absMipGapTol', 0, 'timeLimit', 100, 'method', 'PRIMAL'); out = setCplexParametersForProblem(cp, ptp, struct(), 'MIQP')
+- **Observed**: (R2025a, 2026-11-15) out.Param.lpmethod.Cur = 4 (barrier) for 'PRIMAL' (and for every other text value). Lines 248-260 set lpmethod from the text value, then line 302 (else branch of the 'LP' test on line 268) sets lpmethod to 4 for every problem type other than 'LP'
+- **Expected**: INPUTS document .method as "LP/QP algorithm selector used when problemType is MIQP (numeric legacy code, or 'AUTOMATIC'/'PRIMAL'/...)", so 'PRIMAL' selects algorithm 1; the numeric values do take effect (method 0 gives qpmethod 1)
+- **Source lines**: 248-260, 302
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m`
+
 ### `src/base/solvers/entropicFBA/processConcConstraints.m`
 
 #### Documented defaults for the concentration unit and the maximum concentration differ from the code
@@ -2882,6 +3089,26 @@
 - **Expected**: printLevel defaulting to 0
 - **Source lines**: 161, 224
 - **Documented in**: `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m`
+
+### `src/base/solvers/gams/checkGAMSSolvers.m`
+
+#### A problem type that GAMS does not list stops with an index error
+
+- **Severity**: error
+- **Trigger**: checkGAMSSolvers('MINLP') when getAvailableGAMSSolvers returns problem types {'LP', 'MIP', 'NLP'} (stubs of gams and getAvailableGAMSSolvers on a temporary path)
+- **Observed**: Index in position 2 is invalid. Array indices must be positive integers or logical values. (MATLAB:badsubscript, line 50; R2025a, 2026-11-15): ismember returns position 0, never an empty position, so line 49 is always true
+- **Expected**: an empty cell array, the else branch of line 52
+- **Source lines**: 48-52
+- **Documented in**: `test/verifiedTests/base/testSolvers/testCheckGAMSSolvers.m`
+
+#### The existence of licememo.gms is never checked
+
+- **Severity**: cosmetic
+- **Trigger**: any call with GAMS on the MATLAB path
+- **Observed**: line 41 tests whether the concatenated path string is empty, which it never is, so the error of line 42 cannot be raised
+- **Expected**: the error licememo.gms in not in MATLAB path. when the file is missing
+- **Source lines**: 41-42
+- **Documented in**: `test/verifiedTests/base/testSolvers/testCheckGAMSSolvers.m`
 
 ### `src/base/solvers/getSetSolver/changeCobraSolver.m`
 
@@ -2923,6 +3150,55 @@
 - **Source lines**: 17, 19
 - **Documented in**: `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m`
 
+### `src/base/solvers/gurobi/setGurobiParam.m`
+
+#### printLevel, feasTol and optTol are required although the fields are documented as optional
+
+- **Severity**: error
+- **Trigger**: setGurobiParam(struct())
+- **Observed**: error Unrecognized field name "printLevel". (MATLAB:nonExistentField); without OutputFlag and DisplayInterval the field printLevel is read, without FeasibilityTol the field feasTol, without OptimalityTol the field optTol
+- **Expected**: all fields optional (help text: with fields (all optional))
+- **Source lines**: 182, 194, 214, 223
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
+
+#### the warning for an unknown lpmethod names param.qpmethod
+
+- **Severity**: cosmetic
+- **Trigger**: param.lpmethod = 'FOO'
+- **Observed**: warning FOO is an unrecognised param.qpmethod for gurobi
+- **Expected**: the warning names param.lpmethod
+- **Source lines**: 145
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
+
+#### timelimit overrides TimeLimit although the help text says it is copied only when TimeLimit is absent
+
+- **Severity**: wrong-result
+- **Trigger**: setGurobiParam(struct('timelimit', 10, 'TimeLimit', 20, 'printLevel', 0, 'feasTol', 1e-7, 'optTol', 1e-8))
+- **Observed**: gurobiParam.TimeLimit = 10 (R2025a, 2026-11-15); line 80 copies timelimit unconditionally
+- **Expected**: TimeLimit = 20 kept, as the help text says timelimit is copied to TimeLimit if TimeLimit is absent
+- **Source lines**: 79-81
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
+
+### `src/base/solvers/init/configEnvVars.m`
+
+#### GUROBI_PATH from an environment variable ending in linux64 or mac64 gets a double separator
+
+- **Severity**: cosmetic
+- **Trigger**: environment variable GUROBI_PATH = /x/gurobi1000/linux64 on Linux (no gurobi folder at a standard location on the MATLAB path)
+- **Observed**: GUROBI_PATH = /x/gurobi1000//linux64/matlab (R2025a, 2026-11-15): in the regular expression \/(win64$)|(mac64$)|(linux64$) the separator belongs to the first alternative only, so only linux64 (not /linux64) is removed before /linux64/matlab is appended
+- **Expected**: /x/gurobi1000/linux64/matlab
+- **Source lines**: 240-241
+- **Documented in**: `test/verifiedTests/base/testSolvers/testConfigEnvVars.m`
+
+#### The call stops with an error when ENV_VARS.STATUS is not set
+
+- **Severity**: limitation
+- **Trigger**: global ENV_VARS; ENV_VARS = struct('printLevel', 0); configEnvVars(0) (also with ENV_VARS = [])
+- **Observed**: Unrecognized field name "STATUS". (MATLAB:nonExistentField), and Dot indexing is not supported for variables of this type. (MATLAB:structRefFromNonStruct) for ENV_VARS = [] (R2025a, 2026-11-15): exist('ENV_VARS.STATUS', 'var') is never 1 because ENV_VARS.STATUS is not a variable name, so ENV_VARS.STATUS is always read. initCobraToolbox sets ENV_VARS.STATUS = 0 before its call
+- **Expected**: the paths configured when ENV_VARS.STATUS does not exist, as the test of line 33 suggests, or this requirement documented
+- **Source lines**: 33
+- **Documented in**: `test/verifiedTests/base/testSolvers/testConfigEnvVars.m`
+
 ### `src/base/solvers/isCompatible.m`
 
 #### The distributed compatibility matrix is not understood by the parser
@@ -2933,6 +3209,17 @@
 - **Expected**: the status of the table: 1 for the solvers marked as tested
 - **Source lines**: 98-116
 - **Documented in**: `test/verifiedTests/base/testSolvers/testIsCompatible.m`
+
+### `src/base/solvers/minos/DQQCleanup.m`
+
+#### fort.* and *.sol files are kept when the results folder is missing
+
+- **Severity**: limitation
+- **Trigger**: DQQCleanup(tmpPath, originalDirectory) with fort.81 and a.sol in tmpPath and no folder tmpPath/results
+- **Observed**: rmdir of the missing results folder raises an error that the first try block catches, so the deletion of the fort.* and *.sol files (lines 19-30) is skipped and the files stay in tmpPath
+- **Expected**: the temporary solver output removed (help text: fort.* and *.sol output files to be deleted)
+- **Source lines**: 18-30
+- **Documented in**: `test/verifiedTests/base/testSolvers/testDQQCleanup.m`
 
 ### `src/base/solvers/mosek/setMosekParam.m`
 
@@ -3014,6 +3301,17 @@
 - **Source lines**: 186, 423
 - **Documented in**: `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m`
 
+### `src/base/solvers/rescale/liftRows.m`
+
+#### A well-scaled matrix stops with an error instead of being returned
+
+- **Severity**: error
+- **Trigger**: [Clifted, newcon] = liftRows([1 -1], 'L', 1000, log(1000), 0, {'c1'}, {'r1'; 'r2'})
+- **Observed**: the function prints "Model.C is well scaled. Nothing to do." and returns before any output is set, so the call stops with Output argument "Clifted" (and possibly others) not assigned a value (MATLAB:unassignedOutputs; R2025a, 2026-11-15). liftCouplingConstraints(model, 1000, 0) with model.C = [1, -10], model.d = 0, model.dsense = 'L' stops with the same error at its line 386
+- **Expected**: C returned unchanged with no new rows or variables (newcon, ctrs_new and evars empty, ndum = nEvars = 0), as the printed message says there is nothing to do
+- **Source lines**: 44-47
+- **Documented in**: `test/verifiedTests/base/testLifting/testLiftRows.m`
+
 ### `src/base/solvers/solveCobraLP.m`
 
 #### The option lifting stops on an undefined variable
@@ -3075,6 +3373,44 @@
 - **Expected**: the qpng branch uses the local A, b, c, F, lb and ub, or QPproblem is kept
 - **Source lines**: 178, 363-376
 - **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraQP.m`
+
+### `src/base/solvers/varKin/BDCAmethods/BDCA.m`
+
+#### The display format is switched to longG and the status is printed
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: format longG at the start changes the display format of the session after the call, and the line Status without semicolon prints the termination reason
+- **Expected**: the display format left unchanged and output gated by a print level
+- **Source lines**: 61, 213
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBDCA.m`
+
+#### The documented line search Quadratic_interpolation cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_line_search = 'Quadratic_interpolation', for example with F = [1 0; 0 1], R = [0 1; 1 0], kin = zeros(4, 1), x0 = [0.5; -0.3] and mapp = @(x) [F - R, R - F] * exp(kin + [F, R]' * x)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'lambda'." (MATLAB:UndefinedFunction, line 153; R2025a, 2026-11-15); the branch also uses the undefined f, nfyk and, through df, p
+- **Expected**: a step length from the quadratic interpolation of the merit function along dk
+- **Source lines**: 112, 151-161
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBDCA.m`
+
+#### The option flag_psi_error cannot be used
+
+- **Severity**: unusable-option
+- **Trigger**: options.flag_psi_error = 1 with options.psi_opt = 0 (same model as above)
+- **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 196); options.psi_opt is never read and psi0 is never set
+- **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
+- **Source lines**: 99-101, 195-197, 227-229
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBDCA.m`
+
+#### x_error and Time have a spurious zero in position 2
+
+- **Severity**: wrong-result
+- **Trigger**: options.flag_x_error = 1, options.x_opt = [1; 1], options.flag_time = 1, options.MaxNumIter = 3, options.Stopping_Crit = 2 (same model as above)
+- **Observed**: out.Niter = 3, out.Xk has 3 columns, out.x_error = [0.9849 0 0.9774 0.9767] and out.Time = [0 0 0.0163 0.0221]: Niter starts at 1 and is incremented before x_error(Niter + 1) and Time(Niter + 1) are written, so element 2 is never assigned
+- **Expected**: one entry per point of out.Xk (x0 and each iterate), x_error(k) the relative error of Xk(:, k)
+- **Source lines**: 186-193
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBDCA.m`
 
 ### `src/base/solvers/varKin/optimizeVKmodel0.m`
 

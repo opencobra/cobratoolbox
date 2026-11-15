@@ -5,6 +5,6 @@ Measured over 1611 files (executable lines from MATLAB's coverage tool; files th
 | | Executable lines | Covered lines | Coverage | Files with covered lines |
 |---|---|---|---|---|
 | Before | 264365 | 32112 | 12.1% | 497 |
-| After | 263068 | 35700 | 13.6% | 580 |
+| After | 263058 | 36310 | 13.8% | 596 |
 
-Without the two generated solver files (slvrCumomer.m, slvrCumomer_fast.m, 112094 executable lines): before 21.1%, after 23.6%.
+Without the two generated solver files (slvrCumomer.m, slvrCumomer_fast.m, 112094 executable lines): before 21.1%, after 24.1%.

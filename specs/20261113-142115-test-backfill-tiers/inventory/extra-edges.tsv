@@ -14,3 +14,9 @@ src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifie
 src/analysis/sampling/BarrierRound/logBarrierRound.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m
 src/analysis/sampling/BarrierRound/logBarrierRound.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m
 src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifierTest.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m
+src/base/io/writeLPProblem.m	src/base/io/utilities/getDefaultCompartmentSymbols.m
+src/base/io/utilities/write4ti2.m	src/analysis/topology/integerizeS.m
+src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/InitialBDCA.m
+src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/utilities/toolboxFree/cobraFminunc.m
+src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/FuncGradHessSub.m
+src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m
