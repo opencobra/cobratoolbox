@@ -1,0 +1,3 @@
+{
+ "initPythonEnvironment": "lead (source read: the version check at lines 118-124 runs only in the case 'CPython3' branch, the default environment; it rejects python3 3.12, which this R2025a session loads without trouble)"
+}

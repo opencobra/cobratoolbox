@@ -20,3 +20,4 @@ src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/I
 src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/utilities/toolboxFree/cobraFminunc.m
 src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/FuncGradHessSub.m
 src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m
+src/visualization/metabolicCartography/visualizeFluxTimeseriesFromFile.m	src/visualization/metabolicCartography/addFluxWidthAndColor.m

@@ -159,7 +159,10 @@ class Ledger:
                 if c in self.cycle(r):
                     continue
                 cr = self.by_name.get(c)
-                if c in self.existing or (cr is not None and cr['status'] not in FINAL_OK):
+                # propagate() has already blocked every row that reaches a defect, so a PENDING row
+                # whose callee is QUARANTINED (or existing-defective) does not reach it: the call
+                # avoids the defective form (constitution 1.8.1), and the callee counts as final
+                if cr is not None and cr['status'] not in FINAL_OK | {'QUARANTINED'}:
                     return False
             return True
 

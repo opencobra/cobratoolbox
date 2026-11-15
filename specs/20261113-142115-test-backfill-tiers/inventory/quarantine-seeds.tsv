@@ -120,3 +120,5 @@ optimalScores	src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m
 elementalMatrixToFormulae	NONE
 # changeNodesArea: only the documented three-input call fails; no src file calls it.
 changeNodesArea	NONE
+# initPythonEnvironment: only the default/'CPython3' environment reaches the version check; both callers (writeModelinJSON, autoFragment) pass a conda environment name.
+initPythonEnvironment	NONE

@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-595 known defects in 331 functions (192 wrong-result, 164 error, 52 unusable-option, 106 cosmetic, 81 limitation).
+602 known defects in 335 functions (192 wrong-result, 164 error, 53 unusable-option, 109 cosmetic, 84 limitation).
 
 ## Summary
 
@@ -235,6 +235,7 @@
 | `src/base/io/convertCobraLP2mps.m` | wrong-result | only the first column of a 'G' row is negated | `test/verifiedTests/base/testIO/testConvertCobraLP2mps.m` |
 | `src/base/io/definitions/descFileRead.m` | wrong-result | An empty line ends the reading | `test/verifiedTests/base/testIO/testDescFileRead.m` |
 | `src/base/io/definitions/descFileRead.m` | limitation | Short entries are padded with null characters, not blanks | `test/verifiedTests/base/testIO/testDescFileRead.m` |
+| `src/base/io/python/initPythonEnvironment.m` | unusable-option | The default environment CPython3 rejects every Python newer than 3.8 | `test/verifiedTests/base/testPython/testInitPythonEnvironment.m` |
 | `src/base/io/python/pyPath/py_addpath.m` | wrong-result | A relative folder is added as given, not converted to an absolute path | `test/verifiedTests/base/testPyPath/testPy_addpath.m` |
 | `src/base/io/python/pyPath/py_addpath.m` | wrong-result | The empty input adds the current folder to the Python path | `test/verifiedTests/base/testPyPath/testPy_addpath.m` |
 | `src/base/io/python/pyPath/py_rmpath.m` | error | MATLAB_too = true always raises an error | `test/verifiedTests/base/testPyPath/testPy_rmpath.m` |
@@ -291,6 +292,8 @@
 | `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | The global solver parameters are ignored when no paramStructure is given | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/param/getCobraSolverParams.m` | cosmetic | The structure output keeps the fields named in paramNames | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | paramStructure 'default' returns the global values instead of the defaults | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
+| `src/base/solvers/param/parseSolverParameters.m` | cosmetic | The invalid-parameters error message shows literal \n instead of line breaks | `test/verifiedTests/base/testSolvers/testParseSolverParameters.m` |
+| `src/base/solvers/param/parseSolverParameters.m` | cosmetic | param does not hold the additional (solver-specific) parameters | `test/verifiedTests/base/testSolvers/testParseSolverParameters.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | error | A row with more than two variables cannot be lifted with the default options | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | cosmetic | The model identifier gets two suffixes | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
 | `src/base/solvers/rescale/liftRows.m` | error | A well-scaled matrix stops with an error instead of being returned | `test/verifiedTests/base/testLifting/testLiftRows.m` |
@@ -586,6 +589,8 @@
 | `src/visualization/metabolicCartography/findRxnsInMap.m` | error | A single reaction name found once leaves the output rxnIDref unassigned | `test/verifiedTests/visualization/testMetabolicCartography/testFindRxnsInMap.m` |
 | `src/visualization/metabolicCartography/mapFormula.m` | limitation | Fails instead of returning empty lists when no listed reaction is in the map | `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m` |
 | `src/visualization/metabolicCartography/mapFormula.m` | cosmetic | The help text describes absentRxns as reactions of the map not in the model | `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m` |
+| `src/visualization/metabolicCartography/removeCDReactions.m` | cosmetic | A name listed twice is reported as not present in the map | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m` |
+| `src/visualization/metabolicCartography/removeCDReactions.m` | limitation | A species that only modifies removed reactions is kept | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | wrong-result | Aliases of a removed reaction are removed even when kept reactions use them | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | limitation | Reactions keep a removed alias of a species that has other aliases | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
 | `src/visualization/metabolicCartography/transformFullMap2XML.m` | error | A map with exactly one complex or one included species cannot be written | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
@@ -601,6 +606,8 @@
 | `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | The check for a removed only reactant or product compares with the whole alias list | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/metabolicCartography/transformMap2XML.m` | cosmetic | The error for a single secondary reactant or product link with several map aliases says 'should not be cell' | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/metabolicCartography/unifyMetabolicPPImapCD.m` | wrong-result | Secondary links are recoloured by position, not by the index of the non-empty entries | `test/verifiedTests/visualization/testMetabolicCartography/testUnifyMetabolicPPImapCD.m` |
+| `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | limitation | A colour scheme without a row for the lowest presence fraction stops with an index error | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
+| `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | limitation | Reaction colours written in lower case are not counted as present | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
 | `src/visualization/upsetPlot/upsetPlot.m` | error | Sets without any element stop with an index error | `test/verifiedTests/visualization/testUpsetPlot/testUpsetPlot.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | error | A reaction with several subsystems stops with an error | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | wrong-result | Only the last reaction of a gene gives its subsystem | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
@@ -2929,6 +2936,17 @@
 - **Source lines**: 40
 - **Documented in**: `test/verifiedTests/base/testIO/testDescFileRead.m`
 
+### `src/base/io/python/initPythonEnvironment.m`
+
+#### The default environment CPython3 rejects every Python newer than 3.8
+
+- **Severity**: unusable-option
+- **Trigger**: initPythonEnvironment() with python3 3.12.3 on the system path (MATLAB R2025a)
+- **Observed**: error "MATLAB >=R2020b is only stated to be compatible with Python 3.6,3.7,3.8" at line 123; in the same session pyenv('Version', <which python3>, 'ExecutionMode', 'OutOfProcess') loads that Python 3.12 and py.sys.version returns "3.12.3 ...". The test of line 120 is contains(response, '3.6') || '3.7' || '3.8' on the output of python3 --version
+- **Expected**: the Python versions supported by the running MATLAB are accepted (R2025a supports 3.9 to 3.12, R2023b and later no longer support 3.8), so the default option can load Python
+- **Source lines**: 119-124
+- **Documented in**: `test/verifiedTests/base/testPython/testInitPythonEnvironment.m`
+
 ### `src/base/io/python/pyPath/py_addpath.m`
 
 #### A relative folder is added as given, not converted to an absolute path
@@ -3492,6 +3510,26 @@
 - **Expected**: 1e-06 (OPTIONAL INPUTS: "paramStructure can be set to 'default' to use the default values set within this script"; the comment of line 56 reads "overide defaults unless hack is asking for defaults")
 - **Source lines**: 60-62
 - **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
+
+### `src/base/solvers/param/parseSolverParameters.m`
+
+#### The invalid-parameters error message shows literal \n instead of line breaks
+
+- **Severity**: cosmetic
+- **Trigger**: parseSolverParameters('LP', 'feasTol', 1e-3, 'x')
+- **Observed**: the message reads "Invalid Parameters supplied.\nParameters have to be supplied ..." with the two characters \n (MATLAB R2025a); error is called with a single argument, so escape sequences are not converted
+- **Expected**: three lines, as the '\n' in the message text intends
+- **Source lines**: 54-56
+- **Documented in**: `test/verifiedTests/base/testSolvers/testParseSolverParameters.m`
+
+#### param does not hold the additional (solver-specific) parameters
+
+- **Severity**: cosmetic
+- **Trigger**: [param, solverOnlyParams] = parseSolverParameters('LP', struct('Method', 2))
+- **Observed**: param has only the COBRA fields of the LP type; Method is only in solverOnlyParams
+- **Expected**: per OUTPUTS, param is "The COBRA Toolbox specific parameters for this problem type given the provided parameters, plus any additional parameters"; every caller in src/ (solveCobraLP, parseCobraVarargin, ...) takes the solver parameters from solverOnlyParams, so the header is the likely error
+- **Source lines**: 91-102
+- **Documented in**: `test/verifiedTests/base/testSolvers/testParseSolverParameters.m`
 
 ### `src/base/solvers/rescale/liftCouplingConstraints.m`
 
@@ -6448,6 +6486,26 @@
 - **Source lines**: 30
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m`
 
+### `src/visualization/metabolicCartography/removeCDReactions.m`
+
+#### A name listed twice is reported as not present in the map
+
+- **Severity**: cosmetic
+- **Trigger**: removeCDReactions(fileName, {'R3', 'R3'}) on a map that contains R3
+- **Observed**: MATLAB R2025a prints 'R3 not present in the map' (ismember returns only the first position of R3 in the list, so the second position is counted as missing); R3 is removed.
+- **Expected**: no message, as R3 is in the map
+- **Source lines**: 46, 51
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m`
+
+#### A species that only modifies removed reactions is kept
+
+- **Severity**: limitation
+- **Trigger**: removeCDReactions(fileName, {'R1'}) where species E (alias sa5) is only the catalyst (modifier) of R1
+- **Observed**: MATLAB R2025a: R1, species A and alias sa1 are removed; species E and alias sa5 stay in the written map although no remaining reaction uses them (map.sID and map.sAlias hold reactants and products only, not modifiers).
+- **Expected**: E and sa5 removed with R1, as for reactants and products
+- **Source lines**: 62, 65
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m`
+
 ### `src/visualization/metabolicCartography/removeMapMol.m`
 
 #### Aliases of a removed reaction are removed even when kept reactions use them
@@ -6592,6 +6650,26 @@
 - **Expected**: every non-empty secondary link colour 'FFDCDCDC' with width 1 (OUTPUT)
 - **Source lines**: 51-60, 67-76
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testUnifyMetabolicPPImapCD.m`
+
+### `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m`
+
+#### A colour scheme without a row for the lowest presence fraction stops with an index error
+
+- **Severity**: limitation
+- **Trigger**: visualizeNormalizedRxnPresence(mapDir, {1, 'aaaaaa', 10; 0.5, 'bbbbbb', 5}) with a reaction whose presence fraction is below 0.5 and differs from the listed fractions (for example a reaction present in no map)
+- **Observed**: MATLAB R2025a: error 'Index in position 1 exceeds array bounds. Index must not exceed 2.' at line 150, where the range test reads the fraction of the next row.
+- **Expected**: an error naming the incomplete scheme, or the colour of its last row
+- **Source lines**: 150
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m`
+
+#### Reaction colours written in lower case are not counted as present
+
+- **Severity**: limitation
+- **Trigger**: a map in the folder whose present reactions have the line colour 'ffff4500' (lower case, as CellDesigner writes colours when it saves a map) instead of 'FFFF4500'
+- **Observed**: MATLAB R2025a: no reaction of that map is counted as present (its column of rxnPrsTable is all false), as strcmp with 'FFFF4500' is case-sensitive.
+- **Expected**: the reactions of that colour counted as present, whatever the case
+- **Source lines**: 101, 117
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m`
 
 ### `src/visualization/upsetPlot/upsetPlot.m`
 
