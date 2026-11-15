@@ -119,9 +119,10 @@ end
 newTemp = setdiff(after.temp, before.temp);
 [~, ignoredName, ignoredExt] = fileparts(ignoredFile);
 newTemp = setdiff(newTemp, {[ignoredName ignoredExt]});
-% the test runner itself creates one transient folder named by a GUID per run
+% the test runner creates one transient folder named by a GUID per run, and MATLAB's graphics
+% renderer creates its own folders once per session at the first figure that draws axes
 newTemp = newTemp(cellfun(@isempty, regexp(newTemp, ...
-    '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', 'once')));
+    '^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}|\.org\.chromium\.Chromium\..*)$', 'once')));
 if ~isempty(newTemp)
     changes{end + 1} = ['tempdir ' strjoin(newTemp, ',')];
 end

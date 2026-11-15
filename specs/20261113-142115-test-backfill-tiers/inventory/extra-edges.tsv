@@ -1,0 +1,4 @@
+src/reconstruction/refinement/GPRLogic/AndNode.m	src/reconstruction/refinement/GPRLogic/LiteralNode.m
+src/reconstruction/refinement/GPRLogic/AndNode.m	src/reconstruction/refinement/GPRLogic/Node.m
+src/reconstruction/refinement/GPRLogic/OrNode.m	src/reconstruction/refinement/GPRLogic/LiteralNode.m
+src/reconstruction/refinement/GPRLogic/OrNode.m	src/reconstruction/refinement/GPRLogic/Node.m

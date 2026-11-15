@@ -8,6 +8,14 @@
 
 ## Clarifications
 
+### Session 2026-11-15
+
+- Q: Is getCobraSolverParams' two-input form (returns hard-coded defaults, ignores global
+  parameters) a defect? → A: yes, document it and treat it as a defect (wrong-result).
+- Q: Which callers does a quarantine block? → A: those that reach the defective behaviour, through
+  any chain of calls (constitution 1.8.1).
+- Q: That blocks 308 of 932 pending functions (most of Tier 3 and 4) → A: block the 308.
+
 ### Session 2026-11-13
 
 - Q: Which defect severities quarantine a function and its callers? → A: `wrong-result`, `error`
@@ -206,8 +214,11 @@ of blocked callers, and the coverage gain.
   (maintainer decision 2026-11-13).
 - **FR-008**: A QUARANTINED function's test file MUST follow III-Defects quarantine: header with the
   defect entry, every line exempt, body `prepareTest()` only.
-- **FR-009**: Every function that calls a QUARANTINED function, directly or indirectly, MUST be
-  BLOCKED by it and get no new test in this feature; the ledger names the blocking function. If such
+- **FR-009**: Every untested function that reaches a QUARANTINED function's defective behaviour,
+  directly or indirectly (constitution 1.8.1: through any chain of calls, including chains through
+  functions that already have a test; when the defect is confined to a recognisable call form, only
+  calls using that form reach it), MUST be BLOCKED by it and get no new test in this feature; the
+  ledger names the blocking function. If such
   a call is found only after the caller was TESTED (a dependency found at run time), the caller's
   new test is removed and the caller, and every TESTED caller of it, becomes BLOCKED.
 - **FR-010**: No source function MAY be changed (III-Characterization).

@@ -53,6 +53,12 @@ Already-tested functions (outside the 1085) in which a quarantining defect was f
 function, existing test, defect title, rows it blocks. Their tests keep their assertions and record
 the defect by the input-level rule.
 
+## Quarantine seeds (`inventory/quarantine-seeds.tsv`)
+
+`<defective function><TAB><src file>`: files whose code reaches a defect confined to a call form
+(constitution 1.8.1). A quarantined function without lines here is its own seed (every call
+reaches the defect).
+
 ## Quarantine list (`inventory/quarantine.md`, generated)
 
 One section per QUARANTINED function: defect, evidence, confirming reader, and the BLOCKED files it

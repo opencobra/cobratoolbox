@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Build the inventory and bottom-up order of untested src/ files.
 
-usage: build_inventory.py <repo root> <feature dir>
+usage: build_inventory.py <repo root> <feature dir> [--edges-only]
 
-Reads <feature dir>/inventory/callgraph-raw.tsv (from dumpCallGraph.m) and writes
-<feature dir>/inventory/ledger.tsv, one row per untested file in campaign order, with the
+Reads <feature dir>/inventory/callgraph-raw.tsv (from dumpCallGraph.m), writes every resolved
+src-to-src edge (static calls and name references) to <feature dir>/inventory/edges.tsv and,
+unless --edges-only is given, writes <feature dir>/inventory/ledger.tsv, one row per untested file in campaign order, with the
 initial status (PENDING or EXCLUDED), tier, reason, the untested callees and every caller.
 
 Feature 20261113-142115-test-backfill-tiers (measurement tool; not part of the toolbox).
@@ -15,6 +16,7 @@ import re
 import sys
 
 ROOT, FEATURE = sys.argv[1], sys.argv[2]
+EDGES_ONLY = '--edges-only' in sys.argv[3:]
 SKIP_DIRS = {'old', 'deprecated', 'external'}
 
 # names whose (transitive) use puts a function in Tier 3: they solve an optimisation problem
@@ -103,6 +105,14 @@ for f in files:
         for g in by_name.get(name, ()):
             if g != f:
                 edges[f].add(g)
+with open(os.path.join(FEATURE, 'inventory', 'edges.tsv'), 'w') as out:
+    out.write('caller\tcallee\n')
+    for f in sorted(edges):
+        for g in sorted(edges[f]):
+            out.write('%s\t%s\n' % (f, g))
+if EDGES_ONLY:
+    sys.exit(0)
+
 callers = collections.defaultdict(set)
 for f, gs in edges.items():
     for g in gs:

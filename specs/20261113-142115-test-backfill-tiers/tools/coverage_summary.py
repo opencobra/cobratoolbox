@@ -33,8 +33,11 @@ def records(paths):
 
 
 def counts(rec):
-    lines, hits = as_list(rec.get('lines')), as_list(rec.get('hits'))
-    return len(lines), sum(1 for h in hits if h > 0)
+    # class files list each line once per method context: count each line number once
+    best = {}
+    for n, h in zip(as_list(rec.get('lines')), as_list(rec.get('hits'))):
+        best[n] = max(best.get(n, 0), h)
+    return len(best), sum(1 for h in best.values() if h > 0)
 
 
 before_file = os.path.join(INV, 'coverage-before.tsv')

@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-255 known defects in 137 functions (93 wrong-result, 85 error, 22 unusable-option, 28 cosmetic, 27 limitation).
+279 known defects in 150 functions (99 wrong-result, 89 error, 22 unusable-option, 35 cosmetic, 34 limitation).
 
 ## Summary
 
@@ -15,9 +15,14 @@
 | `src/analysis/FBA/optimizeCbModel.m` | wrong-result | The residual and the slack of QRLP are read from the wrong positions | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
 | `src/analysis/FBA/optimizeCbModel.m` | error | minNorm oneInternal fails for a model without linear objective | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
 | `src/analysis/FBA/optimizeCbModel.m` | wrong-result | param.osenseStr and the sense of the model are ignored for a parameter structure | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
+| `src/analysis/FVA/fastFVA/cleanFilesFastFVA.m` | error | cleanFilesFastFVA(false) fails when there are log files to remove | `test/verifiedTests/analysis/testFVA/testCleanFilesFastFVA.m` |
+| `src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m` | cosmetic | printLevel 2 prints a truncated compilation command and a warning | `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m` |
+| `src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m` | cosmetic | the CPLEX root stays on the MATLAB path when the function stops with an error | `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m` |
+| `src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m` | cosmetic | the existence of the CPLEX library file is never checked | `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m` |
 | `src/analysis/MOMA/MOMA.m` | error | Models with different reaction sets stop with an error | `test/verifiedTests/analysis/testMOMA/testMOMA.m` |
 | `src/analysis/QFCA/QFCA.m` | error | A network that reduces to one metabolite stops with an error | `test/verifiedTests/analysis/testQFCA/testQFCA.m` |
 | `src/analysis/dynamicFBA/dynamicFBA.m` | cosmetic | The number of tracked exchange reactions is printed on every call | `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m` |
+| `src/analysis/ecosystem/matchEcosystemClusters.m` | wrong-result | clusters without points are matched to a reference cluster instead of NaN, and an empty reference cluster absorbs unmatched clusters | `test/verifiedTests/analysis/testEcosystem/testMatchEcosystemClusters.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | limitation | A compartment letter without brackets matches every identifier with that letter | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | error | A compartment without metabolites stops with an error | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findRxnFromCompartment.m` | wrong-result | A compartment with a single metabolite returns the first reaction of the model | `test/verifiedTests/analysis/testExploration/testFindRxnFromCompartment.m` |
@@ -28,6 +33,8 @@
 | `src/analysis/exploration/findSubSystemsFromGenes.m` | error | A model without rxnGeneMat and rules cannot be used | `test/verifiedTests/analysis/testExploration/testFindSubSystemsFromGenes.m` |
 | `src/analysis/exploration/findSubSystemsFromGenes.m` | wrong-result | Sub-systems stored as character arrays come back as single letters | `test/verifiedTests/analysis/testExploration/testFindSubSystemsFromGenes.m` |
 | `src/analysis/exploration/isReactionInSubSystem.m` | wrong-result | Reactions listed by name out of model order get each other's answers | `test/verifiedTests/analysis/testIsReactionInSubSystem/testIsReactionInSubSystem.m` |
+| `src/analysis/exploration/plotEssentialRxns.m` | error | Errors when no reaction is selected | `test/verifiedTests/analysis/testExploration/testPlotEssentialRxns.m` |
+| `src/analysis/exploration/plotEssentialRxns.m` | cosmetic | The output is a cell array of reaction identifiers, not a table of fluxes | `test/verifiedTests/analysis/testExploration/testPlotEssentialRxns.m` |
 | `src/analysis/exploration/printFluxVector.m` | error | Formulas or GPRs of a partly zero flux vector stop with an error | `test/verifiedTests/analysis/testPrint/testPrintFluxVector.m` |
 | `src/analysis/exploration/printFluxVector.m` | wrong-result | excFlag has no effect unless nonZeroFlag is set | `test/verifiedTests/analysis/testPrint/testPrintFluxVector.m` |
 | `src/analysis/exploration/printLabeledData.m` | wrong-result | Sorting on a data column other than the first is silently ignored | `test/verifiedTests/base/testTools/testPrintLabeledData.m` |
@@ -37,8 +44,14 @@
 | `src/analysis/exploration/surfNet.m` | error | Searching with a flux vector stops with an error | `test/verifiedTests/analysis/testPrint/testSurfNet.m` |
 | `src/analysis/exploration/surfNet.m` | cosmetic | The message for a partial field name shows a literal backslash n | `test/verifiedTests/analysis/testPrint/testSurfNet.m` |
 | `src/analysis/exploration/surfNetSubfunctions/generateGrRules.m` | wrong-result | Nested hyperlinks when genes are named from the rules and a gene repeats | `test/verifiedTests/analysis/testExploration/testGenerateGrRules.m` |
+| `src/analysis/fastForest/extractSubsetFeaturesfromFile.m` | wrong-result | The last sample of the file is not written to the subset file | `test/verifiedTests/analysis/testFastForest/testExtractSubsetFeaturesfromFile.m` |
+| `src/analysis/fastForest/extractSubsetFeaturesfromFile.m` | limitation | The subset file is left open | `test/verifiedTests/analysis/testFastForest/testExtractSubsetFeaturesfromFile.m` |
 | `src/analysis/fluxEnrichmentAnalysis/FEA.m` | error | An empty reaction set raises an error instead of returning the header-only result | `test/verifiedTests/analysis/testFEA/testFEA.m` |
 | `src/analysis/geometricFBA/geometricFBA.m` | error | A model with a unique optimum stops with an error | `test/verifiedTests/analysis/testGeometricFBA/testGeometricFBA.m` |
+| `src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m` |
+| `src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m` | wrong-result | The local threshold is the sum divided by the row length minus one, not the mean | `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m` |
+| `src/analysis/igemRNA/LT1/findGenesBelowThresholdLocal1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testLT1/testFindGenesBelowThresholdLocal1.m` |
+| `src/analysis/igemRNA/LT1/findGenesBelowThresholdLocal1.m` | wrong-result | The local threshold is the sum divided by the row length minus one, not the mean | `test/verifiedTests/analysis/testLT1/testFindGenesBelowThresholdLocal1.m` |
 | `src/analysis/igemRNA/filterNonFluxReactions/filterNonFluxReactions.m` | wrong-result | The result file is written next to the result folder, not into it | `test/verifiedTests/analysis/testFilterNonFluxReactions/testFilterNonFluxReactions.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/addMicrobeCommunityBiomass.m` | wrong-result | Abundance weights are rounded to six significant digits | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddMicrobeCommunityBiomass.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m` | wrong-result | Abundances read from a tsv file are added and normalized as text | `test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m` |
@@ -78,6 +91,7 @@
 | `src/analysis/topology/extremeRays/lrs/extremePools.m` | cosmetic | The third output is the transpose of what the help text states | `test/verifiedTests/analysis/testTopology/testExtremePools.m` |
 | `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m` | error | glpk, one of the solvers the routine falls back on, cannot run the search | `test/verifiedTests/analysis/testTopology/testGreedyExtremeRayBasis.m` |
 | `src/analysis/topology/findCyclicRxns.m` | wrong-result | The first output is not a per-reaction boolean | `test/verifiedTests/analysis/testTopology/testFindCyclicRxns.m` |
+| `src/analysis/topology/getCorrespondingCols.m` | cosmetic | The error for a colBool of the wrong length names rowBool | `test/verifiedTests/analysis/testTopology/testGetCorrespondingCols.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | error | A reaction with an elemental mismatch stops the build instead of being skipped | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | wrong-result | Decompartmentalising the model keeps the opening bracket | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | error | The bond graph is not decompartmentalised | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
@@ -109,6 +123,8 @@
 | `src/base/io/utilities/createEmptyFields.m` | limitation | A cell field with a computed default fills only its first column | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
 | `src/base/io/utilities/createEmptyFields.m` | error | A field whose default refers to another field the model lacks cannot be created | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
 | `src/base/io/utilities/createEmptyFields.m` | error | The default of comps cannot be evaluated | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
+| `src/base/io/utilities/getDefinedFieldProperties.m` | limitation | A requested field without definition raises an error instead of being left out | `test/verifiedTests/base/testIO/testUtilities/testGetDefinedFieldProperties.m` |
+| `src/base/io/utilities/getDefinedFieldProperties.m` | limitation | SpecificFields is ignored together with Descriptions or DataBaseFields | `test/verifiedTests/base/testIO/testUtilities/testGetDefinedFieldProperties.m` |
 | `src/base/io/utilities/initFBAFields.m` | limitation | The documented osense and csense fields are not created | `test/verifiedTests/base/testIO/testUtilities/testInitFBAFields.m` |
 | `src/base/io/utilities/readSBML.m` | error | The documented default of defaultBound does not exist | `test/verifiedTests/base/testIO/testReadSBML.m` |
 | `src/base/io/utilities/writeSBML.m` | error | A model without reactions cannot be written | `test/verifiedTests/base/testIO/testWriteSBML.m` |
@@ -131,6 +147,9 @@
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | The problem type is matched as a substring | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/isCompatible.m` | wrong-result | The distributed compatibility matrix is not understood by the parser | `test/verifiedTests/base/testSolvers/testIsCompatible.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
+| `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | The global solver parameters are ignored when no paramStructure is given | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
+| `src/base/solvers/param/getCobraSolverParams.m` | cosmetic | The structure output keeps the fields named in paramNames | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
+| `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | paramStructure 'default' returns the global values instead of the defaults | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | error | A row with more than two variables cannot be lifted with the default options | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | cosmetic | The model identifier gets two suffixes | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
 | `src/base/solvers/solveCobraLP.m` | unusable-option | The option lifting stops on an undefined variable | `test/verifiedTests/base/testSolvers/testSolveCobraLP.m` |
@@ -147,6 +166,7 @@
 | `src/base/solvers/verifyCobraProblem.m` | wrong-result | invalidConstraints names the wrong rows when senses are mixed | `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m` |
 | `src/base/utilities/getGlobalValue.m` | limitation | The value of a global named globalName cannot be read | `test/verifiedTests/base/testUtilities/testGetGlobalValue.m` |
 | `src/base/utilities/removeIndicesInDimenion.m` | cosmetic | The help text says the given indices are removed, but they are the ones kept | `test/verifiedTests/base/testTools/testRemoveIndicesInDimenion.m` |
+| `src/base/utilities/restoreEnvironment.m` | cosmetic | The printed path is cut at a folder name with a % sign | `test/verifiedTests/base/testUtilities/testRestoreEnvironment.m` |
 | `src/base/utilities/setGlobal.m` | limitation | A global named globalName cannot be set | `test/verifiedTests/base/testUtilities/testSetGlobal.m` |
 | `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
 | `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` | wrong-result | A given list of deleted metabolites is discarded when the old model is empty and no deleted reactions are given | `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` |
@@ -230,6 +250,10 @@
 | `src/reconstruction/rBioNet/model2data.m` | error | The two exits with a message box leave the output unassigned | `test/verifiedTests/reconstruction/testRBioNet/testModel2data.m` |
 | `src/reconstruction/rBioNet/rBioNetSaveLoad.m` | error | A wrong path of the compartment database is not detected | `test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m` |
 | `src/reconstruction/rBioNet/rBioNetSaveLoad.m` | cosmetic | Saving prints the whole database | `test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m` |
+| `src/reconstruction/refinement/GPRLogic/AndNode.m` | limitation | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m` |
+| `src/reconstruction/refinement/GPRLogic/AndNode.m` | limitation | convertToDNF of an AndNode without children stops with an error | `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m` |
+| `src/reconstruction/refinement/GPRLogic/OrNode.m` | limitation | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
+| `src/reconstruction/refinement/GPRLogic/OrNode.m` | limitation | convertToCNF of an OrNode without children returns an empty AndNode, which evaluates to true, while the empty OrNode evaluates to false | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | error | A formula whose first metabolite has no coefficient stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A new metabolite used twice in one call is added twice or loses a coefficient | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
@@ -323,6 +347,46 @@
 - **Source lines**: 259-263
 - **Documented in**: `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m`
 
+### `src/analysis/FVA/fastFVA/cleanFilesFastFVA.m`
+
+#### cleanFilesFastFVA(false) fails when there are log files to remove
+
+- **Severity**: error
+- **Trigger**: cleanFilesFastFVA(false) with at least one *.log file in [CBTDIR]/src/analysis/FVA/fastFVA/logFiles
+- **Observed**: MATLAB 2026-11-13: after printing " Number of files in logFiles/: 1" the call stops with "Unrecognized function or variable 'm'." (MATLAB:UndefinedFunction) at line 39; the log file is not removed. m is assigned only by the input() prompt of line 36, which runs only when userInteraction is true, and line 39 evaluates strcmpi(m, 'y') before ~userInteraction.
+- **Expected**: all *.log files removed without a prompt and " >> All log files in logFiles/ removed." printed (the documented meaning of userInteraction = false)
+- **Source lines**: 35-43
+- **Documented in**: `test/verifiedTests/analysis/testFVA/testCleanFilesFastFVA.m`
+
+### `src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m`
+
+#### printLevel 2 prints a truncated compilation command and a warning
+
+- **Severity**: cosmetic
+- **Trigger**: generateMexFastFVA(root, 2) with a CPLEX installation (include and library folders present)
+- **Observed**: MATLAB 2026-11-13 (scratch run, mex stubbed): "Warning: Escaped character '\$' is not valid." and the printed command stops at CFLAGS=" because the command text is passed to fprintf as its format
+- **Expected**: the whole compilation command printed, without a warning
+- **Source lines**: 141-143
+- **Documented in**: `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m`
+
+#### the CPLEX root stays on the MATLAB path when the function stops with an error
+
+- **Severity**: cosmetic
+- **Trigger**: any call that ends with the errors of lines 89 or 102 (as in this test)
+- **Observed**: MATLAB 2026-11-13: rootPathCPLEX, added to the path at line 66, is still on the path after the error; the path saved at line 63 is restored only at lines 163 and 173 (this test restores the path itself)
+- **Expected**: the MATLAB path unchanged after the error
+- **Source lines**: 63-66, 89, 102
+- **Documented in**: `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m`
+
+#### the existence of the CPLEX library file is never checked
+
+- **Severity**: cosmetic
+- **Trigger**: generateMexFastFVA(root, 0) with root/include/ilcplex and root/lib/x86-64_linux/static_pic present but no libcplex.a in the latter
+- **Observed**: MATLAB 2026-11-13 (with mex replaced by a recording stub in a scratch run): the function goes on to "mex -setup c" and to the compilation, passing the missing .../static_pic/libcplex.a to mex; line 111 tests exist(lib, 'dir') again instead of the library file, so the error of line 112 cannot occur
+- **Expected**: the error "The required CPLEX library file ... does not exist." of line 112
+- **Source lines**: 110-112
+- **Documented in**: `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m`
+
 ### `src/analysis/MOMA/MOMA.m`
 
 #### Models with different reaction sets stop with an error
@@ -355,6 +419,17 @@
 - **Expected**: no output
 - **Source lines**: 66
 - **Documented in**: `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m`
+
+### `src/analysis/ecosystem/matchEcosystemClusters.m`
+
+#### clusters without points are matched to a reference cluster instead of NaN, and an empty reference cluster absorbs unmatched clusters
+
+- **Severity**: wrong-result
+- **Trigger**: a cluster without points, whose column of representative states is all NaN (as getEcosystemClusterReactionValues returns it), in repValues or refValues; e.g. refValues = [1 2; 0 NaN; -1 -1], refRxnIds = {'R1'; 'R2'; 'R3'}, repValues = [0 3 7 NaN; 1 2 9 NaN; 5 5 5 NaN], rxnIds = {'R2'; 'R1'; 'R4'}, clusters = [1; 2; 3; 3; 1]; and, matching a clustering with itself, eco = struct('qualVectors', [1 0; 1 0; 2 3], 'clusters', [1; 1; 3], 'k', 3, 'rxn2cluster', {{'R1'; 'R2'}}), [~, v, ids] = getEcosystemClusterReactionValues(eco, 'thr', 0.8, 'changing', false), [newClusters, ~, clusterMap] = matchEcosystemClusters(v, ids, v, ids, eco.clusters)
+- **Observed**: MATLAB 2026-11-13: first call: clusterMap = [1; 2; 3; 1] (cluster 4 has no points); second call: v = [1 NaN 2; 0 NaN 3], clusterMap = [1; 1; 2] and newClusters = [1; 1; 2]: the empty cluster 2 is mapped to 1 and cluster 3 is relabelled 2, the empty reference cluster, because a column without defined states agrees vacuously with every column (line 63)
+- **Expected**: clusterMap NaN for clusters without points (documented output: first call clusterMap = [1; 2; 3; NaN]); by the evident intent, a reference cluster without points is no match, so matching a clustering with itself returns its own labels: newClusters = [1; 1; 3], clusterMap = [1; NaN; 3]
+- **Source lines**: 58-67
+- **Documented in**: `test/verifiedTests/analysis/testEcosystem/testMatchEcosystemClusters.m`
 
 ### `src/analysis/exploration/findMetFromCompartment.m`
 
@@ -458,6 +533,26 @@
 - **Source lines**: 40, 63
 - **Documented in**: `test/verifiedTests/analysis/testIsReactionInSubSystem/testIsReactionInSubSystem.m`
 
+### `src/analysis/exploration/plotEssentialRxns.m`
+
+#### Errors when no reaction is selected
+
+- **Severity**: error
+- **Trigger**: T = cell2table({'R_1'; 'R2'}, 'VariableNames', {'rxn'}); T.m1 = {50; 'NotIncluded'}; T.m2 = {NaN; 30}; plotEssentialRxns(T, [0 100], 5)
+- **Observed**: MATLAB:nonLogicalConditional, Operands to the logical AND (&&) and OR (||) operators must be convertible to logical scalar values. Use the ANY or ALL functions to reduce operands to logical scalar values. (max of an empty matrix is empty)
+- **Expected**: no heat map, the message 'Attention: All non-essential reactions have flux above the threshold' and an empty list of reactions
+- **Source lines**: 65-85
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testPlotEssentialRxns.m`
+
+#### The output is a cell array of reaction identifiers, not a table of fluxes
+
+- **Severity**: cosmetic
+- **Trigger**: plotEssentialRxns(T, [0 100], 1) with the table above
+- **Observed**: {'R_1'; 'R2'} (class cell), from table2cell of the rxn column
+- **Expected**: per the OUTPUT section, a table with the fluxes of the reactions of interest (rows) across models (columns); the code and the tutorial use the identifiers, so the header is the likely error
+- **Source lines**: 52
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testPlotEssentialRxns.m`
+
 ### `src/analysis/exploration/printFluxVector.m`
 
 #### Formulas or GPRs of a partly zero flux vector stop with an error
@@ -549,6 +644,26 @@
 - **Source lines**: 64, 73-74
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testGenerateGrRules.m`
 
+### `src/analysis/fastForest/extractSubsetFeaturesfromFile.m`
+
+#### The last sample of the file is not written to the subset file
+
+- **Severity**: wrong-result
+- **Trigger**: a file feat.txt with the lines 'sample<TAB>f1<TAB>f2<TAB>f3', 's1<TAB>1<TAB>2<TAB>3', 's2<TAB>4<TAB>5<TAB>6', 's3<TAB>7<TAB>8<TAB>9'; extractSubsetFeaturesfromFile(file, {'f1', 'f3'})
+- **Observed**: feat.txt_subset.txt holds 'sample,f1,f3', 's1,1,3', 's2,4,6' (the write loop runs to length(keep)-1)
+- **Expected**: also 's3,7,9', the requested subset of every sample
+- **Source lines**: 61
+- **Documented in**: `test/verifiedTests/analysis/testFastForest/testExtractSubsetFeaturesfromFile.m`
+
+#### The subset file is left open
+
+- **Severity**: limitation
+- **Trigger**: any call
+- **Observed**: after the call openedFiles() still lists the identifier of <fileName>_subset.txt; the function has no fclose for it
+- **Expected**: the output file closed before the function returns
+- **Source lines**: 60-63
+- **Documented in**: `test/verifiedTests/analysis/testFastForest/testExtractSubsetFeaturesfromFile.m`
+
 ### `src/analysis/fluxEnrichmentAnalysis/FEA.m`
 
 #### An empty reaction set raises an error instead of returning the header-only result
@@ -570,6 +685,46 @@
 - **Expected**: the unique flux vector
 - **Source lines**: 215
 - **Documented in**: `test/verifiedTests/analysis/testGeometricFBA/testGeometricFBA.m`
+
+### `src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m`
+
+#### Errors when no gene qualifies
+
+- **Severity**: error
+- **Trigger**: findGenesAboveThresholdLocal1(100, workbook, 1) with the workbook above
+- **Observed**: MATLAB:unassignedOutputs, Output argument "genes" (and possibly others) not assigned a value in the execution with "findGenesAboveThresholdLocal1" function.
+- **Expected**: an empty list of genes
+- **Source lines**: 1, 51-69
+- **Documented in**: `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m`
+
+#### The local threshold is the sum divided by the row length minus one, not the mean
+
+- **Severity**: wrong-result
+- **Trigger**: a workbook with sheets S1_P (g1 = 10, g2 = 2) and S2_P (g1 = 20, g2 = 2); findGenesAboveThresholdLocal1(5, workbook, 1)
+- **Observed**: {"g1", 10, 'High', 'Local'}: avg = expressionSum/length(row)-1 is evaluated as (10 + 20) / 3 - 1 = 9 (the row also holds the gene ID), so 10 passes the local test
+- **Expected**: no gene: the local threshold of g1 is its mean over the two sheets, 15, and 10 < 15
+- **Source lines**: 60-61
+- **Documented in**: `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m`
+
+### `src/analysis/igemRNA/LT1/findGenesBelowThresholdLocal1.m`
+
+#### Errors when no gene qualifies
+
+- **Severity**: error
+- **Trigger**: findGenesBelowThresholdLocal1(-100, workbook, 1) with the workbook above
+- **Observed**: MATLAB:unassignedOutputs, Output argument "genes" (and possibly others) not assigned a value in the execution with "findGenesBelowThresholdLocal1" function.
+- **Expected**: an empty list of genes
+- **Source lines**: 1, 51-75
+- **Documented in**: `test/verifiedTests/analysis/testLT1/testFindGenesBelowThresholdLocal1.m`
+
+#### The local threshold is the sum divided by the row length minus one, not the mean
+
+- **Severity**: wrong-result
+- **Trigger**: a workbook with sheets S1_P (g1 = 10, g2 = 2) and S2_P (g1 = 20, g2 = 2); findGenesBelowThresholdLocal1(5, workbook, 1)
+- **Observed**: {'g2', 2, 'Low', 'Global'} only: avg = expressionSum/length(row)-1 is evaluated as (10 + 20) / 3 - 1 = 9 (the row also holds the gene ID), so g1 (10) is not below its local threshold
+- **Expected**: also {'g1', 10, 'Low', 'Local'}: the local threshold of g1 is its mean over the two sheets, 15, and 10 < 15
+- **Source lines**: 66-67
+- **Documented in**: `test/verifiedTests/analysis/testLT1/testFindGenesBelowThresholdLocal1.m`
 
 ### `src/analysis/igemRNA/filterNonFluxReactions/filterNonFluxReactions.m`
 
@@ -976,6 +1131,17 @@
 - **Source lines**: 24
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testFindCyclicRxns.m`
 
+### `src/analysis/topology/getCorrespondingCols.m`
+
+#### The error for a colBool of the wrong length names rowBool
+
+- **Severity**: cosmetic
+- **Trigger**: getCorrespondingCols(eye(2), true(2, 1), true(3, 1), 'inclusive')
+- **Observed**: the error message is 'length of rowBool must equal size(A,2)'
+- **Expected**: a message naming colBool, 'length of colBool must equal size(A,2)'
+- **Source lines**: 68
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testGetCorrespondingCols.m`
+
 ### `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m`
 
 #### A reaction with an elemental mismatch stops the build instead of being skipped
@@ -1291,6 +1457,26 @@
 - **Source lines**: 82, 86
 - **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m`
 
+### `src/base/io/utilities/getDefinedFieldProperties.m`
+
+#### A requested field without definition raises an error instead of being left out
+
+- **Severity**: limitation
+- **Trigger**: getDefinedFieldProperties('SpecificFields', {'lb', 'notAField'})
+- **Observed**: error "The following requesteds fields have no Specifications: notAField"
+- **Expected**: the documented OUTPUTS: "if fields without definitions are requested, they will not be contained in the result" (i.e. only the row of lb)
+- **Source lines**: 192-194
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testGetDefinedFieldProperties.m`
+
+#### SpecificFields is ignored together with Descriptions or DataBaseFields
+
+- **Severity**: limitation
+- **Trigger**: getDefinedFieldProperties('Descriptions', true, 'SpecificFields', {'lb'})
+- **Observed**: all 82 description rows are returned
+- **Expected**: only the row of lb (SpecificFields: "only obtain definitions for a specific set of fields"); both branches return before the selection of lines 190-196
+- **Source lines**: 102-103, 135-136
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testGetDefinedFieldProperties.m`
+
 ### `src/base/io/utilities/initFBAFields.m`
 
 #### The documented osense and csense fields are not created
@@ -1511,6 +1697,35 @@
 - **Source lines**: 541-549
 - **Documented in**: `test/verifiedTests/base/testSolvers/testSetMosekParam.m`
 
+### `src/base/solvers/param/getCobraSolverParams.m`
+
+#### The global solver parameters are ignored when no paramStructure is given
+
+- **Severity**: wrong-result
+- **Trigger**: changeCobraSolverParams('LP', 'feasTol', 1e-9); getCobraSolverParams('LP', 'feasTol')
+- **Observed**: 1e-06 (the default of the script; overRideDefaults is 0 without a third input, so CBT_LP_PARAMS is never read)
+- **Expected**: 1e-09, the global value (header: "gets ... from paramStructure, the global cobra parameters variable or default values ... with the following priority paramStructure > solver type paramStructure > default paramStructure")
+- **Source lines**: 64-68, 169-176
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
+
+#### The structure output keeps the fields named in paramNames
+
+- **Severity**: cosmetic
+- **Trigger**: [v, s] = getCobraSolverParams('LP', 'feasTol', struct('feasTol', 1e-3, 'other', 5))
+- **Observed**: s has the fields feasTol (1e-3) and other (5)
+- **Expected**: per OUTPUTS, "paramStructureOut, with fields removed corresponding to paramNames" (only other); no caller in src/ uses this output, so the header is the likely error
+- **Source lines**: 166, 181, 186
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
+
+#### paramStructure 'default' returns the global values instead of the defaults
+
+- **Severity**: wrong-result
+- **Trigger**: changeCobraSolverParams('LP', 'feasTol', 1e-9); getCobraSolverParams('LP', 'feasTol', 'default')
+- **Observed**: 1e-09 (the global value; overRideDefaults is set to 1 for 'default')
+- **Expected**: 1e-06 (OPTIONAL INPUTS: "paramStructure can be set to 'default' to use the default values set within this script"; the comment of line 56 reads "overide defaults unless hack is asking for defaults")
+- **Source lines**: 60-62
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
+
 ### `src/base/solvers/rescale/liftCouplingConstraints.m`
 
 #### A row with more than two variables cannot be lifted with the default options
@@ -1672,6 +1887,17 @@
 - **Expected**: a help text that describes the indices as the entries to keep (the code is consistent with its caller)
 - **Source lines**: 2-16
 - **Documented in**: `test/verifiedTests/base/testTools/testRemoveIndicesInDimenion.m`
+
+### `src/base/utilities/restoreEnvironment.m`
+
+#### The printed path is cut at a folder name with a % sign
+
+- **Severity**: cosmetic
+- **Trigger**: a folder named '100%done' on environment.path, restoreEnvironment(environment, true, 1)
+- **Observed**: "Path set to:" is followed by '<tempdir>/100' and nothing else: the path is used as the format of sprintf, which stops at the conversion %d that has no data (backslashes in folder names would likewise be read as escapes); the path itself is restored correctly; the test uses no such folder name
+- **Expected**: every folder of the path, one per line
+- **Source lines**: 44
+- **Documented in**: `test/verifiedTests/base/testUtilities/testRestoreEnvironment.m`
 
 ### `src/base/utilities/setGlobal.m`
 
@@ -2493,6 +2719,46 @@
 - **Expected**: no output
 - **Source lines**: 77, 87, 97
 - **Documented in**: `test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m`
+
+### `src/reconstruction/refinement/GPRLogic/AndNode.m`
+
+#### A numeric literal ID is not deleted
+
+- **Severity**: limitation
+- **Trigger**: n = AndNode(); n.addChild(LiteralNode('1')); n.addChild(LiteralNode('2')); n.deleteLiteral(1)
+- **Observed**: n.toString() is still 'x(1) and x(2)' (no error); LiteralNode.contains compares the number with the text ID with strcmp
+- **Expected**: 'x(2)', as for n.deleteLiteral('1'); the Node interface documents "literalID: The LiteralID (As string or number)"
+- **Source lines**: 38
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m`
+
+#### convertToDNF of an AndNode without children stops with an error
+
+- **Severity**: limitation
+- **Trigger**: AndNode().convertToDNF() (an empty AndNode is also what deleteLiteral(id, false) leaves when the literal is a direct child)
+- **Observed**: "Index exceeds array bounds." in AndNode.nextcombination (line 189): the empty step vector has no first element
+- **Expected**: a DNF node (the class does not define the meaning of an empty node)
+- **Source lines**: 125-126, 188-189
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testAndNode.m`
+
+### `src/reconstruction/refinement/GPRLogic/OrNode.m`
+
+#### A numeric literal ID is not deleted
+
+- **Severity**: limitation
+- **Trigger**: n = OrNode(); n.addChild(LiteralNode('1')); n.addChild(LiteralNode('2')); n.deleteLiteral(1)
+- **Observed**: n.toString() is still '(x(1) or x(2))' (no error); LiteralNode.contains compares the number with the text ID with strcmp
+- **Expected**: '(x(2))', as for n.deleteLiteral('1'); the Node interface documents "literalID: The LiteralID (As string or number)"
+- **Source lines**: 138
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m`
+
+#### convertToCNF of an OrNode without children returns an empty AndNode, which evaluates to true, while the empty OrNode evaluates to false
+
+- **Severity**: limitation
+- **Trigger**: n = OrNode(); n.evaluate(containers.Map()), n.convertToCNF().evaluate(containers.Map()) (an empty OrNode is also what deleteLiteral leaves when every child is removed)
+- **Observed**: false, and true (an AndNode with 0 children)
+- **Expected**: an equivalent CNF (the class does not define the meaning of an empty node)
+- **Source lines**: 31-39
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m`
 
 ### `src/reconstruction/refinement/GPRLogic/combineChildren.m`
 

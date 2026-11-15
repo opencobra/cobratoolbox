@@ -101,7 +101,15 @@ BLOCKED with `blocked_by = f` (several blockers listed if several apply). Files 
 earlier wave cannot call f (they were tested after f and their other callees by construction, R4),
 except through edges discovered later (R3). For such a file the constitution's quarantine clause
 applies unchanged: its new test is removed and it becomes BLOCKED by f, and so does every TESTED
-file that calls it (analysis C1). Functions outside the 1085
+file that calls it (analysis C1).
+
+Reach (constitution 1.8.1, maintainer 2026-11-15): blocking follows the reach of the defect over
+the full call graph of `src/` (`inventory/edges.tsv`, written by `build_inventory.py
+--edges-only`, plus `extra-edges.tsv`), including chains through already-tested functions. Each
+defect has seeds: the defective function itself, or, when the defect is confined to a recognisable
+call form, the files whose code uses that form (`inventory/quarantine-seeds.tsv`). Every untested
+file that is a seed or calls a seed through any chain is BLOCKED. First case: getCobraSolverParams'
+two-input form, used by 67 files including optimizeCbModel's default path, blocks 308 files. Functions outside the 1085
 (already tested) are never BLOCKED; FR-012 handles defects found in them.
 
 ## R7 — Execution: writers, MATLAB sessions, memory

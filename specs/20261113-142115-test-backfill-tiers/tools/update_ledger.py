@@ -74,92 +74,99 @@ class Ledger:
     def cycle(self, r):
         return set(c for c in r['cycle'].split(',') if c) - {name_of(r['file'])}
 
-    def root_blockers(self, name, seen=None):
-        """Quarantined (or existing-defective) functions reached through a blocked/quarantined name."""
-        seen = seen or set()
-        if name in seen:
-            return set()
-        seen.add(name)
-        if name in self.existing:
-            return {name}
+    def root_blockers(self, name):
+        """The quarantined or existing-defective functions whose defect a BLOCKED row reaches."""
         r = self.by_name.get(name)
         if r is None:
             return set()
-        if r['status'] == 'QUARANTINED':
+        if r['status'] == 'QUARANTINED' or name in self.existing:
             return {name}
         if r['status'] == 'BLOCKED':
-            out = set()
-            for b in re.findall(r'[A-Za-z]\w*', r['reason'].replace('blocked by', '')):
-                out |= self.root_blockers(b, seen)
-            return out
+            return set(re.findall(r'[A-Za-z]\w*', r['reason'].replace('blocked by', '')))
         return set()
 
-    def existing_callers(self, name):
-        """Untested rows that call an already-tested function (static calls and name references)."""
-        out = set()
-        raw = os.path.join(self.inv, 'callgraph-raw.tsv')
-        for line in open(raw):
-            a, b, c = (line.rstrip('\n').split('\t') + ['', ''])[:3]
-            if c == 'call' and b == name and a in self.by_file:
-                out.add(a)
-        root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(self.inv))))
-        pattern = re.compile(r'(@\s*%s\b)|((feval|str2func)\s*\(\s*[\'"]%s[\'"])' % (name, name))
-        for r in self.rows:
-            try:
-                if pattern.search(open(os.path.join(root, r['file']), errors='ignore').read()):
-                    out.add(r['file'])
-            except OSError:
-                pass
-        return out
+    def _graph_callers(self):
+        """callee file -> caller files, over all src files (edges.tsv plus extra-edges.tsv)."""
+        callers = collections.defaultdict(set)
+        for name in ('edges.tsv', 'extra-edges.tsv'):
+            path = os.path.join(self.inv, name)
+            if os.path.exists(path):
+                for line in open(path):
+                    parts = line.rstrip('\n').split('\t')
+                    if len(parts) >= 2 and parts[0] != 'caller':
+                        callers[parts[1]].add(parts[0])
+        return callers
+
+    def _seeds(self):
+        """defect root name -> set of src files whose code reaches the defect (constitution 1.8.1):
+        the files listed in quarantine-seeds.tsv for a defect confined to a call form, otherwise
+        the defective function itself."""
+        listed = collections.defaultdict(set)
+        path = os.path.join(self.inv, 'quarantine-seeds.tsv')
+        if os.path.exists(path):
+            for line in open(path):
+                if line.strip() and not line.startswith('#'):
+                    name, seed = line.rstrip('\n').split('\t')[:2]
+                    listed[name].add(seed)
+        roots = {name_of(r['file']): r['file'] for r in self.rows if r['status'] == 'QUARANTINED'}
+        roots.update({n: v[0] for n, v in self.existing.items()})
+        return {n: (listed[n] if listed.get(n) else {f}) for n, f in roots.items()}
 
     def propagate(self):
-        """Block every PENDING row (and, by the late-edge rule, every TESTED row) that reaches a
-        quarantined or existing-defective function. Returns the tests that must be removed."""
+        """Block every untested PENDING row (and, by the late-edge rule, every TESTED row) that
+        reaches a defect: a seed file itself (when it is not the defective function) or any
+        function that calls a seed through any chain of calls, including chains through
+        functions that already have a test. Returns the tests that must be removed."""
+        callers = self._graph_callers()
+        reached = collections.defaultdict(set)
+        for name, seeds in self._seeds().items():
+            root_file = self.by_name[name]['file'] if name in self.by_name else self.existing[name][0]
+            frontier = [x for x in seeds]
+            seen = set(x for x in seeds if x != root_file)
+            while frontier:
+                current = frontier.pop()
+                for c in callers.get(current, ()):
+                    if c not in seen and c != root_file:
+                        seen.add(c)
+                        frontier.append(c)
+            for f in seen:
+                reached[f].add(name)
         removed = []
-        for name in self.existing:
-            for f in self.existing_callers(name):
-                r = self.by_file[f]
-                if name not in self.callees(r):
-                    r['untested_callees'] = ','.join(self.callees(r) + [name])
-        changed = True
-        while changed:
-            changed = False
-            for r in self.rows:
-                if r['status'] not in ('PENDING', 'TESTED'):
-                    continue
-                blockers = set()
-                for c in self.callees(r):
-                    if c in self.cycle(r):
-                        continue
-                    blockers |= self.root_blockers(c)
-                if blockers:
-                    if r['status'] == 'TESTED':
-                        removed.append(r['test'])
-                        r['notes'] = (r['notes'] + '; ' if r['notes'] else '') + \
-                            'test removed: late-discovered call to a quarantined function (FR-009)'
-                        r['test'] = ''
-                    r['status'] = 'BLOCKED'
-                    r['reason'] = 'blocked by ' + ', '.join(sorted(blockers))
-                    changed = True
+        for f, names in reached.items():
+            r = self.by_file.get(f)
+            if r is None or r['status'] not in ('PENDING', 'TESTED', 'BLOCKED'):
+                continue
+            # members of the defective function's own call cycle are blocked too
+            if r['status'] == 'TESTED':
+                removed.append(r['test'])
+                r['notes'] = (r['notes'] + '; ' if r['notes'] else '') + \
+                    'test removed: reaches a quarantined defect (FR-009)'
+                r['test'] = ''
+            r['status'] = 'BLOCKED'
+            previous = self.root_blockers(name_of(f)) if r['reason'].startswith('blocked by') else set()
+            r['reason'] = 'blocked by ' + ', '.join(sorted(names | previous))
         return removed
 
     # ---- waves
     def next_wave(self, tier, limit, slice_size):
         removed = self.propagate()
-        ready = []
-        for r in sorted(self.rows, key=lambda r: int(r['order'])):
-            if r['status'] != 'PENDING' or r['tier'] != str(tier):
-                continue
-            ok = True
+
+        def own_ready(r):
             for c in self.callees(r):
                 if c in self.cycle(r):
                     continue
                 cr = self.by_name.get(c)
-                if c in self.existing:
-                    ok = False
-                elif cr is not None and cr['status'] not in FINAL_OK:
-                    ok = False
-            if ok:
+                if c in self.existing or (cr is not None and cr['status'] not in FINAL_OK):
+                    return False
+            return True
+
+        ready = []
+        for r in sorted(self.rows, key=lambda r: int(r['order'])):
+            if r['status'] != 'PENDING' or r['tier'] != str(tier):
+                continue
+            # a call cycle is one unit: ready only when every member's other callees are final
+            members = [self.by_name[m] for m in self.cycle(r) if m in self.by_name] + [r]
+            if all(own_ready(m) for m in members if m['status'] == 'PENDING'):
                 ready.append(r)
         if limit:
             ready = ready[:limit]
@@ -276,8 +283,12 @@ class Ledger:
             for c in self.callees(r):
                 if c in pos and pos[c] > pos[n] and c not in self.cycle(r):
                     issues.append('order: %s before its callee %s' % (n, c))
-            if r['status'] == 'BLOCKED' and not self.root_blockers(n):
-                issues.append('BLOCKED without a quarantined reach: ' + n)
+            if r['status'] == 'BLOCKED':
+                roots = self.root_blockers(n)
+                bad = [x for x in roots if x not in self.existing and
+                       (x not in self.by_name or self.by_name[x]['status'] != 'QUARANTINED')]
+                if not roots or bad:
+                    issues.append('BLOCKED without a quarantined reach: %s %s' % (n, bad))
             if r['status'] == 'QUARANTINED' and (not r['reason'] or not r['confirmed_by']):
                 issues.append('QUARANTINED without confirmed defect: ' + n)
             if r['status'] in ('TESTED', 'QUARANTINED') and not r['test']:

@@ -19,7 +19,10 @@ for line in open(sys.argv[1]):
         continue
     r = json.loads(line)
     lines, hits = as_list(r.get('lines')), as_list(r.get('hits'))
-    missed = [n for n, h in zip(lines, hits) if h == 0]
+    best = {}
+    for n, h in zip(lines, hits):
+        best[n] = max(best.get(n, 0), h)
+    missed = sorted(n for n, h in best.items() if h == 0)
     print('%s | %s | lines %d | missed %s | leftover: %s | %s' % (
-        r['source'], r['status'], len(lines), missed, r.get('leftover') or '-',
+        r['source'], r['status'], len(best), missed, r.get('leftover') or '-',
         (r.get('message') or '')[:300]))

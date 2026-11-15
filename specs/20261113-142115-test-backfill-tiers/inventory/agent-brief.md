@@ -52,6 +52,11 @@ letter `s` and gives the slice rows (file, tier, flags, untested callees, caller
 
 ## Defects
 
+Header grammar (the registry generator `.github/scripts/known_defects.py` rejects anything else):
+`LINES:` holds only line numbers and ranges (`12`, `12-14`, `12-14, 20`), nothing after them; any
+explanation goes into OBSERVED or EXPECTED; no free text after the LINES field of an entry. Run
+`python3 .github/scripts/known_defects.py` after writing a defect entry: it must say "Wrote ...".
+
 A defect is behaviour that contradicts the function's documentation, an independent derivation, or
 the evident intent of the code, with an input the documentation allows (inputs it does not allow
 are not defects). Severities (III-Defects): `wrong-result`, `error`, `unusable-option`, `cosmetic`,
