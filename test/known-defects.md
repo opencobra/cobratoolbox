@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-374 known defects in 207 functions (129 wrong-result, 111 error, 25 unusable-option, 56 cosmetic, 53 limitation).
+404 known defects in 229 functions (142 wrong-result, 113 error, 30 unusable-option, 62 cosmetic, 57 limitation).
 
 ## Summary
 
@@ -133,12 +133,16 @@
 | `src/analysis/sampling/ACHR/gpSampler.m` | unusable-option | The distributed sampler does not exist | `test/verifiedTests/analysis/testSampling/testGpSampler.m` |
 | `src/analysis/sampling/ACHR/verifyPoints.m` | error | One point stops with an error when a sense has a single row | `test/verifiedTests/analysis/testSampling/testVerifyPoints.m` |
 | `src/analysis/sampling/ACHR/verifyPoints.m` | wrong-result | errorsA gives row numbers within the constraints of one sense, not rows of A | `test/verifiedTests/analysis/testSampling/testVerifyPoints.m` |
+| `src/analysis/sampling/BarrierRound/CMatrix/CMatrix.m` | wrong-result | sparse(i, j, s) pairs the values with the sorted pattern, not with (i, j) | `test/verifiedTests/analysis/testSampling/testCMatrix.m` |
 | `src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m` | error | Every call stops because the parent script config does not exist | `test/verifiedTests/analysis/testSampling/testConfigCMatrix.m` |
+| `src/analysis/sampling/BarrierRound/CMatrix/include/ddouble.m` | wrong-result | sparse(i, j, s) pairs the values with the sorted pattern, not with (i, j) | `test/verifiedTests/analysis/testSampling/testDdouble.m` |
+| `src/analysis/sampling/BarrierRound/CMatrix/include/qdouble.m` | wrong-result | sparse(i, j, s) pairs the values with the sorted pattern, not with (i, j) | `test/verifiedTests/analysis/testSampling/testQdouble.m` |
 | `src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m` | error | step_size fails for more than one point | `test/verifiedTests/analysis/testSampling/testTwoSidedBarrier.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | error | A format without a width gives a NaN length and header fails | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | wrong-result | The blank that separates the columns is dropped | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
 | `src/analysis/sampling/compareTwoSamplesStat.m` | wrong-result | The chi-square p values are cumulative probabilities, near 0 for identical samples | `test/verifiedTests/analysis/testSampling/testCompareTwoSamplesStat.m` |
 | `src/analysis/sampling/loadSamples.m` | wrong-result | More points than pointsPerFile are taken from a file at regular intervals | `test/verifiedTests/analysis/testSampling/testLoadSamples.m` |
+| `src/analysis/sampling/printSampleStats.m` | wrong-result | With several samples only the first sample's mode is printed | `test/verifiedTests/analysis/testSampling/testPrintSampleStats.m` |
 | `src/analysis/subspaces/lsqr/lsqr.m` | cosmetic | The x = 0 message is printed even when show = 0 | `test/verifiedTests/analysis/testSubspaces/testLsqr.m` |
 | `src/analysis/subspaces/lsqr/lsqr.m` | error | r1norm and r2norm are not assigned when A'*b = 0 | `test/verifiedTests/analysis/testSubspaces/testLsqr.m` |
 | `src/analysis/subspaces/lsqr/lsqrtest.m` | cosmetic | The function handle is printed by a statement without a semicolon | `test/verifiedTests/analysis/testSubspaces/testLsqrtest.m` |
@@ -150,6 +154,8 @@
 | `src/analysis/thermo/groupContribution/createComputedSpeciesData.m` | wrong-result | The first group-contribution entry is used for every metabolite | `test/verifiedTests/analysis/testThermo/testCreateComputedSpeciesData.m` |
 | `src/analysis/thermo/groupContribution/jankowski/createGroupContributionStruct.m` | limitation | The input files are left open | `test/verifiedTests/analysis/testThermo/testCreateGroupContributionStruct.m` |
 | `src/analysis/thermo/inchi/getMolecularWeight.m` | wrong-result | Hydrogens are lost for an InChI whose formula starts with H | `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` |
+| `src/analysis/thermo/protons/getMetaboliteMsDistr.m` | wrong-result | Mol files are missed when another file precedes them or their name holds a dot or 'mol' | `test/verifiedTests/analysis/testThermo/testGetMetaboliteMsDistr.m` |
+| `src/analysis/thermo/protons/getMetabolitepKa.m` | wrong-result | Mol files are missed when another file precedes them or their name holds a dot or 'mol' | `test/verifiedTests/analysis/testThermo/testGetMetabolitepKa.m` |
 | `src/analysis/thermo/reactantContribution/calcdGHT.m` | limitation | The standard transformed enthalpy dHf0 is always NaN | `test/verifiedTests/analysis/testThermo/testCalcdGHT.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | error | A wrong input ends with an unassigned output | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | wrong-result | Method 3 without a vartype returns numbers instead of characters | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
@@ -162,20 +168,38 @@
 | `src/analysis/topology/FR/bilinearDecomposition.m` | error | A lone reaction with one substrate and three products gives inconsistent sizes | `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m` |
 | `src/analysis/topology/FR/connectedFR.m` | wrong-result | The column sets are computed over the rows of [F; R] | `test/verifiedTests/analysis/testTopology/testConnectedFR.m` |
 | `src/analysis/topology/FR/largestConnectedFR.m` | wrong-result | The column output is read from the row nodes and has m entries | `test/verifiedTests/analysis/testTopology/testLargestConnectedFR.m` |
+| `src/analysis/topology/conservedMoieties/classifyMoieties.m` | cosmetic | isSecondary is returned as a row vector, not m x 1 | `test/verifiedTests/analysis/testConservedMoieties/testClassifyMoieties.m` |
+| `src/analysis/topology/conservedMoieties/constructElementalMatrix.m` | error | Every call stops because atomicNumbers.mat is missing | `test/verifiedTests/analysis/testConservedMoieties/testConstructElementalMatrix.m` |
+| `src/analysis/topology/conservedMoieties/estimateMoietyFormulas.m` | cosmetic | M is not the r x p matrix the documentation describes | `test/verifiedTests/analysis/testConservedMoieties/testEstimateMoietyFormulas.m` |
+| `src/analysis/topology/conservedMoieties/representativeMoiety.m` | limitation | MMN.moi is required but not documented | `test/verifiedTests/analysis/testConservedMoieties/testRepresentativeMoiety.m` |
+| `src/analysis/topology/conservedMoieties/representativeMoiety.m` | wrong-result | minimalMassFraction is always 1 | `test/verifiedTests/analysis/testConservedMoieties/testRepresentativeMoiety.m` |
 | `src/analysis/topology/extremeRays/lrs/extremePools.m` | error | A model with mets but no usable SIntRxnBool stops on an undefined variable | `test/verifiedTests/analysis/testTopology/testExtremePools.m` |
 | `src/analysis/topology/extremeRays/lrs/extremePools.m` | cosmetic | The third output is the transpose of what the help text states | `test/verifiedTests/analysis/testTopology/testExtremePools.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsInputHalfspace.m` | unusable-option | the linear objective f is malformed and placed where lrs ignores it | `test/verifiedTests/analysis/testLrsInterface/testLrsInputHalfspace.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsInputHalfspace.m` | unusable-option | the shell script writes to a fixed personal folder | `test/verifiedTests/analysis/testLrsInterface/testLrsInputHalfspace.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsInputHalfspace.m` | wrong-result | with A empty and inequality = 1 the column count is 1 | `test/verifiedTests/analysis/testLrsInterface/testLrsInputHalfspace.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsInputHalfspace.m` | wrong-result | with A empty and positivity = 1 the row count omits the x >= 0 rows | `test/verifiedTests/analysis/testLrsInterface/testLrsInputHalfspace.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsOutputReadRay.m` | wrong-result | rows with rational entries are dropped and become zero rays | `test/verifiedTests/analysis/testLrsInterface/testLrsOutputReadRay.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsOutputReadRay.m` | cosmetic | the empty matrix P is printed to the command window | `test/verifiedTests/analysis/testLrsInterface/testLrsOutputReadRay.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m` | cosmetic | a file that cannot be opened gives an undefined-variable error | `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m` | limitation | the file identifier is never closed | `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m` |
 | `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m` | error | glpk, one of the solvers the routine falls back on, cannot run the search | `test/verifiedTests/analysis/testTopology/testGreedyExtremeRayBasis.m` |
 | `src/analysis/topology/findCyclicRxns.m` | wrong-result | The first output is not a per-reaction boolean | `test/verifiedTests/analysis/testTopology/testFindCyclicRxns.m` |
 | `src/analysis/topology/getCorrespondingCols.m` | cosmetic | The error for a colBool of the wrong length names rowBool | `test/verifiedTests/analysis/testTopology/testGetCorrespondingCols.m` |
 | `src/analysis/topology/getCorrespondingRows.m` | cosmetic | The error for a colBool of the wrong length names rowBool | `test/verifiedTests/analysis/testTopology/testGetCorrespondingRows.m` |
+| `src/analysis/topology/graphHypergraphConversion/convertHypergraphToBipartiteGraph.m` | wrong-result | trailing empty hyperedges are missing from A and B | `test/verifiedTests/analysis/testTopology/testConvertHypergraphToBipartiteGraph/testConvertHypergraph2BipartiteGraph.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | error | A reaction with an elemental mismatch stops the build instead of being skipped | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | wrong-result | Decompartmentalising the model keeps the opening bracket | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | error | The bond graph is not decompartmentalised | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
 | `src/analysis/topology/reactingMoieties/checkABRXNFiles.m` | wrong-result | Decompartmentalising the model keeps the opening bracket | `test/verifiedTests/analysis/testReactingMoieties/testCheckABRXNFiles.m` |
 | `src/analysis/topology/reactingMoieties/checkABRXNFiles.m` | cosmetic | The duplicates that stop the check are not shown | `test/verifiedTests/analysis/testReactingMoieties/testCheckABRXNFiles.m` |
 | `src/analysis/topology/reactingMoieties/identifyAtomEquivalenceClasses.m` | limitation | The check for a duplicate bond never fires | `test/verifiedTests/analysis/testReactingMoieties/testIdentifyAtomEquivalenceClasses.m` |
+| `src/analysis/topology/reactingMoieties/identifyIsomorphicClasses.m` | unusable-option | sanityChecks = true raises an error for any class with two or more members | `test/verifiedTests/analysis/testReactingMoieties/testIdentifyIsomorphicClasses.m` |
 | `src/analysis/topology/reactingMoieties/readABRXNFile.m` | cosmetic | The two warnings about transition numbers print a literal backslash n | `test/verifiedTests/analysis/testReactingMoieties/testReadABRXNFile.m` |
 | `src/analysis/topology/reactingMoieties/readABRXNFile.m` | unusable-option | options.readBonds = 0 cannot be used | `test/verifiedTests/analysis/testReactingMoieties/testReadABRXNFile.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m` | cosmetic | The progress message has no space before the food source name | `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m` | unusable-option | brandedFoods = true always raises an error | `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m` | limitation | The shipped USDA food items file is not found | `test/verifiedTests/analysis/testWholeBody/testGetNutritionDatabaseFile.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m` | limitation | Identifiers with surrounding blanks are rejected although they are trimmed for the other checks | `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m` | unusable-option | Non-iterative search type cannot run | `test/verifiedTests/analysis/testWholeBody/testSearcher.m` |
 | `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | error | Reactions missing from a model are collected in a character matrix, which fails for names of different lengths | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
@@ -186,6 +210,7 @@
 | `src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m` | wrong-result | rxnGeneMat is not updated for the gene rules of the added reactions | `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m` | cosmetic | The list of storable amino acids is printed on every call | `test/verifiedTests/analysis/testWholeBody/testSetFeedingFastingConstraints.m` |
 | `src/base/generateSystemConfigReport.m` | error | A short answer from curl stops the report at the summary | `test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m` |
+| `src/base/install/prepareTest.m` | unusable-option | needsLinux makes every test skip on Linux | `test/verifiedTests/base/testInstall/testPrepareTest.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A dictionary abbreviation with several entries stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A metabolite without compartment that is in the dictionary stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
 | `src/base/io/KEGG/mapMetName2KEGGID.m` | error | A metabolite without compartment that is in the dictionary stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapMetName2KEGGID.m` |
@@ -195,6 +220,7 @@
 | `src/base/io/definitions/descFileRead.m` | limitation | Short entries are padded with null characters, not blanks | `test/verifiedTests/base/testIO/testDescFileRead.m` |
 | `src/base/io/python/pyPath/py_addpath.m` | wrong-result | A relative folder is added as given, not converted to an absolute path | `test/verifiedTests/base/testPyPath/testPy_addpath.m` |
 | `src/base/io/python/pyPath/py_addpath.m` | wrong-result | The empty input adds the current folder to the Python path | `test/verifiedTests/base/testPyPath/testPy_addpath.m` |
+| `src/base/io/python/pyPath/py_rmpath.m` | error | MATLAB_too = true always raises an error | `test/verifiedTests/base/testPyPath/testPy_rmpath.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | wrong-result | Mixed matching and non-matching resources return nothing | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | error | Third output unassigned when nothing matches | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/SBML/makeSBMLAnnotationString.m` | wrong-result | A field of another is-qualifier is also annotated under the qualifier is | `test/verifiedTests/base/testIO/testUtilities/testMakeSBMLAnnotationString.m` |
@@ -214,6 +240,7 @@
 | `src/base/io/writeCbModel.m` | unusable-option | The JSON format is not detected from the file extension | `test/verifiedTests/base/testIO/testWriteCbModel.m` |
 | `src/base/io/writeCbModel.m` | unusable-option | The file dialog offers an MPS export that does not exist | `test/verifiedTests/base/testIO/testWriteCbModel.m` |
 | `src/base/parseMetNames.m` | limitation | Mixed or longer compartment notations are not parsed | `test/verifiedTests/base/testTools/testParseMetNames.m` |
+| `src/base/paths/comparePaths.m` | limitation | Python path entries with blanks are reported as differences | `test/verifiedTests/base/testPaths/testComparePaths.m` |
 | `src/base/removeGeneVersions.m` | error | A model without grRules stops after the warning | `test/verifiedTests/base/testRemoveGeneVersions/testRemoveGeneVersions.m` |
 | `src/base/solvers/buildOptProblemFromModel.m` | error | A model with extra columns and no coupling rows gets no csense in its problem | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
 | `src/base/solvers/buildOptProblemFromModel.m` | error | Missing coupling and extra-variable fields are never built | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
@@ -266,6 +293,8 @@
 | `src/dataIntegration/chemoInformatics/deleteProtons.m` | wrong-result | Reactions that carried only protons are removed from the reaction fields but not from S | `test/verifiedTests/dataIntegration/testChemoInformatics/testDeleteProtons.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m` | error | An empty component of a multi-component charge layer stops with an error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetChargeFromInChI.m` |
+| `src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m` | wrong-result | A formula that loses all its hydrogen atoms keeps one H | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m` |
+| `src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m` | wrong-result | Element counts are assigned to the wrong elements on the combining path | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m` | wrong-result | A metabolite with a hyphen is overwritten by its next compartment | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
@@ -308,6 +337,7 @@
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
+| `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m` | cosmetic | Formula numbers in error messages lose their zero padding inside parentheses | `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | A formula given as a cell or number stops with a MATLAB error, not the class error | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | Output is printed at printLevel 0 | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | limitation | Zero counts are replaced only when the formula holds a single zero | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
@@ -1650,6 +1680,17 @@
 - **Source lines**: 56-58, 63
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testVerifyPoints.m`
 
+### `src/analysis/sampling/BarrierRound/CMatrix/CMatrix.m`
+
+#### sparse(i, j, s) pairs the values with the sorted pattern, not with (i, j)
+
+- **Severity**: wrong-result
+- **Trigger**: raw = zeros(4, 2, 1, 'uint8'); raw(:, 1) = 10; raw(:, 2) = 20; vals = CMatrix(raw); f = full(sparse([2 1], [1 1], vals)); f.x(1, :)
+- **Observed**: bytes [10 20] at rows 1 and 2 (MATLAB R2025a), while MATLAB's full(sparse([2 1], [1 1], [10 20]))' is [20 10]; the logical pattern A (line 133) is ordered column-major but the values s (lines 135-136) keep the input order. Repeated (i, j) pairs, e.g. sparse([1 1], [1 1], vals), give a 1 x 1 object whose pattern has 1 nonzero but which stores 2 values. The 5- and 6-argument forms share these lines. No MEX file is involved.
+- **Expected**: S(i(k), j(k)) = s(k) as for MATLAB's sparse (repeated pairs summed or rejected)
+- **Source lines**: 133-136
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testCMatrix.m`
+
 ### `src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m`
 
 #### Every call stops because the parent script config does not exist
@@ -1660,6 +1701,28 @@
 - **Expected**: the parent configuration runs (it is expected to set the global EIGEN_PATH that compileCMatrix reads) and the CMatrix include folder is added to the path
 - **Source lines**: 11, 13
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testConfigCMatrix.m`
+
+### `src/analysis/sampling/BarrierRound/CMatrix/include/ddouble.m`
+
+#### sparse(i, j, s) pairs the values with the sorted pattern, not with (i, j)
+
+- **Severity**: wrong-result
+- **Trigger**: raw = zeros(4, 2, 1, 'uint8'); raw(:, 1) = 10; raw(:, 2) = 20; vals = ddouble(raw); f = full(sparse([2 1], [1 1], vals)); f.x(1, :)
+- **Observed**: bytes [10 20] at rows 1 and 2 (MATLAB R2025a), while MATLAB's full(sparse([2 1], [1 1], [10 20]))' is [20 10]; the logical pattern A (line 133) is ordered column-major but the values s (lines 135-136) keep the input order. Repeated (i, j) pairs, e.g. sparse([1 1], [1 1], vals), give a 1 x 1 object whose pattern has 1 nonzero but which stores 2 values. The 5- and 6-argument forms share these lines. No MEX file is involved.
+- **Expected**: S(i(k), j(k)) = s(k) as for MATLAB's sparse (repeated pairs summed or rejected)
+- **Source lines**: 133-136
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testDdouble.m`
+
+### `src/analysis/sampling/BarrierRound/CMatrix/include/qdouble.m`
+
+#### sparse(i, j, s) pairs the values with the sorted pattern, not with (i, j)
+
+- **Severity**: wrong-result
+- **Trigger**: raw = zeros(4, 2, 1, 'uint8'); raw(:, 1) = 10; raw(:, 2) = 20; vals = qdouble(raw); f = full(sparse([2 1], [1 1], vals)); f.x(1, :)
+- **Observed**: bytes [10 20] at rows 1 and 2 (MATLAB R2025a), while MATLAB's full(sparse([2 1], [1 1], [10 20]))' is [20 10]; the logical pattern A (line 133) is ordered column-major but the values s (lines 135-136) keep the input order. Repeated (i, j) pairs, e.g. sparse([1 1], [1 1], vals), give a 1 x 1 object whose pattern has 1 nonzero but which stores 2 values. The 5- and 6-argument forms share these lines. No MEX file is involved.
+- **Expected**: S(i(k), j(k)) = s(k) as for MATLAB's sparse (repeated pairs summed or rejected)
+- **Source lines**: 133-136
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testQdouble.m`
 
 ### `src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m`
 
@@ -1713,6 +1776,17 @@
 - **Expected**: the documented number of points to be taken from each file (pointsPerFile), as the random selection does
 - **Source lines**: 50-51
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testLoadSamples.m`
+
+### `src/analysis/sampling/printSampleStats.m`
+
+#### With several samples only the first sample's mode is printed
+
+- **Severity**: wrong-result
+- **Trigger**: printSampleStats({[1 1 2; 3 4 4], [5 5 6; 7 8 8]}, struct('rxns', {{'r1'; 'r2'}}), {'A', 'B'})
+- **Observed**: header 'Rxn A-mode B-mode A-mean B-mean A-median B-median A-std B-std' (8 value columns) but row 'r1 1.000000 1.333333 5.333333 1.000000 5.000000 0.577350 0.577350' (7 values: B-mode 5 is missing and every later value is shifted one column to the left; MATLAB R2025a). sampleStats.mode(i) (line 56) indexes the reactions x samples matrix linearly, so it is always the first sample's value.
+- **Expected**: one mode per sample (sampleStats.mode(i, :)), as for mean, median and std (lines 59, 62, 65), matching the header of lines 36-38
+- **Source lines**: 56
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testPrintSampleStats.m`
 
 ### `src/analysis/subspaces/lsqr/lsqr.m`
 
@@ -1830,6 +1904,28 @@
 - **Expected**: a molecular weight of 18 and 2 hydrogens for water
 - **Source lines**: 41-61
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m`
+
+### `src/analysis/thermo/protons/getMetaboliteMsDistr.m`
+
+#### Mol files are missed when another file precedes them or their name holds a dot or 'mol'
+
+- **Severity**: wrong-result
+- **Trigger**: molfiledir holding A.txt, B.mol, C.mol, glc.D.mol, xmol.mol; getMetaboliteMsDistr({'B[c]'; 'C[c]'; 'glc.D[c]'; 'xmol[c]'}, molDir, outDir, [7 7.5])
+- **Observed**: with ispc and system replaced by recording stubs (MATLAB R2025a), only the two calls for C ('... C_msdistr_ph7.sdf msdistr -H 7 ...' and '... C_msdistr_ph7.5.sdf msdistr -H 7.5 ...') are issued; B (preceded by A.txt in the concatenated listing '...A.txtB.molC.mol...'), glc.D (dots removed: 'glcD') and xmol (the unescaped '.' of '.mol' also matches 'xmol') get no call.
+- **Expected**: one cxcalc call for every metabolite whose <id>.mol file exists
+- **Source lines**: 20-22
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMetaboliteMsDistr.m`
+
+### `src/analysis/thermo/protons/getMetabolitepKa.m`
+
+#### Mol files are missed when another file precedes them or their name holds a dot or 'mol'
+
+- **Severity**: wrong-result
+- **Trigger**: molfiledir holding A.txt, B.mol, C.mol, glc.D.mol, xmol.mol; getMetabolitepKa({'B[c]'; 'C[c]'; 'C[e]'; 'glc.D[c]'; 'xmol[c]'}, molDir, outDir)
+- **Observed**: with ispc and system replaced by recording stubs (MATLAB R2025a), only 'cxcalc -o <outDir>/C_pkas.txt pka -M true -a 20 -b 20 <molDir>/C.mol' is issued; B (preceded by A.txt in the concatenated listing '...A.txtB.molC.mol...'), glc.D (dots removed: 'glcD') and xmol (the unescaped '.' of '.mol' also matches 'xmol') get no call.
+- **Expected**: one cxcalc call for every metabolite whose <id>.mol file exists
+- **Source lines**: 18-20
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMetabolitepKa.m`
 
 ### `src/analysis/thermo/reactantContribution/calcdGHT.m`
 
@@ -1951,6 +2047,59 @@
 - **Source lines**: 71
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testLargestConnectedFR.m`
 
+### `src/analysis/topology/conservedMoieties/classifyMoieties.m`
+
+#### isSecondary is returned as a row vector, not m x 1
+
+- **Severity**: cosmetic
+- **Trigger**: [~, isSecondary] = classifyMoieties([1 1 0 0; 0 0 1 0], [-1 0; 1 0; 0 -1; 0 0])
+- **Observed**: size(isSecondary) is [1 4] (MATLAB R2025a): any(..., 1) returns a row
+- **Expected**: an m x 1 Boolean vector, as the OUTPUTS documentation says
+- **Source lines**: 27
+- **Documented in**: `test/verifiedTests/analysis/testConservedMoieties/testClassifyMoieties.m`
+
+### `src/analysis/topology/conservedMoieties/constructElementalMatrix.m`
+
+#### Every call stops because atomicNumbers.mat is missing
+
+- **Severity**: error
+- **Trigger**: constructElementalMatrix({'H2O'; 'CO2'; 'HO'}, [0; 0; -1]) (any input)
+- **Observed**: 'Error using load: Unable to find file or directory 'atomicNumbers.mat'.' at line 30 (MATLAB R2025a, after initCobraToolbox); the file src/analysis/topology/conservedMoieties/atomicNumbers.mat was deleted by commit 008e0e4f51 (2020-10-31) and no copy exists anywhere in the repository.
+- **Expected**: the element symbols and atomic numbers are loaded and the elemental matrix is returned, e.g. H2O -> H 2, O 1, e 10
+- **Source lines**: 30
+- **Documented in**: `test/verifiedTests/analysis/testConservedMoieties/testConstructElementalMatrix.m`
+
+### `src/analysis/topology/conservedMoieties/estimateMoietyFormulas.m`
+
+#### M is not the r x p matrix the documentation describes
+
+- **Severity**: cosmetic
+- **Trigger**: [f, M] = estimateMoietyFormulas([1 0; 1 1; 0 1], [2 4 1 0; 4 6 1 1; 2 2 0 1], {'e', 'H', 'C', 'O'})
+- **Observed**: M = [1 4 0; 0 2 1] (R2025a, 2026-11-15): the electron column is removed and the columns are sorted to C, H, O (lines 26 and 29), so M is r x 3 and its columns no longer follow the input elements
+- **Expected**: OUTPUT: "M: An r x p estimated elemental matrix for moieties" (here 2 x 4 in the order e, H, C, O), or a documentation that says M follows the sorted elements without 'e'
+- **Source lines**: 26, 29
+- **Documented in**: `test/verifiedTests/analysis/testConservedMoieties/testEstimateMoietyFormulas.m`
+
+### `src/analysis/topology/conservedMoieties/representativeMoiety.m`
+
+#### MMN.moi is required but not documented
+
+- **Severity**: limitation
+- **Trigger**: representativeMoiety(rmfield(MMN, 'moi')) with MMN as above
+- **Observed**: error 'Unrecognized field name "moi".' (line 39)
+- **Expected**: INPUT lists only .L and .mol and OUTPUT calls .moi an "added or updated field"; either the input documentation names .moi (a table with one row per moiety) or the field is created when absent
+- **Source lines**: 39
+- **Documented in**: `test/verifiedTests/analysis/testConservedMoieties/testRepresentativeMoiety.m`
+
+#### minimalMassFraction is always 1
+
+- **Severity**: wrong-result
+- **Trigger**: MMN.L = [1 1 0; 0 1 1]; MMN.mol = table({'a'; 'b'; 'c'}, [16; 32; 16], 'VariableNames', {'Mets', 'Mass'}); MMN.moi = table([12; 14], 'VariableNames', {'Mass'}); out = representativeMoiety(MMN)
+- **Observed**: out.moi.minimalMassFraction = [1; 1] (R2025a, 2026-11-15); MinimalMassMol = {'a'; 'c'} and NumMinimalMassMol = [1; 1] are right. Line 35 divides minimumMass by MMN.mol.Mass(ind(1)), which is minimumMass by construction of ind (line 30)
+- **Expected**: the moiety/metabolite mass fraction, here [12/16; 14/16] = [0.75; 0.875]: the sibling representativeMolecule.m computes moietyMasses(i)/minimumMass and documents minimalMassFraction as "the moiety/metabolite mass fraction"; MMN.moi carries the moiety Mass column (old/generateMoietyMoleculeNetwork.m, line 72); the tutorials filter moieties on minimalMassFraction > 0.1, which is meaningless for a constant 1
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testConservedMoieties/testRepresentativeMoiety.m`
+
 ### `src/analysis/topology/extremeRays/lrs/extremePools.m`
 
 #### A model with mets but no usable SIntRxnBool stops on an undefined variable
@@ -1970,6 +2119,84 @@
 - **Expected**: the help text states an m x n matrix N such that P*N = 0
 - **Source lines**: 44
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testExtremePools.m`
+
+### `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsInputHalfspace.m`
+
+#### the linear objective f is malformed and placed where lrs ignores it
+
+- **Severity**: unusable-option
+- **Trigger**: lrsInputHalfspace([1 1 -1], [], 'lp', 1, 0, 1, [], [1 2 3]), then system('lrs lp_pos_eq.ine'); and lrsInputHalfspace([1 1 -1], [], 'lq', 1, 1, 1, [], [1 2 3])
+- **Observed**: the files hold "lponly / minimize 02 3" (equality form: the loop of line 80 starts at c = 2, so f(1) is dropped, and no space follows the constant 0) and "lponly / minimize 01 2 3" (inequality form, lines 233-235), both before "begin"; lrs ignores them and prints the full V-representation (vertices and rays) instead of an LP solution
+- **Expected**: an lrs LP request "minimize 0 1 2 3" with "lponly" (OPTIONAL INPUTS: "f: linear objective for a linear optimization problem in rational arithmetic")
+- **Source lines**: 76-84, 230-238
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsInputHalfspace.m`
+
+#### the shell script writes to a fixed personal folder
+
+- **Severity**: unusable-option
+- **Trigger**: lrsInputHalfspace([1 1 -1], [], 'sh', 1, 1, 0, [], [], 1)
+- **Observed**: sh_pos_ineq.sh holds "(time lrs sh_pos_ineq.ine > /nas/rfleming/sh_pos_ineq.ext) 2> sh_pos_ineq.time" (line 300), a folder of one developer's cluster
+- **Expected**: a script whose output .ext lies next to the input (OPTIONAL INPUTS: "sh: if sh == 1, output a shell script for submitting qsub job")
+- **Source lines**: 300
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsInputHalfspace.m`
+
+#### with A empty and inequality = 1 the column count is 1
+
+- **Severity**: wrong-result
+- **Trigger**: lrsInputHalfspace([], [1 1], 'di', 1, 1, zeros(0, 1), 2), then system('lrs di_pos_ineq.ine'); likewise with positivity = 0 ('dn_neg_ineq.ine')
+- **Observed**: "begin / 1 1 integer / -2 1 1 / end" (line 260 writes clt + 1 = 1, clt being the column count of the empty A); lrs answers "No feasible solution" for a feasible polyhedron
+- **Expected**: "1 3 integer" (Dclt + 1 columns) and the V-representation of the polyhedron
+- **Source lines**: 260
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsInputHalfspace.m`
+
+#### with A empty and positivity = 1 the row count omits the x >= 0 rows
+
+- **Severity**: wrong-result
+- **Trigger**: lrsInputHalfspace([], [1 1], 'de', 1, 0, zeros(0, 1), 2), i.e. x1 + x2 >= 2, x >= 0, then system('lrs de_pos_eq.ine')
+- **Observed**: de_pos_eq.ine has "begin / 1 3 integer / -2 1 1 / 0 1 0 / 0 0 1 / end" (R2025a, lrslib 7.1, 2026-11-15): the count is Drlt + clt = 1 + 0 (line 124 uses clt, the column count of the empty A) but Dclt = 2 positivity rows follow; lrs reads one row and returns vertex (2, 0), ray (1, 0) and linearity (-1, 1), i.e. the half-plane x1 + x2 >= 2 without x >= 0
+- **Expected**: "3 3 integer" (Drlt + Dclt rows) and the V-representation of {x >= 0, x1 + x2 >= 2}: vertices (2, 0), (0, 2), rays (1, 0), (0, 1)
+- **Source lines**: 124
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsInputHalfspace.m`
+
+### `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsOutputReadRay.m`
+
+#### rows with rational entries are dropped and become zero rays
+
+- **Severity**: wrong-result
+- **Trigger**: sq.ine = "sq / H-representation / begin / 3 3 rational / 1 -2 0 / 0 1 0 / 0 0 1 / end" (one line per item: 1 - 2*x1 >= 0, x1 >= 0, x2 >= 0); system('lrs sq.ine > sq.ext') writes the rows "1 0 0", "0 0 1" and "1 1/2 0"; then [R, V] = lrsOutputReadRay('sq.ext')
+- **Observed**: V = [0; 0] and R = [0 0; 0 1] (R2025a, lrslib 7.1, 2026-11-15): the vertex (1/2, 0) is missing and a zero ray is returned instead. The '/' branch (lines 72-82) converts "1/2" to 1.2 and then to fix(1.2)/mod(1.2, 1) = 5, but never assigns scannedLine to P(r, :), so the row stays zero and is classified as a ray (line 94)
+- **Expected**: V = [0 1/2; 0 0] (vertices (0, 0) and (1/2, 0)) and R = [0; 1] (description: "Reads into matlab a vertex representation output from lrs"; lrs writes rationals as p/q)
+- **Source lines**: 70-82, 90-94
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsOutputReadRay.m`
+
+#### the empty matrix P is printed to the command window
+
+- **Severity**: cosmetic
+- **Trigger**: any call, for example [R, V] = lrsOutputReadRay('sq.ext') as above
+- **Observed**: "P = 3x3 sparse double matrix All zero" printed (line 64 has no semicolon)
+- **Expected**: no output
+- **Source lines**: 64
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsOutputReadRay.m`
+
+### `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m`
+
+#### a file that cannot be opened gives an undefined-variable error
+
+- **Severity**: cosmetic
+- **Trigger**: lrsSpecifyRows(fullfile(tempname, 'nope.ext'))
+- **Observed**: error "Unrecognized function or variable 'fileNameOut'." (R2025a, 2026-11-15): line 22 displays fileNameOut, which is not defined in the function
+- **Expected**: error 'Could not open lrs output file.' (line 23)
+- **Source lines**: 22-23
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m`
+
+#### the file identifier is never closed
+
+- **Severity**: limitation
+- **Trigger**: any call, for example lrsSpecifyRows('x.ext') on a valid file
+- **Observed**: the identifier opened on line 20 stays in openedFiles() after the call (identifier 3 after the first call, 3 and 4 after a second call that stopped with an error); there is no fclose
+- **Expected**: no open file left behind; this test closes the identifiers the function leaves open
+- **Source lines**: 20
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m`
 
 ### `src/analysis/topology/extremeRays/optimalRays/greedyExtremeRayBasis.m`
 
@@ -2014,6 +2241,17 @@
 - **Expected**: a message naming colBool, 'length of colBool must equal size(A,2)'
 - **Source lines**: 72
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testGetCorrespondingRows.m`
+
+### `src/analysis/topology/graphHypergraphConversion/convertHypergraphToBipartiteGraph.m`
+
+#### trailing empty hyperedges are missing from A and B
+
+- **Severity**: wrong-result
+- **Trigger**: [A, B] = convertHypergraphToBipartiteGraph([-1 0 0; 2 -1 0]) (m = 2, n = 3, the last hyperedge empty); also convertHypergraphToBipartiteGraph(zeros(2, 2))
+- **Observed**: size(A) = [4 4] and size(B) = [4 3] (R2025a, 2026-11-15); for zeros(2, 2) A and B are 0 x 0. B = sparse(rowIndices, colIndices, values) (line 46) takes its row count from the largest index, m + the last nonempty column, and A = inc2adj(B ~= 0) (line 56) inherits it, so an empty hyperedge in the middle is kept as an isolated node but one at the end is not
+- **Expected**: size(A) = [5 5] and size(B) = [5 3] with node 5 isolated (OUTPUTS: "A: (m+n) x (m+n) adjacency matrix", "B: (m+n) x nnz(S) incidence matrix"); for zeros(2, 2) a 4 x 4 zero A and a 4 x 0 B
+- **Source lines**: 46, 56
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testConvertHypergraphToBipartiteGraph/testConvertHypergraph2BipartiteGraph.m`
 
 ### `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m`
 
@@ -2075,6 +2313,17 @@
 - **Source lines**: 110
 - **Documented in**: `test/verifiedTests/analysis/testReactingMoieties/testIdentifyAtomEquivalenceClasses.m`
 
+### `src/analysis/topology/reactingMoieties/identifyIsomorphicClasses.m`
+
+#### sanityChecks = true raises an error for any class with two or more members
+
+- **Severity**: unusable-option
+- **Trigger**: e = @(m) table([1 2], {m}, 'VariableNames', {'EndNodes', 'mets'}); n = @(i) table(i, 'VariableNames', {'AtomIndex'}); g = {graph(e('m1'), n([1; 2])); graph(e('m1'), n([3; 4])); graph(e('m2'), n([5; 6]))}; identifyIsomorphicClasses(g, 1)
+- **Observed**: error 'Inconsistent mapping of atoms to connected components.' (R2025a, 2026-11-15); with sanityChecks = 0 the classes are {[1 2], 3}, firsts [1; 3] and class indices [1; 1; 2]. Line 33 tests CBSubgraphs{j}.Nodes.AtomIndex ~= j, i.e. atom ids against the subgraph index, which can only pass if every node of subgraph j has AtomIndex j. The code this was ported from (conservedMoieties/old/identifyConservedMoietiesLegacyInterface.m, line 453) tests atoms2component(subgraphs{j}.Nodes.AtomIndex) ~= j. identifyConservedReactingMoieties passes options.sanityChecks (default 1), and testConservedReactingMoieties.m records sanityChecks = 1 as a known crash in this path
+- **Expected**: the same classes as with sanityChecks = 0 and no error, since each subgraph is its own connected component (INPUTS: "sanityChecks: boolean flag to enable additional consistency checks")
+- **Source lines**: 33-34
+- **Documented in**: `test/verifiedTests/analysis/testReactingMoieties/testIdentifyIsomorphicClasses.m`
+
 ### `src/analysis/topology/reactingMoieties/readABRXNFile.m`
 
 #### The two warnings about transition numbers print a literal backslash n
@@ -2094,6 +2343,37 @@
 - **Expected**: the atom table is returned and the bond table is not read, as the help text states
 - **Source lines**: 260
 - **Documented in**: `test/verifiedTests/analysis/testReactingMoieties/testReadABRXNFile.m`
+
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m`
+
+#### The progress message has no space before the food source name
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the default foodSource2Use
+- **Observed**: "Currently creating the individual database forsr_legacy_food" (strcat drops the trailing blank of its first argument)
+- **Expected**: "Currently creating the individual database for sr_legacy_food"
+- **Source lines**: 94
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m`
+
+#### brandedFoods = true always raises an error
+
+- **Severity**: unusable-option
+- **Trigger**: createUSDAdatabase(d, 'brandedFoods', true, 'foodSource2Use', {'sr_legacy_food'; 'foundation_food'}) with a folder d holding food.csv, food_nutrient.csv and usda2vmhInfoFile.xlsx (one branded_food item)
+- **Observed**: error "Colon operands must be real scalars." on line 127 (the loop bound size(brandedNames.fdc_id) is a 1x2 vector); past it, line 133 uses the undefined name foodsnutrients (the table is foodNutrients) and lines 145 and 151 save into the current folder instead of outputDir
+- **Expected**: the branded-food tables are created, as the help text says ("brandedFoods - boolean; if true the branded-foods source table is also created")
+- **Source lines**: 127, 133
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m`
+
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m`
+
+#### The shipped USDA food items file is not found
+
+- **Severity**: limitation
+- **Trigger**: getNutritionDatabaseFile('usda', 'foodItems') with the papers submodule
+- **Observed**: error "Could not find USDA2024_foodItems.mat in <toolbox>/papers/2025_nutritionToolbox/usdaDatabase or on the MATLAB path." - the shipped file is named USDAFoodItems.mat (also on the submodule's origin/master); createUSDAdatabase writes USDA<YEAR>_foodItems.mat, the name this function builds
+- **Expected**: the path of the shipped USDA food items file, as the help text lists 'foodItems' (usda) as a file type
+- **Source lines**: 85-90
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testGetNutritionDatabaseFile.m`
 
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m`
 
@@ -2199,6 +2479,17 @@
 - **Source lines**: 65-66
 - **Documented in**: `test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m`
 
+### `src/base/install/prepareTest.m`
+
+#### needsLinux makes every test skip on Linux
+
+- **Severity**: unusable-option
+- **Trigger**: prepareTest('needsLinux', true) on a 64-bit Linux machine
+- **Observed**: error COBRA:RequirementsNotMet "This test only works on Linux Systems" although isunix is 1; computer('arch') returns 'glnxa64' (probe output: "isunix=1 arch=glnxa64"), and line 177 compares it with 'glnx64', so the check always fails
+- **Expected**: no requirement error on Linux, as the help text says ("needsLinux: Whether the test only works on a Linux system")
+- **Source lines**: 177-179
+- **Documented in**: `test/verifiedTests/base/testInstall/testPrepareTest.m`
+
 ### `src/base/io/KEGG/mapKEGGID2Model.m`
 
 #### A dictionary abbreviation with several entries stops with an error
@@ -2289,6 +2580,17 @@
 - **Expected**: the help text: "to get this output without updating the Python path, use an empty string as the input: py_path = py_addpath('')" - sys.path unchanged
 - **Source lines**: 62-63, 67-69
 - **Documented in**: `test/verifiedTests/base/testPyPath/testPy_addpath.m`
+
+### `src/base/io/python/pyPath/py_rmpath.m`
+
+#### MATLAB_too = true always raises an error
+
+- **Severity**: error
+- **Trigger**: d = tempname; mkdir(d); sp = py.sys.path; sp.insert(int64(0), d); py_rmpath(d, true)
+- **Observed**: error "Undefined function 'rnpath' for input arguments of type 'char'." on line 48 (rnpath is a misspelling of rmpath); the folder has already been removed from sys.path, the MATLAB path is not changed and no output is returned
+- **Expected**: the folder removed from sys.path and from the MATLAB path, as the help text says ("If true (or 1), directory will also be removed from the MATLAB path")
+- **Source lines**: 47-48
+- **Documented in**: `test/verifiedTests/base/testPyPath/testPy_rmpath.m`
 
 ### `src/base/io/utilities/SBML/getDataBases.m`
 
@@ -2482,6 +2784,17 @@
 - **Expected**: name and compartment separated
 - **Source lines**: 36-38
 - **Documented in**: `test/verifiedTests/base/testTools/testParseMetNames.m`
+
+### `src/base/paths/comparePaths.m`
+
+#### Python path entries with blanks are reported as differences
+
+- **Severity**: limitation
+- **Trigger**: setenv('PYTHONPATH', fullfile(d, 'a b')) before MATLAB's Python starts, then comparePaths('PYTHON')
+- **Observed**: system_not_matlab = {'<d>/ab'} and matlab_not_system = {'<d>/a b', ...}; line 39 deletes every blank of the system entries (meant for the blanks after the commas of the printed list), and lines 32-40 also split entries that contain a comma or quote
+- **Expected**: the entry '<d>/a b' common to both sides
+- **Source lines**: 32-40
+- **Documented in**: `test/verifiedTests/base/testPaths/testComparePaths.m`
 
 ### `src/base/removeGeneVersions.m`
 
@@ -3005,6 +3318,26 @@
 - **Source lines**: 41-46, 52-53
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testGetChargeFromInChI.m`
 
+### `src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m`
+
+#### A formula that loses all its hydrogen atoms keeps one H
+
+- **Severity**: wrong-result
+- **Trigger**: getFormulaFromInChI('InChI=1S/H2O4S/c1-5(2,3)4/h(H2,1,2,3,4)/p-2') (sulfate; also phosphate 'InChI=1S/H3O4P/c1-5(2,3)4/h(H3,1,2,3,4)/p-3' and carbonate 'InChI=1S/CH2O3/c2-1(3)4/h(H2,2,3,4)/p-2')
+- **Observed**: formula 'HO4S', protons = 0 (phosphate 'HO4P', carbonate 'CHO3'); the H coefficient 0 is written as 'H0' (lines 59-64) and lines 72-79 replace 'H0' by 'H'
+- **Expected**: 'O4S' (phosphate 'O4P', carbonate 'CO3'), protons = 0
+- **Source lines**: 59-64, 72-79
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m`
+
+#### Element counts are assigned to the wrong elements on the combining path
+
+- **Severity**: wrong-result
+- **Trigger**: getFormulaFromInChI('InChI=1S/C2H3Cl/c1-2-3/h2H,1H2/p+1') (any InChI with a /p layer or a composite or multiplied formula whose element order differs from alphabetical order, e.g. one containing Cl, Co, Br, Ca)
+- **Observed**: formula 'C2Cl3H2', protons = 2; line 50 sorts the new elements alphabetically (setdiff) but line 55 adds the coefficients in the order of the formula layer, so Cl receives the 3 of H and H the 1 of Cl (plus the proton)
+- **Expected**: C2, H4, Cl1 (e.g. 'C2H4Cl') and protons = 4
+- **Source lines**: 50-55
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m`
+
 ### `src/dataIntegration/chemoInformatics/inchi/getInchiData.m`
 
 #### Negative charge layer gives NaN
@@ -3426,6 +3759,17 @@
 - **Expected**: the list of leaking reactions is returned
 - **Source lines**: 61
 - **Documented in**: `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m`
+
+### `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m`
+
+#### Formula numbers in error messages lose their zero padding inside parentheses
+
+- **Severity**: cosmetic
+- **Trigger**: getElementalComposition({'H2O'; 'h2o'; 'H2O'; 'H2O'; 'H2O'; 'H2O'; '(cD)'; 'H2O'; 'H2O'; 'H2O'}) (ten or more formulae, one failing inside or next to a parenthesis)
+- **Observed**: "#02:  h2o" but "#7:  (cD)" in the same message; the nested function uses the digit count of the recursive call that found the error (line 80 of that call: one formula, one digit)
+- **Expected**: the same width for every formula number ("#07:  (cD)")
+- **Source lines**: 252
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m`
 
 ### `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m`
 

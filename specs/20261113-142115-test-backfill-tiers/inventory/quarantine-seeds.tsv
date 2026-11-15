@@ -84,3 +84,11 @@ nullSpaceOperator	NONE
 lsqr	src/analysis/subspaces/lsqr/lsqrtest.m
 # configCMatrix: reached through loadModular('CMatrix') (str2func of the module name); configPolytopeSimplifier makes that call.
 configCMatrix	src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m
+# CMatrix, ddouble, qdouble: only the sparse triplet constructor CMatrix(i,j,s,...) is defective; no src caller uses it.
+CMatrix	NONE
+ddouble	NONE
+qdouble	NONE
+# prepareTest: only the needsLinux option fails; no src file passes it.
+prepareTest	NONE
+# py_rmpath: only MATLAB_too = true fails; the only caller (initPythonEnvironment) passes 0.
+py_rmpath	NONE

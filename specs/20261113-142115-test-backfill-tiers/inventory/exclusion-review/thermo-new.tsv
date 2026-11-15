@@ -1,0 +1,8 @@
+file	decision	reason
+src/analysis/thermo/groupContribution/new/regulariseGroupIncidenceMatrix.m	EXCLUDE	not on the MATLAB path: initCobraToolbox removes the thermo/*/new folders (shadowed by the old/ copy where one exists)
+src/analysis/thermo/inchi/new/createInChIStruct.m	EXCLUDE	not on the MATLAB path: initCobraToolbox removes the thermo/*/new folders (shadowed by the old/ copy where one exists)
+src/analysis/thermo/protons/new/assignpKasToSpecies.m	EXCLUDE	not on the MATLAB path: initCobraToolbox removes the thermo/*/new folders (shadowed by the old/ copy where one exists)
+src/analysis/thermo/trainingModel/new/reverseTransformTrainingData.m	EXCLUDE	not on the MATLAB path: initCobraToolbox removes the thermo/*/new folders (shadowed by the old/ copy where one exists)
+src/analysis/thermo/trainingModel/new/checkForMissingStereo.m	EXCLUDE	not on the MATLAB path: initCobraToolbox removes the thermo/*/new folders (shadowed by the old/ copy where one exists)
+src/analysis/thermo/groupContribution/new/getMappingScores.m	EXCLUDE	not on the MATLAB path: initCobraToolbox removes the thermo/*/new folders (shadowed by the old/ copy where one exists)
+src/analysis/thermo/componentContribution/new/componentContribution.m	EXCLUDE	not on the MATLAB path: initCobraToolbox removes the thermo/*/new folders (shadowed by the old/ copy where one exists)
