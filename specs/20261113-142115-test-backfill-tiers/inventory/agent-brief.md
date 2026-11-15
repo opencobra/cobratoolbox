@@ -126,6 +126,12 @@ lines, leftover state, message).
   branches without the real installation (see `testGetCobraSolverVersion.m`), as long as everything
   is restored.
 
+## Privacy
+
+The repository is public. Never write absolute machine paths (your temporary or scratch folder,
+the home folder, the repository's absolute path), user names or e-mail addresses into a test, a
+result record or notes: use repository-relative paths, `tempname`, or "<scratch folder>".
+
 ## What you return
 
 Write `$F/inventory/results/waveNN-s.jsonl`, one record per row of your slice, exactly as
