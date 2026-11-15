@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	113	src/analysis/persephone/runSeqC.m	1	external-program		getDirectorySize	runPersephone	
+a	138	src/analysis/sampling/calcSampleStats.m	1				printSampleStats	
+a	139	src/analysis/sampling/compareTwoSamplesStat.m	1					
+a	140	src/analysis/sampling/loadSamples.m	1				sampleCbModel,summarizeSamplingResults	
+a	137	src/analysis/sampling/BarrierRound/logBarrierRound.m	1				chrrSampler	
+a	120	src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m	1				compileCMatrix	
+a	134	src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifierTest.m	1					
+a	118	src/analysis/sampling/BarrierRound/utils/isarm.m	1	external-program			AdaptiveChol,CMatrix,compileCMatrix,ddouble,qdouble	
+a	121	src/analysis/sampling/BarrierRound/utils/compile.m	1				compileCMatrix	
+a	132	src/analysis/sampling/BarrierRound/utils/loadModular.m	1				configPolytopeSimplifier,demo,runPolytopeSimplifierTest	
+b	144	src/analysis/subspaces/lsqr/lsqr.m	1				lsqrtest	
+b	142	src/analysis/subspaces/nullspace/nullSpaceOperator.m	1				fourFundamentalSubpaces,getNullSpace	
+b	145	src/analysis/subspaces/rank/getRankLUSOL.m	1				checkModelProperties,checkNullspaceBasis,checkRankFR,extremePools,generateFullRowRankFR,greedyExtremeRayBasis,identifyConservedMoieties,identifyConservedReactingMoieties,testFRconnectedness	
+b	146	src/analysis/subspaces/subspaceProjection/subspaceProjector.m	1				componentContribution,projectOntoSubspace	
+b	158	src/analysis/thermo/componentContribution/new/invertProjection.m	1				componentContribution	
+b	169	src/analysis/thermo/directionalityReport/directionalityStatsFigures.m	1				analyseThermoConstrainedModel	
+b	174	src/analysis/thermo/groupContribution/jankowski/createGroupContributionStruct.m	1					
+b	153	src/analysis/thermo/groupContribution/new/getGroupVectorFromInchi.m	1	external-program			createGroupIncidenceMatrix	
+b	160	src/analysis/thermo/inchi/mol2inchi.m	1	external-program			createInChIStruct	
+b	176	src/analysis/thermo/inchi/inchi2mol.m	1	external-program				
+c	161	src/analysis/thermo/inchi/new/sdf2inchi.m	1	external-program			createInChIStruct	
+c	163	src/analysis/thermo/molFiles/new/mol2sdf.m	1				addInchiToModel,setupComponentContribution,setupComponentContribution	
+c	171	src/analysis/thermo/reactantContribution/calcdGHT.m	1				acidDissociationConstant,assignThermoToModel,estimateDG_temp,estimateDfGt0,moleFraction	
+c	156	src/analysis/thermo/trainingModel/new/loadTrainingData.m	1				addThermoToModel,createTrainingModel,prepareTrainingData	
+c	147	src/base/io/python/pyPath/py_addpath.m	1				autoFragment,writeModelinJSON	
+c	148	src/base/io/python/pyPath/get_py_path.m	1				autoFragment,comparePaths,py_rmpath,writeModelinJSON	
+c	172	src/base/solvers/getSetSolver/getAvailableSolversByType.m	1				prepareTest	
+c	154	src/base/utilities/duplicates.m	1				check4DuplicatesInList,regulariseGroupIncidenceMatrix	
+c	166	src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m	1				getFormulaAndChargeFromInChI,modelMetabolitesToSDF	
+c	164	src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m	1				addPseudoisomersToModel,assignpKasToSpecies,balancecheck,checkBalance,checkFormulae,constructElementalMatrix,createComputedSpeciesData,dGfzeroGroupContToBiochemical,deltaG0concFluxConstraintBounds,estimateDG_temp,estimateDrGt0,getFormulaFromInChI,getMolecularMass,ispolymer,pHbalanceProtons,setupComponentContribution,setupComponentContribution	

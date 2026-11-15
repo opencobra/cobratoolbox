@@ -8,3 +8,9 @@ src/reconstruction/refinement/GPRLogic/Node.m	src/reconstruction/refinement/GPRL
 src/analysis/persephone/performRegressions.m	src/base/utilities/toolboxFree/cobraGeneralizedLinearModel.m
 src/analysis/rMTA/calculateEPSILON.m	src/base/utilities/toolboxFree/cobraTinv.m
 src/reconstruction/refinement/GPRLogic/FormulaParser.m	src/reconstruction/refinement/GPRLogic/Node.m
+src/analysis/sampling/BarrierRound/logBarrierRound.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m
+src/analysis/sampling/BarrierRound/logBarrierRound.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m
+src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifierTest.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m
+src/analysis/sampling/BarrierRound/logBarrierRound.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m
+src/analysis/sampling/BarrierRound/logBarrierRound.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m
+src/analysis/sampling/BarrierRound/PolytopeSimplifier/coverage/PolytopeSimplifierTest.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m

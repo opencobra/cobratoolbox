@@ -73,3 +73,14 @@ getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/minCar
 # nowhere in src/; the only call of removeDuplicateLiterals (combineChildren.m:64) is on a CNF
 # clause flattened by reduce(), whose children are all literals, so no caller reaches the defects.
 Node	NONE
+# getRankLUSOL: only the third output q is wrong (zero columns); callers that take q reach it.
+getRankLUSOL	src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m
+getRankLUSOL	src/analysis/topology/FR/checkRankFR.m
+getRankLUSOL	src/analysis/topology/extremeRays/lrs/extremePools.m
+getRankLUSOL	src/analysis/topology/FR/testFRconnectedness.m
+# nullSpaceOperator: only scale = 0 fails; both callers (fourFundamentalSubpaces, getNullSpace) pass 1.
+nullSpaceOperator	NONE
+# lsqr: fails only with 4 or more outputs (r1norm unassigned); lsqrtest requests 7 outputs.
+lsqr	src/analysis/subspaces/lsqr/lsqrtest.m
+# configCMatrix: reached through loadModular('CMatrix') (str2func of the module name); configPolytopeSimplifier makes that call.
+configCMatrix	src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m

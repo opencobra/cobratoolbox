@@ -126,7 +126,12 @@ lines, leftover state, message).
 Write `$F/inventory/results/waveNN-s.jsonl`, one record per row of your slice, exactly as
 `contracts/agent-result.md` says (`lines` = number of executable lines from the final coverage run,
 `missed` = missed line numbers, `exempt` = the missed lines you documented). Add run-time calls to
-`src/` functions that your row's `untested_callees` does not list to `extra_edges`.
+`src/` functions that your row's `untested_callees` does not list to `extra_edges` only when the
+function makes them for every input; a call whose target depends on an argument (`str2func`,
+`feval` of a name built from an input) goes into `notes`, naming the argument value that leads to
+it. Open Babel (`obabel`, `babel`) cannot run from MATLAB on this machine: treat it as not
+installed. Folders `src/analysis/thermo/*/new` are not on the MATLAB path (initCobraToolbox removes
+them): rows there are EXCLUDED as not on the path.
 
 Your final message: one line per row (`<name>: STATUS — short note`) plus anything the lead must
 decide. Do not edit `src/`, other tests, the ledger, the brief, or git state (no add, no commit).

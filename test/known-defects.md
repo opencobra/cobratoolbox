@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-357 known defects in 194 functions (124 wrong-result, 108 error, 24 unusable-option, 52 cosmetic, 49 limitation).
+374 known defects in 207 functions (129 wrong-result, 111 error, 25 unusable-option, 56 cosmetic, 53 limitation).
 
 ## Summary
 
@@ -133,15 +133,24 @@
 | `src/analysis/sampling/ACHR/gpSampler.m` | unusable-option | The distributed sampler does not exist | `test/verifiedTests/analysis/testSampling/testGpSampler.m` |
 | `src/analysis/sampling/ACHR/verifyPoints.m` | error | One point stops with an error when a sense has a single row | `test/verifiedTests/analysis/testSampling/testVerifyPoints.m` |
 | `src/analysis/sampling/ACHR/verifyPoints.m` | wrong-result | errorsA gives row numbers within the constraints of one sense, not rows of A | `test/verifiedTests/analysis/testSampling/testVerifyPoints.m` |
+| `src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m` | error | Every call stops because the parent script config does not exist | `test/verifiedTests/analysis/testSampling/testConfigCMatrix.m` |
 | `src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m` | error | step_size fails for more than one point | `test/verifiedTests/analysis/testSampling/testTwoSidedBarrier.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | error | A format without a width gives a NaN length and header fails | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | wrong-result | The blank that separates the columns is dropped | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
+| `src/analysis/sampling/compareTwoSamplesStat.m` | wrong-result | The chi-square p values are cumulative probabilities, near 0 for identical samples | `test/verifiedTests/analysis/testSampling/testCompareTwoSamplesStat.m` |
+| `src/analysis/sampling/loadSamples.m` | wrong-result | More points than pointsPerFile are taken from a file at regular intervals | `test/verifiedTests/analysis/testSampling/testLoadSamples.m` |
+| `src/analysis/subspaces/lsqr/lsqr.m` | cosmetic | The x = 0 message is printed even when show = 0 | `test/verifiedTests/analysis/testSubspaces/testLsqr.m` |
+| `src/analysis/subspaces/lsqr/lsqr.m` | error | r1norm and r2norm are not assigned when A'*b = 0 | `test/verifiedTests/analysis/testSubspaces/testLsqr.m` |
 | `src/analysis/subspaces/lsqr/lsqrtest.m` | cosmetic | The function handle is printed by a statement without a semicolon | `test/verifiedTests/analysis/testSubspaces/testLsqrtest.m` |
+| `src/analysis/subspaces/nullspace/nullSpaceOperator.m` | unusable-option | The option scale = 0 always fails | `test/verifiedTests/analysis/testSubspaces/testNullSpaceOperator.m` |
+| `src/analysis/subspaces/rank/getRankLUSOL.m` | wrong-result | q is wrong when A has a zero column | `test/verifiedTests/analysis/testRank/testGetRankLUSOL.m` |
 | `src/analysis/thermo/experimentalData/alberty2006/adjustBaselinesInAlberty2006.m` | wrong-result | The reduced glutathione energies are halved together with the baseline | `test/verifiedTests/analysis/testThermo/testAdjustBaselinesInAlberty2006.m` |
 | `src/analysis/thermo/formulae/checkFormulae.m` | limitation | Elements other than C, H, O, P, S, K, Na and N are ignored | `test/verifiedTests/analysis/testThermo/testCheckFormulae.m` |
 | `src/analysis/thermo/groupContribution/createComputedSpeciesData.m` | error | A row structure array of species fails when two metabolites are included | `test/verifiedTests/analysis/testThermo/testCreateComputedSpeciesData.m` |
 | `src/analysis/thermo/groupContribution/createComputedSpeciesData.m` | wrong-result | The first group-contribution entry is used for every metabolite | `test/verifiedTests/analysis/testThermo/testCreateComputedSpeciesData.m` |
+| `src/analysis/thermo/groupContribution/jankowski/createGroupContributionStruct.m` | limitation | The input files are left open | `test/verifiedTests/analysis/testThermo/testCreateGroupContributionStruct.m` |
 | `src/analysis/thermo/inchi/getMolecularWeight.m` | wrong-result | Hydrogens are lost for an InChI whose formula starts with H | `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` |
+| `src/analysis/thermo/reactantContribution/calcdGHT.m` | limitation | The standard transformed enthalpy dHf0 is always NaN | `test/verifiedTests/analysis/testThermo/testCalcdGHT.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | error | A wrong input ends with an unassigned output | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | wrong-result | Method 3 without a vartype returns numbers instead of characters | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | wrong-result | A solution of the relaxed problem under param.debug is dropped | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
@@ -184,6 +193,8 @@
 | `src/base/io/convertCNAModelToCbModel.m` | error | Without CellNetAnalyzer an output is never assigned | `test/verifiedTests/base/testIO/testConvertCNAModelToCbModel.m` |
 | `src/base/io/definitions/descFileRead.m` | wrong-result | An empty line ends the reading | `test/verifiedTests/base/testIO/testDescFileRead.m` |
 | `src/base/io/definitions/descFileRead.m` | limitation | Short entries are padded with null characters, not blanks | `test/verifiedTests/base/testIO/testDescFileRead.m` |
+| `src/base/io/python/pyPath/py_addpath.m` | wrong-result | A relative folder is added as given, not converted to an absolute path | `test/verifiedTests/base/testPyPath/testPy_addpath.m` |
+| `src/base/io/python/pyPath/py_addpath.m` | wrong-result | The empty input adds the current folder to the Python path | `test/verifiedTests/base/testPyPath/testPy_addpath.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | wrong-result | Mixed matching and non-matching resources return nothing | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/SBML/getDataBases.m` | error | Third output unassigned when nothing matches | `test/verifiedTests/base/testIO/testUtilities/testGetDataBases.m` |
 | `src/base/io/utilities/SBML/makeSBMLAnnotationString.m` | wrong-result | A field of another is-qualifier is also annotated under the qualifier is | `test/verifiedTests/base/testIO/testUtilities/testMakeSBMLAnnotationString.m` |
@@ -215,6 +226,7 @@
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | error | A call without input stops instead of listing the defined solvers | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | A failed validation with printLevel above 0 keeps the failed solver selected | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | The problem type is matched as a substring | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
+| `src/base/solvers/getSetSolver/getAvailableSolversByType.m` | cosmetic | The output of initCobraToolbox is not silenced | `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m` |
 | `src/base/solvers/isCompatible.m` | wrong-result | The distributed compatibility matrix is not understood by the parser | `test/verifiedTests/base/testSolvers/testIsCompatible.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
 | `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | The error for a parameter that is not allowed always names LP solvers | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
@@ -236,6 +248,7 @@
 | `src/base/solvers/varKin/optimizeVKmodel0.m` | wrong-result | The steady state is dropped when the QR factor is a vector with a negative entry | `test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m` |
 | `src/base/solvers/verifyCobraProblem.m` | error | A NaN in x stops a call with more than one output | `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m` |
 | `src/base/solvers/verifyCobraProblem.m` | wrong-result | invalidConstraints names the wrong rows when senses are mixed | `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m` |
+| `src/base/utilities/duplicates.m` | limitation | A cell array with more than one column is compared element by element, so M is not m x m | `test/verifiedTests/base/testTools/testDuplicates.m` |
 | `src/base/utilities/getGlobalValue.m` | limitation | The value of a global named globalName cannot be read | `test/verifiedTests/base/testUtilities/testGetGlobalValue.m` |
 | `src/base/utilities/removeIndicesInDimenion.m` | cosmetic | The help text says the given indices are removed, but they are the ones kept | `test/verifiedTests/base/testTools/testRemoveIndicesInDimenion.m` |
 | `src/base/utilities/restoreEnvironment.m` | cosmetic | The printed path is cut at a folder name with a % sign | `test/verifiedTests/base/testUtilities/testRestoreEnvironment.m` |
@@ -252,6 +265,7 @@
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | cosmetic | The session display format is changed | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/chemoInformatics/deleteProtons.m` | wrong-result | Reactions that carried only protons are removed from the reaction fields but not from S | `test/verifiedTests/dataIntegration/testChemoInformatics/testDeleteProtons.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
+| `src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m` | error | An empty component of a multi-component charge layer stops with an error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetChargeFromInChI.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getInchiData.m` | wrong-result | Negative charge layer gives NaN | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetInchiData.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m` | wrong-result | A metabolite with a hyphen is overwritten by its next compartment | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/convertOld2NewHMDB.m` | limitation | Identifiers of 12 or more characters give an empty result | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertOld2NewHMDB.m` |
@@ -294,6 +308,9 @@
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
+| `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | A formula given as a cell or number stops with a MATLAB error, not the class error | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
+| `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | Output is printed at printLevel 0 | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
+| `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | limitation | Zero counts are replaced only when the formula holds a single zero | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | wrong-result | minSij is zero for every model with a zero in S | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | error | the randomised thermodynamic test can stop with an error | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | wrong-result | the sanity checks after the rank computation never fire | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
@@ -1633,6 +1650,17 @@
 - **Source lines**: 56-58, 63
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testVerifyPoints.m`
 
+### `src/analysis/sampling/BarrierRound/CMatrix/configCMatrix.m`
+
+#### Every call stops because the parent script config does not exist
+
+- **Severity**: error
+- **Trigger**: configCMatrix() (also loadModular('CMatrix'), after initCobraToolbox)
+- **Observed**: error MATLAB:UndefinedFunction 'Unrecognized function or variable 'config'.' at line 11 (MATLAB R2025a; which config -all finds nothing, and no config.m exists under src/analysis/sampling/BarrierRound); the BarrierRound folder added by line 10 stays at the top of the path and the include folder is never added.
+- **Expected**: the parent configuration runs (it is expected to set the global EIGEN_PATH that compileCMatrix reads) and the CMatrix include folder is added to the path
+- **Source lines**: 11, 13
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testConfigCMatrix.m`
+
 ### `src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m`
 
 #### step_size fails for more than one point
@@ -1664,6 +1692,48 @@
 - **Source lines**: 89, 115
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testTableDisplay.m`
 
+### `src/analysis/sampling/compareTwoSamplesStat.m`
+
+#### The chi-square p values are cumulative probabilities, near 0 for identical samples
+
+- **Severity**: wrong-result
+- **Trigger**: rng(1); s = randn(2, 200); [stats, pVals] = compareTwoSamplesStat(s, s, {'chiSquare'}) and compareTwoSamplesStat(s, s + 5, {'chiSquare'})
+- **Observed**: identical samples give stats.chisquare = [0; 0] and pVals.chisquare = [0; 0]; samples shifted by 5 standard deviations (no overlap) give stats.chisquare = [1.9604; 2.0000] and pVals.chisquare = [0.4193; 0.4276] (MATLAB R2025a). Line 75 returns the lower tail chi2cdf(stat, nBin - 1), and lines 70-73 compute the statistic from relative frequencies (counts / nSample), so it is at most 2 whatever the sample size.
+- **Expected**: p values of the chi-square test (upper tail of the statistic computed from the counts): 1 for identical samples and close to 0 for samples that do not overlap, as the other tests give (ks, ranksum and ttest p values are 1 for identical samples)
+- **Source lines**: 70-75
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testCompareTwoSamplesStat.m`
+
+### `src/analysis/sampling/loadSamples.m`
+
+#### More points than pointsPerFile are taken from a file at regular intervals
+
+- **Severity**: wrong-result
+- **Trigger**: points = [1:8 0 0; 11:18 0 0]; save('samples_1.mat', 'points'); loadSamples('samples', 1, 3) (and in general whenever pointsPerFile does not divide the number of points of a file)
+- **Observed**: 4 points (columns 1, 3, 5, 7) are returned: the step floor(8 / 3) = 2 gives ceil(8 / 2) points; loadSamples('samples', 1, 5) returns all 8 points (MATLAB R2025a). Up to 2 * pointsPerFile - 1 points can be returned per file.
+- **Expected**: the documented number of points to be taken from each file (pointsPerFile), as the random selection does
+- **Source lines**: 50-51
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testLoadSamples.m`
+
+### `src/analysis/subspaces/lsqr/lsqr.m`
+
+#### The x = 0 message is printed even when show = 0
+
+- **Severity**: cosmetic
+- **Trigger**: x = lsqr(4, 3, aprod, zeros(4, 1), 0, 1e-12, 1e-12, 1e8, 10, 0) with the aprod above
+- **Observed**: 'The exact solution is  x = 0' printed (disp without the show test)
+- **Expected**: no output when show = 0 ("0 - suppresses output")
+- **Source lines**: 143
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testLsqr.m`
+
+#### r1norm and r2norm are not assigned when A'*b = 0
+
+- **Severity**: error
+- **Trigger**: aprod = @(mode, m, n, x) lsqraprod(mode, m, n, x, 0, 0); [x, istop, itn, r1norm] = lsqr(4, 3, aprod, zeros(4, 1), 0, 1e-12, 1e-12, 1e8, 10, 0)
+- **Observed**: 'Output argument "r1norm" (and possibly others) not assigned a value in the execution with "lsqr" function.' (R2025a, 2026-11-15; also with A = [1 0; 0 2; 0 0] and b = [0; 0; 5], which is orthogonal to range(A)); the early return of line 143 (arnorm = alfa*beta = 0) comes before r1norm and r2norm are set on lines 147-148. With two outputs the call returns x = 0, istop = 0.
+- **Expected**: x = 0 (the documented message "The exact solution is x = 0" for b = 0, and the least-squares solution for b orthogonal to range(A)) with r1norm = norm(b), r2norm = r1norm, as OUTPUTS document
+- **Source lines**: 143, 147-148
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testLsqr.m`
+
 ### `src/analysis/subspaces/lsqr/lsqrtest.m`
 
 #### The function handle is printed by a statement without a semicolon
@@ -1674,6 +1744,28 @@
 - **Expected**: no output for the assignment (debug leftover)
 - **Source lines**: 33
 - **Documented in**: `test/verifiedTests/analysis/testSubspaces/testLsqrtest.m`
+
+### `src/analysis/subspaces/nullspace/nullSpaceOperator.m`
+
+#### The option scale = 0 always fails
+
+- **Severity**: unusable-option
+- **Trigger**: nullSpaceOperator(sparse([1 -1 0 0; 0 1 -1 0]), 0, 0)
+- **Observed**: "Unrecognized function or variable 'A'." at line 151 (R2025a, 2026-11-15); A (and Cinv, used on line 227) are assigned only on lines 79-81 inside "if scale"
+- **Expected**: the operator of the unscaled S (INPUTS: "scale: {(1), 0} geometric mean scaling of S"), e.g. rank 2 for the matrix above, as with scale = 1
+- **Source lines**: 72-90, 151, 227
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testNullSpaceOperator.m`
+
+### `src/analysis/subspaces/rank/getRankLUSOL.m`
+
+#### q is wrong when A has a zero column
+
+- **Severity**: wrong-result
+- **Trigger**: [rankA, p, q] = getRankLUSOL([0 1 2; 0 2 5])
+- **Observed**: rankA = 2, q = [2; 1; 1] (R2025a, 2026-11-15, LUSOL); q(1:2) = [2 1] includes the zero column 1 (rank(A(:, q(1:2))) = 1), column 3 is missing and 1 is repeated. [1 0 2; 2 0 5; 1 0 1] gives q = [2; 1; 2]. The pivot order of the reduced matrix A(:, ~bool) (line 65) is used as column indices of A, then ind(bool) is appended (lines 199-201)
+- **Expected**: q a permutation of 1:3 with q(1:2) = the independent columns 2 and 3 and q(3) = 1 (OUTPUTS: "q(1:rankA) gives indices of independent columns"; comment of line 198: "pad out q in case some columns are dropped")
+- **Source lines**: 62-66, 199-201
+- **Documented in**: `test/verifiedTests/analysis/testRank/testGetRankLUSOL.m`
 
 ### `src/analysis/thermo/experimentalData/alberty2006/adjustBaselinesInAlberty2006.m`
 
@@ -1717,6 +1809,17 @@
 - **Source lines**: 47, 51
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testCreateComputedSpeciesData.m`
 
+### `src/analysis/thermo/groupContribution/jankowski/createGroupContributionStruct.m`
+
+#### The input files are left open
+
+- **Severity**: limitation
+- **Trigger**: createGroupContributionStruct(primaryFile, 7, secondaryFile) with two readable files
+- **Observed**: the file identifiers opened on lines 50 and 75 are never closed (no fclose); this test closes them itself
+- **Expected**: the files closed after reading
+- **Source lines**: 50, 75
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testCreateGroupContributionStruct.m`
+
 ### `src/analysis/thermo/inchi/getMolecularWeight.m`
 
 #### Hydrogens are lost for an InChI whose formula starts with H
@@ -1727,6 +1830,17 @@
 - **Expected**: a molecular weight of 18 and 2 hydrogens for water
 - **Source lines**: 41-61
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m`
+
+### `src/analysis/thermo/reactantContribution/calcdGHT.m`
+
+#### The standard transformed enthalpy dHf0 is always NaN
+
+- **Severity**: limitation
+- **Trigger**: any call, e.g. calcdGHT(-100, -50, -1, 3, 7, 0.25, 298.15)
+- **Observed**: dHf0 = NaN; line 195 sets dHzero = [] before the enthalpy branch ("makes script faster to leave this out for now")
+- **Expected**: the documented output "reactant standard transformed enthalpy of formation"
+- **Source lines**: 195-196, 411
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testCalcdGHT.m`
 
 ### `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m`
 
@@ -2156,6 +2270,26 @@
 - **Source lines**: 40
 - **Documented in**: `test/verifiedTests/base/testIO/testDescFileRead.m`
 
+### `src/base/io/python/pyPath/py_addpath.m`
+
+#### A relative folder is added as given, not converted to an absolute path
+
+- **Severity**: wrong-result
+- **Trigger**: d = tempname; mkdir(fullfile(d, 'sub')); cd(d); p = py_addpath('sub')
+- **Observed**: the entry 'sub' is added ("after py_addpath('sub'): added = sub"); Python resolves it against its working folder, which follows MATLAB's cd, so the folder is lost after a change of directory. exist('sub', 'dir') is 7, so the conversion on line 63 is skipped for every existing folder
+- **Expected**: the absolute path fullfile(d, 'sub'), as the comment on line 61 ("Convert relative path to absolute path") states
+- **Source lines**: 62-63
+- **Documented in**: `test/verifiedTests/base/testPyPath/testPy_addpath.m`
+
+#### The empty input adds the current folder to the Python path
+
+- **Severity**: wrong-result
+- **Trigger**: d = tempname; mkdir(d); cd(d); p = py_addpath('')
+- **Observed**: sys.path gains d as its second entry (probe output: "after py_addpath(''): added = <d>"); exist('', 'dir') is 0, so line 63 replaces '' with py.os.path.abspath(''), the current folder, which lines 67-69 insert
+- **Expected**: the help text: "to get this output without updating the Python path, use an empty string as the input: py_path = py_addpath('')" - sys.path unchanged
+- **Source lines**: 62-63, 67-69
+- **Documented in**: `test/verifiedTests/base/testPyPath/testPy_addpath.m`
+
 ### `src/base/io/utilities/SBML/getDataBases.m`
 
 #### Mixed matching and non-matching resources return nothing
@@ -2465,6 +2599,17 @@
 - **Source lines**: 364, 376
 - **Documented in**: `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m`
 
+### `src/base/solvers/getSetSolver/getAvailableSolversByType.m`
+
+#### The output of initCobraToolbox is not silenced
+
+- **Severity**: cosmetic
+- **Trigger**: global SOLVERS; SOLVERS = []; getAvailableSolversByType()
+- **Observed**: the full initCobraToolbox output is printed (banner, solver checks, "Saving the MATLAB path ... Done.", the solver summary table); ENV_VARS on lines 17 and 19 is a local variable (not declared global), so setting ENV_VARS.printLevel has no effect
+- **Expected**: initCobraToolbox runs with the global ENV_VARS.printLevel false, then restored
+- **Source lines**: 17, 19
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m`
+
 ### `src/base/solvers/isCompatible.m`
 
 #### The distributed compatibility matrix is not understood by the parser
@@ -2676,6 +2821,17 @@
 - **Source lines**: 335, 341, 347
 - **Documented in**: `test/verifiedTests/base/testSolvers/testVerifyCobraProblem.m`
 
+### `src/base/utilities/duplicates.m`
+
+#### A cell array with more than one column is compared element by element, so M is not m x m
+
+- **Severity**: limitation
+- **Trigger**: [M, duplicateBool] = duplicates({'a', 'a', 'b'})
+- **Observed**: M = [0 1] (1 x 2) and duplicateBool = [0; 1] (2 x 1) for an input with one row
+- **Expected**: M of size m x m and duplicateBool of size m x 1 (m = 1 here), as documented
+- **Source lines**: 50
+- **Documented in**: `test/verifiedTests/base/testTools/testDuplicates.m`
+
 ### `src/base/utilities/getGlobalValue.m`
 
 #### The value of a global named globalName cannot be read
@@ -2837,6 +2993,17 @@
 - **Expected**: C2H6
 - **Source lines**: 71-74
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m`
+
+### `src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m`
+
+#### An empty component of a multi-component charge layer stops with an error
+
+- **Severity**: error
+- **Trigger**: getChargeFromInChI('InChI=1S/Na.H2O/h;1H2/q+1;/p-1') (sodium hydroxide); getChargeFromInChI('InChI=1S/2C2H4O2.Ca/c2*1-2(3)4;/h2*1H3,(H,3,4);/q;+2/p-2') (calcium acetate); standard InChI leaves the charge of an uncharged component empty
+- **Observed**: "Error: This statement is incomplete." raised by eval('') in the anonymous function on line 43 (strsplit of '+1;' or ';+2' gives an empty component)
+- **Expected**: an empty component counts as 0: sodium hydroxide charge 0 and chargeWithoutProtons +1; calcium acetate charge 0 and chargeWithoutProtons +2
+- **Source lines**: 41-46, 52-53
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testGetChargeFromInChI.m`
 
 ### `src/dataIntegration/chemoInformatics/inchi/getInchiData.m`
 
@@ -3259,6 +3426,35 @@
 - **Expected**: the list of leaking reactions is returned
 - **Source lines**: 61
 - **Documented in**: `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m`
+
+### `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m`
+
+#### A formula given as a cell or number stops with a MATLAB error, not the class error
+
+- **Severity**: cosmetic
+- **Trigger**: numAtomsOfElementInFormula({'C2'}, 'C')
+- **Observed**: a warning (line 41), then "Invalid data type. Argument must be numeric, char, or logical." from line 48
+- **Expected**: "Formula must be given by a variable of class char" (line 126)
+- **Source lines**: 46-48
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m`
+
+#### Output is printed at printLevel 0
+
+- **Severity**: cosmetic
+- **Trigger**: numAtomsOfElementInFormula('2H2O', 'H', 0); numAtomsOfElementInFormula('CH0', 'H', 0)
+- **Observed**: the formula is displayed (line 39), and "Formula before:" / "Formula after:" lines are printed (lines 49, 52), whatever printLevel is
+- **Expected**: no output at printLevel 0
+- **Source lines**: 39, 49, 52
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m`
+
+#### Zero counts are replaced only when the formula holds a single zero
+
+- **Severity**: limitation
+- **Trigger**: numAtomsOfElementInFormula('C10H0', 'H', 0); numAtomsOfElementInFormula('H0O0', 'O', 0)
+- **Observed**: 'C10H0' returns 0 without the replacement (while 'CH0' is replaced by 'CH' and returns 1); 'H0O0' stops with the error "Colon operands must be real scalars." (line 51)
+- **Expected**: every letter followed by a zero treated as for 'CH0', without an error
+- **Source lines**: 47-53
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m`
 
 ### `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m`
 
