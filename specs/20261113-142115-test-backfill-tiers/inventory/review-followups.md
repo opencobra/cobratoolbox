@@ -72,4 +72,14 @@ multi-function. A later change should merge or rename them so that each function
   the cause is in the external preprocess/genSamples code (reproduction in the wave 16 slice a
   record of chrrExpSampler). fluxVariability reported maxFlux 10 for R_in despite a coupling
   constraint R1 + R2 <= 8 in the chrrSampler set-up (wave 15 slice c record; not verified further).
+- Missing external software and output arguments: convertCbModelToCNAModel's test records "output
+  not assigned without CellNetAnalyzer" as cosmetic, its sibling testConvertCNAModelToCbModel
+  records the same behaviour as error. One reading should be chosen for both (the campaign treats a
+  missing program as an environment condition, not a documented input).
+- External CNAcobra2cna (not under src/) fails when a metabolite name is longer than the number of
+  metabolites (wave 18 slice b record of convertCbModelToCNAModel).
+- compareInchis stores the number of stereochemical sub-layers in a logical column, so three
+  sub-layers read as one; the header does not document the column, so the test pins the behaviour.
+- mapExpressionToReactions is already tested by testPreprocessing.m; its significance branch
+  (lines 46, 69-70) is not reached there.
 

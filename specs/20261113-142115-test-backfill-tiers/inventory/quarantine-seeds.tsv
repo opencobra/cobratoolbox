@@ -148,3 +148,5 @@ SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyComFVA.m
 SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyComPOA.m
 # changeRxnMets: only a numeric Rxn is defective; the only caller (GPR2models) passes a reaction name.
 changeRxnMets	NONE
+# addMetInfoInCBmodel: replace = true and struct inputData fail; atomicallyResolveModel forwards param.replaceMetID as replace.
+addMetInfoInCBmodel	src/dataIntegration/chemoInformatics/atomicallyResolveModel.m
