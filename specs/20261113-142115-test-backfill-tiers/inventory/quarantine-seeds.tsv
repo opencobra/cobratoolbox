@@ -152,3 +152,5 @@ changeRxnMets	NONE
 addMetInfoInCBmodel	src/dataIntegration/chemoInformatics/atomicallyResolveModel.m
 # estimateDrGt0: only a model with field R fails; its only caller setupThermoModel removes R first.
 estimateDrGt0	NONE
+# saveInputsOptForce: only called by optForce when keepInputs is true (the user's option).
+saveInputsOptForce	src/design/optForce/optForce.m

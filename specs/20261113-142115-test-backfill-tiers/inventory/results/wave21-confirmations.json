@@ -1,0 +1,6 @@
+{
+ "plotFRresults": "lead (writer's MATLAB reproductions: line 89 divides the wrong way and reads the last model; rank reports at lines 66 and 75 wrong)",
+ "createMoietyGraph": "lead (writer's MATLAB reproduction: a metabolite not on the cycle shifts edge weights to the wrong metabolites, lines 66-67)",
+ "readGeneRules": "lead (writer's MATLAB reproduction: any parenthesised rule stops at line 83, so ecoli_core_model fails; reactionKO2term points to the wrong terms)",
+ "saveInputsOptForce": "lead (writer's MATLAB reproduction: the documented outputs k.mat and nSets.mat are never written)"
+}

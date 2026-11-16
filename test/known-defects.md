@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-732 known defects in 409 functions (255 wrong-result, 214 error, 65 unusable-option, 123 cosmetic, 75 limitation).
+748 known defects in 420 functions (261 wrong-result, 217 error, 66 unusable-option, 126 cosmetic, 78 limitation).
 
 ## Summary
 
@@ -246,6 +246,9 @@
 | `src/analysis/topology/FR/largestConnectedFR.m` | wrong-result | The column output is read from the row nodes and has m entries | `test/verifiedTests/analysis/testTopology/testLargestConnectedFR.m` |
 | `src/analysis/topology/FR/makeFRresultsTable.m` | limitation | a model missing from modelMetaData has no column | `test/verifiedTests/analysis/testTopology/testMakeFRresultsTable.m` |
 | `src/analysis/topology/FR/makeFRresultsTable.m` | cosmetic | the default results folder is one developer's personal folder | `test/verifiedTests/analysis/testTopology/testMakeFRresultsTable.m` |
+| `src/analysis/topology/FR/plotFRresults.m` | wrong-result | Reconstructions with few stoichiometrically consistent rows are never reported | `test/verifiedTests/analysis/testTopology/testPlotFRresults.m` |
+| `src/analysis/topology/FR/plotFRresults.m` | wrong-result | Row rank deficiency of [F,R] and [Fb,Rb] is misreported | `test/verifiedTests/analysis/testTopology/testPlotFRresults.m` |
+| `src/analysis/topology/FR/plotFRresults.m` | limitation | The optional input modelMetaData cannot be omitted | `test/verifiedTests/analysis/testTopology/testPlotFRresults.m` |
 | `src/analysis/topology/conservedMoieties/classifyMoieties.m` | wrong-result | isSecondary is returned as a row vector, not m x 1 | `test/verifiedTests/analysis/testConservedMoieties/testClassifyMoieties.m` |
 | `src/analysis/topology/conservedMoieties/constructElementalMatrix.m` | error | Every call stops because atomicNumbers.mat is missing | `test/verifiedTests/analysis/testConservedMoieties/testConstructElementalMatrix.m` |
 | `src/analysis/topology/conservedMoieties/estimateMoietyFormulas.m` | wrong-result | M is not the r x p matrix the documentation describes | `test/verifiedTests/analysis/testConservedMoieties/testEstimateMoietyFormulas.m` |
@@ -283,6 +286,7 @@
 | `src/analysis/topology/reactingMoieties/buildAtomAndBondTransitionMultigraph.m` | error | The bond graph is not decompartmentalised | `test/verifiedTests/analysis/testReactingMoieties/testBuildAtomAndBondTransitionMultigraph.m` |
 | `src/analysis/topology/reactingMoieties/checkABRXNFiles.m` | wrong-result | Decompartmentalising the model keeps the opening bracket | `test/verifiedTests/analysis/testReactingMoieties/testCheckABRXNFiles.m` |
 | `src/analysis/topology/reactingMoieties/checkABRXNFiles.m` | cosmetic | The duplicates that stop the check are not shown | `test/verifiedTests/analysis/testReactingMoieties/testCheckABRXNFiles.m` |
+| `src/analysis/topology/reactingMoieties/createMoietyGraph.m` | wrong-result | Edge weights are shifted when a metabolite lies off the cycle | `test/verifiedTests/analysis/testReactingMoieties/testCreateMoietyGraph.m` |
 | `src/analysis/topology/reactingMoieties/identifyAtomEquivalenceClasses.m` | limitation | The check for a duplicate bond never fires | `test/verifiedTests/analysis/testReactingMoieties/testIdentifyAtomEquivalenceClasses.m` |
 | `src/analysis/topology/reactingMoieties/identifyConservedReactingSubgraphs.m` | wrong-result | reaction nodes are removed from RBG with their node indices in dBTM | `test/verifiedTests/analysis/testReactingMoieties/testIdentifyConservedReactingSubgraphs.m` |
 | `src/analysis/topology/reactingMoieties/identifyIsomorphicClasses.m` | unusable-option | sanityChecks = true raises an error for any class with two or more members | `test/verifiedTests/analysis/testReactingMoieties/testIdentifyIsomorphicClasses.m` |
@@ -499,7 +503,10 @@
 | `src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m` | unusable-option | The documented source name lipidmass stops with an error | `test/verifiedTests/dataIntegration/testChemoInformatics/testObtainMetStructures.m` |
 | `src/dataIntegration/chemoInformatics/metabolites/standardiseMolDatabase.m` | error | No selected MOL file stops with an undefined variable standardised | `test/verifiedTests/dataIntegration/testChemoInformatics/testStandardiseMolDatabase.m` |
 | `src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/getElementalWeightMatrix.m` | unusable-option | The help text documents an optional input printWarning that the function does not have | `test/verifiedTests/dataIntegration/testMolecularMass/testGetElementalWeightMatrix.m` |
+| `src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m` | unusable-option | The input method is ignored, method 1 (cumomer) cannot be selected | `test/verifiedTests/dataIntegration/testFitC13Data/testScoreC13Fit.m` |
 | `src/dataIntegration/fluxomics/calcMDVfromSamp.m` | error | A non-empty substrate label distribution glc stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCalcMDVfromSamp.m` |
+| `src/dataIntegration/fluxomics/compareMultSamp.m` | error | calcMDVfromSamp is called with four arguments, every non-empty sample set stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCompareMultSamp.m` |
+| `src/dataIntegration/fluxomics/compareTwoSamp.m` | error | calcMDVfromSamp is called as calcMDVfromSamp(points, measuredMetabolites), every call stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCompareTwoSamp.m` |
 | `src/dataIntegration/fluxomics/getBinsOfFluxes.m` | error | Every call with at least 200 samples stops with an error instead of returning the bins | `test/verifiedTests/dataIntegration/testFluxomics/testGetBinsOfFluxes.m` |
 | `src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m` | error | A suggestion list with fewer rows than columns stops with an index error | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m` |
 | `src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m` | wrong-result | IDsAdded keeps only the last accepted suggestion | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m` |
@@ -510,6 +517,7 @@
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/convertModel2Metstructure.m` | wrong-result | A metabolite with a hyphen is overwritten by its next compartment | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testConvertModel2Metstructure.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m` | limitation | A table without a name column stops on an undefined variable | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m` |
 | `src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m` | wrong-result | The formula columns of the documented input format are dropped | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m` |
+| `src/dataIntegration/metaboAnnotator/buildMetStruct/populateModelMetStr.m` | wrong-result | A field missing from the model is created with one entry per metabolite up to the last match only | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testPopulateModelMetStr.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m` | error | A comma-separated VMH id that is not in the structure stops the function | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m` | wrong-result | A row whose VMH id is not in the structure overwrites the metabolite of the previous matched row | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m` |
 | `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m` | error | A table whose first row with a VMH id has no matching metabolite stops the function | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Metabolon.m` |
@@ -532,6 +540,7 @@
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The colour order is changed for every later figure of the session | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The coordinates of every phenotype are printed to the console | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/mkTableOfAddedExchanges.m` | error | An exchange list with fewer rows than columns stops the function | `test/verifiedTests/dataIntegration/testMetaboTools/testMkTableOfAddedExchanges.m` |
+| `src/dataIntegration/metabotools/setSemiQuantConstraints.m` | limitation | An empty cond1_upt_higher list stops with an error | `test/verifiedTests/dataIntegration/testMetaboTools/testSetSemiQuantConstraints.m` |
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | cosmetic | The sample counter is printed for every sample | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | wrong-result | The table is not ordered by frequency as documented; the sorted copy goes to a differently spelled variable | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
@@ -545,6 +554,9 @@
 | `src/design/OptKnock.m` | error | A model with coupling constraints stops with an error | `test/verifiedTests/design/testOptKnock/testOptKnock.m` |
 | `src/design/OptKnock.m` | wrong-result | Without constrOpt the inner growth maximisation is lost | `test/verifiedTests/design/testOptKnock/testOptKnock.m` |
 | `src/design/TrimGdel/modelSetting.m` | wrong-result | A model without rev gets rev as a row vector | `test/verifiedTests/design/testTrimGdel/testModelSetting.m` |
+| `src/design/TrimGdel/readGeneRules.m` | limitation | A model without any gene rule stops with an error | `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m` |
+| `src/design/TrimGdel/readGeneRules.m` | error | A rule enclosed in parentheses stops with an error | `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m` |
+| `src/design/TrimGdel/readGeneRules.m` | wrong-result | reactionKO2term points into the term list before it is reordered | `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m` |
 | `src/design/multiProductionEnvelope.m` | error | An unbounded minimum is stored in the upper bounds | `test/verifiedTests/design/testMultiProductionEnvelope.m` |
 | `src/design/multiProductionEnvelope.m` | wrong-result | The wrong reaction is removed when a later substrate is next to the end of the list | `test/verifiedTests/design/testMultiProductionEnvelope.m` |
 | `src/design/optEnvelope/optEnvelope.m` | error | The mid output is not assigned without mid points | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
@@ -556,6 +568,10 @@
 | `src/design/optForce/optForce.m` | wrong-result | The option loop solves the same problem in each pass | `test/verifiedTests/design/testOptForce/testOptForce.m` |
 | `src/design/optForce/optForce.m` | unusable-option | The option loop stops with an error as soon as a set is found | `test/verifiedTests/design/testOptForce/testOptForce.m` |
 | `src/design/optForce/optForce.m` | cosmetic | The report becomes a file named like the output folder | `test/verifiedTests/design/testOptForce/testOptForce.m` |
+| `src/design/optForce/saveInputsMustSetsFirstOrder.m` | cosmetic | maxFluxesW.mat is documented as the maximum fluxes of the mutant | `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsFirstOrder.m` |
+| `src/design/optForce/saveInputsMustSetsSecondOrder.m` | cosmetic | the error messages for empty inputs name the first order function | `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m` |
+| `src/design/optForce/saveInputsMustSetsSecondOrder.m` | cosmetic | two output files are misdescribed in the help text | `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m` |
+| `src/design/optForce/saveInputsOptForce.m` | wrong-result | k.mat and nSets.mat are not written | `test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m` |
 | `src/design/simpleOptKnock.m` | limitation | Single-deletion growth is stored in the first column in double-deletion mode | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/simpleOptKnock.m` | wrong-result | The wild-type minimum production is the maximum | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/reconstruction/comparison/modelBorgifier/charpos.m` | wrong-result | The letters i and j count as digits | `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` |
@@ -3169,6 +3185,35 @@
 - **Source lines**: 33
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testMakeFRresultsTable.m`
 
+### `src/analysis/topology/FR/plotFRresults.m`
+
+#### Reconstructions with few stoichiometrically consistent rows are never reported
+
+- **Severity**: wrong-result
+- **Trigger**: plotFRresults(FRresults, 2, 2, [], [], 1, modelMetaData) with FRresults(1).model a 4 x 2 S with SConsistentMetBool = [1; 0; 0; 0] (25% consistent rows) and FRresults(2).model fully consistent
+- **Observed**: the list under "Reconstructions with less than 90% stoichiometrically inconsistent rows..." is empty and MATLAB prints "2 models that are sufficiently stochiometrically consistent for plotting."; both models are plotted. Line 89 computes size(S,1)/nnz(SConsistentMetBool), which is never below 0.9, and reads FRresults(k), the last model, instead of FRresults(j)
+- **Expected**: model m1 (1 of 4 rows consistent) listed and not plotted (lines 153-155), using nnz(SConsistentMetBool)/size(S,1) of model j
+- **Source lines**: 89-92
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testPlotFRresults.m`
+
+#### Row rank deficiency of [F,R] and [Fb,Rb] is misreported
+
+- **Severity**: wrong-result
+- **Trigger**: the call above, with FRresults(2).model.FRrows having 2 nonzeros and FRresults(2).rankFR = 2, and FRresults(1).model.Frb with 3 rows and rankBilinearFrRr = 2
+- **Observed**: m2 is listed under "[F,R] does not have full row rank for:" (line 66 compares nnz(FRrows) with nnz(rankFR), which is 1 for any nonzero rank, and line 67 prints the whole FRrows vector); m1 is not listed under "[Fb,Rb] does not have full row rank" because line 75 loops over k=nReconstructions, the last model only
+- **Expected**: [F,R] listed when nnz(FRrows) differs from rankFR; [Fb,Rb] checked for every model
+- **Source lines**: 66-67, 75
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testPlotFRresults.m`
+
+#### The optional input modelMetaData cannot be omitted
+
+- **Severity**: limitation
+- **Trigger**: plotFRresults(FRresults) or any call with fewer than seven inputs
+- **Observed**: error "Not enough input arguments." at line 43, which passes modelMetaData to makeFRresultsTable without a default; the defaults of lines 21, 24, 29, 33 and 39 are only reached by such calls; line 33 is a folder in one developer's home
+- **Expected**: modelMetaData defaulting to empty, as for makeFRresultsTable
+- **Source lines**: 21, 24, 29, 33, 39, 43
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testPlotFRresults.m`
+
 ### `src/analysis/topology/conservedMoieties/classifyMoieties.m`
 
 #### isSecondary is returned as a row vector, not m x 1
@@ -3541,6 +3586,17 @@
 - **Expected**: the repeated identifiers are displayed
 - **Source lines**: 65, 69
 - **Documented in**: `test/verifiedTests/analysis/testReactingMoieties/testCheckABRXNFiles.m`
+
+### `src/analysis/topology/reactingMoieties/createMoietyGraph.m`
+
+#### Edge weights are shifted when a metabolite lies off the cycle
+
+- **Severity**: wrong-result
+- **Trigger**: model.mets = {'A';'B';'C'}; BG = graph([], [], [], 7); BG.Nodes.mets = {'A';'A';'B';'C';'C';'C';'C'}; arm.L = sparse([2 1 4]); arm.I2A = sparse(ones(1,7)); arm.ATG = graph([], [], [], 7); arm.ATG.Nodes.MoietyIndex = (1:7)'; arm.MTG = graph([1 3], [2 2], [], 3) with Nodes.IsomorphismClass = [1;1;1], Nodes.mets = {'A';'B';'C'}, Nodes.MoietyIndex = [1;2;3]; G = createMoietyGraph(model, BG, arm)
+- **Observed**: inclusion rates are C 0.25, A 0.5, B 1; A is not on the path from C to B, and G.Edges lists two edges (2,3) with mets C and B and Weight 0.25 and 0.5: B carries the rate of A. Line 66 filters inclusionOrder first, so line 67 builds its mask from the already filtered list and keeps the first entries of A instead of the matching ones; both stay filtered for the next starting node
+- **Expected**: B with its own inclusion rate 1 (A and inclusionOrder filtered with the same mask, from the unfiltered lists for every starting node)
+- **Source lines**: 66-67
+- **Documented in**: `test/verifiedTests/analysis/testReactingMoieties/testCreateMoietyGraph.m`
 
 ### `src/analysis/topology/reactingMoieties/identifyAtomEquivalenceClasses.m`
 
@@ -5728,6 +5784,17 @@
 - **Source lines**: 16
 - **Documented in**: `test/verifiedTests/dataIntegration/testMolecularMass/testGetElementalWeightMatrix.m`
 
+### `src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m`
+
+#### The input method is ignored, method 1 (cumomer) cannot be selected
+
+- **Severity**: unusable-option
+- **Trigger**: with the fixtures of this folder, load('point.mat', 'v0'); load('model.mat', 'model'); load('expdata.mat', 'expdata'); expdata.inputfrag = convertCarbonInput(expdata.input); scoreC13Fit(v0, expdata, model, [], 1)
+- **Observed**: (R2025a, 2026-11-16) the test "if nargin < 6" is always true for a function of five inputs, so method is set to 2 (EMU) on every call; the output for method = 1 is identical (isequal) to the output for the default, error 386.121954048192 in both cases. The cumomer branch runs only as the fallback when the EMU result has NaN
+- **Expected**: method = 1 uses slvrCumomer_fast with expdata.input (documented "method 1 = cumomer, method 2 = CMU"); the default 2 applies only when method is not given
+- **Source lines**: 50-52
+- **Documented in**: `test/verifiedTests/dataIntegration/testFitC13Data/testScoreC13Fit.m`
+
 ### `src/dataIntegration/fluxomics/calcMDVfromSamp.m`
 
 #### A non-empty substrate label distribution glc stops with an error
@@ -5738,6 +5805,28 @@
 - **Expected**: glc converted to the fragment label input of slvrEMU_fast (as convertCarbonInput does) and the MDVs of every sample returned
 - **Source lines**: 34, 37-38, 54-57, 68
 - **Documented in**: `test/verifiedTests/dataIntegration/testFluxomics/testCalcMDVfromSamp.m`
+
+### `src/dataIntegration/fluxomics/compareMultSamp.m`
+
+#### calcMDVfromSamp is called with four arguments, every non-empty sample set stops with an error
+
+- **Severity**: error
+- **Trigger**: with the fixtures of testFitC13Data, load('point.mat', 'v0'); load('model.mat', 'model'); compareMultSamp([], model, struct('points', v0))
+- **Observed**: (R2025a, 2026-11-16) "Too many input arguments." at line 57, the call calcMDVfromSamp(model, xglc, samp, measuredMetabolites); calcMDVfromSamp takes (glc, points, experiment). Only an empty struct array of samples returns (totalz = 0, zscore = 0, empty ave and stdev)
+- **Expected**: the MDVs of each sample set, e.g. calcMDVfromSamp(xglc, samps(i).points, experiment), collected in mdvs.ave and mdvs.stdev
+- **Source lines**: 57
+- **Documented in**: `test/verifiedTests/dataIntegration/testFluxomics/testCompareMultSamp.m`
+
+### `src/dataIntegration/fluxomics/compareTwoSamp.m`
+
+#### calcMDVfromSamp is called as calcMDVfromSamp(points, measuredMetabolites), every call stops with an error
+
+- **Severity**: error
+- **Trigger**: with the fixtures of testFitC13Data, load('point.mat', 'v0'); load('model.mat', 'model'); compareTwoSamp([], model, struct('points', v0), struct('points', v0)) (also with a fifth argument {'xalaL011'})
+- **Observed**: (R2025a, 2026-11-16) "Undefined function 'convert_input' for input arguments of type 'double'." raised in calcMDVfromSamp line 34: the sampled points are passed as its first argument glc and measuredMetabolites as its argument points; with empty points (glc empty) it stops with "Not enough input arguments." at calcMDVfromSamp line 32 because no experiment structure is passed; xglc is never passed on
+- **Expected**: calcMDVfromSamp(xglc, samp.points, experiment) for each sample, then the z-scores of compareTwoMDVs
+- **Source lines**: 57-58
+- **Documented in**: `test/verifiedTests/dataIntegration/testFluxomics/testCompareTwoSamp.m`
 
 ### `src/dataIntegration/fluxomics/getBinsOfFluxes.m`
 
@@ -5842,6 +5931,17 @@
 - **Expected**: the documented columns stored in neutralFormula and chargedFormula
 - **Source lines**: 108-110
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testCreateNewMetaboliteStructure.m`
+
+### `src/dataIntegration/metaboAnnotator/buildMetStruct/populateModelMetStr.m`
+
+#### A field missing from the model is created with one entry per metabolite up to the last match only
+
+- **Severity**: wrong-result
+- **Trigger**: pm = createModel({'R1'}, {'R1'}, {'glc_D + atp + datp -> h2o + adp'}); n = numel(pm.mets); pm.metKEGGID = repmat({''}, n, 1); pm.metChEBIID = repmat({''}, n, 1); pm.metCharges = zeros(n, 1); ms.VMH_glc_D = struct('VMHId', 'glc_D', 'metNames', 'D-Glucose', 'keggId', 'C00031', 'cheBIId', '4167', 'charge', '-1', 'drugbank', NaN); ms.VMH_atp = struct('VMHId', 'atp', 'metNames', 'ATP', 'keggId', 'C00002', 'cheBIId', NaN, 'charge', -4, 'drugbank', 'DB00171'); out = populateModelMetStr(pm, ms)
+- **Observed**: (R2025a, 2026-11-16) the model has 5 metabolites (adp, atp, datp, glc_D, h2o) but out.metDrugbank is 4-by-1 ({'DB00171'} for atp at index 2, {[NaN]} for glc_D at index 4, [] in between), same with replaceAllHits = 1: line 79 creates the field as [] and lines 83/87/90 grow it only up to the matched index; columnVector does not pad it, so the returned model is inconsistent (field length differs from mets)
+- **Expected**: a created field with one (empty) entry per metabolite, filled at the matches
+- **Source lines**: 79, 83, 87, 90
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboAnnotator/testPopulateModelMetStr.m`
 
 ### `src/dataIntegration/metaboAnnotator/connect2resources/VMH2Metabolon.m`
 
@@ -6065,6 +6165,17 @@
 - **Source lines**: 19-20
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testMkTableOfAddedExchanges.m`
 
+### `src/dataIntegration/metabotools/setSemiQuantConstraints.m`
+
+#### An empty cond1_upt_higher list stops with an error
+
+- **Severity**: limitation
+- **Trigger**: setSemiQuantConstraints(m, m, cell(0, 2), {'EX_a', 0.5}, {'EX_b', 10}, {'EX_b', 10}) with m = createModel({'EX_a', 'EX_b'}, {'EX_a', 'EX_b'}, {'a <=> ', 'b <=> '})
+- **Observed**: (R2025a, 2026-11-16) "Unrecognized function or variable 'c'." at line 76: the row counter c is first set inside the loop over cond1_upt_higher; calculateQuantitativeDiffs never returns an empty list (it leaves the output undefined instead)
+- **Expected**: no bound changed for an empty list, the other lists applied
+- **Source lines**: 76
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testSetSemiQuantConstraints.m`
+
 ### `src/dataIntegration/metabotools/statisticsAddedExchanges.m`
 
 #### The sample counter is printed for every sample
@@ -6196,6 +6307,35 @@
 - **Source lines**: 56
 - **Documented in**: `test/verifiedTests/design/testTrimGdel/testModelSetting.m`
 
+### `src/design/TrimGdel/readGeneRules.m`
+
+#### A model without any gene rule stops with an error
+
+- **Severity**: limitation
+- **Trigger**: readGeneRules(model) with every model.grRules entry empty
+- **Observed**: error "Unrecognized function or variable 'term2'." at line 115
+- **Expected**: empty term and zero counts
+- **Source lines**: 115
+- **Documented in**: `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m`
+
+#### A rule enclosed in parentheses stops with an error
+
+- **Severity**: error
+- **Trigger**: readGeneRules(model) with model.rxns = {'r1'}, model.genes = {'g1'; 'g2'} and model.grRules = {'(g1 or g2)'} (also '(g1)', a single gene whose name contains "or" or "and" such as 'gor', and ecoli_core_model from getDistributedModel, many of whose rules, e.g. "(b3925 or b4232)" of FBP, are enclosed in parentheses)
+- **Observed**: error "Index exceeds the number of array elements. Index must not exceed 1." at line 83: after the inner term is replaced, "(term_1)" (or "(g1)") is left, whose single word has no operator unit(2)
+- **Expected**: parentheses around a whole rule or a single gene accepted, as in the grRules of the distributed models
+- **Source lines**: 41-42, 75-89
+- **Documented in**: `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m`
+
+#### reactionKO2term points into the term list before it is reordered
+
+- **Severity**: wrong-result
+- **Trigger**: model.rxns = {'r1';'r2';'r3';'r4';'r5'}, model.genes = {'g1';'g2';'g3';'g4'}, model.grRules = {'g1'; 'g1 and g2'; ''; '(g1 and g2) or g3'; 'g3 or g4'}
+- **Observed**: reactionKO2term = [1 2 0 4 5] but the returned term lists term_2 first, so term(1).output is 'term_2', not 'reactionKO_1', and term(2) is reactionKO_1; lines 103-115 reorder term (internal terms first) after lines 48 and 93 set the map
+- **Expected**: term(reactionKO2term(i)).output equal to reactionKO_<i> for every reaction i with a rule, as the help text documents
+- **Source lines**: 48, 93, 103-115
+- **Documented in**: `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m`
+
 ### `src/design/multiProductionEnvelope.m`
 
 #### An unbounded minimum is stored in the upper bounds
@@ -6300,6 +6440,48 @@
 - **Expected**: the output folder is created first and the report is moved into it
 - **Source lines**: 746
 - **Documented in**: `test/verifiedTests/design/testOptForce/testOptForce.m`
+
+### `src/design/optForce/saveInputsMustSetsFirstOrder.m`
+
+#### maxFluxesW.mat is documented as the maximum fluxes of the mutant
+
+- **Severity**: cosmetic
+- **Trigger**: reading the OUTPUTS section of the help text
+- **Observed**: the help text says maxFluxesW.mat holds the maximum fluxes for the mutant; line 86 saves maxFluxesW, the maximum fluxes of the wild type (INPUTS section)
+- **Expected**: maxFluxesW.mat described as the maximum fluxes for the wild type
+- **Source lines**: 54
+- **Documented in**: `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsFirstOrder.m`
+
+### `src/design/optForce/saveInputsMustSetsSecondOrder.m`
+
+#### the error messages for empty inputs name the first order function
+
+- **Severity**: cosmetic
+- **Trigger**: saveInputsMustSetsSecondOrder with an empty model, minFluxesW, maxFluxesW or inputFolder
+- **Observed**: the messages end with "when running saveInputsMustFirstOrder"
+- **Expected**: messages naming saveInputsMustSetsSecondOrder
+- **Source lines**: 69, 72, 75, 78
+- **Documented in**: `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m`
+
+#### two output files are misdescribed in the help text
+
+- **Severity**: cosmetic
+- **Trigger**: reading the OUTPUTS section of the help text
+- **Observed**: maxFluxesW.mat is described as the maximum fluxes for the mutant, but line 91 saves maxFluxesW, the wild-type fluxes; the excluded reactions are listed as excludedRsns.mat, but line 93 writes excludedRxns.mat
+- **Expected**: maxFluxesW.mat described as the wild-type maximum fluxes, and the file name excludedRxns.mat
+- **Source lines**: 58, 60
+- **Documented in**: `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m`
+
+### `src/design/optForce/saveInputsOptForce.m`
+
+#### k.mat and nSets.mat are not written
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1'; 'R2'}, {'first'; 'second'}, {'a -> b'; 'b <=> '}, 'printLevel', 0); saveInputsOptForce(model, {'R2'}, {'R1'}, {'R2'}, [0;-5], [10;0], [1;-5], [10;-1], 3, 2, struct('rxnList', {{'R1'}}, 'values', 1), {}, {}, {}, folder)
+- **Observed**: folder holds constrOpt, excludedKRxns, excludedLRxns, excludedURxns, maxFluxesM, maxFluxesW, minFluxesM, minFluxesW, model, mustL, mustU and targetRxn .mat; k.mat and nSets.mat do not exist (lines 136-147 never save k or nSets)
+- **Expected**: k.mat and nSets.mat written, as the OUTPUTS section documents, so that the kept inputs of an optForce run are complete
+- **Source lines**: 136-147
+- **Documented in**: `test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m`
 
 ### `src/design/simpleOptKnock.m`
 
