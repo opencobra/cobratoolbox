@@ -140,3 +140,11 @@ printFluxBounds	NONE
 chrrSampler	NONE
 # transportReactionBool: only calls passing an origin/destination with unidirectionalBool 0 reach it; deltaG0concFluxConstraintBounds does (numChar as origin).
 transportReactionBool	src/analysis/thermo/thermoDirectionality/deltaG0concFluxConstraintBounds.m
+# SteadyComSubroutines: only the 'initialize' call on a model with only infoCom fails; the SteadyCom entry points pass the caller's model to 'initialize'.
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComPOAgr.m
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComFVAgr.m
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyCom.m
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyComFVA.m
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyComPOA.m
+# changeRxnMets: only a numeric Rxn is defective; the only caller (GPR2models) passes a reaction name.
+changeRxnMets	NONE
