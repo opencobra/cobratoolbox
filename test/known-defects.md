@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-610 known defects in 339 functions (219 wrong-result, 180 error, 54 unusable-option, 97 cosmetic, 60 limitation).
+663 known defects in 372 functions (234 wrong-result, 194 error, 59 unusable-option, 109 cosmetic, 67 limitation).
 
 ## Summary
 
@@ -46,6 +46,8 @@
 | `src/analysis/exploration/plotEssentialRxns.m` | error | Errors when no reaction is selected | `test/verifiedTests/analysis/testExploration/testPlotEssentialRxns.m` |
 | `src/analysis/exploration/plotEssentialRxns.m` | wrong-result | The output is a cell array of reaction identifiers, not a table of fluxes | `test/verifiedTests/analysis/testExploration/testPlotEssentialRxns.m` |
 | `src/analysis/exploration/printCouplingConstraints.m` | error | The documented output is not assigned with the default printLevel, so a call requesting it stops | `test/verifiedTests/analysis/testExploration/testPrintCouplingConstraints.m` |
+| `src/analysis/exploration/printFluxBounds.m` | error | The documented calls without rxnNameFlag stop with an error | `test/verifiedTests/analysis/testExploration/testPrintFluxBounds.m` |
+| `src/analysis/exploration/printFluxBounds.m` | cosmetic | The fixed-point format is never used together with reaction names | `test/verifiedTests/analysis/testExploration/testPrintFluxBounds.m` |
 | `src/analysis/exploration/printFluxVector.m` | error | Formulas or GPRs of a partly zero flux vector stop with an error | `test/verifiedTests/analysis/testPrint/testPrintFluxVector.m` |
 | `src/analysis/exploration/printFluxVector.m` | wrong-result | excFlag has no effect unless nonZeroFlag is set | `test/verifiedTests/analysis/testPrint/testPrintFluxVector.m` |
 | `src/analysis/exploration/printLabeledData.m` | wrong-result | Sorting on a data column other than the first is silently ignored | `test/verifiedTests/base/testTools/testPrintLabeledData.m` |
@@ -85,10 +87,17 @@
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m` | wrong-result | A structure without a rxns field is silently not saved | `test/verifiedTests/analysis/testMgPipe/testParsave.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m` | error | The documented matrix inputs stop with an error | `test/verifiedTests/analysis/testMgPipe/testPlotMappingInfo.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m` | wrong-result | The heatmap shows only the first four individuals | `test/verifiedTests/analysis/testMgPipe/testPlotMappingInfo.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/retrieveModelStats.m` | unusable-option | The size plot is never produced without a stratification file | `test/verifiedTests/analysis/testMgPipe/testRetrieveModelStats.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m` | wrong-result | Abundances read from a tsv file are added and normalized as text | `test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/updateTaxonomyInfoAGORA.m` | cosmetic | The row counter is printed for every strain | `test/verifiedTests/analysis/testMgPipe/testUpdateTaxonomyInfoAGORA.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m` | error | Errors when the taxon table has fewer rows than columns | `test/verifiedTests/analysis/testMultiSpeciesModelling/testCalculateInteractionsByTaxon.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/getMultiSpeciesModelId.m` | cosmetic | The compartmentalization error never names the species | `test/verifiedTests/analysis/testMultiSpeciesModelling/testGetMultiSpeciesModelId.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/joinModelsPairwiseFromList.m` | error | Two models whose file names start with the same model name stop the function | `test/verifiedTests/analysis/testMultiSpeciesModelling/testJoinModelsPairwiseFromList.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/printUptakeBoundCom.m` | limitation | A model without indCom cannot be printed | `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/printUptakeBoundCom.m` | limitation | A model without infoCom fails after the default abbreviations are built | `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/printUptakeBoundCom.m` | cosmetic | Continuation lines of long names are printed as the literal text %30s in the host layout | `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/useDiet.m` | error | A diet with fewer rows than columns stops with an index error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testUseDiet.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/useDiet.m` | limitation | Numeric bounds become NaN | `test/verifiedTests/analysis/testMultiSpeciesModelling/testUseDiet.m` |
 | `src/analysis/parsimoniousFBA/pFBA.m` | error | A call with one output stops with an error | `test/verifiedTests/analysis/testpFBA/testpFBA.m` |
 | `src/analysis/persephone/additionalFunctions/combineFluxResults.m` | error | Errors for a common germ-free sample preceded by a sample of the first run only | `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m` |
 | `src/analysis/persephone/additionalFunctions/combineFluxResults.m` | wrong-result | Shadow prices of the second run are dropped when the folders hold different samples | `test/verifiedTests/analysis/testPersephone/testCombineFluxResults.m` |
@@ -110,6 +119,8 @@
 | `src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m` | cosmetic | An unlabelled count is printed | `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m` |
 | `src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m` | wrong-result | Taxa whose name contains "pan" are counted as unmapped | `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m` |
 | `src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m` | cosmetic | The sheet of unmapped taxa is named 'Umapped' | `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m` |
+| `src/analysis/persephone/additionalFunctions/physiologicalConstraintsHMDBbasedTEMP.m` | wrong-result | Blood uptake constraints of organs other than the kidney are never applied | `test/verifiedTests/analysis/testPersephone/testPhysiologicalConstraintsHMDBbasedTEMP.m` |
+| `src/analysis/persephone/additionalFunctions/physiologicalConstraintsHMDBbasedTEMP.m` | wrong-result | Measured concentrations are never matched when the data has more than one row | `test/verifiedTests/analysis/testPersephone/testPhysiologicalConstraintsHMDBbasedTEMP.m` |
 | `src/analysis/persephone/additionalFunctions/plotAbsentTaxaEffectOnMARScoverage.m` | wrong-result | The genus+epithet curve starts at the standard deviation of the base coverage | `test/verifiedTests/analysis/testPersephone/testPlotAbsentTaxaEffectOnMARScoverage.m` |
 | `src/analysis/persephone/additionalFunctions/setResultPath.m` | error | On Linux and macOS the results folder is placed at the file-system root | `test/verifiedTests/analysis/testPersephone/testSetResultPath.m` |
 | `src/analysis/persephone/additionalFunctions/slimDownFBAresults.m` | cosmetic | The call leaves every MATLAB warning switched on | `test/verifiedTests/analysis/testPersephone/testSlimDownFBAresults.m` |
@@ -133,6 +144,8 @@
 | `src/analysis/relaxedFBA/relaxedFBA.m` | limitation | A generic LP without rxns and mets stops with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m` |
 | `src/analysis/relaxedFBA/relaxedFBA.m` | error | Extra variables given only by model.D stop with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
+| `src/analysis/sampling/ACHR/ACHRSampler.m` | cosmetic | The time-limit exit leaves the error log open | `test/verifiedTests/analysis/testSampling/testACHRSampler.m` |
+| `src/analysis/sampling/ACHR/ACHRSampler.m` | cosmetic | printLevel 0 does not silence the header and the step warnings | `test/verifiedTests/analysis/testSampling/testACHRSampler.m` |
 | `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m` | cosmetic | A log file is written into the current folder | `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m` |
 | `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m` | unusable-option | The parallel mode cannot start its worker processes on Linux and macOS | `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m` |
 | `src/analysis/sampling/ACHR/convRevSamples.m` | wrong-result | Bounds of a reverse-only reaction are not exchanged correctly | `test/verifiedTests/analysis/testSampling/testConvRevSamples.m` |
@@ -148,6 +161,9 @@
 | `src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m` | error | step_size fails for more than one point | `test/verifiedTests/analysis/testSampling/testTwoSidedBarrier.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | error | A format without a width gives a NaN length and header fails | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | wrong-result | The blank that separates the columns is dropped | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
+| `src/analysis/sampling/CHRR/chrrExpSampler.m` | limitation | A model without metabolites and a reaction of zero width stops in preprocess | `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m` |
+| `src/analysis/sampling/CHRR/chrrExpSampler.m` | limitation | minFlux and maxFlux cannot be requested together with a rounded polytope | `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m` |
+| `src/analysis/sampling/CHRR/chrrSampler.m` | error | minFlux and maxFlux cannot be requested together with a rounded polytope | `test/verifiedTests/analysis/testSampling/testChrrSampler.m` |
 | `src/analysis/sampling/compareTwoSamplesStat.m` | wrong-result | The chi-square p values are cumulative probabilities, near 0 for identical samples | `test/verifiedTests/analysis/testSampling/testCompareTwoSamplesStat.m` |
 | `src/analysis/sampling/loadSamples.m` | wrong-result | More points than pointsPerFile are taken from a file at regular intervals | `test/verifiedTests/analysis/testSampling/testLoadSamples.m` |
 | `src/analysis/sampling/printSampleStats.m` | wrong-result | With several samples only the first sample's mode is printed | `test/verifiedTests/analysis/testSampling/testPrintSampleStats.m` |
@@ -156,15 +172,42 @@
 | `src/analysis/subspaces/lsqr/lsqrtest.m` | cosmetic | The function handle is printed by a statement without a semicolon | `test/verifiedTests/analysis/testSubspaces/testLsqrtest.m` |
 | `src/analysis/subspaces/nullspace/nullSpaceOperator.m` | unusable-option | The option scale = 0 always fails | `test/verifiedTests/analysis/testSubspaces/testNullSpaceOperator.m` |
 | `src/analysis/subspaces/rank/getRankLUSOL.m` | wrong-result | q is wrong when A has a zero column | `test/verifiedTests/analysis/testRank/testGetRankLUSOL.m` |
+| `src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m` | error | Every call fails when the error bars are adjusted | `test/verifiedTests/analysis/testThermo/testPlotFeasibleReactionEnergyRanges.m` |
+| `src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m` | wrong-result | Only the first reaction is plotted for the documented n x 1 rxns | `test/verifiedTests/analysis/testThermo/testPlotFeasibleReactionEnergyRanges.m` |
+| `src/analysis/thermo/directionalityReport/singleMetaboliteThermoFigure.m` | error | Every call fails on the undefined variable directions | `test/verifiedTests/analysis/testThermo/testSingleMetaboliteThermoFigure.m` |
+| `src/analysis/thermo/directionalityReport/singleMetaboliteThermoFigure.m` | unusable-option | The metabolite argument metAbbr is never read | `test/verifiedTests/analysis/testThermo/testSingleMetaboliteThermoFigure.m` |
+| `src/analysis/thermo/directionalityReport/standardGibbsFormationEnergyStats.m` | unusable-option | The documented figures option always fails in pie | `test/verifiedTests/analysis/testThermo/testStandardGibbsFormationEnergyStats.m` |
+| `src/analysis/thermo/directionalityReport/standardGibbsFormationEnergyStats.m` | wrong-result | The returned counts are offset by eps | `test/verifiedTests/analysis/testThermo/testStandardGibbsFormationEnergyStats.m` |
+| `src/analysis/thermo/directionalityReport/writeReactionListThermo.m` | wrong-result | No arrow for an irreversible exchange reaction that has a product | `test/verifiedTests/analysis/testThermo/testWriteReactionListThermo.m` |
+| `src/analysis/thermo/directionalityReport/writeReactionListThermo.m` | cosmetic | Non-integer stoichiometric coefficients are printed in exponent form | `test/verifiedTests/analysis/testThermo/testWriteReactionListThermo.m` |
 | `src/analysis/thermo/experimentalData/alberty2006/adjustBaselinesInAlberty2006.m` | wrong-result | The reduced glutathione energies are halved together with the baseline | `test/verifiedTests/analysis/testThermo/testAdjustBaselinesInAlberty2006.m` |
+| `src/analysis/thermo/experimentalData/readMetRxnBoundsFiles.m` | error | Omitting the optional printLevel fails when a metabolite file is read | `test/verifiedTests/analysis/testThermo/testReadMetRxnBoundsFiles.m` |
+| `src/analysis/thermo/experimentalData/readMetRxnBoundsFiles.m` | cosmetic | The concMax error message says Minimum | `test/verifiedTests/analysis/testThermo/testReadMetRxnBoundsFiles.m` |
+| `src/analysis/thermo/experimentalDesign/priorityKeqMeasurement.m` | error | A model whose metabolites all have Keq data fails | `test/verifiedTests/analysis/testThermo/testPriorityKeqMeasurement.m` |
+| `src/analysis/thermo/experimentalDesign/priorityKeqMeasurement.m` | error | The plot fails on an invalid line style, so no call returns | `test/verifiedTests/analysis/testThermo/testPriorityKeqMeasurement.m` |
 | `src/analysis/thermo/formulae/checkFormulae.m` | limitation | Elements other than C, H, O, P, S, K, Na and N are ignored | `test/verifiedTests/analysis/testThermo/testCheckFormulae.m` |
+| `src/analysis/thermo/formulae/compareMetaboliteFormulae.m` | wrong-result | The identifier and the reconstruction formula are not tab separated | `test/verifiedTests/analysis/testThermo/testCompareMetaboliteFormulae.m` |
 | `src/analysis/thermo/groupContribution/createComputedSpeciesData.m` | error | A row structure array of species fails when two metabolites are included | `test/verifiedTests/analysis/testThermo/testCreateComputedSpeciesData.m` |
 | `src/analysis/thermo/groupContribution/createComputedSpeciesData.m` | wrong-result | The first group-contribution entry is used for every metabolite | `test/verifiedTests/analysis/testThermo/testCreateComputedSpeciesData.m` |
 | `src/analysis/thermo/groupContribution/jankowski/createGroupContributionStruct.m` | limitation | The input files are left open | `test/verifiedTests/analysis/testThermo/testCreateGroupContributionStruct.m` |
+| `src/analysis/thermo/groupContribution/jankowski/createGroupIncidenceMatrix_jankowski.m` | unusable-option | The documented arguments gcmOutputFile, gcmMetList and jankowskiGroupData are ignored | `test/verifiedTests/analysis/testThermo/testCreateGroupIncidenceMatrix_jankowski.m` |
+| `src/analysis/thermo/groupContribution/jankowski/createGroupIncidenceMatrix_jankowski.m` | cosmetic | The documented call name createGroupIncidenceMatrix_old does not exist | `test/verifiedTests/analysis/testThermo/testCreateGroupIncidenceMatrix_jankowski.m` |
+| `src/analysis/thermo/groupContribution/jankowski/plotConcVSdGft0GroupContUncertainty.m` | cosmetic | An intermediate fraction is echoed to the command window | `test/verifiedTests/analysis/testThermo/testPlotConcVSdGft0GroupContUncertainty.m` |
+| `src/analysis/thermo/groupContribution/jankowski/webCGMtoTabDelimitedFile.m` | error | A metabolite without group contribution data stops the call or is reported under another name | `test/verifiedTests/analysis/testThermo/testWebCGMtoTabDelimitedFile.m` |
+| `src/analysis/thermo/groupContribution/jankowski/webCGMtoTabDelimitedFile.m` | wrong-result | The output file is named gc_data_webGCM.txt, not gc_data_webCGM.txt as documented | `test/verifiedTests/analysis/testThermo/testWebCGMtoTabDelimitedFile.m` |
+| `src/analysis/thermo/inchi/addInchiToModel.m` | unusable-option | The method 'mol' stops with Too many input arguments | `test/verifiedTests/analysis/testThermo/testAddInchiToModel.m` |
 | `src/analysis/thermo/inchi/getMolecularWeight.m` | wrong-result | Hydrogens are lost for an InChI whose formula starts with H | `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m` |
+| `src/analysis/thermo/molFiles/molFilesToCDFfile.m` | cosmetic | The share of metabolites without mol files is printed as a fraction labelled percentage | `test/verifiedTests/analysis/testThermo/testMolFilesToCDFfile.m` |
 | `src/analysis/thermo/protons/getMetaboliteMsDistr.m` | wrong-result | Mol files are missed when another file precedes them or their name holds a dot or 'mol' | `test/verifiedTests/analysis/testThermo/testGetMetaboliteMsDistr.m` |
 | `src/analysis/thermo/protons/getMetabolitepKa.m` | wrong-result | Mol files are missed when another file precedes them or their name holds a dot or 'mol' | `test/verifiedTests/analysis/testThermo/testGetMetabolitepKa.m` |
+| `src/analysis/thermo/protons/moleFractionStats.m` | error | Fewer than two cytoplasmic reactants with a spread distribution stop the call | `test/verifiedTests/analysis/testThermo/testMoleFractionStats.m` |
+| `src/analysis/thermo/protons/plotActivityCoefficients.m` | wrong-result | The output lambda holds the ionic-strength curves, not the activity coefficients of the species | `test/verifiedTests/analysis/testThermo/testPlotActivityCoefficients.m` |
 | `src/analysis/thermo/reactantContribution/calcdGHT.m` | wrong-result | The standard transformed enthalpy dHf0 is always NaN | `test/verifiedTests/analysis/testThermo/testCalcdGHT.m` |
+| `src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m` | error | Every call stops at getCompartment with Too many input arguments | `test/verifiedTests/analysis/testThermo/testSetCommonZeroStandardGibbsEnergyOfFormation.m` |
+| `src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m` | error | An internal reaction with carbon dioxide stops with an index error | `test/verifiedTests/analysis/testThermo/testThermodynamicAdjustmentToStoichiometry.m` |
+| `src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m` | error | Every call stops at getCompartment with Too many input arguments | `test/verifiedTests/analysis/testThermo/testThermodynamicAdjustmentToStoichiometry.m` |
+| `src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m` | error | A Gibbs energy range with one bound at zero stops the call | `test/verifiedTests/analysis/testThermo/testThermoConstrainFluxBounds.m` |
+| `src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m` | limitation | A confidence level outside the built-in table stops the call | `test/verifiedTests/analysis/testThermo/testThermoConstrainFluxBounds.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | error | A wrong input ends with an unassigned output | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | wrong-result | Method 3 without a vartype returns numbers instead of characters | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | wrong-result | A solution of the relaxed problem under param.debug is dropped | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
@@ -222,7 +265,9 @@
 | `src/analysis/wholeBody/PSCMToolbox/getStatsOrganComp.m` | wrong-result | The results file named in the help text is never written | `test/verifiedTests/analysis/testWholeBody/testGetStatsOrganComp.m` |
 | `src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m` | unusable-option | The coupling factor given by the caller is ignored | `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m` |
 | `src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m` | wrong-result | rxnGeneMat is not updated for the gene rules of the added reactions | `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m` |
+| `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m` | wrong-result | ExclList is ignored for the blood exchanges of every organ but the kidney | `test/verifiedTests/analysis/testWholeBody/testPhysiologicalConstraintsHMDBbased.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m` | limitation | Flux values are rounded to the default precision of num2str | `test/verifiedTests/analysis/testWholeBody/testReadInDietFromVMH.m` |
+| `src/analysis/wholeBody/PSCMToolbox/setConstraints/setDietConstraints.m` | limitation | diet flux values given as numbers are not accepted | `test/verifiedTests/analysis/testWholeBody/testSetDietConstraints.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m` | cosmetic | The list of storable amino acids is printed on every call | `test/verifiedTests/analysis/testWholeBody/testSetFeedingFastingConstraints.m` |
 | `src/base/ci/addKeyToKnownHostsCT.m` | cosmetic | The error messages fail with a dot-indexing error when gitCmd is not set | `test/verifiedTests/base/testCi/testAddKeyToKnownHostsCT.m` |
 | `src/base/cobrarrow/COBRArrowSolver.m` | limitation | Copies of a solver object share one parameter map | `test/verifiedTests/base/testCobrarrow/testCOBRArrowSolver.m` |
@@ -253,6 +298,7 @@
 | `src/base/io/utilities/createEmptyFields.m` | limitation | A cell field with a computed default fills only its first column | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
 | `src/base/io/utilities/createEmptyFields.m` | error | A field whose default refers to another field the model lacks cannot be created | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
 | `src/base/io/utilities/createEmptyFields.m` | error | The default of comps cannot be evaluated | `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m` |
+| `src/base/io/utilities/creategrRulesField.m` | cosmetic | unknown reaction names in positions are not reported as intended | `test/verifiedTests/base/testIO/testUtilities/testCreategrRulesField.m` |
 | `src/base/io/utilities/getDefinedFieldProperties.m` | error | A requested field without definition raises an error instead of being left out | `test/verifiedTests/base/testIO/testUtilities/testGetDefinedFieldProperties.m` |
 | `src/base/io/utilities/getDefinedFieldProperties.m` | unusable-option | SpecificFields is ignored together with Descriptions or DataBaseFields | `test/verifiedTests/base/testIO/testUtilities/testGetDefinedFieldProperties.m` |
 | `src/base/io/utilities/initFBAFields.m` | limitation | The documented osense and csense fields are not created | `test/verifiedTests/base/testIO/testUtilities/testInitFBAFields.m` |
@@ -260,6 +306,7 @@
 | `src/base/io/utilities/readSimPhenyCMPD.m` | limitation | A file without metabolite lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
 | `src/base/io/utilities/readSimPhenyCMPD.m` | wrong-result | Alternative names keep the blank that follows a '/' | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
 | `src/base/io/utilities/readSimPhenyGPR.m` | limitation | A file without reaction lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGPR.m` |
+| `src/base/io/utilities/readSimPhenyGprText.m` | wrong-result | the rules of reactions with several genes refer to the wrong genes | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGprText.m` |
 | `src/base/io/utilities/write4ti2.m` | error | integerizeS is called with a matrix but needs a model structure | `test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m` |
 | `src/base/io/utilities/writeSBML.m` | error | A model without reactions cannot be written | `test/verifiedTests/base/testIO/testWriteSBML.m` |
 | `src/base/io/utilities/writeSBML.m` | wrong-result | The compartments of the model and the given lists are replaced by the defaults | `test/verifiedTests/base/testIO/testWriteSBML.m` |
@@ -496,7 +543,12 @@
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
+| `src/reconstruction/modelGeneration/massBalance/checkBalance.m` | wrong-result | With exactly one metabolite without a formula, the wrong reactions are set to NaN | `test/verifiedTests/reconstruction/testModelGeneration/testCheckBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m` | wrong-result | A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1 | `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m` |
+| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | a mass-balanced reaction named DM_atp(c) is classified as an exchange | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
+| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | a model without c gets a c with one entry per metabolite | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
+| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | cosmetic | the biomass reaction found from biomassRxnAbbr is printed at every printLevel | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
+| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | the exchange prefix Ex_ is never recognised | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
 | `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m` | cosmetic | Formula numbers in error messages lose their zero padding inside parentheses | `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m` |
 | `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | error | Every formula stops with an error because the group name FULLR2 contains a digit | `test/verifiedTests/reconstruction/testModelGeneration/testIspolymer.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | A formula given as a cell or number stops with a MATLAB error, not the class error | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
@@ -555,6 +607,7 @@
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | The default gene list removes all genes of the model | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | The subsystem of every filled reaction is stored as a cell inside a cell | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/extractSubSysModel.m` | wrong-result | A single subsystem name given as text selects almost every reaction | `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m` |
+| `src/reconstruction/refinement/getModelFieldsForType.m` | wrong-result | custom fields named after the type are missed for a model with one or no element of that type | `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m` |
 | `src/reconstruction/refinement/mergeModelFieldPositions.m` | error | A cell field that does not hold text or cell arrays cannot be merged | `test/verifiedTests/base/testTools/testMergeModelFieldPositions.m` |
 | `src/reconstruction/refinement/mergeTwoModels.m` | wrong-result | A field that cannot be concatenated is dropped with a debug message | `test/verifiedTests/reconstruction/testModelManipulation/testMergeTwoModels.m` |
 | `src/reconstruction/refinement/removeFieldEntriesForType.m` | error | removing genes from a model that has grRules but no rules field fails | `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m` |
@@ -997,6 +1050,26 @@
 - **Source lines**: 34, 85
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testPrintCouplingConstraints.m`
 
+### `src/analysis/exploration/printFluxBounds.m`
+
+#### The documented calls without rxnNameFlag stop with an error
+
+- **Severity**: error
+- **Trigger**: printFluxBounds(model) or printFluxBounds(model, {'R1'}) for any model (the usage line is printFluxBounds(model, rxns) and rxnNameFlag is listed as optional)
+- **Observed**: after the header line 'Reaction ID  Lower Bound  Upper Bound', "Not enough input arguments." at line 36 (MATLAB R2025a; model with two reactions R1, R2 built with createModel): rxnNameFlag has no default value
+- **Expected**: the bounds printed without reaction names, as with rxnNameFlag false
+- **Source lines**: 36
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testPrintFluxBounds.m`
+
+#### The fixed-point format is never used together with reaction names
+
+- **Severity**: cosmetic
+- **Trigger**: printFluxBounds(model, rxns, true) where every listed lower bound has an absolute value above 0.01
+- **Observed**: the exponential format %14.3e of lines 43-46 is used (MATLAB R2025a): the condition of line 37 ends with '& 0', so lines 38-41 never run
+- **Expected**: the %14.3f format, as the branch without names uses (lines 49-53)
+- **Source lines**: 37-41
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testPrintFluxBounds.m`
+
 ### `src/analysis/exploration/printFluxVector.m`
 
 #### Formulas or GPRs of a partly zero flux vector stop with an error
@@ -1394,6 +1467,17 @@
 - **Source lines**: 48
 - **Documented in**: `test/verifiedTests/analysis/testMgPipe/testPlotMappingInfo.m`
 
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/retrieveModelStats.m`
+
+#### The size plot is never produced without a stratification file
+
+- **Severity**: unusable-option
+- **Trigger**: retrieveModelStats(modelPath, modelList, abunFilePath, 1, '-dpng') with three models microbiota_model_samp_S1..S3 of 2, 3 and 4 reactions (and metabolites) and an abundance table with the columns S1, S2, S3
+- **Observed**: no figure is opened and no file MicrobiomeModel_Sizes.png is written (MATLAB R2025a): the condition of line 108, ~numel(unique(data(:,1)))==1 && ..., is parsed as (~numel(...)) == 1 and is false whenever the data has a row, so lines 109-117 never run; modelStats (2, 3, 4 reactions and metabolites; 2, 1, 2 microbes) and summary (mean 3, 3, 1.6667; median 3, 3, 2; min 2, 2, 1; max 4, 4, 2) are returned correctly
+- **Expected**: the violin plot of reactions, metabolites and microbes saved in the figForm format unless all values of a column are equal, as the comment of line 107 says
+- **Source lines**: 108-117
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testRetrieveModelStats.m`
+
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m`
 
 #### Abundances read from a tsv file are added and normalized as text
@@ -1427,6 +1511,17 @@
 - **Source lines**: 42-43
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testCalculateInteractionsByTaxon.m`
 
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/getMultiSpeciesModelId.m`
+
+#### The compartmentalization error never names the species
+
+- **Severity**: cosmetic
+- **Trigger**: getMultiSpeciesModelId(modelJoint, {'Org1'; 'Org2A'}) on the two-species model of this test (the second tag matches metabolites but no reaction)
+- **Observed**: the message reads 'The model for species %s is not correctly compartmentalized. Check the name tags.' (MATLAB R2025a): error is called with a format specifier but without the argument, so %s is printed literally
+- **Expected**: the tag of the species in the message
+- **Source lines**: 118
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testGetMultiSpeciesModelId.m`
+
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/joinModelsPairwiseFromList.m`
 
 #### Two models whose file names start with the same model name stop the function
@@ -1437,6 +1532,55 @@
 - **Expected**: the file named exactly after the model is used
 - **Source lines**: 111, 113-114, 139, 141-142, 157, 159-160
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testJoinModelsPairwiseFromList.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/printUptakeBoundCom.m`
+
+#### A model without indCom cannot be printed
+
+- **Severity**: limitation
+- **Trigger**: printUptakeBoundCom(model) for a model with infoCom but without indCom
+- **Observed**: "Undefined function 'infoCom2indCom' for input arguments of type 'struct'." (MATLAB R2025a): infoCom2indCom is a local function of src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m and not on the path; the documentation lists both fields, so the branch is a convenience that never works
+- **Expected**: indCom derived from infoCom, as the branch intends
+- **Source lines**: 37
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m`
+
+#### A model without infoCom fails after the default abbreviations are built
+
+- **Severity**: limitation
+- **Trigger**: printUptakeBoundCom(model) for a model with indCom but without infoCom
+- **Observed**: 'Unrecognized field name "infoCom".' at line 62 (MATLAB R2025a) although line 46 builds the default abbreviations Org1, Org2, ... for this case
+- **Expected**: the bounds printed with the default abbreviations, from indCom alone
+- **Source lines**: 46, 62
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m`
+
+#### Continuation lines of long names are printed as the literal text %30s in the host layout
+
+- **Severity**: cosmetic
+- **Trigger**: printUptakeBoundCom(model, true, true) on a model with a host whose community metabolite name has more than 30 characters
+- **Observed**: after the first line of the row, each continuation line reads '%30s' (MATLAB R2025a): the format of line 121 starts with '%%', so the text argument is not consumed; the layout without host (line 106) prints the remaining characters
+- **Expected**: the remaining characters of the name, 30 per line
+- **Source lines**: 121
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/useDiet.m`
+
+#### A diet with fewer rows than columns stops with an index error
+
+- **Severity**: error
+- **Trigger**: useDiet(model, {'EX_a(e)', '-5', '10'}) or useDiet(model, {'EX_a(e)', '-5', '10'; 'EX_b(e)', '-2', '3'}) on a model with the exchanges EX_a(e), EX_b(e), EX_c(e) (createModel); likewise one constraint with two columns
+- **Observed**: "Index in position 1 exceeds array bounds. Index must not exceed 1." (two rows: "... must not exceed 2.") at line 54 (MATLAB R2025a): the loop of line 52 runs to length(dietConstraints), the larger dimension of the cell array, so it reads rows the diet does not have; a diet with three rows and three columns is applied correctly (lower bounds -5, -2, -1 and upper bounds 10, 3, 1)
+- **Expected**: the bounds of the listed exchanges set, whatever the number of rows
+- **Source lines**: 52-54
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testUseDiet.m`
+
+#### Numeric bounds become NaN
+
+- **Severity**: limitation
+- **Trigger**: useDiet(model, {'EX_a(e)', -5; 'EX_b(e)', -2}), bounds given as numbers
+- **Observed**: the lower bounds of EX_a(e) and EX_b(e) are NaN (MATLAB R2025a): str2double of a double is NaN; the same bounds as text ('-5', '-2') give -5 and -2
+- **Expected**: numeric bounds applied as they are, or rejected with a message
+- **Source lines**: 54, 57, 62, 65
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testUseDiet.m`
 
 ### `src/analysis/parsimoniousFBA/pFBA.m`
 
@@ -1644,6 +1788,26 @@
 - **Expected**: a sheet named Unmapped
 - **Source lines**: 205
 - **Documented in**: `test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m`
+
+### `src/analysis/persephone/additionalFunctions/physiologicalConstraintsHMDBbasedTEMP.m`
+
+#### Blood uptake constraints of organs other than the kidney are never applied
+
+- **Severity**: wrong-result
+- **Trigger**: physiologicalConstraintsHMDBbasedTEMP(model, IndividualParameters, {}, 'direct', {'glc_D', 4000, 6000}, 'bc') on a model with Liver_EX_glc_D(e)_[bc] (Liver_glc_D[e] <=> glc_D[bc]), parameters as above with liver blood flow 0.27
+- **Observed**: the bounds stay at -1000 and 1000 (MATLAB R2025a): line 440 compares the identifier without the '[bc]' suffix with the metabolite 'glc_D[bc]', so X is always empty and the uptake bound of lines 447-457 is never set (the second lookup of line 442 is not used either)
+- **Expected**: lb = -(5000/1000) * 868.3 * 60 * 24 / 1000 = -6251.8 mmol/day/person (line 449: the mean of the two concentrations and the liver plasma flow 0.27 * 5360 * (1 - 0.4) ml/min)
+- **Source lines**: 440-443
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testPhysiologicalConstraintsHMDBbasedTEMP.m`
+
+#### Measured concentrations are never matched when the data has more than one row
+
+- **Severity**: wrong-result
+- **Trigger**: physiologicalConstraintsHMDBbasedTEMP(model, IndividualParameters) (HMDB tables) on a model with the reaction Kidney_EX_glc_D(e)_[bc] (Kidney_glc_D[e] <=> glc_D[bc]); hand-built parameters: male, CardiacOutput 5360 ml/min, Hematocrit 0.4, kidney blood flow fraction 0.19 (glomerular filtration rate 122.2 ml/min)
+- **Observed**: lb = -3.5196 and ub = 0 (MATLAB R2025a), the values of the default range MConMin = 0, MConMax = MConDefaultBc = 20 uM (lines 376-378); every kidney, cerebrospinal-fluid and urine exchange gets the default range; in 'direct' mode with InputData {'glc_D', 4000, 6000; 'ala_L', 300, 500} and Biofluid 'bc' no bound changes at all, while the single row {'glc_D', 4000, 6000} does set the kidney bounds. Cause: strcat(metConcDataBc{:,VMHIDCol},'[bc]') (and the CSF, urine and organ variants) expands the cell column into separate arguments, so strcat joins all identifiers into one string ({'a';'b';'c'} gives 'abc[bc]') and ismember never finds a metabolite; the original physiologicalConstraintsHMDBbased.m indexes with parentheses, metConcDataBc(:,VMHIDCol)
+- **Expected**: from the HMDB blood range of glc_D (1100-20880 uM): ub = -193.58 and lb = -3674.5 mmol/day/person (the formulas of lines 408 and 433)
+- **Source lines**: 374, 440, 513, 603
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testPhysiologicalConstraintsHMDBbasedTEMP.m`
 
 ### `src/analysis/persephone/additionalFunctions/plotAbsentTaxaEffectOnMARScoverage.m`
 
@@ -1886,6 +2050,26 @@
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/analysis/testRumba/testCompareConditions.m`
 
+### `src/analysis/sampling/ACHR/ACHRSampler.m`
+
+#### The time-limit exit leaves the error log open
+
+- **Severity**: cosmetic
+- **Trigger**: any call whose time limit is exceeded before the last point, for example ACHRSampler(model, warmupPoints, 'achr', 1, 3, 2, [], [], -1)
+- **Observed**: the function returns at line 200 after saving the points without closing the file ACHRerror.txt opened at line 72; its identifier is still listed by openedFiles after the call (MATLAB R2025a; this test closes it)
+- **Expected**: the log closed on every exit, as at line 221
+- **Source lines**: 200
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testACHRSampler.m`
+
+#### printLevel 0 does not silence the header and the step warnings
+
+- **Severity**: cosmetic
+- **Trigger**: ACHRSampler(model, warmupPoints, 'achr', 1, 4, 5, initPoint, 3, 36000, 0, minFlux, maxFlux) (printLevel 0, documented as silent)
+- **Observed**: the line 'File #  Point #  Step #  Time  #Time left' (line 80), the progress bar title (line 76) and 'Warning <minStep> <maxStep>' (line 132) are printed whatever printLevel is (MATLAB R2025a)
+- **Expected**: no console output with printLevel 0
+- **Source lines**: 76, 80, 132
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testACHRSampler.m`
+
 ### `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m`
 
 #### A log file is written into the current folder
@@ -2041,6 +2225,37 @@
 - **Source lines**: 89, 115
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testTableDisplay.m`
 
+### `src/analysis/sampling/CHRR/chrrExpSampler.m`
+
+#### A model without metabolites and a reaction of zero width stops in preprocess
+
+- **Severity**: limitation
+- **Trigger**: the six-reaction model below with S = zeros(0, 6), b = zeros(0, 1) and lb(1) = ub(1) = 5: chrrExpSampler(box, 5, 10, [1; 0; 0; 0; 0; 0])
+- **Observed**: MATLAB R2025a: preprocess prints 'Found 1 degenerate reactions' and stops at its line 173 (P.A = P.A*N) with 'Incorrect dimensions for matrix multiplication.' Line 105 replaces the empty 0 x 6 equality matrix with a 0 x 0 one, so preprocess builds the equality row of the fixed reaction with the wrong number of columns. chrrSampler has the same lines.
+- **Expected**: the fixed reaction is added as an equality and the remaining box sampled
+- **Source lines**: 105-106
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m`
+
+#### minFlux and maxFlux cannot be requested together with a rounded polytope
+
+- **Severity**: limitation
+- **Trigger**: [samples, P, minFlux, maxFlux] = chrrExpSampler(model, [], 5, lambda, 1, P) with P the roundedPolytope of a previous call
+- **Observed**: MATLAB R2025a: error 'Output argument "minFlux" (and possibly others) not assigned a value in the execution with "chrrExpSampler" function.' The two outputs are only assigned when the polytope is pre-processed in the call, although the rounded polytope carries them as fields (.minFlux, .maxFlux). The same limitation is recorded for chrrSampler.
+- **Expected**: the flux minima and maxima stored in roundedPolytope
+- **Source lines**: 119-120
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m`
+
+### `src/analysis/sampling/CHRR/chrrSampler.m`
+
+#### minFlux and maxFlux cannot be requested together with a rounded polytope
+
+- **Severity**: error
+- **Trigger**: [samples, P, minFlux, maxFlux] = chrrSampler(model, [], 5, [], P) with P the roundedPolytope of a previous call
+- **Observed**: MATLAB R2025a: error 'Output argument "minFlux" (and possibly others) not assigned a value in the execution with "chrrSampler" function.' The two outputs are only assigned when the polytope is pre-processed in the call (lines 154-155), although the rounded polytope carries them as fields (.minFlux, .maxFlux). The documented USAGE with a roundedPolytope requests two outputs and works.
+- **Expected**: the flux minima and maxima stored in roundedPolytope
+- **Source lines**: 65-69
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testChrrSampler.m`
+
 ### `src/analysis/sampling/compareTwoSamplesStat.m`
 
 #### The chi-square p values are cumulative probabilities, near 0 for identical samples
@@ -2127,6 +2342,86 @@
 - **Source lines**: 62-66, 199-201
 - **Documented in**: `test/verifiedTests/analysis/testRank/testGetRankLUSOL.m`
 
+### `src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m`
+
+#### Every call fails when the error bars are adjusted
+
+- **Severity**: error
+- **Trigger**: any call, e.g. plotFeasibleReactionEnergyRanges(modelT) with modelT.rxns = {'r1'; 'r2'; 'r3'}, modelT.DrGtMin = [-10; -50; 5], modelT.DrGtMax = [10; -20; 30] (also with rxns as a row)
+- **Observed**: "Index exceeds array bounds." at line 50 (MATLAB R2025a): get(errorbar1, 'Children') returns an empty array for an ErrorBar object, so hE_c(2) does not exist; the same code follows at lines 63-69
+- **Expected**: the documented figure of the feasible reaction energy ranges
+- **Source lines**: 49-55, 63-69
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testPlotFeasibleReactionEnergyRanges.m`
+
+#### Only the first reaction is plotted for the documented n x 1 rxns
+
+- **Severity**: wrong-result
+- **Trigger**: modelT.rxns as the documented `n x 1` cell array with n > 1, e.g. the input above
+- **Observed**: line 16 sets nRxn = size(modelT.rxns, 2), which is 1 for a column, so the loop of lines 23-27 reads only reaction 1 (read from the code; in MATLAB R2025a the call stops at line 50 first, see the defect above)
+- **Expected**: one error bar per reaction, nRxn = n
+- **Source lines**: 16
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testPlotFeasibleReactionEnergyRanges.m`
+
+### `src/analysis/thermo/directionalityReport/singleMetaboliteThermoFigure.m`
+
+#### Every call fails on the undefined variable directions
+
+- **Severity**: error
+- **Trigger**: any call, e.g. singleMetaboliteThermoFigure(model, false, 'a') with model.S = [-1 0; 1 -1], dGt0Min = [-1; -2], dGt0Max = [1; 2], dGtMin = [-3; -4], dGtMax = [3; 4]
+- **Observed**: "Unable to resolve the name 'directions.ChangeForwardReversibleBool_dGfGC'." at line 34 (MATLAB R2025a): directions is neither an input nor assigned in the function
+- **Expected**: the documented figure of the reactions involving metAbbr
+- **Source lines**: 34-38
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testSingleMetaboliteThermoFigure.m`
+
+#### The metabolite argument metAbbr is never read
+
+- **Severity**: unusable-option
+- **Trigger**: any value of metAbbr, e.g. singleMetaboliteThermoFigure(model, false, 'a')
+- **Observed**: metAbbr appears only in the signature (line 1); the reactions are selected by the fields of directions, not by the metabolite (read from the code)
+- **Expected**: the figure restricted to the reactions involving the metabolite given by the abbreviation, as the description says
+- **Source lines**: 1
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testSingleMetaboliteThermoFigure.m`
+
+### `src/analysis/thermo/directionalityReport/standardGibbsFormationEnergyStats.m`
+
+#### The documented figures option always fails in pie
+
+- **Severity**: unusable-option
+- **Trigger**: standardGibbsFormationEnergyStats(modelT, 1) with modelT.S = [-1 0; 1 -1; 0 1; 0 1], mets {'a[c]'; 'b[c]'; 'c[c]'; 'd[e]'} and dGft0Source 'Keq', 'GC', 'GC', 'Keq'
+- **Observed**: "Text labels must be a string or a cell array of character vectors." raised by pie from line 50 (MATLAB R2025a): each label is itself a cell array
+- **Expected**: the pie chart saved as dfG0provinencePieChart.fig
+- **Source lines**: 50-54
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testStandardGibbsFormationEnergyStats.m`
+
+#### The returned counts are offset by eps
+
+- **Severity**: wrong-result
+- **Trigger**: standardGibbsFormationEnergyStats(modelT, 0) with the model above and dGft0Source 'Keq', 'GC', NaN, 'Keq'
+- **Observed**: nKeq = 2, nGC = 1.000000000000000222, nNone = 1.000000000000000222 (nGC == 1 is false); with no NaN source nNone = eps (2.2204e-16) instead of 0 (MATLAB R2025a): lines 24-26 start every count at eps
+- **Expected**: integer counts, as documented ("number of metabolites"), 0 when none
+- **Source lines**: 24-26
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testStandardGibbsFormationEnergyStats.m`
+
+### `src/analysis/thermo/directionalityReport/writeReactionListThermo.m`
+
+#### No arrow for an irreversible exchange reaction that has a product
+
+- **Severity**: wrong-result
+- **Trigger**: writeReactionListThermo(model, 'out.txt') with a reaction 'EX_a' (or 'Exch_a') whose column of S has a positive entry and lb >= 0, e.g. S(:, 2) = [1; 0; 0], lb = 0, ub = 5
+- **Observed**: the line "2<TAB>EX_a<TAB>name 2<TAB>1 a<TAB>0 <TAB>5 <TAB>" (MATLAB R2025a): the exchange branch of line 51 prints ' <==> ' only when there is no product (line 54) and nothing otherwise, so the equation has no arrow
+- **Expected**: an arrow between the two sides (' --> ' as for other irreversible reactions, line 58)
+- **Source lines**: 51-56
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testWriteReactionListThermo.m`
+
+#### Non-integer stoichiometric coefficients are printed in exponent form
+
+- **Severity**: cosmetic
+- **Trigger**: a reaction with a coefficient 0.5, e.g. S(:, 5) = [-0.5; 0; 1]
+- **Observed**: "5.000000e-01 a --> 1 c" (MATLAB R2025a): the format '%d' of lines 41 and 62 falls back to %e for non-integers
+- **Expected**: "0.5 a --> 1 c"
+- **Source lines**: 41, 62
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testWriteReactionListThermo.m`
+
 ### `src/analysis/thermo/experimentalData/alberty2006/adjustBaselinesInAlberty2006.m`
 
 #### The reduced glutathione energies are halved together with the baseline
@@ -2138,6 +2433,46 @@
 - **Source lines**: 173, 175
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testAdjustBaselinesInAlberty2006.m`
 
+### `src/analysis/thermo/experimentalData/readMetRxnBoundsFiles.m`
+
+#### Omitting the optional printLevel fails when a metabolite file is read
+
+- **Severity**: error
+- **Trigger**: readMetRxnBoundsFiles(model, 1, 1, 1e-5, 0.02, 'met.txt') with model.S = [-1 0; 1 -1], mets {'a[c]'; 'b[c]'}, rxns {'R1'; 'R2'} and met.txt holding the line "a[c]<TAB>0.001<TAB>0.01"
+- **Observed**: "Not enough input arguments." at line 87 (MATLAB R2025a): printLevel has no default although metBoundsFile and rxnBoundsFile get one (lines 45-50)
+- **Expected**: the bounds read silently, printLevel documented as an OPTIONAL INPUT
+- **Source lines**: 87
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testReadMetRxnBoundsFiles.m`
+
+#### The concMax error message says Minimum
+
+- **Severity**: cosmetic
+- **Trigger**: a model whose concMax holds Inf, with setDefaultConc = 0
+- **Observed**: line 136 raises "<met> :Minimum concentration bound is not finite" for a non-finite maximum (read from the code)
+- **Expected**: "... :Maximum concentration bound is not finite"
+- **Source lines**: 136
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testReadMetRxnBoundsFiles.m`
+
+### `src/analysis/thermo/experimentalDesign/priorityKeqMeasurement.m`
+
+#### A model whose metabolites all have Keq data fails
+
+- **Severity**: error
+- **Trigger**: the model above with dGft0Source 'Keq' for every metabolite
+- **Observed**: "Unrecognized function or variable 'measuredMetRxnRatio'." at line 172 (MATLAB R2025a): the while loop of line 66 is skipped, so measuredMetRxnRatio and priorityKeq are never assigned
+- **Expected**: nothing left to measure (empty priorityKeq, numNonKeqMet = 0)
+- **Source lines**: 66, 172
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testPriorityKeqMeasurement.m`
+
+#### The plot fails on an invalid line style, so no call returns
+
+- **Severity**: error
+- **Trigger**: priorityKeqMeasurement(modelT) with modelT.S = [-1 0 0; 1 -1 0; 0 1 0; -1 0 1], mets {'a[c]'; 'b[c]'; 'c[c]'; 'h[c]'}, rxns {'R1'; 'R2'; 'EX'}, SIntRxnBool = [true; true; false], dGft0Source 'Keq' for a[c] and 'GC' for the others, officialName and equation set
+- **Observed**: the two rounds are printed, then "Error setting property 'LineStyle' of class 'Line': '.' is not a valid value." at line 173 (MATLAB R2025a); line 174 sets '*' in the same way
+- **Expected**: the outputs priorityKeq and numNonKeqMet (here [2 1 0]) and the figure
+- **Source lines**: 173-174
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testPriorityKeqMeasurement.m`
+
 ### `src/analysis/thermo/formulae/checkFormulae.m`
 
 #### Elements other than C, H, O, P, S, K, Na and N are ignored
@@ -2148,6 +2483,17 @@
 - **Expected**: 0 (different)
 - **Source lines**: 31-45
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testCheckFormulae.m`
+
+### `src/analysis/thermo/formulae/compareMetaboliteFormulae.m`
+
+#### The identifier and the reconstruction formula are not tab separated
+
+- **Severity**: wrong-result
+- **Trigger**: compareMetaboliteFormulae(modelT) with modelT.S = [-1; 1], mets {'a[c]'; 'averyveryverylongmetaboliteid[c]'}, metFormulas {'C6H12O6'; 'H2O'} and formulaMarvin 'C6H12O6', 'H2O'
+- **Observed**: the lines "                a[c]             C6H12O6<TAB>             C6H12O6" and "averyveryverylongmetaboliteid[c]                 H2O<TAB>                 H2O" (MATLAB R2025a): the format '%20s%20s\t%20s\n' of line 21 has a tab only between the second and third field, so splitting a line on tabs gives two fields, not three
+- **Expected**: a tab delimited file with the three columns, as the description says
+- **Source lines**: 21
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testCompareMetaboliteFormulae.m`
 
 ### `src/analysis/thermo/groupContribution/createComputedSpeciesData.m`
 
@@ -2180,6 +2526,68 @@
 - **Source lines**: 50, 75
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testCreateGroupContributionStruct.m`
 
+### `src/analysis/thermo/groupContribution/jankowski/createGroupIncidenceMatrix_jankowski.m`
+
+#### The documented arguments gcmOutputFile, gcmMetList and jankowskiGroupData are ignored
+
+- **Severity**: unusable-option
+- **Trigger**: createGroupIncidenceMatrix_jankowski(model, 'gcm.txt', {'a'; 'b'; 'c'}, groupData) with model.mets = {'a'; 'b'; 'c'; 'd'}, groupData.groups = {'G1'; 'G2'; 'G3'} and gcm.txt a valid output file
+- **Observed**: "Unrecognized field name "jankowskiGroupData"." at line 26 (MATLAB R2025a); with model.gcmOutputFile, model.gcmMetList and model.jankowskiGroupData set, a call with the arguments 'nonexistent.txt', {} and an empty group list returns the matrix of the model fields: lines 26-28 read the model fields only
+- **Expected**: the matrix built from the file, metabolite list and groups passed as arguments, as the INPUTS section documents them
+- **Source lines**: 26-28
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testCreateGroupIncidenceMatrix_jankowski.m`
+
+#### The documented call name createGroupIncidenceMatrix_old does not exist
+
+- **Severity**: cosmetic
+- **Trigger**: createGroupIncidenceMatrix_old(model, 'gcm.txt', {'a'}, groupData), as USAGE shows
+- **Observed**: "Undefined function 'createGroupIncidenceMatrix_old' for input arguments of type 'struct'." (MATLAB R2025a): the signature names the function _old, but MATLAB resolves it by its file name createGroupIncidenceMatrix_jankowski
+- **Expected**: the signature and USAGE naming the function as its file
+- **Source lines**: 1
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testCreateGroupIncidenceMatrix_jankowski.m`
+
+### `src/analysis/thermo/groupContribution/jankowski/plotConcVSdGft0GroupContUncertainty.m`
+
+#### An intermediate fraction is echoed to the command window
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the model of the first section below
+- **Observed**: "fraction2q = 0.5000" printed before the documented message (MATLAB R2025a): line 54 has no semicolon
+- **Expected**: only the line "Fraction of metabolites where GC uncertainty is more significant: ..."
+- **Source lines**: 54
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testPlotConcVSdGft0GroupContUncertainty.m`
+
+### `src/analysis/thermo/groupContribution/jankowski/webCGMtoTabDelimitedFile.m`
+
+#### A metabolite without group contribution data stops the call or is reported under another name
+
+- **Severity**: error
+- **Trigger**: a NONE line for the first mapped metabolite: model.S = zeros(2, 1), model.mets = {'a[c]'; 'b[c]'}, model.metFormulas = {'C2H4'; 'C3H6'}, a file with the lines 'header', 'NONE;no groups', '-10.5;1.2;g1|g2|-1;0;C2H3', and webCGMtoTabDelimitedFile(model, 'web.txt', {'a[c]'; 'b[c]'})
+- **Observed**: MATLAB R2025a, 2026-11-16: "Unrecognized function or variable 'metAbbr'." (MATLAB:UndefinedFunction) at line 136; metAbbr is assigned only at line 138, in the other branch. With the two data lines swapped (NONE second) the call ends and line 136 prints "a[c]<tab>;no groups", the identifier of the previous metabolite instead of b[c]
+- **Expected**: the metabolite without data is left out of the output file and its own identifier is printed with the reason, as the comments at lines 85 and 134-135 say
+- **Source lines**: 136
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testWebCGMtoTabDelimitedFile.m`
+
+#### The output file is named gc_data_webGCM.txt, not gc_data_webCGM.txt as documented
+
+- **Severity**: wrong-result
+- **Trigger**: any call, for example the call above with the NONE line second
+- **Observed**: MATLAB R2025a, 2026-11-16: exist('gc_data_webGCM.txt', 'file') = 2 and exist('gc_data_webCGM.txt', 'file') = 0 in the current folder after the call; line 44 opens 'gc_data_webGCM.txt'
+- **Expected**: the data in gc_data_webCGM.txt, the file named in the OUTPUT section
+- **Source lines**: 44
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testWebCGMtoTabDelimitedFile.m`
+
+### `src/analysis/thermo/inchi/addInchiToModel.m`
+
+#### The method 'mol' stops with Too many input arguments
+
+- **Severity**: unusable-option
+- **Trigger**: addInchiToModel(model, molFileDir, 'mol', 0) with model.mets = {'a[c]'; 'b[c]'} and an empty folder molFileDir
+- **Observed**: MATLAB R2025a, 2026-11-16: "Too many input arguments." (MATLAB:TooManyInputs) at line 64. The createInChIStruct on the MATLAB path is src/analysis/thermo/inchi/old/createInChIStruct.m with the signature inchiStruct = createInChIStruct(mets, sdfFileName); the form with three inputs and two outputs called at line 64 exists only in src/analysis/thermo/inchi/new, which initCobraToolbox removes from the path
+- **Expected**: model.inchi and model.molBool built from the mol files in molFileDir, as the help text says for the method 'mol'
+- **Source lines**: 64
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testAddInchiToModel.m`
+
 ### `src/analysis/thermo/inchi/getMolecularWeight.m`
 
 #### Hydrogens are lost for an InChI whose formula starts with H
@@ -2190,6 +2598,17 @@
 - **Expected**: a molecular weight of 18 and 2 hydrogens for water
 - **Source lines**: 41-61
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMolecularWeight.m`
+
+### `src/analysis/thermo/molFiles/molFilesToCDFfile.m`
+
+#### The share of metabolites without mol files is printed as a fraction labelled percentage
+
+- **Severity**: cosmetic
+- **Trigger**: model.mets = {'a[c]'; 'b[c]'; 'c[c]'; 'd[c]'} with only a.mol in the current folder, molFilesToCDFfile(model, 'x')
+- **Observed**: MATLAB R2025a, 2026-11-16: "Percentage of metabolites without mol files: 0.75" (num2str(noMolFileCount/nMet)); the returned list and the .cdf file are correct, so no input is skipped and the console text is not asserted
+- **Expected**: "Percentage of metabolites without mol files: 75" (or the value labelled as a fraction), as mol2sdf prints "75.0%"
+- **Source lines**: 77
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testMolFilesToCDFfile.m`
 
 ### `src/analysis/thermo/protons/getMetaboliteMsDistr.m`
 
@@ -2213,6 +2632,28 @@
 - **Source lines**: 18-20
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testGetMetabolitepKa.m`
 
+### `src/analysis/thermo/protons/moleFractionStats.m`
+
+#### Fewer than two cytoplasmic reactants with a spread distribution stop the call
+
+- **Severity**: error
+- **Trigger**: modelT.S = sparse([1 0; 0 1; 1 1]), modelT.mets = {'a[c]'; 'b[c]'; 'c[e]'}, modelT.metNames = {'A'; 'B'; 'C'} and modelT.mf = {[0.5; 0.5]; [0.0005; 0.9995]; 1} (one [c] reactant whose largest mole fraction is below 0.95), or modelT.mf = {1; 1; 1} (none)
+- **Observed**: MATLAB R2025a, 2026-11-16: with one such reactant "Limits must be a 2-element vector of increasing numeric values." from ylim([0.5 0.5]) at line 117; with none "Unrecognized function or variable 'metInd'." at line 115 (metInd is assigned only inside the selection of line 90). With mf = {[0.5; 0.5]; [0.3; 0.3; 0.4]; 1} (two such reactants) the call ends normally
+- **Expected**: the figures are drawn for any model with valid mole fractions, the mole-fraction chart with one bar or none
+- **Source lines**: 115, 117
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testMoleFractionStats.m`
+
+### `src/analysis/thermo/protons/plotActivityCoefficients.m`
+
+#### The output lambda holds the ionic-strength curves, not the activity coefficients of the species
+
+- **Severity**: wrong-result
+- **Trigger**: any call, for example modelT.S = zeros(2, 1), modelT.mets = {'a'; 'b'}, modelT.metNames = {'A'; 'B'}, modelT.temp = 298.15, modelT.gasConstant = 8.314472e-3, modelT.met(1).lambda = [0.5 0.005], modelT.met(1).aveZi = -1, modelT.met(2).lambda = [], modelT.met(2).aveZi = 0, [n, edges, lambda] = plotActivityCoefficients(modelT)
+- **Observed**: MATLAB R2025a, 2026-11-16: size(n) = size(edges) = [1 101] as expected, but size(lambda) = [4 1000] and lambda(1:4, 1) = [1; 1; 1; 1], lambda(1:4, 2) = [0.9820; 0.9300; 0.8494; 0.7482]: lines 62-66 reuse the variable lambda of lines 34-43 for the curves of charges 1 to 4, overwriting the species values
+- **Expected**: lambda = [0.5 0.005], the activity coefficients of the metabolite species, as the OUTPUTS section says
+- **Source lines**: 65
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testPlotActivityCoefficients.m`
+
 ### `src/analysis/thermo/reactantContribution/calcdGHT.m`
 
 #### The standard transformed enthalpy dHf0 is always NaN
@@ -2223,6 +2664,57 @@
 - **Expected**: the documented output "reactant standard transformed enthalpy of formation"; dHzero is a documented OPTIONAL INPUT ("`p x 1` standard enthalpy of formation at 298.15 K") and dHf0 a documented OUTPUT, so the documented input is ignored and the documented output is always NaN (severity audit T009a)
 - **Source lines**: 195-196, 411
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testCalcdGHT.m`
+
+### `src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m`
+
+#### Every call stops at getCompartment with Too many input arguments
+
+- **Severity**: error
+- **Trigger**: any call, for example model.S = sparse([1 -1; -1 1]) and model.mets = {'fad[c]'; 'fadh2[c]'}, setCommonZeroStandardGibbsEnergyOfFormation(model)
+- **Observed**: MATLAB R2025a, 2026-11-16: "Too many input arguments." (MATLAB:TooManyInputs) at line 58: getCompartment(model.mets, numChar) passes a second argument, but src/analysis/thermo/vonBertalanffy/getCompartment.m, the only getCompartment on the path, takes one input (mets)
+- **Expected**: the cofactor baselines are adjusted and model is returned, as the help text says
+- **Source lines**: 57-58
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testSetCommonZeroStandardGibbsEnergyOfFormation.m`
+
+### `src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m`
+
+#### An internal reaction with carbon dioxide stops with an index error
+
+- **Severity**: error
+- **Trigger**: the model above with mets {'a[c]'; 'co2[c]'; 'h2o[c]'}, metFormulas {'C'; 'CO2'; 'H2O'}, metNames {'a'; 'c'; 'w'} and S = sparse([-1; 1; 0]) (a -> co2)
+- **Observed**: MATLAB R2025a, 2026-11-16: after "Formula for carbon dioxide [c] is now H2CO3 = CO2.H20" the call stops with "Index exceeds the number of array elements. Index must not exceed 1." (MATLAB:badsubscript) at line 124: model.mets(co2MatchBool) is a 1 x 1 cell, so abbr(4:6) indexes the cell, not the identifier; lines 106-107 and 113-114 (two carbon dioxide species in one reaction) use the same pattern
+- **Expected**: S(h2o[c], r1) = -1, one H2O added to the substrate side for the CO2 produced, as the help text says
+- **Source lines**: 106-107, 113-114, 123-124
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testThermodynamicAdjustmentToStoichiometry.m`
+
+#### Every call stops at getCompartment with Too many input arguments
+
+- **Severity**: error
+- **Trigger**: any call that passes the carbon dioxide step, for example model.S = sparse([-1; 1]), mets {'a[c]'; 'b[c]'}, rxns {'r1'}, metFormulas {'C'; 'C'}, metNames {'a'; 'b'}, rxnNames {'r'}, subSystems {{''}}, SIntRxnBool true
+- **Observed**: MATLAB R2025a, 2026-11-16: "Too many input arguments." (MATLAB:TooManyInputs) at line 153: getCompartment(model.mets, numChar) passes a second argument, but src/analysis/thermo/vonBertalanffy/getCompartment.m, the only getCompartment on the path, takes one input (mets)
+- **Expected**: the model is returned with oldS, SIntRxnBool and SExRxnBool, unchanged otherwise (no carbon dioxide, no succinate dehydrogenase)
+- **Source lines**: 152-153
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testThermodynamicAdjustmentToStoichiometry.m`
+
+### `src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m`
+
+#### A Gibbs energy range with one bound at zero stops the call
+
+- **Severity**: error
+- **Trigger**: model.S = sparse([-1 0; 1 -1]), rxns {'r1'; 'r2'}, lb [-10; 0], ub [10; 10], SIntRxnBool [true; true], DrG0_Uncertainty [1; 1], DrGtMin [0; -5], DrGtMax [5; -1], DrGt0 [2; -3], thermoConstrainFluxBounds(model, 0.95, 10, 0)
+- **Observed**: MATLAB R2025a, 2026-11-16: the call prints 5 and 0 (lines 136-137) and stops with "Some thermo reactions direction categories are not assigned." at line 138: a reaction with DrGtMin = 0 < DrGtMax (or DrGtMin < 0 = DrGtMax) fits none of the categories of lines 120-124, which use strict inequalities, so the sanity check of line 135 fails. With DrGtMin = [-1; -5] the call ends normally
+- **Expected**: r1 classified (it cannot run forward with a negative Gibbs energy) and the bounds returned, since the categories are meant to cover every internal reaction
+- **Source lines**: 120-124, 135-138
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testThermoConstrainFluxBounds.m`
+
+#### A confidence level outside the built-in table stops the call
+
+- **Severity**: limitation
+- **Trigger**: the model above with DrGtMin = [-1; -5] and confidenceLevel 0.9
+- **Observed**: MATLAB R2025a, 2026-11-16: "Unable to perform assignment because the left and right sides have a different number of elements." at line 167: only -1, 0.5, 0.7, 0.95 and 0.99 are in the table of lines 62-66, any other value gives an empty tValue
+- **Expected**: the documentation of confidenceLevel is empty; an error naming the supported values
+- **Source lines**: 68, 167
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testThermoConstrainFluxBounds.m`
 
 ### `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m`
 
@@ -2805,6 +3297,17 @@
 - **Source lines**: 60
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m`
 
+### `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m`
+
+#### ExclList is ignored for the blood exchanges of every organ but the kidney
+
+- **Severity**: wrong-result
+- **Trigger**: a model with the reaction Liver_EX_xyz(e)_[bc] (Liver_xyz[e] <=> xyz[bc], bounds -1000/1000, xyz not in the HMDB table); physiologicalConstraintsHMDBbased(model, IndividualParameters, {'Liver_EX_xyz(e)_[bc]'})
+- **Observed**: MATLAB R2025a: the lower bound becomes -21.6 (default concentration 20 uM x liver plasma flow), the same as without ExclList; the general blood branch (lines 447-525) never consults ExclList, which only the kidney (line 425), CSF (line 605, HMDB input only) and urine (line 749) branches merge into their exclusion lists
+- **Expected**: the bounds of a reaction in ExclList unchanged (documented: "list of reaction identifiers that should not receive an updated bound")
+- **Source lines**: 447-525, 602-603
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testPhysiologicalConstraintsHMDBbased.m`
+
 ### `src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m`
 
 #### Flux values are rounded to the default precision of num2str
@@ -2815,6 +3318,17 @@
 - **Expected**: the flux values as given in the spreadsheet (e.g. '0.123456789')
 - **Source lines**: 32
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testReadInDietFromVMH.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/setConstraints/setDietConstraints.m`
+
+#### diet flux values given as numbers are not accepted
+
+- **Severity**: limitation
+- **Trigger**: setDietConstraints(model, {'Diet_EX_glc_D[d]', 10})
+- **Observed**: MATLAB R2025a: error "Input must be a character vector or string scalar." from str2num; the documented diet table ("second column holds the corresponding flux values") must hold the values as character arrays, as the predefined diet scripts do
+- **Expected**: numeric flux values accepted, or the documentation naming character arrays
+- **Source lines**: 156, 158, 166, 174
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testSetDietConstraints.m`
 
 ### `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m`
 
@@ -3126,6 +3640,17 @@
 - **Source lines**: 82, 86
 - **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testCreateEmptyFields.m`
 
+### `src/base/io/utilities/creategrRulesField.m`
+
+#### unknown reaction names in positions are not reported as intended
+
+- **Severity**: cosmetic
+- **Trigger**: creategrRulesField(model, {'R1', 'notInModel'}) and creategrRulesField(model, {'notInModel'}) on a model with a grRules field
+- **Observed**: MATLAB R2025a: the mixed list raises no error and silently updates R1 only, because the test of line 45 reads (~sum(pos)) == numel(unique(positions)), which is true only when no name matches and exactly one name is given; the all-unknown list then stops in the error call of line 46 with "Unrecognized function or variable 'postions'" (misspelt variable) instead of the intended message. The test below only checks that the all-unknown list raises an error.
+- **Expected**: the error "The following reactions are not part of this model: notInModel" for both lists
+- **Source lines**: 45-46
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testCreategrRulesField.m`
+
 ### `src/base/io/utilities/getDefinedFieldProperties.m`
 
 #### A requested field without definition raises an error instead of being left out
@@ -3198,6 +3723,17 @@
 - **Expected**: empty outputs (no reaction, no gene)
 - **Source lines**: 48
 - **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGPR.m`
+
+### `src/base/io/utilities/readSimPhenyGprText.m`
+
+#### the rules of reactions with several genes refer to the wrong genes
+
+- **Severity**: wrong-result
+- **Trigger**: a GPR text file with 11 tab-separated columns and one header line whose rows have R1 / b1, R2 / b2+b3 and R3 / b3,b1 in the reaction name (third) and GPRA (ninth) columns; gpraModel = readSimPhenyGprText(file)
+- **Observed**: MATLAB R2025a: gpraModel.genes = {b1; b2; b3} and gpraModel.rules = {'x(1)'; 'x(3) & x(3)'; 'x(3) | x(1)'} while gpraModel.rxnGeneMat is right ([1 0 0; 0 1 1; 1 0 1]). Line 62 renumbers the local gene indices with strrep one gene at a time: for R2 the first step turns x(1) into x(2) and the second step turns both x(2) into x(3). Every reaction whose genes are not the first genes of the sorted gene list in order is affected (and x(1) would also match inside x(10)); the rules merged into a model (line 82) carry the same error
+- **Expected**: gpraModel.rules = {'x(1)'; 'x(2) & x(3)'; 'x(3) | x(1)'}, consistent with rxnGeneMat and grRules ('b2 and b3')
+- **Source lines**: 61-63
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGprText.m`
 
 ### `src/base/io/utilities/write4ti2.m`
 
@@ -5567,6 +6103,17 @@
 - **Source lines**: 61
 - **Documented in**: `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m`
 
+### `src/reconstruction/modelGeneration/massBalance/checkBalance.m`
+
+#### With exactly one metabolite without a formula, the wrong reactions are set to NaN
+
+- **Severity**: wrong-result
+- **Trigger**: model.S = sparse([-1 0 0; 1 -1 0; 0 1 -1; 0 0 1]), model.mets = {'a'; 'b'; 'c'; 'd'}, model.metFormulas = {'C2'; 'C2'; ''; 'C2'}, [dE, E] = checkBalance(model, 'C', 0)
+- **Observed**: MATLAB R2025a, 2026-11-16: dE = [NaN -2 2] and E = [2 2 NaN 2]. With a single missing formula model.S(missingFormulaeBool, :) is a 1 x n row and any() of it is a scalar, so line 92 sets dE(1) to NaN (whenever that metabolite is in some reaction) instead of the reactions that use it. With two missing formulas ({'C2'; ''; ''; 'C2'}) dE = [NaN NaN NaN] is correct
+- **Expected**: dE = [0 NaN NaN]: reaction 1 (a -> b) is balanced and reactions 2 and 3 involve c, as the OUTPUTS section says (isnan(dE(n)) when the reaction involves a metabolite without a formula)
+- **Source lines**: 92
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testCheckBalance.m`
+
 ### `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m`
 
 #### A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1
@@ -5577,6 +6124,44 @@
 - **Expected**: {'CH4'} and {'C0.1H2'} (dMax is documented as the maximum number of decimal places, so 0 and 1 are valid and 1 and 0.1 are written exactly at those precisions)
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m`
+
+### `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m`
+
+#### a mass-balanced reaction named DM_atp(c) is classified as an exchange
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1'; 'DM_atp(c)'; 'EX_a'; 'DM_atp_c_'}, {'r1'; 'dm'; 'ex'; 'dm2'}, {'a -> b'; 'atp + h2o -> adp + pi'; 'a <=> '; 'atp2 + h2o -> adp2 + pi'}); out = findSExRxnInd(model)
+- **Observed**: MATLAB R2025a: out.DMRxnBool(2) = 0 but out.SIntRxnBool(2) = 0, while out.SIntRxnBool(4) = 1 for the same reaction named DM_atp_c_. The variable bool used at line 198 to remove the ATP demand from the heuristic exchange set is the one computed for DM_atp_c_ at line 189, so DM_atp(c) (and ATPM) are only removed from DMRxnBool (lines 179, 187) and stay in SExRxnBoolHeuristic, computed at line 170 before the removal
+- **Expected**: SIntRxnBool true for DM_atp(c), as for DM_atp_c_ and as the message of line 184 announces ("not considered an exchange reaction by default")
+- **Source lines**: 189, 198
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
+
+#### a model without c gets a c with one entry per metabolite
+
+- **Severity**: wrong-result
+- **Trigger**: findSExRxnInd(rmfield(model, 'c')) with the model of defect 1 (S is 8 x 4)
+- **Observed**: MATLAB R2025a: the returned model.c is 8 x 1 (zeros(nMet, 1), line 68)
+- **Expected**: an n x 1 vector (4 x 1), as documented for .c ("created as zeros if absent")
+- **Source lines**: 68
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
+
+#### the biomass reaction found from biomassRxnAbbr is printed at every printLevel
+
+- **Severity**: cosmetic
+- **Trigger**: model.biomassRxnAbbr = 'Biomass_x'; findSExRxnInd(model, [], 0)
+- **Observed**: MATLAB R2025a: "Found biomass reaction: Biomass_x" is printed at printLevel 0
+- **Expected**: no output at printLevel 0, as for the other messages of the function
+- **Source lines**: 98
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
+
+#### the exchange prefix Ex_ is never recognised
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'Ex_h'; 'R1'}, {'1'; '2'}, {'h <=> '; 'h -> g'}); out = findSExRxnInd(model)
+- **Observed**: MATLAB R2025a: out.ExchRxnBool(1) = 0 (SIntRxnBool is still false through the one-coefficient heuristic); strncmp('Ex_', rxns, 5) at lines 159 and 162 compares five characters of a three-character prefix and is always false
+- **Expected**: ExchRxnBool true (documented: "Prefix EX_ or Exch_ or Ex_")
+- **Source lines**: 159, 162
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
 
 ### `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m`
 
@@ -6143,6 +6728,17 @@
 - **Expected**: the reactions annotated with that subsystem only, as for {'Exchange'}
 - **Source lines**: 20
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m`
+
+### `src/reconstruction/refinement/getModelFieldsForType.m`
+
+#### custom fields named after the type are missed for a model with one or no element of that type
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1'}, {'r1'}, {'a -> b'}); model.rxnCustom = {'z'}; getModelFieldsForType(model, 'rxns')
+- **Observed**: MATLAB R2025a: rxnCustom is not in the result (S, rxnGeneMat, c, grRules, lb, rules, rxnNames, rxns, subSystems, ub), while the same model with two reactions lists it. Line 104 reads strncmp(x, type, length(type-1)): type-1 subtracts one from each character code, so the length is that of the whole type name and the fields must start with 'rxns', not 'rxn' as the comment ("Remove the s from the type") and line 184 intend
+- **Expected**: rxnCustom listed with dimension 1, as documented ("fields named e.g. rxnXYZ are associated with rxns") and as for two or more reactions
+- **Source lines**: 104
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m`
 
 ### `src/reconstruction/refinement/mergeModelFieldPositions.m`
 

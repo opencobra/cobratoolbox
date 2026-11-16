@@ -136,3 +136,5 @@ duplicates	src/analysis/thermo/groupContribution/new/regulariseGroupIncidenceMat
 printCouplingConstraints	src/dataIntegration/XomicsToModel/XomicsToModel.m
 # printFluxBounds: only calls with fewer than 3 inputs fail; no src caller makes one.
 printFluxBounds	NONE
+# chrrSampler: only requesting minFlux/maxFlux with a roundedPolytope input fails; sampleCbModel does not request them.
+chrrSampler	NONE

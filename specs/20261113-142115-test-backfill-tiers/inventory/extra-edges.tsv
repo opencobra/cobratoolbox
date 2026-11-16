@@ -22,3 +22,13 @@ src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/F
 src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m
 src/visualization/metabolicCartography/visualizeFluxTimeseriesFromFile.m	src/visualization/metabolicCartography/addFluxWidthAndColor.m
 src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m
+src/analysis/exploration/findCarbonRxns.m	src/base/utilities/parseMetNames.m
+src/analysis/exploration/findCarbonRxns.m	src/base/utilities/columnVector.m
+src/analysis/exploration/findGPRFromRxns.m	src/analysis/exploration/printGPRForRxns.m
+src/analysis/exploration/findSubSysGen.m	src/analysis/exploration/findSubSystemsFromGenes.m
+src/analysis/exploration/getMIRIAMAnnotations.m	src/base/io/utilities/getBioQualifiers.m
+src/analysis/exploration/getMIRIAMAnnotations.m	src/base/io/utilities/getDatabaseMappings.m
+src/analysis/rMTA/diffexprs2rxnFBS.m	src/dataIntegration/transcriptomics/preprocessing/GPRparser.m
+src/analysis/rMTA/diffexprs2rxnFBS.m	src/dataIntegration/transcriptomics/preprocessing/findUsedGenesLevels.m
+src/analysis/rMTA/diffexprs2rxnFBS.m	src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m
+src/analysis/sampling/ACHR/ACHRSampler.m	src/base/utilities/showprogress.m

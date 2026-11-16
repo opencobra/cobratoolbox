@@ -166,9 +166,15 @@ class Ledger:
                     return False
             return True
 
+        # rows already assigned to an earlier wave whose results are not applied yet (still
+        # PENDING) are in progress and must not be issued again
+        in_progress = set()
+        for w in glob.glob(os.path.join(self.inv, 'waves', 'wave[0-9][0-9].tsv')):
+            for line in list(open(w))[1:]:
+                in_progress.add(line.split('\t')[2])
         ready = []
         for r in sorted(self.rows, key=lambda r: int(r['order'])):
-            if r['status'] != 'PENDING' or r['tier'] != str(tier):
+            if r['status'] != 'PENDING' or r['tier'] != str(tier) or r['file'] in in_progress:
                 continue
             # a call cycle is one unit: ready only when every member's other callees are final
             members = [self.by_name[m] for m in self.cycle(r) if m in self.by_name] + [r]
