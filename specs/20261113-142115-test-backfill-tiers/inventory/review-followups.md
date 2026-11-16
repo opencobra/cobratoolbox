@@ -85,4 +85,16 @@ multi-function. A later change should merge or rename them so that each function
 - Coverage tool quirk: setQualitativeConstraints lines 50 and 55 evidently run (the asserted bounds
   come only from them) but MATLAB's coverage plugin records no hits; exempt in the test with that
   reason. The same loop in a scratch function is recorded normally.
+- addSubSystemsToReactions now has its own test; the legacy testSubSystemModification.m tests six
+  functions including it (III-Naming merge candidate).
+- populateModelwithRxnIDs builds a path with 'metaboReport' while the folder is 'metaboRePort'; it
+  works on this machine but may fail on other file systems.
+- addMIRIAMAnnotations is EXCLUDED (every call needs the internet through getRegisteredDatabases);
+  a stand-in for getRegisteredDatabases, as accepted for parseNCBItaxonomy, would make it testable:
+  to revisit (three defects confirmed with a stub are in its wave 23 record).
+- isSameCobraModel is quarantined (different reaction counts error; logical fields never compared;
+  punctuation stripped, so 'R-1' equals 'R1'), yet many existing tests use it as their oracle: those
+  assertions may pass for models that differ. High priority for review.
+- expa.m and the two physiologicalConstraintsHMDBbased files: MATLAB's coverage plugin reports 0
+  executable lines (non-UTF-8 bytes); their records use the profiler's line counts.
 

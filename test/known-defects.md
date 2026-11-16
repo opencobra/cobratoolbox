@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-762 known defects in 431 functions (266 wrong-result, 223 error, 66 unusable-option, 128 cosmetic, 79 limitation).
+788 known defects in 445 functions (277 wrong-result, 229 error, 69 unusable-option, 133 cosmetic, 80 limitation).
 
 ## Summary
 
@@ -688,6 +688,7 @@
 | `src/reconstruction/refinement/GPRLogic/Node.m` | wrong-result | isequal is false for a tree with a repeated clause, and not symmetric | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
 | `src/reconstruction/refinement/GPRLogic/Node.m` | wrong-result | isequal is false for equivalent trees with different literals | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
 | `src/reconstruction/refinement/GPRLogic/Node.m` | wrong-result | removeDuplicateLiterals removes the wrong children when a child that is not a literal comes before a literal | `test/verifiedTests/reconstruction/testGPRLogic/testNode.m` |
+| `src/reconstruction/refinement/GPRLogic/NormaliseGPRs.m` | wrong-result | The rules are not reduced to the minimal DNF form: absorbed clauses are kept | `test/verifiedTests/reconstruction/testGPRLogic/testNormaliseGPRs.m` |
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | wrong-result | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | limitation | convertToCNF of an OrNode without children returns an empty AndNode, which evaluates to true, while the empty OrNode evaluates to false | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
@@ -701,21 +702,35 @@
 | `src/reconstruction/refinement/annotateSBOTerms.m` | wrong-result | metSBOTerms and geneSBOTerms are created as rows, not m x 1 and g x 1 | `test/verifiedTests/reconstruction/testRefinement/testAnnotateSBOTerms.m` |
 | `src/reconstruction/refinement/assignGPRA.m` | error | Every call stops because parseSimPhenyGPRA does not exist | `test/verifiedTests/reconstruction/testRefinement/testAssignGPRA.m` |
 | `src/reconstruction/refinement/assignSubSystems.m` | error | Every call stops because parseSimPhenyGPRA does not exist | `test/verifiedTests/reconstruction/testRefinement/testAssignSubSystems.m` |
+| `src/reconstruction/refinement/changeCOBRAConstraints.m` | error | The documented constraint index cannot be used as constraintID | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAConstraints.m` |
+| `src/reconstruction/refinement/changeCOBRAVariable.m` | unusable-option | The documented option Name stops with an error | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m` |
+| `src/reconstruction/refinement/changeCOBRAVariable.m` | error | The documented variable index cannot be used as variableID | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | cosmetic | A partly unknown reaction list is not reported | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | The extra reactions are drawn from a set that already contains the selected ones | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | With one metabolite to change, the random selection reduces the S row to a scalar | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/extractSubSysModel.m` | wrong-result | A single subsystem name given as text selects almost every reaction | `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m` |
 | `src/reconstruction/refinement/getModelFieldsForType.m` | wrong-result | custom fields named after the type are missed for a model with one or no element of that type | `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m` |
+| `src/reconstruction/refinement/isSameCobraModel.m` | wrong-result | Logical fields are never compared | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
+| `src/reconstruction/refinement/isSameCobraModel.m` | wrong-result | Text fields are compared with every non-word character removed, not only white space | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
+| `src/reconstruction/refinement/isSameCobraModel.m` | cosmetic | The message for differing nested subSystems names prints 0 positions | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
+| `src/reconstruction/refinement/isSameCobraModel.m` | error | Two models with different numbers of reactions stop with an error | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
 | `src/reconstruction/refinement/mergeModelFieldPositions.m` | error | A cell field that does not hold text or cell arrays cannot be merged | `test/verifiedTests/base/testTools/testMergeModelFieldPositions.m` |
 | `src/reconstruction/refinement/mergeTwoModels.m` | wrong-result | A field that cannot be concatenated is dropped with a debug message | `test/verifiedTests/reconstruction/testModelManipulation/testMergeTwoModels.m` |
 | `src/reconstruction/refinement/removeFieldEntriesForType.m` | error | removing genes from a model that has grRules but no rules field fails | `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m` |
+| `src/reconstruction/refinement/removeSubSystemsFromRxns.m` | cosmetic | The help text describes setRxnSubSystems, not the removal | `test/verifiedTests/reconstruction/testRefinement/testRemoveSubSystemsFromRxns.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | limitation | An order that repeats indices is accepted | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | unusable-option | The type proteins is accepted but always stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateGenes.m` | wrong-result | With two duplicated genes, different genes are merged | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m` |
 | `src/visualization/SAMMIM/expa.m` | cosmetic | The collapsed model does not match the input model as documented: its reactions are sorted and its objective is zero | `test/verifiedTests/visualization/testSAMMIM/testExpa.m` |
+| `src/visualization/cellDesigner/addAnnotation.m` | error | Annotating a reaction of a standard COBRA model stops with an error | `test/verifiedTests/visualization/testCellDesigner/testAddAnnotation.m` |
 | `src/visualization/cellDesigner/addColour.m` | wrong-result | A reaction listed by an ID in the last row of r_info.ID is not coloured | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
 | `src/visualization/cellDesigner/addColour.m` | wrong-result | The html colours of the second column of listRxn_Color are ignored | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
 | `src/visualization/cellDesigner/addColour.m` | error | The second output is not assigned when no listed link has a non-zero width | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
+| `src/visualization/cellDesigner/addFlux.m` | wrong-result | A reaction whose structure field is named by the reaction ID itself is left unchanged | `test/verifiedTests/visualization/testCellDesigner/testAddFlux.m` |
+| `src/visualization/cellDesigner/addFlux.m` | wrong-result | Reaction IDs with (e) are not converted to the _e field name | `test/verifiedTests/visualization/testCellDesigner/testAddFlux.m` |
+| `src/visualization/cellDesigner/addMiriam.m` | wrong-result | Every matched species receives the MIRIAM entries of the last infix entry | `test/verifiedTests/visualization/testCellDesigner/testAddMiriam.m` |
+| `src/visualization/cellDesigner/addMiriam.m` | unusable-option | The documented option miriam_path stops with an error | `test/verifiedTests/visualization/testCellDesigner/testAddMiriam.m` |
+| `src/visualization/cellDesigner/cmpRxn.m` | error | A parsed model with no reaction found in the COBRA model raises an error | `test/verifiedTests/visualization/testCellDesigner/testCmpRxn.m` |
 | `src/visualization/cellDesigner/correctMetName.m` | cosmetic | Debug output of the species row numbers | `test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m` |
 | `src/visualization/cellDesigner/parseCD.m` | cosmetic | Debug output of the keyword table, of every line read and of intermediate values | `test/verifiedTests/visualization/testCellDesigner/testParseCD.m` |
 | `src/visualization/cellDesigner/parseCD.m` | limitation | The input file is left open | `test/verifiedTests/visualization/testCellDesigner/testParseCD.m` |
@@ -736,13 +751,24 @@
 | `src/visualization/createMetIntrcNetwork/hit_node.m` | cosmetic | The help text describes the fcont flag the wrong way round | `test/verifiedTests/visualization/testCreateMetIntrcNetwork/testHit_node.m` |
 | `src/visualization/efmviz/efmEnrichmentAnalysis.m` | error | Expression data without significance values stops with an error | `test/verifiedTests/visualization/testEFMviz/testEfmEnrichmentAnalysis.m` |
 | `src/visualization/efmviz/efmSubsystemsExtraction.m` | error | Every call with valid inputs stops with an error | `test/verifiedTests/visualization/testEFMviz/testEfmSubsystemsExtraction.m` |
+| `src/visualization/entropicFBA/calculateGeneWeight.m` | cosmetic | A model without SConsistentRxnBool fails before the function's own check | `test/verifiedTests/visualization/testEntropicFBA/testCalculateGeneWeight.m` |
+| `src/visualization/entropicFBA/calculateGeneWeight.m` | wrong-result | Reactions without expressed genes keep weight 0 when any reaction is inconsistent | `test/verifiedTests/visualization/testEntropicFBA/testCalculateGeneWeight.m` |
+| `src/visualization/maps/ReconMap/buildFluxDistLayout.m` | wrong-result | The largest flux gets line width 0 and the smallest the maximum width | `test/verifiedTests/visualization/testReconMap/testBuildFluxDistLayout.m` |
+| `src/visualization/maps/ReconMap/buildFluxDistLayout.m` | unusable-option | The maxThickness input is ignored | `test/verifiedTests/visualization/testReconMap/testBuildFluxDistLayout.m` |
 | `src/visualization/maps/ReconMap/generateSubsytemsLayout.m` | wrong-result | The overlay content is truncated to 'name' before it is sent | `test/verifiedTests/visualization/testReconMap/testGenerateSubsytemsLayout.m` |
 | `src/visualization/maps/ReconMap/makeColorGradient.m` | wrong-result | A channel that is equal in both colours becomes 0 | `test/verifiedTests/visualization/testReconMap/testMakeColorGradient.m` |
 | `src/visualization/maps/ReconMap/printInRecon3Dmap.m` | cosmetic | The line width is written with a stray digit | `test/verifiedTests/visualization/testReconMap/testPrintInRecon3Dmap.m` |
+| `src/visualization/metabolicCartography/addFluxFBA.m` | cosmetic | A flux of exactly 1e-3 of the largest flux keeps width 0.001 | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
+| `src/visualization/metabolicCartography/addFluxFBA.m` | limitation | A flux vector of zeros gives NaN widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
+| `src/visualization/metabolicCartography/addFluxFBA.m` | wrong-result | fluxMap holds the widths of the input map, not the flux widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
 | `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m` | wrong-result | Numeric reaction IDs of different lengths do not match the map | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFromFileWidthAndColor.m` |
 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
+| `src/visualization/metabolicCartography/addNotes.m` | cosmetic | A metabolite shown twice in the map gets its note twice in each copy | `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m` |
+| `src/visualization/metabolicCartography/addNotes.m` | wrong-result | Numeric confidence scores are written as control characters | `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m` |
+| `src/visualization/metabolicCartography/addNotes.m` | error | Subsystems stored as cells of cells raise an error | `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m` |
 | `src/visualization/metabolicCartography/changeNodesArea.m` | error | The optional areaWidth is not defaulted when areaHeight is given | `test/verifiedTests/visualization/testMetabolicCartography/testChangeNodesArea.m` |
 | `src/visualization/metabolicCartography/colorProtein.m` | error | The default colour 'Red' is not a key of createColorsMap | `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m` |
+| `src/visualization/metabolicCartography/colorSubsystemCD.m` | wrong-result | Reactions with several subsystems shift the selection to the wrong reactions | `test/verifiedTests/visualization/testMetabolicCartography/testColorSubsystemCD.m` |
 | `src/visualization/metabolicCartography/defaultColorCD.m` | error | Secondary reaction lines are coloured with the undefined function Colors | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultColorCD.m` |
 | `src/visualization/metabolicCartography/defaultLookMap.m` | wrong-result | An included species named as an ion makes the main species of the same index an ION | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultLookMap.m` |
 | `src/visualization/metabolicCartography/findRxnsInMap.m` | error | A list with a reaction name absent from the map is an error | `test/verifiedTests/visualization/testMetabolicCartography/testFindRxnsInMap.m` |
@@ -7657,6 +7683,17 @@
 - **Source lines**: 199-201
 - **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testNode.m`
 
+### `src/reconstruction/refinement/GPRLogic/NormaliseGPRs.m`
+
+#### The rules are not reduced to the minimal DNF form: absorbed clauses are kept
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1','R2','EX_A','EX_C'}, {'R1','R2','EX_A','EX_C'}, {'A -> B','B <=> C','A <=> ','C -> '}); model.genes = {'g1';'g2'}; model.rules = {'x(1) | (x(1) & x(2))'; ''; ''; ''}; out = NormaliseGPRs(model)
+- **Observed**: out.rules{1} = '(x(1) | x(1) & x(2))' and out.grRules{1} = '(g1 or g1 and g2)' (only identical clauses are removed by removeDNFduplicates)
+- **Expected**: x(1) (g1): x1 or (x1 and x2) = x1 by absorption (header: "reduce them to the minimal DNF Form"; OUTPUTS: "all GPRS in minimal DNF form")
+- **Source lines**: 31-38
+- **Documented in**: `test/verifiedTests/reconstruction/testGPRLogic/testNormaliseGPRs.m`
+
 ### `src/reconstruction/refinement/GPRLogic/OrNode.m`
 
 #### A numeric literal ID is not deleted
@@ -7786,6 +7823,37 @@
 - **Source lines**: 23-35
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAssignSubSystems.m`
 
+### `src/reconstruction/refinement/changeCOBRAConstraints.m`
+
+#### The documented constraint index cannot be used as constraintID
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','EX_A','EX_C'}, {'R1','R2','EX_A','EX_C'}, {'A -> B','B <=> C','A <=> ','C -> '}); model = addCOBRAConstraints(model, {'R1','R2'}, 5, 'c', [1 1], 'dsense', 'L'); changeCOBRAConstraints(model, 1, 'd', 7)
+- **Observed**: error "The value of 'constraintID' is invalid. It must satisfy the function: @(x)ischar(x)&&any(ismember(model.ctrs,x))." (the validator accepts only a char ID, so the numeric path after line 75 is never used)
+- **Expected**: model.d(1) = 7 (INPUTS: "constraintID: The ID of the constraint (or the index in the ctrs field)")
+- **Source lines**: 52
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAConstraints.m`
+
+### `src/reconstruction/refinement/changeCOBRAVariable.m`
+
+#### The documented option Name stops with an error
+
+- **Severity**: unusable-option
+- **Trigger**: same model as above; changeCOBRAVariable(model, 'v1', 'Name', 'newName')
+- **Observed**: error "Unrecognized field name "evarName"." (the option name is appended to 'evar', but addCOBRAVariables stores the names in evarNames)
+- **Expected**: model.evarNames{1} = 'newName' (OPTIONAL INPUTS: "Name: The new, descriptive name of the variable.")
+- **Source lines**: 51-54
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m`
+
+#### The documented variable index cannot be used as variableID
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','EX_A','EX_C'}, {'R1','R2','EX_A','EX_C'}, {'A -> B','B <=> C','A <=> ','C -> '}); model = addCOBRAVariables(model, {'v1'}, 'lb', 0, 'ub', 3); changeCOBRAVariable(model, 1, 'lb', 1)
+- **Observed**: error "The value of 'variableID' is invalid. It must satisfy the function: @(x)ischar(x)&&any(ismember(model.evars,x))."
+- **Expected**: model.evarlb(1) = 1 (INPUTS: "variableID: The ID of the variable (or the index in the evars field)")
+- **Source lines**: 32
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m`
+
 ### `src/reconstruction/refinement/changeRxnMets.m`
 
 #### A partly unknown reaction list is not reported
@@ -7837,6 +7905,44 @@
 - **Source lines**: 104
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m`
 
+### `src/reconstruction/refinement/isSameCobraModel.m`
+
+#### Logical fields are never compared
+
+- **Severity**: wrong-result
+- **Trigger**: m1 as above; a = m1; a.myFlag = true(4,1); b = m1; b.myFlag = false(4,1); isSameCobraModel(a, b)
+- **Observed**: isSame = true (a logical value is neither numeric, cellstr nor char, so nDiff stays 0)
+- **Expected**: false: the common field myFlag differs in 4 positions (OUTPUTS: "True if all common fields are identical")
+- **Source lines**: 108-124
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m`
+
+#### Text fields are compared with every non-word character removed, not only white space
+
+- **Severity**: wrong-result
+- **Trigger**: a = m1; a.rxnNames{1} = 'R-1'; isSameCobraModel(m1, a)
+- **Observed**: isSame = true ('R-1' and 'R1' are equal after regexprep(value, '[^\w'']', ''))
+- **Expected**: false: rxnNames{1} differs (code comment: "replace all whitespaces")
+- **Source lines**: 103-106
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m`
+
+#### The message for differing nested subSystems names prints 0 positions
+
+- **Severity**: cosmetic
+- **Trigger**: a = m1; a.subSystems = {{'A'};{'B'};{'A'};{'A'}}; b = m1; b.subSystems = {{'A'};{'A'};{'A'};{'A'}}; isSameCobraModel(a, b, 1)
+- **Observed**: prints "Field subSystems differs in 0 positions between the models" (nDiff(i) is printed before it is assigned)
+- **Expected**: the number of differing subSystem names
+- **Source lines**: 86
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m`
+
+#### Two models with different numbers of reactions stop with an error
+
+- **Severity**: error
+- **Trigger**: m1 = createModel({'R1','R2','EX_A','EX_C'}, {'R1','R2','EX_A','EX_C'}, {'A -> B','B <=> C','A <=> ','C -> '}); m2 = createModel({'R1','R2','EX_A'}, {'R1','R2','EX_A'}, {'A -> B','B <=> C','A <=> '}); [isSame, nDiff] = isSameCobraModel(m1, m2)
+- **Observed**: error "Arrays have incompatible sizes for this operation." (value1 == value2 on numeric fields of different sizes; strcmp on cell fields of different sizes fails in the same way)
+- **Expected**: isSame = false with the differing fields counted ("Checks if two COBRA models are the same")
+- **Source lines**: 109, 121
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m`
+
 ### `src/reconstruction/refinement/mergeModelFieldPositions.m`
 
 #### A cell field that does not hold text or cell arrays cannot be merged
@@ -7869,6 +7975,17 @@
 - **Expected**: the gene reaction rules are rewritten and the model has no rules field
 - **Source lines**: 86-87, 173, 190-196
 - **Documented in**: `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m`
+
+### `src/reconstruction/refinement/removeSubSystemsFromRxns.m`
+
+#### The help text describes setRxnSubSystems, not the removal
+
+- **Severity**: cosmetic
+- **Trigger**: help removeSubSystemsFromRxns
+- **Observed**: the summary says "Adds the subSystem to the specified reaction", the subSystems input says "If multiple strings are present, an empty string will be removed" and the output says "The model with the subSystems set to the respective reactions (old values will be removed)"
+- **Expected**: a description of the removal (the code removes the given names and leaves {''} when none remains, as tested below)
+- **Source lines**: 2, 21-22, 25-26
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testRemoveSubSystemsFromRxns.m`
 
 ### `src/reconstruction/refinement/updateFieldOrderForType.m`
 
@@ -7912,6 +8029,17 @@
 - **Source lines**: 184-198, 207
 - **Documented in**: `test/verifiedTests/visualization/testSAMMIM/testExpa.m`
 
+### `src/visualization/cellDesigner/addAnnotation.m`
+
+#### Annotating a reaction of a standard COBRA model stops with an error
+
+- **Severity**: error
+- **Trigger**: fin: an XML file with the lines <sbml>, <listOfReactions>, <reaction metaid="re1" id="re1" name="R1">, </reaction>, </listOfReactions>, </sbml>; model = createModel({'R1','R2'}, {'R1','R2'}, {'A -> B','B -> '}); addAnnotation(fin, fullfile(tempname, 'o.xml'), {'R1'}, model)
+- **Observed**: error "Index exceeds array bounds." in contructItems line 463 (model.rxnGeneMat is 2 x 0); with rmfield(model, 'rxnGeneMat') the error is "Cell elements must be character vectors." at line 465 (strrep on the nested cell model.subSystems), after the warnings "Inputs must be character vectors, cell arrays of character vectors, or string arrays." from strrep on the numeric fields
+- **Expected**: the output file with a notes block holding the fields of reaction R1 (header: "Retrieves omics data from a COBRA model structure and add them to a CellDesginer XML file")
+- **Source lines**: 463-467
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddAnnotation.m`
+
 ### `src/visualization/cellDesigner/addColour.m`
 
 #### A reaction listed by an ID in the last row of r_info.ID is not coloured
@@ -7940,6 +8068,57 @@
 - **Expected**: an empty list of newly coloured reactions
 - **Source lines**: 173-177
 - **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddColour.m`
+
+### `src/visualization/cellDesigner/addFlux.m`
+
+#### A reaction whose structure field is named by the reaction ID itself is left unchanged
+
+- **Severity**: wrong-result
+- **Trigger**: same call as above
+- **Observed**: r.R2.width = {1} (when isfield(ref, listRxn{r}) holds nothing is done)
+- **Expected**: r.R2.width = {4}, the width computed for R2 (0.5 / 2 = 0.25, class 4)
+- **Source lines**: 140
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddFlux.m`
+
+#### Reaction IDs with (e) are not converted to the _e field name
+
+- **Severity**: wrong-result
+- **Trigger**: ref.r_info.ID = {'re1','x','R1'; 're2','y',[]}; ref.re1.width = {1}; ref.R_EX_glc_e.width = {1}; ref.R2.width = {1}; m = createModel({'R1','EX_glc(e)','R2'}, {'R1','EX_glc(e)','R2'}, {'A -> B','B -> ','A <=> '}); sol.x = [2; 1; 0.5]; [r, nf] = addFlux(m, sol, ref, {'R1','EX_glc(e)','R2'})
+- **Observed**: nf = [2 8; 1 4; 0.5 4] but r.R_EX_glc_e.width = {1} and the message "error ! the listRxn{2}" is printed (the condition isempty(strfind(newRxnName,'(e)')) is inverted, so '(e)' is never replaced)
+- **Expected**: r.R_EX_glc_e.width = {4} (code: strrep(newRxnName,'(e)','_e'))
+- **Source lines**: 142-144
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddFlux.m`
+
+### `src/visualization/cellDesigner/addMiriam.m`
+
+#### Every matched species receives the MIRIAM entries of the last infix entry
+
+- **Severity**: wrong-result
+- **Trigger**: fin: an XML file with <sbml>, <listOfSpecies>, then for A and B: <species metaid="s1" id="s1" name="A">, <celldesigner:extension>, </celldesigner:extension>, </species> (s2, B likewise), </listOfSpecies>, </sbml>; model = struct('S', sparse([-1 0; 1 -1]), 'rxns', {{'R1';'R2'}}, 'mets', {{'A';'B'}}, 'metChEBIID', {{'15422';'16027'}}); [f, v] = addMiriam(fin, fullfile(tempname, 'm.xml'), {'A','B'}, model, 'name', {'metChEBIID','ChEBI','bqbiol:is'})
+- **Observed**: the block after species A is <rdf:Description rdf:about="#A"> with <rdf:li rdf:resource="urn:miriam:chebi:16027"/>, the ChEBI ID of B (constructItems is called with infix(in), where in is the last value of the earlier loop, not the matched entry)
+- **Expected**: urn:miriam:chebi:15422 for A and urn:miriam:chebi:16027 for B
+- **Source lines**: 280-298, 327
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddMiriam.m`
+
+#### The documented option miriam_path stops with an error
+
+- **Severity**: unusable-option
+- **Trigger**: same file and model; addMiriam(fin, fullfile(tempname, 'm.xml'), {'A'}, model, 'name', {'metChEBIID','ChEBI','bqbiol:is'}, which('MIRIAM.mat'))
+- **Observed**: error "Unrecognized function or variable 'miriam'." at line 327 (miriam is loaded only when nargin < 7)
+- **Expected**: the registry loaded from miriam_path (OPTIONAL INPUT: "miriam_path: the file path of the miriam registry's dataset")
+- **Source lines**: 49-60
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddMiriam.m`
+
+### `src/visualization/cellDesigner/cmpRxn.m`
+
+#### A parsed model with no reaction found in the COBRA model raises an error
+
+- **Severity**: error
+- **Trigger**: parsed.r_info.ID = {'re1', 'nomatch'}; model.rxns = {'R1'; 'R2'}; model.mets = {'a'; 'b'; 'c'}; model.S = sparse([-1 0; 1 -1; 0 1]); cmpRxn(parsed, model)
+- **Observed**: (R2025a, 2026-11-16) error MATLAB:UndefinedFunction "Unrecognized function or variable 'rea_M'." at line 217: rea_M is only created when a reaction is found
+- **Expected**: results with listOfNotFound holding the parsed reaction and list_of_rxns_not_present_in_ReferenceModel holding r1 and r2, as documented
+- **Source lines**: 217
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testCmpRxn.m`
 
 ### `src/visualization/cellDesigner/correctMetName.m`
 
@@ -8139,6 +8318,46 @@
 - **Source lines**: 30-31, 33-40
 - **Documented in**: `test/verifiedTests/visualization/testEFMviz/testEfmSubsystemsExtraction.m`
 
+### `src/visualization/entropicFBA/calculateGeneWeight.m`
+
+#### A model without SConsistentRxnBool fails before the function's own check
+
+- **Severity**: cosmetic
+- **Trigger**: a model with grRules and no SConsistentRxnBool field
+- **Observed**: MATLAB's error "Unrecognized field name" at line 35; the check of line 39 and its message (which names grRules) are never reached
+- **Expected**: the error of line 40 naming the missing field
+- **Source lines**: 35, 39-41
+- **Documented in**: `test/verifiedTests/visualization/testEntropicFBA/testCalculateGeneWeight.m`
+
+#### Reactions without expressed genes keep weight 0 when any reaction is inconsistent
+
+- **Severity**: wrong-result
+- **Trigger**: model.grRules = {'g1 and g2'; ''; 'g3 or g1'; 'g4'}; model.SConsistentRxnBool = [true; true; true; false]; T = table({'g1'; 'g2'; 'g3'; 'g4'}, [5; 2; 7; 1], 'VariableNames', {'entrezID', 'val'}); calculateGeneWeight(model, T, 0)
+- **Observed**: (R2025a, 2026-11-16) [2; 0; 12]: the test isEmptyFirstColumn(i) & model.SConsistentRxnBool combines a scalar with the whole n x 1 vector, so the if is false as soon as one reaction is inconsistent; with SConsistentRxnBool = true(4, 1) the same call gives [2; 1.5; 12; 1] (median 1.5 assigned to the empty rule)
+- **Expected**: [2; 2; 12], the empty rule replaced by the median of [2 0 12] as the comment of the function says
+- **Source lines**: 104
+- **Documented in**: `test/verifiedTests/visualization/testEntropicFBA/testCalculateGeneWeight.m`
+
+### `src/visualization/maps/ReconMap/buildFluxDistLayout.m`
+
+#### The largest flux gets line width 0 and the smallest the maximum width
+
+- **Severity**: wrong-result
+- **Trigger**: the call above without the last two inputs
+- **Observed**: (R2025a, 2026-11-16) content 'name%09reactionIdentifier%09lineWidth%09color%0D%09R2%095%09#57c657%0D%09R3%090%09#57c657%0D': flux 10 gets width 0 and flux 5 width 5, because normalizeFluxes returns thickness * (1 - (f - min) / range)
+- **Expected**: width growing with the absolute flux (flux 10 the widest line), as the use of the width as a flux thickness implies
+- **Source lines**: 136-140
+- **Documented in**: `test/verifiedTests/visualization/testReconMap/testBuildFluxDistLayout.m`
+
+#### The maxThickness input is ignored
+
+- **Severity**: unusable-option
+- **Trigger**: minerva.map = 'ReconMap-2.01'; model.rxns = {'R1'; 'R2'; 'R3'}; solution.v = [0; 5; 10]; buildFluxDistLayout(minerva, model, solution, 'id', '#ff0000', 4)
+- **Observed**: (R2025a, 2026-11-16, postMINERVArequest replaced by a recording stand-in) content '...%09R2%095%09#ff0000%0D%09R3%090%09#ff0000%0D', the same widths as without maxThickness: line 46 tests exist('thickness', 'var'), which is always false, so maxThickness is always reset to 10
+- **Expected**: widths scaled to the given maximum thickness 4
+- **Source lines**: 46-48
+- **Documented in**: `test/verifiedTests/visualization/testReconMap/testBuildFluxDistLayout.m`
+
 ### `src/visualization/maps/ReconMap/generateSubsytemsLayout.m`
 
 #### The overlay content is truncated to 'name' before it is sent
@@ -8172,6 +8391,35 @@
 - **Source lines**: 87
 - **Documented in**: `test/verifiedTests/visualization/testReconMap/testPrintInRecon3Dmap.m`
 
+### `src/visualization/metabolicCartography/addFluxFBA.m`
+
+#### A flux of exactly 1e-3 of the largest flux keeps width 0.001
+
+- **Severity**: cosmetic
+- **Trigger**: the call above with solution.v = [1e-3; 1; 0]
+- **Observed**: (R2025a, 2026-11-16) map2.rxnWidth = {1.0000e-03; 8; 1}: the bands of lines 69-70 are > 1e-3 and < 1e-3, so the ratio 1e-3 itself is in neither
+- **Expected**: width 1 or 3
+- **Source lines**: 69-70
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m`
+
+#### A flux vector of zeros gives NaN widths
+
+- **Severity**: limitation
+- **Trigger**: the call above with solution.v = [0; 0; 0]
+- **Observed**: (R2025a, 2026-11-16) map2.rxnWidth = {NaN; NaN; NaN} (0 / 0 at line 62)
+- **Expected**: width 1 for every reaction without flux
+- **Source lines**: 62
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m`
+
+#### fluxMap holds the widths of the input map, not the flux widths
+
+- **Severity**: wrong-result
+- **Trigger**: map.rxnName = {'R1'; 'R2'; 'R3'}; map.rxnWidth = {1; 1; 1}; map.rxnColor = {'X'; 'X'; 'X'}; model.rxns = {'R1'; 'R2'; 'R3'}; solution.v = [0; 5; -10]; [map2, flux3, fluxMap] = addFluxFBA(map, model, solution)
+- **Observed**: (R2025a, 2026-11-16) map2.rxnWidth = {1; 4; 8} but fluxMap = {'R1', 1; 'R2', 1; 'R3', 1}: line 88 reads map.rxnWidth (the input) instead of map2.rxnWidth; addFluxFBAdirectionAndColor returns the new widths
+- **Expected**: fluxMap = {'R1', 1; 'R2', 4; 'R3', 8}, the reactions with their width value as the header says
+- **Source lines**: 88
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m`
+
 ### `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m`
 
 #### Numeric reaction IDs of different lengths do not match the map
@@ -8194,6 +8442,35 @@
 - **Source lines**: 102-105, 133
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m`
 
+### `src/visualization/metabolicCartography/addNotes.m`
+
+#### A metabolite shown twice in the map gets its note twice in each copy
+
+- **Severity**: cosmetic
+- **Trigger**: the call above with map.specName = {'a[c]'; 'b[c]'; 'b[c]'; 'Glycolysis'} and four specNotes
+- **Observed**: (R2025a, 2026-11-16) both b[c] notes hold the summary of b[c] twice: the metabolite is listed once per copy and each pass writes into every copy
+- **Expected**: one summary per copy
+- **Source lines**: 67-76
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m`
+
+#### Numeric confidence scores are written as control characters
+
+- **Severity**: wrong-result
+- **Trigger**: the call above with model.subSystems = {'S1'; 'S2'}
+- **Observed**: (R2025a, 2026-11-16) the note of R1 reads 'Mechanical Confidence Score: ' followed by char(3) (a control character) and that of R2 by char(0): line 102 applies char to the numeric score (the COBRA field definition makes rxnConfidenceScores numeric); with scores {'3'; '0'} the notes read 'Score: 3' and 'Score: 0'
+- **Expected**: 'Mechanical Confidence Score: 3' and 'Mechanical Confidence Score: 0'
+- **Source lines**: 102
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m`
+
+#### Subsystems stored as cells of cells raise an error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1'; 'R2'}, {'R one'; 'R two'}, {'a[c] -> b[c]'; 'b[c] <=> c[c]'}); model.metNames = {'Alpha'; 'Beta'; 'Gamma'}; model.metFormulas = {'C'; 'H2'; 'O'}; model.metCharge = [0; -1; 2]; model.rxnConfidenceScores = [3; 0]; model.subSystems = {{'S1'}; {'S2'}}; map.specName = {'a[c]'; 'b[c]'; 'Glycolysis'}; map.specNotes = {''; ''; ''}; map.rxnName = {'R1'; 'R2'}; map.rxnType = {'STATE_TRANSITION'; 'TRANSPORT'}; map.rxnNotes = {''; ''}; addNotes(model, map)
+- **Observed**: (R2025a, 2026-11-16) error "Cell elements must be character arrays." from char(model.subSystems(idsModel)) at line 105; createModel writes subSystems in this format
+- **Expected**: the reaction notes with 'Subsystem: S1' and 'Subsystem: S2'
+- **Source lines**: 105
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m`
+
 ### `src/visualization/metabolicCartography/changeNodesArea.m`
 
 #### The optional areaWidth is not defaulted when areaHeight is given
@@ -8215,6 +8492,17 @@
 - **Expected**: the protein node coloured 'FFFF0000' (RED), the documented default
 - **Source lines**: 32
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m`
+
+### `src/visualization/metabolicCartography/colorSubsystemCD.m`
+
+#### Reactions with several subsystems shift the selection to the wrong reactions
+
+- **Severity**: wrong-result
+- **Trigger**: model.rxns = {'R1'; 'R2'; 'R3'}; model.subSystems = {{'A', 'B'}; {'C'}; {'B'}}; map.rxnName = {'R1'; 'R2'; 'R3'}; map.rxnColor = {'X'; 'X'; 'X'}; map.rxnWidth = {1; 1; 1}; colorSubsystemCD(map, model, 'C')
+- **Observed**: (R2025a, 2026-11-16) rxnColor = {'X'; 'X'; 'FFFF0000'}: R3 is coloured instead of R2, because [model.subSystems{:}] has 4 entries for 3 reactions; with subsystem 'B' the call fails with "The logical indices contain a true value outside of the array bounds."; subSystems given as a cell of char vectors ({'S1'; 'S2'}) are concatenated into one character row and compared character by character
+- **Expected**: rxnColor = {'X'; 'FFFF0000'; 'X'} for 'C', and R1 and R3 coloured for 'B'
+- **Source lines**: 45
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorSubsystemCD.m`
 
 ### `src/visualization/metabolicCartography/defaultColorCD.m`
 
