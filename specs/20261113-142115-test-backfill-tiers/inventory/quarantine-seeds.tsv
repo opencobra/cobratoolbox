@@ -154,3 +154,5 @@ addMetInfoInCBmodel	src/dataIntegration/chemoInformatics/atomicallyResolveModel.
 estimateDrGt0	NONE
 # saveInputsOptForce: only called by optForce when keepInputs is true (the user's option).
 saveInputsOptForce	src/design/optForce/optForce.m
+# scoreC13Fit: only the 6th input method is ignored; the only caller (errorComputation2) passes 3 arguments.
+scoreC13Fit	NONE

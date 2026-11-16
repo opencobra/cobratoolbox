@@ -82,4 +82,7 @@ multi-function. A later change should merge or rename them so that each function
   sub-layers read as one; the header does not document the column, so the test pins the behaviour.
 - mapExpressionToReactions is already tested by testPreprocessing.m; its significance branch
   (lines 46, 69-70) is not reached there.
+- Coverage tool quirk: setQualitativeConstraints lines 50 and 55 evidently run (the asserted bounds
+  come only from them) but MATLAB's coverage plugin records no hits; exempt in the test with that
+  reason. The same loop in a scratch function is recorded normally.
 

@@ -1,0 +1,6 @@
+{
+ "compareTwoSamp": "lead (writer's MATLAB reproduction: calcMDVfromSamp(points, measuredMetabolites) has the arguments in the wrong order; every call fails)",
+ "compareMultSamp": "lead (writer's MATLAB reproduction: line 57 passes 4 arguments: Too many input arguments)",
+ "scoreC13Fit": "lead (writer's MATLAB reproduction: nargin < 6 is always true, so the documented method input is ignored)",
+ "populateModelMetStr": "lead (writer's MATLAB reproduction: a missing field returns fewer entries than metabolites although line 78 adds missing fields on purpose)"
+}
