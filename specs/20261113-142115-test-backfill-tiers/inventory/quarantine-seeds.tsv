@@ -150,3 +150,5 @@ SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyComPOA.m
 changeRxnMets	NONE
 # addMetInfoInCBmodel: replace = true and struct inputData fail; atomicallyResolveModel forwards param.replaceMetID as replace.
 addMetInfoInCBmodel	src/dataIntegration/chemoInformatics/atomicallyResolveModel.m
+# estimateDrGt0: only a model with field R fails; its only caller setupThermoModel removes R first.
+estimateDrGt0	NONE
