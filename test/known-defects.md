@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-788 known defects in 445 functions (277 wrong-result, 229 error, 69 unusable-option, 133 cosmetic, 80 limitation).
+792 known defects in 447 functions (277 wrong-result, 229 error, 69 unusable-option, 136 cosmetic, 81 limitation).
 
 ## Summary
 
@@ -730,6 +730,8 @@
 | `src/visualization/cellDesigner/addFlux.m` | wrong-result | Reaction IDs with (e) are not converted to the _e field name | `test/verifiedTests/visualization/testCellDesigner/testAddFlux.m` |
 | `src/visualization/cellDesigner/addMiriam.m` | wrong-result | Every matched species receives the MIRIAM entries of the last infix entry | `test/verifiedTests/visualization/testCellDesigner/testAddMiriam.m` |
 | `src/visualization/cellDesigner/addMiriam.m` | unusable-option | The documented option miriam_path stops with an error | `test/verifiedTests/visualization/testCellDesigner/testAddMiriam.m` |
+| `src/visualization/cellDesigner/cmpMet.m` | cosmetic | Every comparison prints the searched name | `test/verifiedTests/visualization/testCellDesigner/testCmpMet.m` |
+| `src/visualization/cellDesigner/cmpMet.m` | cosmetic | Model metabolites absent from the parsed model are returned in lower case | `test/verifiedTests/visualization/testCellDesigner/testCmpMet.m` |
 | `src/visualization/cellDesigner/cmpRxn.m` | error | A parsed model with no reaction found in the COBRA model raises an error | `test/verifiedTests/visualization/testCellDesigner/testCmpRxn.m` |
 | `src/visualization/cellDesigner/correctMetName.m` | cosmetic | Debug output of the species row numbers | `test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m` |
 | `src/visualization/cellDesigner/parseCD.m` | cosmetic | Debug output of the keyword table, of every line read and of intermediate values | `test/verifiedTests/visualization/testCellDesigner/testParseCD.m` |
@@ -761,6 +763,8 @@
 | `src/visualization/metabolicCartography/addFluxFBA.m` | cosmetic | A flux of exactly 1e-3 of the largest flux keeps width 0.001 | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
 | `src/visualization/metabolicCartography/addFluxFBA.m` | limitation | A flux vector of zeros gives NaN widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
 | `src/visualization/metabolicCartography/addFluxFBA.m` | wrong-result | fluxMap holds the widths of the input map, not the flux widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
+| `src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m` | cosmetic | A flux of exactly 1e-3 of the largest flux keeps width 0.001 | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m` |
+| `src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m` | limitation | A flux vector of zeros gives NaN widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m` |
 | `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m` | wrong-result | Numeric reaction IDs of different lengths do not match the map | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFromFileWidthAndColor.m` |
 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
 | `src/visualization/metabolicCartography/addNotes.m` | cosmetic | A metabolite shown twice in the map gets its note twice in each copy | `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m` |
@@ -8109,6 +8113,26 @@
 - **Source lines**: 49-60
 - **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testAddMiriam.m`
 
+### `src/visualization/cellDesigner/cmpMet.m`
+
+#### Every comparison prints the searched name
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: line 53 has no semicolon, so 'met = 1x1 cell array {...}' is printed for every parsed entry compared
+- **Expected**: no output, or output gated by a print level
+- **Source lines**: 53
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testCmpMet.m`
+
+#### Model metabolites absent from the parsed model are returned in lower case
+
+- **Severity**: cosmetic
+- **Trigger**: a model metabolite ID with capital letters that is not in the parsed model, for example model.mets = {'A[c]'}
+- **Observed**: list_of_mets_not_present_in_ReferenceModel holds 'a[c]' (the IDs are lowered at line 42 for the search and returned as lowered); the header calls the output field list_of_rxns_not_present_in_ReferenceModel and speaks of reactions
+- **Expected**: the model's own IDs, in a field named as documented
+- **Source lines**: 42, 101
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testCmpMet.m`
+
 ### `src/visualization/cellDesigner/cmpRxn.m`
 
 #### A parsed model with no reaction found in the COBRA model raises an error
@@ -8420,6 +8444,26 @@
 - **Source lines**: 88
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m`
 
+### `src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m`
+
+#### A flux of exactly 1e-3 of the largest flux keeps width 0.001
+
+- **Severity**: cosmetic
+- **Trigger**: fbaSolution.v = [1e-3; 1] for map reactions R1 and R2
+- **Observed**: (R2025a, 2026-11-16, same computation in addFluxFBA) R1 width 1.0000e-03: the bands of lines 60-61 are > 1e-3 and < 1e-3, so the ratio 1e-3 is in neither
+- **Expected**: width 1 or 3
+- **Source lines**: 60-61
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m`
+
+#### A flux vector of zeros gives NaN widths
+
+- **Severity**: limitation
+- **Trigger**: fbaSolution.v = zeros(n, 1) for a model whose reactions are in the map
+- **Observed**: (R2025a, 2026-11-16, same computation in addFluxFBA) every width is NaN (0 / 0 at line 53)
+- **Expected**: width 1 for every reaction without flux
+- **Source lines**: 53
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m`
+
 ### `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m`
 
 #### Numeric reaction IDs of different lengths do not match the map
@@ -8499,7 +8543,7 @@
 
 - **Severity**: wrong-result
 - **Trigger**: model.rxns = {'R1'; 'R2'; 'R3'}; model.subSystems = {{'A', 'B'}; {'C'}; {'B'}}; map.rxnName = {'R1'; 'R2'; 'R3'}; map.rxnColor = {'X'; 'X'; 'X'}; map.rxnWidth = {1; 1; 1}; colorSubsystemCD(map, model, 'C')
-- **Observed**: (R2025a, 2026-11-16) rxnColor = {'X'; 'X'; 'FFFF0000'}: R3 is coloured instead of R2, because [model.subSystems{:}] has 4 entries for 3 reactions; with subsystem 'B' the call fails with "The logical indices contain a true value outside of the array bounds."; subSystems given as a cell of char vectors ({'S1'; 'S2'}) are concatenated into one character row and compared character by character
+- **Observed**: (R2025a, 2026-11-16) rxnColor = {'X'; 'X'; 'FFFF0000'}: R3 is coloured instead of R2, because [model.subSystems{:}] has 4 entries for 3 reactions; with subsystem 'B' the call fails with "The logical indices contain a true value outside of the array bounds."; subSystems given as a cell of char vectors (model.rxns = {'R1'; 'R2'}, model.subSystems = {'S1'; 'S2'}, subsystem 'S2') are concatenated into one character row 'S1S2', compared character by character, and fail with the same error
 - **Expected**: rxnColor = {'X'; 'FFFF0000'; 'X'} for 'C', and R1 and R3 coloured for 'B'
 - **Source lines**: 45
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorSubsystemCD.m`
