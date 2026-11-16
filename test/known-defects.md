@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-748 known defects in 420 functions (261 wrong-result, 217 error, 66 unusable-option, 126 cosmetic, 78 limitation).
+762 known defects in 431 functions (266 wrong-result, 223 error, 66 unusable-option, 128 cosmetic, 79 limitation).
 
 ## Summary
 
@@ -572,6 +572,9 @@
 | `src/design/optForce/saveInputsMustSetsSecondOrder.m` | cosmetic | the error messages for empty inputs name the first order function | `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m` |
 | `src/design/optForce/saveInputsMustSetsSecondOrder.m` | cosmetic | two output files are misdescribed in the help text | `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m` |
 | `src/design/optForce/saveInputsOptForce.m` | wrong-result | k.mat and nSets.mat are not written | `test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m` |
+| `src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m` | error | Every call stops with the error that not all inputs are given | `test/verifiedTests/design/testOptForce/testExportInputsMustOrder2ToGAMS.m` |
+| `src/design/optForceGAMS/exportInputsMustToGAMS.m` | error | Every call stops with the error that not all inputs are given | `test/verifiedTests/design/testOptForce/testExportInputsMustToGAMS.m` |
+| `src/design/optForceGAMS/exportInputsOptForceToGAMS.m` | error | Every call stops on the undefined variable nSets and leaves the current folder changed | `test/verifiedTests/design/testOptForce/testExportInputsOptForceToGAMS.m` |
 | `src/design/simpleOptKnock.m` | limitation | Single-deletion growth is stored in the first column in double-deletion mode | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/simpleOptKnock.m` | wrong-result | The wild-type minimum production is the maximum | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/reconstruction/comparison/modelBorgifier/charpos.m` | wrong-result | The letters i and j count as digits | `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` |
@@ -584,6 +587,8 @@
 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | wrong-result | Positions of duplicates are printed as character codes | `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m` |
 | `src/reconstruction/comparison/modelBorgifier/mapMatch.m` | wrong-result | 'noSeed' score of a single-metabolite compared reaction uses the minimum over the template metabolites | `test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m` |
 | `src/reconstruction/comparison/modelBorgifier/optimalScores.m` | error | A training list with exactly one matched reaction stops with an index error | `test/verifiedTests/reconstruction/testModelBorgifier/testOptimalScores.m` |
+| `src/reconstruction/comparison/modelBorgifier/readCbTmodel.m` | limitation | rules and rxnGeneMat are never built | `test/verifiedTests/reconstruction/testModelBorgifier/testReadCbTmodel.m` |
+| `src/reconstruction/comparison/modelBorgifier/readCbTmodel.m` | wrong-result | rxnID and metID entries are shifted when an entry has no ID of the model | `test/verifiedTests/reconstruction/testModelBorgifier/testReadCbTmodel.m` |
 | `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m` | wrong-result | A rule with a present- and an absent-condition applies when only the absent reaction is missing | `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m` |
 | `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m` | wrong-result | The lower bound is not changed for a rule whose present-condition uses OR | `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m` |
 | `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m` | limitation | A metabolite without time stamp stops the conversion with an error | `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m` |
@@ -618,6 +623,9 @@
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | A SUX structure without exchange reactions cannot be solved | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | An empty objective stops with an undefined variable | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/growthExpMatch/printSolutionGEM.m` | error | A log file name shorter than four characters stops the function | `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m` |
+| `src/reconstruction/metaboRePort/generateMetaboReport.m` | cosmetic | Every template line is printed twice to the console | `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m` |
+| `src/reconstruction/metaboRePort/generateMetaboReport.m` | wrong-result | Template lines are written as fprintf formats, so a percent sign cuts the line | `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m` |
+| `src/reconstruction/metaboRePort/generateMetaboReport.m` | wrong-result | The first template line is not written | `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
@@ -640,6 +648,8 @@
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | error | the randomised thermodynamic test can stop with an error | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | wrong-result | the sanity checks after the rank computation never fire | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | cosmetic | the thermodynamic consistency counts vary between runs | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
+| `src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m` | error | A results model without balancedRxnBool stops with an error | `test/verifiedTests/reconstruction/testModelGeneration/testMakeModelPropertiesTable.m` |
+| `src/reconstruction/modelGeneration/modelProperties/plotModelConsistency.m` | wrong-result | The fraction of stoichiometrically consistent rows is inverted | `test/verifiedTests/reconstruction/testModelGeneration/testPlotModelConsistency.m` |
 | `src/reconstruction/modelGeneration/modelVerification/checkDatabaseIDs.m` | wrong-result | Standard InChI strings with an undefined stereo centre are reported invalid | `test/verifiedTests/reconstruction/testModelGeneration/testCheckDatabaseIDs.m` |
 | `src/reconstruction/modelGeneration/modelVerification/verifyModel.m` | wrong-result | a consistent model fails the simple check of flux consistency | `test/verifiedTests/reconstruction/testModelGeneration/testVerifyModel.m` |
 | `src/reconstruction/modelGeneration/modelVerification/verifyModel.m` | wrong-result | every reaction counts as imbalanced in a mass balance without charges | `test/verifiedTests/reconstruction/testModelGeneration/testVerifyModel.m` |
@@ -688,6 +698,9 @@
 | `src/reconstruction/refinement/addReactionGEM.m` | error | Appending a reaction whose first metabolite is already in the model stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | The default gene list removes all genes of the model | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | The subsystem of every filled reaction is stored as a cell inside a cell | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
+| `src/reconstruction/refinement/annotateSBOTerms.m` | wrong-result | metSBOTerms and geneSBOTerms are created as rows, not m x 1 and g x 1 | `test/verifiedTests/reconstruction/testRefinement/testAnnotateSBOTerms.m` |
+| `src/reconstruction/refinement/assignGPRA.m` | error | Every call stops because parseSimPhenyGPRA does not exist | `test/verifiedTests/reconstruction/testRefinement/testAssignGPRA.m` |
+| `src/reconstruction/refinement/assignSubSystems.m` | error | Every call stops because parseSimPhenyGPRA does not exist | `test/verifiedTests/reconstruction/testRefinement/testAssignSubSystems.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | cosmetic | A partly unknown reaction list is not reported | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | The extra reactions are drawn from a set that already contains the selected ones | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | With one metabolite to change, the random selection reduces the S row to a scalar | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
@@ -699,6 +712,7 @@
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | limitation | An order that repeats indices is accepted | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | unusable-option | The type proteins is accepted but always stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateGenes.m` | wrong-result | With two duplicated genes, different genes are merged | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m` |
+| `src/visualization/SAMMIM/expa.m` | cosmetic | The collapsed model does not match the input model as documented: its reactions are sorted and its objective is zero | `test/verifiedTests/visualization/testSAMMIM/testExpa.m` |
 | `src/visualization/cellDesigner/addColour.m` | wrong-result | A reaction listed by an ID in the last row of r_info.ID is not coloured | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
 | `src/visualization/cellDesigner/addColour.m` | wrong-result | The html colours of the second column of listRxn_Color are ignored | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
 | `src/visualization/cellDesigner/addColour.m` | error | The second output is not assigned when no listed link has a non-zero width | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
@@ -6483,6 +6497,39 @@
 - **Source lines**: 136-147
 - **Documented in**: `test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m`
 
+### `src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m`
+
+#### Every call stops with the error that not all inputs are given
+
+- **Severity**: error
+- **Trigger**: model with rxns {'R1'; 'R2'}, mets {'a'; 'b'}, S = sparse([-1 0; 1 -1]), lb = [0; -5], ub = [10; 0]; exportInputsMustOrder2ToGAMS(model, [0; -5], [10; 0], struct('rxnList', {{'R1'}}, 'values', 1), {}, {'R1'}, fullfile(tempname, 'f2')), all seven documented inputs given
+- **Observed**: error 'Optforce: All inputs must be specified when using exportInputsMustOrder2ToGAMS' and no folder created; the function has seven inputs but line 76 tests nargin < 8, so no call can pass (R2025a, 2026-11-16). Lines 129 and 132 would fail next: the constraint names are fixed to {'EX_gluc', 'R75', 'EX_suc'} instead of constrOpt.rxnList, and setType is not defined
+- **Expected**: the five text files and MtoG.gdx written to inputFolder when all seven inputs are given
+- **Source lines**: 76-77, 129, 132
+- **Documented in**: `test/verifiedTests/design/testOptForce/testExportInputsMustOrder2ToGAMS.m`
+
+### `src/design/optForceGAMS/exportInputsMustToGAMS.m`
+
+#### Every call stops with the error that not all inputs are given
+
+- **Severity**: error
+- **Trigger**: model with rxns {'R1'; 'R2'}, mets {'a'; 'b'}, S = sparse([-1 0; 1 -1]), lb = [0; -5], ub = [10; 0]; exportInputsMustToGAMS(model, [0; -5], [10; 0], struct('rxnList', {{'R1'}}, 'values', 1), fullfile(tempname, 'f1')), all five documented inputs given
+- **Observed**: error 'OptForce: All inputs must be specified when running exportInputsMustToGAMS' and no folder created; the function has five inputs but line 58 tests nargin < 6, so no call can pass (R2025a, 2026-11-16). Lines 109 and 112 would fail next: the constraint names are fixed to {'EX_gluc', 'R75', 'EX_suc'} instead of constrOpt.rxnList, and setType is not defined
+- **Expected**: the three text files and MtoG.gdx written to inputFolder when all five inputs are given
+- **Source lines**: 58-59, 109, 112
+- **Documented in**: `test/verifiedTests/design/testOptForce/testExportInputsMustToGAMS.m`
+
+### `src/design/optForceGAMS/exportInputsOptForceToGAMS.m`
+
+#### Every call stops on the undefined variable nSets and leaves the current folder changed
+
+- **Severity**: error
+- **Trigger**: model with rxns {'R1'; 'R2'}, mets {'a'; 'b'}, S = sparse([-1 0; 1 -1]), lb = [0; -5], ub = [10; 0]; exportInputsOptForceToGAMS(model, {'R2'}, {'R1'}, {'R2'}, [0; -5], [10; 0], [1; -5], [10; -1], 3, 2, struct('rxnList', {{'R1'}}, 'values', 1), {}, {}, {}, fullfile(tempname, 'f3'))
+- **Observed**: error MATLAB:UndefinedFunction 'Unrecognized function or variable 'nSets'.' at line 179 (the input is named n_sets); the nine text files are written but MtoGOF.gdx is not, and the current folder stays inputFolder because line 183 is never reached (R2025a, 2026-11-16)
+- **Expected**: nMax.val = n_sets, MtoGOF.gdx written and the current folder restored
+- **Source lines**: 179, 183
+- **Documented in**: `test/verifiedTests/design/testOptForce/testExportInputsOptForceToGAMS.m`
+
 ### `src/design/simpleOptKnock.m`
 
 #### Single-deletion growth is stored in the first column in double-deletion mode
@@ -6608,6 +6655,26 @@
 - **Expected**: one hit: hitVec of size 2 x 1, missVec of size 2 x 2, the weights and the normalized scoreTotal returned (size(hitPos, 1) instead of length(hitPos))
 - **Source lines**: 63, 68, 74-75
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testOptimalScores.m`
+
+### `src/reconstruction/comparison/modelBorgifier/readCbTmodel.m`
+
+#### rules and rxnGeneMat are never built
+
+- **Severity**: limitation
+- **Trigger**: any Tmodel whose model has genes, for example T above without the change of rxnID
+- **Observed**: R has genes but neither rules nor rxnGeneMat: line 219 tests sum of the all-zero matrix made at line 216, so lines 220-242 never run (R2025a, 2026-11-16)
+- **Expected**: rules and rxnGeneMat built from grRules and genes
+- **Source lines**: 216, 219-242
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testReadCbTmodel.m`
+
+#### rxnID and metID entries are shifted when an entry has no ID of the model
+
+- **Severity**: wrong-result
+- **Trigger**: m with rxns {'R1'; 'R2'; 'EX_a'}, mets {'a[c]'; 'B'; 'c[c]'}, S = sparse([-1 0 -1; 1 -1 0; 0 1 0]), lb = [0; -10; -10], ub = [10; 0; 10], c = [0; 1; 0], rxnNames, metNames {'A'; 'B[e]'; 'C'}, grRules {'g1 or g2'; ''; 'g3'}, genes {'g1'; 'g2'; 'g3'}, description 'modelA'; T = buildTmodel(verifyModelBorg(m, 'keepName')); T.rxnID{1} = ''; R = readCbTmodel('modelA', T, 'n')
+- **Observed**: R.rxnID = {''; ''; 'r2'}: line 161 writes IDs{iRxn} to entry IDIndexes(iRxn), so the ID of the second reaction goes to the third and the second is blanked; line 188 does the same for metID (T.metID{1} = '' gives {''; ''; 'b[e]'} instead of {''; 'b[e]'; 'c[c]'}) (R2025a, 2026-11-16). buildTmodel keeps empty rxnID and metID entries (its line 46), so such a Tmodel is a valid input
+- **Expected**: R.rxnID = {''; 'r2'; 'ex_a'} (IDs{IDIndexes(iRxn)})
+- **Source lines**: 161, 188
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testReadCbTmodel.m`
 
 ### `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m`
 
@@ -6951,6 +7018,35 @@
 - **Source lines**: 27
 - **Documented in**: `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m`
 
+### `src/reconstruction/metaboRePort/generateMetaboReport.m`
+
+#### Every template line is printed twice to the console
+
+- **Severity**: cosmetic
+- **Trigger**: the call above
+- **Observed**: about 4,700 lines of HTML, and -1, printed for one model by the debugging disp calls (R2025a, 2026-11-16)
+- **Expected**: no console output, or output gated by a verbose flag
+- **Source lines**: 33, 35
+- **Documented in**: `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m`
+
+#### Template lines are written as fprintf formats, so a percent sign cuts the line
+
+- **Severity**: wrong-result
+- **Trigger**: generateMetaboReport(mp, tempname folder) with mp.My_model.modelProp2 holding every field the function reads (numbers 1.234, Details lists {'r1'}, Scores 0.5) and the distributed reportTemplate.html, whose line 2315 ends in 'max-height:10%">'
+- **Observed**: modelreport_My_model.html holds '... background-color:#3c85c9;max-height:10' followed directly by the next template line '<div class="row align-items-end ">': line 454 passes strcat(html{j}, '\n') to fprintf as the format, so '%"' ends the output of that line, its closing '">' and its line break (R2025a, 2026-11-16)
+- **Expected**: every template line written verbatim apart from the replaced placeholders (for example fprintf(fid, '%s\n', html{j}))
+- **Source lines**: 454
+- **Documented in**: `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m`
+
+#### The first template line is not written
+
+- **Severity**: wrong-result
+- **Trigger**: the call above
+- **Observed**: the report starts with '<html lang="en">'; the template's first line '<!DOCTYPE html>' read at line 30 is replaced at line 34 before it is stored, so the page renders in quirks mode (R2025a, 2026-11-16)
+- **Expected**: the report starts with '<!DOCTYPE html>'
+- **Source lines**: 30, 34
+- **Documented in**: `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m`
+
 ### `src/reconstruction/modelGeneration/checkDuplicateRxn.m`
 
 #### the 'FR' method removes the last reaction of a group after testing the first two
@@ -7168,6 +7264,28 @@
 - **Expected**: a deterministic result
 - **Source lines**: 431
 - **Documented in**: `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m`
+
+### `src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m`
+
+#### A results model without balancedRxnBool stops with an error
+
+- **Severity**: error
+- **Trigger**: modelResults.model with fields S, rankS, modelID and the Boolean vectors that checkModelProperties sets (SIntRxnBool, SConsistentRxnBool, ..., SIntMetBool) but no balancedRxnBool; makeModelPropertiesTable(modelResults)
+- **Observed**: (R2025a, 2026-11-16) error "Unrecognized field name "balancedRxnBool"." at line 194, after line 184 found the field absent and wrote NaN. checkModelProperties never sets balancedRxnBool, so every documented input (output of checkModelProperties) stops here; with the field added by hand the table of 33 rows is returned
+- **Expected**: the row of line 194 is NaN (or skipped) when balancedRxnBool is absent, as lines 184-188 do for the row before it
+- **Source lines**: 194
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testMakeModelPropertiesTable.m`
+
+### `src/reconstruction/modelGeneration/modelProperties/plotModelConsistency.m`
+
+#### The fraction of stoichiometrically consistent rows is inverted
+
+- **Severity**: wrong-result
+- **Trigger**: one model result with S of 10 rows and SConsistentMetBool true for 1 row (10% consistent), the other Boolean vectors true, modelID 'toy'; plotModelConsistency(modelResults, {'sp', 'toy', 'f', 1, ''}, 1, 1, 2)
+- **Observed**: (R2025a, 2026-11-16) the function prints "1 models that are sufficiently stochiometrically consistent for plotting." and plots the model: line 75 computes size(S, 1) / nnz(SConsistentMetBool) = 10, which is never below the tolerance 0.60, so lines 77-78 are unreachable and no model is flagged or skipped (line 78 would also read modelResults(j).modelID, a field the results do not have)
+- **Expected**: the fraction nnz(SConsistentMetBool) / size(S, 1) = 0.1 < 0.60 flags the model as not sufficiently consistent (comment at line 67 and the printed heading)
+- **Source lines**: 75-78
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testPlotModelConsistency.m`
 
 ### `src/reconstruction/modelGeneration/modelVerification/checkDatabaseIDs.m`
 
@@ -7635,6 +7753,39 @@
 - **Source lines**: 64-73, 139
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m`
 
+### `src/reconstruction/refinement/annotateSBOTerms.m`
+
+#### metSBOTerms and geneSBOTerms are created as rows, not m x 1 and g x 1
+
+- **Severity**: wrong-result
+- **Trigger**: model = getDistributedModel('ecoli_core_model.mat') (no metSBOTerms or geneSBOTerms field); model = annotateSBOTerms(model)
+- **Observed**: (R2025a, 2026-11-16) size(model.metSBOTerms) = [1 72] and size(model.geneSBOTerms) = [1 137] while mets is 72 x 1 and genes 137 x 1; verifyModel reports "inconsistentFields: metSBOTerms: Size of metSBOTerms was 72. Expected 1". Lines 33 and 38 grow a new field along the second dimension; only rxnSBOTerms is turned into a column (line 84)
+- **Expected**: m x 1 and g x 1 cell arrays, as the OUTPUT documentation says
+- **Source lines**: 32-39
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAnnotateSBOTerms.m`
+
+### `src/reconstruction/refinement/assignGPRA.m`
+
+#### Every call stops because parseSimPhenyGPRA does not exist
+
+- **Severity**: error
+- **Trigger**: model = createModel({'r1', 'EX_a'}, {'r1', 'EX_a'}, {'A[c] -> B[c]', 'A[c] <=> '}); assignGPRA(model, 'gpra.txt') (any model and any file name)
+- **Observed**: (R2025a, 2026-11-16) error "Undefined function 'parseSimPhenyGPRA' for input arguments of type 'char'." at line 24: parseSimPhenyGPRA is not part of the toolbox (no file of that name in the repository)
+- **Expected**: the SimPheny GPRA file is parsed and the genes and rxnGeneMat of the model are set from it
+- **Source lines**: 24-31
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAssignGPRA.m`
+
+### `src/reconstruction/refinement/assignSubSystems.m`
+
+#### Every call stops because parseSimPhenyGPRA does not exist
+
+- **Severity**: error
+- **Trigger**: model = createModel({'r1', 'EX_a'}, {'r1', 'EX_a'}, {'A[c] -> B[c]', 'A[c] <=> '}); assignSubSystems(model, 'gpra.txt') (any model and any file name)
+- **Observed**: (R2025a, 2026-11-16) error "Undefined function 'parseSimPhenyGPRA' for input arguments of type 'char'." at line 23: parseSimPhenyGPRA is not part of the toolbox (no file of that name in the repository)
+- **Expected**: the SimPheny GPRA file is parsed and the subSystems of the model are set from it
+- **Source lines**: 23-35
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAssignSubSystems.m`
+
 ### `src/reconstruction/refinement/changeRxnMets.m`
 
 #### A partly unknown reaction list is not reported
@@ -7749,6 +7900,17 @@
 - **Expected**: the genes g1 and g2, the first two reactions with rule x(1) and the others x(2)
 - **Source lines**: 43
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m`
+
+### `src/visualization/SAMMIM/expa.m`
+
+#### The collapsed model does not match the input model as documented: its reactions are sorted and its objective is zero
+
+- **Severity**: cosmetic
+- **Trigger**: [model, fullmodel] = expa(m) for any m whose reactions are not already internal-first in name order, or whose c is not zero
+- **Observed**: model.rxns is {'R1'; 'R2'; 'EX_A'; 'EX_B'; 'EX_C'} for the input order {'R1'; 'R2'; 'EX_A'; 'EX_C'; 'EX_B'}, and model.c is all zero; the fields are mutually consistent (S, P, bounds and the optional fields follow the same order)
+- **Expected**: "The model output matches the original model input" (OUTPUTS); the order and the objective are documentation issues, the pathways themselves are correct
+- **Source lines**: 184-198, 207
+- **Documented in**: `test/verifiedTests/visualization/testSAMMIM/testExpa.m`
 
 ### `src/visualization/cellDesigner/addColour.m`
 
