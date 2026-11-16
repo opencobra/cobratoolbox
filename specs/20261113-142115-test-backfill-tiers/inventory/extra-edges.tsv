@@ -35,3 +35,11 @@ src/analysis/sampling/ACHR/ACHRSampler.m	src/base/utilities/showprogress.m
 src/analysis/sampling/CHRR/chrrExpSampler.m	src/analysis/FVA/fluxVariability.m
 src/analysis/sampling/CHRR/chrrExpSampler.m	src/analysis/FBA/optimizeCbModel.m
 src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m	src/base/utilities/toolboxFree/cobraNormcdf.m
+src/analysis/sampling/plotSampleHist.m	src/base/utilities/toolboxFree/cobraSmooth.m
+src/base/io/utilities/readBooleanRegModel.m	src/base/parseBoolean.m
+src/base/io/utilities/readBooleanRegModel.m	src/base/splitString.m
+src/base/io/utilities/readBooleanRegModel.m	src/base/utilities/columnVector.m
+src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased_old.m	src/base/changeRxnBounds.m
+src/base/io/newt/writeNewtExperiment.m	src/base/io/utilities/SBML/convertSBMLID.m
+src/base/io/utilities/model2xls.m	src/analysis/exploration/printRxnFormula.m
+src/dataIntegration/fluxomics/c13solver/errorComputation2.m	src/dataIntegration/fluxomics/c13solver/slvrEMU_fast.m

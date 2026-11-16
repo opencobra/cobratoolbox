@@ -98,3 +98,7 @@ multi-function. A later change should merge or rename them so that each function
 - expa.m and the two physiologicalConstraintsHMDBbased files: MATLAB's coverage plugin reports 0
   executable lines (non-UTF-8 bytes); their records use the profiler's line counts.
 
+- fitC13Data turns NaN checking (`checkNaN`) off for method 1, which is exactly the case where
+  `errorComputation2_grad` returns NaN entries (for the reactions that have an isotopomer map, meaning
+  "the solver estimates this entry"). Possibly a defect in fitC13Data; not checked, because no NLP
+  solver is available here (wave 25 record of errorComputation2_grad).
