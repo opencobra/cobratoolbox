@@ -15,3 +15,8 @@
   `prepareTest('requiredSoftwares', {'obabel'})` would not skip, because it only checks `which`.
 - `initCobraToolbox` removes the `src/analysis/thermo/*/new` folders from the MATLAB path, so files
   there are shadowed by their `old/` copies and are excluded as not on the path.
+- Coverage sessions (tools/run_coverage.sh): at most ~110 tests per session and one session of the
+  lead at a time; each session gets a private TMPDIR and an idle cap (default 900 s). Reason: on
+  R2025a a long coverage session of the Tier 1 set stalls (MATLAB's `Connector[#1]` thread at 100%,
+  no system call, memory far below the cap) around the 125th test; alone or in shorter sessions the
+  same tests pass, and so do all of them in one session without coverage (checked 2026-11-16).

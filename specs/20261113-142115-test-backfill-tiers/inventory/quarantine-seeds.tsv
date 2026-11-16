@@ -134,3 +134,5 @@ duplicates	src/analysis/thermo/groupContribution/new/regulariseGroupIncidenceMat
 # readSimPhenyCMPD: alternative names keep a leading blank on every call; reached through readCbModel only for SimPheny files, which no src caller requests, but readCbModel's own code reaches it: default seed (blocks no pending row).
 # printCouplingConstraints: only calls that request the output with printLevel <= 0 on a model with C fail; XomicsToModel:1414 requests the output with the user's printLevel.
 printCouplingConstraints	src/dataIntegration/XomicsToModel/XomicsToModel.m
+# printFluxBounds: only calls with fewer than 3 inputs fail; no src caller makes one.
+printFluxBounds	NONE

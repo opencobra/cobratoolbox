@@ -62,3 +62,9 @@ multi-function. A later change should merge or rename them so that each function
   libstdc++ lacks GLIBCXX_3.4.32); `prepareTest('requiredSoftwares', {'obabel'})` would not skip.
 - `initCobraToolbox` removes the `src/analysis/thermo/*/new` folders from the path.
 - MATLAB's Python has no pyarrow (COBRArrow cannot load); python3 is 3.12.
+- Coverage sessions stall on R2025a after roughly 100–125 tests of the Tier 1 set: MATLAB's
+  `Connector[#1]` thread spins at 100% in user space (no system call) and the next test or the
+  session exit never completes; memory is far below the cap (3.3 GB of 12 GB). The same 129 tests
+  run clean in one session without coverage, and 187 other tests run clean under coverage, so the
+  full suite (no coverage) is not affected. The campaign's coverage checkpoints are therefore run
+  in sessions of about 100 tests, each with a private temporary directory and an idle cap.

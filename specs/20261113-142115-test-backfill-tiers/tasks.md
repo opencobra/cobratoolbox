@@ -63,7 +63,7 @@ with complete or documented coverage.
 
 - [X] T009 [US2] Run procedure W for Tier 1 waves until `update_ledger.py --next-wave 1` returns no row; tests in `test/verifiedTests/<category>/test<Area>/`
 - [X] T009a [US3] Severity consistency audit (research R5, consistency rule from wave 09): every `cosmetic`/`limitation` entry written so far is checked against the rule; entries where a documented input fails when used are raised to `error`/`unusable-option` and their functions quarantined (tests converted, call-form seeds recorded); result in `$F/inventory/severity-audit.md`
-- [ ] T010 [US2] Tier 1 checkpoint: re-run every Tier 1 test of this feature together with coverage → `$F/inventory/coverage/tier1.jsonl`; all pass
+- [X] T010 [US2] Tier 1 checkpoint: re-run every Tier 1 test of this feature with coverage → `$F/inventory/coverage/tier1.jsonl`; all pass. (Coverage sessions on R2025a stall after roughly 100–125 tests of this set, a MATLAB Connector thread spinning, see `inventory/review-followups.md`; the same tests run clean in one session without coverage. Checkpoints are therefore run as consecutive coverage sessions of at most ~110 tests, one at a time, with the runner's idle cap, and merged.)
 
 ## Phase 5: User Story 3 — Defect quarantine (Priority: P1)
 
