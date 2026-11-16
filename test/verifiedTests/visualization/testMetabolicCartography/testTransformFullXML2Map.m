@@ -49,10 +49,13 @@
 %       EXPECTED: no console output, or output gated behind a printLevel
 %       LINES: 91, 360
 %     - DEFECT: The field compartName is missing for a map without compartments
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: a file with an empty celldesigner:listOfCompartmentAliases
 %       OBSERVED: (R2025a, 2026-11-15) map.compartAlias = '' and map has no field compartName
-%       EXPECTED: map.compartName = '' (documented as empty if no info)
+%       EXPECTED: map.compartName = '' (documented as empty if no info). Severity audit
+%         2026-11-15: OUTPUTS documents ".compartName - name of each compartment (empty if no
+%         info)"; for a map without compartments only compartAlias = '' is set (line 357), the
+%         field is missing and map.compartName errors
 %       LINES: 356-357
 %
 % Authors:

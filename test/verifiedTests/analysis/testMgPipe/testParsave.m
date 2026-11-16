@@ -8,6 +8,11 @@
 %       'data'. The test checks the variable name, the round-trip of the saved value and the
 %       MAT-file version written in the file header (the text 'MATLAB 5.0 MAT-file' or
 %       'MATLAB 7.3 MAT-file' at the start of the file, documented by MathWorks).
+%     - The function is QUARANTINED (Constitution III-Defects, quarantine in back-fill
+%       campaigns; severity audit T009a): a structure without a rxns field, a documented data
+%       variable, is silently not saved (defect below), so no assertion about the function is
+%       made; the checks described above are the plan for the test once the defect is
+%       resolved.
 %
 % Function under test:
 %     src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/parsave.m
@@ -17,20 +22,25 @@
 %     folder.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     every line - parsave is quarantined for the defect below (feature
+%     20261113-142115-test-backfill-tiers, severity audit T009a)
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: A structure without a rxns field is silently not saved
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: parsave(fullfile(tempname, 'x.mat'), struct('a', 1))
 %       OBSERVED: no file is written and no warning or error is raised (the isfield test on
 %         line 15 has no else branch)
 %       EXPECTED: per the header ('Saves a data variable (e.g., model)'), the structure is
-%         saved; the callers in the toolbox pass only models or cell arrays
+%         saved; the callers in the toolbox pass only models or cell arrays. Severity audit
+%         2026-11-15: INPUTS document data as "name of variable"; a struct without a rxns
+%         field is a documented data variable and is silently not saved (no else branch at
+%         line 15)
 %       LINES: 15
 %
 % Authors:
-%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15; severity audit
+%       2026-11-15.
 
 % save the current path
 currentDir = pwd;
@@ -43,64 +53,6 @@ cd(fileDir);
 % or particular operating system, so none is listed; the call is the standard opening
 % of a COBRA test and the place where a requirement would be added later
 prepareTest();
-
-% all files are written to a temporary folder that is removed at the end
-tmpFolder = tempname;
-mkdir(tmpFolder);
-
-%% a model with fewer than 300000 reactions is saved as 'model' in a version 7 MAT-file
-
-smallModel = struct('rxns', {{'R1'; 'R2'}}, 'mets', {{'A'; 'B'}}, 'S', sparse([1 0; -1 1]));
-smallFile = fullfile(tmpFolder, 'smallModel.mat');
-parsave(smallFile, smallModel);
-% exactly one variable, named 'model', holding the input unchanged (exact round trip)
-fileVars = whos('-file', smallFile);
-assert(isequal({fileVars.name}, {'model'}));
-loaded = load(smallFile);
-assert(isequal(loaded.model, smallModel));
-% the header text gives the MAT-file version (version 7 files start with 'MATLAB 5.0')
-fid = fopen(smallFile, 'r');
-headerText = fread(fid, [1 19], '*char');
-fclose(fid);
-assert(strcmp(headerText, 'MATLAB 5.0 MAT-file'));
-
-%% a model with 300000 reactions or more is saved as 'model' in a version 7.3 MAT-file
-
-% only length(model.rxns) is read, so a sparse column of 300000 entries reaches the
-% branch with a file of a few kilobytes
-largeModel = struct('rxns', sparse(300000, 1));
-largeFile = fullfile(tmpFolder, 'largeModel.mat');
-parsave(largeFile, largeModel);
-fileVars = whos('-file', largeFile);
-assert(isequal({fileVars.name}, {'model'}));
-loaded = load(largeFile);
-assert(isequal(loaded.model, largeModel));
-fid = fopen(largeFile, 'r');
-headerText = fread(fid, [1 19], '*char');
-fclose(fid);
-assert(strcmp(headerText, 'MATLAB 7.3 MAT-file'));
-
-%% any value that is not a structure is saved under the name 'data'
-
-% a cell array of solutions, as analyseObjectiveShadowPrices passes it
-cellValue = {struct('f', 1.5); {}};
-cellFile = fullfile(tmpFolder, 'cellValue.mat');
-parsave(cellFile, cellValue);
-fileVars = whos('-file', cellFile);
-assert(isequal({fileVars.name}, {'data'}));
-loaded = load(cellFile);
-assert(isequal(loaded.data, cellValue));
-
-% a numeric matrix
-numericValue = magic(4);
-numericFile = fullfile(tmpFolder, 'numericValue.mat');
-parsave(numericFile, numericValue);
-loaded = load(numericFile);
-assert(isequal(fieldnames(loaded), {'data'}) && isequal(loaded.data, numericValue));
-
-%% clean up
-
-rmdir(tmpFolder, 's');
 
 % change the directory
 cd(currentDir)

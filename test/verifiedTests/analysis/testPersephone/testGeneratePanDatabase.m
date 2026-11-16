@@ -40,11 +40,14 @@
 %       EXPECTED: [1 2 3] (r2 has the coefficient 2 and r3 the coefficient 3 in mB)
 %       LINES: 203-208
 %     - DEFECT: The documented default inputDir needs an explicit empty argument
-%       SEVERITY: limitation
+%       SEVERITY: error
 %       TRIGGER: generatePanDatabase()
 %       OBSERVED: MATLAB:minrhs, Not enough input arguments. (line 18 reads inputDir);
 %         generatePanDatabase([]) uses the default 'AGORA2'
-%       EXPECTED: the call without argument uses the default 'AGORA2' given in the header
+%       EXPECTED: the call without argument uses the default 'AGORA2' given in the header.
+%         Severity audit 2026-11-15: INPUT documents "inputDir: directory with the AGORA2
+%         models (default: 'AGORA2')" but the argument cannot be omitted (line 18 reads it) - a
+%         documented optional argument that cannot be omitted
 %       LINES: 18
 %
 % Authors:

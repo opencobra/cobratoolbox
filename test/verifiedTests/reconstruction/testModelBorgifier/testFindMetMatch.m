@@ -30,7 +30,7 @@
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: Names and identifiers are used as regular expressions without escaping
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: a compared metabolite whose name (or identifier, formula, KEGG or SEED
 %         identifier) contains a regular-expression metacharacter, for example the name
 %         'Water (pure)' against the identical template name 'Water (pure)'
@@ -40,7 +40,12 @@
 %         name criterion adds nothing for such metabolites; '.' or '+' match other
 %         characters (R2025a, 2026-11-15)
 %       EXPECTED: the text matched literally (regexptranslate('escape', ...)), as the
-%         criterion compares names
+%         criterion compares names. Severity audit 2026-11-15: OUTPUTS documents "matchScores:
+%         Array of sorted, normalized scores for each met"; the name criterion (lines 84, 86,
+%         113, 126, 151, 169) wraps names in \< \> to match them as whole words, i.e.
+%         literally, but metacharacters common in metabolite names (parentheses, brackets, +,
+%         .) are not escaped, so identical names do not match and the scores are wrong for a
+%         large class of valid inputs
 %       LINES: 84, 86, 113, 126, 151, 169
 %     - DEFECT: A SEED identifier given as a cell stops the function
 %       SEVERITY: error

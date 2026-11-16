@@ -49,13 +49,18 @@
 %       EXPECTED: the mismatch listed (with metNames) and the other cross-references added
 %       LINES: 92, 131
 %     - DEFECT: Numeric identifiers are never queried
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: a metabolite whose pubChemId, cheBIId or chemspider is numeric, as
 %         cleanUpMetabolite_structure and sanityCheckMetIds make them
 %       OBSERVED: regexprep(5793, ',', ';') at line 95 raises "The 'STRING' input must be either a
 %         char row vector, a cell array of char row vectors, or a string array.", swallowed by
 %         the try (line 92), so the identifier is skipped (R2025a, 2026-11-15)
-%       EXPECTED: numeric identifiers converted to text and queried
+%       EXPECTED: numeric identifiers converted to text and queried. Severity audit 2026-11-15:
+%         INPUT is the "metabolite structure ... each holding identifier fields" as the toolbox
+%         builds it (numeric pubChemId/cheBIId); line 90 tests isnan on the field, so numeric
+%         identifiers are anticipated, yet regexprep at line 95 fails and the try at line 92
+%         swallows it - the documented result ("adding them to the metabolite structure") is
+%         silently not produced for those identifiers
 %       LINES: 95
 %     - DEFECT: The progress shown exceeds 100 percent when startSearch is above 1
 %       SEVERITY: cosmetic

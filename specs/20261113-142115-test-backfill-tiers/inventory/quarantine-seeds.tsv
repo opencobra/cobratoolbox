@@ -84,9 +84,9 @@ nullSpaceOperator	NONE
 lsqr	src/analysis/subspaces/lsqr/lsqrtest.m
 # configCMatrix: reached through loadModular('CMatrix') (str2func of the module name); configPolytopeSimplifier makes that call.
 configCMatrix	src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m
-# CMatrix, ddouble, qdouble: only the sparse triplet constructor CMatrix(i,j,s,...) is defective; no src caller uses it.
+# CMatrix, ddouble, qdouble: only the sparse triplet constructor CMatrix(i,j,s,...) is defective. The only src caller using that form is CMatrixTest.externalFunc (ddouble, lines 210-212; found in wave 14).
 CMatrix	NONE
-ddouble	NONE
+ddouble	src/analysis/sampling/BarrierRound/CMatrix/coverage/CMatrixTest.m
 qdouble	NONE
 # prepareTest: only the needsLinux option fails; no src file passes it.
 prepareTest	NONE
@@ -122,3 +122,15 @@ elementalMatrixToFormulae	NONE
 changeNodesArea	NONE
 # initPythonEnvironment: only the default/'CPython3' environment reaches the version check; both callers (writeModelinJSON, autoFragment) pass a conda environment name.
 initPythonEnvironment	NONE
+# Severity audit T009a (2026-11-15)
+# getDefinedFieldProperties: both defects need SpecificFields (an undefined name, or the option with Descriptions/DataBaseFields). The only caller passing SpecificFields is createEmptyFields, whose callers pass literal names from the definitions table (addCOBRAConstraints, addCOBRAVariables, changeCOBRAConstraints, buildOptProblemFromModel) or user-given names that createEmptyFields rejects with its own error in any case (addMultipleReactions, addMultipleMetabolites, addGenes, addMultipleReactionsIT): no caller's result changes.
+getDefinedFieldProperties	NONE
+# AndNode, OrNode: deleteLiteral with a numeric id; every caller passes text (num2str, literals from getLiterals).
+AndNode	NONE
+OrNode	NONE
+# duplicates: only multi-column input gives a wrong M; the only such caller is the excluded regulariseGroupIncidenceMatrix (thermo new/, off the path).
+duplicates	src/analysis/thermo/groupContribution/new/regulariseGroupIncidenceMatrix.m
+# ReactionChecks: the crashes need an empty formula or a metabolite without charged formula from the rBioNet data; its only caller addreactions is an excluded GUI.
+# readSimPhenyCMPD: alternative names keep a leading blank on every call; reached through readCbModel only for SimPheny files, which no src caller requests, but readCbModel's own code reaches it: default seed (blocks no pending row).
+# printCouplingConstraints: only calls that request the output with printLevel <= 0 on a model with C fail; XomicsToModel:1414 requests the output with the user's printLevel.
+printCouplingConstraints	src/dataIntegration/XomicsToModel/XomicsToModel.m

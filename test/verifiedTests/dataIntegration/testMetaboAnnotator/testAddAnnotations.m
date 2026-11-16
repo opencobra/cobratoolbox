@@ -39,13 +39,17 @@
 %         'source:type:verification:date'
 %       LINES: 42-44, 62
 %     - DEFECT: An empty field receives NaN with a source when the table cell is NaN
-%       SEVERITY: cosmetic
+%       SEVERITY: wrong-result
 %       TRIGGER: the call above (field hmdb = '' and table cell hmdb = NaN)
 %       OBSERVED: o.VMH_glc_minus_D.hmdb = NaN and hmdb_source = 'src:manual:<date>': the test
 %         isempty(field) || hasNaN(field) && ~isnan(cell) applies the NaN check of the table cell
 %         only to NaN fields (&& binds tighter than ||), and NaN passes the text checks of line
 %         60 (R2025a, 2026-11-15)
-%       EXPECTED: missing table values not copied and no source written for them
+%       EXPECTED: missing table values not copied and no source written for them. Severity
+%         audit 2026-11-15: the condition on line 59 contains isempty(find(isnan(RAW{i,j}))),
+%         so the code evidently intends not to copy NaN cells, but && binds before ||, and an
+%         empty field receives NaN plus a <field>_source string (lines 61-62) - wrong values
+%         written into the returned metabolite structure for the common blank-cell input
 %       LINES: 59-62
 %
 % Authors:

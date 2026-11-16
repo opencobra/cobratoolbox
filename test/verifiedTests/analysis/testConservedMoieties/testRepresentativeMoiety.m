@@ -37,12 +37,14 @@
 %         filter moieties on minimalMassFraction > 0.1, which is meaningless for a constant 1
 %       LINES: 35
 %     - DEFECT: MMN.moi is required but not documented
-%       SEVERITY: limitation
+%       SEVERITY: error
 %       TRIGGER: representativeMoiety(rmfield(MMN, 'moi')) with MMN as above
 %       OBSERVED: error 'Unrecognized field name "moi".' (line 39)
 %       EXPECTED: INPUT lists only .L and .mol and OUTPUT calls .moi an "added or updated
 %         field"; either the input documentation names .moi (a table with one row per moiety)
-%         or the field is created when absent
+%         or the field is created when absent. Severity audit 2026-11-15: INPUT lists only
+%         ".L" and ".mol" and OUTPUT calls ".moi" an "added or updated field"; the documented
+%         input without .moi errors at line 39 - a documented input that fails when used
 %       LINES: 39
 %
 % Authors:

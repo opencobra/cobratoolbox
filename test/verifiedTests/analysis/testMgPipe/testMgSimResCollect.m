@@ -51,13 +51,18 @@
 %       EXPECTED: the rich-diet values of S3
 %       LINES: 72
 %     - DEFECT: Two samples stop with an error in the PCoA
-%       SEVERITY: limitation
+%       SEVERITY: error
 %       TRIGGER: the first call above with two samples {'S1'; 'S2'} (cells of S1 and S2 only)
 %       OBSERVED: cobraCmdscale: D must have a zero diagonal (or ones for a similarity
 %         matrix). cobraPdist of two samples returns one distance, a scalar that is read as
 %         a 1-by-1 matrix; the check on line 125 ("too few individuals to plot") is not
 %         reached.
-%       EXPECTED: no PCoA, as for too few individuals, and the flux tables written
+%       EXPECTED: no PCoA, as for too few individuals, and the flux tables written. Severity
+%         audit 2026-11-15: sampNames is documented as "nx1 cell array ... names of
+%         individuals" with no minimum, and the comment "catch if there are too few
+%         individuals to plot" (line 124) shows few individuals are intended; n = 2 stops with
+%         an error in cobraCmdscale (lines 119-120) before that check - a documented input that
+%         fails when used
 %       LINES: 119-120
 %
 % Authors:

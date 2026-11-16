@@ -54,14 +54,19 @@
 %       EXPECTED: R2 [0.99989 0.91242] and coefficients [1.0014 -0.95694] labelled {V2, V3}
 %       LINES: 285-288, 328
 %     - DEFECT: A text (cell array) variable of interest is not supported
-%       SEVERITY: limitation
+%       SEVERITY: error
 %       TRIGGER: M and s as in the first entry; meta = table((1:10)', [repmat({'a'}, 5, 1);
 %         repmat({'b'}, 5, 1)], 'VariableNames', {'V2', 'Group'}, 'RowNames', s'); (text as a
 %         cellstr, as readtable returns it by default) called with varOfInterest 'Group'
 %       OBSERVED: MATLAB:math:mustBeNumericCharOrLogical, Invalid data type. Argument must be
 %         numeric, char, or logical. (line 162 compares cells with ==); string and
 %         categorical variables pass this line
-%       EXPECTED: groups of a text variable are plotted as those of a categorical one
+%       EXPECTED: groups of a text variable are plotted as those of a categorical one.
+%         Severity audit 2026-11-15: metadataTable is documented as "metadata for the samples
+%         (e.g. sex), with columns = variables (e.g. Sex)" and varOfInterest as a "variable
+%         (e.g. Sex or disease status) contained in the metadata"; a text variable as
+%         readtable returns it (cellstr) stops at line 162 - a documented input that fails
+%         when used
 %       LINES: 162
 %     - DEFECT: The loadings figure of PC 1 is saved as Loadings_PC11.png
 %       SEVERITY: cosmetic

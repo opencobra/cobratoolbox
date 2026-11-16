@@ -6,6 +6,11 @@
 %       'stable') outputs C, IA, IC. This test checks the documented example (char column),
 %       a numeric matrix compared row by row, a column cell array of text and an input without
 %       duplicates. Expected values are the documented example and hand-listed duplicates.
+%     - The function is QUARANTINED (Constitution III-Defects, quarantine in back-fill
+%       campaigns; severity audit T009a): a cell array with more than one column gives M and
+%       duplicateBool of the wrong size (defect below), so no assertion about the function is
+%       made; the checks described above are the plan for the test once the defect is
+%       resolved.
 %
 % Function under test:
 %     src/base/utilities/duplicates.m
@@ -14,18 +19,24 @@
 %     Tier 1 - no model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     every line - duplicates is quarantined for the defect below (feature
+%     20261113-142115-test-backfill-tiers, severity audit T009a)
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: A cell array with more than one column is compared element by element, so M is not m x m
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: [M, duplicateBool] = duplicates({'a', 'a', 'b'})
 %       OBSERVED: M = [0 1] (1 x 2) and duplicateBool = [0; 1] (2 x 1) for an input with one row
-%       EXPECTED: M of size m x m and duplicateBool of size m x 1 (m = 1 here), as documented
+%       EXPECTED: M of size m x m and duplicateBool of size m x 1 (m = 1 here), as documented.
+%         Severity audit 2026-11-15: INPUT documents "A: m x n array (compatible with
+%         `unique`)" and OUTPUTS "M: m x m", "duplicateBool: m x 1"; for a 1 x 3 cell (a
+%         documented m x n input) M is 1 x 2 and duplicateBool 2 x 1 because line 50 calls
+%         unique element-wise
 %       LINES: 50
 %
 % Authors:
-%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15; severity audit
+%       2026-11-15.
 
 % save the current path
 currentDir = pwd;
@@ -39,54 +50,5 @@ cd(fileDir);
 % of a COBRA test and the place where a requirement would be added later
 prepareTest();
 
-% all outputs are logical or integer-valued, so every comparison below is exact
-
-%% documented example: a char column with repeated letters
-
-A = ['a'; 'a'; 'b'; 'c'; 'd'; 'd'; 'b'; 'b'; 'e'];
-[M, duplicateBool, C, IA, IC] = duplicates(A);
-% M from the help text: row 1 -> 2, row 3 -> 7 and 8, row 5 -> 6
-expectedM = zeros(9);
-expectedM(1, 2) = 1;
-expectedM(3, [7 8]) = 1;
-expectedM(5, 6) = 1;
-assert(isequal(size(M), [9 9]) && isequal(full(M), expectedM));
-assert(islogical(duplicateBool));
-assert(isequal(full(duplicateBool), logical([0; 1; 0; 0; 0; 1; 1; 1; 0])));
-% unique first instances in order of appearance, and the maps between A and C
-assert(isequal(C, ['a'; 'b'; 'c'; 'd'; 'e']));
-assert(isequal(IA, [1; 3; 4; 5; 9]));
-assert(isequal(IC, [1; 1; 2; 3; 4; 4; 2; 2; 5]));
-assert(isequal(C(IC, :), A) && isequal(A(IA, :), C));
-
-%% numeric matrix: rows are compared as wholes
-
-A = [1 2; 3 4; 1 2; 1 3; 3 4; 1 2];
-[M, duplicateBool, C, IA, IC] = duplicates(A);
-% rows 3 and 6 repeat row 1, row 5 repeats row 2, row 4 ([1 3]) is unique
-expectedM = zeros(6);
-expectedM(1, [3 6]) = 1;
-expectedM(2, 5) = 1;
-assert(isequal(full(M), expectedM));
-assert(isequal(full(duplicateBool), logical([0; 0; 1; 0; 1; 1])));
-assert(isequal(C, [1 2; 3 4; 1 3]) && isequal(IA, [1; 2; 4]) && isequal(IC, [1; 2; 1; 3; 2; 1]));
-
-%% column cell array of text (the form used by check4DuplicatesInList)
-
-A = {'atp'; 'adp'; 'atp'; 'h2o'; 'adp'};
-[M, duplicateBool, C, IA, IC] = duplicates(A);
-expectedM = zeros(5);
-expectedM(1, 3) = 1;
-expectedM(2, 5) = 1;
-assert(isequal(full(M), expectedM));
-assert(isequal(full(duplicateBool), logical([0; 0; 1; 0; 1])));
-assert(isequal(C, {'atp'; 'adp'; 'h2o'}) && isequal(IA, [1; 2; 4]) && isequal(IC, [1; 2; 1; 3; 2]));
-
-%% no duplicates: M is all zero and no row is flagged
-
-[M, duplicateBool] = duplicates([3; 1; 2]);
-assert(isequal(size(M), [3 3]) && nnz(M) == 0);
-assert(~any(duplicateBool) && isequal(size(duplicateBool), [3 1]));
-
-% restore the directory
+% change the directory
 cd(currentDir)

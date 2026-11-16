@@ -40,12 +40,13 @@
 %         defaults unless hack is asking for defaults")
 %       LINES: 60-62
 %     - DEFECT: The structure output keeps the fields named in paramNames
-%       SEVERITY: cosmetic
+%       SEVERITY: wrong-result
 %       TRIGGER: [v, s] = getCobraSolverParams('LP', 'feasTol', struct('feasTol', 1e-3, 'other', 5))
 %       OBSERVED: s has the fields feasTol (1e-3) and other (5)
 %       EXPECTED: per OUTPUTS, "paramStructureOut, with fields removed corresponding to
 %         paramNames" (only other); no caller in src/ uses this output, so the header is the
-%         likely error
+%         likely error. Severity audit 2026-11-15: the struct returned keeps and sets exactly
+%         those fields (lines 166, 181), the opposite of the documented result
 %       LINES: 166, 181, 186
 %
 % Authors:

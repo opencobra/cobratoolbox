@@ -37,12 +37,16 @@
 %         statistics of S1 to S6
 %       LINES: 75-77
 %     - DEFECT: Fecal exchange features never get a metabolite description
-%       SEVERITY: cosmetic
+%       SEVERITY: wrong-result
 %       TRIGGER: the call above; the metabolite ac (Acetate) is in the VMH database
 %       OBSERVED: the Description of EX_ac[fe] is 'NA'. The condition on line 230 includes
 %         the header 'Feature' of Statistics(:,1), which never contains '[fe]', so the
 %         prefix and suffix are never stripped.
-%       EXPECTED: 'Acetate'
+%       EXPECTED: 'Acetate'. Severity audit 2026-11-15: the code comment "add
+%         reaction/metabolite annotations if possible" and the EX_/[fe] stripping (lines
+%         231-232) show the Description column is meant to be filled; the test on line 230
+%         includes the header row so it is always false and every [fe] feature gets NA in the
+%         returned Statistics table - a wrong value in a result, not in a message
 %       LINES: 230-232
 %
 % Authors:

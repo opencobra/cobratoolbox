@@ -21,3 +21,4 @@ src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/utilities/toolboxFree/cobraF
 src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/FuncGradHessSub.m
 src/base/solvers/varKin/BDCAmethods/BDCA.m	src/base/solvers/varKin/BDCAmethods/StopCritBDCA.m
 src/visualization/metabolicCartography/visualizeFluxTimeseriesFromFile.m	src/visualization/metabolicCartography/addFluxWidthAndColor.m
+src/analysis/sampling/BarrierRound/PolytopeSimplifier/ConvexProgram.m	src/analysis/sampling/BarrierRound/PolytopeSimplifier/TwoSidedBarrier.m

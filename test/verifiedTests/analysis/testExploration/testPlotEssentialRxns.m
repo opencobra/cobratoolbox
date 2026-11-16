@@ -30,12 +30,15 @@
 %         above the threshold' and an empty list of reactions
 %       LINES: 65-85
 %     - DEFECT: The output is a cell array of reaction identifiers, not a table of fluxes
-%       SEVERITY: cosmetic
+%       SEVERITY: wrong-result
 %       TRIGGER: plotEssentialRxns(T, [0 100], 1) with the table above
 %       OBSERVED: {'R_1'; 'R2'} (class cell), from table2cell of the rxn column
 %       EXPECTED: per the OUTPUT section, a table with the fluxes of the reactions of interest
 %         (rows) across models (columns); the code and the tutorial use the identifiers, so the
-%         header is the likely error
+%         header is the likely error. Severity audit 2026-11-15: OUTPUT documents "Table with
+%         reaction fluxes ... for reactions of interest (rows) across models (columns)"; a cell
+%         array of reaction identifiers is returned (line 52) - a different type and content
+%         from the documented result
 %       LINES: 52
 %
 % Authors:

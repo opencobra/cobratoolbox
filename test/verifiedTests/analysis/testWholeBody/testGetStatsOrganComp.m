@@ -42,12 +42,15 @@
 %         metabolite counts in TableGRM (core / organ-specific / others) derive from it too
 %       LINES: 600, 627, 646, 654-672, 1287, 1315-1337
 %     - DEFECT: The results file named in the help text is never written
-%       SEVERITY: cosmetic
+%       SEVERITY: wrong-result
 %       TRIGGER: any call, e.g. the call above
 %       OBSERVED: (R2025a, 2026-11-15) no Results_StatsOrganComp.mat is created: the save is
 %         inside "if 0" (lines 1508-1515); the call only sets the global resultsPath
 %       EXPECTED: Results_StatsOrganComp.mat "created at the end of this function", as the help
-%         text says, or a help text that does not announce it
+%         text says, or a help text that does not announce it. Severity audit 2026-11-15: the
+%         header promises "Results_StatsOrganComp.mat, which is created at the end of this
+%         function"; the save is inside "if 0" (lines 1508-1515), so the documented output file
+%         is never written
 %       LINES: 1508-1515
 %
 % Authors:
