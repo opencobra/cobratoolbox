@@ -32,3 +32,6 @@ src/analysis/rMTA/diffexprs2rxnFBS.m	src/dataIntegration/transcriptomics/preproc
 src/analysis/rMTA/diffexprs2rxnFBS.m	src/dataIntegration/transcriptomics/preprocessing/findUsedGenesLevels.m
 src/analysis/rMTA/diffexprs2rxnFBS.m	src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m
 src/analysis/sampling/ACHR/ACHRSampler.m	src/base/utilities/showprogress.m
+src/analysis/sampling/CHRR/chrrExpSampler.m	src/analysis/FVA/fluxVariability.m
+src/analysis/sampling/CHRR/chrrExpSampler.m	src/analysis/FBA/optimizeCbModel.m
+src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m	src/base/utilities/toolboxFree/cobraNormcdf.m

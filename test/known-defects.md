@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-663 known defects in 372 functions (234 wrong-result, 194 error, 59 unusable-option, 109 cosmetic, 67 limitation).
+694 known defects in 388 functions (241 wrong-result, 205 error, 61 unusable-option, 118 cosmetic, 69 limitation).
 
 ## Summary
 
@@ -72,6 +72,7 @@
 | `src/analysis/igemRNA/filterNonFluxReactions/filterNonFluxReactions.m` | wrong-result | The result file is written next to the result folder, not into it | `test/verifiedTests/analysis/testFilterNonFluxReactions/testFilterNonFluxReactions.m` |
 | `src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m` | limitation | Errors when the source sheet holds no gene | `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m` |
 | `src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m` | wrong-result | Genes are matched by row position, not by gene ID | `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m` |
+| `src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m` | error | 'initialize' reads modelCom.indCom before building it from infoCom | `test/verifiedTests/analysis/testSteadyCom/testSteadyComSubroutines.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m` | error | Every call stops with an error when the taxonomy is prepared for export | `test/verifiedTests/analysis/testAdditionalAnalysis/testCorrelateFluxWithTaxonAbundance.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m` | cosmetic | Box plots print the handle array of every plot | `test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m` | wrong-result | Features with negative values are dropped as if they were all zero | `test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m` |
@@ -162,16 +163,33 @@
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | error | A format without a width gives a NaN length and header fails | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
 | `src/analysis/sampling/BarrierRound/utils/TableDisplay.m` | wrong-result | The blank that separates the columns is dropped | `test/verifiedTests/analysis/testSampling/testTableDisplay.m` |
 | `src/analysis/sampling/CHRR/chrrExpSampler.m` | limitation | A model without metabolites and a reaction of zero width stops in preprocess | `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m` |
-| `src/analysis/sampling/CHRR/chrrExpSampler.m` | limitation | minFlux and maxFlux cannot be requested together with a rounded polytope | `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m` |
+| `src/analysis/sampling/CHRR/chrrExpSampler.m` | error | minFlux and maxFlux cannot be requested together with a rounded polytope | `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m` |
 | `src/analysis/sampling/CHRR/chrrSampler.m` | error | minFlux and maxFlux cannot be requested together with a rounded polytope | `test/verifiedTests/analysis/testSampling/testChrrSampler.m` |
+| `src/analysis/sampling/compareSampleTraj.m` | error | The documented default of nBins is never set, so a call without nBins fails | `test/verifiedTests/analysis/testSampling/testCompareSampleTraj.m` |
+| `src/analysis/sampling/compareSampleTraj.m` | limitation | The fallback to the reversed reaction <name>_r never runs | `test/verifiedTests/analysis/testSampling/testCompareSampleTraj.m` |
 | `src/analysis/sampling/compareTwoSamplesStat.m` | wrong-result | The chi-square p values are cumulative probabilities, near 0 for identical samples | `test/verifiedTests/analysis/testSampling/testCompareTwoSamplesStat.m` |
 | `src/analysis/sampling/loadSamples.m` | wrong-result | More points than pointsPerFile are taken from a file at regular intervals | `test/verifiedTests/analysis/testSampling/testLoadSamples.m` |
+| `src/analysis/sampling/plotSampleHist.m` | cosmetic | The subplot grid is transposed for perScreen = [nY, nX] | `test/verifiedTests/analysis/testSampling/testPlotSampleHist.m` |
 | `src/analysis/sampling/printSampleStats.m` | wrong-result | With several samples only the first sample's mode is printed | `test/verifiedTests/analysis/testSampling/testPrintSampleStats.m` |
+| `src/analysis/sampling/sampleScatterMatrix.m` | error | The documented optional inputs cannot be omitted one at a time | `test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m` |
+| `src/analysis/sampling/sampleScatterMatrix.m` | cosmetic | The progress of the two-set layout exceeds 100 % | `test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m` |
+| `src/analysis/subspaces/checkScaling.m` | error | A model whose lower bounds are all zero stops with an error | `test/verifiedTests/analysis/testSubspaces/testCheckScaling.m` |
+| `src/analysis/subspaces/checkScaling.m` | error | A model with C and d but without b stops with an error | `test/verifiedTests/analysis/testSubspaces/testCheckScaling.m` |
 | `src/analysis/subspaces/lsqr/lsqr.m` | cosmetic | The x = 0 message is printed even when show = 0 | `test/verifiedTests/analysis/testSubspaces/testLsqr.m` |
 | `src/analysis/subspaces/lsqr/lsqr.m` | error | r1norm and r2norm are not assigned when A'*b = 0 | `test/verifiedTests/analysis/testSubspaces/testLsqr.m` |
 | `src/analysis/subspaces/lsqr/lsqrtest.m` | cosmetic | The function handle is printed by a statement without a semicolon | `test/verifiedTests/analysis/testSubspaces/testLsqrtest.m` |
 | `src/analysis/subspaces/nullspace/nullSpaceOperator.m` | unusable-option | The option scale = 0 always fails | `test/verifiedTests/analysis/testSubspaces/testNullSpaceOperator.m` |
 | `src/analysis/subspaces/rank/getRankLUSOL.m` | wrong-result | q is wrong when A has a zero column | `test/verifiedTests/analysis/testRank/testGetRankLUSOL.m` |
+| `src/analysis/thermo/directionalityReport/directionalityChangeReport.m` | wrong-result | The descriptions of the bydGt0LHS and bydGt0RHS classes state the wrong probability bound | `test/verifiedTests/analysis/testThermo/testDirectionalityChangeReport.m` |
+| `src/analysis/thermo/directionalityReport/directionalityChangeReport.m` | wrong-result | Two pairs of classes are written to the same file, so one class of each pair is lost | `test/verifiedTests/analysis/testThermo/testDirectionalityChangeReport.m` |
+| `src/analysis/thermo/directionalityReport/directionalityStats.m` | wrong-result | The printed Reverse -> Reverse count is the number of reverse -> reversible reactions | `test/verifiedTests/analysis/testThermo/testDirectionalityStats.m` |
+| `src/analysis/thermo/directionalityReport/directionalityStats.m` | cosmetic | The reverse -> uncertain count is labelled Reversible -> Uncertain | `test/verifiedTests/analysis/testThermo/testDirectionalityStats.m` |
+| `src/analysis/thermo/directionalityReport/forwardProbablyReverseFigures.m` | limitation | The structure array model.rxn is required but not documented | `test/verifiedTests/analysis/testThermo/testForwardProbablyReverseFigures.m` |
+| `src/analysis/thermo/directionalityReport/forwardProbablyReverseFigures.m` | unusable-option | miliMolarStandard true stops with an error | `test/verifiedTests/analysis/testThermo/testForwardProbablyReverseFigures.m` |
+| `src/analysis/thermo/directionalityReport/forwardReversibleFigures.m` | error | Reactions with a fixed DrGt0 stop the figures with an error | `test/verifiedTests/analysis/testThermo/testForwardReversibleFigures.m` |
+| `src/analysis/thermo/directionalityReport/forwardReversibleFigures.m` | cosmetic | The warning about extra NaN probabilities is garbled | `test/verifiedTests/analysis/testThermo/testForwardReversibleFigures.m` |
+| `src/analysis/thermo/directionalityReport/forwardTransportQuantReverseFigures.m` | error | A model without a qualifying transport reaction stops with an error | `test/verifiedTests/analysis/testThermo/testForwardTransportQuantReverseFigures.m` |
+| `src/analysis/thermo/directionalityReport/forwardTransportQuantReverseFigures.m` | limitation | The fields transportRxnBool and directions.forwardProbability are required but not documented | `test/verifiedTests/analysis/testThermo/testForwardTransportQuantReverseFigures.m` |
 | `src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m` | error | Every call fails when the error bars are adjusted | `test/verifiedTests/analysis/testThermo/testPlotFeasibleReactionEnergyRanges.m` |
 | `src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m` | wrong-result | Only the first reaction is plotted for the documented n x 1 rxns | `test/verifiedTests/analysis/testThermo/testPlotFeasibleReactionEnergyRanges.m` |
 | `src/analysis/thermo/directionalityReport/singleMetaboliteThermoFigure.m` | error | Every call fails on the undefined variable directions | `test/verifiedTests/analysis/testThermo/testSingleMetaboliteThermoFigure.m` |
@@ -210,12 +228,18 @@
 | `src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m` | limitation | A confidence level outside the built-in table stops the call | `test/verifiedTests/analysis/testThermo/testThermoConstrainFluxBounds.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | error | A wrong input ends with an unassigned output | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | wrong-result | Method 3 without a vartype returns numbers instead of characters | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
+| `src/analysis/thermo/thermoFBA/connectedRxnsByEFM.m` | cosmetic | The working directory is not restored when EFMtool fails | `test/verifiedTests/analysis/testThermo/testConnectedRxnsByEFM.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | wrong-result | A solution of the relaxed problem under param.debug is dropped | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | wrong-result | Lower bounds are checked only when an upper bound is violated | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | unusable-option | The analysis of an infeasible problem under param.debug stops at its first step | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | wrong-result | The objective bound of the lp approach is tightened when it should be relaxed | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | unusable-option | The relaxedFBA fallback of the regularised approach can never succeed | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | error | param.removeFixedBool = 1 stops the regularised approach | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
+| `src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m` | cosmetic | The empty-producer branch labels the consumer axes | `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m` |
+| `src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m` | error | The reaction labels read an undocumented legacy field model.rxn(k).directionality | `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m` |
+| `src/analysis/thermo/transport/transportReactionBool.m` | wrong-result | Origin and destination compartments filter the result when unidirectionalBool is 0 | `test/verifiedTests/analysis/testThermo/testTransportReactionBool.m` |
+| `src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m` | error | A model with concMin or concMax fails unless concMinDefault and concMaxDefault are passed | `test/verifiedTests/analysis/testVonBertalanffy/testConfigureSetupThermoModelInputs.m` |
+| `src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m` | unusable-option | concMinDefault and concMaxDefault are ignored | `test/verifiedTests/analysis/testVonBertalanffy/testConfigureSetupThermoModelInputs.m` |
 | `src/analysis/topology/FR/bilinearDecomposition.m` | error | A lone reaction with one substrate and three products gives inconsistent sizes | `test/verifiedTests/analysis/testTopology/testBilinearDecomposition.m` |
 | `src/analysis/topology/FR/connectedFR.m` | wrong-result | The column sets are computed over the rows of [F; R] | `test/verifiedTests/analysis/testTopology/testConnectedFR.m` |
 | `src/analysis/topology/FR/largestConnectedFR.m` | wrong-result | The column output is read from the row nodes and has m entries | `test/verifiedTests/analysis/testTopology/testLargestConnectedFR.m` |
@@ -554,6 +578,10 @@
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | A formula given as a cell or number stops with a MATLAB error, not the class error | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | Output is printed at printLevel 0 | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | limitation | Zero counts are replaced only when the formula holds a single zero | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
+| `src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m` | wrong-result | A proton-driven reaction uses an undefined or stale proton index | `test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m` |
+| `src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m` | error | The default of massImbalance uses nRxn before it is defined | `test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m` |
+| `src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m` | cosmetic | The missing-formula warning tests the whole formula list | `test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m` |
+| `src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m` | cosmetic | The report file is never closed | `test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m` |
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | wrong-result | minSij is zero for every model with a zero in S | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | error | the randomised thermodynamic test can stop with an error | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
 | `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m` | wrong-result | the sanity checks after the rank computation never fire | `test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m` |
@@ -606,6 +634,9 @@
 | `src/reconstruction/refinement/addReactionGEM.m` | error | Appending a reaction whose first metabolite is already in the model stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | The default gene list removes all genes of the model | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | The subsystem of every filled reaction is stored as a cell inside a cell | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
+| `src/reconstruction/refinement/changeRxnMets.m` | cosmetic | A partly unknown reaction list is not reported | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
+| `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | The extra reactions are drawn from a set that already contains the selected ones | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
+| `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | With one metabolite to change, the random selection reduces the S row to a scalar | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/extractSubSysModel.m` | wrong-result | A single subsystem name given as text selects almost every reaction | `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m` |
 | `src/reconstruction/refinement/getModelFieldsForType.m` | wrong-result | custom fields named after the type are missed for a model with one or no element of that type | `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m` |
 | `src/reconstruction/refinement/mergeModelFieldPositions.m` | error | A cell field that does not hold text or cell arrays cannot be merged | `test/verifiedTests/base/testTools/testMergeModelFieldPositions.m` |
@@ -1313,6 +1344,17 @@
 - **Expected**: g1 compared with 2 and g3 with 3; a missing gene reported or rejected. The function assumes both sheets list the same genes in the same order; OUTPUTS documents each row as "geneId, source dataset expression value, target dataset expression value" and the header puts no ordering requirement on the sheets, so a target sheet in another order is a documented input that silently returns another gene's value (severity audit T009a)
 - **Source lines**: 30-32
 - **Documented in**: `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m`
+
+### `src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m`
+
+#### 'initialize' reads modelCom.indCom before building it from infoCom
+
+- **Severity**: error
+- **Trigger**: SteadyComSubroutines('initialize', modelCom) with modelCom having S, b, c, lb, ub, rxns, mets and infoCom (fields spBm, EXcom, EXsp, spAbbr, rxnSps, metSps) but no indCom, e.g. a one-reaction model with infoCom.spBm = {'r'}
+- **Observed**: 'Unrecognized field name "indCom".' at line 72 (MATLAB R2025a): lines 72-73 use modelCom.indCom before the test of line 76, so lines 76-83 never build it
+- **Expected**: indCom is derived from infoCom (line 82), as the header says (at least one of infoCom and indCom is needed)
+- **Source lines**: 72-73, 76-83
+- **Documented in**: `test/verifiedTests/analysis/testSteadyCom/testSteadyComSubroutines.m`
 
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m`
 
@@ -2230,7 +2272,7 @@
 #### A model without metabolites and a reaction of zero width stops in preprocess
 
 - **Severity**: limitation
-- **Trigger**: the six-reaction model below with S = zeros(0, 6), b = zeros(0, 1) and lb(1) = ub(1) = 5: chrrExpSampler(box, 5, 10, [1; 0; 0; 0; 0; 0])
+- **Trigger**: the model above with S = zeros(0, 6), b = zeros(0, 1), mets = cell(0, 1), csense = char(zeros(0, 1)) and lb(1) = ub(1) = 5 (gurobi): chrrExpSampler(box, 5, 10, [1; 0; 0; 0; 0; 0])
 - **Observed**: MATLAB R2025a: preprocess prints 'Found 1 degenerate reactions' and stops at its line 173 (P.A = P.A*N) with 'Incorrect dimensions for matrix multiplication.' Line 105 replaces the empty 0 x 6 equality matrix with a 0 x 0 one, so preprocess builds the equality row of the fixed reaction with the wrong number of columns. chrrSampler has the same lines.
 - **Expected**: the fixed reaction is added as an equality and the remaining box sampled
 - **Source lines**: 105-106
@@ -2238,9 +2280,9 @@
 
 #### minFlux and maxFlux cannot be requested together with a rounded polytope
 
-- **Severity**: limitation
-- **Trigger**: [samples, P, minFlux, maxFlux] = chrrExpSampler(model, [], 5, lambda, 1, P) with P the roundedPolytope of a previous call
-- **Observed**: MATLAB R2025a: error 'Output argument "minFlux" (and possibly others) not assigned a value in the execution with "chrrExpSampler" function.' The two outputs are only assigned when the polytope is pre-processed in the call, although the rounded polytope carries them as fields (.minFlux, .maxFlux). The same limitation is recorded for chrrSampler.
+- **Severity**: error
+- **Trigger**: model = createModel({'R_in'; 'R1'; 'R2'; 'R3'; 'R_outB'; 'R_outC'}, {'in'; 'r1'; 'r2'; 'r3'; 'ob'; 'oc'}, {' -> A'; 'A -> B'; 'A -> C'; 'B -> C'; 'B -> '; 'C -> '}, [], zeros(6, 1), 10 * ones(6, 1)); model.c = full(model.S(1, :))'; [~, P] = chrrExpSampler(model, 5, 10); [s, P2, minFlux, maxFlux] = chrrExpSampler(model, [], 5, model.c, 1, P)
+- **Observed**: MATLAB R2025a (gurobi): error 'Output argument "minFlux" (and possibly others) not assigned a value in the execution with "chrrExpSampler" function.' The two outputs are only assigned when the polytope is pre-processed in the call (lines 119-120), although the rounded polytope carries them as fields (.minFlux, .maxFlux). The documented USAGE requests all four outputs.
 - **Expected**: the flux minima and maxima stored in roundedPolytope
 - **Source lines**: 119-120
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testChrrExpSampler.m`
@@ -2255,6 +2297,26 @@
 - **Expected**: the flux minima and maxima stored in roundedPolytope
 - **Source lines**: 65-69
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testChrrSampler.m`
+
+### `src/analysis/sampling/compareSampleTraj.m`
+
+#### The documented default of nBins is never set, so a call without nBins fails
+
+- **Severity**: error
+- **Trigger**: compareSampleTraj({'r1'}, {[1 2 3; 4 5 6]}, {model}) with model = createModel({'r1','r2'}, {'r1','r2'}, {'A -> B','B ->'}) (nBins omitted, documented default nSamples/25)
+- **Observed**: 'Not enough input arguments.' at line 50 (MATLAB R2025a): lines 17-20 assign the default to a variable named bins, and line 50 then reads the unset nBins
+- **Expected**: nBins = round(nSamples/25) is used, as the header documents
+- **Source lines**: 17-20, 50
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testCompareSampleTraj.m`
+
+#### The fallback to the reversed reaction <name>_r never runs
+
+- **Severity**: limitation
+- **Trigger**: a reaction name that is not in a model whose reversed half <name>_r is, e.g. rxnNames {'r1_'} with model.rxns {'r1'; 'r2'}, nBins 5
+- **Observed**: 'Index in position 1 is invalid. Array indices must be positive integers or logical values.' at line 46 (MATLAB R2025a): findRxnIDs returns 0, not an empty array, for an absent name, so the isempty tests of lines 40 and 55 are never true and 0 is used as an index
+- **Expected**: the reaction is looked up as <name>_r (lines 41 and 56) and, if absent, the error 'Reaction does not exist' of line 43
+- **Source lines**: 40-45, 55-58
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testCompareSampleTraj.m`
 
 ### `src/analysis/sampling/compareTwoSamplesStat.m`
 
@@ -2278,6 +2340,17 @@
 - **Source lines**: 50-51
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testLoadSamples.m`
 
+### `src/analysis/sampling/plotSampleHist.m`
+
+#### The subplot grid is transposed for perScreen = [nY, nX]
+
+- **Severity**: cosmetic
+- **Trigger**: perScreen = [1 2] (documented as [nY, nX], one row of two plots)
+- **Observed**: line 171 calls subplot(nX, nY, ...), so the plots are drawn in two rows of one (read from the code; the layout is not asserted below)
+- **Expected**: subplot(nY, nX, ...), one row of two plots
+- **Source lines**: 171
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testPlotSampleHist.m`
+
 ### `src/analysis/sampling/printSampleStats.m`
 
 #### With several samples only the first sample's mode is printed
@@ -2288,6 +2361,46 @@
 - **Expected**: one mode per sample (sampleStats.mode(i, :)), as for mean, median and std (lines 59, 62, 65), matching the header of lines 36-38
 - **Source lines**: 56
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testPrintSampleStats.m`
+
+### `src/analysis/sampling/sampleScatterMatrix.m`
+
+#### The documented optional inputs cannot be omitted one at a time
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'}, {'r1'; 'r2'; 'r3'}, {' -> A'; 'A -> B'; 'B -> '}, [], zeros(3, 1), 10 * ones(3, 1)); rng(1); sample = rand(3, 50); sampleScatterMatrix({'R1', 'R2'}, model, sample, 20) or sampleScatterMatrix({'R1', 'R2'}, model, sample, 20, 12)
+- **Observed**: MATLAB R2025a: both calls stop with 'Not enough input arguments.' at line 53, which reads dispRFlag although only nPoints (and fontSize) were given; line 71 reads fontSize in the same way. The calls with 3, 6 and 7 arguments run.
+- **Expected**: the omitted optional inputs take their documented defaults (dispRFlag false, fontSize calculated from the number of reactions), as in the call with 3 arguments
+- **Source lines**: 53, 71
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m`
+
+#### The progress of the two-set layout exceeds 100 %
+
+- **Severity**: cosmetic
+- **Trigger**: the model and sample above: sampleScatterMatrix({'R1', 'R2'}, model, sample, 20, [], true, {'R3'})
+- **Observed**: MATLAB R2025a: the progress bar printed by showprogress runs to 116 % and 133 %; line 84 computes ((i - 1) * nRxns + j) / (nRxns * nRxns2) with nRxns where the row length is nRxns2
+- **Expected**: the progress ends at 100 % ((i - 1) * nRxns2 + j)
+- **Source lines**: 84
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m`
+
+### `src/analysis/subspaces/checkScaling.m`
+
+#### A model whose lower bounds are all zero stops with an error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'}, {'r1'; 'r2'; 'r3'}, {' -> A'; 'A -> B'; 'B -> '}, [], zeros(3, 1), 10 * ones(3, 1)); checkScaling(model, 'fine', 0)
+- **Observed**: MATLAB R2025a: 'Operands to the logical AND (&&) and OR (||) operators must be convertible to logical scalar values. Use the ANY or ALL functions to reduce operands to logical scalar values.' at line 305: without a non-zero lower bound minLB (line 219) and ratioL (line 222) are empty. The same model with lb(1) = -5 returns 'double'. A model whose upper bounds are all zero reaches the same test at line 321.
+- **Expected**: the scaling summary and recommendation, with the lower-bound ratio left out (an all-irreversible model is a valid model)
+- **Source lines**: 219-222, 305, 321
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testCheckScaling.m`
+
+#### A model with C and d but without b stops with an error
+
+- **Severity**: error
+- **Trigger**: the model above with lb(1) = -5, the field b removed and C = [1 0 0], d = 5, dsense = 'L': checkScaling(model, 'fine', 0)
+- **Observed**: MATLAB R2025a: 'Unrecognized field name "b".' at line 157; lines 136 and 157 assemble [S, b; C, d] whenever C and d are present, although the header lists b among the optional fields analysed if present
+- **Expected**: the constraint matrix assembled from S, C and d with b taken as zero (the COBRA default right-hand side), as for a model without C and d (lines 165-171)
+- **Source lines**: 136, 157
+- **Documented in**: `test/verifiedTests/analysis/testSubspaces/testCheckScaling.m`
 
 ### `src/analysis/subspaces/lsqr/lsqr.m`
 
@@ -2341,6 +2454,106 @@
 - **Expected**: q a permutation of 1:3 with q(1:2) = the independent columns 2 and 3 and q(3) = 1 (OUTPUTS: "q(1:rankA) gives indices of independent columns"; comment of line 198: "pad out q in case some columns are dropped")
 - **Source lines**: 62-66, 199-201
 - **Documented in**: `test/verifiedTests/analysis/testRank/testGetRankLUSOL.m`
+
+### `src/analysis/thermo/directionalityReport/directionalityChangeReport.m`
+
+#### The descriptions of the bydGt0LHS and bydGt0RHS classes state the wrong probability bound
+
+- **Severity**: wrong-result
+- **Trigger**: the call above
+- **Observed**: MATLAB R2025a: r_forward_to_reversible_DrG0t_spans_zero_probably_forward_StructuredView.txt (class forward2Reversible_bydGt0LHS, reaction R3) begins 'Metabolites which force 1 qualitatively  forward -> quantiatively reversible (DrG0t span the zero line). Forward with probability less than 0.3.'; directionalityStats defines bydGt0LHS as forwardProbability > 0.5 + cumNormProbCutoff and bydGt0RHS as < 0.5 - cumNormProbCutoff, so lines 124 and 132 swap the two bounds
+- **Expected**: bydGt0LHS: forward with probability greater than 0.7; bydGt0RHS: less than 0.3
+- **Source lines**: 124, 132
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testDirectionalityChangeReport.m`
+
+#### Two pairs of classes are written to the same file, so one class of each pair is lost
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'}, {'one'; 'two'; 'three'}, {'A[c] -> B[c]'; 'B[c] -> C[c]'; 'C[c] -> A[c]'}, [], zeros(3, 1), 10 * ones(3, 1)) with gasConstant = 8.3144621e-3, T = 298.15, DrGt0Min = [0; -4; -6], DrGt0Max = [0; -4; 2], DrGtMin = [-3; -9; -10], DrGtMax = [3; 1; 5], DfGt0 = [-10; -20; -30], DfG0_Uncertainty = [1; 2; 3], concMin = 1e-5 * ones(3, 1), concMax = 1e-2 * ones(3, 1); directions with every documented field false(3, 1) except forward2Reversible = true(3, 1), forward2Reversible_byConc_zero_fixed_DrG0 = [1; 0; 0], forward2Reversible_byConc_negative_fixed_DrG0 = [0; 1; 0], forward2Reversible_bydGt0 = forward2Reversible_bydGt0LHS = [0; 0; 1]; in an empty folder: directionalityChangeReport(model, directions, 0.2, 0, 'r_')
+- **Observed**: MATLAB R2025a: 30 files for the 17 classes (34 expected); r_forward_to_reversible_negative_exact_DrG0t.txt lists only R2, R1 (the zero fixed DrGt0 class) is lost, and r_forward_to_reversible_DrG0t_spans_zero_possibly_reversible.txt lists no reaction although R3 is in forward2Reversible_bydGt0 (it is overwritten by the empty bydGt0Mid class): lines 138 and 142, and lines 121 and 129, give the same file name
+- **Expected**: one pair of files per class: R1 in the zero fixed DrGt0 files and R3 in the files of forward2Reversible_bydGt0
+- **Source lines**: 121, 129, 138, 142
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testDirectionalityChangeReport.m`
+
+### `src/analysis/thermo/directionalityReport/directionalityStats.m`
+
+#### The printed Reverse -> Reverse count is the number of reverse -> reversible reactions
+
+- **Severity**: wrong-result
+- **Trigger**: three internal reactions, R1 forward in the reconstruction and forward by thermodynamics, R2 reverse and reversible, R3 reversible and uncertain: model.S = [1 -1 0; 0 1 -1] (createModel for ' -> A', 'A -> B', 'B -> '); lb = [0; -10; -10], ub = [10; 0; 10], lb_reconThermo = lb, ub_reconThermo = ub, SIntRxnBool = true(3, 1), DrGtMin = [-20; -5; -3], DrGtMax = [-10; 5; 4], DrGt0Min = [-15; -1; -2], DrGt0Max = [-12; 1; 2]; directions.forwardProbability = [1; 0.5; 0.6], forwardRecon = [1; 0; 0], reverseRecon = [0; 1; 0], reversibleRecon = [0; 0; 1], forwardThermo = [1; 0; 0], reverseThermo = [0; 0; 0], reversibleThermo = [0; 1; 0], uncertainThermo = [0; 0; 1] (logical); directionalityStats(model, directions, 0.2, 1)
+- **Observed**: MATLAB R2025a: the report prints '1 Reverse -> Reverse' and '1 Reverse -> Reversible', while the returned directions.reverse2Reverse has 0 and directions.reverse2Reversible 1 true entry: line 206 prints nnz(reverse2Reversible) under the label Reverse -> Reverse
+- **Expected**: '0 Reverse -> Reverse', the count nnz(reverse2Reverse)
+- **Source lines**: 206
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testDirectionalityStats.m`
+
+#### The reverse -> uncertain count is labelled Reversible -> Uncertain
+
+- **Severity**: cosmetic
+- **Trigger**: the call above
+- **Observed**: MATLAB R2025a: the last line of the Qualitative vs Quantitative block reads '0 Reversible -> Uncertain' (reverse2Uncertain), repeating the label of the reversible2Uncertain line printed above it with 1
+- **Expected**: the label Reverse -> Uncertain
+- **Source lines**: 209
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testDirectionalityStats.m`
+
+### `src/analysis/thermo/directionalityReport/forwardProbablyReverseFigures.m`
+
+#### The structure array model.rxn is required but not documented
+
+- **Severity**: limitation
+- **Trigger**: the model above without the field rxn: forwardProbablyReverseFigures(model, false)
+- **Observed**: MATLAB R2025a: 'Unrecognized field name "rxn".' at line 164; lines 164 and 169 label the reactions with model.rxn(n).officialName and model.rxn(n).equation, which the header does not list (the header lists only S and the energy fields)
+- **Expected**: the header lists model.rxn, or the labels come from rxnNames and the formulas
+- **Source lines**: 164, 169
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testForwardProbablyReverseFigures.m`
+
+#### miliMolarStandard true stops with an error
+
+- **Severity**: unusable-option
+- **Trigger**: model.S = [1 -1 0; 0 1 -1] (createModel for ' -> A', 'A -> B', 'B -> ', reactions R1-R3), DrGt0Min = [-5; -1; -5], DrGt0Max = [-5; 3; 1], DrGt0Mean = (DrGt0Min + DrGt0Max) / 2, DrGtMin = [-10; -4; -8], DrGtMax = [2; 6; 4], DrGtMean = (DrGtMin + DrGtMax) / 2, dGt0Min = DrGt0Min, dGt0Max = DrGt0Max, dGtMin = DrGtMin, dGtMax = DrGtMax, directions.forwardReversible_bydGt0RHS = [0; 1; 0], .forwardReversible_byConc_positive_fixed_DrG0 = [0; 0; 0], .forwardReversible_byConc_positive_uncertain_DrG0 = [0; 0; 1] (logical), .forwardProbability = [NaN; 0.1; 0.05], rxn = struct('officialName', {'one', 'two', 'three'}, 'equation', {'A -> B', 'B -> C', 'C -> D'}): forwardProbablyReverseFigures(model, true)
+- **Observed**: MATLAB R2025a: the figure is drawn and saved, then the call stops with 'Unrecognized function or variable 'dGt0Min'.' at line 181: lines 180-183 restore model.dGt0Min and dGt0Max from variables that are only assigned in the disabled horizontal-bar block (lines 190-197, horizontal = 0). The same call with false runs.
+- **Expected**: the call with miliMolarStandard = true completes (the vertical figure changes nothing that needs restoring)
+- **Source lines**: 180-183
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testForwardProbablyReverseFigures.m`
+
+### `src/analysis/thermo/directionalityReport/forwardReversibleFigures.m`
+
+#### Reactions with a fixed DrGt0 stop the figures with an error
+
+- **Severity**: error
+- **Trigger**: model.S = [1 -1 0; 0 1 -1] (createModel for ' -> A', 'A -> B', 'B -> ', reactions R1-R3), SIntRxnBool = true(3, 1), DrGt0 = [-5; 1; -2], DrG0_Uncertainty = [0; 2; 3], DrGt0Min = [-5; -1; -5], DrGt0Max = [-5; 3; 1], DrGtMin = [-10; -4; -8], DrGtMax = [2; 6; 4], DrGtMean = (DrGtMin + DrGtMax) / 2; directions with the nine forward2Reversible* fields false(3, 1) except forward2Reversible = true(3, 1), forward2Reversible_bydGt0 = forward2Reversible_bydGt0Mid = [0; 1; 1] and forward2Reversible_byConc_negative_fixed_DrG0 = [1; 0; 0]: forwardReversibleFigures(model, directions); likewise with forward2Reversible_byConc_positive_fixed_DrG0 = [1; 0; 0] instead
+- **Observed**: MATLAB R2025a: 'Unrecognized function or variable 'P'.' at line 212 (negative fixed DrGt0) and 'Undefined function 'P' for input arguments of type 'logical'.' at line 327 (positive fixed DrGt0). P is never assigned: the forward probability is held in forwardProbability (lines 84-93), which the other figures use; lines 212, 230 and 283 (figure of the negative fixed class) and 327 and 381 (positive fixed class) use P.
+- **Expected**: the figures of the two fixed-DrGt0 classes drawn with forwardProbability
+- **Source lines**: 212, 230, 283, 327, 381
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testForwardReversibleFigures.m`
+
+#### The warning about extra NaN probabilities is garbled
+
+- **Severity**: cosmetic
+- **Trigger**: the call above
+- **Observed**: MATLAB R2025a: the warning of line 140 is shown as 'Extra category of NaN P(' preceded by the warning 'Escaped character '\D' is not valid. See 'doc sprintf' for supported special characters.': with an identifier, warning treats the TeX text \Delta_{r}G^{\primem} as a format. Line 638 has the same text.
+- **Expected**: the full message (the backslashes escaped or the text passed as an argument of a %s format)
+- **Source lines**: 140, 638
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testForwardReversibleFigures.m`
+
+### `src/analysis/thermo/directionalityReport/forwardTransportQuantReverseFigures.m`
+
+#### A model without a qualifying transport reaction stops with an error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'glc_abc'; 'ACt2r'; 'R3'; 'Bt'; 'Ht'}, {'glc abc'; 'acetate symport'; 'internal'; 'B transport'; 'proton'}, {'A[e] -> A[c]'; 'A[e] + h[e] -> A[c] + h[c]'; 'A[c] -> B[c]'; 'B[c] -> B[e]'; 'h[e] -> h[c]'}, [], zeros(5, 1), 10 * ones(5, 1)) with transportRxnBool = [1; 1; 0; 1; 1], DrGt0Min = [-10; -3; -5; -2; 2], DrGt0Max = [4; -3; 1; 6; 2], DrGt0Mean = (DrGt0Min + DrGt0Max) / 2, DrGtMin = [-20; -12; -9; -8; -6], DrGtMax = [9; 5; 4; 12; 10], DrGtMean = (DrGtMin + DrGtMax) / 2, directions.forwardProbability = [0.8; NaN; 0.6; 0.4; NaN] and directions.forwardReversible = false(5, 1): forwardTransportQuantReverseFigures(model)
+- **Observed**: MATLAB R2025a: "Error setting property 'BaseValue' of class 'Bar': Value not a numeric scalar" from barh at line 126: with no selected reaction minX (line 119) is empty; read from the code, line 185 (max of the never assigned textLen) would stop next. With directions.forwardReversible = true(5, 1) the same model draws the figure with the three selected reactions (ACt2r, glc_abc, Ht).
+- **Expected**: an empty figure, or no figure, when no qualitatively forward transport reaction is quantitatively reversible (a valid model)
+- **Source lines**: 119-126, 185
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testForwardTransportQuantReverseFigures.m`
+
+#### The fields transportRxnBool and directions.forwardProbability are required but not documented
+
+- **Severity**: limitation
+- **Trigger**: the model above without transportRxnBool (or without directions.forwardProbability)
+- **Observed**: read from the code: line 38 reads model.transportRxnBool and line 67 directions.forwardProbability, neither listed under INPUT; the header lists DrdGtMin, used only in the disabled branch of line 53
+- **Expected**: the header lists the fields the function reads
+- **Source lines**: 38, 67
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testForwardTransportQuantReverseFigures.m`
 
 ### `src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m`
 
@@ -2736,6 +2949,17 @@
 - **Source lines**: 333
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m`
 
+### `src/analysis/thermo/thermoFBA/connectedRxnsByEFM.m`
+
+#### The working directory is not restored when EFMtool fails
+
+- **Severity**: cosmetic
+- **Trigger**: an error inside the loop over components, e.g. CalculateFluxModes raising an error
+- **Observed**: the catch block returns at line 68 without cd(p), so the caller is left in the EFMtool folder (MATLAB R2025a, with the stub below); rxnLink = [] as documented
+- **Expected**: the working directory of the caller is restored, as at line 71
+- **Source lines**: 68
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testConnectedRxnsByEFM.m`
+
 ### `src/analysis/thermo/thermoFBA/cycleFreeFlux.m`
 
 #### A solution of the relaxed problem under param.debug is dropped
@@ -2791,6 +3015,57 @@
 - **Expected**: the option has no effect on the regularised approach, or removes its fixed variables
 - **Source lines**: 991
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m`
+
+### `src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m`
+
+#### The empty-producer branch labels the consumer axes
+
+- **Severity**: cosmetic
+- **Trigger**: a metabolite with no producing reaction in the flux vector
+- **Observed**: line 79 sets the YTickLabel of h1 (consumer subplot) to NONE (read from the code)
+- **Expected**: the producer subplot h2 is labelled NONE, as line 59 does for h1
+- **Source lines**: 79
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m`
+
+#### The reaction labels read an undocumented legacy field model.rxn(k).directionality
+
+- **Severity**: error
+- **Trigger**: model = createModel({'r1','r2','r3'}, {'r1','r2','r3'}, {'-> A','A ->','A -> B'}); solution.full = [3; 1; 2]; metaboliteMassBalancePlot(model, 'A[c]', solution, 2)
+- **Observed**: 'Unrecognized field name "rxn".' at line 62 (MATLAB R2025a); the producer labels use the same field at line 82
+- **Expected**: the documented fields only (S, mets, rxns) are used; the labels are the reaction identifiers of the top consumers and producers
+- **Source lines**: 62-67, 82-87
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m`
+
+### `src/analysis/thermo/transport/transportReactionBool.m`
+
+#### Origin and destination compartments filter the result when unidirectionalBool is 0
+
+- **Severity**: wrong-result
+- **Trigger**: a createModel model with reactions r1 'a[e] -> a[c]', r2 'a[c] -> b[c]', r3 'b[c] <=> b[m]', r4 'a[e] <=> ', r5 'c[e] <=> c[c]', r6 'a[e] + c[e] -> a[c] + c[c]', lowerBoundList [0; 0; -10; -10; -10; 0], upperBoundList [10; 10; 10; 10; 0; 10]; transportReactionBool(model, 'c', 'e', 0)
+- **Observed**: MATLAB R2025a, 2026-11-16: [1; 0; 0; 0; 1; 1]; the c <-> m transport r3 is dropped because lines 65-68 keep only the reactions between the two given compartments when unidirectionalBool is 0 (transportReactionBool(model) gives [1; 0; 1; 0; 1; 1])
+- **Expected**: [1; 0; 1; 0; 1; 1], every transport reaction, since the help (lines 17-18) says the origin and destination compartments are only relevant for unidirectional
+- **Source lines**: 65-69
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testTransportReactionBool.m`
+
+### `src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m`
+
+#### A model with concMin or concMax fails unless concMinDefault and concMaxDefault are passed
+
+- **Severity**: error
+- **Trigger**: model = createModel({'r1'}, {'r1'}, {'A[c] -> B[c]'}) with metFormulas {'C'; 'C'}, metCharges [0; 0], concMin [1e-6; 1e-6], concMax [1e-3; 1e-3]; configureSetupThermoModelInputs(model)
+- **Observed**: 'Not enough input arguments.' at line 188 (MATLAB R2025a): lines 63-68 default variables named concMin and concMax instead of concMinDefault and concMaxDefault; passing concMinDefault = [] raises the error of line 189 'concMinDefault must not be set if concentrations are provided', the opposite of its message
+- **Expected**: all optional inputs are empty by default (header); the model's bounds are kept and an error is raised only when a default is set together with model bounds
+- **Source lines**: 63-68, 188-190, 203-205
+- **Documented in**: `test/verifiedTests/analysis/testVonBertalanffy/testConfigureSetupThermoModelInputs.m`
+
+#### concMinDefault and concMaxDefault are ignored
+
+- **Severity**: unusable-option
+- **Trigger**: the model above without concMin and concMax; configureSetupThermoModelInputs(model, [], [], [], [], [], 1e-6, 1e-3)
+- **Observed**: model.concMin = [1e-5; 1e-5] and model.concMax = [1e-2; 1e-2] (MATLAB R2025a): lines 192 and 207 overwrite the inputs with 1e-5 and 1e-2; lines 193-194 and 208-209 can never run
+- **Expected**: model.concMin = [1e-6; 1e-6] and model.concMax = [1e-3; 1e-3] (the documented default bounds)
+- **Source lines**: 192-197, 207-212
+- **Documented in**: `test/verifiedTests/analysis/testVonBertalanffy/testConfigureSetupThermoModelInputs.m`
 
 ### `src/analysis/topology/FR/bilinearDecomposition.m`
 
@@ -6214,6 +6489,44 @@
 - **Source lines**: 47-53
 - **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m`
 
+### `src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m`
+
+#### A proton-driven reaction uses an undefined or stale proton index
+
+- **Severity**: wrong-result
+- **Trigger**: an internal reaction whose protons are in more compartments than its other metabolites, e.g. ATPS4r (adp[c] + 4 h[e] + pi[c] <=> atp[c] + h2o[c] + 3 h[c])
+- **Observed**: line 248 reads indexHRxn, which is only set at line 270 for an earlier reaction, so it is undefined (error) or points to the proton of the previous reaction (read from the code)
+- **Expected**: the proton of the compartment of the other metabolites is adjusted, as the comment above line 248 says
+- **Source lines**: 248
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m`
+
+#### The default of massImbalance uses nRxn before it is defined
+
+- **Severity**: error
+- **Trigger**: model = createModel({'r1'}, {'r1'}, {'a[c] -> b[c]'}) with compartments {'c'}, metCompartments {'c'; 'c'}, SIntRxnBool true, aveHbound [1; 1], metFormulas {'CH'; 'CH'}, metCharges [0; 0]; pHbalanceProtons(model)
+- **Observed**: 'Unrecognized function or variable 'nRxn'.' at line 57 (MATLAB R2025a); nRxn is set at line 72
+- **Expected**: massImbalance is optional; every reaction is treated as mass balanced
+- **Source lines**: 57
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m`
+
+#### The missing-formula warning tests the whole formula list
+
+- **Severity**: cosmetic
+- **Trigger**: a model in which some, but not all, metFormulas are empty
+- **Observed**: line 108 strcmp(model.metFormulas, '') returns a vector, so the branch runs only when every formula is empty (read from the code)
+- **Expected**: the formula of metabolite m is tested (model.metFormulas{m})
+- **Source lines**: 108-113
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m`
+
+#### The report file is never closed
+
+- **Severity**: cosmetic
+- **Trigger**: printLevel < 0
+- **Observed**: line 124 opens the file and no fclose follows (read from the code)
+- **Expected**: the file is closed before returning
+- **Source lines**: 124
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m`
+
 ### `src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m`
 
 #### minSij is zero for every model with a zero in S
@@ -6717,6 +7030,35 @@
 - **Expected**: the entry holds the subsystem name (a character array or a cell of character arrays), like every other entry of the field
 - **Source lines**: 64-73, 139
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m`
+
+### `src/reconstruction/refinement/changeRxnMets.m`
+
+#### A partly unknown reaction list is not reported
+
+- **Severity**: cosmetic
+- **Trigger**: Rxn = {'r1', 'missing'}
+- **Observed**: line 54 min(RxnsInd == 0) is true only when every reaction is missing, so the documented error is skipped and an indexing error follows (read from the code)
+- **Expected**: the error 'A reaction wasn't found in your model!'
+- **Source lines**: 54
+- **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m`
+
+#### The extra reactions are drawn from a set that already contains the selected ones
+
+- **Severity**: wrong-result
+- **Trigger**: the model above; rng(3); changeRxnMets(model, {'A[c]', 'C[c]'}, {'Z[c]', 'E[c]'}, 2)
+- **Observed**: ModifiedRxns = {'r2'} only (MATLAB R2025a, seeds 3 and 4; seeds 1, 2 and 5 give r1 and r2): line 72 draws Rxn - numel(RxnsIndAll) reactions from RxnsIndAny, which includes RxnsIndAll, and the union drops repeats; line 67 adds the two counts, which double counts the same reactions
+- **Expected**: 2 reactions modified (r1 and r2, the only reactions containing A[c] or C[c])
+- **Source lines**: 67-72
+- **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m`
+
+#### With one metabolite to change, the random selection reduces the S row to a scalar
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'r1','r2','r3'}, {'r1','r2','r3'}, {'A -> B','A + C -> D','E -> F'}) plus metabolite Z[c]; changeRxnMets(model, {'A[c]'}, {'Z[c]'}, 2)
+- **Observed**: ModifiedRxns = {'r1'} and two warnings that fewer reactions contain the metabolite (MATLAB R2025a): all() and any() of the 1 x n row at lines 63-64 return a scalar, so the indices found are 1 or empty instead of the reactions r1 and r2 that contain A[c]
+- **Expected**: ModifiedRxns = {'r1'; 'r2'} (both reactions containing A[c]), no warning
+- **Source lines**: 63-64
+- **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m`
 
 ### `src/reconstruction/refinement/extractSubSysModel.m`
 

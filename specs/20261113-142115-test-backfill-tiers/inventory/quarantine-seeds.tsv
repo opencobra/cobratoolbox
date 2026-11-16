@@ -138,3 +138,5 @@ printCouplingConstraints	src/dataIntegration/XomicsToModel/XomicsToModel.m
 printFluxBounds	NONE
 # chrrSampler: only requesting minFlux/maxFlux with a roundedPolytope input fails; sampleCbModel does not request them.
 chrrSampler	NONE
+# transportReactionBool: only calls passing an origin/destination with unidirectionalBool 0 reach it; deltaG0concFluxConstraintBounds does (numChar as origin).
+transportReactionBool	src/analysis/thermo/thermoDirectionality/deltaG0concFluxConstraintBounds.m

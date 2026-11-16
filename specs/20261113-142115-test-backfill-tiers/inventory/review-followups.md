@@ -68,3 +68,8 @@ multi-function. A later change should merge or rename them so that each function
   run clean in one session without coverage, and 187 other tests run clean under coverage, so the
   full suite (no coverage) is not affected. The campaign's coverage checkpoints are therefore run
   in sessions of about 100 tests, each with a private temporary directory and an idle cap.
+- chrrSampler / chrrExpSampler with toRound = 0: samples leave the bounds (minimum -6.1 for [0, 10]);
+  the cause is in the external preprocess/genSamples code (reproduction in the wave 16 slice a
+  record of chrrExpSampler). fluxVariability reported maxFlux 10 for R_in despite a coupling
+  constraint R1 + R2 <= 8 in the chrrSampler set-up (wave 15 slice c record; not verified further).
+
