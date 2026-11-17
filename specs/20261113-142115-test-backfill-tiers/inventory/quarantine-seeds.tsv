@@ -156,3 +156,6 @@ estimateDrGt0	NONE
 saveInputsOptForce	src/design/optForce/optForce.m
 # scoreC13Fit: only the 6th input method is ignored; the only caller (errorComputation2) passes 3 arguments.
 scoreC13Fit	NONE
+# calculateMCS (wave 27): the error needs KO together with a row cell rxn_set of two or more
+# entries; its only caller, buildGmatrix, passes a column rxn_set and no KO.
+calculateMCS	NONE

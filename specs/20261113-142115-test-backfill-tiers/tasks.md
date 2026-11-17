@@ -80,7 +80,7 @@ finds a confirmed defect for every QUARANTINED row and a quarantined reach for e
 
 ## Phase 7: User Story 5 — Tier 3 tests (Priority: P3)
 
-- [ ] T015 [US5] Run procedure W for Tier 3 waves until none PENDING (Gurobi; requirements declared; CPLEX-only lines exempt)
+- [X] T015 [US5] Run procedure W for Tier 3 waves until none PENDING (Gurobi; requirements declared; CPLEX-only lines exempt)
 - [ ] T016 [US5] Tier 3 checkpoint → `$F/inventory/coverage/tier3.jsonl`; all pass
 
 ## Phase 8: User Story 6 — Tier 4/5 tests (Priority: P4)

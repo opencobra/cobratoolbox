@@ -1,0 +1,6 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	776	src/analysis/gMCS/calculateMCS.m	3			setCplexParam	buildGmatrix	
+b	872	src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m	3				findMinimalSetOfRxns,main_norm0	
+a	877	src/base/solvers/cplex/solveCobraLPCPLEX_2018.m	3			setCplexParam		
+a	878	src/base/solvers/cplex/solveCobraLPCPLEXcard.m	3				findMinCardModel	
+b	840	src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m	3				checkStoichiometricConsistency	

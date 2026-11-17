@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-792 known defects in 447 functions (277 wrong-result, 229 error, 69 unusable-option, 136 cosmetic, 81 limitation).
+807 known defects in 452 functions (282 wrong-result, 235 error, 69 unusable-option, 140 cosmetic, 81 limitation).
 
 ## Summary
 
@@ -60,6 +60,8 @@
 | `src/analysis/fastForest/extractSubsetFeaturesfromFile.m` | wrong-result | The last sample of the file is not written to the subset file | `test/verifiedTests/analysis/testFastForest/testExtractSubsetFeaturesfromFile.m` |
 | `src/analysis/fastForest/extractSubsetFeaturesfromFile.m` | limitation | The subset file is left open | `test/verifiedTests/analysis/testFastForest/testExtractSubsetFeaturesfromFile.m` |
 | `src/analysis/fluxEnrichmentAnalysis/FEA.m` | error | An empty reaction set raises an error instead of returning the header-only result | `test/verifiedTests/analysis/testFEA/testFEA.m` |
+| `src/analysis/gMCS/calculateMCS.m` | error | A row cell array rxn_set together with KO stops with an error | `test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m` |
+| `src/analysis/gMCS/calculateMCS.m` | cosmetic | The enumeration writes tmp.mat into the current folder | `test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m` |
 | `src/analysis/geometricFBA/geometricFBA.m` | error | A model with a unique optimum stops with an error | `test/verifiedTests/analysis/testGeometricFBA/testGeometricFBA.m` |
 | `src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m` |
 | `src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m` | wrong-result | The local threshold is the sum divided by the row length minus one, not the mean | `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m` |
@@ -380,7 +382,18 @@
 | `src/base/solvers/buildOptProblemFromModel.m` | error | Missing coupling and extra-variable fields are never built | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
 | `src/base/solvers/buildOptProblemFromModel.m` | error | The form QRQP keeps the csense of the model only | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
 | `src/base/solvers/buildOptProblemFromModel.m` | wrong-result | The forms QRLP and QRQP lose the bounds of the extra variables | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
+| `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | cosmetic | Diagnostic output is printed unconditionally | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
+| `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Empty inequality (or equality) block errors when the LP optimum is zero | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
+| `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Output z is not assigned when every entry of the LP solution is below zeps | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
+| `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | wrong-result | The zero vector is returned as the solution although it violates Aeq*x = beq | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
+| `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Theta L0 iteration errors when the l1 solution has no positive entry | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
 | `src/base/solvers/cplex/setCplexParametersForProblem.m` | unusable-option | text values of problemTypeParams.method have no effect for MIQP | `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m` |
+| `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m` | error | An LPProblem without csense stops with an error | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m` |
+| `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m` | wrong-result | The documented solution fields solver (every interface) and stat (ILOGsimple) are missing | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m` |
+| `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | error | An LPProblem without csense stops with an error | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
+| `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | wrong-result | The IBM ILOG branch returns the objective of a maximisation with the wrong sign | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
+| `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | cosmetic | The cardinality solve prints the solution structure and a minimum-Euclidean-norm note | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
+| `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | wrong-result | theNorm 'zero' optimises the original objective in the wrong direction or reports it with the wrong sign | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
 | `src/base/solvers/entropicFBA/addExoMetToEFBA.m` | error | Data for a reaction not in the model, or duplicate data, stop with an error | `test/verifiedTests/base/testEntropicFBA/testAddExoMetToEFBA.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | cosmetic | Documented defaults for the concentration unit and the maximum concentration differ from the code | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | unusable-option | The case dxReplacement always stops with an error | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
@@ -662,6 +675,8 @@
 | `src/reconstruction/modelGeneration/removeCompartments.m` | cosmetic | The default compartment and every reaction index are printed | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
 | `src/reconstruction/modelGeneration/removeCompartments.m` | wrong-result | metNames is a row and holds the metabolite identifiers | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
 | `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m` | wrong-result | Reactions with names of one or two characters get the wrong sign | `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m` | wrong-result | The entropy maximiser is resolved only to the pdco optimality tolerance | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m` | cosmetic | printLevel is ignored and pdco always prints its iteration log | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m` |
 | `src/reconstruction/modelGeneration/test4HumanFctExt.m` | error | an error when no test carried flux | `test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m` |
 | `src/reconstruction/modelGeneration/test4HumanFctExt.m` | cosmetic | the diary is opened in the current folder and never closed | `test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m` |
 | `src/reconstruction/modelGeneration/test4HumanFctExt.m` | unusable-option | the documented option 'IECori' is not recognised | `test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m` |
@@ -1320,6 +1335,26 @@
 - **Expected**: the header-only cell array of lines 35-36 (the branch is unreachable)
 - **Source lines**: 32, 35-37
 - **Documented in**: `test/verifiedTests/analysis/testFEA/testFEA.m`
+
+### `src/analysis/gMCS/calculateMCS.m`
+
+#### A row cell array rxn_set together with KO stops with an error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1', 'R2', 'R3', 'R4'}, {'R1', 'R2', 'R3', 'R4'}, {' -> A', 'A <=> B', 'A -> B', 'B -> '}); model.c(4) = 1; calculateMCS(model, 10, 2, 'KO', 'R2', 'rxn_set', {'R1', 'R3'}) with IBM CPLEX installed and working (here: global SOLVERS with SOLVERS.ibm_cplex.installed = 1 and .working = 1, restored afterwards)
+- **Observed**: (R2025a, 2026-11-17; the error comes before any CPLEX call) "Dimensions of arrays being concatenated are not consistent." (MATLAB:catenate:dimensionMismatch) at line 139, rxn_set = [rxn_set; {KO}]; the column {'R1'; 'R3'} reaches the Cplex call, and the row form without KO too
+- **Expected**: OPTIONAL INPUTS document rxn_set as a "Cell array containing the set of reactions" (validated by iscell), so a row cell array is accepted and KO is added to the set
+- **Source lines**: 139
+- **Documented in**: `test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m`
+
+#### The enumeration writes tmp.mat into the current folder
+
+- **Severity**: cosmetic
+- **Trigger**: any call that reaches the enumeration loop (IBM CPLEX installed)
+- **Observed**: (R2025a, 2026-11-17, with a stand-in Cplex class whose populate returns an empty pool) calculateMCS(model, 10, 2, 'printLevel', 0) on the model above leaves tmp.mat (mcs = [], mcs_time 4 x 2) in the current folder; lines 305 and 521 save it after every populate round, overwriting a file of that name, and never remove it
+- **Expected**: no undocumented file in the user's current folder
+- **Source lines**: 305, 521
+- **Documented in**: `test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m`
 
 ### `src/analysis/geometricFBA/geometricFBA.m`
 
@@ -4601,6 +4636,53 @@
 - **Source lines**: 255-256, 258, 301-302, 304
 - **Documented in**: `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m`
 
+### `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m`
+
+#### Diagnostic output is printed unconditionally
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the first trigger above
+- **Observed**: (R2025a, Gurobi, 2026-11-17) "err_init = 0", "err_l1 = 0" and "Elapsed time is ... seconds." are printed (statements without semicolon and toc)
+- **Expected**: no console output, or output gated behind a printLevel argument
+- **Source lines**: 43, 61, 87
+- **Documented in**: `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m`
+
+#### Empty inequality (or equality) block errors when the LP optimum is zero
+
+- **Severity**: error
+- **Trigger**: P = struct('Aeq', [1 -1], 'beq', 0, 'Ain', [], 'bin', [], 'lb', [-10; -10], 'ub', [10; 10]); SparseLP_old([1; -1], P, 1e-8, 5) (findMinimalSetOfRxns passes Ain = [], bin = []; Ain = zeros(0, 2), bin = zeros(0, 1) fails as well)
+- **Observed**: (R2025a, Gurobi, 2026-11-17) "Incorrect dimensions for matrix multiplication" at line 49 for Ain = []; "Operands to the logical AND (&&) and OR (||) operators must be convertible to logical scalar values" at line 49 for the 0-by-2 Ain
+- **Expected**: the empty block is ignored as in LPSolve, L1Solve and ThetaL0, which test isempty, and z = [0; 0] is returned (zero is feasible and optimal)
+- **Source lines**: 49
+- **Documented in**: `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m`
+
+#### Output z is not assigned when every entry of the LP solution is below zeps
+
+- **Severity**: error
+- **Trigger**: P = struct('Aeq', 1, 'beq', 1e-12, 'Ain', 0, 'bin', 0, 'lb', -1, 'ub', 1); [rt, ec, nw, z] = SparseLP_old(1, P, 1e-9, 5)
+- **Observed**: (R2025a, Gurobi, 2026-11-17) "Output argument "z" (and possibly others) not assigned a value in the execution with "SparseLP_old" function.": the optimum 1e-12 is not exactly 0, so the shortcut of line 49 is not taken, and the loop of line 71 does not run because init_result = 0
+- **Expected**: z = 1e-12 (or the LP solution x0) with result_tab = [0, 0]
+- **Source lines**: 71
+- **Documented in**: `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m`
+
+#### The zero vector is returned as the solution although it violates Aeq*x = beq
+
+- **Severity**: wrong-result
+- **Trigger**: P = struct('Aeq', eye(2), 'beq', [0; 5], 'Ain', [0 0], 'bin', 0, 'lb', [-10; -10], 'ub', [10; 10]); [rt, ec, nw, z] = SparseLP_old([1; 0], P, 1e-8, 5)
+- **Observed**: (R2025a, Gurobi, 2026-11-17) rt = 0, ec = 0, nw = 0, z = [0; 0]: the zero-optimum shortcut tests max(Aeq*0 - beq) == 0, which holds when beq >= 0 has one zero entry, instead of testing that every residual is zero
+- **Expected**: z = [0; 5] (the only feasible point, objective 0), result_tab = [1, 1]
+- **Source lines**: 49-50
+- **Documented in**: `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m`
+
+#### Theta L0 iteration errors when the l1 solution has no positive entry
+
+- **Severity**: error
+- **Trigger**: P = struct('Aeq', 1, 'beq', -1, 'Ain', 0, 'bin', 0, 'lb', -10, 'ub', 10); SparseLP_old(0, P, 1e-8, 5)
+- **Observed**: (R2025a, Gurobi, 2026-11-17) "Operands to the logical AND (&&) and OR (||) operators must be convertible to logical scalar values" in ThetaL0 at line 149: min(sol(sol > zero_precision)) is empty
+- **Expected**: z = -1, result_tab = [1, 1] (the only feasible point); the smoothing function theta1 uses abs(t), so negative entries are allowed
+- **Source lines**: 142, 149
+- **Documented in**: `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m`
+
 ### `src/base/solvers/cplex/setCplexParametersForProblem.m`
 
 #### text values of problemTypeParams.method have no effect for MIQP
@@ -4611,6 +4693,64 @@
 - **Expected**: INPUTS document .method as "LP/QP algorithm selector used when problemType is MIQP (numeric legacy code, or 'AUTOMATIC'/'PRIMAL'/...)", so 'PRIMAL' selects algorithm 1; the numeric values do take effect (method 0 gives qpmethod 1)
 - **Source lines**: 248-260, 302
 - **Documented in**: `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m`
+
+### `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m`
+
+#### An LPProblem without csense stops with an error
+
+- **Severity**: error
+- **Trigger**: LP = struct('A', sparse([1 -1 0; 0 1 -1]), 'b', [0; 0], 'c', [0; 0; 1], 'lb', zeros(3, 1), 'ub', 10 * ones(3, 1), 'osense', -1); solveCobraLPCPLEX_2018(LP)
+- **Observed**: (R2025a, 2026-11-17; no CPLEX needed, the error comes before any solver call) "Colon operands must be real scalars." (MATLAB:colon:operandsNotRealScalar) at line 170: line 165 sets nMet = size(LPProblem.A), the vector [2 3], and 1:nMet is then evaluated
+- **Expected**: INPUTS document .csense as optional; the code (comment "assuming equality constraints") fills one 'E' per row of A and solves
+- **Source lines**: 165, 170
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m`
+
+#### The documented solution fields solver (every interface) and stat (ILOGsimple) are missing
+
+- **Severity**: wrong-result
+- **Trigger**: the LP above with LP.csense = ['E'; 'E']: solveCobraLPCPLEX_2018(LP) with TOMLAB CPLEX, and solveCobraLPCPLEX_2018(LP, 0, 0, 0, [], 0, 'ILOGsimple') with IBM ILOG CPLEX
+- **Observed**: (R2025a, 2026-11-17, with stand-in cplex, Cplex, cplexlp and cplexoptimset functions on a temporary path that solve with gurobi; CPLEX is not installed) tomlab_cplex returns the fields full, dual, rcost, obj, nInfeas, sumInfeas, origStat, time, stat (no solver); ILOGsimple returns obj, full, dual, rcost, nInfeas, sumInfeas, origStat, time (no stat, no solver), obj = 10 in both. The ILOGsimple and tomlab_cplex branches never set solver, and the status block (line 519) runs only for 'tomlab_cplex'
+- **Expected**: OUTPUT documents .stat (COBRA status 1/2/0/-1) and .solver for every solution
+- **Source lines**: 363-421, 422-464, 519
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m`
+
+### `src/base/solvers/cplex/solveCobraLPCPLEXcard.m`
+
+#### An LPProblem without csense stops with an error
+
+- **Severity**: error
+- **Trigger**: LP = struct('A', sparse([1 -1 0; 0 1 -1]), 'b', [0; 0], 'c', [0; 0; 1], 'lb', zeros(3, 1), 'ub', 10 * ones(3, 1), 'osense', -1); solveCobraLPCPLEXcard(LP)
+- **Observed**: (R2025a, 2026-11-17; no CPLEX needed, the error comes before any solver call) "Colon operands must be real scalars." (MATLAB:colon:operandsNotRealScalar) at line 160: line 155 sets nMet = size(LPProblem.A), the vector [2 3], and 1:nMet is then evaluated
+- **Expected**: INPUTS document .csense as optional; the code (comment "assuming equality constraints") fills one 'E' per row of A and solves
+- **Source lines**: 155, 160
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m`
+
+#### The IBM ILOG branch returns the objective of a maximisation with the wrong sign
+
+- **Severity**: wrong-result
+- **Trigger**: the LP above with LP.csense = ['E'; 'E'], IBM ILOG CPLEX (cplexlp) on the path: solveCobraLPCPLEXcard(LP)
+- **Observed**: (R2025a, 2026-11-17, with stand-in Cplex and cplexlp functions on a temporary path that solve the Cplex model with gurobi; CPLEX is not installed) solution.obj = -10 with solution.full = [10; 10; 10] and stat 1. Line 331 sets the Cplex objective to -c = LPProblem.c with sense 'maximize' (line 327), so objval is LPProblem.c'*x = 10, and line 362 multiplies it by osense = -1
+- **Expected**: solution.obj = LPProblem.c'*solution.full = 10, as the TOMLAB branch returns (f_k*osense, line 702)
+- **Source lines**: 331, 362
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m`
+
+#### The cardinality solve prints the solution structure and a minimum-Euclidean-norm note
+
+- **Severity**: cosmetic
+- **Trigger**: solveCobraLPCPLEXcard(LP, 0, 0, 0, [], 1, 'zero') with IBM ILOG CPLEX on the path (printLevel 0)
+- **Observed**: (R2025a, 2026-11-17, same stand-in) "solution = struct with fields: obj: 0" is printed (line 433 has no semicolon), followed by "This objective corresponds to a flux with minimum Euclidean norm." (lines 806-809 print it for every nonzero minNorm, also for theNorm 'zero' and printLevel 0)
+- **Expected**: console output gated by printLevel; no Euclidean-norm note for 'zero'
+- **Source lines**: 433, 806-809
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m`
+
+#### theNorm 'zero' optimises the original objective in the wrong direction or reports it with the wrong sign
+
+- **Severity**: wrong-result
+- **Trigger**: the LP above with LP.csense = ['E'; 'E'] and IBM ILOG CPLEX on the path: solveCobraLPCPLEXcard(LP, 0, 0, 0, [], 1, 'zero') (maximisation); the same with minNorm = -1; and with LP.osense = 1, LP.c = [0; 0; -1] (minimisation)
+- **Observed**: (R2025a, 2026-11-17, same stand-in) maximisation: solution.obj = 0 for minNorm 1 and -1, the minimum of v3 instead of the maximum 10: line 402 passes c = osense*LPProblem.c with the sense 'maximize' of line 397, so the first solve minimises v3 and line 536 (473) bounds v3 below by 0 instead of 10*beta; minimisation: solution.obj = 10 although LPProblem.c'*solution.full = -10 (line 587 negates x'*c)
+- **Expected**: the first solve optimises LPProblem.c in the sense osense (as the 'two' branch does), the second solve keeps that optimum, and solution.obj is LPProblem.c'*x of the optimum
+- **Source lines**: 394-398, 402, 515, 587
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m`
 
 ### `src/base/solvers/entropicFBA/addExoMetToEFBA.m`
 
@@ -7432,6 +7572,26 @@
 - **Expected**: the value is kept for a reaction that is not reversed, whatever the length of its name
 - **Source lines**: 22
 - **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m`
+
+### `src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m`
+
+#### The entropy maximiser is resolved only to the pdco optimality tolerance
+
+- **Severity**: wrong-result
+- **Trigger**: [m, bool] = maxEntConsVector(sparse([-1; 1]), 0)
+- **Observed**: (R2025a, pdco5, 2026-11-17) m = [1.2284; 1.2284]; pdco reports Converged: the entropy term is weighted by alpha = 1e-6, the size of pdco's default OptTol (1e-6), so alpha*log(m) = 2e-7 is accepted as zero. For sparse([1; 1]) m = 4.0e-4 per entry where the minimiser is about 6e-6
+- **Expected**: m = [0.9901; 0.9901], the root of 1e-6*log(x) + 1e-8*x = 0 (stationarity of the objective along the conservation law m(1) = m(2))
+- **Source lines**: 34, 51
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m`
+
+#### printLevel is ignored and pdco always prints its iteration log
+
+- **Severity**: cosmetic
+- **Trigger**: maxEntConsVector(sparse([-1; 1]), 0)
+- **Observed**: (R2025a, pdco5, 2026-11-17) the pdco banner, iteration table and distribution of x are printed although printLevel = 0
+- **Expected**: no output for printLevel = 0 (options.Print = printLevel - 1 is commented out)
+- **Source lines**: 34
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m`
 
 ### `src/reconstruction/modelGeneration/test4HumanFctExt.m`
 
