@@ -30,7 +30,7 @@
 %       EXPECTED: nBins = round(nSamples/25) is used, as the header documents
 %       LINES: 17-20, 50
 %     - DEFECT: The fallback to the reversed reaction <name>_r never runs
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: a reaction name that is not in a model whose reversed half <name>_r is, e.g.
 %       rxnNames {'r1_'} with model.rxns {'r1'; 'r2'}, nBins 5
 %       OBSERVED: 'Index in position 1 is invalid. Array indices must be positive integers or

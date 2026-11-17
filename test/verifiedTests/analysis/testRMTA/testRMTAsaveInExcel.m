@@ -34,7 +34,7 @@
 %         TSscore.bTS ('alpha = 1' and 'alpha = 2')
 %       LINES: 41, 47, 51-53
 %     - DEFECT: The sheets written with xlswrite need Microsoft Excel
-%       SEVERITY: limitation
+%       SEVERITY: unusable-option
 %       TRIGGER: on Linux: genes = {'g1'; 'g2'; 'g3'; 'g4'}; TS.bTS = [3 2; 1 4; -Inf -Inf;
 %         2 1]; TS.mTS = [0.5; 0.7; -Inf; -0.2]; TS.wTS = [1 1; -2 0.5; -Inf -Inf; 0 1];
 %         TS.rTS = [2 -1; 1 3; -Inf -Inf; -0.5 0.5]; gi = table(genes, {'A'; 'B'; 'C'; 'D'},

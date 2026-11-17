@@ -2,9 +2,14 @@
 %
 % Purpose:
 %     - COBRArrowSolver holds the name of a solver and a key-value map of its parameters for the
-%       COBRArrow client. The test checks the constructor, setName, setParameter (add and
-%       update), removeParameter, clearParameters and the text that showParameters prints
-%       (captured with diary into a tempname folder).
+%       COBRArrow client. Once the wrong-result defect below is fixed, the test should check the
+%       constructor (name as given, empty map), setName, setParameter (add and update),
+%       removeParameter, clearParameters, the text that showParameters prints (captured with
+%       diary into a tempname folder), and that a copy of an object (o2 = o1, or an object passed
+%       to a function) changed with setParameter, removeParameter or clearParameters leaves the
+%       original unchanged.
+%       Quarantined: no behaviour of COBRArrowSolver is asserted until the wrong-result defect
+%       below is fixed; this file only opens the test.
 %
 % Function under test:
 %     src/base/cobrarrow/COBRArrowSolver.m
@@ -13,21 +18,26 @@
 %     Tier 1 - no model, no solver (only the configuration object), hand-built inputs.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     every line - COBRArrowSolver is quarantined for the defect below (feature
+%     20261113-142115-test-backfill-tiers)
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: Copies of a solver object share one parameter map
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: o1 = COBRArrowSolver('GLPK'); o2 = o1; o2 = o2.setParameter('k', 1); o1.parameters.keys
-%       OBSERVED: (R2025a, 2026-11-15) {'k'}: COBRArrowSolver is a value class, but its parameters
-%         property is a containers.Map, which is a handle, so setParameter and removeParameter on
-%         a copy change the original too (clearParameters gives the copy a new map)
-%       EXPECTED: o1 keeps no parameters, as for a value object whose methods return the updated
-%         instance
+%         (likewise removeParameter on a copy, or any of them on an object passed to a function)
+%       OBSERVED: (R2025a, 2026-11-17) o1.parameters.keys is {'k'} after o2.setParameter; after
+%         o1 = o1.setParameter('m', 2); o3 = o1; o3 = o3.removeParameter('m') o1 has lost 'm';
+%         f = @(s) s.setParameter('fromFunction', 3); f(o1) adds 'fromFunction' to o1. COBRArrowSolver
+%         is a value class, but its parameters property is a containers.Map, which is a handle
+%         (only clearParameters gives the copy a new map)
+%       EXPECTED: the original keeps its parameters: a value object whose methods return the
+%         updated instance changes only the object the caller assigns the result to
 %       LINES: 36, 60, 72
 %
 % Authors:
-%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15; quarantined
+%       after independent review, 2026-11-17.
 
 % save the current path
 currentDir = pwd;
@@ -40,48 +50,6 @@ cd(fileDir);
 % or particular operating system, so none is listed; the call is the standard opening
 % of a COBRA test and the place where a requirement would be added later
 prepareTest();
-
-%% constructor: the name as given and an empty parameter map
-
-solver = COBRArrowSolver('GLPK');
-assert(isa(solver, 'COBRArrowSolver'));
-assert(strcmp(solver.name, 'GLPK'));
-assert(isa(solver.parameters, 'containers.Map') && solver.parameters.Count == 0);
-
-%% setName replaces the name
-
-solver = solver.setName('gurobi');
-assert(strcmp(solver.name, 'gurobi'));
-
-%% setParameter adds a key and updates an existing key
-
-solver = solver.setParameter('maxIterations', 1000);
-solver = solver.setParameter('method', 'dual');
-assert(solver.parameters.Count == 2);
-assert(isequal(solver.parameters('maxIterations'), 1000));
-solver = solver.setParameter('maxIterations', 500);
-assert(solver.parameters.Count == 2 && isequal(solver.parameters('maxIterations'), 500));
-assert(strcmp(solver.parameters('method'), 'dual'));
-
-%% showParameters prints the name and one line per parameter (keys in sorted order)
-
-tempFolder = tempname;
-mkdir(tempFolder);
-diaryFile = fullfile(tempFolder, 'showParameters.txt');
-diary(diaryFile);
-solver.showParameters();
-diary('off');
-printedLines = strtrim(splitlines(strtrim(fileread(diaryFile))));
-assert(isequal(printedLines, {'Parameters for solver: gurobi'; 'maxIterations: 500'; 'method: dual'}));
-rmdir(tempFolder, 's');
-
-%% removeParameter removes one key, clearParameters all of them
-
-solver = solver.removeParameter('method');
-assert(isequal(solver.parameters.keys, {'maxIterations'}));
-solver = solver.clearParameters();
-assert(isa(solver.parameters, 'containers.Map') && solver.parameters.Count == 0);
-assert(strcmp(solver.name, 'gurobi'));
 
 % change the directory
 cd(currentDir)

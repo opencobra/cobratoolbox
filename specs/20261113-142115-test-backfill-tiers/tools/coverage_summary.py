@@ -6,7 +6,7 @@ usage: coverage_summary.py <repo root> <feature dir>
 Before: the 557 tested files from the final runs of feature 20261104-115314-test-coverage-100
 (covered = lines hit by the file's own test), and the 1085 untested files with 0 covered lines
 (their executable-line counts from inventory/coverage/baseline-untested.jsonl). After: the same,
-with each file tested in this feature replaced by its latest record in inventory/coverage/
+with each file tested in this feature replaced by its latest record in inventory/coverage/ (review*.jsonl last)
 wave*.jsonl or tier*.jsonl. Writes inventory/coverage-before.tsv (once) and
 inventory/coverage-summary.md.
 
@@ -64,7 +64,8 @@ if not os.path.exists(before_file):
 
 after = dict(before)
 runs = sorted(glob.glob(os.path.join(INV, 'coverage', 'wave*.jsonl'))) + \
-    sorted(glob.glob(os.path.join(INV, 'coverage', 'tier*.jsonl')))
+    sorted(glob.glob(os.path.join(INV, 'coverage', 'tier*.jsonl'))) + \
+    sorted(glob.glob(os.path.join(INV, 'coverage', 'review*.jsonl')))  # T021 re-runs come last
 for rec in records(runs):
     if rec.get('status') == 'passed' and rec.get('lines') is not None:
         after[rec['source']] = counts(rec)

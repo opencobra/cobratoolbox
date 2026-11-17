@@ -28,7 +28,7 @@
 %       EXPECTED: param.inequality defaults to 0 (OPTIONAL INPUT param) and the file is read
 %       LINES: 33-35, 43
 %     - DEFECT: a row with rational coefficients is lost
-%       SEVERITY: wrong-result
+%       SEVERITY: error
 %       TRIGGER: v2.ext holding "v2 / V-representation / begin / 3 3 rational / 1 0 0 /
 %         1 1/2 0 / 0 0 1 / end", then lrsReadRay('v2', struct('inequality', 0))
 %       OBSERVED: "Index exceeds array bounds." at line 159 (R2025a, 2026-11-16): the branch

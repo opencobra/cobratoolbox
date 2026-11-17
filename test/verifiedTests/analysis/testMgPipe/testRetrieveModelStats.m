@@ -22,7 +22,7 @@
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: The size plot is never produced without a stratification file
-%       SEVERITY: unusable-option
+%       SEVERITY: wrong-result
 %       TRIGGER: retrieveModelStats(modelPath, modelList, abunFilePath, 1, '-dpng') with
 %         three models microbiota_model_samp_S1..S3 of 2, 3 and 4 reactions (and
 %         metabolites) and an abundance table with the columns S1, S2, S3

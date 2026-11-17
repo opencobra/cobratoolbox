@@ -5,23 +5,29 @@
 %       string, a missing InChI key and a missing SMILES with Open Babel
 %       (convertInchiString2format), logs each addition in IDsAdded and finally runs
 %       cleanUpMetabolite_structure on the whole structure.
-%     - Open Babel cannot run here, so the test checks the paths that need no conversion: a
-%       metabolite whose InChI key and SMILES are both present, and metabolites without an InChI
-%       string (NaN or empty), with and without a VMHId field. Nothing is converted, IDsAdded
-%       stays an empty text and the structure comes back cleaned (spaces removed from the KEGG
-%       id, text PubChem id and charge made numeric, as cleanUpMetabolite_structure documents);
-%       expected values are derived by hand from that documentation.
+%     - Open Babel cannot run from MATLAB here, so the test stands in for it with an executable
+%       named obabel that the test writes into a tempname folder put first on PATH (restored at
+%       the end). For an InChI string containing 'garbage' it prints Open Babel's error text
+%       ("*** Open Babel Error  in InChI code"); otherwise it prints the InChI key or the SMILES
+%       of L-alanine (QNAYBMKLOCPYGJ-REOHCLBHSA-N, C[C@@H](C(=O)O)N followed by a tab, the form
+%       Open Babel writes). The expected values are therefore the stand-in's outputs, which the
+%       function must store unchanged; the SMILES is compared after strtrim because the
+%       trailing tab comes from convertInchiString2format, not from the function under test.
+%     - The paths without conversion are checked as well: a metabolite whose InChI key and
+%       SMILES are both present, and metabolites without an InChI string (NaN or empty), with
+%       and without a VMHId field. The structure comes back cleaned (spaces removed from the
+%       KEGG id, text PubChem id and charge made numeric, as cleanUpMetabolite_structure
+%       documents); expected values are derived by hand from that documentation.
 %
 % Function under test:
 %     src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m
 %
 % Tier (Constitution III-Coverage):
-%     Tier 1 - no model, no solver, a hand-built metabolite structure.
+%     Tier 1 - no model, no solver, a hand-built metabolite structure; Open Babel is replaced by
+%     a test double (needs a Unix shell).
 %
 % Coverage exemptions:
-%     Lines 44-52, 56-64: the conversion of a missing InChI key or SMILES calls Open Babel
-%     (obabel) through convertInchiString2format, which cannot run from MATLAB on the
-%     reference machine (counted as not installed).
+%     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: The metabolite counter is printed for every metabolite
@@ -33,7 +39,8 @@
 %       LINES: 40
 %
 % Authors:
-%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15; conversion
+%       paths added after independent review, 2026-11-17.
 
 % save the current path
 currentDir = pwd;
@@ -42,10 +49,8 @@ currentDir = pwd;
 fileDir = fileparts(which('testGenerateInchiKeysSmilesFromInchiStrings'));
 cd(fileDir);
 
-% declare the requirements of this test. A Tier 1 test needs no solver, MATLAB toolbox
-% or particular operating system, so none is listed; the call is the standard opening
-% of a COBRA test and the place where a requirement would be added later
-prepareTest();
+% needs a POSIX shell for the stand-in obabel
+prepareTest('needsUnix', true);
 
 % a metabolite holds the fields that cleanUpMetabolite_structure reads (keggId, cheBIId,
 % inchiString, pubChemId, charge) and the InChI key and SMILES fields
@@ -85,6 +90,85 @@ assert(isequal(annotated.VMH_h2o.pubChemId, 962) && isequal(annotated.VMH_h2o.ch
 assert(strcmp(annotated.VMH_glc__D.keggId, 'C00031') && isequal(annotated.VMH_glc__D.pubChemId, 5793));
 % no metabolite is added or removed
 assert(isequal(fieldnames(annotated), fieldnames(metabolites)));
+
+%% conversion with a stand-in Open Babel
+
+% the stand-in obabel: Open Babel's error text for an InChI containing 'garbage', otherwise
+% the InChI key or SMILES of L-alanine with the "1 molecule converted" line on stderr
+origPath = getenv('PATH');
+sandboxDir = tempname;
+fakeBin = [sandboxDir, filesep, 'bin'];
+mkdir(fakeBin);
+fakeObabel = [fakeBin, filesep, 'obabel'];
+stubLines = {'#!/bin/sh', ...
+    'case "$*" in', ...
+    '  *garbage*) printf ''==============================\n*** Open Babel Error  in InChI code\n  Reading InChI failed\n'' >&2', ...
+    '    echo "0 molecules converted" >&2; exit 1 ;;', ...
+    'esac', ...
+    'case "$*" in', ...
+    '  *"-o inchikey"*) echo "QNAYBMKLOCPYGJ-REOHCLBHSA-N" ;;', ...
+    '  *"-o smiles"*) printf ''C[C@@H](C(=O)O)N\t\n'' ;;', ...
+    'esac', ...
+    'echo "1 molecule converted" >&2'};
+fid = fopen(fakeObabel, 'w');
+fprintf(fid, '%s\n', stubLines{:});
+fclose(fid);
+system(['chmod +x ', fakeObabel]);
+
+alanineInchi = 'InChI=1S/C3H7NO2/c1-2(4)3(5)6/h2H,4H2,1H3,(H,5,6)/t2-/m0/s1';
+alanineKey = 'QNAYBMKLOCPYGJ-REOHCLBHSA-N';
+alanineSmiles = 'C[C@@H](C(=O)O)N';
+sourcePrefix = 'InchiString (metabolite_structure, obabel):automatic:not verified:';
+
+converting = struct();
+% key and SMILES missing (NaN): both are converted and logged, key first
+converting.VMH_ala__L = newMetabolite(alanineInchi, NaN, NaN, 'C00041', NaN, 0);
+% key present, SMILES empty: only the SMILES is converted
+converting.VMH_alaKey = newMetabolite(alanineInchi, alanineKey, '', NaN, NaN, 0);
+% SMILES present, key empty: only the key is converted, the SMILES is kept
+converting.VMH_alaSmiles = newMetabolite(alanineInchi, '', 'CC(N)C(O)=O', NaN, NaN, 0);
+% Open Babel reports an error: nothing is stored or logged
+converting.VMH_bad = newMetabolite('InChI=1S/garbage', '', NaN, NaN, NaN, 0);
+
+try
+    setenv('PATH', [fakeBin, pathsep, origPath]);
+    % nothing below may reach the real Open Babel
+    [~, obabelPath] = system('which obabel');
+    assert(strcmp(strtrim(obabelPath), fakeObabel));
+
+    [converted, IDsAdded] = generateInchiKeysSmilesFromInchiStrings(converting);
+catch ME
+    % restore the system path and remove the sandbox before reporting the failure
+    setenv('PATH', origPath);
+    rmdir(sandboxDir, 's');
+    rethrow(ME);
+end
+setenv('PATH', origPath);
+rmdir(sandboxDir, 's');
+
+% the log: one row per added identifier, in metabolite order and key before SMILES
+assert(iscell(IDsAdded) && isequal(size(IDsAdded), [4, 3]));
+assert(isequal(IDsAdded(:, 1:2), {'VMH_ala__L', 'inchiKey'; 'VMH_ala__L', 'smiles'; ...
+    'VMH_alaKey', 'smiles'; 'VMH_alaSmiles', 'inchiKey'}));
+assert(isequal(IDsAdded([1, 4], 3), {alanineKey; alanineKey}));
+assert(isequal(strtrim(IDsAdded([2, 3], 3)), {alanineSmiles; alanineSmiles}));
+
+% the structure: converted identifiers stored with their source, present ones kept
+assert(strcmp(converted.VMH_ala__L.inchiKey, alanineKey));
+assert(strcmp(strtrim(converted.VMH_ala__L.smile), alanineSmiles));
+assert(startsWith(converted.VMH_ala__L.inchiKey_source, sourcePrefix));
+assert(startsWith(converted.VMH_ala__L.smile_source, sourcePrefix));
+assert(strcmp(converted.VMH_alaKey.inchiKey, alanineKey) && ~isfield(converted.VMH_alaKey, 'inchiKey_source'));
+assert(strcmp(strtrim(converted.VMH_alaKey.smile), alanineSmiles));
+assert(startsWith(converted.VMH_alaKey.smile_source, sourcePrefix));
+assert(strcmp(converted.VMH_alaSmiles.inchiKey, alanineKey));
+assert(strcmp(converted.VMH_alaSmiles.smile, 'CC(N)C(O)=O') && ~isfield(converted.VMH_alaSmiles, 'smile_source'));
+% the failed conversions leave the missing key and SMILES as they were
+assert(isempty(converted.VMH_bad.inchiKey) && isnan(converted.VMH_bad.smile));
+assert(~isfield(converted.VMH_bad, 'inchiKey_source') && ~isfield(converted.VMH_bad, 'smile_source'));
+% cleanUpMetabolite_structure ran here too: the KEGG id is kept, no metabolite added or removed
+assert(strcmp(converted.VMH_ala__L.keggId, 'C00041'));
+assert(isequal(fieldnames(converted), fieldnames(converting)));
 
 % change the directory
 cd(currentDir)

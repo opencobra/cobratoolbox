@@ -35,7 +35,7 @@
 %       EXPECTED: R.rxnID = {''; 'r2'; 'ex_a'} (IDs{IDIndexes(iRxn)})
 %       LINES: 161, 188
 %     - DEFECT: rules and rxnGeneMat are never built
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: any Tmodel whose model has genes, for example T above without the change of
 %         rxnID
 %       OBSERVED: R has genes but neither rules nor rxnGeneMat: line 219 tests sum of the

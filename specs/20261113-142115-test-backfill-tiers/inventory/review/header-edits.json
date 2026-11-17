@@ -1,0 +1,130 @@
+[
+ {
+  "test": "test/verifiedTests/analysis/testExploration/testPrintFluxBounds.m",
+  "file": "src/analysis/exploration/printFluxBounds.m",
+  "title": "The fixed-point format is never used together with reaction names",
+  "from": "cosmetic",
+  "action": "remove the entry (not a defect)",
+  "reviewer_why": "Line 37's '& 0' deliberately disables the fixed-point branch; the header documents no print format, so the exponential output contradicts no documentation or result. At most a style or cleanup note, and it does not quarantine either way."
+ },
+ {
+  "test": "test/verifiedTests/analysis/testMgPipe/testRetrieveModelStats.m",
+  "file": "src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/retrieveModelStats.m",
+  "title": "The size plot is never produced without a stratification file",
+  "from": "unusable-option",
+  "action": "change severity to wrong-result",
+  "reviewer_why": "The behaviour is real: '~numel(...)==1' at line 108 parses as (~numel)==1, which is false for nonempty data, so lines 109-117 never run. But no option is involved: the plot is the default behaviour for nargin<6, and code that is never reached falls under wrong-result (evident intent, comment at line 107), not unusable-option. It still quarantines."
+ },
+ {
+  "test": "test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m",
+  "file": "src/analysis/rMTA/rMTAsaveInExcel.m",
+  "title": "The sheets written with xlswrite need Microsoft Excel",
+  "from": "limitation",
+  "action": "change severity to unusable-option",
+  "reviewer_why": "Lines 98-103, 116-117, 133-134 and 199 use xlswrite, which without Excel falls back to CSV (numeric only); the documented options RankingGeneID and differ_genes therefore misplace output or fail (SUMMARY, line 199) on every non-Windows platform, and the header states no Excel requirement, so by the rule a documented option fails when used (same platform reasoning as ACHRSamplerParallelGeneral's Linux defect). Does not change the quarantine."
+ },
+ {
+  "test": "test/verifiedTests/analysis/testSampling/testCompareSampleTraj.m",
+  "file": "src/analysis/sampling/compareSampleTraj.m",
+  "title": "The fallback to the reversed reaction <name>_r never runs",
+  "from": "limitation",
+  "action": "change severity to wrong-result",
+  "reviewer_why": "findRxnIDs returns 0 (ismember) for an absent name, so isempty at lines 40 and 55 is never true and line 46 indexes with 0. For a model that holds only <name>_r (an irreversible-split model), the call with <name> is the case lines 41 and 56-57 are written for; handling code that is never reached on that input is wrong-result by the rule. The given trigger ('r1_' with no 'r1__r') does not exercise that case. Does not change the quarantine."
+ },
+ {
+  "test": "test/verifiedTests/analysis/testThermo/testWebCGMtoTabDelimitedFile.m",
+  "file": "src/analysis/thermo/groupContribution/jankowski/webCGMtoTabDelimitedFile.m",
+  "title": "The output file is named gc_data_webGCM.txt, not gc_data_webCGM.txt as documented",
+  "from": "wrong-result",
+  "action": "change severity to cosmetic",
+  "reviewer_why": "Line 44 writes gc_data_webGCM.txt while OUTPUT (line 25) says gc_data_webCGM.txt; the data are written, and other code (dGfzeroGroupContToBiochemical.m line 104) refers to gc_data_webGCM.txt, so the documentation is what misnames the file. Does not change the quarantine."
+ },
+ {
+  "test": "test/verifiedTests/analysis/testTopology/testPlotFRresults.m",
+  "file": "src/analysis/topology/FR/plotFRresults.m",
+  "title": "The optional input modelMetaData cannot be omitted",
+  "from": "limitation",
+  "action": "change severity to error",
+  "reviewer_why": "modelMetaData is listed under OPTIONAL INPUTS (line 18) but line 43 uses it without a default, so any call omitting it errors; omitting a documented optional input is a documented call that fails, i.e. error, not limitation."
+ },
+ {
+  "test": "test/verifiedTests/analysis/testLrsInterface/testLrsReadRay.m",
+  "file": "src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadRay.m",
+  "title": "a row with rational coefficients is lost",
+  "from": "wrong-result",
+  "action": "change severity to error",
+  "reviewer_why": "The '/' branch (lines 123-136) never stores the row, which therefore becomes an all-zero ray; line 157 removes it and line 159 indexes R with a sort permutation of the original length, so any rational row ends in an index error rather than a wrong value - a documented lrs input (rationals) that fails."
+ },
+ {
+  "test": "test/verifiedTests/base/testIO/testWriteLPProblem.m",
+  "file": "src/base/io/writeLPProblem.m",
+  "title": "vartype is dropped from the default output",
+  "from": "wrong-result",
+  "action": "change severity to cosmetic",
+  "reviewer_why": "Real: line 206 (default writeMatrix=true, default solverParams) calls BuildMPS without the 'Integer'/'Binary' lists built at 186-187. But the writeMatrix help (lines 32-33) documents that the default writes 'only the Matrix, not the full problem', and writeMatrix=false (line 209) does pass vartype, so the caller gets what writeMatrix documents; only the .vartype text is imprecise."
+ },
+ {
+  "test": "test/verifiedTests/design/testTrimGdel/testReadGeneRules.m",
+  "file": "src/design/TrimGdel/readGeneRules.m",
+  "title": "A model without any gene rule stops with an error",
+  "from": "limitation",
+  "action": "change severity to error",
+  "reviewer_why": "An all-empty grRules leaves term2 (and term) undefined at line 115. The doc allows any n x 1 grRules cell and nothing forbids all-empty, so by the rule this is a documented input that fails. It does not change the quarantine."
+ },
+ {
+  "test": "test/verifiedTests/reconstruction/testModelBorgifier/testFindMetMatch.m",
+  "file": "src/reconstruction/comparison/modelBorgifier/findMetMatch.m",
+  "title": "A SEED identifier given as a cell stops the function",
+  "from": "error",
+  "action": "change severity to limitation",
+  "reviewer_why": "A nested-cell SEED id is not a documented or produced format: verifyModelBorg builds metSEEDID as a cell of char (its line 272), and nothing defines cell-valued entries. The iscell handling at lines 145-147 covers KEGG only, so the SEED failure is an undocumented input."
+ },
+ {
+  "test": "test/verifiedTests/reconstruction/testModelBorgifier/testReadCbTmodel.m",
+  "file": "src/reconstruction/comparison/modelBorgifier/readCbTmodel.m",
+  "title": "rules and rxnGeneMat are never built",
+  "from": "limitation",
+  "action": "change severity to wrong-result",
+  "reviewer_why": "rxnGeneMat is created all-zero at line 216 and line 219 tests its sum, so lines 220-242 (rules/rxnGeneMat construction, with the comment 'only make the rules if there are grRules') can never run. That is handling code never reached on a valid input, which the rule classes as wrong-result, not limitation. It does not change the quarantine."
+ },
+ {
+  "test": "test/verifiedTests/reconstruction/testDemeter/testRankFeaturesByIncidence.m",
+  "file": "src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m",
+  "title": "metabolite and uptake/secretion features are looked up in the reaction database",
+  "from": "cosmetic",
+  "action": "change severity to wrong-result",
+  "reviewer_why": "This changes the written table: Description/Formula/Subsystem stay empty for every metabolite-presence and uptake/secretion feature (i=2,3 go through the reaction lookup at lines 51-56). The i==4 branch (line 69) shows that metabolite features are meant to be looked up in database.metabolites. It is not a documentation-only problem; mild, and it does not change the quarantine."
+ },
+ {
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m",
+  "file": "src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m",
+  "title": "The missing-formula warning tests the whole formula list",
+  "from": "cosmetic",
+  "action": "change severity to error",
+  "reviewer_why": "Line 108 strcmp(model.metFormulas,'') is a vector, so with some (not all) empty formulas line 115 calls numAtomsOfElementInFormula('', 'H'), which indexes formula(1) at its line 38 and errors; the unreached handling at lines 109-113 shows partial missing formulas are an intended input, so the caller gets an error, not just a missing warning."
+ },
+ {
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m",
+  "file": "src/visualization/metabolicCartography/addFluxFBA.m",
+  "title": "A flux vector of zeros gives NaN widths",
+  "from": "limitation",
+  "action": "change severity to wrong-result",
+  "reviewer_why": "An all-zero fbaSolution.v is a valid documented input (n x 1 flux vector); line 62 divides by max = 0, giving NaN widths, while lines 70 and 82 show the intent that non-carrying reactions get width 1. Not an undocumented input, so not a limitation."
+ },
+ {
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m",
+  "file": "src/visualization/metabolicCartography/addFluxFBA.m",
+  "title": "A flux of exactly 1e-3 of the largest flux keeps width 0.001",
+  "from": "cosmetic",
+  "action": "change severity to wrong-result",
+  "reviewer_why": "Lines 69-70 use > 1e-3 and < 1e-3, so a ratio of exactly 1e-3 keeps the raw ratio as its width; the caller receives a width outside the band set, which changes the result, not just documentation (minor boundary case)."
+ },
+ {
+  "test": "test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m",
+  "file": "src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m",
+  "title": "(new entry)",
+  "from": "",
+  "action": "add a wrong-result entry: the local objective pdcoObj (line 74) returns alpha*x'*(log(x)-x) = alpha*sum(x.*log(x) - x.^2), while its gradient (line 75) alpha*log(x) and Hessian (line 76) belong to alpha*sum(x.*log(x) - x); objective and derivatives disagree. Keep the existing entries.",
+  "reviewer_why": "independent review T021 (quarantine-6)"
+ }
+]

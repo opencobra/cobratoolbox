@@ -1,0 +1,296 @@
+% The COBRAToolbox: testMakeModelPropertiesTable.m
+%
+% Purpose:
+%     - makeModelPropertiesTable turns the results of checkModelProperties (a structure array,
+%       one element per model, the checked model in field .model) into a table with one row
+%       per property and one column per model: column 1 holds the row headings, each model
+%       column holds species, modelID, file name, PMID or DOI (from modelMetaData, or the
+%       modelID and empty text without it) followed by counts of the Boolean property
+%       vectors. With modelMetaData the model columns follow the order of its rows; an empty
+%       modelResults is loaded from resultsDirectory/resultsFileName; a tableFilename writes
+%       the table to a tab-delimited file.
+%     - The input is a hand-built results structure with every field checkModelProperties
+%       (and findStoichConsistentSubset, which it calls with massBalanceCheck = 1) sets on a
+%       model of 4 metabolites and 5 reactions. Every expected count is worked out by hand
+%       from those Boolean vectors in the comments below (no value is taken from a run).
+%
+% Function under test:
+%     src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 2 - the input is a structure of model results (S and Boolean property vectors); no
+%     solver. Temporary .mat and text files are written to a tempname folder that is removed.
+%
+% Coverage exemptions:
+%     Line 187: reached only by a results model without balancedRxnBool, the skipped input of
+%     the limitation below (III-Defects). Lines 167-171, 252-298, 309-313, 318-340, 378-382,
+%     428-480: unreachable (dead code), inside "if 0" blocks.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A results model without balancedRxnBool stops with an error
+%       SEVERITY: limitation
+%       TRIGGER: modelResults(k).model without the field balancedRxnBool, which is not an
+%         output of checkModelProperties (for example a structure built by hand);
+%         makeModelPropertiesTable(modelResults)
+%       OBSERVED: (R2025a, 2026-11-17) error "Unrecognized field name "balancedRxnBool"." at
+%         line 194, after lines 184-188 found the field absent and wrote NaN. The documented
+%         input, the output of checkModelProperties, always has the field: checkModelProperties
+%         (lines 202-205) calls findStoichConsistentSubset with massBalanceCheck = 1, and every
+%         path of findStoichConsistentSubset lines 181-224 either sets model.balancedRxnBool or
+%         stops with "No model.metFormulas". The input is skipped here
+%       EXPECTED: the row of line 194 is NaN (or skipped) when balancedRxnBool is absent, as
+%         lines 184-188 do for the row before it
+%       LINES: 187, 194
+%     - DEFECT: The progress message of each model column prints nothing
+%       SEVERITY: cosmetic
+%       TRIGGER: any call with at least one model, makeModelPropertiesTable(modelResults)
+%       OBSERVED: (R2025a, 2026-11-17) line 62 calls fprintf('%\n', modelID); the format "%\n"
+%         is not a valid conversion, so nothing is printed (no modelID, no newline)
+%       EXPECTED: the modelID of each model column, one per line ('%s\n')
+%       LINES: 62
+%
+% Authors:
+%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-17.
+
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+fileDir = fileparts(which('testMakeModelPropertiesTable'));
+cd(fileDir);
+
+% declare the requirements of this test. A Tier 2 test needs no solver, MATLAB toolbox
+% or particular operating system, so none is listed; the call is the standard opening
+% of a COBRA test and the place where a requirement would be added later
+prepareTest();
+
+% temporary folder for the saved results and the written table
+tmpDir = tempname;
+mkdir(tmpDir);
+
+% model checked by checkModelProperties: mets A B C D, reactions
+% R1: A -> B, R2: B -> C, R3: C -> D, EX_A: -> A, EX_D: D ->
+% S has rank 4: the columns R1, R2, R3, EX_A are triangular with nonzero pivots
+toy = struct();
+toy.modelID = 'toy';
+toy.mets = {'A'; 'B'; 'C'; 'D'};
+toy.rxns = {'R1'; 'R2'; 'R3'; 'EX_A'; 'EX_D'};
+toy.S = sparse([-1  0  0  1  0;
+                 1 -1  0  0  0;
+                 0  1 -1  0  0;
+                 0  0  1  0 -1]);
+toy.lb = [0; 0; 0; -10; 0];
+toy.ub = [10; 10; 10; 0; 10];
+toy.metFormulas = {'C'; 'C'; 'C'; 'C'};
+% fields of checkModelProperties (OUTPUT list) and findStoichConsistentSubset; the reaction
+% vectors are in the order R1 R2 R3 EX_A EX_D, the metabolite vectors in the order A B C D
+toy.rankS = 4;
+toy.rankFRvanilla = 4;
+toy.rankFRVvanilla = 5;
+toy.maxSij = 1;
+toy.minSij = 1;
+toy.SIntRxnBool = logical([1; 1; 1; 0; 0]);
+toy.SIntRxnBool_findSExRxnInd = toy.SIntRxnBool;
+toy.SIntMetBool = logical([1; 1; 1; 0]);
+toy.SConsistentRxnBool = logical([1; 1; 0; 0; 0]);
+toy.SInConsistentRxnBool = logical([0; 0; 1; 1; 0]);
+toy.unknownSConsistencyRxnBool = logical([0; 0; 0; 0; 1]);
+toy.rxnUnknownInconsistentRemoveBool = logical([0; 0; 0; 0; 1]);
+toy.balancedRxnBool = logical([1; 1; 0; 1; 0]);
+toy.fluxConsistentRxnBool = logical([1; 0; 1; 1; 0]);
+toy.thermoFluxConsistentRxnBool = logical([0; 0; 1; 1; 1]);
+toy.thermoFwdFluxConsistentRxnBool = toy.thermoFluxConsistentRxnBool;
+toy.thermoRevFluxConsistentRxnBool = false(5, 1);
+toy.leakRxnBool = logical([0; 0; 1; 0; 0]);
+toy.siphonRxnBool = logical([0; 1; 1; 0; 0]);
+toy.SConsistentMetBool = logical([1; 1; 0; 0]);
+toy.SInConsistentMetBool = logical([0; 0; 1; 0]);
+toy.unknownSConsistencyMetBool = logical([0; 0; 0; 1]);
+toy.metUnknownInconsistentRemoveBool = logical([0; 0; 0; 1]);
+toy.balancedMetBool = logical([1; 1; 1; 0]);
+toy.Elements = {'C'};
+toy.missingFormulaeBool = false(4, 1);
+toy.fluxConsistentMetBool = logical([1; 0; 1; 1]);
+toy.thermoFluxConsistentMetBool = logical([0; 0; 1; 1]);
+toy.leakMetBool = logical([0; 0; 1; 0]);
+toy.siphonMetBool = logical([0; 0; 1; 1]);
+toy.FRrows = toy.SConsistentMetBool;
+toy.FRVcols = toy.SConsistentRxnBool;
+toy.FRnonZeroRowBool1 = true(4, 1);
+toy.FRnonZeroColBool1 = true(5, 1);
+toy.FRuniqueRowBool = true(4, 1);
+toy.FRuniqueColBool = true(5, 1);
+toy.FRnonZeroRowBool = true(4, 1);
+toy.FRnonZeroColBool = true(5, 1);
+toy.largestConnectedRowsFRBool = true(4, 1);
+toy.largestConnectedColsFRVBool = true(5, 1);
+toy.rankFR = 2;
+toy.rankFRV = 2;
+
+% headings of column 1 and the hand-derived values of the toy column
+toyRows = { ...
+    'Metabolites',                                    '';     ... % species: no metadata
+    'modelID',                                        'toy';  ...
+    'filename',                                       'toy';  ... % modelID without metadata
+    'PMID or DOI',                                    '';     ...
+    'rank [N B]',                                     4;      ... % rankS
+    'Reactions = Cols of [N B]',                      5;      ... % columns of S
+    'Internal reactions = Cols of N',                 3;      ... % SIntRxnBool: R1 R2 R3
+    'Stoichiometrically consistent reactions',        2;      ... % R1 R2
+    'Internal, stoich. inconsistent reactions',       1;      ... % R3 (EX_A is external)
+    'Elementally balanced reactions',                 3;      ... % R1 R2 EX_A
+    'Internal, stoich. inconsistent, elementally balanced reactions', 0; ... % R3 is not balanced
+    'Omitted reactions',                              1;      ... % EX_D
+    'Stoich. and flux consistent reactions',          1;      ... % R1 (R2 not flux consistent)
+    'Stoich. not flux consistent reactions',          1;      ... % 2 - 1
+    'Stoich. and thermo flux consistent reactions',   0;      ... % R1 is not thermo consistent
+    'Stoich. not thermo. flux consistent reactions',  2;      ... % 2 - 0
+    'Reactions exclusive to leaks',                   1;      ... % R3
+    'Reactions exclusive to siphons',                 2;      ... % R2 R3
+    'External reactions = Cols of B',                 2;      ... % EX_A EX_D
+    'External flux consistent reactions',             1;      ... % EX_A
+    'Metabolites = Rows of [N B]',                    4;      ... % rows of S
+    'Stoichiometrically consistent rows',             2;      ... % A B
+    'Stoichiometrically inconsistent rows',           1;      ... % C
+    'Elementally balanced rows',                      3;      ... % A B C
+    'Metabolites not stoich. consistent rows',        2;      ... % 4 - 2
+    'Omitted rows',                                   1;      ... % D
+    'Stoich. and flux consistent rows',               1;      ... % A (B not flux consistent)
+    'Stoich. not flux consistent rows',               1;      ... % 2 - 1
+    'Stoich. and thermo flux consistent rows',        0;      ... % A is not thermo consistent
+    'Stoich. not thermo flux consistent rows',        2;      ... % 2 - 0
+    'Leak metabolites',                               1;      ... % C
+    'Siphon metabolites',                             2;      ... % C D
+    'External metabolites = Rows exclusive to B',     1};         % D
+
+%% one model, no metadata: headings and the hand-derived counts
+
+% counts are integers (nnz, size), so the comparison is exact
+modelResults = struct('model', toy);
+[resultsTable, resultsOut] = makeModelPropertiesTable(modelResults);
+assert(istable(resultsTable));
+assert(isequal(size(resultsTable), [33, 2]));
+assert(isequal(table2cell(resultsTable), toyRows));
+% the results are returned unchanged
+assert(isequal(resultsOut, modelResults));
+
+%% empty metadata is the same as no metadata; the table is written to a tab-delimited file
+
+tableFile = fullfile(tmpDir, 'toyTable.txt');
+[resultsTable, resultsOut] = makeModelPropertiesTable(modelResults, {}, [], [], tableFile);
+assert(isequal(table2cell(resultsTable), toyRows));
+assert(isequal(resultsOut, modelResults));
+% the file holds the variable names and then the 33 rows of the table, tab separated
+fileLines = strsplit(strtrim(fileread(tableFile)), newline);
+fileLines = regexprep(fileLines, '\r$', '');
+assert(numel(fileLines) == 34);
+assert(strcmp(fileLines{1}, sprintf('modelResultsTable1\tmodelResultsTable2')));
+assert(strcmp(fileLines{3}, sprintf('modelID\ttoy')));
+assert(strcmp(fileLines{6}, sprintf('rank [N B]\t4')));
+assert(strcmp(fileLines{34}, sprintf('External metabolites = Rows exclusive to B\t1')));
+
+%% a model without balancedMetBool gets NaN in the row of elementally balanced rows
+
+% the other rows are unchanged
+noMetBalance = rmfield(toy, 'balancedMetBool');
+resultsTable = makeModelPropertiesTable(struct('model', noMetBalance));
+expectedRows = toyRows;
+expectedRows{24, 2} = NaN;
+tableCells = table2cell(resultsTable);
+assert(isnan(tableCells{24, 2}));
+tableCells{24, 2} = 0;
+expectedRows{24, 2} = 0;
+assert(isequal(tableCells, expectedRows));
+
+%% metadata: columns follow the rows of modelMetaData, three modelIDs are renamed
+
+% results in the order Recon3D, humanGEM1, humanGEM1p10; the function renames these modelIDs
+% to Recon3.01, Human1.0 and Human1.10 before looking them up in column 2 of modelMetaData
+recon = toy;
+recon.modelID = 'Recon3D';
+humanOne = toy;
+humanOne.modelID = 'humanGEM1';
+humanOneTen = toy;
+humanOneTen.modelID = 'humanGEM1p10';
+% humanOneTen has one reaction fewer in the internal set, to tell its column apart
+humanOneTen.SIntRxnBool = logical([1; 1; 0; 0; 0]);
+modelResults = struct('model', {recon, humanOne, humanOneTen});
+% rows: species, modelID, fileName, PMID, doi; Human1.10 has no PMID, so its DOI is used
+modelMetaData = {'Homo sapiens', 'Human1.10', 'Human-GEM-1.10.mat', '', 'doi:10.1/h110'; ...
+                 'Homo sapiens', 'Human1.0', 'Human-GEM-1.0.mat', '111', ''; ...
+                 'Homo sapiens', 'Recon3.01', 'Recon3D_301.mat', '222', ''};
+[resultsTable, resultsOut] = makeModelPropertiesTable(modelResults, modelMetaData);
+tableCells = table2cell(resultsTable);
+assert(isequal(size(tableCells), [33, 4]));
+assert(isequal(tableCells(:, 1), toyRows(:, 1)));
+% column n + 1 for metadata row n: Human1.10 -> 2, Human1.0 -> 3, Recon3.01 -> 4
+assert(isequal(tableCells(1:4, 2), {'Homo sapiens'; 'Human1.10'; 'Human-GEM-1.10.mat'; 'doi:10.1/h110'}));
+assert(isequal(tableCells(1:4, 3), {'Homo sapiens'; 'Human1.0'; 'Human-GEM-1.0.mat'; '111'}));
+assert(isequal(tableCells(1:4, 4), {'Homo sapiens'; 'Recon3.01'; 'Recon3D_301.mat'; '222'}));
+% the counts of Human1.0 and Recon3.01 are those of the toy model
+assert(isequal(tableCells(5:end, 3), toyRows(5:end, 2)));
+assert(isequal(tableCells(5:end, 4), toyRows(5:end, 2)));
+% Human1.10: internal reactions R1 R2 (2), internal inconsistent 0 (R3 is now external),
+% external reactions R3 EX_A EX_D (3), external flux consistent R3 EX_A (2)
+humanOneTenRows = toyRows(:, 2);
+humanOneTenRows{7} = 2;
+humanOneTenRows{9} = 0;
+humanOneTenRows{19} = 3;
+humanOneTenRows{20} = 2;
+assert(isequal(tableCells(5:end, 2), humanOneTenRows(5:end)));
+% the returned results carry the renamed modelIDs
+assert(isequal(arrayfun(@(r) r.model.modelID, resultsOut, 'UniformOutput', false), ...
+    {'Recon3.01', 'Human1.0', 'Human1.10'}));
+
+%% a model missing from the metadata stops with the documented error
+
+assert(verifyCobraFunctionError('makeModelPropertiesTable', ...
+    'inputs', {struct('model', toy), modelMetaData}, ...
+    'testMessage', 'no metadata found for for model: toy'));
+
+%% empty modelResults: the results are loaded from resultsDirectory and resultsFileName
+
+% the saved results have no modelID; the function takes it from modelFilename without '.mat'
+saved = rmfield(toy, 'modelID');
+saved.modelFilename = 'toy.mat';
+modelResults = struct('model', saved);
+save(fullfile(tmpDir, 'myResults.mat'), 'modelResults');
+% resultsDirectory is concatenated with the file name, so it ends with a separator
+resultsTable = makeModelPropertiesTable([], [], [tmpDir filesep], 'myResults');
+assert(isequal(table2cell(resultsTable), toyRows));
+% the function changes to resultsDirectory (line 36); return to the test folder
+cd(fileDir);
+
+% without resultsFileName the file name is 'FRresults'
+save(fullfile(tmpDir, 'FRresults.mat'), 'modelResults');
+[resultsTable, resultsOut] = makeModelPropertiesTable([], [], [tmpDir filesep]);
+assert(isequal(table2cell(resultsTable), toyRows));
+assert(strcmp(resultsOut.model.modelID, 'toy'));
+cd(fileDir);
+
+%% empty modelResults and no directory: the default directory ~/results/modelResults/
+
+% HOME points to a temporary folder for this call (as in testConfigEnvVars), so that '~' is
+% that folder; the function creates the default directory (MATLAB warns that it exists,
+% because the results file was saved there first) and loads FRresults from it
+savedHome = getenv('HOME');
+fakeHome = fullfile(tmpDir, 'home');
+mkdir(fullfile(fakeHome, 'results', 'modelResults'));
+save(fullfile(fakeHome, 'results', 'modelResults', 'FRresults.mat'), 'modelResults');
+setenv('HOME', fakeHome);
+try
+    resultsTable = makeModelPropertiesTable([]);
+catch loadError
+    setenv('HOME', savedHome);
+    cd(fileDir);
+    rethrow(loadError);
+end
+setenv('HOME', savedHome);
+cd(fileDir);
+assert(isequal(table2cell(resultsTable), toyRows));
+
+% remove the temporary folder
+rmdir(tmpDir, 's');
+
+% change the directory
+cd(currentDir)

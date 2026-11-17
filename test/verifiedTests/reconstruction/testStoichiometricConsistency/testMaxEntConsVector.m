@@ -38,6 +38,16 @@
 %         distribution of x are printed although printLevel = 0
 %       EXPECTED: no output for printLevel = 0 (options.Print = printLevel - 1 is commented out)
 %       LINES: 34
+%     - DEFECT: The objective passed to pdco does not match its gradient and Hessian
+%       SEVERITY: wrong-result
+%       TRIGGER: any call, e.g. maxEntConsVector(sparse([-1; 1]), 0)
+%       OBSERVED: by reading (independent review T021, 2026-11-17): pdcoObj returns
+%         obj = alpha*x'*(log(x) - x) = alpha*sum(x.*log(x) - x.^2) (line 74), while the
+%         gradient alpha*log(x) (line 75) and Hessian alpha./x (line 76) are those of
+%         alpha*sum(x.*log(x) - x)
+%       EXPECTED: objective, gradient and Hessian of one function, e.g.
+%         obj = alpha*sum(x.*log(x) - x)
+%       LINES: 74-76
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-17.

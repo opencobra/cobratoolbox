@@ -41,7 +41,7 @@
 %         with a rule, as the help text documents
 %       LINES: 48, 93, 103-115
 %     - DEFECT: A model without any gene rule stops with an error
-%       SEVERITY: limitation
+%       SEVERITY: error
 %       TRIGGER: readGeneRules(model) with every model.grRules entry empty
 %       OBSERVED: error "Unrecognized function or variable 'term2'." at line 115
 %       EXPECTED: empty term and zero counts

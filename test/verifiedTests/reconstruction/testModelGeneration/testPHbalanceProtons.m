@@ -40,12 +40,14 @@
 %       comment above line 248 says
 %       LINES: 248
 %     - DEFECT: The missing-formula warning tests the whole formula list
-%       SEVERITY: cosmetic
+%       SEVERITY: error
 %       TRIGGER: a model in which some, but not all, metFormulas are empty
 %       OBSERVED: line 108 strcmp(model.metFormulas, '') returns a vector, so the branch runs only
-%       when every formula is empty (read from the code)
-%       EXPECTED: the formula of metabolite m is tested (model.metFormulas{m})
-%       LINES: 108-113
+%       when every formula is empty; otherwise line 115 calls numAtomsOfElementInFormula('', 'H')
+%       for an empty formula, which errors indexing formula(1) at its line 38 (read from the code)
+%       EXPECTED: the formula of metabolite m is tested (model.metFormulas{m}) and the metabolite
+%       gets NaN with the warning (lines 109-113)
+%       LINES: 108-115
 %     - DEFECT: The report file is never closed
 %       SEVERITY: cosmetic
 %       TRIGGER: printLevel < 0

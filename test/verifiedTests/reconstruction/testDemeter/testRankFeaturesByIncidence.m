@@ -38,7 +38,7 @@
 %         percentage) as the column header and the plot label say
 %       LINES: 59, 75
 %     - DEFECT: metabolite and uptake/secretion features are looked up in the reaction database
-%       SEVERITY: cosmetic
+%       SEVERITY: wrong-result
 %       TRIGGER: rankFeaturesByIncidence(d, 'v') with metabolite IDs (e.g. 'atp') in
 %         MetabolitePresence_v.txt and '<exchange>_uptake'/'<exchange>_secretion' columns (as
 %         computeUptakeSecretion writes them) in UptakeSecretion_v.txt

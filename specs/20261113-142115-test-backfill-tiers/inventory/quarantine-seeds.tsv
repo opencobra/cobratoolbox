@@ -159,3 +159,16 @@ scoreC13Fit	NONE
 # calculateMCS (wave 27): the error needs KO together with a row cell rxn_set of two or more
 # entries; its only caller, buildGmatrix, passes a column rxn_set and no KO.
 calculateMCS	NONE
+# Independent review T021 (2026-11-17), functions quarantined after the review:
+# classifyRxns: the defaults are not implemented; its only caller, rumba.m, always passes all six inputs.
+classifyRxns	NONE
+# directionalityStatsFigures: its only call site (analyseThermoConstrainedModel.m line 98) is inside `if 0`.
+directionalityStatsFigures	NONE
+# openBabelConverter: the defects need an output other than mol saved to a file, a folder as saveFileDir,
+# or the 'rxn' output; metaboliteStructuresTable converts to inchikey/inchi/smiles without saving and
+# obtainMetStructures saves only 'mol' to a file path.
+openBabelConverter	NONE
+# COBRArrowSolver: copies share one parameter map; COBRArrow.optimizeModel never calls setParameter/removeParameter.
+COBRArrowSolver	NONE
+# editCobraToolboxPath: only the default basePath on Windows; driver_createTrainingModel passes no Windows path.
+editCobraToolboxPath	NONE

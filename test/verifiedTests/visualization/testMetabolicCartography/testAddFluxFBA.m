@@ -32,13 +32,13 @@
 %         as the header says
 %       LINES: 88
 %     - DEFECT: A flux vector of zeros gives NaN widths
-%       SEVERITY: limitation
+%       SEVERITY: wrong-result
 %       TRIGGER: the call above with solution.v = [0; 0; 0]
 %       OBSERVED: (R2025a, 2026-11-16) map2.rxnWidth = {NaN; NaN; NaN} (0 / 0 at line 62)
 %       EXPECTED: width 1 for every reaction without flux
 %       LINES: 62
 %     - DEFECT: A flux of exactly 1e-3 of the largest flux keeps width 0.001
-%       SEVERITY: cosmetic
+%       SEVERITY: wrong-result
 %       TRIGGER: the call above with solution.v = [1e-3; 1; 0]
 %       OBSERVED: (R2025a, 2026-11-16) map2.rxnWidth = {1.0000e-03; 8; 1}: the bands of
 %         lines 69-70 are > 1e-3 and < 1e-3, so the ratio 1e-3 itself is in neither

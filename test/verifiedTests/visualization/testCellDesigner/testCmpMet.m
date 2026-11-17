@@ -3,11 +3,16 @@
 % Purpose:
 %     - cmpMet compares the metabolites of a parsed CellDesigner model
 %       (parsed.r_info.species, one row per species, one column per identifier form) with the
-%       metabolites of a COBRA model. A parsed row is 'found' as soon as one of its entries,
-%       trimmed and in lower case, is a substring of a model metabolite ID in lower case
-%       (strfind); otherwise it is listed as not found with its row number. Model metabolites
-%       (in lower case) that match no parsed entry exactly (strcmpi) are listed separately.
-%       Expected values are worked out by hand from the inputs below.
+%       metabolites of a COBRA model: parsed species present and not present in the model, and
+%       model metabolites not present in the parsed model.
+%     - The function is QUARANTINED (Constitution III-Defects, quarantine in back-fill
+%       campaigns): the independent review (T021) showed that a parsed species is reported
+%       present when one of its entries is only a substring of a model metabolite ID, and
+%       that the model metabolites it reports are not the model's IDs (they are lowered), so
+%       this file makes no assertion about the function. The wave 24 version of this test (git
+%       history) pinned the substring rule and avoided upper-case model IDs; a test of the fixed
+%       function must include a substring collision (parsed 'atp', model 'datp[c]') and an
+%       upper-case model ID.
 %
 % Function under test:
 %     src/visualization/cellDesigner/cmpMet.m
@@ -17,11 +22,41 @@
 %     structure; no solver.
 %
 % Coverage exemptions:
-%     Lines 56-57: unreachable. strtrim at line 52 raises "Input should be a string, character
-%     array, or a cell array of character arrays." for any entry that is not text, so the
-%     entry is always text when line 55 tests ~ischar.
+%     every line - cmpMet is quarantined for the defects below (feature
+%     20261113-142115-test-backfill-tiers, independent review T021). Before the quarantine the
+%     test exempted lines 56-57 (unreachable: strtrim at line 52 raises an error for any entry
+%     that is not text).
 %
 % Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A parsed species is reported present when one of its entries is a substring of a model metabolite ID
+%       SEVERITY: wrong-result
+%       TRIGGER: parsed.r_info.species = {'h'; 'atp'}; model.mets = {'h2o[c]'; 'datp[c]'};
+%         model.metNames = {'Water'; 'dATP'}; results = cmpMet(parsed, model)
+%       OBSERVED: (R2025a, 2026-11-17) results.listOfFound holds both rows ({'h', [],
+%         'Present in the Reference mode'; 'atp', [], 'Present in the Reference mode'}) and
+%         results has no field listOfNotFound: line 63 tests strfind(model IDs, entry), so 'h'
+%         matches h2o[c] and 'atp' matches datp[c], although neither species is in the model
+%       EXPECTED: both rows in listOfNotFound ("A list of reactions in the test model that are
+%         NOT present in the reference COBRA model"); an exact, case-insensitive match as in
+%         the second pass of line 99
+%       LINES: 63
+%     - DEFECT: Model metabolites absent from the parsed model are returned in lower case
+%       SEVERITY: wrong-result
+%       TRIGGER: parsed.r_info.species = {'x'}; model.mets = {'A[c]'}; model.metNames = {'A'};
+%         results = cmpMet(parsed, model)
+%       OBSERVED: (R2025a, 2026-11-17) results.list_of_mets_not_present_in_ReferenceModel is
+%         {'a[c]'}: the IDs are lowered at line 42 for the search and returned lowered at line
+%         101, so they no longer equal (or ismember) the IDs of model.mets
+%       EXPECTED: the model's own IDs ({'A[c]'})
+%       LINES: 42, 101
+%     - DEFECT: The help text names the third output field and its content wrongly
+%       SEVERITY: cosmetic
+%       TRIGGER: reading the OUTPUT section of cmpMet
+%       OBSERVED: the field is list_of_mets_not_present_in_ReferenceModel (line 101) and holds
+%         metabolites; the help text calls it list_of_rxns_not_present_in_ReferenceModel and
+%         speaks of reactions in all three fields
+%       EXPECTED: the field name of line 101 and "metabolites"
+%       LINES: 21-26
 %     - DEFECT: Every comparison prints the searched name
 %       SEVERITY: cosmetic
 %       TRIGGER: any call
@@ -29,18 +64,10 @@
 %         every parsed entry compared
 %       EXPECTED: no output, or output gated by a print level
 %       LINES: 53
-%     - DEFECT: Model metabolites absent from the parsed model are returned in lower case
-%       SEVERITY: cosmetic
-%       TRIGGER: a model metabolite ID with capital letters that is not in the parsed model,
-%         for example model.mets = {'A[c]'}
-%       OBSERVED: list_of_mets_not_present_in_ReferenceModel holds 'a[c]' (the IDs are
-%         lowered at line 42 for the search and returned as lowered); the header calls the
-%         output field list_of_rxns_not_present_in_ReferenceModel and speaks of reactions
-%       EXPECTED: the model's own IDs, in a field named as documented
-%       LINES: 42, 101
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Converted to the quarantine layout after the independent review (T021), 2026-11-17.
 
 % save the current path
 currentDir = pwd;
@@ -53,46 +80,6 @@ cd(fileDir);
 % or particular operating system, so none is listed; the call is the standard opening
 % of a COBRA test and the place where a requirement would be added later
 prepareTest();
-
-% a model with three metabolites; IDs in lower case so that the reported IDs are the model's
-% own (the lower-case defect above is skipped)
-model.mets = {'glc_d[c]'; 'atp[c]'; 'h2o[c]'};
-model.metNames = {'Glucose'; 'ATP'; 'Water'};
-
-% three parsed species (alias, ID, name):
-%   row 1: found by its second entry, a substring of glc_d[c]
-%   row 2: found by its first entry, 'ATP[c]' in lower case
-%   row 3: found by no entry
-parsed.r_info.species = {'sa1', 'glc_d', 'Glucose'; 'ATP[c]', 'sa2', 'ATP'; 'sa3', 'foo', 'bar'};
-
-results = cmpMet(parsed, model);
-
-%% found and not found parsed species
-
-% the found rows are copied with the label in column 5 (column 4 stays empty)
-assert(isequal(results.listOfFound, ...
-    {'sa1', 'glc_d', 'Glucose', [], 'Present in the Reference mode'; ...
-     'ATP[c]', 'sa2', 'ATP', [], 'Present in the Reference mode'}));
-% the not found row also gets its row number in parsed.r_info.species in column 6
-assert(isequal(results.listOfNotFound, {'sa3', 'foo', 'bar', [], 'Not Present in the Reference mode', 3}));
-% the parsed list is returned with 'found' in column 5 of the found rows
-assert(isequal(results.main, [parsed.r_info.species, cell(3, 1), {'found'; 'found'; []}]));
-
-%% model metabolites that no parsed entry names exactly
-
-% glc_d[c] is not an exact parsed entry (only the substring glc_d is), atp[c] equals 'ATP[c]'
-% without regard to case, h2o[c] is not in the parsed model
-assert(isequal(results.list_of_mets_not_present_in_ReferenceModel, {'glc_d[c]'; 'h2o[c]'}));
-
-%% everything matches: only the fields that received entries exist
-
-parsedAll.r_info.species = {'atp[c]'};
-modelAll.mets = {'atp[c]'};
-modelAll.metNames = {'ATP'};
-resultsAll = cmpMet(parsedAll, modelAll);
-assert(isequal(sort(fieldnames(resultsAll)), {'listOfFound'; 'main'}));
-assert(isequal(resultsAll.listOfFound, {'atp[c]', [], 'Present in the Reference mode'}));
-assert(isequal(resultsAll.main, {'atp[c]', [], 'found'}));
 
 % change the directory
 cd(currentDir)

@@ -27,14 +27,6 @@
 %         with createModel): rxnNameFlag has no default value
 %       EXPECTED: the bounds printed without reaction names, as with rxnNameFlag false
 %       LINES: 36
-%     - DEFECT: The fixed-point format is never used together with reaction names
-%       SEVERITY: cosmetic
-%       TRIGGER: printFluxBounds(model, rxns, true) where every listed lower bound has an
-%         absolute value above 0.01
-%       OBSERVED: the exponential format %14.3e of lines 43-46 is used (MATLAB R2025a): the
-%         condition of line 37 ends with '& 0', so lines 38-41 never run
-%       EXPECTED: the %14.3f format, as the branch without names uses (lines 49-53)
-%       LINES: 37-41
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.

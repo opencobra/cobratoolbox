@@ -45,7 +45,7 @@
 %         model
 %       LINES: 66-67, 75
 %     - DEFECT: The optional input modelMetaData cannot be omitted
-%       SEVERITY: limitation
+%       SEVERITY: error
 %       TRIGGER: plotFRresults(FRresults) or any call with fewer than seven inputs
 %       OBSERVED: error "Not enough input arguments." at line 43, which passes modelMetaData
 %         to makeFRresultsTable without a default; the defaults of lines 21, 24, 29, 33 and 39

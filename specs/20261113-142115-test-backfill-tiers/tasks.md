@@ -92,7 +92,7 @@ finds a confirmed defect for every QUARANTINED row and a quarantined reach for e
 
 - [ ] T019 [US7] `update_ledger.py --check`: no PENDING row (SC-001); every BLOCKED row reaches a QUARANTINED one; every QUARANTINED row has a confirmed defect (SC-003)
 - [ ] T020 [US7] Regenerate `test/known-defects.md` with `.github/scripts/known_defects.py` (FR-013)
-- [ ] T021 [US7] Independent review (R9): Codex if the account accepts a model, otherwise reviewer agents given only code and tests; at least one TESTED test per source area, every Tier 5 reference, every QUARANTINED entry; findings and resolutions in `$F/review.md`; fixes re-run
+- [X] T021 [US7] Independent review (R9): Codex if the account accepts a model, otherwise reviewer agents given only code and tests; at least one TESTED test per source area, every Tier 5 reference, every QUARANTINED entry; findings and resolutions in `$F/review.md`; fixes re-run
 - [ ] T022 [US7] Coverage after (R10) and `$F/inventory/summary.md` (counts by status × tier, exclusions by reason, quarantine ranking, coverage before/after) (SC-006)
 - [ ] T023 [US7] SC-004: `git diff --name-only upstream/develop... -- src` is empty
 - [ ] T024 [US7] Full suite on the reference machine (SC-005); failures compared with the base commit's; result in the receipt

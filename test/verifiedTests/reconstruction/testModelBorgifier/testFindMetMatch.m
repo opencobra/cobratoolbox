@@ -48,7 +48,7 @@
 %         large class of valid inputs
 %       LINES: 84, 86, 113, 126, 151, 169
 %     - DEFECT: A SEED identifier given as a cell stops the function
-%       SEVERITY: error
+%       SEVERITY: limitation
 %       TRIGGER: global CMODEL TMODEL with TMODEL the six template metabolites of
 %         testMetCompare (glc_D[c], atp[c], adp[c], g6p[c], h[c], glc_D[e] with metID, metNames,
 %         metFormulas, metCharge, metKEGGID, metSEEDID, S); CMODEL.mets = {'glc_D[c]'},
@@ -57,7 +57,8 @@
 %       OBSERVED: "Invalid data type. Argument must be numeric, char, or logical." at line 168:
 %         the KEGG branch converts a cell pipePos with cell2mat (lines 145-147) and accepts a
 %         cell identifier, the SEED branch does not (R2025a, 2026-11-15)
-%       EXPECTED: a cell SEED identifier handled as a cell KEGG identifier is
+%       EXPECTED: a cell SEED identifier handled as a cell KEGG identifier is (an undocumented
+%         input: verifyModelBorg, its line 272, builds metSEEDID as a cell of char)
 %       LINES: 164-169
 %
 % Authors:
