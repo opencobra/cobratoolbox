@@ -133,3 +133,71 @@ Net effect:
    - getCobraSolverVersion (tested earlier) ignores its documented third input `rootPathSolver`.
    - `test/verifiedTests/base/testInstall/testAddKeyToKnownHosts.m`, a legacy test, still asserts on
      calls to addKeyToKnownHostsCT, which is now quarantined.
+
+## Follow-up: every remaining TESTED test (T027–T028), 2026-11-17
+
+The T021 sample found a missed quarantine in 12 of 40 TESTED tests, so the other 173 TESTED tests were
+reviewed in the same way. Five reviewer agents had only the code and the tests
+(`inventory/review/review-brief.md`, lists `inventory/review/tested-full-1..5.txt`, verdicts in
+`tested-full-1..5.jsonl`). Four resolution helpers reproduced every finding in MATLAB R2025a
+(`inventory/review/resolution-brief.md`; records in `inventory/results/review-full-a/b/c/e.jsonl`).
+The lead confirmed each quarantine as second reader and set its reach in `inventory/quarantine-seeds.tsv`.
+
+| Verdict | Tests |
+|---|---|
+| OK | 147 |
+| WEAK | 5 |
+| WRONG | 21 |
+
+Outcome:
+
+| Function | Outcome |
+|---|---|
+| findCarbonRxns | QUARANTINED, `wrong-result`: formulas Cl, Ca and CaC2O4 give carbon counts [1 1 1] instead of [0 0 2]. Every call reaches it. Its caller multiProductionEnvelope had a test before this feature, so it is not in the ledger (see below). |
+| setSemiQuantConstraints | QUARANTINED, `error`: an empty `cond1_upt_higher` list with a non-empty secretion list fails at line 76. No callers. |
+| TmodelStats | QUARANTINED, `wrong-result`: line 123 computes the inverse of the share. Only ids without an `[x]` suffix reach it. mergeModelsBorg's models always carry the suffix (seed NONE). |
+| writeReactionsFromPubSeedSpreadsheets, getSubsystemPresence | QUARANTINED, `unusable-option`: a documented default folder is not implemented. The only callers always pass a folder (seed NONE). |
+| plotSampleHist | QUARANTINED, `wrong-result` and `error`: a reaction held only as `<rxn>_r` is dropped before the code meant for it. A call where no requested reaction is in every model fails. |
+| getNutritionDatabaseFile | QUARANTINED, `error`: `('usda','foodItems')` looks for `USDA2024_foodItems.mat`, but the shipped file is `USDAFoodItems.mat`. This reverses the wave's lead decision (limitation). Both callers are already BLOCKED. |
+| calcOrganFract | QUARANTINED, `wrong-result`: the code names the organ 'Lungs', but the models and organ lists call it 'Lung', so Lung stays at 536 g at any weight. |
+| setDietConstraints | QUARANTINED, `error`: numeric flux values, which the header allows, fail in str2num. No src caller passes them (seed NONE). |
+| convertCbModelToCNAModel | QUARANTINED, `error` and `wrong-result`, in the external CNAcobra2cna (lines 36-43): names longer than the number of metabolites cause an index error. |
+| printFRdependencies | QUARANTINED (from WEAK), `wrong-result`: on real checkRankFR output it lists a dependent row as dependent on itself and among the independent rows. |
+| model2xls | QUARANTINED, `error`: the documented 3-argument call fails at line 173. writeCbModel always passes 4 (seed NONE). |
+| comparePaths | QUARANTINED, `wrong-result`: sys.path entries with a blank are misreported. Seed: initPythonEnvironment, already QUARANTINED. |
+| getCobraSolverVersion | QUARANTINED, `unusable-option`: the documented `rootPathSolver` is never used, as for hit_node. Only generateMexFastFVA passes it, and that function is already QUARANTINED. |
+| configEnvVars | QUARANTINED, `error`: line 33 fails when ENV_VARS has no STATUS field, and the check meant for that case (`exist('ENV_VARS.STATUS','var')`) is always 0. initCobraToolbox always sets STATUS (seed NONE). |
+| compareInchis | QUARANTINED, `wrong-result`: line 78 turns X into R, so 'C6H12O6X' never matches glucose. Seed: generateChemicalDatabase, which had a test before this feature. |
+| metaboliteStructuresTable | QUARANTINED (from WEAK), `wrong-result`: the unescaped '.mol' pattern at line 39 turns 'amol.mol' into "". The full test, with a stand-in obabel, is kept at `inventory/review/testMetaboliteStructuresTable.full.m.txt`. |
+| addFluxFBAdirectionAndColor | QUARANTINED, `wrong-result`: a zero flux vector gives NaN widths, and a ratio of exactly 1e-3 gets no band. |
+| removeCDReactions | QUARANTINED, `wrong-result`: a species still catalysing a kept reaction is deleted, which the comment "delete isolated species" contradicts. |
+| transformMap2XML | QUARANTINED, `wrong-result`: reversibility 'true' is never written, and the single-reference check is unreachable. Its five tested callers use none of these forms (seed NONE). |
+| visualizeNormalizedRxnPresence | QUARANTINED, `error` and `wrong-result`: a custom colour scheme without a 0 row fails at line 150. A second run counts its own earlier heatmap as a map. |
+| transformKEGG2Model | BLOCKED, test removed: the triggers are in the callee mapMetName2KEGGID, whose test (written before this feature) already records an `error`. mapMetName2KEGGID is now in `inventory/existing-defective.tsv` (FR-012). |
+| printUptakeBoundCom | stays TESTED: the header lists both indCom and infoCom without marking either as optional, so a model with only one is undocumented (`limitation`). |
+| computeEcosystemDBSCAN, loadMinimalWBM, LP10cvx | stay TESTED, strengthened. LP10cvx's new section runs only when CVX is installed, so it has not run here. |
+
+Also: runSeqC's test now restores PATH with onCleanup. plotQuantitativeFluxCoupling, correctMetName and
+createColorsMap got `cosmetic` entries, and parseCD got a `limitation` entry: a reaction written on one
+line loops forever (observed by reading only).
+
+Net effect of T027–T028:
+- 21 functions moved from TESTED to QUARANTINED and 1 to BLOCKED. That is 22 of 173 (13%), against
+  30% in the T021 sample.
+- Over both reviews, 34 of the 213 functions TESTED before T021 were quarantined or blocked.
+- TESTED is now 179, QUARANTINED 291 and BLOCKED 430.
+- The 30 changed tests were re-run together with coverage (`inventory/coverage/review-full.jsonl`):
+  all passed, nothing was left behind, and `--verify-coverage` and `--check` found 0 problems.
+- The registry lists 848 defects.
+- Coverage of `src/` without the generated c13 solvers is 26.5%, down from 27.4%, because quarantined
+  tests do not count.
+
+For the human review (in addition to the list above):
+- **Tests that predate this feature.** multiProductionEnvelope (testMultiProductionEnvelope,
+  testMultiProductionEnvelopeInorg) calls the now-quarantined findCarbonRxns, and generateChemicalDatabase
+  calls compareInchis. Like the hit_node caller, they are outside the ledger.
+- **checkRankFR (BLOCKED)** hard-codes solver 'gurobi5' and interface 'solveCobraLP' at lines 534–535,
+  so it fails on every input here. Its FRwrows (line 641) also contradicts its header. Its own future
+  test should start there.
+- **Moderate-confidence reaches:** TmodelStats (seed NONE rests on verifyModelBorg forcing `[x]`) and
+  the visualizeNormalizedRxnPresence lower-case colour entry.

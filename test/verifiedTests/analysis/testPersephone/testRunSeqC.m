@@ -36,6 +36,7 @@
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - PATH restored through onCleanup after the independent review (T027/T028), 2026-11-17.
 
 % save the current path
 currentDir = pwd;
@@ -98,6 +99,9 @@ cd(fileDir);
 
 % the PATH seen by system() holds only the stub folder from here on
 originalPath = getenv('PATH');
+% restore the PATH even when an assertion below fails (the object runs setenv when it is
+% cleared, at the end of the test or when an error ends it)
+restorePath = onCleanup(@() setenv('PATH', originalPath));
 setenv('PATH', stubDir);
 
 % expected commands of the Docker branch (memory 4, cpus 2, processes 3)
@@ -262,7 +266,8 @@ assert(isfile(fullfile(outputDir, 'KB_S2.txt')));
 
 %% clean up: restore the PATH, remove the temporary files and return to the original folder
 
-setenv('PATH', originalPath);
+clear restorePath
+assert(strcmp(getenv('PATH'), originalPath));
 rmdir(sandboxDir, 's');
 cd(currentDir)
 

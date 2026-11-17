@@ -99,6 +99,16 @@ finds a confirmed defect for every QUARANTINED row and a quarantined reach for e
 - [X] T025 Implementation receipt `$F/agent-runs/<UTC>-implement/implementation-receipt.md` (Prompt, Final response, Diff summary, Tests, Unresolved issues)
 - [X] T026 Final privacy scan and commit; push and PR only when the maintainer asks (FR-018)
 
+## Phase 10: Follow-up review of every TESTED test (maintainer, 2026-11-17: "continue building")
+
+T021's sample found a missed quarantining defect in 12 of 40 TESTED tests; review.md recommended
+reviewing the rest before merging. These tasks do that with the same briefs.
+
+- [X] T027 [US7] Independent review of the 173 TESTED tests not in the T021 sample: reviewer agents given only code and tests (`$F/inventory/review/review-brief.md`, "Tested sample" section), lists `$F/inventory/review/tested-full-1..5.txt`, verdicts in `tested-full-N.jsonl`
+- [X] T028 [US7] Resolve every WEAK/WRONG verdict by `$F/inventory/review/resolution-brief.md` (reproduce in MATLAB; quarantine on a confirmed `error`/`unusable-option`/`wrong-result`, otherwise strengthen the test); lead confirms each quarantine and sets its reach; `--apply`, block callers that reach a new quarantine, re-run changed tests with coverage (`inventory/coverage/review-full.jsonl`), `--verify-coverage` and `--check` with 0 problems
+- [X] T029 [US7] Registry, summary, coverage summary, `$F/review.md` (new section) and the receipt brought up to date
+- [X] T030 Privacy scan and commit; no push
+
 ## Dependencies & Execution Order
 
 - Setup (T001–T004) → Foundational (T005–T006) → US1 (T007–T008) → Tier phases in order:

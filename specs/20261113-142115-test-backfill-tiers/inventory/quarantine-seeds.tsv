@@ -172,3 +172,24 @@ openBabelConverter	NONE
 COBRArrowSolver	NONE
 # editCobraToolboxPath: only the default basePath on Windows; driver_createTrainingModel passes no Windows path.
 editCobraToolboxPath	NONE
+# transformMap2XML: its five tested callers only change names, colours and widths; none sets reversibility to true or relies on the reference check (review T027).
+transformMap2XML	NONE
+# review T027/T028 (list 3): model2xls only the 3-argument call (writeCbModel passes 4); comparePaths only the 'PYTHON' form (initPythonEnvironment);
+# getCobraSolverVersion only a third argument (generateMexFastFVA); configEnvVars only with ENV_VARS lacking STATUS (initCobraToolbox always sets it);
+# compareInchis depends on model data (generateChemicalDatabase, tested before this feature); metaboliteStructuresTable has no callers.
+model2xls	NONE
+comparePaths	src/base/io/python/initPythonEnvironment.m
+getCobraSolverVersion	src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m
+configEnvVars	NONE
+compareInchis	src/dataIntegration/chemoInformatics/generateChemicalDatabase.m
+metaboliteStructuresTable	NONE
+# review T027/T028 (list 2): getNutritionDatabaseFile only the ('usda','foodItems') form; setDietConstraints only a Diet cell with numeric values (no src caller passes one).
+getNutritionDatabaseFile	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/vmhFoodFinder.m
+getNutritionDatabaseFile	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/nutritionAlgorithmWBM.m
+setDietConstraints	NONE
+# review T027/T028 (lists 1 and 4): the only callers pass a folder (prepareInputData, computeModelProperties); setSemiQuantConstraints has no callers;
+# TmodelStats only ids without an [x] suffix, and mergeModelsBorg's models are forced to [x] by verifyModelBorg.
+writeReactionsFromPubSeedSpreadsheets	NONE
+getSubsystemPresence	NONE
+setSemiQuantConstraints	NONE
+TmodelStats	NONE

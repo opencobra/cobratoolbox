@@ -3,12 +3,18 @@
 % Purpose:
 %     - TmodelStats summarizes a template model (Tmodel) of modelBorgifier, or a plain model:
 %       the number and share of reactions and metabolites with each annotation field of
-%       TmodelFields, the number and share of metabolites per compartment, the exchange
-%       reactions (one metabolite), the number of metabolites ignoring the compartment and,
-%       for a Tmodel of two or more models, the reactions, metabolites and compartment-free
-%       metabolites unique to each model and shared between each pair of models. The test
-%       builds a two-model Tmodel of four metabolites in three compartments and three
-%       reactions by hand; every expected count and share is derived by hand in the comments.
+%       TmodelFields, the number and share of metabolites per compartment and in total, the
+%       exchange reactions, the number of metabolites ignoring the compartment and, for a
+%       Tmodel of two or more models, the reactions and metabolites unique to each model and
+%       shared between each pair of models.
+%     - The function is QUARANTINED (Constitution III-Defects, quarantine in back-fill
+%       campaigns): the independent review (T027/T028) showed that the share in the 'Total'
+%       row of metsByComp is inverted, which is visible for a plain model with metabolites
+%       without a compartment suffix, so this file makes no assertion about the function.
+%       The wave version of this test (git history) built a two-model Tmodel of four
+%       metabolites in three compartments by hand and checked every count and share, the
+%       extension of an existing Stats structure, a one-model Tmodel and a plain model; it is
+%       the starting point once the defect is fixed.
 %
 % Function under test:
 %     src/reconstruction/comparison/modelBorgifier/TmodelStats.m
@@ -17,13 +23,29 @@
 %     Tier 1 - no genome-scale model, no solver, hand-built inputs.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     every line - TmodelStats is quarantined for the defect below (feature
+%     20261113-142115-test-backfill-tiers, independent review T027/T028). Before the
+%     quarantine the test reached every executable line.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     None found.
+%     - DEFECT: The share of metabolites with a compartment ('Total' row) is inverted
+%       SEVERITY: wrong-result
+%       TRIGGER: a plain model in which some metabolite identifiers have no '[x]' compartment
+%         suffix, for example Stats = TmodelStats(struct('rxns', {{'R1'}}, 'mets',
+%         {{'a[c]'; 'b[c]'; 'glc'}}, 'S', sparse([1; -1; 0])))
+%       OBSERVED: (R2025a, 2026-11-17) Stats.metsByComp{end, 2} = [2 1.5]: line 123 computes
+%         count \ nMets (left division, nMets / count = 3 / 2) instead of count / nMets. For
+%         identifiers such as {'a_c'; 'b_c'} (no '[x]' suffix at all) it is [0 Inf]. When
+%         every identifier has a suffix, count = nMets and both give 1, which hides the defect
+%       EXPECTED: [2 0.6667] (2/3) and [0 0]: the comment of line 112 ("Total metabolite with
+%         compartment (should be 100%)") and line 120, which computes each compartment's
+%         share as nMetsInComp / nMets, give the intent; the header (line 2) says the
+%         function "Can also be used on a normal model"
+%       LINES: 123
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Quarantined after the independent review (T027/T028), 2026-11-17.
 
 % save the current path
 currentDir = pwd;
@@ -36,106 +58,6 @@ cd(fileDir);
 % or particular operating system, so none is listed; the call is the standard opening
 % of a COBRA test and the place where a requirement would be added later
 prepareTest();
-
-% shares are ratios of small integers computed once; 1e-12 allows for their rounding only
-tol = 1e-12;
-
-% a Tmodel of two models m1 and m2. Metabolites (sorted, as cleanTmodel leaves them):
-% a[c], a[e], b[c], c[m]; reactions: EX_a (a[e] only), R1 (a[e] -> a[c]),
-% R2 (a[c] + b[c] -> c[m])
-Tmodel = struct();
-Tmodel.rxns = {'EX_a'; 'R1'; 'R2'};
-Tmodel.mets = {'a[c]'; 'a[e]'; 'b[c]'; 'c[m]'};
-Tmodel.S = sparse([0 1 -1; -1 -1 0; 0 0 -1; 0 0 1]);
-% annotation fields: rxnNames is filled for 1 of 3 reactions, metNames for 3 of 4
-% metabolites; the other TmodelFields fields are absent (count 0)
-Tmodel.rxnNames = {'exchange of a'; ''; ''};
-Tmodel.metNames = {'A'; 'A'; ''; 'C'};
-% m1 has EX_a and R1, m2 all three reactions; m1 has a[c] and a[e], m2 a[c], b[c] and c[m]
-Tmodel.Models.m1 = struct('rxns', logical([1; 1; 0]), 'mets', logical([1; 1; 0; 0]));
-Tmodel.Models.m2 = struct('rxns', logical([1; 1; 1]), 'mets', logical([1; 0; 1; 1]));
-
-% the share of x among n
-share = @(x, n) [x, x / n];
-
-%% statistics of a two-model Tmodel
-
-Stats = TmodelStats(Tmodel);
-
-% reaction annotation: one row per reaction field of TmodelFields, in its order
-fields = TmodelFields;
-assert(isequal(Stats.rxnInfo(:, 1), fields{1}));
-assert(norm(Stats.rxnInfo{strcmp(fields{1}, 'rxns'), 2} - share(3, 3)) < tol);
-assert(norm(Stats.rxnInfo{strcmp(fields{1}, 'rxnNames'), 2} - share(1, 3)) < tol);
-assert(isequal(Stats.rxnInfo{strcmp(fields{1}, 'grRules'), 2}, [0 0]));
-
-% metabolite annotation
-assert(isequal(Stats.metInfo(:, 1), fields{3}));
-assert(norm(Stats.metInfo{strcmp(fields{3}, 'mets'), 2} - share(4, 4)) < tol);
-assert(norm(Stats.metInfo{strcmp(fields{3}, 'metNames'), 2} - share(3, 4)) < tol);
-assert(isequal(Stats.metInfo{strcmp(fields{3}, 'metKEGGID'), 2}, [0 0]));
-
-% compartments, sorted: c (a[c], b[c]), e (a[e]), m (c[m]), then the total of 4 of 4
-assert(isequal(Stats.metsByComp(:, 1), {'c'; 'e'; 'm'; 'Total'}));
-assert(norm(Stats.metsByComp{1, 2} - share(2, 4)) < tol);
-assert(norm(Stats.metsByComp{2, 2} - share(1, 4)) < tol);
-assert(norm(Stats.metsByComp{3, 2} - share(1, 4)) < tol);
-assert(norm(Stats.metsByComp{4, 2} - [4, 1]) < tol);
-
-% exchange reactions: EX_a is the only reaction with one metabolite (1 of 3)
-assert(norm(Stats.exhangeRxns - share(1, 3)) < tol);
-
-% metabolites without compartment: a, b, c
-assert(Stats.uniqueMetabolites == 3);
-
-% shared reactions. The diagonal holds the entities found only in that model, the other
-% cells the entities of the row model also found in the column model, each with its share
-% of the row model's entities.
-% m1 = {EX_a, R1}, m2 = {EX_a, R1, R2}: m1 has none of its own (0 of 2), shares 2 of 2
-% with m2; m2 has R2 of its own (1 of 3) and shares 2 of 3 with m1
-assert(isequal(Stats.sharedRxns(1, :), {'[Count, %]', 'in m1', 'in m2'}));
-assert(isequal(Stats.sharedRxns(:, 1), {'[Count, %]'; 'm1'; 'm2'}));
-assert(norm(Stats.sharedRxns{2, 2} - [0 0]) < tol);
-assert(norm(Stats.sharedRxns{2, 3} - share(2, 2)) < tol);
-assert(norm(Stats.sharedRxns{3, 3} - share(1, 3)) < tol);
-assert(norm(Stats.sharedRxns{3, 2} - share(2, 3)) < tol);
-
-% shared metabolites: m1 = {a[c], a[e]}, m2 = {a[c], b[c], c[m]}: m1 has a[e] of its own
-% (1 of 2) and shares a[c] (1 of 2); m2 has b[c] and c[m] (2 of 3) and shares a[c] (1 of 3)
-assert(norm(Stats.sharedMets{2, 2} - share(1, 2)) < tol);
-assert(norm(Stats.sharedMets{2, 3} - share(1, 2)) < tol);
-assert(norm(Stats.sharedMets{3, 3} - share(2, 3)) < tol);
-assert(norm(Stats.sharedMets{3, 2} - share(1, 3)) < tol);
-
-% shared metabolites ignoring the compartment: m1 = {a}, m2 = {a, b, c}: m1 has none of its
-% own and shares a (1 of 1); m2 has b and c (2 of 3) and shares a (1 of 3)
-assert(norm(Stats.sharedMetsNoComp{2, 2} - [0 0]) < tol);
-assert(norm(Stats.sharedMetsNoComp{2, 3} - share(1, 1)) < tol);
-assert(norm(Stats.sharedMetsNoComp{3, 3} - share(2, 3)) < tol);
-assert(norm(Stats.sharedMetsNoComp{3, 2} - share(1, 3)) < tol);
-
-%% an existing Stats structure is extended, not replaced
-
-previous = struct('rxnList', [1; 0; -1]);
-Stats = TmodelStats(Tmodel, previous);
-assert(isequal(Stats.rxnList, [1; 0; -1]));
-assert(Stats.uniqueMetabolites == 3);
-
-%% a Tmodel of one model: no comparison between models
-
-oneModel = Tmodel;
-oneModel.Models = rmfield(oneModel.Models, 'm2');
-Stats = TmodelStats(oneModel);
-assert(~isfield(Stats, 'sharedRxns') && ~isfield(Stats, 'sharedMets') && ~isfield(Stats, 'sharedMetsNoComp'));
-assert(norm(Stats.exhangeRxns - share(1, 3)) < tol);
-
-%% a plain model (no Models field) is treated as the single model 'model'
-
-plainModel = rmfield(Tmodel, 'Models');
-Stats = TmodelStats(plainModel);
-assert(~isfield(Stats, 'sharedRxns'));
-assert(isequal(Stats.metsByComp(:, 1), {'c'; 'e'; 'm'; 'Total'}));
-assert(Stats.uniqueMetabolites == 3);
 
 % change the directory
 cd(currentDir)

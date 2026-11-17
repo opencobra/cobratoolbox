@@ -37,23 +37,31 @@
 %     - DEFECT: A model without indCom cannot be printed
 %       SEVERITY: limitation
 %       TRIGGER: printUptakeBoundCom(model) for a model with infoCom but without indCom
-%       OBSERVED: "Undefined function 'infoCom2indCom' for input arguments of type
-%         'struct'." (MATLAB R2025a): infoCom2indCom is a local function of
+%       OBSERVED: (R2025a, 2026-11-17) "Undefined function 'infoCom2indCom' for input
+%         arguments of type 'struct'." at line 37: infoCom2indCom is a local function of
 %         src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m and not on
-%         the path; the documentation lists both fields, so the branch is a convenience that
-%         never works
+%         the path. The input is not documented: the header lists both fields as required
+%         fields of the model ("model: the community COBRA model, with fields: * .infoCom -
+%         struct of community exchange reaction/metabolite names, obtained from
+%         getMultiSpeciesModelId * .indCom - struct of the corresponding community exchange
+%         indices"), and getMultiSpeciesModelId returns both; only the code (lines 33-37 and
+%         the message of line 35) treats either field alone as enough, so the branch is a
+%         convenience that never works
 %       EXPECTED: indCom derived from infoCom, as the branch intends
 %       LINES: 37
 %     - DEFECT: A model without infoCom fails after the default abbreviations are built
 %       SEVERITY: limitation
 %       TRIGGER: printUptakeBoundCom(model) for a model with indCom but without infoCom
-%       OBSERVED: 'Unrecognized field name "infoCom".' at line 62 (MATLAB R2025a) although
-%         line 46 builds the default abbreviations Org1, Org2, ... for this case
+%       OBSERVED: (R2025a, 2026-11-17) 'Unrecognized field name "infoCom".' at line 62
+%         although line 46 builds the default abbreviations Org1, Org2, ... for this case. The
+%         input is not documented: the header lists .infoCom and .indCom as required fields
+%         of the model (see the entry above)
 %       EXPECTED: the bounds printed with the default abbreviations, from indCom alone
 %       LINES: 46, 62
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Defect evidence revised after the independent review (T027/T028), 2026-11-17.
 
 % save the current path
 currentDir = pwd;

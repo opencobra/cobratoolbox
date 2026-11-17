@@ -38,6 +38,18 @@
 %         after the call; the function has no fclose
 %       EXPECTED: the file closed before the function returns
 %       LINES: 30, 32
+%     - DEFECT: A reaction written on one line makes the function loop forever
+%       SEVERITY: limitation
+%       TRIGGER: a file in which a reaction's '<reaction ' and '</reaction>' are on the same
+%         line, e.g. '<reaction metaid="re1" id="re1" name="R1"></reaction>' (CellDesigner
+%         itself writes one element per line, so its files do not have this form)
+%       OBSERVED: (by reading, 2026-11-17; not run, as the call would not return) line 245
+%         finds '</reaction>' on the line just read, so the loop of lines 255-482, the only
+%         place in the reaction branch (lines 202-492) that reads a new line (line 260), is
+%         skipped; the outer loop of line 149 then handles the same line again, adding a
+%         reaction each time, without end
+%       EXPECTED: the reaction parsed once and the next line read
+%       LINES: 149, 245, 255
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.

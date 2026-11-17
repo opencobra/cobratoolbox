@@ -5,10 +5,11 @@
 %       needs (ID, S, ub, lb, rxns, mets, c, d, csense, dsense, osenseStr, C, plus sex and
 %       SetupInfo) and falls back to loading the whole file, un-nesting a single variable,
 %       when a required field is missing. This test writes a small stand-in model (the
-%       fields of a WBM, two metabolites and three reactions) in the three layouts a WBM
-%       file can have and checks what is returned: the fields as variables (minimal load,
-%       char and string path), the model nested in one variable (full load and un-nesting),
-%       and the fields as variables with C missing (full load returned as it is). No
+%       fields of a WBM, two metabolites and three reactions, plus two fields FBA does not
+%       need) in the three layouts a WBM file can have and checks what is returned: the
+%       fields as variables (minimal load without the extra fields, char and string path),
+%       the model nested in one variable (full load and un-nesting), and the fields as
+%       variables with C missing (full load returned as it is, extra fields included). No
 %       whole-body model is downloaded or loaded.
 %
 % Function under test:
@@ -25,6 +26,7 @@
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Extended after the independent review (T027/T028), 2026-11-17.
 
 % save the current path
 currentDir = pwd;
@@ -59,12 +61,20 @@ wbm.SetupInfo = struct('diet', 'EUAverageDiet');
 workDir = tempname;
 mkdir(workDir);
 
-%% fields stored as variables: the minimal load returns exactly the model
+% the stored files also hold fields that FBA does not need (rxnNames, metNames): the minimal
+% load must leave them out, the full load must return them
+wbmFile = wbm;
+wbmFile.rxnNames = {'reaction 1'; 'reaction 2'; 'reaction 3'};
+wbmFile.metNames = {'metabolite A'; 'metabolite B'};
+
+%% fields stored as variables: the minimal load returns only the requested fields
 
 minimalFile = fullfile(workDir, 'minimal.mat');
-save(minimalFile, '-struct', 'wbm');
+save(minimalFile, '-struct', 'wbmFile');
 model = loadMinimalWBM(minimalFile);
-% every stored field comes back with its value (field order is not part of the contract)
+% the 14 requested fields come back with their values (field order is not part of the
+% contract); the two extra fields of the file are not loaded
+assert(~isfield(model, 'rxnNames') && ~isfield(model, 'metNames'));
 assert(isequal(sort(fieldnames(model)), sort(fieldnames(wbm))));
 assert(isequal(orderfields(model), orderfields(wbm)));
 assert(issparse(model.S) && isequal(model.S, wbm.S));
@@ -76,20 +86,23 @@ assert(isequal(modelFromString, model));
 %% the model nested in a single variable: full load and un-nesting
 
 % the first load finds none of the requested variables (MATLAB warns for each of them), so
-% the whole file is loaded and its single variable is returned
+% the whole file is loaded and its single variable is returned, the extra fields included
 nestedFile = fullfile(workDir, 'nested.mat');
-save(nestedFile, 'wbm');
+save(nestedFile, 'wbmFile');
 model = loadMinimalWBM(nestedFile);
-assert(isequal(model, wbm));
+assert(isfield(model, 'rxnNames') && isfield(model, 'metNames'));
+assert(isequal(model, wbmFile));
 
 %% fields stored as variables but one required field missing: the full load as it is
 
-wbmNoC = rmfield(wbm, 'C');
+wbmNoC = rmfield(wbmFile, 'C');
 partialFile = fullfile(workDir, 'partial.mat');
 save(partialFile, '-struct', 'wbmNoC');
 model = loadMinimalWBM(partialFile);
-% the file holds several variables, so nothing is un-nested; C stays absent
+% the file holds several variables, so nothing is un-nested; C stays absent and the fields
+% that the minimal load leaves out (rxnNames, metNames) are now returned
 assert(~isfield(model, 'C'));
+assert(isfield(model, 'rxnNames') && isfield(model, 'metNames'));
 assert(isequal(sort(fieldnames(model)), sort(fieldnames(wbmNoC))));
 assert(isequal(orderfields(model), orderfields(wbmNoC)));
 

@@ -1,0 +1,175 @@
+% The COBRAToolbox: testMetaboliteStructuresTable.m
+%
+% Purpose:
+%     - metaboliteStructuresTable reads every MDL MOL file of a folder and builds a table with
+%       one row per file: the metabolite name (file name without .mol) and its InChIKey, InChI
+%       and SMILES, which it obtains from Open Babel through openBabelConverter; optionally the
+%       table is written to <saveDir>/metaboliteStructures.txt. The test checks:
+%         * a folder without MOL files gives an empty table with the four documented string
+%           columns mets, inchikey, inchi, smiles, with and without a trailing file separator;
+%         * with saveDir the empty table is written as a header line only, and without saveDir
+%           (omitted or empty) nothing is written;
+%         * MOL files converted by a stand-in obabel: a shell script written by the test to a
+%           temporary folder put first on the system path, which prints, for each known file
+%           and output format, a fixed line in the form Open Babel prints it (InChIKey; InChI;
+%           SMILES followed by a tab and the title; "1 molecule converted" on the error
+%           stream) and an empty line for an unknown file. The expected table holds these
+%           fixed strings (the values of alanine and glycine), the file names without .mol,
+%           and missing values for the file without a structure; the saved table is checked
+%           line by line;
+%         * when obabel cannot be found on the system path (status 127), the error of
+%           openBabelConverter (installation message) reaches the caller.
+%       The system path is changed only for these calls and restored.
+%
+% Function under test:
+%     src/dataIntegration/chemoInformatics/metabolites/metaboliteStructuresTable.m
+%
+% Tier (Constitution III-Coverage):
+%     Tier 1 - no model, no solver; the external program Open Babel is replaced by a stand-in
+%     shell script, so the test declares needsUnix (the script runs under /bin/sh).
+%
+% Coverage exemptions:
+%     None. Every executable line is reached below.
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: A file name containing a character followed by mol loses that part of the metabolite name
+%       SEVERITY: cosmetic
+%       TRIGGER: metaboliteStructuresTable(metDir) with a MOL file whose name has any character
+%         followed by mol before the extension; for example the files amol.mol and
+%         xmolecule.mol
+%       OBSERVED: (R2025a, 2026-11-17, stand-in obabel) metTable.mets is "" for amol.mol and
+%         "ecule" for xmolecule.mol; the InChIKey, InChI and SMILES of the rows are right: line
+%         39 removes every match of the regular expression '.mol' (any character followed by
+%         mol), not only the extension
+%       EXPECTED: "amol" and "xmolecule" (the file name without the extension .mol)
+%       LINES: 39
+%
+% Authors:
+%     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Stand-in obabel added after the independent review (T027/T028), 2026-11-17.
+
+% save the current path
+currentDir = pwd;
+
+% initialize the test
+fileDir = fileparts(which('testMetaboliteStructuresTable'));
+cd(fileDir);
+
+% declare the requirements of this test: the stand-in obabel is a /bin/sh script
+prepareTest('needsUnix', true);
+
+% all files of this test live in a temporary folder removed at the end
+workFolder = tempname;
+molFolder = [workFolder filesep 'mol'];
+saveFolder = [workFolder filesep 'save'];
+mkdir(molFolder);
+mkdir(saveFolder);
+savedTable = [saveFolder filesep 'metaboliteStructures.txt'];
+originalPath = getenv('PATH');
+
+%% a folder without MOL files gives an empty table with the four string columns
+
+% a file with another extension is ignored (only *.mol files are read)
+fid = fopen([molFolder filesep 'notes.txt'], 'w');
+fprintf(fid, 'not a structure\n');
+fclose(fid);
+
+metTable = metaboliteStructuresTable(molFolder);
+assert(istable(metTable) && isequal(size(metTable), [0 4]));
+assert(isequal(metTable.Properties.VariableNames, {'mets', 'inchikey', 'inchi', 'smiles'}));
+assert(isstring(metTable.mets) && isstring(metTable.inchikey) && isstring(metTable.inchi) ...
+    && isstring(metTable.smiles));
+% an empty saveDir saves nothing either
+metTable = metaboliteStructuresTable(molFolder, '');
+assert(isequal(size(metTable), [0 4]));
+assert(~isfile(savedTable));
+
+%% saveDir with a trailing file separator: the empty table is written as its header line
+
+metTable = metaboliteStructuresTable([molFolder filesep], [saveFolder filesep]);
+assert(isequal(size(metTable), [0 4]));
+assert(isfile(savedTable));
+savedLines = strtrim(splitlines(strtrim(fileread(savedTable))));
+assert(isequal(savedLines, {'mets,inchikey,inchi,smiles'}));
+delete(savedTable);
+
+%% MOL files converted by a stand-in obabel: one row per file with its structures
+
+% the stand-in answers "obabel" without arguments with a usage message (status 1, not 127)
+% and "obabel -imol <file> -o<format>" with the fixed output below; unknown files get an
+% empty line, as Open Babel prints for a molecule it cannot write
+stubFolder = [workFolder filesep 'bin'];
+mkdir(stubFolder);
+stubLines = {'#!/bin/sh'
+    '# stand-in for Open Babel written by testMetaboliteStructuresTable'
+    'if [ $# -eq 0 ]; then echo "No input file or format spec or possibly a misplaced option." >&2; exit 1; fi'
+    'f=${2##*/}'
+    'case "$f:$3" in'
+    '  alanine.mol:-oinchikey) echo ''QNAYBMKLOCPYGJ-REOHCLBHSA-N'';;'
+    '  alanine.mol:-oinchi) echo ''InChI=1S/C3H7NO2/c1-2(4)3(5)6/h2H,4H2,1H3,(H,5,6)/t2-/m0/s1'';;'
+    '  alanine.mol:-osmiles) printf ''C[C@@H](C(=O)O)N\talanine\n'';;'
+    '  glycine.mol:-oinchikey) echo ''DHMQDGOQFOQNFH-UHFFFAOYSA-N'';;'
+    '  glycine.mol:-oinchi) echo ''InChI=1S/C2H5NO2/c3-1-2(4)5/h1,3H2,(H,4,5)'';;'
+    '  glycine.mol:-osmiles) printf ''NCC(=O)O\tglycine\n'';;'
+    '  *) echo;;'
+    'esac'
+    'echo "1 molecule converted" >&2'};
+stubFile = [stubFolder filesep 'obabel'];
+fid = fopen(stubFile, 'w');
+fprintf(fid, '%s\n', stubLines{:});
+fclose(fid);
+fileattrib(stubFile, '+x');
+
+% three MOL files (the content is passed to obabel only, so a minimal file is enough)
+for name = {'alanine', 'glycine', 'unknown'}
+    fid = fopen([molFolder filesep name{1} '.mol'], 'w');
+    fprintf(fid, '%s\n\n\n  0  0  0  0  0  0  0  0  0  0999 V2000\nM  END\n', name{1});
+    fclose(fid);
+end
+
+setenv('PATH', [stubFolder pathsep originalPath]);
+metTable = metaboliteStructuresTable(molFolder, saveFolder);
+setenv('PATH', originalPath);
+
+% exact: one row per MOL file (notes.txt ignored), the name is the file name without .mol,
+% the structures are the stand-in's lines (the SMILES without the tab and title)
+assert(isequal(size(metTable), [3 4]));
+[~, order] = sort(metTable.mets);
+metTable = metTable(order, :);
+assert(isequal(metTable.mets, ["alanine"; "glycine"; "unknown"]));
+assert(isequal(metTable.inchikey(1:2), ["QNAYBMKLOCPYGJ-REOHCLBHSA-N"; "DHMQDGOQFOQNFH-UHFFFAOYSA-N"]));
+assert(isequal(metTable.inchi(1:2), ["InChI=1S/C3H7NO2/c1-2(4)3(5)6/h2H,4H2,1H3,(H,5,6)/t2-/m0/s1"; ...
+    "InChI=1S/C2H5NO2/c3-1-2(4)5/h1,3H2,(H,4,5)"]));
+assert(isequal(metTable.smiles(1:2), ["C[C@@H](C(=O)O)N"; "NCC(=O)O"]));
+% a file Open Babel cannot convert keeps missing values in the three structure columns
+assert(all(ismissing([metTable.inchikey(3), metTable.inchi(3), metTable.smiles(3)])));
+
+% the saved table: header and one line per file, missing values written as empty fields
+savedLines = sort(strtrim(splitlines(strtrim(fileread(savedTable)))));
+expectedLines = sort({'mets,inchikey,inchi,smiles'
+    'alanine,QNAYBMKLOCPYGJ-REOHCLBHSA-N,"InChI=1S/C3H7NO2/c1-2(4)3(5)6/h2H,4H2,1H3,(H,5,6)/t2-/m0/s1",C[C@@H](C(=O)O)N'
+    'glycine,DHMQDGOQFOQNFH-UHFFFAOYSA-N,"InChI=1S/C2H5NO2/c3-1-2(4)5/h1,3H2,(H,4,5)",NCC(=O)O'
+    'unknown,,,'});
+assert(isequal(savedLines, expectedLines));
+delete(savedTable);
+
+%% a MOL file and no Open Babel: the installation error of openBabelConverter reaches the caller
+
+% make obabel unreachable: the system path holds only an empty temporary folder, so the shell
+% answers "command not found" (status 127) whether or not Open Babel is installed
+emptyFolder = [workFolder filesep 'empty'];
+mkdir(emptyFolder);
+setenv('PATH', emptyFolder);
+installMessage = ['To use this function, Open Babel must be installed; follow the installation ' ...
+    'instructions in https://openbabel.org/wiki/Category:Installation'];
+assert(verifyCobraFunctionError('metaboliteStructuresTable', 'inputs', {molFolder, saveFolder}, ...
+    'testMessage', installMessage));
+setenv('PATH', originalPath);
+% the error comes before the table is saved
+assert(~isfile(savedTable));
+
+% remove the temporary folder
+rmdir(workFolder, 's');
+
+% change the directory
+cd(currentDir)

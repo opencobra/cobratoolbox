@@ -9,8 +9,8 @@
 %     - This test checks labels worked out by hand from that definition for points on a line:
 %       two clusters and a noise point; border points (reachable but not core) and the
 %       resulting noise; the order of the labels; a point reached twice during the search;
-%       the boundary distance equal to epsilon; the default epsilon (0.05) and minPoints (5);
-%       and the documented errors.
+%       a distance exactly equal to epsilon (cases whose labels differ between <= and <);
+%       the default epsilon (0.05) and minPoints (5); and the documented errors.
 %
 % Function under test:
 %     src/analysis/ecosystem/computeEcosystemDBSCAN.m
@@ -26,6 +26,7 @@
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-13.
+%     - Extended after the independent review (T027/T028), 2026-11-17.
 
 % save the current path
 currentDir = pwd;
@@ -66,13 +67,25 @@ reverseOrder = 6:-1:1;
 labels = computeEcosystemDBSCAN(D(reverseOrder, reverseOrder), 0.15, 2);
 assert(isequal(labels, [-1; 0; 0; 1; 1; 1]));
 
-%% a point reached twice and the boundary distance equal to epsilon
+%% a point pushed twice during the search is labelled once
 
-% epsilon 0.2 (a distance equal to epsilon is a neighbour) and minPoints 3: points 1, 2, 3
-% are all neighbours of each other, so point 2 is pushed by point 1 and again by point 3
-% before it is labelled; it is labelled once
+% epsilon 0.2 and minPoints 3: points 1, 2, 3 are all neighbours of each other, so point 2
+% is pushed by point 1 and again by point 3 before it is labelled
 labels = computeEcosystemDBSCAN(D, 0.2, 3);
 assert(isequal(labels, [0; 0; 0; -1; -1; -1]));
+
+%% a distance equal to epsilon is a neighbour (the documented "lower than or equal to")
+
+% two points at distance 1 (exact in binary), epsilon 1, minPoints 2: each point has two
+% points within epsilon (itself and the other) only if the distance 1 counts, so both are
+% core points of cluster 0; with a strict "<" both would be noise (-1)
+assert(isequal(computeEcosystemDBSCAN([0 1; 1 0], 1, 2), [0; 0]));
+% the points on a line with epsilon 0.1: D(1, 2) = 0.1 - 0 and D(2, 3) = 0.2 - 0.1 are both
+% exactly the double 0.1, so point 2 has three points within epsilon (core) and points 1 and
+% 3 join its cluster; with "<" every point would be noise. D(4, 5) = 5.1 - 5 is slightly
+% below 0.1, but two points are fewer than minPoints 3, so points 4 and 5 stay noise
+assert(D(1, 2) == 0.1 && D(2, 3) == 0.1);
+assert(isequal(computeEcosystemDBSCAN(D, 0.1, 3), [0; 0; 0; -1; -1; -1]));
 
 %% default parameters: epsilon 0.05 and minPoints 5
 

@@ -8,8 +8,13 @@
 %       LIGHTGRAY, all molecules WHITE, reactions with negative flux and their (base and
 %       secondary) reactants TOMATO, then reactions with positive flux and their (base and
 %       secondary) products DARKTURQUOISE. It also returns the reactions with non-zero flux
-%       (ID, flux, width) and the map reactions with their widths. Expected values are worked
-%       out by hand from the flux vector; colour codes are those of createColorsMap.
+%       (ID, flux, width) and the map reactions with their widths.
+%     - The function is QUARANTINED (Constitution III-Defects, quarantine in back-fill
+%       campaigns): the independent review (T027/T028) regraded both defects below to
+%       wrong-result (a width that is not one of the documented bands on a valid flux
+%       vector), so this file makes no assertion about the function. The wave 24 version of
+%       this test (git history) checked hand-derived widths and colours on a four-reaction map
+%       and is the starting point once the defects are fixed.
 %
 % Function under test:
 %     src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m
@@ -19,26 +24,34 @@
 %     vector stands for the FBA solution, so no solver is used.
 %
 % Coverage exemptions:
-%     None. Every executable line is reached below.
+%     every line - addFluxFBAdirectionAndColor is quarantined for the defects below (feature
+%     20261113-142115-test-backfill-tiers, independent review T027/T028). Before the
+%     quarantine every executable line was reached.
 %
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: A flux vector of zeros gives NaN widths
-%       SEVERITY: limitation
-%       TRIGGER: fbaSolution.v = zeros(n, 1) for a model whose reactions are in the map
-%       OBSERVED: (R2025a, 2026-11-16, same computation in addFluxFBA) every width is NaN
-%         (0 / 0 at line 53)
-%       EXPECTED: width 1 for every reaction without flux
-%       LINES: 53
+%       SEVERITY: wrong-result
+%       TRIGGER: map.rxnName = {'R1'; 'R2'} (with the other documented map fields),
+%         model.rxns = {'R1'; 'R2'}, fbaSolution.v = [0; 0];
+%         map = addFluxFBAdirectionAndColor(map, model, fbaSolution)
+%       OBSERVED: (R2025a, 2026-11-17) map.rxnWidth is {NaN; NaN}: line 53 divides 0 by
+%         max(abs(v)) = 0, no band of lines 56-61 matches NaN, and line 74 stores NaN as the
+%         width of every map reaction in the model
+%       EXPECTED: width 1 for every reaction without flux, as lines 61 and 72 give for a ratio
+%         below 1e-3 and for a reaction not in the model (fbaSolution.v is documented as any
+%         n x 1 flux vector)
+%       LINES: 53, 74
 %     - DEFECT: A flux of exactly 1e-3 of the largest flux keeps width 0.001
-%       SEVERITY: cosmetic
-%       TRIGGER: fbaSolution.v = [1e-3; 1] for map reactions R1 and R2
-%       OBSERVED: (R2025a, 2026-11-16, same computation in addFluxFBA) R1 width 1.0000e-03:
-%         the bands of lines 60-61 are > 1e-3 and < 1e-3, so the ratio 1e-3 is in neither
-%       EXPECTED: width 1 or 3
+%       SEVERITY: wrong-result
+%       TRIGGER: the map and model above with fbaSolution.v = [1e-3; 1]
+%       OBSERVED: (R2025a, 2026-11-17) map.rxnWidth is {0.0010; 8}: the bands of lines 60-61
+%         are '> 1e-3' and '< 1e-3', so the ratio 1e-3 is in neither and keeps its raw value
+%       EXPECTED: one of the band widths (1 or 3) for R1
 %       LINES: 60-61
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Converted to the quarantine layout after the independent review (T027/T028), 2026-11-17.
 
 % save the current path
 currentDir = pwd;
@@ -51,62 +64,6 @@ cd(fileDir);
 % or particular operating system, so none is listed; the call is the standard opening
 % of a COBRA test and the place where a requirement would be added later
 prepareTest();
-
-% colour codes (createColorsMap)
-tomato = 'FFFF6347';
-darkTurquoise = 'FF00CED1';
-lightGray = 'FFD3D3D3';
-white = 'FFFFFFFF';
-
-% a map of four reactions and eight molecules a..h:
-%   R1: a + b -> c        (negative flux)
-%   R2: c -> d + e + b    (positive flux; b is also a secondary reactant of R1)
-%   R3: f -> g            (zero flux)
-%   R4: h -> a            (not in the model)
-map.rxnName = {'R1'; 'R2'; 'R3'; 'R4'};
-map.rxnBaseReactantAlias = {{'a'}; {'c'}; {'f'}; {'h'}};
-map.rxnReactantAlias = {{'b'}; cell(0, 1); cell(0, 1); cell(0, 1)};
-map.rxnBaseProductAlias = {{'c'}; {'d'}; {'g'}; {'a'}};
-map.rxnProductAlias = {cell(0, 1); {'e'; 'b'}; cell(0, 1); cell(0, 1)};
-map.rxnWidth = {1; 1; 1; 1};
-map.rxnColor = {'X'; 'X'; 'X'; 'X'};
-map.molAlias = {'a'; 'b'; 'c'; 'd'; 'e'; 'f'; 'g'; 'h'};
-map.molColor = repmat({'X'}, 8, 1);
-
-% model reactions and fluxes; R5, R6 and R7 are not in the map. |v| / 10 gives the ratios
-% 1, 0.4, 0, 0.1, 0.9 and 0.6
-model.rxns = {'R1'; 'R2'; 'R3'; 'R5'; 'R6'; 'R7'};
-fbaSolution.v = [-10; 4; 0; 1; 9; 6];
-
-[newMap, flux2, fluxMap] = addFluxFBAdirectionAndColor(map, model, fbaSolution);
-
-%% widths of the reactions with non-zero flux, in model order
-
-% ratio 1 -> 8, 0.4 -> 4, 0.1 -> 3, 0.9 -> 6, 0.6 -> 5 (exact: the widths are constants)
-assert(isequal(flux2, {'R1', -10, 8; 'R2', 4, 4; 'R5', 1, 3; 'R6', 9, 6; 'R7', 6, 5}));
-
-%% widths of the map reactions
-
-% R3 has zero flux (ratio 0 -> 1); R4 is not in the model -> 1
-assert(isequal(newMap.rxnWidth, {8; 4; 1; 1}));
-assert(isequal(fluxMap, {'R1', 8; 'R2', 4; 'R3', 1; 'R4', 1}));
-
-%% reaction colours: negative TOMATO, positive DARKTURQUOISE, zero LIGHTGRAY, others unchanged
-
-assert(isequal(newMap.rxnColor, {tomato; darkTurquoise; lightGray; 'X'}));
-
-%% molecule colours
-
-% a (base reactant of R1) and b (secondary reactant of R1) TOMATO, but b is also a secondary
-% product of R2 and the positive pass comes last -> DARKTURQUOISE; c is a product of the
-% negative R1 and a reactant of the positive R2 -> stays WHITE; d (base product) and e
-% (secondary product) of R2 -> DARKTURQUOISE; f, g (zero flux) and h (R4) -> WHITE
-assert(isequal(newMap.molColor, {tomato; darkTurquoise; white; darkTurquoise; darkTurquoise; white; white; white}));
-
-%% unchanged fields
-
-assert(isequal(newMap.rxnName, map.rxnName));
-assert(isequal(newMap.molAlias, map.molAlias));
 
 % change the directory
 cd(currentDir)

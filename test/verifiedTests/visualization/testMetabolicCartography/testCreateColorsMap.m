@@ -16,7 +16,14 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     None found.
+%     - DEFECT: The help text says the map holds 143 colours; it holds 141
+%       SEVERITY: cosmetic
+%       TRIGGER: colors = createColorsMap()
+%       OBSERVED: (R2025a, 2026-11-17) colors.Count is 141: the key list (line 18) has 142
+%         names, MEDIUMSLATEBLUE twice with the same code; the author note (line 16) says
+%         "complete list HTML colour references, 143 colours"
+%       EXPECTED: the number in the help text equal to the number of colours in the map
+%       LINES: 16
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.

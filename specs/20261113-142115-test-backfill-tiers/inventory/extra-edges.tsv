@@ -43,3 +43,6 @@ src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBba
 src/base/io/newt/writeNewtExperiment.m	src/base/io/utilities/SBML/convertSBMLID.m
 src/base/io/utilities/model2xls.m	src/analysis/exploration/printRxnFormula.m
 src/dataIntegration/fluxomics/c13solver/errorComputation2.m	src/dataIntegration/fluxomics/c13solver/slvrEMU_fast.m
+src/analysis/exploration/findCarbonRxns.m	src/base/utilities/parseMetNames.m
+src/analysis/exploration/findCarbonRxns.m	src/base/utilities/columnVector.m
+src/analysis/sampling/plotSampleHist.m	src/base/utilities/toolboxFree/cobraSmooth.m

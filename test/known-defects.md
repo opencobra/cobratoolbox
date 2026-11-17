@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-826 known defects in 457 functions (293 wrong-result, 245 error, 72 unusable-option, 139 cosmetic, 77 limitation).
+848 known defects in 467 functions (313 wrong-result, 253 error, 75 unusable-option, 143 cosmetic, 64 limitation).
 
 ## Summary
 
@@ -29,7 +29,8 @@
 | `src/analysis/ecosystem/getEcosystemClusterDescriptor.m` | wrong-result | The status variable is named status_c<id>, not status as documented | `test/verifiedTests/analysis/testEcosystem/testGetEcosystemClusterDescriptor.m` |
 | `src/analysis/ecosystem/getQualitativeFluxStates.m` | wrong-result | Zero band applied inconsistently to the maximum and to max - min | `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m` |
 | `src/analysis/ecosystem/matchEcosystemClusters.m` | wrong-result | clusters without points are matched to a reference cluster instead of NaN, and an empty reference cluster absorbs unmatched clusters | `test/verifiedTests/analysis/testEcosystem/testMatchEcosystemClusters.m` |
-| `src/analysis/exploration/findCarbonRxns.m` | limitation | Two-letter element symbols beginning with C are counted as one carbon | `test/verifiedTests/analysis/testExploration/testFindCarbonRxns.m` |
+| `src/analysis/ecosystem/plotQuantitativeFluxCoupling.m` | cosmetic | The documented default figure width does not match the code | `test/verifiedTests/analysis/testEcosystem/testPlotQuantitativeFluxCoupling.m` |
+| `src/analysis/exploration/findCarbonRxns.m` | wrong-result | Two-letter element symbols beginning with C are counted as carbon | `test/verifiedTests/analysis/testExploration/testFindCarbonRxns.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | limitation | A compartment letter without brackets matches every identifier with that letter | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | error | A compartment without metabolites stops with an error | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findRxnFromCompartment.m` | wrong-result | A compartment with a single metabolite returns the first reaction of the model | `test/verifiedTests/analysis/testExploration/testFindRxnFromCompartment.m` |
@@ -174,6 +175,8 @@
 | `src/analysis/sampling/compareSampleTraj.m` | wrong-result | The fallback to the reversed reaction <name>_r never runs | `test/verifiedTests/analysis/testSampling/testCompareSampleTraj.m` |
 | `src/analysis/sampling/compareTwoSamplesStat.m` | wrong-result | The chi-square p values are cumulative probabilities, near 0 for identical samples | `test/verifiedTests/analysis/testSampling/testCompareTwoSamplesStat.m` |
 | `src/analysis/sampling/loadSamples.m` | wrong-result | More points than pointsPerFile are taken from a file at regular intervals | `test/verifiedTests/analysis/testSampling/testLoadSamples.m` |
+| `src/analysis/sampling/plotSampleHist.m` | error | A call in which no requested reaction is kept stops with an index error | `test/verifiedTests/analysis/testSampling/testPlotSampleHist.m` |
+| `src/analysis/sampling/plotSampleHist.m` | wrong-result | A reaction held as its flipped copy <rxn>_r in one model is never plotted | `test/verifiedTests/analysis/testSampling/testPlotSampleHist.m` |
 | `src/analysis/sampling/plotSampleHist.m` | cosmetic | The subplot grid is transposed for perScreen = [nY, nX] | `test/verifiedTests/analysis/testSampling/testPlotSampleHist.m` |
 | `src/analysis/sampling/printSampleStats.m` | wrong-result | With several samples only the first sample's mode is printed | `test/verifiedTests/analysis/testSampling/testPrintSampleStats.m` |
 | `src/analysis/sampling/sampleScatterMatrix.m` | error | The documented optional inputs cannot be omitted one at a time | `test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m` |
@@ -257,6 +260,8 @@
 | `src/analysis/topology/FR/plotFRresults.m` | wrong-result | Reconstructions with few stoichiometrically consistent rows are never reported | `test/verifiedTests/analysis/testTopology/testPlotFRresults.m` |
 | `src/analysis/topology/FR/plotFRresults.m` | wrong-result | Row rank deficiency of [F,R] and [Fb,Rb] is misreported | `test/verifiedTests/analysis/testTopology/testPlotFRresults.m` |
 | `src/analysis/topology/FR/plotFRresults.m` | error | The optional input modelMetaData cannot be omitted | `test/verifiedTests/analysis/testTopology/testPlotFRresults.m` |
+| `src/analysis/topology/FR/printFRdependencies.m` | wrong-result | Dependent rows are counted and displayed among the independent rows | `test/verifiedTests/analysis/testTopology/testPrintFRdependencies.m` |
+| `src/analysis/topology/FR/printFRdependencies.m` | wrong-result | Each dependent metabolite is reported as dependent on itself | `test/verifiedTests/analysis/testTopology/testPrintFRdependencies.m` |
 | `src/analysis/topology/conservedMoieties/classifyMoieties.m` | wrong-result | isSecondary is returned as a row vector, not m x 1 | `test/verifiedTests/analysis/testConservedMoieties/testClassifyMoieties.m` |
 | `src/analysis/topology/conservedMoieties/constructElementalMatrix.m` | error | Every call stops because atomicNumbers.mat is missing | `test/verifiedTests/analysis/testConservedMoieties/testConstructElementalMatrix.m` |
 | `src/analysis/topology/conservedMoieties/estimateMoietyFormulas.m` | wrong-result | M is not the r x p matrix the documentation describes | `test/verifiedTests/analysis/testConservedMoieties/testEstimateMoietyFormulas.m` |
@@ -305,13 +310,14 @@
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietComposition.m` | error | A whole-body model (struct) input is rejected | `test/verifiedTests/analysis/testWholeBody/testGetDietComposition.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getMetaboliteFlux.m` | unusable-option | addStarch fails for every food of the shipped USDA database | `test/verifiedTests/analysis/testWholeBody/testGetMetaboliteFlux.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getMetaboliteFlux.m` | error | addStarch fails when a macro value of the food equals a looked-up nutrient id | `test/verifiedTests/analysis/testWholeBody/testGetMetaboliteFlux.m` |
-| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m` | limitation | The shipped USDA food items file is not found | `test/verifiedTests/analysis/testWholeBody/testGetNutritionDatabaseFile.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m` | error | The documented file type 'foodItems' of the USDA database is not found | `test/verifiedTests/analysis/testWholeBody/testGetNutritionDatabaseFile.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/isValidVmhID.m` | limitation | Identifiers with surrounding blanks are rejected although they are trimmed for the other checks | `test/verifiedTests/analysis/testWholeBody/testIsValidVmhID.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/makeDietFormatConsistant.m` | error | the food tables fdTable.mat and fdCategoriesTable.mat are not in the repository | `test/verifiedTests/analysis/testWholeBody/testMakeDietFormatConsistant.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/normalizeDiet.m` | error | Every call fails because fdTable.mat is not shipped | `test/verifiedTests/analysis/testWholeBody/testNormalizeDiet.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/searcher.m` | unusable-option | Non-iterative search type cannot run | `test/verifiedTests/analysis/testWholeBody/testSearcher.m` |
 | `src/analysis/wholeBody/PSCMToolbox/annotateModel.m` | wrong-result | every non-transport reaction gets the exchange SBO term when any reaction is an exchange | `test/verifiedTests/analysis/testWholeBody/testAnnotateModel.m` |
 | `src/analysis/wholeBody/PSCMToolbox/annotateModel.m` | error | modelID without modelName stops the call | `test/verifiedTests/analysis/testWholeBody/testAnnotateModel.m` |
+| `src/analysis/wholeBody/PSCMToolbox/calcOrganFract.m` | wrong-result | The lung of a whole-body model keeps the reference weight instead of the lung polynomial | `test/verifiedTests/analysis/testWholeBody/testCalcOrganFract.m` |
 | `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | error | Reactions missing from a model are collected in a character matrix, which fails for names of different lengths | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
 | `src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m` | limitation | All MATLAB warnings are switched off and never switched back on | `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m` |
 | `src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m` | cosmetic | The names of the new transport reactions lose their blanks | `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m` |
@@ -323,7 +329,7 @@
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m` | wrong-result | ExclList is ignored for the blood exchanges of every organ but the kidney | `test/verifiedTests/analysis/testWholeBody/testPhysiologicalConstraintsHMDBbased.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased_old.m` | wrong-result | ExclList is ignored for the blood exchanges of every organ but the kidney | `test/verifiedTests/analysis/testWholeBody/testPhysiologicalConstraintsHMDBbased_old.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m` | limitation | Flux values are rounded to the default precision of num2str | `test/verifiedTests/analysis/testWholeBody/testReadInDietFromVMH.m` |
-| `src/analysis/wholeBody/PSCMToolbox/setConstraints/setDietConstraints.m` | limitation | diet flux values given as numbers are not accepted | `test/verifiedTests/analysis/testWholeBody/testSetDietConstraints.m` |
+| `src/analysis/wholeBody/PSCMToolbox/setConstraints/setDietConstraints.m` | error | A user diet with numeric flux values stops with an error | `test/verifiedTests/analysis/testWholeBody/testSetDietConstraints.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m` | cosmetic | The list of storable amino acids is printed on every call | `test/verifiedTests/analysis/testWholeBody/testSetFeedingFastingConstraints.m` |
 | `src/base/ci/addKeyToKnownHostsCT.m` | error | The documented host name ' ' does not select github.com and the call fails | `test/verifiedTests/base/testCi/testAddKeyToKnownHostsCT.m` |
 | `src/base/ci/addKeyToKnownHostsCT.m` | cosmetic | The error messages fail with a dot-indexing error when gitCmd is not set | `test/verifiedTests/base/testCi/testAddKeyToKnownHostsCT.m` |
@@ -343,6 +349,8 @@
 | `src/base/io/KEGG/mapMetName2KEGGID.m` | error | A metabolite without compartment that is in the dictionary stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapMetName2KEGGID.m` |
 | `src/base/io/KEGG/mapMetName2KEGGID.m` | cosmetic | The message for a metabolite with several matches is never printed | `test/verifiedTests/base/testIO/testKEGG/testMapMetName2KEGGID.m` |
 | `src/base/io/convertCNAModelToCbModel.m` | error | Without CellNetAnalyzer an output is never assigned | `test/verifiedTests/base/testIO/testConvertCNAModelToCbModel.m` |
+| `src/base/io/convertCbModelToCNAModel.m` | error | Ordinary metabolite names stop the conversion with an index error | `test/verifiedTests/base/testIO/testConvertCbModelToCNAModel.m` |
+| `src/base/io/convertCbModelToCNAModel.m` | wrong-result | Whitespace in metabolite names is replaced only in the first rows | `test/verifiedTests/base/testIO/testConvertCbModelToCNAModel.m` |
 | `src/base/io/convertCbModelToCNAModel.m` | cosmetic | without CellNetAnalyzer a call with an output stops with an unassigned-output error | `test/verifiedTests/base/testIO/testConvertCbModelToCNAModel.m` |
 | `src/base/io/convertCobraLP2mps.m` | wrong-result | only the first column of a 'G' row is negated | `test/verifiedTests/base/testIO/testConvertCobraLP2mps.m` |
 | `src/base/io/definitions/descFileRead.m` | wrong-result | An empty line ends the reading | `test/verifiedTests/base/testIO/testDescFileRead.m` |
@@ -362,7 +370,7 @@
 | `src/base/io/utilities/getDefinedFieldProperties.m` | unusable-option | SpecificFields is ignored together with Descriptions or DataBaseFields | `test/verifiedTests/base/testIO/testUtilities/testGetDefinedFieldProperties.m` |
 | `src/base/io/utilities/getDistributedModelFolder.m` | cosmetic | the warning shows a literal \n | `test/verifiedTests/base/testIO/testUtilities/testGetDistributedModelFolder.m` |
 | `src/base/io/utilities/initFBAFields.m` | limitation | The documented osense and csense fields are not created | `test/verifiedTests/base/testIO/testUtilities/testInitFBAFields.m` |
-| `src/base/io/utilities/model2xls.m` | limitation | compSymbols without compNames stops the call | `test/verifiedTests/base/testIO/testUtilities/testModel2xls.m` |
+| `src/base/io/utilities/model2xls.m` | error | compSymbols without compNames stops the call | `test/verifiedTests/base/testIO/testUtilities/testModel2xls.m` |
 | `src/base/io/utilities/readBooleanRegModel.m` | limitation | A file without a rule of every type stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
 | `src/base/io/utilities/readBooleanRegModel.m` | limitation | Pool members written with spaces around + are not found | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
 | `src/base/io/utilities/readBooleanRegModel.m` | limitation | The default file iMHruletest.xls is not distributed | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
@@ -383,7 +391,7 @@
 | `src/base/io/writeLPProblem.m` | cosmetic | vartype is dropped from the default output | `test/verifiedTests/base/testIO/testWriteLPProblem.m` |
 | `src/base/io/writeLPProblem.m` | unusable-option | writeMatrix given as the first option is taken for a positional problem name | `test/verifiedTests/base/testIO/testWriteLPProblem.m` |
 | `src/base/parseMetNames.m` | limitation | Mixed or longer compartment notations are not parsed | `test/verifiedTests/base/testTools/testParseMetNames.m` |
-| `src/base/paths/comparePaths.m` | limitation | Python path entries with blanks are reported as differences | `test/verifiedTests/base/testPaths/testComparePaths.m` |
+| `src/base/paths/comparePaths.m` | wrong-result | Python path entries with blanks, commas or quotes are reported as differences | `test/verifiedTests/base/testPaths/testComparePaths.m` |
 | `src/base/paths/editCobraToolboxPath.m` | unusable-option | The default basePath does nothing on Windows | `test/verifiedTests/base/testPaths/testEditCobraToolboxPath.m` |
 | `src/base/removeGeneVersions.m` | error | A model without grRules stops after the warning | `test/verifiedTests/base/testRemoveGeneVersions/testRemoveGeneVersions.m` |
 | `src/base/solvers/buildOptProblemFromModel.m` | error | A model with extra columns and no coupling rows gets no csense in its problem | `test/verifiedTests/base/testSolvers/testBuildOptProblemFromModel.m` |
@@ -413,11 +421,13 @@
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | A failed validation with printLevel above 0 keeps the failed solver selected | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | The problem type is matched as a substring | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/getAvailableSolversByType.m` | cosmetic | The output of initCobraToolbox is not silenced | `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m` |
+| `src/base/solvers/getSetSolver/getCobraSolverVersion.m` | unusable-option | The documented input rootPathSolver has no effect | `test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m` |
+| `src/base/solvers/getSetSolver/getCobraSolverVersion.m` | cosmetic | The help text gives the default printLevel as 0; the code uses 1 | `test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m` |
 | `src/base/solvers/gurobi/setGurobiParam.m` | error | printLevel, feasTol and optTol are required although the fields are documented as optional | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
 | `src/base/solvers/gurobi/setGurobiParam.m` | cosmetic | the warning for an unknown lpmethod names param.qpmethod | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
 | `src/base/solvers/gurobi/setGurobiParam.m` | wrong-result | timelimit overrides TimeLimit although the help text says it is copied only when TimeLimit is absent | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
 | `src/base/solvers/init/configEnvVars.m` | cosmetic | GUROBI_PATH from an environment variable ending in linux64 or mac64 gets a double separator | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
-| `src/base/solvers/init/configEnvVars.m` | limitation | The call stops with an error when ENV_VARS.STATUS is not set | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
+| `src/base/solvers/init/configEnvVars.m` | error | The call stops with an error when ENV_VARS.STATUS is not set | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
 | `src/base/solvers/isCompatible.m` | wrong-result | The distributed compatibility matrix is not understood by the parser | `test/verifiedTests/base/testSolvers/testIsCompatible.m` |
 | `src/base/solvers/minos/DQQCleanup.m` | limitation | fort.* and *.sol files are kept when the results folder is missing | `test/verifiedTests/base/testSolvers/testDQQCleanup.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
@@ -510,7 +520,8 @@
 | `src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m` | error | A system without java stops with an undefined variable options | `test/verifiedTests/dataIntegration/testChemoInformatics/testCheckChemoinformaticDependencies.m` |
 | `src/dataIntegration/chemoInformatics/deleteProtons.m` | wrong-result | Reactions that carried only protons are removed from the reaction fields but not from S | `test/verifiedTests/dataIntegration/testChemoInformatics/testDeleteProtons.m` |
 | `src/dataIntegration/chemoInformatics/editChemicalFormula.m` | cosmetic | Element with zero atoms stays in the formula | `test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m` |
-| `src/dataIntegration/chemoInformatics/inchi/compareInchis.m` | limitation | A model formula made only of R groups is not treated as H | `test/verifiedTests/dataIntegration/testChemoInformatics/testCompareInchis.m` |
+| `src/dataIntegration/chemoInformatics/inchi/compareInchis.m` | wrong-result | A model formula made only of R groups is not treated as H | `test/verifiedTests/dataIntegration/testChemoInformatics/testCompareInchis.m` |
+| `src/dataIntegration/chemoInformatics/inchi/compareInchis.m` | wrong-result | The R groups of the model formula are replaced by R instead of removed, so the formula never matches | `test/verifiedTests/dataIntegration/testChemoInformatics/testCompareInchis.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m` | error | An empty component of a multi-component charge layer stops with an error | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetChargeFromInChI.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m` | wrong-result | A formula that loses all its hydrogen atoms keeps one H | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m` |
 | `src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m` | wrong-result | Element counts are assigned to the wrong elements on the combining path | `test/verifiedTests/dataIntegration/testChemoInformatics/testGetFormulaFromInChI.m` |
@@ -519,6 +530,7 @@
 | `src/dataIntegration/chemoInformatics/metabolites/addMetInfoInCBmodel.m` | unusable-option | replace = true stops with an error for every matched metabolite | `test/verifiedTests/dataIntegration/testChemoInformatics/testAddMetInfoInCBmodel.m` |
 | `src/dataIntegration/chemoInformatics/metabolites/metDatabaseStatus.m` | wrong-result | A metabolite whose identifier contains mol after another character is reported missing | `test/verifiedTests/dataIntegration/testChemoInformatics/testMetDatabaseStatus.m` |
 | `src/dataIntegration/chemoInformatics/metabolites/metDatabaseStatus.m` | wrong-result | The labels inconsistentCharge and inconsistentFormula are swapped | `test/verifiedTests/dataIntegration/testChemoInformatics/testMetDatabaseStatus.m` |
+| `src/dataIntegration/chemoInformatics/metabolites/metaboliteStructuresTable.m` | wrong-result | A file name containing a character followed by mol loses that part of the metabolite name | `test/verifiedTests/dataIntegration/testChemoInformatics/testMetaboliteStructuresTable.m` |
 | `src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m` | error | A model without an HMDB field stops with an error | `test/verifiedTests/dataIntegration/testChemoInformatics/testObtainMetStructures.m` |
 | `src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m` | wrong-result | The SMILES source is used only for metabolites that have an InChI | `test/verifiedTests/dataIntegration/testChemoInformatics/testObtainMetStructures.m` |
 | `src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m` | unusable-option | The documented source name lipidmass stops with an error | `test/verifiedTests/dataIntegration/testChemoInformatics/testObtainMetStructures.m` |
@@ -565,10 +577,11 @@
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The colour order is changed for every later figure of the session | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The coordinates of every phenotype are printed to the console | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/mkTableOfAddedExchanges.m` | error | An exchange list with fewer rows than columns stops the function | `test/verifiedTests/dataIntegration/testMetaboTools/testMkTableOfAddedExchanges.m` |
-| `src/dataIntegration/metabotools/setSemiQuantConstraints.m` | limitation | An empty cond1_upt_higher list stops with an error | `test/verifiedTests/dataIntegration/testMetaboTools/testSetSemiQuantConstraints.m` |
+| `src/dataIntegration/metabotools/setSemiQuantConstraints.m` | error | An empty cond1_upt_higher list stops with an error | `test/verifiedTests/dataIntegration/testMetaboTools/testSetSemiQuantConstraints.m` |
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | cosmetic | The sample counter is printed for every sample | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | wrong-result | The table is not ordered by frequency as documented; the sorted copy goes to a differently spelled variable | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
+| `src/dataIntegration/transcriptomics/FASTCORE/LP10cvx.m` | cosmetic | The help text names the wrong solver and the wrong LP | `test/verifiedTests/analysis/testFASTCORE/testLP10cvx.m` |
 | `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m` | wrong-result | The json format writes colour names without quotes | `test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m` |
 | `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` | wrong-result | With minSum the reported gene does not belong to the selected alternative | `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` |
 | `src/design/GDLS.m` | error | A single knockout cost in the model stops with an error | `test/verifiedTests/design/testGDLS/testGDLS.m` |
@@ -602,6 +615,7 @@
 | `src/design/optForceGAMS/exportInputsOptForceToGAMS.m` | error | Every call stops on the undefined variable nSets and leaves the current folder changed | `test/verifiedTests/design/testOptForce/testExportInputsOptForceToGAMS.m` |
 | `src/design/simpleOptKnock.m` | limitation | Single-deletion growth is stored in the first column in double-deletion mode | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/simpleOptKnock.m` | wrong-result | The wild-type minimum production is the maximum | `test/verifiedTests/design/testSimpleOptKnock.m` |
+| `src/reconstruction/comparison/modelBorgifier/TmodelStats.m` | wrong-result | The share of metabolites with a compartment ('Total' row) is inverted | `test/verifiedTests/reconstruction/testModelBorgifier/testTmodelStats.m` |
 | `src/reconstruction/comparison/modelBorgifier/charpos.m` | wrong-result | The letters i and j count as digits | `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` |
 | `src/reconstruction/comparison/modelBorgifier/cleanTmodel.m` | wrong-result | Lengthening a short lb, ub or c array overwrites its last value with 0 | `test/verifiedTests/reconstruction/testModelBorgifier/testCleanTmodel.m` |
 | `src/reconstruction/comparison/modelBorgifier/compareAllMets.m` | error | Models with no positively scored metabolite pair stop with an undefined-function error | `test/verifiedTests/reconstruction/testModelBorgifier/testCompareAllMets.m` |
@@ -623,8 +637,10 @@
 | `src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m` | error | Spreadsheets with no unannotated reaction stop with an index error | `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m` |
 | `src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m` | wrong-result | A KBase reaction irreversible where the VMH reaction is reversible is not reported as similar | `test/verifiedTests/reconstruction/testDemeter/testMapKBaseToVMHReactions.m` |
 | `src/reconstruction/demeter/src/integration/printRefinedModelIDs.m` | wrong-result | files that are not SBML or .mat files are returned as model identifiers | `test/verifiedTests/reconstruction/testDemeter/testPrintRefinedModelIDs.m` |
+| `src/reconstruction/demeter/src/integration/writeReactionsFromPubSeedSpreadsheets.m` | unusable-option | The documented default of inputDataFolder is not implemented | `test/verifiedTests/reconstruction/testDemeter/testWriteReactionsFromPubSeedSpreadsheets.m` |
 | `src/reconstruction/demeter/src/properties/computeMetabolicDistance.m` | error | the blocks of 100 rows run past the last strain | `test/verifiedTests/reconstruction/testDemeter/testComputeMetabolicDistance.m` |
 | `src/reconstruction/demeter/src/properties/computeMetabolicDistance.m` | error | the distances are stored in comDistTmp but read from the undefined comDist | `test/verifiedTests/reconstruction/testDemeter/testComputeMetabolicDistance.m` |
+| `src/reconstruction/demeter/src/properties/getSubsystemPresence.m` | unusable-option | The documented default of propertiesFolder is not implemented | `test/verifiedTests/reconstruction/testDemeter/testGetSubsystemPresence.m` |
 | `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m` | unusable-option | the default metsToAnalyze analyses no metabolite | `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m` |
 | `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m` | error | the header row of a numeric flux file is dropped by readtable | `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m` |
 | `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m` | cosmetic | the metabolite counter is printed | `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m` |
@@ -767,6 +783,8 @@
 | `src/visualization/cellDesigner/cmpMet.m` | cosmetic | The help text names the third output field and its content wrongly | `test/verifiedTests/visualization/testCellDesigner/testCmpMet.m` |
 | `src/visualization/cellDesigner/cmpRxn.m` | error | A parsed model with no reaction found in the COBRA model raises an error | `test/verifiedTests/visualization/testCellDesigner/testCmpRxn.m` |
 | `src/visualization/cellDesigner/correctMetName.m` | cosmetic | Debug output of the species row numbers | `test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m` |
+| `src/visualization/cellDesigner/correctMetName.m` | cosmetic | The EXAMPLE of the help text passes a cell column as cmpM_results and fails | `test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m` |
+| `src/visualization/cellDesigner/parseCD.m` | limitation | A reaction written on one line makes the function loop forever | `test/verifiedTests/visualization/testCellDesigner/testParseCD.m` |
 | `src/visualization/cellDesigner/parseCD.m` | cosmetic | Debug output of the keyword table, of every line read and of intermediate values | `test/verifiedTests/visualization/testCellDesigner/testParseCD.m` |
 | `src/visualization/cellDesigner/parseCD.m` | limitation | The input file is left open | `test/verifiedTests/visualization/testCellDesigner/testParseCD.m` |
 | `src/visualization/cellDesigner/position.m` | error | An attribute name that occurs more than once in the line stops the function | `test/verifiedTests/visualization/testCellDesigner/testPosition.m` |
@@ -797,8 +815,8 @@
 | `src/visualization/metabolicCartography/addFluxFBA.m` | wrong-result | A flux of exactly 1e-3 of the largest flux keeps width 0.001 | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
 | `src/visualization/metabolicCartography/addFluxFBA.m` | wrong-result | A flux vector of zeros gives NaN widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
 | `src/visualization/metabolicCartography/addFluxFBA.m` | wrong-result | fluxMap holds the widths of the input map, not the flux widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m` |
-| `src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m` | cosmetic | A flux of exactly 1e-3 of the largest flux keeps width 0.001 | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m` |
-| `src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m` | limitation | A flux vector of zeros gives NaN widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m` |
+| `src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m` | wrong-result | A flux of exactly 1e-3 of the largest flux keeps width 0.001 | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m` |
+| `src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m` | wrong-result | A flux vector of zeros gives NaN widths | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m` |
 | `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m` | wrong-result | Numeric reaction IDs of different lengths do not match the map | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFromFileWidthAndColor.m` |
 | `src/visualization/metabolicCartography/addFluxWidthAndColor.m` | limitation | Map reactions without flux data get no colour entry | `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxWidthAndColor.m` |
 | `src/visualization/metabolicCartography/addNotes.m` | cosmetic | A metabolite shown twice in the map gets its note twice in each copy | `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m` |
@@ -807,6 +825,7 @@
 | `src/visualization/metabolicCartography/changeNodesArea.m` | error | The optional areaWidth is not defaulted when areaHeight is given | `test/verifiedTests/visualization/testMetabolicCartography/testChangeNodesArea.m` |
 | `src/visualization/metabolicCartography/colorProtein.m` | error | The default colour 'Red' is not a key of createColorsMap | `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m` |
 | `src/visualization/metabolicCartography/colorSubsystemCD.m` | wrong-result | Reactions with several subsystems shift the selection to the wrong reactions | `test/verifiedTests/visualization/testMetabolicCartography/testColorSubsystemCD.m` |
+| `src/visualization/metabolicCartography/createColorsMap.m` | cosmetic | The help text says the map holds 143 colours; it holds 141 | `test/verifiedTests/visualization/testMetabolicCartography/testCreateColorsMap.m` |
 | `src/visualization/metabolicCartography/defaultColorCD.m` | error | Secondary reaction lines are coloured with the undefined function Colors | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultColorCD.m` |
 | `src/visualization/metabolicCartography/defaultLookMap.m` | wrong-result | An included species named as an ion makes the main species of the same index an ION | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultLookMap.m` |
 | `src/visualization/metabolicCartography/findRxnsInMap.m` | error | A list with a reaction name absent from the map is an error | `test/verifiedTests/visualization/testMetabolicCartography/testFindRxnsInMap.m` |
@@ -814,7 +833,8 @@
 | `src/visualization/metabolicCartography/mapFormula.m` | error | Fails instead of returning empty lists when no listed reaction is in the map | `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m` |
 | `src/visualization/metabolicCartography/mapFormula.m` | cosmetic | The help text describes absentRxns as reactions of the map not in the model | `test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m` |
 | `src/visualization/metabolicCartography/removeCDReactions.m` | cosmetic | A name listed twice is reported as not present in the map | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m` |
-| `src/visualization/metabolicCartography/removeCDReactions.m` | limitation | A species that only modifies removed reactions is kept | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m` |
+| `src/visualization/metabolicCartography/removeCDReactions.m` | wrong-result | A species still used as modifier by a kept reaction is removed, leaving dangling references | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m` |
+| `src/visualization/metabolicCartography/removeCDReactions.m` | wrong-result | A species that only modifies removed reactions is kept | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | wrong-result | Aliases of a removed reaction are removed even when kept reactions use them | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | limitation | Reactions keep a removed alias of a species that has other aliases | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
 | `src/visualization/metabolicCartography/transformFullMap2XML.m` | error | A map with exactly one complex or one included species cannot be written | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
@@ -825,13 +845,15 @@
 | `src/visualization/metabolicCartography/transformFullXML2Map.m` | error | Reaction notes written inside XHTML elements cannot be read | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m` |
 | `src/visualization/metabolicCartography/transformFullXML2Map.m` | wrong-result | The field compartName is missing for a map without compartments | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m` |
 | `src/visualization/metabolicCartography/transformFullXML2Map.m` | cosmetic | The run time is printed on every call | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m` |
+| `src/visualization/metabolicCartography/transformMap2XML.m` | wrong-result | A reaction set to reversible 'true' in the map stays reversible="false" in the file | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
+| `src/visualization/metabolicCartography/transformMap2XML.m` | wrong-result | Emptied notes and compartment aliases of the map are not removed from the file | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | Every '~' of the file name is replaced by the home folder | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
-| `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | Map information can be added or changed but not removed | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
-| `src/visualization/metabolicCartography/transformMap2XML.m` | limitation | The check for a removed only reactant or product compares with the whole alias list | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
+| `src/visualization/metabolicCartography/transformMap2XML.m` | wrong-result | The check for a removed only reactant or product compares with the whole alias list | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/metabolicCartography/transformMap2XML.m` | cosmetic | The error for a single secondary reactant or product link with several map aliases says 'should not be cell' | `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m` |
 | `src/visualization/metabolicCartography/unifyMetabolicPPImapCD.m` | wrong-result | Secondary links are recoloured by position, not by the index of the non-empty entries | `test/verifiedTests/visualization/testMetabolicCartography/testUnifyMetabolicPPImapCD.m` |
-| `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | limitation | A colour scheme without a row for the lowest presence fraction stops with an index error | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
-| `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | limitation | Reaction colours written in lower case are not counted as present | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
+| `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | error | A custom colour scheme in the documented format stops with an index error | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
+| `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | wrong-result | A second call on the same folder counts the previous heatmap as a map | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
+| `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | wrong-result | Reaction colours written in lower case are not counted as present | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
 | `src/visualization/upsetPlot/upsetPlot.m` | error | Sets without any element stop with an index error | `test/verifiedTests/visualization/testUpsetPlot/testUpsetPlot.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | error | A reaction with several subsystems stops with an error | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | wrong-result | Only the last reaction of a gene gives its subsystem | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
@@ -1040,15 +1062,26 @@
 - **Source lines**: 58-67
 - **Documented in**: `test/verifiedTests/analysis/testEcosystem/testMatchEcosystemClusters.m`
 
+### `src/analysis/ecosystem/plotQuantitativeFluxCoupling.m`
+
+#### The documented default figure width does not match the code
+
+- **Severity**: cosmetic
+- **Trigger**: plotQuantitativeFluxCoupling(qfca) with fewer panels than colWrap, for example the three points of this test and the default colWrap 4
+- **Observed**: (R2025a, 2026-11-17) figure Position [100 100 900 260]: line 52 sets the default width to 300 * nCols with nCols = min(colWrap, nPanels) (line 49); the call succeeds, and the test does not assert the width for this input
+- **Expected**: the header (line 19) documents the default figureSize as [300 * colWrap, 260 * nRows], i.e. a width of 1200 here; the code's width is the sensible one, so the header misdescribes it
+- **Source lines**: 49, 52
+- **Documented in**: `test/verifiedTests/analysis/testEcosystem/testPlotQuantitativeFluxCoupling.m`
+
 ### `src/analysis/exploration/findCarbonRxns.m`
 
-#### Two-letter element symbols beginning with C are counted as one carbon
+#### Two-letter element symbols beginning with C are counted as carbon
 
-- **Severity**: limitation
-- **Trigger**: a metabolite whose formula contains Ca, Cl, Co, Cu, Cr, Cd, Ce or Cs, for example metFormulas {'Cl'; 'Ca'; 'CaC2O4'} in a model with one reaction that uses the three metabolites, findCarbonRxns(model, 1)
-- **Observed**: MATLAB R2025a: nCarbon = [1 1 1]; the regular expression C(\d*) of line 42 matches the C of the element symbol and an empty digit group counts as one carbon at line 50, so chloride and calcium are reported as carbon-containing metabolites and the reaction is in hiCarbonRxns for every threshold up to 1; calcium oxalate counts 1 carbon instead of 2
-- **Expected**: nCarbon = [0 0 2], the number of carbon atoms in each formula
-- **Source lines**: 42, 50
+- **Severity**: wrong-result
+- **Trigger**: a metabolite whose formula contains Ca, Cl, Co, Cu, Cr, Cd, Ce or Cs; for example model.mets = {'cl[c]'; 'ca2[c]'; 'caox[c]'}, model.metFormulas = {'Cl'; 'Ca'; 'CaC2O4'}, model.S = sparse([-1; -1; 1]), model.rxns = {'R1'}; [hiCarbonRxns, zeroCarbonRxns, nCarbon] = findCarbonRxns(model, 1)
+- **Observed**: (R2025a, 2026-11-17) nCarbon = [1 1 1], hiCarbonRxns = {'R1'} and zeroCarbonRxns empty: the regular expression C(\d*) of line 42 matches the C of the element symbol, only the first match is used (line 47) and an empty digit group counts as one carbon (line 50); calcium oxalate counts 1 carbon instead of 2
+- **Expected**: nCarbon = [0 0 2] (the header: "The number of carbons in each metabolite", from the "metabolite elemental formulas"); a reaction that acts only on chloride or calcium belongs in zeroCarbonRxns, not in hiCarbonRxns
+- **Source lines**: 42, 47-50
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testFindCarbonRxns.m`
 
 ### `src/analysis/exploration/findMetFromCompartment.m`
@@ -1753,7 +1786,7 @@
 
 - **Severity**: limitation
 - **Trigger**: printUptakeBoundCom(model) for a model with infoCom but without indCom
-- **Observed**: "Undefined function 'infoCom2indCom' for input arguments of type 'struct'." (MATLAB R2025a): infoCom2indCom is a local function of src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m and not on the path; the documentation lists both fields, so the branch is a convenience that never works
+- **Observed**: (R2025a, 2026-11-17) "Undefined function 'infoCom2indCom' for input arguments of type 'struct'." at line 37: infoCom2indCom is a local function of src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m and not on the path. The input is not documented: the header lists both fields as required fields of the model ("model: the community COBRA model, with fields: * .infoCom - struct of community exchange reaction/metabolite names, obtained from getMultiSpeciesModelId * .indCom - struct of the corresponding community exchange indices"), and getMultiSpeciesModelId returns both; only the code (lines 33-37 and the message of line 35) treats either field alone as enough, so the branch is a convenience that never works
 - **Expected**: indCom derived from infoCom, as the branch intends
 - **Source lines**: 37
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m`
@@ -1762,7 +1795,7 @@
 
 - **Severity**: limitation
 - **Trigger**: printUptakeBoundCom(model) for a model with indCom but without infoCom
-- **Observed**: 'Unrecognized field name "infoCom".' at line 62 (MATLAB R2025a) although line 46 builds the default abbreviations Org1, Org2, ... for this case
+- **Observed**: (R2025a, 2026-11-17) 'Unrecognized field name "infoCom".' at line 62 although line 46 builds the default abbreviations Org1, Org2, ... for this case. The input is not documented: the header lists .infoCom and .indCom as required fields of the model (see the entry above)
 - **Expected**: the bounds printed with the default abbreviations, from indCom alone
 - **Source lines**: 46, 62
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m`
@@ -2525,11 +2558,29 @@
 
 ### `src/analysis/sampling/plotSampleHist.m`
 
+#### A call in which no requested reaction is kept stops with an index error
+
+- **Severity**: error
+- **Trigger**: plotSampleHist({'r1'}, {rand(2, 50), rand(2, 50)}, {model1, model2}, 5) with model1 and model2 of the entry above (r1 is held as r1_r in model2); also plotSampleHist({'r1_x'}, {rand(2, 50)}, {model1}, 5) (a name absent from the model)
+- **Observed**: (R2025a, 2026-11-17) 'Index exceeds array bounds.' at line 128: line 106 leaves rxnNameList empty (nRxns = 0) and the plotting loop still reads rxnNameList{1}; the empty figure of line 119 is left open
+- **Expected**: no error (an empty plot, or the 'Reaction does not exist' warning that line 137 intends for an absent reaction)
+- **Source lines**: 106-107, 119-128
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testPlotSampleHist.m`
+
+#### A reaction held as its flipped copy <rxn>_r in one model is never plotted
+
+- **Severity**: wrong-result
+- **Trigger**: model1 = createModel({'r1', 'r2'}, {'r1', 'r2'}, {'A -> B', 'B -> C'}); modelBack = createModel({'r1', 'r2'}, {'r1', 'r2'}, {'A <=> B', 'B -> C'}) with lb(1) = -10, ub(1) = 0; model2 = convertToIrreversible(modelBack) (reactions r1_r, r2); rng(1); plotSampleHist({'r1', 'r2'}, {rand(2, 50), rand(2, 50)}, {model1, model2}, 5)
+- **Observed**: (R2025a, 2026-11-17) one subplot only, 'Flux of r2': lines 91-106 drop every reaction that is absent under its plain name from any model, and findRxnIDs returns 0 (never empty) for an absent name, so the handling code of lines 130-138 and 158-165 that looks up <rxn>_r and plots it with sampleSign = -1 is never reached
+- **Expected**: a subplot for r1 as well, with the histogram of -samples of r1_r for model 2, as the handling code of lines 130-138 and 158-165 intends
+- **Source lines**: 91-106, 130-138, 158-165
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testPlotSampleHist.m`
+
 #### The subplot grid is transposed for perScreen = [nY, nX]
 
 - **Severity**: cosmetic
 - **Trigger**: perScreen = [1 2] (documented as [nY, nX], one row of two plots)
-- **Observed**: line 171 calls subplot(nX, nY, ...), so the plots are drawn in two rows of one (read from the code; the layout is not asserted below)
+- **Observed**: line 171 calls subplot(nX, nY, ...), so the plots are drawn in two rows of one (read from the code; not asserted)
 - **Expected**: subplot(nY, nX, ...), one row of two plots
 - **Source lines**: 171
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testPlotSampleHist.m`
@@ -3372,6 +3423,26 @@
 - **Source lines**: 21, 24, 29, 33, 39, 43
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testPlotFRresults.m`
 
+### `src/analysis/topology/FR/printFRdependencies.m`
+
+#### Dependent rows are counted and displayed among the independent rows
+
+- **Severity**: wrong-result
+- **Trigger**: the same checkRankFR output as the entry above; printFRdependencies(fmOut)
+- **Observed**: (R2025a, 2026-11-17) FRwrows of checkRankFR (its line 641) holds every nonzero FRW column, so wR = A, B, C, D includes the dependent row D; the report prints 'FR subset of dimension 5 x 4, of rank 3.', '4 independent rows:' (D among them) and '1 dependent rows:' (D again): row D appears twice in FRdisplay (lines 74 and 130). With two copies of the module: '10 x 8', '8 independent rows:', '2 dependent rows:'
+- **Expected**: 3 independent rows (A, B, C) and 1 dependent row (D), a 4-row submatrix
+- **Source lines**: 29, 73-74, 83-86, 129-130, 139-140
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testPrintFRdependencies.m`
+
+#### Each dependent metabolite is reported as dependent on itself
+
+- **Severity**: wrong-result
+- **Trigger**: the model returned by checkRankFR for fm = createModel({'R1'; 'R2'; 'R3'; 'R4'}, {'R1'; 'R2'; 'R3'; 'R4'}, {'A + C -> E'; 'E -> A + D'; 'B + D -> G'; 'G -> B + C'}) with lb = -1000, ub = 1000 and SIntRxnBool, SIntMetBool, SConsistentRxnBool, SConsistentMetBool all true; printFRdependencies(fmOut). checkRankFR itself stops at its line 541 on this machine (method.solver 'gurobi5' and method.interface 'solveCobraLP' are hard-coded at its lines 534-535), so the fields were produced by a copy of checkRankFR with only those two names changed to 'gurobi' and 'SDCCO'
+- **Observed**: (R2025a, 2026-11-17) checkRankFR gives rankFR = 5, FRdrows = D[c], FRW = [A:1, B:1, C:-1, D:-1] (lines 636-655 of checkRankFR put -1 at the dependent row) and the report prints 'D[c] is dependent on: A[c] and B[c] and C[c] and D[c].' (lines 38 and 97 list every nonzero FRW column, the dependent row included); the same for two copies of the module (C[c] and Cx[c] each listed as dependent on themselves)
+- **Expected**: 'D[c] is dependent on: A[c] and B[c] and C[c].' (the documented FRW expresses dependent rows as combinations of independent rows)
+- **Source lines**: 37-38, 96-97
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testPrintFRdependencies.m`
+
 ### `src/analysis/topology/conservedMoieties/classifyMoieties.m`
 
 #### isSecondary is returned as a row vector, not m x 1
@@ -3862,12 +3933,12 @@
 
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m`
 
-#### The shipped USDA food items file is not found
+#### The documented file type 'foodItems' of the USDA database is not found
 
-- **Severity**: limitation
-- **Trigger**: getNutritionDatabaseFile('usda', 'foodItems') with the papers submodule
-- **Observed**: error "Could not find USDA2024_foodItems.mat in <toolbox>/papers/2025_nutritionToolbox/usdaDatabase or on the MATLAB path." - the shipped file is named USDAFoodItems.mat (also on the submodule's origin/master); createUSDAdatabase writes USDA<YEAR>_foodItems.mat, the name this function builds
-- **Expected**: the path of the shipped USDA food items file, as the help text lists 'foodItems' (usda) as a file type
+- **Severity**: error
+- **Trigger**: getNutritionDatabaseFile('usda', 'foodItems') with the papers submodule checked out ('foodItems' (usda) is a documented value of fileType, header lines 12-14)
+- **Observed**: (R2025a, 2026-11-17) error "Could not find USDA2024_foodItems.mat in <toolbox>/papers/2025_nutritionToolbox/usdaDatabase or on the MATLAB path." at line 90: line 85 builds USDA<edition>_foodItems.mat (the name createUSDAdatabase writes), while the shipped folder holds USDA2024_100gFluxValue.mat, USDA2024_100gMacros.mat, usda2024_infoFile.mat and USDAFoodItems.mat (the same at the submodule commit the toolbox records and on the submodule's origin/master)
+- **Expected**: the path of the shipped USDA food items file
 - **Source lines**: 85-90
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testGetNutritionDatabaseFile.m`
 
@@ -3934,6 +4005,17 @@
 - **Expected**: model.modelID = 'myID' and modelName left out (both are documented as optional)
 - **Source lines**: 66-67
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testAnnotateModel.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/calcOrganFract.m`
+
+#### The lung of a whole-body model keeps the reference weight instead of the lung polynomial
+
+- **Severity**: wrong-result
+- **Trigger**: calcOrganFract(model, struct('sex', 'male', 'bodyWeight', 100, 'CardiacOutput', 5360, 'OrgansWeights', {{}})) for a model with the reaction Lung_biomass_maintenance, e.g. struct('rxns', {{'Lung_biomass_maintenance'}}) or the rxns of the shipped Harvey_1_03d (test/models/mat), whose only lung reaction is Lung_biomass_maintenance (no reaction starts with Lungs_)
+- **Observed**: (R2025a, 2026-11-17) the polynomials name the lung 'Lungs' (lines 70 and 88) while the whole-body models and the reference table name it 'Lung' (OrganLists.m, getOrganWeightFraction), so lines 174-188 treat the model's Lung as an organ without polynomial: the output lists both 'Lungs' (1079.05 g at 70 kg, 1405.00 g at 100 kg) and 'Lung' (536 g at every body weight, the reference man's value); the same with the Harvey reactions at 100 kg
+- **Expected**: the model's lung weighted by the lung polynomial of Table 3 (the header, lines 4-8, and the comment of lines 167-171 keep only organs not given there constant), listed once
+- **Source lines**: 70, 88, 174-188
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCalcOrganFract.m`
 
 ### `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m`
 
@@ -4050,13 +4132,13 @@
 
 ### `src/analysis/wholeBody/PSCMToolbox/setConstraints/setDietConstraints.m`
 
-#### diet flux values given as numbers are not accepted
+#### A user diet with numeric flux values stops with an error
 
-- **Severity**: limitation
-- **Trigger**: setDietConstraints(model, {'Diet_EX_glc_D[d]', 10})
-- **Observed**: MATLAB R2025a: error "Input must be a character vector or string scalar." from str2num; the documented diet table ("second column holds the corresponding flux values") must hold the values as character arrays, as the predefined diet scripts do
-- **Expected**: numeric flux values accepted, or the documentation naming character arrays
-- **Source lines**: 156, 158, 166, 174
+- **Severity**: error
+- **Trigger**: model = struct('rxns', {{'Diet_EX_glc_D[d]'; 'Diet_EX_na1[d]'; 'Diet_EX_thm[d]'}}, 'lb', [-1; -1; -1], 'ub', [1; 1; 1]); setDietConstraints(model, {'Diet_EX_glc_D[d]', 10}); also setDietConstraints(model, {'Diet_EX_thm[d]', 1}) (a micronutrient)
+- **Observed**: (R2025a, 2026-11-17) error "Input must be a character vector or string scalar." from str2num, called at line 166 (glucose) and at line 156 (thiamin); the header (lines 18-22) documents Diet as "a diet cell array whose first column holds diet exchange reaction identifiers and whose second column holds the corresponding flux values", without restricting the values to text; the same diet with the value '10' (text) gives lb = -12, ub = -8 for glucose
+- **Expected**: numeric flux values accepted as documented, giving the same bounds as the same values written as text
+- **Source lines**: 156-166, 174-178
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testSetDietConstraints.m`
 
 ### `src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m`
@@ -4258,6 +4340,24 @@
 
 ### `src/base/io/convertCbModelToCNAModel.m`
 
+#### Ordinary metabolite names stop the conversion with an index error
+
+- **Severity**: error
+- **Trigger**: with the CellNetAnalyzer stand-ins startcna and CNAgenerateMFNetwork (empty functions) on the path: model = createModel({'R1'; 'R2'}, {'first'; 'second'}, {'a -> b'; 'b <=> '}); model.metNames = {'glucose'; 'fructose'}; convertCbModelToCNAModel(model, 0)
+- **Observed**: (R2025a, 2026-11-17) 'Index in position 1 exceeds array bounds. Index must not exceed 2.' in external/analysis/CnaCobraInterface/CNAcobra2cna.m line 37, called from line 32: the loop of CNAcobra2cna.m lines 36-43 runs i = 1:size(cnap.specLongName, 2) (8, the longest name) over the rows specLongName(i, :) (2 metabolites); the fault is in the read-only interface submodule
+- **Expected**: the project of the documented COBRA model input (metNames of any length)
+- **Source lines**: 32
+- **Documented in**: `test/verifiedTests/base/testIO/testConvertCbModelToCNAModel.m`
+
+#### Whitespace in metabolite names is replaced only in the first rows
+
+- **Severity**: wrong-result
+- **Trigger**: with the same stand-ins: model = createModel({'R1'; 'R2'; 'R3'}, {'R1'; 'R2'; 'R3'}, {'a -> b'; 'b -> c + d'; 'c + d <=> '}); model.metNames = {'x y'; 'u v'; 'p'; 'q r'}; convertCbModelToCNAModel(model, 0)
+- **Observed**: (R2025a, 2026-11-17) specLongName rows 'x_y', 'u_v', 'p', 'q r': the same loop (CNAcobra2cna.m lines 36-43, reached from line 32) visits only as many rows as the longest name has characters (3 of 4), so the fourth name keeps its space
+- **Expected**: 'q_r' as well, as the warning and replacement of CNAcobra2cna.m lines 38-41 intend for every metabolite name
+- **Source lines**: 32
+- **Documented in**: `test/verifiedTests/base/testIO/testConvertCbModelToCNAModel.m`
+
 #### without CellNetAnalyzer a call with an output stops with an unassigned-output error
 
 - **Severity**: cosmetic
@@ -4457,11 +4557,11 @@
 
 #### compSymbols without compNames stops the call
 
-- **Severity**: limitation
-- **Trigger**: model2xls(createModel({'R1'}, {''}, {'a[c] -> b[c]'}), fileName, {'c'})
-- **Observed**: MATLAB R2025a: "Not enough input arguments." at line 173; compNames, documented as optional, is read whenever compSymbols is given
-- **Expected**: the documentation to say that compNames must be given with compSymbols, or the symbols used as names
-- **Source lines**: 87-94, 173
+- **Severity**: error
+- **Trigger**: model2xls(model, fileName, compSymbols) with compSymbols given and compNames omitted; for example model2xls(createModel({'R1'}, {''}, {'a[c] -> b[c]'}), [tempname '.xls'], {'c'})
+- **Observed**: (R2025a, 2026-11-17) "Not enough input arguments." (MATLAB:minrhs) at line 173: the defaults of lines 87-94 are set only when compSymbols is missing, so compNames is never defined when compSymbols alone is given, and line 173 reads it
+- **Expected**: the call to succeed, as the header lists compSymbols and compNames as two separate entries under OPTIONAL INPUT (lines 31-34), for example with compNames defaulting to compSymbols (as writeCbModel does)
+- **Source lines**: 87-94, 171, 173
 - **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testModel2xls.m`
 
 ### `src/base/io/utilities/readBooleanRegModel.m`
@@ -4666,13 +4766,13 @@
 
 ### `src/base/paths/comparePaths.m`
 
-#### Python path entries with blanks are reported as differences
+#### Python path entries with blanks, commas or quotes are reported as differences
 
-- **Severity**: limitation
-- **Trigger**: setenv('PYTHONPATH', fullfile(d, 'a b')) before MATLAB's Python starts, then comparePaths('PYTHON')
-- **Observed**: system_not_matlab = {'<d>/ab'} and matlab_not_system = {'<d>/a b', ...}; line 39 deletes every blank of the system entries (meant for the blanks after the commas of the printed list), and lines 32-40 also split entries that contain a comma or quote
-- **Expected**: the entry '<d>/a b' common to both sides
-- **Source lines**: 32-40
+- **Severity**: wrong-result
+- **Trigger**: [common, system_not_matlab, matlab_not_system] = comparePaths('PYTHON') when an entry of sys.path contains a blank (also a comma or a quote); for example setenv('PYTHONPATH', fullfile(d, 'a b')) before MATLAB's Python is loaded, so that both the system python and MATLAB's Python have <d>/a b in sys.path
+- **Observed**: (R2025a, 2026-11-17) <d>/a b is in sys.path of both pythons but is returned in matlab_not_system and not in common, and system_not_matlab holds <d>/ab: line 39 deletes every blank of every system entry (meant for the blanks after the commas of the printed list), and lines 32-40 split the printed list at every comma and remove every quote, also inside entries
+- **Expected**: <d>/a b in common (INPUTS: NAME 'PYTHON' compares the MATLAB and system python paths; OUTPUTS: common holds the entries common to system and MATLAB), as for any path entry; blanks are valid in paths (Program Files, Application Support)
+- **Source lines**: 31-40
 - **Documented in**: `test/verifiedTests/base/testPaths/testComparePaths.m`
 
 ### `src/base/paths/editCobraToolboxPath.m`
@@ -4960,6 +5060,26 @@
 - **Source lines**: 17, 19
 - **Documented in**: `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m`
 
+### `src/base/solvers/getSetSolver/getCobraSolverVersion.m`
+
+#### The documented input rootPathSolver has no effect
+
+- **Severity**: unusable-option
+- **Trigger**: getCobraSolverVersion(solverName, printLevel, rootPathSolver) with a third argument; for example global GUROBI_PATH; GUROBI_PATH = ''; getCobraSolverVersion('gurobi', 0, '/opt/gurobi1103/linux64/matlab')
+- **Observed**: (R2025a, 2026-11-17) '' for GUROBI_PATH = '', and '950' for GUROBI_PATH = '/opt/gurobi950/linux64/matlab' with the same third argument: rootPathSolver is only defaulted (lines 38-40) and then overwritten (lines 88, 91, 94); the version always comes from the global path variable
+- **Expected**: the version detected from the given solver installation path (INPUT rootPathSolver: "Path to the solver installation"), e.g. '1103'
+- **Source lines**: 38-40, 88, 91, 94
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m`
+
+#### The help text gives the default printLevel as 0; the code uses 1
+
+- **Severity**: cosmetic
+- **Trigger**: getCobraSolverVersion(solverName) without printLevel
+- **Observed**: (R2025a, 2026-11-13, pilot run of this test) the version message is printed for getCobraSolverVersion('gurobi'): line 34 sets printLevel = 1 when it is omitted
+- **Expected**: "printLevel: verbose level (default: 0)" (line 9), i.e. no message, or the help text giving the default 1
+- **Source lines**: 33-35
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m`
+
 ### `src/base/solvers/gurobi/setGurobiParam.m`
 
 #### printLevel, feasTol and optTol are required although the fields are documented as optional
@@ -5002,10 +5122,10 @@
 
 #### The call stops with an error when ENV_VARS.STATUS is not set
 
-- **Severity**: limitation
-- **Trigger**: global ENV_VARS; ENV_VARS = struct('printLevel', 0); configEnvVars(0) (also with ENV_VARS = [])
-- **Observed**: Unrecognized field name "STATUS". (MATLAB:nonExistentField), and Dot indexing is not supported for variables of this type. (MATLAB:structRefFromNonStruct) for ENV_VARS = [] (R2025a, 2026-11-15): exist('ENV_VARS.STATUS', 'var') is never 1 because ENV_VARS.STATUS is not a variable name, so ENV_VARS.STATUS is always read. initCobraToolbox sets ENV_VARS.STATUS = 0 before its call
-- **Expected**: the paths configured when ENV_VARS.STATUS does not exist, as the test of line 33 suggests, or this requirement documented
+- **Severity**: error
+- **Trigger**: configEnvVars(printLevel) when the global ENV_VARS has no field STATUS; for example clear global ENV_VARS; configEnvVars(0) (ENV_VARS = []), or global ENV_VARS; ENV_VARS = struct('printLevel', 0); configEnvVars(0)
+- **Observed**: (R2025a, 2026-11-17) "Dot indexing is not supported for variables of this type." (MATLAB:structRefFromNonStruct) for ENV_VARS = [], and "Unrecognized field name "STATUS"." (MATLAB:nonExistentField) for the struct, both at line 33: exist('ENV_VARS.STATUS', 'var') is always 0 (ENV_VARS.STATUS is not a variable name), so the first test of line 33 never holds and ENV_VARS.STATUS is always read
+- **Expected**: the solver paths configured, as the first test of line 33 (STATUS not yet set) intends; the USAGE configEnvVars(printLevel) states no condition on ENV_VARS
 - **Source lines**: 33
 - **Documented in**: `test/verifiedTests/base/testSolvers/testConfigEnvVars.m`
 
@@ -5927,11 +6047,20 @@
 
 #### A model formula made only of R groups is not treated as H
 
-- **Severity**: limitation
-- **Trigger**: compareInchis(model, inchis, met) with model.metFormulas = {'X'} for met
-- **Observed**: regexprep({'X'}, ["X", "Y", "*", "FULLR"], '') returns {0x0 char} (a 1-by-1 cell), so isempty at line 75 is false and the formula becomes editChemicalFormula({'X'}) = 'R'; no InChI formula (for example 'H' of the proton InChI 'InChI=1S/p+1') then matches
+- **Severity**: wrong-result
+- **Trigger**: compareInchis(model, inchis, met) with model.metFormulas = 'X' for met; for example inchis = {'InChI=1S/p+1'}
+- **Observed**: (R2025a, 2026-11-17) formulaOkBool false: regexprep({'X'}, ["X", "Y", "*", "FULLR"], '') returns a 1-by-1 cell holding '', so isempty at line 75 is false, line 76 is never reached and the formula becomes editChemicalFormula({'X'}) = 'R'
 - **Expected**: the formula set to 'H' (line 76), so that it matches an InChI whose formula is hydrogen only
 - **Source lines**: 75-76
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testCompareInchis.m`
+
+#### The R groups of the model formula are replaced by R instead of removed, so the formula never matches
+
+- **Severity**: wrong-result
+- **Trigger**: compareInchis(model, inchis, met) when the model formula of met contains X, Y, * or FULLR together with other atoms; for example model.metFormulas = 'C6H12O6X' for met 'glcr' and inchis = {'InChI=1S/C6H12O6/c7-1-2/h2H/t2-/m1/s1'}
+- **Observed**: (R2025a, 2026-11-17) formulaOkBool false and score 6 (the same InChI scores 16 with formulaOkBool true for a metabolite with formula C6H12O6): line 78 calls editChemicalFormula, which replaces X, Y, * and FULLR by R ('C6H12O6R'), so after the hydrogen is removed 'C6O6R' is compared with 'C6O6' and the 10 formula points are lost for every InChI
+- **Expected**: the R groups removed before the comparison ("Remove the R groups from the formula", line 72; formulas compared "excluding hydrogen and non-chemical atoms", lines 109-111), so 'C6O6' matches and formulaOkBool is true
+- **Source lines**: 72-83
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testCompareInchis.m`
 
 ### `src/dataIntegration/chemoInformatics/inchi/getChargeFromInChI.m`
@@ -6015,6 +6144,17 @@
 - **Expected**: status "inconsistentFormula" for a formula mismatch with equal charges
 - **Source lines**: 128-131
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testMetDatabaseStatus.m`
+
+### `src/dataIntegration/chemoInformatics/metabolites/metaboliteStructuresTable.m`
+
+#### A file name containing a character followed by mol loses that part of the metabolite name
+
+- **Severity**: wrong-result
+- **Trigger**: metaboliteStructuresTable(metDir) with a MOL file whose name has any character followed by mol before the extension; for example the files amol.mol and xmolecule.mol
+- **Observed**: (R2025a, 2026-11-17, stand-in obabel) metTable.mets is "" for amol.mol and "ecule" for xmolecule.mol, while the InChIKey, InChI and SMILES of these rows are those of amol.mol and xmolecule.mol: line 39 removes every match of the regular expression '.mol' (any character followed by mol), not only the extension; two such files (amol.mol, bmol.mol) both get the name ""
+- **Expected**: "amol" and "xmolecule", the file name without the extension .mol, which line 39 evidently intends (the column names the metabolite of each row)
+- **Source lines**: 39
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testMetaboliteStructuresTable.m`
 
 ### `src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m`
 
@@ -6490,11 +6630,11 @@
 
 #### An empty cond1_upt_higher list stops with an error
 
-- **Severity**: limitation
-- **Trigger**: setSemiQuantConstraints(m, m, cell(0, 2), {'EX_a', 0.5}, {'EX_b', 10}, {'EX_b', 10}) with m = createModel({'EX_a', 'EX_b'}, {'EX_a', 'EX_b'}, {'a <=> ', 'b <=> '})
-- **Observed**: (R2025a, 2026-11-16) "Unrecognized function or variable 'c'." at line 76: the row counter c is first set inside the loop over cond1_upt_higher; calculateQuantitativeDiffs never returns an empty list (it leaves the output undefined instead)
-- **Expected**: no bound changed for an empty list, the other lists applied
-- **Source lines**: 76
+- **Severity**: error
+- **Trigger**: setSemiQuantConstraints(m, m, cell(0, 2), {'EX_a', 0.5}, {'EX_b', 10}, {'EX_b', 10}) with m = createModel({'EX_a', 'EX_b'}, {'EX_a', 'EX_b'}, {'a <=> ', 'b <=> '}); any call with an empty cond1_upt_higher and a non-empty cond2_secr_higher or cond1_secr_higher
+- **Observed**: (R2025a, 2026-11-17) "Unrecognized function or variable 'c'." at line 76: the row counter c is first set inside the loop over cond1_upt_higher (line 62), so with zero rows the secretion loops (lines 76 and 91) read an undefined variable. With both secretion lists empty as well, the call succeeds
+- **Expected**: no bound changed for the empty list and the other lists applied. The header (line 23) documents cond1_upt_higher as the "Exchange reactions and relative differences with higher uptake in condition 1 compared to condition 2", a set that can be empty, and the sibling list cond2_upt_higher works when empty
+- **Source lines**: 62, 76, 91
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testSetSemiQuantConstraints.m`
 
 ### `src/dataIntegration/metabotools/statisticsAddedExchanges.m`
@@ -6527,6 +6667,17 @@
 - **Expected**: the first result taken from a struct array as well as from a cell array
 - **Source lines**: 137
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m`
+
+### `src/dataIntegration/transcriptomics/FASTCORE/LP10cvx.m`
+
+#### The help text names the wrong solver and the wrong LP
+
+- **Severity**: cosmetic
+- **Trigger**: help LP10cvx
+- **Observed**: (2026-11-17, by reading) the first help line (line 2) reads "CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)", but the code (lines 36-54) states the problem in CVX, and the problem (minimise the L1 norm of the fluxes of P with the fluxes of K at least epsilon) is LP-10, as the file name says; no call is affected
+- **Expected**: "CVX implementation of LP-10 for input sets K, P (see FASTCORE paper)"
+- **Source lines**: 2
+- **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testLP10cvx.m`
 
 ### `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m`
 
@@ -6857,6 +7008,17 @@
 - **Source lines**: 66
 - **Documented in**: `test/verifiedTests/design/testSimpleOptKnock.m`
 
+### `src/reconstruction/comparison/modelBorgifier/TmodelStats.m`
+
+#### The share of metabolites with a compartment ('Total' row) is inverted
+
+- **Severity**: wrong-result
+- **Trigger**: a plain model in which some metabolite identifiers have no '[x]' compartment suffix, for example Stats = TmodelStats(struct('rxns', {{'R1'}}, 'mets', {{'a[c]'; 'b[c]'; 'glc'}}, 'S', sparse([1; -1; 0])))
+- **Observed**: (R2025a, 2026-11-17) Stats.metsByComp{end, 2} = [2 1.5]: line 123 computes count \ nMets (left division, nMets / count = 3 / 2) instead of count / nMets. For identifiers such as {'a_c'; 'b_c'} (no '[x]' suffix at all) it is [0 Inf]. When every identifier has a suffix, count = nMets and both give 1, which hides the defect
+- **Expected**: [2 0.6667] (2/3) and [0 0]: the comment of line 112 ("Total metabolite with compartment (should be 100%)") and line 120, which computes each compartment's share as nMetsInComp / nMets, give the intent; the header (line 2) says the function "Can also be used on a normal model"
+- **Source lines**: 123
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testTmodelStats.m`
+
 ### `src/reconstruction/comparison/modelBorgifier/charpos.m`
 
 #### The letters i and j count as digits
@@ -7078,6 +7240,17 @@
 - **Source lines**: 27-28
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPrintRefinedModelIDs.m`
 
+### `src/reconstruction/demeter/src/integration/writeReactionsFromPubSeedSpreadsheets.m`
+
+#### The documented default of inputDataFolder is not implemented
+
+- **Severity**: unusable-option
+- **Trigger**: writeReactionsFromPubSeedSpreadsheets(infoFilePath, [], spreadsheetFolder) (or '' for inputDataFolder) run from a folder that holds the information file, InReactions.txt and the VMH database; inputDataFolder cannot be omitted because spreadsheetFolder follows it, so an empty value is the only way to ask for the default
+- **Observed**: (R2025a, 2026-11-17, Linux) "Unable to open file '/genomeAnnotation.txt' for writing" at line 129: [[] filesep 'genomeAnnotation'] is a path in the root of the file system; there is no nargin or isempty handling; ./InputData is not written
+- **Expected**: the file written to the folder InputData of the current folder, as the header documents ("inputDataFolder: Folder to save propagated data to (default: folder in current path called "InputData")", lines 11-12)
+- **Source lines**: 129
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testWriteReactionsFromPubSeedSpreadsheets.m`
+
 ### `src/reconstruction/demeter/src/properties/computeMetabolicDistance.m`
 
 #### the blocks of 100 rows run past the last strain
@@ -7097,6 +7270,17 @@
 - **Expected**: the pairwise distances of the first file stored in column 3 of the table
 - **Source lines**: 38-41, 52, 54
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testComputeMetabolicDistance.m`
+
+### `src/reconstruction/demeter/src/properties/getSubsystemPresence.m`
+
+#### The documented default of propertiesFolder is not implemented
+
+- **Severity**: unusable-option
+- **Trigger**: getSubsystemPresence([], 'v') or getSubsystemPresence('', 'v') run in a folder that holds Reactions_v.txt and ReactionMetabolitePresence/ reactionPresence_v.txt; propertiesFolder is the first argument and reconVersion is required, so an empty value is the only way to ask for the default
+- **Observed**: (R2025a, 2026-11-17, Linux) "Unable to find or open '/Reactions_v.txt'. Check the path and filename or file permissions." (readtable, called through readInputTableForPipeline from line 20): [[] filesep 'Reactions_v.txt'] is a path in the root of the file system; there is no nargin or isempty handling. The same call with propertiesFolder '.' writes the output
+- **Expected**: the files read from and written to the current folder, as the header documents ("propertiesFolder: Folder where the retrieved subsystem presences will be stored (default: current folder)", lines 13-14)
+- **Source lines**: 20, 23
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testGetSubsystemPresence.m`
 
 ### `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m`
 
@@ -8506,7 +8690,25 @@
 - **Source lines**: 41
 - **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m`
 
+#### The EXAMPLE of the help text passes a cell column as cmpM_results and fails
+
+- **Severity**: cosmetic
+- **Trigger**: the call of the EXAMPLE (line 28), correctMetName(ref, cmp_recon2map_M.listOfNotFound(:, 6), listForCorrection(:, 2)), e.g. with cmp.listOfNotFound = cell(1, 8), cmp.listOfNotFound{1, 6} = 'glc', cmp.listOfNotFound{1, 8} = 1 and listForCorrection = {'glc', 'glc_D'}
+- **Observed**: (R2025a, 2026-11-17) error 'Dot indexing is not supported for variables of this type.' at line 41, which reads cmpM_results.listOfNotFound(:, 8) from the structure that INPUTS documents ("the output of the cmpM function"); the documented input works (tested below), only the example is wrong
+- **Expected**: an EXAMPLE that passes the cmpM output structure, e.g. correctMetName(ref, cmp_recon2map_M, listForCorrection(:, 2))
+- **Source lines**: 28
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m`
+
 ### `src/visualization/cellDesigner/parseCD.m`
+
+#### A reaction written on one line makes the function loop forever
+
+- **Severity**: limitation
+- **Trigger**: a file in which a reaction's '<reaction ' and '</reaction>' are on the same line, e.g. '<reaction metaid="re1" id="re1" name="R1"></reaction>' (CellDesigner itself writes one element per line, so its files do not have this form)
+- **Observed**: (by reading, 2026-11-17; not run, as the call would not return) line 245 finds '</reaction>' on the line just read, so the loop of lines 255-482, the only place in the reaction branch (lines 202-492) that reads a new line (line 260), is skipped; the outer loop of line 149 then handles the same line again, adding a reaction each time, without end
+- **Expected**: the reaction parsed once and the next line read
+- **Source lines**: 149, 245, 255
+- **Documented in**: `test/verifiedTests/visualization/testCellDesigner/testParseCD.m`
 
 #### Debug output of the keyword table, of every line read and of intermediate values
 
@@ -8808,20 +9010,20 @@
 
 #### A flux of exactly 1e-3 of the largest flux keeps width 0.001
 
-- **Severity**: cosmetic
-- **Trigger**: fbaSolution.v = [1e-3; 1] for map reactions R1 and R2
-- **Observed**: (R2025a, 2026-11-16, same computation in addFluxFBA) R1 width 1.0000e-03: the bands of lines 60-61 are > 1e-3 and < 1e-3, so the ratio 1e-3 is in neither
-- **Expected**: width 1 or 3
+- **Severity**: wrong-result
+- **Trigger**: the map and model above with fbaSolution.v = [1e-3; 1]
+- **Observed**: (R2025a, 2026-11-17) map.rxnWidth is {0.0010; 8}: the bands of lines 60-61 are '> 1e-3' and '< 1e-3', so the ratio 1e-3 is in neither and keeps its raw value
+- **Expected**: one of the band widths (1 or 3) for R1
 - **Source lines**: 60-61
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m`
 
 #### A flux vector of zeros gives NaN widths
 
-- **Severity**: limitation
-- **Trigger**: fbaSolution.v = zeros(n, 1) for a model whose reactions are in the map
-- **Observed**: (R2025a, 2026-11-16, same computation in addFluxFBA) every width is NaN (0 / 0 at line 53)
-- **Expected**: width 1 for every reaction without flux
-- **Source lines**: 53
+- **Severity**: wrong-result
+- **Trigger**: map.rxnName = {'R1'; 'R2'} (with the other documented map fields), model.rxns = {'R1'; 'R2'}, fbaSolution.v = [0; 0]; map = addFluxFBAdirectionAndColor(map, model, fbaSolution)
+- **Observed**: (R2025a, 2026-11-17) map.rxnWidth is {NaN; NaN}: line 53 divides 0 by max(abs(v)) = 0, no band of lines 56-61 matches NaN, and line 74 stores NaN as the width of every map reaction in the model
+- **Expected**: width 1 for every reaction without flux, as lines 61 and 72 give for a ratio below 1e-3 and for a reaction not in the model (fbaSolution.v is documented as any n x 1 flux vector)
+- **Source lines**: 53, 74
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m`
 
 ### `src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m`
@@ -8908,6 +9110,17 @@
 - **Source lines**: 45
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorSubsystemCD.m`
 
+### `src/visualization/metabolicCartography/createColorsMap.m`
+
+#### The help text says the map holds 143 colours; it holds 141
+
+- **Severity**: cosmetic
+- **Trigger**: colors = createColorsMap()
+- **Observed**: (R2025a, 2026-11-17) colors.Count is 141: the key list (line 18) has 142 names, MEDIUMSLATEBLUE twice with the same code; the author note (line 16) says "complete list HTML colour references, 143 colours"
+- **Expected**: the number in the help text equal to the number of colours in the map
+- **Source lines**: 16
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testCreateColorsMap.m`
+
 ### `src/visualization/metabolicCartography/defaultColorCD.m`
 
 #### Secondary reaction lines are coloured with the undefined function Colors
@@ -8981,12 +9194,21 @@
 - **Source lines**: 46, 51
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m`
 
+#### A species still used as modifier by a kept reaction is removed, leaving dangling references
+
+- **Severity**: wrong-result
+- **Trigger**: removeCDReactions(fileName, {'R5'}) on a map with species A-F (s1-s6, aliases sa1-sa6), R1: A -> B catalysed by E (modifiers="s5" aliases="sa5"), R2: B -> C, R3: C -> D, R5: E -> F (re4, base reactant s5/sa5, product s6/sa6)
+- **Observed**: (R2025a, 2026-11-17) the written _subset.xml has the reactions R1, R2, R3, the species s1-s4 and the aliases sa1-sa4: s5 and sa5 are deleted although R1 keeps its modification modifiers="s5" aliases="sa5" and its modifierSpeciesReference to s5. map.sID and map.sAlias (getMapMatrices) hold reactants and products only, so lines 62 and 65 see s5/sa5 used by R5 alone and lines 71 and 74-75 delete them
+- **Expected**: "removing corresponding species and species aliases if necessary" (lines 2-3): a species or alias used by a remaining reaction (as modifier too) is kept
+- **Source lines**: 62, 65, 71, 74-75
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m`
+
 #### A species that only modifies removed reactions is kept
 
-- **Severity**: limitation
-- **Trigger**: removeCDReactions(fileName, {'R1'}) where species E (alias sa5) is only the catalyst (modifier) of R1
-- **Observed**: MATLAB R2025a: R1, species A and alias sa1 are removed; species E and alias sa5 stay in the written map although no remaining reaction uses them (map.sID and map.sAlias hold reactants and products only, not modifiers).
-- **Expected**: E and sa5 removed with R1, as for reactants and products
+- **Severity**: wrong-result
+- **Trigger**: removeCDReactions(fileName, {'R1'}) on the map above without R5 and F, where species E (s5, alias sa5) is only the catalyst (modifier) of R1
+- **Observed**: (R2025a, 2026-11-17) the written map has R2, R3, the species s2-s5 and the aliases sa2-sa5: A (s1, sa1) is removed with R1, but E and sa5 stay although no remaining reaction uses them (map.sID and map.sAlias hold reactants and products only, not modifiers)
+- **Expected**: E and sa5 removed with R1, as for reactants and products: the map structure is used "to be able to delete isolated species and species aliases" (lines 37-38)
 - **Source lines**: 62, 65
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m`
 
@@ -9088,6 +9310,24 @@
 
 ### `src/visualization/metabolicCartography/transformMap2XML.m`
 
+#### A reaction set to reversible 'true' in the map stays reversible="false" in the file
+
+- **Severity**: wrong-result
+- **Trigger**: [x, m] = transformXML2Map(f) on a map whose reaction has reversible="false"; m.rxnReversibility{1} = 'true' (a documented value, line 40, as transformToReversibleMap writes it); transformMap2XML(x, m, out); [~, m2] = transformXML2Map(out)
+- **Observed**: (R2025a, 2026-11-17) m2.rxnReversibility{1} is 'false': lines 162-164 write the attribute only when the map value is 'false', so the old value of xmlStruct stays
+- **Expected**: 'true' in the written file: the map information "is then transferred to the xmlStruct" (lines 19-20)
+- **Source lines**: 162-164
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
+
+#### Emptied notes and compartment aliases of the map are not removed from the file
+
+- **Severity**: wrong-result
+- **Trigger**: the map above with species notes 'glucose', reaction notes 'hexokinase' and molecule compartment alias 'ca1'; m.specNotes{1} = ''; m.rxnNotes{1} = ''; m.molCompartAlias{1} = ''; transformMap2XML(x, m, out); [~, m2] = transformXML2Map(out)
+- **Observed**: (R2025a, 2026-11-17) m2.specNotes{1} is 'glucose', m2.rxnNotes{1} 'hexokinase' and m2.molCompartAlias{1} 'ca1': these values are written only when non-empty, so the values of xmlStruct stay
+- **Expected**: the file reflects the map (the INPUTS document these fields as "empty if no info")
+- **Source lines**: 79-81, 99-101, 281-283
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
+
 #### Every '~' of the file name is replaced by the home folder
 
 - **Severity**: limitation
@@ -9097,20 +9337,11 @@
 - **Source lines**: 69
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
 
-#### Map information can be added or changed but not removed
-
-- **Severity**: limitation
-- **Trigger**: a map in which a compartment alias of a molecule, species notes or reaction notes are emptied, or rxnReversibility is set to 'true' for a reaction read as reversible="false"
-- **Observed**: these values are written only when non-empty (or 'false'), so the value of xmlStruct stays in the file.
-- **Expected**: the file reflects the map
-- **Source lines**: 79-81, 99-101, 162-164, 281-283
-- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
-
 #### The check for a removed only reactant or product compares with the whole alias list
 
-- **Severity**: limitation
-- **Trigger**: a reaction with one species reference of reactants (or products) whose alias was removed from map.molAlias, or a map whose only molecule alias is that reference
-- **Observed**: strcmp(alias, map.molAlias) returns one logical per map alias and 'if' needs all of them true, so the error 'removing only substrate in reaction' (or '... product ...') is never raised for a map of two or more aliases (the removed reference is kept in the file) and is raised for a one-alias map in which nothing was removed.
+- **Severity**: wrong-result
+- **Trigger**: a reaction with one species reference of reactants (or products) whose alias was removed from map.molAlias and from the alias list of xmlStruct, in a map of two or more aliases; e.g. R3: C (sa3) -> D (sa4) with sa4 removed from a map of the aliases sa1-sa4
+- **Observed**: (R2025a, 2026-11-17) no error; the written file has the three remaining aliases and R3 still references sa4 in its listOfProducts. strcmp(alias, map.molAlias) returns one logical per map alias and 'if' needs all of them true, so the handling code (error 'removing only substrate in reaction' or '... product ...') is never reached for a map of two or more aliases; by reading, it is reached for a one-alias map in which nothing was removed
 - **Expected**: the error only when the single reference's alias is not in map.molAlias
 - **Source lines**: 108-109, 126-127
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m`
@@ -9137,21 +9368,30 @@
 
 ### `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m`
 
-#### A colour scheme without a row for the lowest presence fraction stops with an index error
+#### A custom colour scheme in the documented format stops with an index error
 
-- **Severity**: limitation
-- **Trigger**: visualizeNormalizedRxnPresence(mapDir, {1, 'aaaaaa', 10; 0.5, 'bbbbbb', 5}) with a reaction whose presence fraction is below 0.5 and differs from the listed fractions (for example a reaction present in no map)
-- **Observed**: MATLAB R2025a: error 'Index in position 1 exceeds array bounds. Index must not exceed 2.' at line 150, where the range test reads the fraction of the next row.
-- **Expected**: an error naming the incomplete scheme, or the colour of its last row
+- **Severity**: error
+- **Trigger**: visualizeNormalizedRxnPresence(mapDir, {1, 'aaaaaa', 10; 0.5, 'bbbbbb', 5}, 1) on a folder of four maps with a reaction present in none of them (fraction 0), or any scheme whose last row's fraction is above a reaction's fraction
+- **Observed**: (R2025a, 2026-11-17) error 'Index in position 1 exceeds array bounds. Index must not exceed 2.' at line 150, where the range test of the last row reads the fraction of the next row; the heatmap is not written
+- **Expected**: a colour for every reaction: setColours is documented (lines 28-32) as rows {fraction, colour, line width} with an example list, without the requirement of a final row of fraction 0
 - **Source lines**: 150
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m`
+
+#### A second call on the same folder counts the previous heatmap as a map
+
+- **Severity**: wrong-result
+- **Trigger**: rxnPrsTable = visualizeNormalizedRxnPresence(mapDir, [], 1) called twice on a folder of four maps (R1 present in all four, R2 in three, R3 in one, R4 in none)
+- **Observed**: (R2025a, 2026-11-17) the first call gives the columns m1.xml-m4.xml and the heatmap colours FFfbcaf3, FFf6a077, FF103f60, FFD3D3D3 (widths 10, 8, 3, 1); the second call adds the column normalisedReactionHeatmap.xml (written by the first call into mapDir, lines 169-170, and read as a map, line 67), divides by 5 (line 134) and gives FFf6a077, FF99882c, FF103f60, FFD3D3D3 (widths 8, 7, 3, 1): R1, present in every map, gets 0.8 instead of 1
+- **Expected**: the presence "normalized over the total amount of maps used" (lines 7-8), the same heatmap on every call; the documented output location is the input folder
+- **Source lines**: 67, 134, 169-170
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m`
 
 #### Reaction colours written in lower case are not counted as present
 
-- **Severity**: limitation
-- **Trigger**: a map in the folder whose present reactions have the line colour 'ffff4500' (lower case, as CellDesigner writes colours when it saves a map) instead of 'FFFF4500'
-- **Observed**: MATLAB R2025a: no reaction of that map is counted as present (its column of rxnPrsTable is all false), as strcmp with 'FFFF4500' is case-sensitive.
-- **Expected**: the reactions of that colour counted as present, whatever the case
+- **Severity**: wrong-result
+- **Trigger**: a map in the folder whose present reactions have the line colour 'ffff4500' (lower case, as CellDesigner writes colours when it saves a map: the CellDesigner files of tutorials/visualization/metabolicCartography/data use 'ff000000') instead of 'FFFF4500'
+- **Observed**: (R2025a, 2026-11-17) a folder with one such map (R1 and R2 'ffff4500') gives the presence [false false false false]: strcmp with 'FFFF4500' is case-sensitive
+- **Expected**: the reactions of that colour counted as present, as hexadecimal colour codes are case-insensitive and the function "extracts reactions with a specific colour" (lines 2-3)
 - **Source lines**: 101, 117
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m`
 

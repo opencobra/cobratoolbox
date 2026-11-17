@@ -111,3 +111,39 @@ The main ones:
    Connector thread spins. Checkpoints were therefore run in chunks. The full suite without coverage
    is not affected.
 6. **Not pushed.** No push and no PR yet. Both wait for the maintainer (FR-018).
+
+## Addendum, 2026-11-17: follow-up review of every TESTED test (T027–T030)
+
+Maintainer: "continue building but stop before 80% of 5h usage limit". The receipt's first unresolved
+issue was a review of the 173 TESTED functions outside the T021 sample, and that review is now done.
+`review.md` has the details, in the section "Follow-up: every remaining TESTED test".
+
+- **Review:** five code-only reviewer agents returned 147 OK, 5 WEAK and 21 WRONG. Four helpers
+  reproduced every finding in MATLAB R2025a. The lead confirmed each quarantine and set its reach.
+- **Status changes:** 21 functions moved from TESTED to QUARANTINED. transformKEGG2Model is now BLOCKED
+  and its test was removed: its callee mapMetName2KEGGID has an `error` recorded by a test written
+  before this feature, and is now in `inventory/existing-defective.tsv`. Five tests were strengthened,
+  and four got non-quarantining entries.
+- **Ledger:**
+
+  | Status | Files |
+  |---|---|
+  | TESTED | 179 |
+  | QUARANTINED | 291 |
+  | BLOCKED | 430 |
+  | EXCLUDED | 185 |
+
+  `--check` reports 0 issues.
+- **Registry:** `test/known-defects.md` lists 848 defects.
+- **Tests:** the 30 changed tests were re-run together with coverage. All passed, nothing was left
+  behind, and `--verify-coverage` found 0 problems.
+- **Coverage** of `src/`, without the generated c13 solvers, went from 22.2% before the feature to
+  26.5% (27.4% before this follow-up; quarantined tests do not count). Including those files, it went
+  from 12.1% to 59.9%.
+- **Unresolved issue 1 is now resolved.** Issues 2–6 still stand. Three are new:
+  - multiProductionEnvelope and generateChemicalDatabase have tests from before this feature but call
+    newly quarantined functions.
+  - checkRankFR hard-codes the solver 'gurobi5'.
+  - Two reaches rest on moderate confidence.
+
+  All three are listed in `review.md`.
