@@ -70,8 +70,8 @@ with complete or documented coverage.
 **Goal**: quarantines evidence-based and visible. **Independent test**: `update_ledger.py --check`
 finds a confirmed defect for every QUARANTINED row and a quarantined reach for every BLOCKED row.
 
-- [ ] T011 [US3] After each tier checkpoint, regenerate `$F/inventory/quarantine.md` (ranking by files blocked) and check every quarantine has a second-reader confirmation in the ledger
-- [ ] T012 [US3] FR-012: for a quarantining defect found in an already-tested function, add the entry to that function's existing test header by the input-level rule (assertions unchanged), list it in `$F/inventory/existing-defective.tsv` and propagate blocking to its untested callers; apply the late-edge rule (FR-009, research R6) when `--apply` adds an edge from a TESTED row to a QUARANTINED one
+- [X] T011 [US3] After each tier checkpoint, regenerate `$F/inventory/quarantine.md` (ranking by files blocked) and check every quarantine has a second-reader confirmation in the ledger
+- [X] T012 [US3] FR-012: for a quarantining defect found in an already-tested function, add the entry to that function's existing test header by the input-level rule (assertions unchanged), list it in `$F/inventory/existing-defective.tsv` and propagate blocking to its untested callers; apply the late-edge rule (FR-009, research R6) when `--apply` adds an edge from a TESTED row to a QUARANTINED one
 
 ## Phase 6: User Story 4 — Tier 2 tests (Priority: P2)
 
@@ -81,12 +81,12 @@ finds a confirmed defect for every QUARANTINED row and a quarantined reach for e
 ## Phase 7: User Story 5 — Tier 3 tests (Priority: P3)
 
 - [X] T015 [US5] Run procedure W for Tier 3 waves until none PENDING (Gurobi; requirements declared; CPLEX-only lines exempt)
-- [ ] T016 [US5] Tier 3 checkpoint → `$F/inventory/coverage/tier3.jsonl`; all pass
+- [X] T016 [US5] Tier 3 checkpoint → `$F/inventory/coverage/tier3.jsonl`; all pass (7 tests, all quarantine layout)
 
 ## Phase 8: User Story 6 — Tier 4/5 tests (Priority: P4)
 
-- [ ] T017 [US6] Run procedure W for Tier 4/5 waves until none PENDING (models via getDistributedModel; reference values labelled Tier 5)
-- [ ] T018 [US6] Tier 4/5 checkpoint → `$F/inventory/coverage/tier4.jsonl`; all pass
+- [X] T017 [US6] Run procedure W for Tier 4/5 waves until none PENDING (models via getDistributedModel; reference values labelled Tier 5)
+- [X] T018 [US6] Tier 4/5 checkpoint → `$F/inventory/coverage/tier4.jsonl`; all pass (no Tier 4/5 row was testable: 40 BLOCKED, 9 EXCLUDED, so there is no test to run and no tier4.jsonl)
 
 ## Phase 9: User Story 7 — Ready for human review (Priority: P2) and Polish
 
