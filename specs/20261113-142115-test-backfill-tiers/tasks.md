@@ -76,7 +76,7 @@ finds a confirmed defect for every QUARANTINED row and a quarantined reach for e
 ## Phase 6: User Story 4 — Tier 2 tests (Priority: P2)
 
 - [X] T013 [US4] Run procedure W for Tier 2 waves until none PENDING
-- [ ] T014 [US4] Tier 2 checkpoint → `$F/inventory/coverage/tier2.jsonl`; all pass
+- [X] T014 [US4] Tier 2 checkpoint → `$F/inventory/coverage/tier2.jsonl`; all pass (148 tests, two coverage sessions of 74, merged)
 
 ## Phase 7: User Story 5 — Tier 3 tests (Priority: P3)
 
