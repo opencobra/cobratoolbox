@@ -31,14 +31,16 @@
 %       LINES: 17-20, 50
 %     - DEFECT: The fallback to the reversed reaction <name>_r never runs
 %       SEVERITY: wrong-result
-%       TRIGGER: a reaction name that is not in a model whose reversed half <name>_r is, e.g.
-%       rxnNames {'r1_'} with model.rxns {'r1'; 'r2'}, nBins 5
+%       TRIGGER: a reaction name that is not in a model whose reversed half <name>_r is:
+%       model = createModel({'r1_r','r2'}, {'r1_r','r2'}, {'A -> B','B ->'}, 'printLevel', 0);
+%       compareSampleTraj({'r1'}, {[1 2 3; 4 5 6]}, {model}, 5)
 %       OBSERVED: 'Index in position 1 is invalid. Array indices must be positive integers or
-%       logical values.' at line 46 (MATLAB R2025a): findRxnIDs returns 0, not an empty array, for
-%       an absent name, so the isempty tests of lines 40 and 55 are never true and 0 is used as an
-%       index
-%       EXPECTED: the reaction is looked up as <name>_r (lines 41 and 56) and, if absent, the
-%       error 'Reaction does not exist' of line 43
+%       logical values.' at line 46 (MATLAB R2025a, 2026-11-17): findRxnIDs(model, 'r1') returns
+%       0, not an empty array, for an absent name, so the isempty tests of lines 40 and 55 are
+%       never true and 0 is used as an index. A name absent in both forms ({'r1_'} with
+%       model.rxns {'r1'; 'r2'}) stops at the same line instead of line 43
+%       EXPECTED: the samples of r1_r plotted with the sign -1 (lines 41, 56-57); for a name
+%       absent in both forms, the error 'Reaction does not exist' of line 43
 %       LINES: 40-45, 55-58
 %
 % Authors:

@@ -72,6 +72,22 @@
 %         minNorm, also for theNorm 'zero' and printLevel 0)
 %       EXPECTED: console output gated by printLevel; no Euclidean-norm note for 'zero'
 %       LINES: 433, 806-809
+%     - DEFECT: With osense = 1 the IBM ILOG branch optimises in the wrong direction
+%       SEVERITY: wrong-result
+%       TRIGGER: LP = struct('A', sparse([1 -1 0; 0 1 -1]), 'b', [0; 0], 'c', [0; 0; 1],
+%         'lb', zeros(3, 1), 'ub', 10 * ones(3, 1), 'osense', 1, 'csense', ['E'; 'E']);
+%         solveCobraLPCPLEXcard(LP) with IBM ILOG CPLEX (cplexlp) on the path (theNorm 'two',
+%         the default; also with minNorm ~= 0); the same with LP.c = [0; 0; -1]
+%       OBSERVED: (R2025a, 2026-11-17, with stand-in Cplex and cplexlp on a temporary path that
+%         solve the Cplex model with gurobi; CPLEX is not installed) solution.full = [10; 10;
+%         10], solution.obj = -10, stat 1, where solveCobraLP with gurobi returns the minimum
+%         full = [0; 0; 0], obj 0; with LP.c = [0; 0; -1] it returns full = [0; 0; 0], obj 0
+%         instead of the minimum -10. Line 182 sets c = osense*LPProblem.c = LPProblem.c and
+%         line 331 passes -c with the sense 'minimize' of line 325, so -LPProblem.c is minimised
+%         and line 362 reports -LPProblem.c'*x
+%       EXPECTED: the minimum of LPProblem.c'*x (obj 0 at x = 0; obj -10 at x = [10; 10; 10]
+%         for c = [0; 0; -1]) with solution.obj = LPProblem.c'*solution.full
+%       LINES: 324-331, 362
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-17.

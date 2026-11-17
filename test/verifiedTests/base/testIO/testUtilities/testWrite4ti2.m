@@ -29,6 +29,26 @@
 %       EXPECTED: the documented input "SeFull: full stoichiometric matrix" is integerised and
 %         written, e.g. integerizeS(struct('S', SeFull), 0, 0) and its .S field
 %       LINES: 17
+%     - DEFECT: With uni = 0 the file is closed twice and the call stops after writing it
+%       SEVERITY: error
+%       TRIGGER: write4ti2([1 -1; 0 1], fullfile(<tempname folder>, 'x'), 0), reached once line
+%         17 passes the matrix (the real integerizeS stops the call at line 17 first)
+%       OBSERVED: (R2025a, 2026-11-17, with a stand-in integerizeS on a temporary path that
+%         returns its matrix input) x_Bi.4ti2in is written completely ("2 2", "1 -1 ", "0 1 ")
+%         and the call then stops with "Invalid file identifier.  Use fopen to generate a valid
+%         file identifier." at line 45: line 32 closes fid inside the uni == 0 branch and line
+%         45, after the if/else, closes it again; with uni = 1 the same call returns normally
+%       EXPECTED: the file written and the call returning, as for uni = 1
+%       LINES: 32, 45
+%     - DEFECT: The optional input uni has no default, so it cannot be omitted
+%       SEVERITY: error
+%       TRIGGER: write4ti2([1 -1; 0 1], fullfile(<tempname folder>, 'y')), reached once line 17
+%         passes the matrix (the real integerizeS stops the call at line 17 first)
+%       OBSERVED: (R2025a, 2026-11-17, same stand-in integerizeS) "Not enough input arguments."
+%         (MATLAB:minrhs) at line 21 (if uni == 0); no file is written
+%       EXPECTED: OPTIONAL INPUT documents "uni: {(0),1}", i.e. a default of 0: the matrix is
+%         written to <filename>_Bi.4ti2in
+%       LINES: 21
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.

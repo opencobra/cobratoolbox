@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-848 known defects in 467 functions (313 wrong-result, 253 error, 75 unusable-option, 143 cosmetic, 64 limitation).
+863 known defects in 467 functions (318 wrong-result, 258 error, 76 unusable-option, 147 cosmetic, 64 limitation).
 
 ## Summary
 
@@ -283,6 +283,7 @@
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadRay.m` | error | the optional param cannot be omitted | `test/verifiedTests/analysis/testLrsInterface/testLrsReadRay.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m` | cosmetic | a file that cannot be opened gives an undefined-variable error | `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m` | limitation | the file identifier is never closed | `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m` |
+| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m` | wrong-result | the documented default positivity = 1 is implemented as 0 | `test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m` | error | the optional param cannot be omitted | `test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m` | unusable-option | the shell-script option fails | `test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m` | wrong-result | with no equality and inequality = 1 the column count is 1 | `test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m` |
@@ -381,6 +382,8 @@
 | `src/base/io/utilities/readSimPhenyCMPD.m` | wrong-result | Alternative names keep the blank that follows a '/' | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
 | `src/base/io/utilities/readSimPhenyGPR.m` | limitation | A file without reaction lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGPR.m` |
 | `src/base/io/utilities/readSimPhenyGprText.m` | wrong-result | the rules of reactions with several genes refer to the wrong genes | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyGprText.m` |
+| `src/base/io/utilities/write4ti2.m` | error | The optional input uni has no default, so it cannot be omitted | `test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m` |
+| `src/base/io/utilities/write4ti2.m` | error | With uni = 0 the file is closed twice and the call stops after writing it | `test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m` |
 | `src/base/io/utilities/write4ti2.m` | error | integerizeS is called with a matrix but needs a model structure | `test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m` |
 | `src/base/io/utilities/writeSBML.m` | error | A model without reactions cannot be written | `test/verifiedTests/base/testIO/testWriteSBML.m` |
 | `src/base/io/utilities/writeSBML.m` | wrong-result | The compartments of the model and the given lists are replaced by the defaults | `test/verifiedTests/base/testIO/testWriteSBML.m` |
@@ -409,8 +412,10 @@
 | `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | error | An LPProblem without csense stops with an error | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | wrong-result | The IBM ILOG branch returns the objective of a maximisation with the wrong sign | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | cosmetic | The cardinality solve prints the solution structure and a minimum-Euclidean-norm note | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
+| `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | wrong-result | With osense = 1 the IBM ILOG branch optimises in the wrong direction | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | wrong-result | theNorm 'zero' optimises the original objective in the wrong direction or reports it with the wrong sign | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
 | `src/base/solvers/entropicFBA/addExoMetToEFBA.m` | error | Data for a reaction not in the model, or duplicate data, stop with an error | `test/verifiedTests/base/testEntropicFBA/testAddExoMetToEFBA.m` |
+| `src/base/solvers/entropicFBA/addExoMetToEFBA.m` | error | The default relaxBounds reads model fields that are not documented as required | `test/verifiedTests/base/testEntropicFBA/testAddExoMetToEFBA.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | cosmetic | Documented defaults for the concentration unit and the maximum concentration differ from the code | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | unusable-option | The case dxReplacement always stops with an error | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
 | `src/base/solvers/entropicFBA/processConcConstraints.m` | wrong-result | The default row selection indexes the first row repeatedly | `test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m` |
@@ -456,6 +461,7 @@
 | `src/base/solvers/varKin/BDCAmethods/DCA.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testDCA.m` |
 | `src/base/solvers/varKin/derFreeMethods/BDF.m` | cosmetic | The display format is switched to longG and the status is printed | `test/verifiedTests/base/testSolvers/testBDF.m` |
 | `src/base/solvers/varKin/derFreeMethods/BDF.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testBDF.m` |
+| `src/base/solvers/varKin/derFreeMethods/BDF.m` | wrong-result | out.Xk holds only the starting point | `test/verifiedTests/base/testSolvers/testBDF.m` |
 | `src/base/solvers/varKin/derFreeMethods/BDF.m` | wrong-result | x_error and Time have a spurious zero in position 2 | `test/verifiedTests/base/testSolvers/testBDF.m` |
 | `src/base/solvers/varKin/derFreeMethods/CSDF.m` | cosmetic | The display format is switched to longG and Niter and the status are printed | `test/verifiedTests/base/testSolvers/testCSDF.m` |
 | `src/base/solvers/varKin/derFreeMethods/CSDF.m` | unusable-option | The option flag_psi_error cannot be used | `test/verifiedTests/base/testSolvers/testCSDF.m` |
@@ -569,10 +575,13 @@
 | `src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m` | cosmetic | The progress shown exceeds 100 percent when startSearch is above 1 | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m` |
 | `src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m` | cosmetic | The metabolite counter is printed for every metabolite | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testGenerateInchiKeysSmilesFromInchiStrings.m` |
 | `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | error | An empty difference set is not assigned, so a call requesting it stops | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
+| `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | wrong-result | Higher secretion is reported for the other condition, contrary to the code's own comments | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
+| `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | wrong-result | Higher uptake is reported for the other condition for the slope ratio of defineUptakeSecretionProfiles | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
 | `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | error | No uptake or no secretion exchange common to both conditions stops the call | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | Fewer than four exchanges stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | The documented essAA_excl flag and its default stop the call | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
 | `src/dataIntegration/metabotools/illustrate_ppp.m` | error | More than two metabolite pairs stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
+| `src/dataIntegration/metabotools/illustrate_ppp.m` | error | The mets of performPPP (one pair per row) do not select its results | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | wrong-result | Only the first two phenotypes are plotted | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The colour order is changed for every later figure of the session | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The coordinates of every phenotype are printed to the console | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
@@ -609,6 +618,7 @@
 | `src/design/optForce/saveInputsMustSetsFirstOrder.m` | cosmetic | maxFluxesW.mat is documented as the maximum fluxes of the mutant | `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsFirstOrder.m` |
 | `src/design/optForce/saveInputsMustSetsSecondOrder.m` | cosmetic | the error messages for empty inputs name the first order function | `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m` |
 | `src/design/optForce/saveInputsMustSetsSecondOrder.m` | cosmetic | two output files are misdescribed in the help text | `test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m` |
+| `src/design/optForce/saveInputsOptForce.m` | cosmetic | The wild-type maximum fluxes are written to maxFluxesW.mat, not maxFluxes.mat as documented | `test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m` |
 | `src/design/optForce/saveInputsOptForce.m` | wrong-result | k.mat and nSets.mat are not written | `test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m` |
 | `src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m` | error | Every call stops with the error that not all inputs are given | `test/verifiedTests/design/testOptForce/testExportInputsMustOrder2ToGAMS.m` |
 | `src/design/optForceGAMS/exportInputsMustToGAMS.m` | error | Every call stops with the error that not all inputs are given | `test/verifiedTests/design/testOptForce/testExportInputsMustToGAMS.m` |
@@ -625,6 +635,7 @@
 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | error | An empty list stops with an error | `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m` |
 | `src/reconstruction/comparison/modelBorgifier/makeNamesUnique.m` | wrong-result | Positions of duplicates are printed as character codes | `test/verifiedTests/reconstruction/testModelBorgifier/testMakeNamesUnique.m` |
 | `src/reconstruction/comparison/modelBorgifier/mapMatch.m` | wrong-result | 'noSeed' score of a single-metabolite compared reaction uses the minimum over the template metabolites | `test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m` |
+| `src/reconstruction/comparison/modelBorgifier/mapMatch.m` | cosmetic | The help names the third input seedMats and does not document the 'noSeed' form | `test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m` |
 | `src/reconstruction/comparison/modelBorgifier/optimalScores.m` | error | A training list with exactly one matched reaction stops with an index error | `test/verifiedTests/reconstruction/testModelBorgifier/testOptimalScores.m` |
 | `src/reconstruction/comparison/modelBorgifier/readCbTmodel.m` | wrong-result | rules and rxnGeneMat are never built | `test/verifiedTests/reconstruction/testModelBorgifier/testReadCbTmodel.m` |
 | `src/reconstruction/comparison/modelBorgifier/readCbTmodel.m` | wrong-result | rxnID and metID entries are shifted when an entry has no ID of the model | `test/verifiedTests/reconstruction/testModelBorgifier/testReadCbTmodel.m` |
@@ -635,6 +646,8 @@
 | `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
 | `src/reconstruction/demeter/src/integration/getCurationStatus.m` | wrong-result | Data entries 1 and -1 cancel out and the organism is reported without experimental data | `test/verifiedTests/reconstruction/testDemeter/testGetCurationStatus.m` |
 | `src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m` | error | Spreadsheets with no unannotated reaction stop with an index error | `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m` |
+| `src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m` | unusable-option | The documented default of inputDataFolder is not implemented | `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m` |
+| `src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m` | cosmetic | The loop counter i is printed for every spreadsheet and every organism | `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m` |
 | `src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m` | wrong-result | A KBase reaction irreversible where the VMH reaction is reversible is not reported as similar | `test/verifiedTests/reconstruction/testDemeter/testMapKBaseToVMHReactions.m` |
 | `src/reconstruction/demeter/src/integration/printRefinedModelIDs.m` | wrong-result | files that are not SBML or .mat files are returned as model identifiers | `test/verifiedTests/reconstruction/testDemeter/testPrintRefinedModelIDs.m` |
 | `src/reconstruction/demeter/src/integration/writeReactionsFromPubSeedSpreadsheets.m` | unusable-option | The documented default of inputDataFolder is not implemented | `test/verifiedTests/reconstruction/testDemeter/testWriteReactionsFromPubSeedSpreadsheets.m` |
@@ -646,6 +659,7 @@
 | `src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m` | cosmetic | the metabolite counter is printed | `test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m` |
 | `src/reconstruction/demeter/src/properties/producetSNEPlots.m` | error | 16 to 19 taxa with few singletons raise an index error | `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m` |
 | `src/reconstruction/demeter/src/properties/producetSNEPlots.m` | cosmetic | the custom-feature branch filters on the taxa of the last taxon level | `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m` |
+| `src/reconstruction/demeter/src/properties/producetSNEPlots.m` | error | the custom-feature branch reads perpl, which only the taxon branch sets | `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m` |
 | `src/reconstruction/demeter/src/properties/producetSNEPlots.m` | error | three t-SNE coordinates are stored in two columns | `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m` |
 | `src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m` | wrong-result | metabolite and uptake/secretion features are looked up in the reaction database | `test/verifiedTests/reconstruction/testDemeter/testRankFeaturesByIncidence.m` |
 | `src/reconstruction/demeter/src/properties/rankFeaturesByIncidence.m` | wrong-result | the percentage of reconstructions is divided by the count of the most common feature | `test/verifiedTests/reconstruction/testDemeter/testRankFeaturesByIncidence.m` |
@@ -664,6 +678,7 @@
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | A SUX structure without exchange reactions cannot be solved | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | An empty objective stops with an undefined variable | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/growthExpMatch/printSolutionGEM.m` | error | A log file name shorter than four characters stops the function | `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m` |
+| `src/reconstruction/growthExpMatch/printSolutionGEM.m` | cosmetic | The documented default log file GEMLog.txt is never used | `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m` |
 | `src/reconstruction/metaboRePort/generateMetaboReport.m` | cosmetic | Every template line is printed twice to the console | `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m` |
 | `src/reconstruction/metaboRePort/generateMetaboReport.m` | wrong-result | Template lines are written as fprintf formats, so a percent sign cuts the line | `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m` |
 | `src/reconstruction/metaboRePort/generateMetaboReport.m` | wrong-result | The first template line is not written | `test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m` |
@@ -1045,9 +1060,9 @@
 #### Zero band applied inconsistently to the maximum and to max - min
 
 - **Severity**: wrong-result
-- **Trigger**: getQualitativeFluxStates([-1 2 -2], [0 2 -2], 0); and with the default band getQualitativeFluxStates([-1 2], [1e-9 2 + 1e-9], 1e-9)
-- **Observed**: [5 2 -2] ({'err', '++', '--'}) for delta = 0, and [5 2] for delta = 1e-9: the state -1 requires max < delta (not <= delta) and the fixed states -3 and 3 require |max - min| < delta (not <= delta), so with delta = 0 they cannot occur
-- **Expected**: [-1 3 -3] ({'-0', '+', '-'}) and [-1 3]: the documented table treats |x| <= delta, and a difference max - min within delta, as zero
+- **Trigger**: getQualitativeFluxStates([-1 2 -2], [0 2 -2], 0); with the default band getQualitativeFluxStates(-1, 1e-9); and at the edge of a band that is exact in binary, getQualitativeFluxStates([-1 2 -2.5], [0.5 2.5 -2], 0.5)
+- **Observed**: (R2025a, 2026-11-17) [5 2 -2] ({'err', '++', '--'}) for delta = 0, 5 for the default band, and [5 2 -2] for delta = 0.5 (just inside that band, getQualitativeFluxStates([-1 2 -2.5], [0.4 2.4 -2.1], 0.5) gives [-1 3 -3]): the state -1 requires max < delta (not <= delta) and the fixed states -3 and 3 require |max - min| < delta (not <= delta), so with delta = 0 they cannot occur. A difference of exactly 1e-9 is hard to produce in double precision ((2 + 1e-9) - 2 is 1.000000082740371e-09), so the edge of the fixed states is shown with delta = 0.5
+- **Expected**: [-1 3 -3] ({'-0', '+', '-'}), -1 and [-1 3 -3]: the documented table treats |x| <= delta, and a difference max - min within delta, as zero
 - **Source lines**: 68, 75, 85
 - **Documented in**: `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m`
 
@@ -2528,9 +2543,9 @@
 #### The fallback to the reversed reaction <name>_r never runs
 
 - **Severity**: wrong-result
-- **Trigger**: a reaction name that is not in a model whose reversed half <name>_r is, e.g. rxnNames {'r1_'} with model.rxns {'r1'; 'r2'}, nBins 5
-- **Observed**: 'Index in position 1 is invalid. Array indices must be positive integers or logical values.' at line 46 (MATLAB R2025a): findRxnIDs returns 0, not an empty array, for an absent name, so the isempty tests of lines 40 and 55 are never true and 0 is used as an index
-- **Expected**: the reaction is looked up as <name>_r (lines 41 and 56) and, if absent, the error 'Reaction does not exist' of line 43
+- **Trigger**: a reaction name that is not in a model whose reversed half <name>_r is: model = createModel({'r1_r','r2'}, {'r1_r','r2'}, {'A -> B','B ->'}, 'printLevel', 0); compareSampleTraj({'r1'}, {[1 2 3; 4 5 6]}, {model}, 5)
+- **Observed**: 'Index in position 1 is invalid. Array indices must be positive integers or logical values.' at line 46 (MATLAB R2025a, 2026-11-17): findRxnIDs(model, 'r1') returns 0, not an empty array, for an absent name, so the isempty tests of lines 40 and 55 are never true and 0 is used as an index. A name absent in both forms ({'r1_'} with model.rxns {'r1'; 'r2'}) stops at the same line instead of line 43
+- **Expected**: the samples of r1_r plotted with the sign -1 (lines 41, 56-57); for a name absent in both forms, the error 'Reaction does not exist' of line 43
 - **Source lines**: 40-45, 55-58
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testCompareSampleTraj.m`
 
@@ -3656,6 +3671,15 @@
 
 ### `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m`
 
+#### the documented default positivity = 1 is implemented as 0
+
+- **Severity**: wrong-result
+- **Trigger**: lrsWriteHalfspace([1 -1], 0, 'E', 'pz', struct('inequality', 0)) (positivity omitted), i.e. x1 - x2 = 0, then system('lrs pz.ine')
+- **Observed**: (R2025a, lrslib 7.1, 2026-11-17) pz.ine has "linearity 1 1 / begin / 1 3 integer / 0 1 -1 / end" (lines 39-41 set param.positivity = 0); lrs returns vertex (0, 0) and linearity (1, 1), the whole line x1 = x2. With positivity = 1 given explicitly the file has "3 3 integer" with the rows 0 1 0 and 0 0 1, and lrs returns vertex (0, 0) and ray (1, 1)
+- **Expected**: the documented default "{0, (1)} if param.positivity == 1, then positive orthant base" (line 18): x >= 0 added, so the file and lrs result equal those of the explicit positivity = 1 call
+- **Source lines**: 39-41
+- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m`
+
 #### the optional param cannot be omitted
 
 - **Severity**: error
@@ -4666,6 +4690,24 @@
 
 ### `src/base/io/utilities/write4ti2.m`
 
+#### The optional input uni has no default, so it cannot be omitted
+
+- **Severity**: error
+- **Trigger**: write4ti2([1 -1; 0 1], fullfile(<tempname folder>, 'y')), reached once line 17 passes the matrix (the real integerizeS stops the call at line 17 first)
+- **Observed**: (R2025a, 2026-11-17, same stand-in integerizeS) "Not enough input arguments." (MATLAB:minrhs) at line 21 (if uni == 0); no file is written
+- **Expected**: OPTIONAL INPUT documents "uni: {(0),1}", i.e. a default of 0: the matrix is written to <filename>_Bi.4ti2in
+- **Source lines**: 21
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m`
+
+#### With uni = 0 the file is closed twice and the call stops after writing it
+
+- **Severity**: error
+- **Trigger**: write4ti2([1 -1; 0 1], fullfile(<tempname folder>, 'x'), 0), reached once line 17 passes the matrix (the real integerizeS stops the call at line 17 first)
+- **Observed**: (R2025a, 2026-11-17, with a stand-in integerizeS on a temporary path that returns its matrix input) x_Bi.4ti2in is written completely ("2 2", "1 -1 ", "0 1 ") and the call then stops with "Invalid file identifier.  Use fopen to generate a valid file identifier." at line 45: line 32 closes fid inside the uni == 0 branch and line 45, after the if/else, closes it again; with uni = 1 the same call returns normally
+- **Expected**: the file written and the call returning, as for uni = 1
+- **Source lines**: 32, 45
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m`
+
 #### integerizeS is called with a matrix but needs a model structure
 
 - **Severity**: error
@@ -4942,6 +4984,15 @@
 - **Source lines**: 433, 806-809
 - **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m`
 
+#### With osense = 1 the IBM ILOG branch optimises in the wrong direction
+
+- **Severity**: wrong-result
+- **Trigger**: LP = struct('A', sparse([1 -1 0; 0 1 -1]), 'b', [0; 0], 'c', [0; 0; 1], 'lb', zeros(3, 1), 'ub', 10 * ones(3, 1), 'osense', 1, 'csense', ['E'; 'E']); solveCobraLPCPLEXcard(LP) with IBM ILOG CPLEX (cplexlp) on the path (theNorm 'two', the default; also with minNorm ~= 0); the same with LP.c = [0; 0; -1]
+- **Observed**: (R2025a, 2026-11-17, with stand-in Cplex and cplexlp on a temporary path that solve the Cplex model with gurobi; CPLEX is not installed) solution.full = [10; 10; 10], solution.obj = -10, stat 1, where solveCobraLP with gurobi returns the minimum full = [0; 0; 0], obj 0; with LP.c = [0; 0; -1] it returns full = [0; 0; 0], obj 0 instead of the minimum -10. Line 182 sets c = osense*LPProblem.c = LPProblem.c and line 331 passes -c with the sense 'minimize' of line 325, so -LPProblem.c is minimised and line 362 reports -LPProblem.c'*x
+- **Expected**: the minimum of LPProblem.c'*x (obj 0 at x = 0; obj -10 at x = [10; 10; 10] for c = [0; 0; -1]) with solution.obj = LPProblem.c'*solution.full
+- **Source lines**: 324-331, 362
+- **Documented in**: `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m`
+
 #### theNorm 'zero' optimises the original objective in the wrong direction or reports it with the wrong sign
 
 - **Severity**: wrong-result
@@ -4960,6 +5011,15 @@
 - **Observed**: error "Unrecognized function or variable 'printLevel'." - lines 69 and 75 read the undefined variable printLevel instead of param.printLevel
 - **Expected**: the unmatched (or duplicate) entries ignored and the penalty built from the matched data, as the help text says (exoMet.rxns "matched against model.rxns") and as lines 68-77 and 82 intend
 - **Source lines**: 69, 75
+- **Documented in**: `test/verifiedTests/base/testEntropicFBA/testAddExoMetToEFBA.m`
+
+#### The default relaxBounds reads model fields that are not documented as required
+
+- **Severity**: error
+- **Trigger**: model = struct('S', [1 -1 0; 0 1 -1], 'rxns', {{'EX_a'; 'R1'; 'EX_b'}}) (the documented fields; also with model.lb and model.ub added); exoMet = struct('rxns', {{'EX_a'}}, 'mean', -1, 'SD', 0.1); addExoMetToEFBA(model, exoMet)
+- **Observed**: (R2025a, 2026-11-17) Unrecognized field name "lb_preconstrainRxns". (line 123); lines 123-124 read model.lb_preconstrainRxns and model.ub_preconstrainRxns, which only metabolomicsTomodel sets; with param.relaxBounds = 0 the same call returns h = [-1; NaN; NaN] and diag(H) = [5000; 0; 0]
+- **Expected**: the documented call (model with .S and .rxns, default param) returns the model with .H, .h and the relaxed bounds, or INPUTS list .lb_preconstrainRxns and .ub_preconstrainRxns as required while relaxBounds is true
+- **Source lines**: 121-124
 - **Documented in**: `test/verifiedTests/base/testEntropicFBA/testAddExoMetToEFBA.m`
 
 ### `src/base/solvers/entropicFBA/processConcConstraints.m`
@@ -5409,6 +5469,15 @@
 - **Observed**: the first iteration stops with "Unrecognized function or variable 'psi_opt'." (MATLAB:UndefinedFunction, line 151; R2025a, 2026-11-15); options.psi_opt is never read and psi0 is never set
 - **Expected**: out.psi_error, the relative error (psi_k - psi_opt)/(psi_0 - psi_opt) of each iteration
 - **Source lines**: 89-91, 150-152, 182-184
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBDF.m`
+
+#### out.Xk holds only the starting point
+
+- **Severity**: wrong-result
+- **Trigger**: options.MaxNumIter = 3, options.Stopping_Crit = 2 (same model as above): [x_best, psi_best, out] = BDF(mapp, x0, options)
+- **Observed**: (R2025a, 2026-11-17) out.Niter = 3 but out.Xk = [0.5; -0.3] (2 x 1), i.e. x0, while x_best = [0.16495; 0.035046]: line 99 sets Xk = x0 and the loop never appends an iterate, so line 171 returns x0
+- **Expected**: out.Xk holds the iterates, one column per iteration, as the sibling methods DCA, BDCA and LLM of src/base/solvers/varKin store them (Xk(:, Niter) = xk)
+- **Source lines**: 99, 135-140, 171
 - **Documented in**: `test/verifiedTests/base/testSolvers/testBDF.m`
 
 #### x_error and Time have a spurious zero in position 2
@@ -6546,6 +6615,24 @@
 - **Source lines**: 84, 90, 104, 110
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m`
 
+#### Higher secretion is reported for the other condition, contrary to the code's own comments
+
+- **Severity**: wrong-result
+- **Trigger**: r = {'EX_a'; 'EX_c'; 'EX_b'; 'EX_d'}; A = [100 100 100 50; 100 100 100 80; 100 100 100 200; 100 100 100 150]; B = [100 100 100 80; 100 100 100 50; 100 100 100 150; 100 100 100 200]; [u1, u2, s1, s2, sr] = defineUptakeSecretionProfiles(A, B, r, 0.05, {'none'}, {}, {}, {}, {}); [o1, o2, o3, o4] = calculateQuantitativeDiffs(r, sr, r, [1; 2; 3; 4], u1, u2, s1, s2)
+- **Observed**: (R2025a, 2026-11-17) sr = [1.6; 0.625; 0.75; 1.3333]; cond2_secr_higher = EX_b (25) and cond1_secr_higher = EX_d (133.333), although EX_b rises 2-fold in condition 1 and 1.5-fold in condition 2 (EX_d the reverse): the comment of line 102 says secretion is higher in cond1 when slopeRatio < 1 (as slope_Ratio = slope_cond2/slope_cond1 of defineUptakeSecretionProfiles implies), but lines 104-105 store those exchanges in cond2_secr_higher, and lines 110-111 store ratio >= 1 in cond1_secr_higher
+- **Expected**: cond1_secr_higher = EX_b and cond2_secr_higher = EX_d (OUTPUTS: higher secretion in condition 1, in condition 2)
+- **Source lines**: 102-112
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m`
+
+#### Higher uptake is reported for the other condition for the slope ratio of defineUptakeSecretionProfiles
+
+- **Severity**: wrong-result
+- **Trigger**: the call of the entry above
+- **Observed**: (R2025a, 2026-11-17) cond1_upt_higher = EX_c (37.5) and cond2_upt_higher = EX_a (0.6), although EX_a falls to 0.5 of its start in condition 1 and to 0.8 in condition 2 (more uptake in condition 1; EX_c the reverse): slope_Ratio is the ratio of the concentration fold changes slope_cond2/slope_cond1, which is < 1 when condition 2 depletes more, while lines 82-85 (comment and code) take ratio < 1 as higher uptake in cond1
+- **Expected**: cond1_upt_higher = EX_a and cond2_upt_higher = EX_c (OUTPUTS: higher uptake in condition 1, in condition 2)
+- **Source lines**: 82-92
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m`
+
 #### No uptake or no secretion exchange common to both conditions stops the call
 
 - **Severity**: error
@@ -6584,6 +6671,15 @@
 - **Observed**: Index in position 1 exceeds array bounds. Index must not exceed 2. (line 28; R2025a, 2026-11-15) after the PDFs of the first two pairs: line 28 tests mets{p, 1} (row p) where the pair is column p (mets{1, p}, as lines 29-31 use)
 - **Expected**: one PDF per pair
 - **Source lines**: 28
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m`
+
+#### The mets of performPPP (one pair per row) do not select its results
+
+- **Severity**: error
+- **Trigger**: model = createModel({'EX_glc(e)'; 'EX_o2(e)'; 'EX_gln(e)'; 'BIO'}, {'glc ex'; 'o2 ex'; 'gln ex'; 'biomass'}, {'glc[e] <=> '; 'o2[e] <=> '; 'gln[e] <=> '; 'glc[e] + o2[e] + gln[e] -> '}) with lb = -10 and ub = 10 on the exchanges and c = 1 on BIO; R.S1.modelPruned = model; R.S1.maxBiomass.f = 10; mets = {'EX_glc(e)', 'EX_o2(e)'} (performPPP's layout, its help: pairs x 2); R = performPPP(R, mets, [1 1], {'S1'}, [3 3], [-1 -1]); illustrate_ppp(R, mets, <tempname folder>, {'S1'}, {'x'; 'y'; 'z'}, 10, 1e-6); the same with two pairs mets = {'EX_glc(e)', 'EX_o2(e)'; 'EX_gln(e)', 'EX_o2(e)'} and two-row step_size, step_num and direct
+- **Observed**: (R2025a, 2026-11-17, gurobi) one pair: "Index in position 1 exceeds array bounds. Index must not exceed 1." (line 31); two pairs: Unrecognized field name "phasePlane_EX_glc_EX_gln". (line 34), although performPPP stored phasePlane_EX_glc_EX_o2 and phasePlane_EX_gln_EX_o2: performPPP reads pair p from row p (mets{p, 1}, mets{p, 2}), illustrate_ppp from column p (mets{1, p}, mets{2, p}); the transposed mets draws and saves the PDFs
+- **Expected**: the header says illustrate_ppp shows "the results of the function performPPP" for the "Metabolites that were tested in the phase plane analysis", so the mets given to performPPP select its results and one PDF per pair is saved
+- **Source lines**: 27, 29, 31, 44-45, 50, 96
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m`
 
 ### `src/dataIntegration/metabotools/make3Dplot.m`
@@ -6946,6 +7042,15 @@
 
 ### `src/design/optForce/saveInputsOptForce.m`
 
+#### The wild-type maximum fluxes are written to maxFluxesW.mat, not maxFluxes.mat as documented
+
+- **Severity**: cosmetic
+- **Trigger**: the call of the entry above
+- **Observed**: (R2025a, 2026-11-17) the folder holds maxFluxesW.mat (line 141) and no maxFluxes.mat; the call succeeds, and every other file is named after its variable, so the code's name is the consistent one and the OUTPUTS line misdescribes it
+- **Expected**: the OUTPUTS section (line 86) names the file maxFluxesW.mat
+- **Source lines**: 86, 141
+- **Documented in**: `test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m`
+
 #### k.mat and nSets.mat are not written
 
 - **Severity**: wrong-result
@@ -7114,6 +7219,15 @@
 - **Source lines**: 81
 - **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m`
 
+#### The help names the third input seedMats and does not document the 'noSeed' form
+
+- **Severity**: cosmetic
+- **Trigger**: help mapMatch; and the C, T of the entry above with [rmatch, mmatch] = mapMatch(C, T, 'noSeed')
+- **Observed**: (R2025a, 2026-11-17) the INPUTS section (line 12) describes "seedMats" while the signature and USAGE use seedMets; the help never mentions 'noSeed', the only form compareCbModels uses (its line 336). The call returns rmatch = [1 1; 1 1] and mmatch = zeros(2, 3): in the noSeed branch (lines 57-90) mmatch is never computed, and any other character argument (for example 'xyz') returns both outputs as zeros without a message. No call fails because of the help
+- **Expected**: the help names the input seedMets and documents 'noSeed' (topology score only, mmatch not computed)
+- **Source lines**: 1, 7, 12-14, 57-58
+- **Documented in**: `test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m`
+
 ### `src/reconstruction/comparison/modelBorgifier/optimalScores.m`
 
 #### A training list with exactly one matched reaction stops with an index error
@@ -7216,6 +7330,24 @@
 - **Observed**: "Index in position 2 exceeds array bounds." at line 84: unannotatedRxns is the 0 x 0 cell {} and unannotatedRxns(:, 1) fails (R2025a, 2026-11-15)
 - **Expected**: an empty list of unannotated reactions returned
 - **Source lines**: 84
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m`
+
+#### The documented default of inputDataFolder is not implemented
+
+- **Severity**: unusable-option
+- **Trigger**: the files of the entry above, with gapfilledGenomeAnnotation.txt moved to d/InputData, the line 'GeneY RXN2' added to InReactions.txt, 'rxn2 RXN2' added to ReactionTranslationTable.txt, and d/ss/a.tsv replaced by the tab-separated lines 'Organism GeneX GeneY', 'Org A (1.1) 123 <empty>' and 'Org B (2.1) 5 7'; from d, getUnannotatedReactionsFromPubSeedSpreadsheets(fullfile(d, 'info2.txt'), [], fullfile(d, 'ss')) (or '' for inputDataFolder); inputDataFolder cannot be omitted because spreadsheetFolder follows it, so an empty value is the only way to ask for the default
+- **Observed**: (R2025a, 2026-11-17, Linux) "Unable to find or open '/gapfilledGenomeAnnotation.txt'." (readtable, called at line 75 through readInputTableForPipeline): [[] filesep 'gapfilledGenomeAnnotation.txt'] is a path in the root of the file system; there is no nargin or isempty handling. The same call with fullfile(d, 'InputData') returns {'orgA', 'RXN2'}
+- **Expected**: d/InputData/gapfilledGenomeAnnotation.txt read, as the header documents ("inputDataFolder: ... (default: folder in current path called "InputData")", lines 14-15)
+- **Source lines**: 75
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m`
+
+#### The loop counter i is printed for every spreadsheet and every organism
+
+- **Severity**: cosmetic
+- **Trigger**: the call of the entry above with fullfile(d, 'InputData')
+- **Observed**: (R2025a, 2026-11-17) "i = 1" is printed twice to the command window, by the statements without a semicolon of lines 47 and 86; the result is not affected
+- **Expected**: no output other than the returned list (no progress output is documented)
+- **Source lines**: 47, 86
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m`
 
 ### `src/reconstruction/demeter/src/integration/mapKBaseToVMHReactions.m`
@@ -7329,6 +7461,15 @@
 - **Observed**: (code reading, R2025a source of 2026-11-15) lines 246-248 remove rows where taxa (the species list left by the taxon loop, already without 'N/A' and of another length) is 'N/A', so they never remove anything; the strains whose feature is 'N/A' are kept. Lines 66-67 already drop strains absent from the information table, so no 'N/A' feature arises unless the first header of the property file is itself an identifier of the information table
 - **Expected**: the filter applied to feats (strains with no information on the feature removed from data, red_orgs and feats)
 - **Source lines**: 246-248
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m`
+
+#### the custom-feature branch reads perpl, which only the taxon branch sets
+
+- **Severity**: error
+- **Trigger**: info.txt (tab-separated: MicrobeID, Phylum, Class, Order, Family, Genus, Species, Gram) for exactly 10 strains m01..m10 (ranks P1..Spec1 for m01-m05 and P2..Spec2 for m06-m10, Gram 'pos' or 'neg'); ReactionMetabolitePresence/ ReactionPresence_v.txt in folder d (header row, one row per strain, 3 positive features); producetSNEPlots(d, 'd/info.txt', 'v', {'Gram'})
+- **Observed**: (R2025a, 2026-11-17) error "Unrecognized function or variable 'perpl'." at line 260, also with a stand-in tsne on the path, so the missing toolbox does not mask it; the same call without customFeatures returns normally. perpl is assigned only at lines 178-186, inside "if size(data,1) > 10" of the taxon loop, which no taxon level reaches with 10 strains, while the custom-feature branch runs from 10 strains on (line 250); the current folder is left at d (line 301 is not reached)
+- **Expected**: a perplexity chosen for the custom-feature embedding as well (the rule of lines 178-186 applied to its own data), so that 10 strains with a custom feature are embedded
+- **Source lines**: 175-186, 250, 260
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m`
 
 #### three t-SNE coordinates are stored in two columns
@@ -7507,6 +7648,15 @@
 - **Observed**: "Array indices must be positive integers or logical values." at line 27 (logFile(end-3:end) of a 3-character name), after abc_solution_1.mat was saved and before anything was printed (R2025a, 2026-11-15); 'GEMLog' and 'GEMLog.txt' work
 - **Expected**: the log written to abc.txt, as for any other name without '.txt'
 - **Source lines**: 27
+- **Documented in**: `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m`
+
+#### The documented default log file GEMLog.txt is never used
+
+- **Severity**: cosmetic
+- **Trigger**: the MatricesSUX and solution above; printSolutionGEM(MatricesSUX, solution) in an empty folder (logFile omitted)
+- **Observed**: (R2025a, 2026-11-17) the objective value and the line "3 r3 2.500000e+00" are printed to the command window (fid = 1, line 38); no GEMLog.txt and no solution .mat file are written. The content is the same as in a log file, only its destination differs, and growthExpMatch (line 199) uses this two-input form for its final display
+- **Expected**: the header (lines 17-18) documents "solution is printed in this file ... (Default = GEMLog.txt)"; either GEMLog.txt is written or the header says that without logFile the solution is printed to the command window
+- **Source lines**: 25, 37-38
 - **Documented in**: `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m`
 
 ### `src/reconstruction/metaboRePort/generateMetaboReport.m`

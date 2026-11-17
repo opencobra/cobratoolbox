@@ -22,12 +22,17 @@
 % Known defects documented (NOT tested, NOT fixed here):
 %     - DEFECT: Zero band applied inconsistently to the maximum and to max - min
 %       SEVERITY: wrong-result
-%       TRIGGER: getQualitativeFluxStates([-1 2 -2], [0 2 -2], 0); and with the default band
-%         getQualitativeFluxStates([-1 2], [1e-9 2 + 1e-9], 1e-9)
-%       OBSERVED: [5 2 -2] ({'err', '++', '--'}) for delta = 0, and [5 2] for delta = 1e-9:
-%         the state -1 requires max < delta (not <= delta) and the fixed states -3 and 3
-%         require |max - min| < delta (not <= delta), so with delta = 0 they cannot occur
-%       EXPECTED: [-1 3 -3] ({'-0', '+', '-'}) and [-1 3]: the documented table treats
+%       TRIGGER: getQualitativeFluxStates([-1 2 -2], [0 2 -2], 0); with the default band
+%         getQualitativeFluxStates(-1, 1e-9); and at the edge of a band that is exact in
+%         binary, getQualitativeFluxStates([-1 2 -2.5], [0.5 2.5 -2], 0.5)
+%       OBSERVED: (R2025a, 2026-11-17) [5 2 -2] ({'err', '++', '--'}) for delta = 0, 5 for the
+%         default band, and [5 2 -2] for delta = 0.5 (just inside that band,
+%         getQualitativeFluxStates([-1 2 -2.5], [0.4 2.4 -2.1], 0.5) gives [-1 3 -3]): the
+%         state -1 requires max < delta (not <= delta) and the fixed states -3 and 3 require
+%         |max - min| < delta (not <= delta), so with delta = 0 they cannot occur. A
+%         difference of exactly 1e-9 is hard to produce in double precision ((2 + 1e-9) - 2
+%         is 1.000000082740371e-09), so the edge of the fixed states is shown with delta = 0.5
+%       EXPECTED: [-1 3 -3] ({'-0', '+', '-'}), -1 and [-1 3 -3]: the documented table treats
 %         |x| <= delta, and a difference max - min within delta, as zero
 %       LINES: 68, 75, 85
 %

@@ -27,6 +27,19 @@
 %         matched data, as the help text says (exoMet.rxns "matched against model.rxns") and
 %         as lines 68-77 and 82 intend
 %       LINES: 69, 75
+%     - DEFECT: The default relaxBounds reads model fields that are not documented as required
+%       SEVERITY: error
+%       TRIGGER: model = struct('S', [1 -1 0; 0 1 -1], 'rxns', {{'EX_a'; 'R1'; 'EX_b'}})
+%         (the documented fields; also with model.lb and model.ub added); exoMet =
+%         struct('rxns', {{'EX_a'}}, 'mean', -1, 'SD', 0.1); addExoMetToEFBA(model, exoMet)
+%       OBSERVED: (R2025a, 2026-11-17) Unrecognized field name "lb_preconstrainRxns". (line
+%         123); lines 123-124 read model.lb_preconstrainRxns and model.ub_preconstrainRxns,
+%         which only metabolomicsTomodel sets; with param.relaxBounds = 0 the same call returns
+%         h = [-1; NaN; NaN] and diag(H) = [5000; 0; 0]
+%       EXPECTED: the documented call (model with .S and .rxns, default param) returns the model
+%         with .H, .h and the relaxed bounds, or INPUTS list .lb_preconstrainRxns and
+%         .ub_preconstrainRxns as required while relaxBounds is true
+%       LINES: 121-124
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.

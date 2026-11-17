@@ -6,8 +6,9 @@
 %       an lrs linearity or as two opposite inequalities (param.inequality = 1). The function
 %       is QUARANTINED (Constitution III-Defects, quarantine in back-fill campaigns): the
 %       documented call without param fails, with no equality the row or column count is
-%       wrong so lrs solves another polyhedron, and the sh option cannot be used; no
-%       assertion about the function is made.
+%       wrong so lrs solves another polyhedron, the sh option cannot be used, and an omitted
+%       positivity drops x >= 0 although the documented default is 1; no assertion about the
+%       function is made.
 %
 % Function under test:
 %     src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m
@@ -55,6 +56,19 @@
 %       EXPECTED: a script next to the .ine file (OPTIONAL INPUTS: "sh: output a shell script
 %         for submitting a qsub job")
 %       LINES: 322-328
+%     - DEFECT: the documented default positivity = 1 is implemented as 0
+%       SEVERITY: wrong-result
+%       TRIGGER: lrsWriteHalfspace([1 -1], 0, 'E', 'pz', struct('inequality', 0)) (positivity
+%         omitted), i.e. x1 - x2 = 0, then system('lrs pz.ine')
+%       OBSERVED: (R2025a, lrslib 7.1, 2026-11-17) pz.ine has "linearity 1 1 / begin / 1 3
+%         integer / 0 1 -1 / end" (lines 39-41 set param.positivity = 0); lrs returns vertex
+%         (0, 0) and linearity (1, 1), the whole line x1 = x2. With positivity = 1 given
+%         explicitly the file has "3 3 integer" with the rows 0 1 0 and 0 0 1, and lrs returns
+%         vertex (0, 0) and ray (1, 1)
+%       EXPECTED: the documented default "{0, (1)} if param.positivity == 1, then positive
+%         orthant base" (line 18): x >= 0 added, so the file and lrs result equal those of the
+%         explicit positivity = 1 call
+%       LINES: 39-41
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.

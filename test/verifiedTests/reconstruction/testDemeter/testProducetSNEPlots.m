@@ -56,6 +56,23 @@
 %       EXPECTED: the filter applied to feats (strains with no information on the feature
 %         removed from data, red_orgs and feats)
 %       LINES: 246-248
+%     - DEFECT: the custom-feature branch reads perpl, which only the taxon branch sets
+%       SEVERITY: error
+%       TRIGGER: info.txt (tab-separated: MicrobeID, Phylum, Class, Order, Family, Genus,
+%         Species, Gram) for exactly 10 strains m01..m10 (ranks P1..Spec1 for m01-m05 and
+%         P2..Spec2 for m06-m10, Gram 'pos' or 'neg'); ReactionMetabolitePresence/
+%         ReactionPresence_v.txt in folder d (header row, one row per strain, 3 positive
+%         features); producetSNEPlots(d, 'd/info.txt', 'v', {'Gram'})
+%       OBSERVED: (R2025a, 2026-11-17) error "Unrecognized function or variable 'perpl'." at
+%         line 260, also with a stand-in tsne on the path, so the missing toolbox does not
+%         mask it; the same call without customFeatures returns normally. perpl is assigned
+%         only at lines 178-186, inside "if size(data,1) > 10" of the taxon loop, which no
+%         taxon level reaches with 10 strains, while the custom-feature branch runs from 10
+%         strains on (line 250); the current folder is left at d (line 301 is not reached)
+%       EXPECTED: a perplexity chosen for the custom-feature embedding as well (the rule of
+%         lines 178-186 applied to its own data), so that 10 strains with a custom feature
+%         are embedded
+%       LINES: 175-186, 250, 260
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.

@@ -36,6 +36,31 @@
 %         2026-11-15)
 %       EXPECTED: an empty list of unannotated reactions returned
 %       LINES: 84
+%     - DEFECT: The documented default of inputDataFolder is not implemented
+%       SEVERITY: unusable-option
+%       TRIGGER: the files of the entry above, with gapfilledGenomeAnnotation.txt moved to
+%         d/InputData, the line 'GeneY RXN2' added to InReactions.txt, 'rxn2 RXN2' added to
+%         ReactionTranslationTable.txt, and d/ss/a.tsv replaced by the tab-separated lines
+%         'Organism GeneX GeneY', 'Org A (1.1) 123 <empty>' and 'Org B (2.1) 5 7'; from d, getUnannotatedReactionsFromPubSeedSpreadsheets(fullfile(d, 'info2.txt'), [],
+%         fullfile(d, 'ss')) (or '' for inputDataFolder); inputDataFolder cannot be omitted
+%         because spreadsheetFolder follows it, so an empty value is the only way to ask for
+%         the default
+%       OBSERVED: (R2025a, 2026-11-17, Linux) "Unable to find or open
+%         '/gapfilledGenomeAnnotation.txt'." (readtable, called at line 75 through
+%         readInputTableForPipeline): [[] filesep 'gapfilledGenomeAnnotation.txt'] is a path in
+%         the root of the file system; there is no nargin or isempty handling. The same call
+%         with fullfile(d, 'InputData') returns {'orgA', 'RXN2'}
+%       EXPECTED: d/InputData/gapfilledGenomeAnnotation.txt read, as the header documents
+%         ("inputDataFolder: ... (default: folder in current path called "InputData")",
+%         lines 14-15)
+%       LINES: 75
+%     - DEFECT: The loop counter i is printed for every spreadsheet and every organism
+%       SEVERITY: cosmetic
+%       TRIGGER: the call of the entry above with fullfile(d, 'InputData')
+%       OBSERVED: (R2025a, 2026-11-17) "i = 1" is printed twice to the command window, by the
+%         statements without a semicolon of lines 47 and 86; the result is not affected
+%       EXPECTED: no output other than the returned list (no progress output is documented)
+%       LINES: 47, 86
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.

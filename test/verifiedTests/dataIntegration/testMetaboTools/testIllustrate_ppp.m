@@ -32,6 +32,26 @@
 %         (row p) where the pair is column p (mets{1, p}, as lines 29-31 use)
 %       EXPECTED: one PDF per pair
 %       LINES: 28
+%     - DEFECT: The mets of performPPP (one pair per row) do not select its results
+%       SEVERITY: error
+%       TRIGGER: model = createModel({'EX_glc(e)'; 'EX_o2(e)'; 'EX_gln(e)'; 'BIO'}, {'glc ex';
+%         'o2 ex'; 'gln ex'; 'biomass'}, {'glc[e] <=> '; 'o2[e] <=> '; 'gln[e] <=> ';
+%         'glc[e] + o2[e] + gln[e] -> '}) with lb = -10 and ub = 10 on the exchanges and
+%         c = 1 on BIO; R.S1.modelPruned = model; R.S1.maxBiomass.f = 10; mets = {'EX_glc(e)',
+%         'EX_o2(e)'} (performPPP's layout, its help: pairs x 2); R = performPPP(R, mets,
+%         [1 1], {'S1'}, [3 3], [-1 -1]); illustrate_ppp(R, mets, <tempname folder>, {'S1'},
+%         {'x'; 'y'; 'z'}, 10, 1e-6); the same with two pairs mets = {'EX_glc(e)', 'EX_o2(e)';
+%         'EX_gln(e)', 'EX_o2(e)'} and two-row step_size, step_num and direct
+%       OBSERVED: (R2025a, 2026-11-17, gurobi) one pair: "Index in position 1 exceeds array
+%         bounds. Index must not exceed 1." (line 31); two pairs: Unrecognized field name
+%         "phasePlane_EX_glc_EX_gln". (line 34), although performPPP stored
+%         phasePlane_EX_glc_EX_o2 and phasePlane_EX_gln_EX_o2: performPPP reads pair p from row
+%         p (mets{p, 1}, mets{p, 2}), illustrate_ppp from column p (mets{1, p}, mets{2, p});
+%         the transposed mets draws and saves the PDFs
+%       EXPECTED: the header says illustrate_ppp shows "the results of the function performPPP"
+%         for the "Metabolites that were tested in the phase plane analysis", so the mets given
+%         to performPPP select its results and one PDF per pair is saved
+%       LINES: 27, 29, 31, 44-45, 50, 96
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.

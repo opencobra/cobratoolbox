@@ -147,3 +147,7 @@ issue was a review of the 173 TESTED functions outside the T021 sample, and that
   - Two reaches rest on moderate confidence.
 
   All three are listed in `review.md`.
+
+T031–T033, the same day: the defects reported in already-quarantined functions (review.md items 3 and 4)
+were reproduced and added to 14 quarantine tests, with 2 triggers corrected. No status changed. The 14
+tests pass with coverage, and the registry lists 863 defects. Unresolved issue 4 is resolved.

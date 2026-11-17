@@ -1,0 +1,14 @@
+test/verifiedTests/base/testIO/testUtilities/testWrite4ti2.m|src/base/io/utilities/write4ti2.m
+test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m|src/base/solvers/cplex/solveCobraLPCPLEXcard.m
+test/verifiedTests/base/testEntropicFBA/testAddExoMetToEFBA.m|src/base/solvers/entropicFBA/addExoMetToEFBA.m
+test/verifiedTests/base/testSolvers/testBDF.m|src/base/solvers/varKin/derFreeMethods/BDF.m
+test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m|src/dataIntegration/metabotools/calculateQuantitativeDiffs.m
+test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m|src/dataIntegration/metabotools/illustrate_ppp.m
+test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m|src/reconstruction/demeter/src/properties/producetSNEPlots.m
+test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m|src/reconstruction/growthExpMatch/printSolutionGEM.m
+test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m|src/reconstruction/comparison/modelBorgifier/mapMatch.m
+test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m|src/design/optForce/saveInputsOptForce.m
+test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m|src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m
+test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m|src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m
+test/verifiedTests/analysis/testSampling/testCompareSampleTraj.m|src/analysis/sampling/compareSampleTraj.m
+test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m|src/analysis/ecosystem/getQualitativeFluxStates.m

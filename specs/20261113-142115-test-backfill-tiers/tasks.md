@@ -108,6 +108,9 @@ reviewing the rest before merging. These tasks do that with the same briefs.
 - [X] T028 [US7] Resolve every WEAK/WRONG verdict by `$F/inventory/review/resolution-brief.md` (reproduce in MATLAB; quarantine on a confirmed `error`/`unusable-option`/`wrong-result`, otherwise strengthen the test); lead confirms each quarantine and sets its reach; `--apply`, block callers that reach a new quarantine, re-run changed tests with coverage (`inventory/coverage/review-full.jsonl`), `--verify-coverage` and `--check` with 0 problems
 - [X] T029 [US7] Registry, summary, coverage summary, `$F/review.md` (new section) and the receipt brought up to date
 - [X] T030 Privacy scan and commit; no push
+- [X] T031 [US7] Reproduce the defects review.md (T021, "For the human review" items 3 and 4) reports in already-QUARANTINED functions, not yet in the registry: add each confirmed one as a header entry of that function's quarantine test, correct the two triggers marked for another look (compareSampleTraj, getQualitativeFluxStates); records `$F/inventory/results/review-extra-a/b.jsonl`
+- [X] T032 [US7] Re-run the changed tests with coverage (`inventory/coverage/review-extra.jsonl`), `--verify-coverage`, regenerate the registry, update review.md and the receipt
+- [X] T033 Privacy scan and commit; no push
 
 ## Dependencies & Execution Order
 

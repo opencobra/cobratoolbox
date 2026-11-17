@@ -201,3 +201,28 @@ For the human review (in addition to the list above):
   test should start there.
 - **Moderate-confidence reaches:** TmodelStats (seed NONE rests on verifyModelBorg forcing `[x]`) and
   the visualizeNormalizedRxnPresence lower-case colour entry.
+
+## Follow-up: defects reported in already-quarantined functions (T031–T032), 2026-11-17
+
+Two helpers reproduced in MATLAB R2025a the findings listed above under "For the human review", items 3
+and 4. Their records are `inventory/results/review-extra-a/b.jsonl`. All 14 functions were already
+QUARANTINED, so no status changes. New header entries:
+
+| Function | Entries |
+|---|---|
+| write4ti2 | 2 `error`: with uni = 0 the file is closed a second time at l.45; omitting uni fails at l.21 |
+| solveCobraLPCPLEXcard | `wrong-result`: with osense = 1 the non-card ILOG branch maximises (stand-in Cplex). findMinCardModel uses 'zero', so it is unaffected |
+| addExoMetToEFBA | `error`: the default relaxBounds reads lb_preconstrainRxns at l.123 |
+| BDF | `wrong-result`: out.Xk only ever holds x0. The field is undocumented, but the sibling methods store their iterates |
+| calculateQuantitativeDiffs | 2 `wrong-result`: the secretion and uptake sets name the wrong condition. setSemiQuantConstraints reads them with the swapped meaning, so a fix must change both functions together |
+| illustrate_ppp | `error`: with performPPP's layout of mets (one pair per row) it fails at l.31 or l.34 |
+| producetSNEPlots | `error`: with exactly 10 strains and a custom feature, perpl is undefined at l.260. computeModelProperties (BLOCKED) reaches it |
+| getUnannotatedReactionsFromPubSeedSpreadsheets | `unusable-option`: the documented default inputDataFolder is not implemented, as in its sibling. Also 1 `cosmetic` entry |
+| lrsWriteHalfspace | `wrong-result`: with positivity omitted, x >= 0 is left out. extremePools passes 1 |
+| printSolutionGEM, mapMatch, saveInputsOptForce | `cosmetic` (help text versus code). printSolutionGEM's three-input finding is not a documented call, because itNum has no default |
+| compareSampleTraj, getQualitativeFluxStates | triggers corrected; both entries hold |
+
+All 14 tests stay in quarantine layout and pass with coverage, leaving nothing behind
+(`inventory/coverage/review-extra.jsonl`); `--verify-coverage` and `--check` found 0 problems. The registry lists
+863 defects. Items 3 and 4 of "For the human review" are resolved, apart from the csense release-dependence,
+which needs another MATLAB release.

@@ -31,6 +31,19 @@
 %         before anything was printed (R2025a, 2026-11-15); 'GEMLog' and 'GEMLog.txt' work
 %       EXPECTED: the log written to abc.txt, as for any other name without '.txt'
 %       LINES: 27
+%     - DEFECT: The documented default log file GEMLog.txt is never used
+%       SEVERITY: cosmetic
+%       TRIGGER: the MatricesSUX and solution above; printSolutionGEM(MatricesSUX, solution)
+%         in an empty folder (logFile omitted)
+%       OBSERVED: (R2025a, 2026-11-17) the objective value and the line "3 r3 2.500000e+00"
+%         are printed to the command window (fid = 1, line 38); no GEMLog.txt and no
+%         solution .mat file are written. The content is the same as in a log file, only its
+%         destination differs, and growthExpMatch (line 199) uses this two-input form for
+%         its final display
+%       EXPECTED: the header (lines 17-18) documents "solution is printed in this file ...
+%         (Default = GEMLog.txt)"; either GEMLog.txt is written or the header says that
+%         without logFile the solution is printed to the command window
+%       LINES: 25, 37-38
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.

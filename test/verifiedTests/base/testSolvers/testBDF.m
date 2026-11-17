@@ -48,6 +48,16 @@
 %         call, and the line Status without semicolon prints the termination reason
 %       EXPECTED: the display format left unchanged and output gated by a print level
 %       LINES: 51, 168
+%     - DEFECT: out.Xk holds only the starting point
+%       SEVERITY: wrong-result
+%       TRIGGER: options.MaxNumIter = 3, options.Stopping_Crit = 2 (same model as above):
+%         [x_best, psi_best, out] = BDF(mapp, x0, options)
+%       OBSERVED: (R2025a, 2026-11-17) out.Niter = 3 but out.Xk = [0.5; -0.3] (2 x 1), i.e. x0,
+%         while x_best = [0.16495; 0.035046]: line 99 sets Xk = x0 and the loop never appends
+%         an iterate, so line 171 returns x0
+%       EXPECTED: out.Xk holds the iterates, one column per iteration, as the sibling methods
+%         DCA, BDCA and LLM of src/base/solvers/varKin store them (Xk(:, Niter) = xk)
+%       LINES: 99, 135-140, 171
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
