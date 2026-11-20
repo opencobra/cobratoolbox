@@ -124,6 +124,7 @@ longer than MATLAB's 63-character limit (`namelengthmax`), which the CI coverage
 - [X] T036 [US7] Rename `testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m` (67 characters) to the 63-character name MATLAB truncates it to, `testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elem.m`; record the unavoidable exception to III-Naming in its header and in review.md; update the ledger path
 - [X] T037 [US7] Re-run the changed tests with coverage after removing the generated solver files from `src/` (as on CI), the c13 tests twice (each run generates new Perl hash orders); `--verify-coverage`, `--check` with 0 problems; review.md section and receipt addendum
 - [X] T038 Privacy scan and commit; push only when the maintainer asks
+- [X] T039 [US7] Constitution 1.9.0, Principle XI (maintainer, 2026-11-20: minimise dependence on third-party toolboxes and proprietary applications): the eight c13 tests of T035 declare Perl only outside Windows, where MATLAB's `perl` runs the Perl shipped with MATLAB; headers state the reason; re-run with coverage (`inventory/coverage/ci-fix-perl.jsonl`, `PERL_HASH_SEED=0` for the measurement as in T037), `--verify-coverage`; review.md; commit. testLrsRun's `redund` requirement is avoidable only in `src/` (lrsRun can use the `redund` option of `lrs`) and is left to a separate feature, since no task of this feature changes `src/`
 
 ## Dependencies & Execution Order
 

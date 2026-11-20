@@ -23,9 +23,10 @@
 % Tier (Constitution III-Coverage):
 %     Tier 3 - the EMU solver the function calls is written in the test by
 %     generateIsotopomerSolver, whose flux variability step needs an LP solver and whose scripts
-%     need Perl (declared with prepareTest). The input carries a model structure (the
-%     335-reaction isotopomer model of this folder, the smallest model the EMU solver is
-%     generated for); the function itself uses no optimisation solver.
+%     need Perl (declared with prepareTest; Perl only outside Windows, where MATLAB ships its
+%     own Perl). The input carries a model structure (the 335-reaction isotopomer model of this
+%     folder, the smallest model the EMU solver is generated for); the function itself uses no
+%     optimisation solver.
 %
 % Coverage exemptions:
 %     Lines 67-68: unreachable (dead code); they run when length(x) ~= length(model.lb) inside
@@ -49,8 +50,14 @@ fileDir = fileparts(which('testErrorComputation2_grad'));
 cd(fileDir);
 
 % declare the requirements of this test: an LP solver and Perl, both used only to generate
-% the solver files below
-solvers = prepareTest('needsLP', true, 'requiredSoftwares', {'perl'});
+% the solver files below. MATLAB's perl runs the system Perl on Linux and macOS, but the Perl
+% shipped with MATLAB on Windows, so Perl is declared only outside Windows
+if ispc
+    requiredPrograms = {};
+else
+    requiredPrograms = {'perl'};
+end
+solvers = prepareTest('needsLP', true, 'requiredSoftwares', requiredPrograms);
 
 % the solver files (slvr*.m, convertCarbonInput.m) are written by generateIsotopomerSolver for
 % a given model and are not kept in the repository (.gitignore); generate them here for

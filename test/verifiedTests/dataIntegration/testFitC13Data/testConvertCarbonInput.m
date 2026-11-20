@@ -20,8 +20,8 @@
 % Tier (Constitution III-Coverage):
 %     Tier 3 - the function under test is written in the test by generateIsotopomerSolver, whose
 %     flux variability step needs an LP solver and whose scripts need Perl (declared with
-%     prepareTest). The function itself needs no model and no solver; the label inputs are built
-%     by hand.
+%     prepareTest; Perl only outside Windows, where MATLAB ships its own Perl). The function
+%     itself needs no model and no solver; the label inputs are built by hand.
 %
 % Coverage exemptions:
 %     None. Every executable line is reached below (the function is straight-line code).
@@ -41,8 +41,14 @@ fileDir = fileparts(which('testConvertCarbonInput'));
 cd(fileDir);
 
 % declare the requirements of this test: an LP solver and Perl, both used only to generate
-% the solver files below
-solvers = prepareTest('needsLP', true, 'requiredSoftwares', {'perl'});
+% the solver files below. MATLAB's perl runs the system Perl on Linux and macOS, but the Perl
+% shipped with MATLAB on Windows, so Perl is declared only outside Windows
+if ispc
+    requiredPrograms = {};
+else
+    requiredPrograms = {'perl'};
+end
+solvers = prepareTest('needsLP', true, 'requiredSoftwares', requiredPrograms);
 
 % the solver files (slvr*.m, convertCarbonInput.m) are written by generateIsotopomerSolver for
 % a given model and are not kept in the repository (.gitignore); generate them here for

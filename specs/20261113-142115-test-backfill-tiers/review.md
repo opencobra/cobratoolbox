@@ -263,3 +263,20 @@ only source name over 59 characters. It is therefore the only function whose `te
 MATLAB's limit, and no test file can follow III-Naming for it. The test header records this. A
 constitution amendment (`/speckit-constitution`) could make the rule itself say "cut to
 `namelengthmax`".
+
+**After constitution 1.9.0 (Principle XI, same day, T039).** The maintainer added the goal of
+minimal dependence on third-party toolboxes and proprietary applications to the constitution.
+Two of the requirements above were checked against it:
+
+- **Perl in the eight c13 tests:** declared now only outside Windows. On Windows, MATLAB's `perl`
+  runs the Perl that ships with MATLAB, so declaring it would skip the tests needlessly. The tests
+  pass with coverage (`inventory/coverage/ci-fix-perl.jsonl`; `--verify-coverage` 0 problems). The
+  LP solver they need is served by GLPK, which COBRA ships.
+- **`redund` in testLrsRun:** avoidable, but only in `src/`. `redund` is not needed as a separate
+  program: since lrslib 7, `lrs` removes redundant inequalities itself when the input file carries
+  the option `redund 0 0`. Checked on a two-variable example with the system lrs and with the lrs
+  COBRA bundles for Linux (`binary/glnxa64`, lrslib 7.3, which has no `redund`): each gives the same
+  irredundant H-representation as `redund`. `lrsRun` already contains this route (lines 133-135),
+  switched off at line 128, and that route's `sed` edit would also rewrite every `end` in the file.
+  No task of this feature changes `src/`, so the requirement stays declared here. A separate feature
+  that makes `lrsRun` use `lrs` alone would let testLrsRun drop `redund` and run on CI again.

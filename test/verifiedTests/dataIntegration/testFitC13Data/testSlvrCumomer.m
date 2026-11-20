@@ -24,10 +24,11 @@
 % Tier (Constitution III-Coverage):
 %     Tier 3 - the function under test is written in the test by generateIsotopomerSolver, whose
 %     flux variability step needs an LP solver and whose scripts need Perl (declared with
-%     prepareTest). The function itself uses no solver (the linear systems are solved by
-%     solveLin with backslash) and no genome-scale model: the flux vector and label input are
-%     the small fixtures point.mat and expdata.mat of this folder. The function is about 82,600
-%     lines of generated straight-line code; one call takes about 1.3 s and 1.2 GB of memory.
+%     prepareTest; Perl only outside Windows, where MATLAB ships its own Perl). The function
+%     itself uses no solver (the linear systems are solved by solveLin with backslash) and no
+%     genome-scale model: the flux vector and label input are the small fixtures point.mat and
+%     expdata.mat of this folder. The function is about 82,600 lines of generated straight-line
+%     code; one call takes about 1.3 s and 1.2 GB of memory.
 %
 % Coverage exemptions:
 %     None. Every executable line is reached below (the function is straight-line code).
@@ -47,8 +48,14 @@ fileDir = fileparts(which('testSlvrCumomer'));
 cd(fileDir);
 
 % declare the requirements of this test: an LP solver and Perl, both used only to generate
-% the solver files below
-solvers = prepareTest('needsLP', true, 'requiredSoftwares', {'perl'});
+% the solver files below. MATLAB's perl runs the system Perl on Linux and macOS, but the Perl
+% shipped with MATLAB on Windows, so Perl is declared only outside Windows
+if ispc
+    requiredPrograms = {};
+else
+    requiredPrograms = {'perl'};
+end
+solvers = prepareTest('needsLP', true, 'requiredSoftwares', requiredPrograms);
 
 % the solver files (slvr*.m, convertCarbonInput.m) are written by generateIsotopomerSolver for
 % a given model and are not kept in the repository (.gitignore); generate them here for
