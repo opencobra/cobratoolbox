@@ -226,3 +226,40 @@ All 14 tests stay in quarantine layout and pass with coverage, leaving nothing b
 (`inventory/coverage/review-extra.jsonl`); `--verify-coverage` and `--check` found 0 problems. The registry lists
 863 defects. Items 3 and 4 of "For the human review" are resolved, apart from the csense release-dependence,
 which needs another MATLAB release.
+
+## Follow-up: CI failures of the pull request (T034–T037), 2026-11-20
+
+The CI run of the pull request failed ten tests of this feature that had passed locally. The local
+runs could not show any of the three causes:
+
+| Tests | Cause | Fix |
+|---|---|---|
+| testLrsRun | `redund` (lrslib) is not installed on the CI machine; the facet-enumeration section runs it (exit status 127). The header listed it, but `prepareTest` declared only `lrs` | `prepareTest('requiredSoftwares', {'lrs', 'redund'})`. Checked with a `PATH` holding only `lrs`: the test is skipped, naming redund |
+| testConvertCarbonInput, testErrorComputation2, testErrorComputation2_grad, testGradtest, testSlvrCumomer, testSlvrCumomer_fast, testSlvrEMU, testSlvrEMU_fast | `convertCarbonInput` and `slvr*.m` are written by `generateIsotopomerSolver` and kept out of the repository by `.gitignore`, on develop as here. Locally they were present from an earlier run of testFitC13Data, which needs an NLP solver and is skipped on CI | Each test generates the solver for `model.mat` of testFitC13Data (as testFitC13Data does: an LP solver for the flux variability step, and Perl; both declared, so the tests are now Tier 3). Solver files present before are copied away and put back; files the test generated are removed. testConvertCarbonInput moved to `testFitC13Data/`, beside the fixtures it now loads |
+| testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements | The name is 67 characters; MATLAB's limit is 63 (`namelengthmax`). The CI coverage run (MOcov) cuts it and fails with "Unrecognized function or variable" | Renamed to `testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elem.m`, the 63-character name MATLAB itself uses for it |
+
+**Generated files depend on Perl's hash order.** The Perl scripts list fields and pools in hash
+order, which changes from one generation to the next: the files differ every time, with the same
+lines in another order or with the internals renumbered. One assertion depended on that order:
+testConvertCarbonInput compared the field names of the output in order. It now compares them without
+their order. The other tests passed against every generation tried, including the Tier 5 reference
+values of testSlvrCumomer_fast and testSlvrEMU_fast.
+
+**Checks.**
+
+- All ten tests pass with coverage (`inventory/coverage/ci-fix.jsonl`, `ci-fix-seed0.jsonl`), leaving
+  nothing behind. The user's solver files present before the run were put back byte for byte.
+- For the four generated solvers, coverage was measured with `PERL_HASH_SEED=0` in the environment
+  of the measurement only. A test regenerates the file it covers, and the coverage plugin maps lines
+  from the file present when the run starts, so an unseeded run shows false misses. With the seed,
+  generation is deterministic (two generations compared byte for byte) and every line is reached.
+- The ten tests were run twice the way CI runs them (`runScriptFile` by name), after removing the
+  generated files from `src/`. All 20 runs passed, so the eight c13 tests passed against 16
+  generations in different hash orders, and no generated file was left in `src/` afterwards.
+- `--verify-coverage` and `--check` found 0 problems.
+
+**Exception to III-Naming.** `parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements` is the
+only source name over 59 characters. It is therefore the only function whose `test<Name>` exceeds
+MATLAB's limit, and no test file can follow III-Naming for it. The test header records this. A
+constitution amendment (`/speckit-constitution`) could make the rule itself say "cut to
+`namelengthmax`".

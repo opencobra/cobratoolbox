@@ -1,4 +1,4 @@
-% The COBRAToolbox: testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m
+% The COBRAToolbox: testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elem.m
 %
 % Purpose:
 %     - parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements reads the NIST table
@@ -10,6 +10,10 @@
 %       carbon-12/13/14 and nitrogen-14 against the NIST values written in the data file, the
 %       empty fields (an empty isotopic composition is NaN) and the last record (element 116).
 %       Expected values are the decimal numbers of the data file (NIST, Coursey et al.).
+%     - File name: test<Name> (III-Naming) would be 67 characters, longer than the 63 MATLAB
+%       allows for a name (namelengthmax); MATLAB then cuts the name, and the CI coverage run
+%       fails with "Unrecognized function or variable". The file therefore has the name
+%       test<Name> cut to 63 characters, the name MATLAB itself uses for it.
 %
 % Function under test:
 %     src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m
@@ -25,12 +29,13 @@
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Renamed to a name of 63 characters, MATLAB's limit (T036), 2026-11-20.
 
 % save the current path
 currentDir = pwd;
 
 % initialize the test
-fileDir = fileparts(which('testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements'));
+fileDir = fileparts(which('testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elem'));
 cd(fileDir);
 
 % declare the requirements of this test. A Tier 1 test needs no solver, MATLAB toolbox

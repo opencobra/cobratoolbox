@@ -21,9 +21,11 @@
 %     src/dataIntegration/fluxomics/c13solver/slvrEMU.m
 %
 % Tier (Constitution III-Coverage):
-%     Tier 1 - no solver (the linear systems are solved by solveLin with backslash) and no
-%     genome-scale model: the flux vector and label input are the small fixtures point.mat and
-%     expdata.mat of this folder.
+%     Tier 3 - the function under test is written in the test by generateIsotopomerSolver, whose
+%     flux variability step needs an LP solver and whose scripts need Perl (declared with
+%     prepareTest). The function itself uses no solver (the linear systems are solved by
+%     solveLin with backslash) and no genome-scale model: the flux vector and label input are
+%     the small fixtures point.mat and expdata.mat of this folder.
 %
 % Coverage exemptions:
 %     None. Every executable line is reached below (the function is straight-line code).
@@ -33,6 +35,7 @@
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Generates the solver files it tests itself, as the CI run has none (T035), 2026-11-20.
 
 % save the current path
 currentDir = pwd;
@@ -41,10 +44,33 @@ currentDir = pwd;
 fileDir = fileparts(which('testSlvrEMU'));
 cd(fileDir);
 
-% declare the requirements of this test. A Tier 1 test needs no solver, MATLAB toolbox
-% or particular operating system, so none is listed; the call is the standard opening
-% of a COBRA test and the place where a requirement would be added later
-prepareTest();
+% declare the requirements of this test: an LP solver and Perl, both used only to generate
+% the solver files below
+solvers = prepareTest('needsLP', true, 'requiredSoftwares', {'perl'});
+
+% the solver files (slvr*.m, convertCarbonInput.m) are written by generateIsotopomerSolver for
+% a given model and are not kept in the repository (.gitignore); generate them here for
+% model.mat of this folder, as testFitC13Data does. Solver files present now (perhaps generated
+% for another model) are copied to a temporary folder and put back at the end
+c13Dir = fileparts(which('generateIsotopomerSolver'));
+c13Files = {'IsotopomerModel.txt'; 'convertCarbonInput.m'; 'slvrCumomer.m'; 'slvrCumomer_fast.m'; ...
+    'slvrEMU.m'; 'slvrEMU_fast.m'};
+c13Existed = cellfun(@(f) exist(fullfile(c13Dir, f), 'file') == 2, c13Files);
+c13Backup = tempname;
+mkdir(c13Backup);
+for k = find(c13Existed)'
+    copyfile(fullfile(c13Dir, c13Files{k}), c13Backup);
+end
+changeCobraSolver(solvers.LP{1}, 'LP', 0);
+c13Fixtures = load('model.mat', 'model');
+c13Fixtures.expdata = getfield(load('expdata.mat', 'expdata'), 'expdata');
+% true: leave out the reactions that carry no flux in any steady state (flux variability), as
+% testFitC13Data does
+generateIsotopomerSolver(c13Fixtures.model, 'xglcDe', c13Fixtures.expdata, true);
+clear c13Fixtures
+% make MATLAB read the new files, not versions of them it may hold in memory
+rehash;
+clear convertCarbonInput slvrCumomer slvrCumomer_fast slvrEMU slvrEMU_fast
 
 % solveLin (called by the function) turns the warning MATLAB:nearlySingularMatrix off and does
 % not turn it on again; save its state to restore it at the end
@@ -132,6 +158,18 @@ newGlobals = setdiff(who('global'), globalsBefore);
 for k = 1:numel(newGlobals)
     clearvars('-global', newGlobals{k});
 end
+
+% put back the solver files present before the test and remove the ones it generated
+for k = 1:numel(c13Files)
+    if c13Existed(k)
+        copyfile(fullfile(c13Backup, c13Files{k}), c13Dir);
+    elseif exist(fullfile(c13Dir, c13Files{k}), 'file') == 2
+        delete(fullfile(c13Dir, c13Files{k}));
+    end
+end
+rmdir(c13Backup, 's');
+rehash;
+clear convertCarbonInput slvrCumomer slvrCumomer_fast slvrEMU slvrEMU_fast
 
 % change the directory
 cd(currentDir)

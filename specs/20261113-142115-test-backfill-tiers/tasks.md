@@ -112,6 +112,19 @@ reviewing the rest before merging. These tasks do that with the same briefs.
 - [X] T032 [US7] Re-run the changed tests with coverage (`inventory/coverage/review-extra.jsonl`), `--verify-coverage`, regenerate the registry, update review.md and the receipt
 - [X] T033 Privacy scan and commit; no push
 
+## Phase 11: CI failures of the pull request (maintainer, 2026-11-20)
+
+The CI run of the pull request failed ten tests of this feature that passed locally, for three
+causes the local runs could not show: a program missing on the CI machine, solver files that
+`generateIsotopomerSolver` writes and `.gitignore` keeps out of the repository, and a file name
+longer than MATLAB's 63-character limit (`namelengthmax`), which the CI coverage run (MOcov) hits.
+
+- [X] T034 [US7] `test/verifiedTests/analysis/testLrsInterface/testLrsRun.m`: declare `redund` with `lrs` in `prepareTest('requiredSoftwares', ...)` (the facet-enumeration section runs it; the header already lists it)
+- [X] T035 [US7] The eight tests of generated c13 solver files (`testConvertCarbonInput`, `testErrorComputation2`, `testErrorComputation2_grad`, `testGradtest`, `testSlvrCumomer`, `testSlvrCumomer_fast`, `testSlvrEMU`, `testSlvrEMU_fast`): each generates the solver for `model.mat` of `testFitC13Data` (as `testFitC13Data` does: LP solver for the flux variability step, Perl), keeps a copy of any solver files present before and puts them back at the end; `testConvertCarbonInput` moves to `test/verifiedTests/dataIntegration/testFitC13Data/` (it now uses that folder's fixtures) and compares field names without their order (Perl writes them in hash order, which changes from one generation to the next)
+- [X] T036 [US7] Rename `testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m` (67 characters) to the 63-character name MATLAB truncates it to, `testParse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elem.m`; record the unavoidable exception to III-Naming in its header and in review.md; update the ledger path
+- [X] T037 [US7] Re-run the changed tests with coverage after removing the generated solver files from `src/` (as on CI), the c13 tests twice (each run generates new Perl hash orders); `--verify-coverage`, `--check` with 0 problems; review.md section and receipt addendum
+- [X] T038 Privacy scan and commit; push only when the maintainer asks
+
 ## Dependencies & Execution Order
 
 - Setup (T001–T004) → Foundational (T005–T006) → US1 (T007–T008) → Tier phases in order:

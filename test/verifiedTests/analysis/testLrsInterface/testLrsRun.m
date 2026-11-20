@@ -17,7 +17,7 @@
 %
 % Tier (Constitution III-Coverage):
 %     Tier 2 - no solver; needs the external programs lrs and redund (lrslib), declared with
-%     prepareTest('requiredSoftwares', {'lrs'}), and a Unix shell.
+%     prepareTest('requiredSoftwares', {'lrs', 'redund'}), and a Unix shell.
 %
 % Coverage exemptions:
 %     Lines 133-135: unreachable, uselrsRedundOption is set to 0 on line 128.
@@ -28,6 +28,7 @@
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Declares redund, which the CI machine lacks (T034), 2026-11-20.
 
 % save the current path
 currentDir = pwd;
@@ -36,8 +37,9 @@ currentDir = pwd;
 fileDir = fileparts(which('testLrsRun'));
 cd(fileDir);
 
-% declare the requirements of this test: the lrs program (lrslib)
-prepareTest('requiredSoftwares', {'lrs'});
+% declare the requirements of this test: the lrs and redund programs (lrslib); redund runs in
+% the facet-enumeration section
+prepareTest('requiredSoftwares', {'lrs', 'redund'});
 
 % all files are written to a temporary folder, removed at the end
 workDir = tempname;

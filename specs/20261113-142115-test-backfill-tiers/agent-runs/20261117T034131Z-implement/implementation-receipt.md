@@ -151,3 +151,16 @@ issue was a review of the 173 TESTED functions outside the T021 sample, and that
 T031–T033, the same day: the defects reported in already-quarantined functions (review.md items 3 and 4)
 were reproduced and added to 14 quarantine tests, with 2 triggers corrected. No status changed. The 14
 tests pass with coverage, and the registry lists 863 defects. Unresolved issue 4 is resolved.
+
+T034–T038, 2026-11-20: CI failures of the pull request. Ten tests had passed locally but failed on CI,
+for three reasons:
+
+- testLrsRun needs `redund`, which was not declared.
+- Eight c13 tests relied on solver files that `generateIsotopomerSolver` writes and `.gitignore`
+  excludes. Each test now generates them, and puts back any files that were there before.
+- One test name was longer than MATLAB's 63-character limit. The file was renamed; this is a recorded
+  exception to III-Naming.
+
+All ten pass with coverage, and they also passed twice when run as CI runs them from a `src/` without
+generated files. `--verify-coverage` and `--check` find 0 problems. Statuses and the registry are
+unchanged. See `review.md`, "Follow-up: CI failures of the pull request".
