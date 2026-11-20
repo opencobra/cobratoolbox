@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	181	src/analysis/thermo/protons/plotMoleFraction.m	1			realpH		
+a	206	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getMetaboliteFlux.m	1			getNutritionDatabaseFile	collectFoodItemInfo,generateInSilicoDiet	
+a	207	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietEnergy.m	1			getNutritionDatabaseFile,loadVMHDatabase	collectFoodItemInfo,generateInSilicoDiet,normalizeDiet	
+a	208	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietComposition.m	1			getNutritionDatabaseFile,loadVMHDatabase	collectFoodItemInfo,generateInSilicoDiet	
+a	216	src/analysis/wholeBody/PSCMToolbox/getStatsOrganComp.m	1					
+a	224	src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m	1					
+a	248	src/base/setWorkerCount.m	1				generateMetaboScore	
+a	225	src/base/ci/addKeyToKnownHostsCT.m	1	external-program				
+a	226	src/base/cobrarrow/COBRArrowSolver.m	1				COBRArrow	
+a	229	src/base/codeConsistency/printFunctionIO.m	1					
+b	230	src/base/install/adaptMacPath.m	1	external-program				
+b	231	src/base/install/addCOBRABinaryPathToSystemPath.m	1					
+b	232	src/base/install/checkCNAinstallation.m	1				convertCNAModelToCbModel,convertCbModelToCNAModel	
+b	233	src/base/install/getIgnoredFiles.m	1				getFilesInDir	
+b	235	src/base/install/getGitBashVersion.m	1				installGitBash,updateGitBash	
+b	242	src/base/io/convertCobraLP2mps.m	1					
+b	246	src/base/io/writeGDXFromCOBRA.m	1					
+b	247	src/base/io/writeLPProblem.m	1				solveCobraLP,solveCobraMILP,solveCobraQP	
+b	245	src/base/io/utilities/write4ti2.m	1					
+b	249	src/base/solvers/cplex/setCplexParametersForProblem.m	1			setCplexParam	solveCobraLP,solveCobraMILP,solveCobraMIQP,solveCobraQP	
+c	250	src/base/solvers/entropicFBA/mosekParamSetEFBA.m	1				flux2json,plotyy_eFBA	
+c	252	src/base/solvers/gams/checkGAMSSolvers.m	1			getAvailableGAMSSolvers	findMustLLWithGAMS,findMustLWithGAMS,findMustULWithGAMS,findMustUUWithGAMS,findMustUWithGAMS,optForceWithGAMS	
+c	253	src/base/solvers/gurobi/setGurobiParam.m	1				solveCobraLP,solveCobraQP	
+c	254	src/base/solvers/init/configEnvVars.m	1				changeCobraSolver	
+c	255	src/base/solvers/lindo/solveCobraLPLindo.m	1					
+c	257	src/base/solvers/lp_solve/lp_solve.m	1			mxlpsolve	solveCobraLP	
+c	258	src/base/solvers/minos/DQQCleanup.m	1				solveCobraLP	
+c	259	src/base/solvers/minos/readMinosSolution.m	1				solveCobraLP,solveCobraQP	
+c	263	src/base/solvers/rescale/liftRows.m	1				liftCouplingConstraints	
+c	264	src/base/solvers/varKin/BDCAmethods/BDCA.m	1				optimizeVKmodel0	

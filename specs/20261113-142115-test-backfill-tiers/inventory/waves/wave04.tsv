@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	57	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m	1			loadVMHDatabase	analyzeMgPipeResults	
+a	58	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/performStatisticalAnalysis.m	1			loadVMHDatabase	analyzeMgPipeResults	
+a	60	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/calculateSubsystemAbundance.m	1			loadVMHDatabase,readInputTableForPipeline	mgPipe	
+a	61	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m	1			loadVMHDatabase,readInputTableForPipeline	calculateCorrelations	
+a	62	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/plotFluxesAgainstOrganismAbundances.m	1			loadVMHDatabase,readInputTableForPipeline		
+a	69	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m	1			loadVMHDatabase,readInputTableForPipeline	mgPipe	
+a	76	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/normalizeCoverage.m	1			readInputTableForPipeline		
+a	77	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/plotMappingInfo.m	1			readInputTableForPipeline		
+a	79	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/updateTaxonomyInfoAGORA.m	1			parseNCBItaxonomy,readInputTableForPipeline		
+a	96	src/analysis/persephone/runNonparametricTests.m	1				performStatsPersephone,runStatisticsOnModerationAnalysisResults	
+b	97	src/analysis/persephone/performRegressions.m	1				performStatsPersephone,runStatisticsOnModerationAnalysisResults	
+b	102	src/analysis/persephone/analyseWBMsol.m	1				analyseWBMs	
+b	104	src/analysis/persephone/readMetadataForPersephone.m	1				createBatchMWBM,initPersephone,performStatsPersephone	
+b	105	src/analysis/persephone/createForestPlot.m	1					
+b	106	src/analysis/persephone/createVolcanoPlot.m	1				performStatsPersephone	
+b	107	src/analysis/persephone/generateStackedBarPlot_PhylumMARScoverage.m	1					
+b	112	src/analysis/persephone/runMars.m	1				runPersephone	
+b	84	src/analysis/persephone/additionalFunctions/convertVMHIDName.m	1			loadVMHDatabase		
+b	91	src/analysis/persephone/additionalFunctions/getDirectorySize.m	1				runSeqC	
+b	93	src/analysis/persephone/additionalFunctions/getVMHID.m	1			loadVMHDatabase		
+c	94	src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m	1					
+c	95	src/analysis/persephone/additionalFunctions/plotAbsentTaxaEffectOnMARScoverage.m	1					
+c	99	src/analysis/persephone/additionalFunctions/setResultPath.m	1					
+c	100	src/analysis/persephone/additionalFunctions/slimDownFBAresults.m	1				analyseWBMs	
+c	101	src/analysis/persephone/additionalFunctions/validateDietPath.m	1			EUAverageDietNew,HighFiberDiet,HighProteinDiet,UnhealthyDiet,VegetarianDiet	runPersephone	
+c	114	src/analysis/rMTA/calculateEPSILON.m	1					
+c	115	src/analysis/rMTA/rMTAsaveInExcel.m	1					
+c	116	src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m	1	external-program			gpSampler	
+c	117	src/analysis/sampling/ACHR/verifyPoints.m	1					
+c	44	src/reconstruction/refinement/GPRLogic/FormulaParser.m	1			AndNode,LiteralNode,OrNode	GPR2models,GPRparser,NormaliseGPRs,removeFieldEntriesForType,removeGenesFromModel	

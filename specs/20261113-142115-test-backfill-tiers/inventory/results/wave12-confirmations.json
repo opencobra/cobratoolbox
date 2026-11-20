@@ -1,0 +1,9 @@
+{
+ "unifyMetabolicPPImapCD": "lead (writer's MATLAB reproduction: the secondary-link loops read entry t/r instead of index(t)/index(r), lines 51-60 and 67-76, so later links are never recoloured)",
+ "defaultLookMap": "lead (source read: the included-species loop writes specType{m} instead of specIncType{m}, line 166)",
+ "findRxnsInMap": "lead (writer's MATLAB reproductions: one name found once leaves rxnIDref unassigned; a name missing from the map gives a bad subscript)",
+ "transformFullMap2XML": "lead (writer's MATLAB reproductions: edited complex aliases not written, lines 123-124; a map with one complex or one included species errors)",
+ "transformFullXML2Map": "lead (writer's MATLAB reproductions: one complex errors at line 140; reaction notes inside <p> error at line 334)",
+ "colorProtein": "lead (writer's MATLAB reproduction: the default colour 'Red' is not a key of createColorsMap, so the documented 2-argument call errors)",
+ "defaultColorCD": "lead (writer's MATLAB reproduction: line 36/42 calls the undefined function Colors)"
+}

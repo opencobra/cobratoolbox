@@ -16,14 +16,14 @@ function [results] = cmpMet(parsed, model)
 %    model:      A COBRA model Matlab structure.
 %
 % OUTPUT:
-%    results:    contains three fields:
+%    results:    contains the field .main (the parsed species list) and three lists:
 %
-%                  * listOfFound - A list of reactions in the test model that are
+%                  * listOfFound - A list of metabolites in the test model that are
 %                    present in the reference COBRA model.
-%                  * listOfNotFound - A list of reactions in the test model that are NOT
+%                  * listOfNotFound - A list of metabolites in the test model that are NOT
 %                    present in the reference COBRA model.
-%                  * list_of_rxns_not_present_in_ReferenceModel - A list of reactions in
-%                    the reference model that are NOT included in the test model.
+%                  * list_of_mets_not_present_in_ReferenceModel - A list of metabolite IDs of
+%                    the reference COBRA model that are NOT included in the test model.
 %
 % EXAMPLE:
 %

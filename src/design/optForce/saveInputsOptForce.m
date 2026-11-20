@@ -83,7 +83,7 @@ function [] = saveInputsOptForce(model, targetRxn, mustU, mustL, minFluxesW, max
 %    mustU.mat:         File containing `mustU` set
 %    mustL.mat:         File containing `mustL` set
 %    minFluxesW.mat:    File containing the minimum fluxes for the wild-type
-%    maxFluxes.mat:     File containing the maximum fluxes for the wild-type
+%    maxFluxesW.mat:    File containing the maximum fluxes for the wild-type
 %    minFluxesM.mat:    File containing the minimum fluxes for the mutant
 %    maxFluxesM.mat:    File containing the maximum fluxes for the mutant
 %    k.mat:             File containing `k` the number of reactions in the `optForce` set

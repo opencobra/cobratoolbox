@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	240	src/base/install/updateGitBash.m	1	external-program		getGitBashVersion,installGitBash,portableGitSetup	updateCobraToolbox	
+a	292	src/dataIntegration/chemoInformatics/metabolites/metaboliteStructuresTable.m	1			openBabelConverter		
+a	295	src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/getElementalWeightMatrix.m	1			parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements	computeElementalMatrix,getMolecularMass	
+a	302	src/dataIntegration/fluxomics/calcMDVfromSamp.m	1			slvrEMU_fast	compareMultSamp,compareTwoSamp,runHiLoExp	
+a	303	src/dataIntegration/fluxomics/getBinsOfFluxes.m	1				getCompareBinsOfFluxes	
+a	304	src/dataIntegration/fluxomics/isotopomerViewer.m	1					
+a	305	src/dataIntegration/fluxomics/score_KS.m	1				runHiLoExp	
+a	298	src/dataIntegration/fluxomics/atomTransition/renameDREAMOutputFiles.m	1					
+a	297	src/dataIntegration/fluxomics/c13solver/slvrCumomer_fast.m	1				scoreC13Fit	
+a	299	src/dataIntegration/fluxomics/c13solver/convertCarbonInput.m	1					
+b	300	src/dataIntegration/fluxomics/c13solver/slvrCumomer.m	1					
+b	301	src/dataIntegration/fluxomics/c13solver/slvrEMU.m	1					
+b	306	src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m	1					
+b	307	src/dataIntegration/metaboAnnotator/analyseMetStruct/addAnnotations.m	1				assignMetaboliteIDs,getAnnoFromHMDB,getIDsFromBIGG	
+b	313	src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m	1			duplicates	list2MetaboliteStructure	
+b	322	src/dataIntegration/metaboAnnotator/analyseMetStruct/getIDfromMetStructure.m	1				VMH2Metabolon,VMH2Seed,assignAGORAReconPresence,getMolFilesMultipleSources,getRxnFromKegg,model2MetStructure	
+b	323	src/dataIntegration/metaboAnnotator/analyseMetStruct/getStatsMetStruct.m	1				createrBioNetStructure,model2MetStructure	
+b	342	src/dataIntegration/metaboAnnotator/buildMetStruct/createNewMetaboliteStructure.m	1			generateVMHMetAbbr,metaboliteStructureFieldNames	createNewMetEntryFromArray,createrBioNetStructure,list2MetaboliteStructure	
+b	325	src/dataIntegration/metaboAnnotator/connect2resources/getCas2Echa.m	1				createrBioNetStructure,list2MetaboliteStructure	
+b	335	src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m	1	external-program			parseDBCollection	
+c	343	src/dataIntegration/metaboAnnotator/connect2resources/getCas2CTD.m	1				createrBioNetStructure,list2MetaboliteStructure	
+c	351	src/dataIntegration/metaboAnnotator/connect2resources/getSeed2Kegg.m	1				createrBioNetStructure	
+c	353	src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m	1					reclassified testable (T008): only the biggId target (urlread to bigg.ucsd.edu, swallowed by try) needs internet and is exempt; the seed/keggId/biocyc cross-filling from the local PMID 24927599 table (tutorials/dataIntegration/metaboAnnotator/data/pnas.1401329111.sd01.xlsx via xlsread) is testable with metabolites whose biggId is pre-set
+c	308	src/dataIntegration/metaboAnnotator/generateMetInfo/convertInchiString2format.m	1	external-program			addInfoFromMolFiles,generateInchiFromMol,generateInchiKeysSmilesFromInchiStrings,removeSmilesInchiKey	
+c	358	src/dataIntegration/metabotools/calculateQuantitativeDiffs.m	1					
+c	359	src/dataIntegration/metabotools/checkExchangeProfiles.m	1					
+c	360	src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m	1					
+c	361	src/dataIntegration/metabotools/illustrate_ppp.m	1					
+c	362	src/dataIntegration/metabotools/make3Dplot.m	1					
+c	314	src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m	1				checkAbbrExists,createrBioNetStructure,generateVMHMetAbbr	

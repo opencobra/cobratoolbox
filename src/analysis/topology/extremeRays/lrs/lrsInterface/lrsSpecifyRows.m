@@ -10,47 +10,58 @@ function [status, result] = lrsSpecifyRows(fileNameIn)
 %    fileNameIn:    name (or full path) of the lrs `.ine`/`.ext` file to edit in place
 %
 % OUTPUTS:
-%    status:        status returned by the `sed` system call (0 on success)
-%    result:        text output returned by the `sed` system call
+%    status:        0 (the file was edited)
+%    result:        empty character array
+%
+% NOTE:
+%
+%    The file is read, edited and written back in MATLAB: every `*****` is replaced
+%    by the number of data rows, leftmost and without overlap, and all other bytes are
+%    kept. (Feature 20261120-144501-lrsspecifyrows-without-sed, November 2026,
+%    Constitution Principle XI. Before, GNU `sed -i` did the replacement, which failed
+%    with the BSD sed of macOS and on Windows, and `status`/`result` were those of the
+%    sed call.)
 
 if ~contains(fileNameIn,filesep)
     fileNameIn = [pwd filesep fileNameIn];
 end
 
+% opening for reading and writing checks that the file can be edited in place
 fid = fopen(fileNameIn,'r+');
 if fid<0
-    disp(fileNameOut)
     error('Could not open lrs output file.');
 end
+fileText = fread(fid, Inf, '*char')';
+fclose(fid);
 
+% count the lines from "begin" to "end", as fgetl would read them
+fileLines = strsplit(fileText, newline, 'CollapseDelimiters', false);
 countRows = 0;
-while 1
-    tline = fgetl(fid);
+foundEnd = false;
+for i = 1:numel(fileLines)
+    tline = fileLines{i};
     if countRows ~=0
         countRows = countRows + 1;
     end
     if strcmp(tline, 'begin')
         countRows = 1;
     elseif strcmp(tline, 'end')
+        foundEnd = true;
         break
-    elseif ~ischar(tline)
-        error('Could not read lrs output file.');
     end
+end
+if ~foundEnd
+    error('Could not read lrs output file.');
 end
 nRows = countRows -3;
 
-%open the file and write the number of rows and columns
-%The procedure to change the text in files under Linux/Unix using sed:
-%Use Stream EDitor (sed) as follows:
-%sed -i 's/old-text/new-text/g' input.txt
-%The s is the substitute command of sed for find and replace
-%It tells sed to find all occurrences of ‘old-text’ and replace with ‘new-text’ in a file named input.txt
-[status, result] =  system(['sed -i ''s/\*\*\*\*\*/' int2str(nRows) '/g'' ' fileNameIn]);
-if status == 1
-    disp(result)
-    error(['sed failed on file ' fileNameIn]);
-end
+% replace the placeholder by the number of rows and write the file back
+fileText = regexprep(fileText, '\*\*\*\*\*', int2str(nRows));
+fid = fopen(fileNameIn, 'w');
+fwrite(fid, fileText);
+fclose(fid);
 
+status = 0;
+result = '';
 
 end
-

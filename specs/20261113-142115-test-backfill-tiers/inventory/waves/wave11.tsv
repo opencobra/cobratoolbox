@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	374	src/reconstruction/comparison/modelBorgifier/metCompare.m	1			findMetMatch,metCompareGUI	autoMatchReactions,mergeModelsBorg,reactionCompareGUI	
+a	400	src/reconstruction/demeter/suite/reports/compareVersions.m	1	external-program		parseNCBItaxonomy		
+a	401	src/reconstruction/demeter/suite/reports/printRefinementReport.m	1				runTestSuiteTools	
+a	402	src/reconstruction/growthExpMatch/printSolutionGEM.m	1				growthExpMatch	
+a	403	src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m	1				computeMetFormulae	
+a	404	src/reconstruction/modelGeneration/massBalance/ispolymer.m	1			numAtomsOfElementInFormula		
+a	405	src/reconstruction/rBioNet/BalancePrep.m	1				ReactionChecks,ReconstructionTool	
+a	408	src/reconstruction/rBioNet/GenesReactions.m	1				ReconstructionCreator	
+a	411	src/reconstruction/rBioNet/balancecheck.m	1			numAtomsOfElementInFormula	ReactionChecks,ReconstructionTool	
+a	413	src/reconstruction/rBioNet/webDatabases.m	1				ReconstructionCreator,ReconstructionTool,load_reaction,model_stats	
+b	414	src/reconstruction/rBioNet/rBioNet_search.m	1				ReconstructionCreator,ReconstructionTool,load_reaction	
+b	415	src/reconstruction/rBioNet/webKeggMapper.m	1				ReconstructionCreator,ReconstructionTool,load_reaction,model_stats	
+b	426	src/reconstruction/rBioNet/formula2mets.m	1			parseRxnFormula		
+b	427	src/visualization/SAMMIM/openSammi.m	1					
+b	429	src/visualization/cellDesigner/addColour.m	1					
+b	430	src/visualization/cellDesigner/position.m	1				repairXML,writeCD,writeXML	
+b	436	src/visualization/cellDesigner/correctMetName.m	1					
+b	437	src/visualization/cellDesigner/parseCD.m	1					reclassified testable (T008): uigetfile runs only when fname is omitted (exempt); parsing a small CellDesigner XML fixture written by the test is testable
+b	438	src/visualization/cellDesigner/writeText2XML.m	1				repairXML	reclassified testable (T008): uiputfile runs only when fname_out is omitted (exempt); writing the text struct lines to an explicit file is testable
+b	440	src/visualization/cellDesigner/writeTXT.m	1					reclassified testable (T008): uiputfile runs only when fname_out is omitted (exempt); the name/colour table formatting (default red, FF stripping, # prefix, header row) written to an explicit file is testable
+c	443	src/visualization/createMetIntrcNetwork/hit_node.m	1				createMetIntrcNetwork	
+c	445	src/visualization/maps/ReconMap/changeCbMapOutput.m	1				pFBA	
+c	446	src/visualization/maps/ReconMap/generateSubsytemsLayout.m	1			postMINERVArequest	generateSubsystemLayouts	
+c	448	src/visualization/metabolicCartography/createColorsMap.m	1				addColourNode,addFluxFBA,addFluxFBAdirectionAndColor,changeMetColor,changeRxnColorAndWidth,colorProtein,colorRxnType,colorRxnsFromGenes,colorSubsystemCD,defaultLookMap,modifyReactionsMetabolites	
+c	450	src/visualization/metabolicCartography/addFluxFromFileWidthAndColor.m	1				visualizeFluxFromFile	
+c	451	src/visualization/metabolicCartography/getMapMatrices.m	1				removeMapMol,removeMapReactions,removeMapSpecies,removeMapSpeciesOnly,transformXML2Map	
+c	453	src/visualization/metabolicCartography/transformMap2XML.m	1				changeMapMetIDToName,visualizeFluxFromFile,visualizeFluxTimeseriesFromFile,visualizeNormalizedRxnPresence,visualizeReconstructionsOnMap	
+c	455	src/visualization/metabolicCartography/changeNodesArea.m	1					
+c	457	src/visualization/metabolicCartography/changeRxnType.m	1					
+c	458	src/visualization/metabolicCartography/mapFormula.m	1				compareModelMapFormulas	

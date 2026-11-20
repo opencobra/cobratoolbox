@@ -8,6 +8,27 @@
 %      - test can be extended to test the performance of ConvertHypergraphToBipartiteGraph
 %        with B2 = hypergraph2bipartgraph(S~=0);
 %
+% Function under test:
+%     src/analysis/topology/graphHypergraphConversion/convertHypergraphToBipartiteGraph.m
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: trailing empty hyperedges are missing from A and B
+%       SEVERITY: wrong-result
+%       TRIGGER: [A, B] = convertHypergraphToBipartiteGraph([-1 0 0; 2 -1 0]) (m = 2, n = 3,
+%         the last hyperedge empty); also convertHypergraphToBipartiteGraph(zeros(2, 2))
+%       OBSERVED: size(A) = [4 4] and size(B) = [4 3] (R2025a, 2026-11-15); for zeros(2, 2)
+%         A and B are 0 x 0. B = sparse(rowIndices, colIndices, values) (line 46) takes its row
+%         count from the largest index, m + the last nonempty column, and A = inc2adj(B ~= 0)
+%         (line 56) inherits it, so an empty hyperedge in the middle is kept as an isolated node
+%         but one at the end is not
+%       EXPECTED: size(A) = [5 5] and size(B) = [5 3] with node 5 isolated (OUTPUTS: "A:
+%         (m+n) x (m+n) adjacency matrix", "B: (m+n) x nnz(S) incidence matrix"); for
+%         zeros(2, 2) a 4 x 4 zero A and a 4 x 0 B
+%       LINES: 46, 56
+%
+%     (entry added by feature 20261113-142115-test-backfill-tiers, FR-012; the assertions below
+%     are unchanged)
+%
 % Author:
 %     - original file: Marouen BEN GUEBILA - 10/02/2017
 %     - integration of test to CI: Laurent Heirendt - February 2017

@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	141	src/analysis/sampling/printSampleStats.m	1			calcSampleStats		
+a	119	src/analysis/sampling/BarrierRound/CMatrix/CMatrix.m	1			isarm		
+a	123	src/analysis/sampling/BarrierRound/CMatrix/include/ddouble.m	1			isarm	AdaptiveChol,CMatrixTest,ConvexProgram,analyticCenter,demo,lewisCenter	
+a	124	src/analysis/sampling/BarrierRound/CMatrix/include/qdouble.m	1			isarm	AdaptiveChol	
+a	177	src/analysis/thermo/protons/getMetaboliteMsDistr.m	1	external-program				
+a	178	src/analysis/thermo/protons/getMetabolitepKa.m	1	external-program				
+a	180	src/analysis/thermo/protons/realpH.m	1				moleFraction,plotMoleFraction	
+a	186	src/analysis/topology/FR/combinatorialDependentRows.m	1				testCombinatorialDependentRows	
+a	192	src/analysis/topology/conservedMoieties/classifyMoieties.m	1				biomassPrecursorCheck	
+a	193	src/analysis/topology/conservedMoieties/constructElementalMatrix.m	1			numAtomsOfElementInFormula		
+b	194	src/analysis/topology/conservedMoieties/estimateMoietyFormulas.m	1					
+b	196	src/analysis/topology/conservedMoieties/representativeMoiety.m	1					
+b	197	src/analysis/topology/conservedMoieties/representativeMolecule.m	1					
+b	198	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsOutputReadRay.m	1				equivalentSets,extremePathways,extremePools	
+b	199	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsInputHalfspace.m	1				extremePathways,extremePools	
+b	200	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m	1	external-program			lrsRun	
+b	201	src/analysis/topology/graphHypergraphConversion/convertHypergraphToBipartiteGraph.m	1				connectedFR,largestConnectedFR	
+b	202	src/analysis/topology/reactingMoieties/buildReactingMoietyTables.m	1					
+b	203	src/analysis/topology/reactingMoieties/displayReactingMoieties.m	1					
+b	204	src/analysis/topology/reactingMoieties/identifyIsomorphicClasses.m	1				identifyConservedReactingMoieties	
+c	205	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getNutritionDatabaseFile.m	1				collectFoodItemInfo,getDietComposition,getDietEnergy,getMetaboliteFlux,nutritionAlgorithmWBM,setFoodRxnsWbm,vmhFoodFinder	
+c	210	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createBLSdatabase.m	1					
+c	211	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createFridaDatabase.m	1					
+c	212	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m	1					
+c	173	src/base/install/prepareTest.m	1	external-program		getAvailableSolversByType	createTissueSpecificModel,findFluxConsistentSubset	lead note (wave 05): needsLinux always skips on Linux: line 177 compares computer('arch') with 'glnx64' instead of 'glnxa64' (unusable-option); no src file passes needsLinux
+c	150	src/base/io/python/pyPath/py_rmpath.m	1			get_py_path	initPythonEnvironment	
+c	149	src/base/paths/comparePaths.m	1	external-program		get_py_path	initPythonEnvironment	
+c	184	src/base/paths/editCobraToolboxPath.m	1				driver_createTrainingModel	
+c	165	src/dataIntegration/chemoInformatics/inchi/getFormulaFromInChI.m	1			numAtomsOfElementInFormula	getFormulaAndChargeFromInChI,modelMetabolitesToSDF,regulariseModelFormulae	
+c	195	src/reconstruction/modelGeneration/massBalance/getElementalComposition.m	1				computeElementalMatrix,computeMetFormulae,getMolecularMass,identifyConservedMoieties,identifyConservedReactingMoieties	

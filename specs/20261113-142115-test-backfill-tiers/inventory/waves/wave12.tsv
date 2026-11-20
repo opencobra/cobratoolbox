@@ -1,0 +1,25 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	412	src/reconstruction/rBioNet/ReactionChecks.m	1			BalancePrep,balancecheck,unbalanced	addreactions	reclassified testable (T008): questdlg/msgbox/unbalanced-GUI only fire for empty, duplicate, already-in-database, FULLRCO, unknown-metabolite or unbalanced reactions (exempt); the happy path for new, balanced reactions with known metabolites (balance check, similarity check, output {newrxns,data,check}) is testable with hand-built rxn/metab tables
+a	449	src/visualization/metabolicCartography/addColourNode.m	1			createColorsMap	visualizeReconstructionsOnMap	
+a	452	src/visualization/metabolicCartography/transformXML2Map.m	1			getMapMatrices	changeMapMetIDToName,removeCDReactions,visualizeFluxFromFile,visualizeFluxTimeseriesFromFile,visualizeNormalizedRxnPresence,visualizeReconstructionsOnMap	
+a	454	src/visualization/metabolicCartography/changeMetColor.m	1			createColorsMap		
+a	456	src/visualization/metabolicCartography/changeRxnColorAndWidth.m	1			createColorsMap	visualizeReconstructionsOnMap	
+a	459	src/visualization/metabolicCartography/colorProtein.m	1			createColorsMap		
+a	460	src/visualization/metabolicCartography/colorRxnType.m	1			createColorsMap		
+a	461	src/visualization/metabolicCartography/correctMetNameCD.m	1					
+a	462	src/visualization/metabolicCartography/correctRxnNameCD.m	1					
+a	463	src/visualization/metabolicCartography/defaultColorCD.m	1					
+b	464	src/visualization/metabolicCartography/defaultLookMap.m	1			createColorsMap		
+b	465	src/visualization/metabolicCartography/findMetsFromCompartInMap.m	1					
+b	466	src/visualization/metabolicCartography/findMetsInMap.m	1					
+b	467	src/visualization/metabolicCartography/findRxnsFromCompartInMap.m	1					
+b	468	src/visualization/metabolicCartography/findRxnsInMap.m	1					
+b	469	src/visualization/metabolicCartography/findRxnsPerTypeInMap.m	1					
+b	470	src/visualization/metabolicCartography/modifyReactionsMetabolites.m	1			createColorsMap		
+b	472	src/visualization/metabolicCartography/transformFullMap2XML.m	1					
+b	473	src/visualization/metabolicCartography/transformFullXML2Map.m	1					
+b	474	src/visualization/metabolicCartography/transformToIrreversibleMap.m	1					
+c	475	src/visualization/metabolicCartography/transformToReversibleMap.m	1					
+c	476	src/visualization/metabolicCartography/unifyMetabolicMapCD.m	1				visualizeNormalizedRxnPresence,visualizeReconstructionsOnMap	
+c	477	src/visualization/metabolicCartography/unifyMetabolicPPImapCD.m	1					
+c	482	src/visualization/visualizeEpistasis/visualizePathwayInEpistasis.m	1					

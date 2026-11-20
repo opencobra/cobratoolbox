@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	214	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/normalizeDiet.m	1			getDietEnergy		
+a	227	src/base/cobrarrow/COBRArrow.m	1			COBRArrowSolver		
+a	234	src/base/install/getFilesInDir.m	1	external-program		getIgnoredFiles	changeCobraSolver,removeTempFiles	
+a	238	src/base/install/installGitBash.m	1			getGitBashVersion,portableGitSetup	updateGitBash	
+a	265	src/base/solvers/varKin/BDCAmethods/DCA.m	1				optimizeVKmodel0	
+a	266	src/base/solvers/varKin/BDCAmethods/Rate_function.m	1	shadowed-name			optimizeVKmodel0	
+a	267	src/base/solvers/varKin/derFreeMethods/BDF.m	1				optimizeVKmodel0	
+a	268	src/base/solvers/varKin/derFreeMethods/CSDF.m	1				optimizeVKmodel0	
+a	269	src/base/solvers/varKin/derFreeMethods/DBDF.m	1				optimizeVKmodel0	
+a	270	src/base/solvers/varKin/derFreeMethods/Rate_function.m	1	shadowed-name			optimizeVKmodel0	
+b	271	src/base/solvers/varKin/levMarMethods/GLM_FY.m	1				optimizeVKmodel0	
+b	272	src/base/solvers/varKin/levMarMethods/GLM_YF.m	1				optimizeVKmodel0	
+b	273	src/base/solvers/varKin/levMarMethods/LLM.m	1				optimizeVKmodel0	
+b	274	src/base/solvers/varKin/levMarMethods/LMLS.m	1				optimizeVKmodel0	
+b	275	src/base/solvers/varKin/levMarMethods/LMTR.m	1				optimizeVKmodel0	
+b	276	src/base/solvers/varKin/levMarMethods/LevMar.m	1				optimizeVKmodel0	
+b	277	src/base/utilities/generateStructFunction.m	1					
+b	278	src/base/utilities/issueConfirmationWarning.m	1				INIT,OptKnock,SteadyCom,fastcc,iMAT,optForce,optGene,prepareFastGapFill	reclassified testable (T008): the input() prompt runs only when HOME contains 'jenkins' (exempt); the warning emission and the onCleanup restore of the warning state are testable in a normal environment
+b	282	src/dataIntegration/XomicsToModel/analysis/plotOverlapResults.m	1					
+b	286	src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m	1					
+c	287	src/dataIntegration/XomicsToModel/metabolomics/summaryConcentrations.m	1					
+c	279	src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m	1				XomicsToModel	
+c	280	src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelStats.m	1				thermoKernel	
+c	281	src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelWeights.m	1				thermoKernel	
+c	290	src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m	1	external-program			atomicallyResolveModel,generateChemicalDatabase	
+c	291	src/dataIntegration/chemoInformatics/openBabelConverter.m	1	external-program			metaboliteStructuresTable,obtainMetStructures	
+c	289	src/dataIntegration/chemoInformatics/RXN/writeRxnfile.m	1				obtainAtomMappingsRDT	
+c	293	src/dataIntegration/chemoInformatics/metabolites/standardiseMolDatabase.m	1	external-program			generateChemicalDatabase	
+c	294	src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/parse_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.m	1				getElementalWeightMatrix	
+c	296	src/dataIntegration/fluxomics/c13solver/slvrEMU_fast.m	1				calcMDVfromSamp,scoreC13Fit	

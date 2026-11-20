@@ -1,5 +1,5 @@
 function [model]  = removeSubSystemsFromRxns(model, reactions, subSystems)
-% Adds the subSystem to the specified reaction
+% Removes the given subSystems from the specified reactions
 %
 % USAGE:
 %
@@ -17,13 +17,13 @@ function [model]  = removeSubSystemsFromRxns(model, reactions, subSystems)
 %                           reactions, or a double vector or boolean vector
 %                           identifying positions.
 %    subSystems:            A String identifying a subsystem, or a cell
-%                           array of strings to assign multiple subSystems.
-%                           If multiple strings are present, an empty
-%                           string will be removed
+%                           array of strings to remove multiple subSystems.
+%                           A reaction left without any subSystem gets
+%                           the single entry {''} (an empty string)
 %
 % OUTPUT:
-%    model:                 The model with the subSystems set to the
-%                           respective reactions (old values will be removed).
+%    model:                 The model with the given subSystems removed from the
+%                           respective reactions (other subSystems are kept).
 %
 % EXAMPLE:
 %    %Remove TCA as subSystem from a set of reactions

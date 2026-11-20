@@ -1,0 +1,6 @@
+test/verifiedTests/base/testSolvers/testParseSolverParameters.m|src/base/solvers/param/parseSolverParameters.m
+test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m|src/base/solvers/param/changeCobraSolverParams.m
+test/verifiedTests/dataIntegration/testMolecularMass/testGetElementalWeightMatrix.m|src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/getElementalWeightMatrix.m
+test/verifiedTests/analysis/testEcosystem/testGetEcosystemClusterDescriptor.m|src/analysis/ecosystem/getEcosystemClusterDescriptor.m
+test/verifiedTests/analysis/testThermo/testTransportReactionBool.m|src/analysis/thermo/transport/transportReactionBool.m
+test/verifiedTests/analysis/testThermo/testDeltaG0concFluxConstraintBounds.m|src/analysis/thermo/thermoDirectionality/deltaG0concFluxConstraintBounds.m

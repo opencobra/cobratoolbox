@@ -25,7 +25,7 @@ function [parsed_updated] = correctMetName(parsed, cmpM_results, listR)
 %
 % EXAMPLE:
 %
-%    ref_corrected = correctMetName(ref, cmp_recon2map_M.listOfNotFound(:, 6), listForCorrection(:, 2))
+%    ref_corrected = correctMetName(ref, cmp_recon2map_M, listForCorrection(:, 2))
 %
 % .. Author: - Longfei Mao Oct/2014
 

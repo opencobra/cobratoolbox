@@ -1,0 +1,12 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	125	src/analysis/sampling/BarrierRound/CMatrix/include/AdaptiveChol.m	1			ddouble,isarm,qdouble	CMatrixTest,ConvexProgram,demo	
+a	129	src/analysis/sampling/BarrierRound/PolytopeSimplifier/lewisCenter.m	1			ddouble	ConvexProgram	
+a	130	src/analysis/sampling/BarrierRound/PolytopeSimplifier/analyticCenter.m	1			ddouble	ConvexProgram	
+a	143	src/analysis/subspaces/nullspace/getNullSpace.m	1			nullSpaceOperator	checkNullspaceBasis,detMinSpan,entropicFluxBalanceAnalysis,findCyclicRxns,findFluxConsistentSubset,findSignedCyclicFluxConsistentSubset,greedyExtremeRayBasis	
+a	151	src/base/io/python/initPythonEnvironment.m	1	external-program		comparePaths,py_rmpath	autoFragment,writeModelinJSON	
+a	262	src/base/solvers/param/parseSolverParameters.m	1			getCobraSolverParams,getCobraSolverParamsOptionsForType	computeMetFormulae,parseCobraVarargin,solveCobraEP,solveCobraLP,solveCobraMILP,solveCobraMIQP,solveCobraNLP,solveCobraQP	
+a	471	src/visualization/metabolicCartography/removeCDReactions.m	1			getCorrespondingRows,transformXML2Map		
+a	478	src/visualization/metabolicCartography/visualizeFluxFromFile.m	1			addFluxFromFileWidthAndColor,transformMap2XML,transformXML2Map		
+a	479	src/visualization/metabolicCartography/visualizeFluxTimeseriesFromFile.m	1			transformMap2XML,transformXML2Map		
+a	480	src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m	1			transformMap2XML,transformXML2Map,unifyMetabolicMapCD		
+b	481	src/visualization/metabolicCartography/visualizeReconstructionsOnMap.m	1			addColourNode,changeRxnColorAndWidth,transformMap2XML,transformXML2Map,unifyMetabolicMapCD		

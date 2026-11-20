@@ -15,20 +15,28 @@ function fileNameOut = lrsRun(modelName, param)
 %                      * .inequality - {0, 1} if 1, then represent as two inequalities rather than a single equality
 %                      * .shellScript - {0, 1} if 1, then lrs is run through a bash script
 %                      * .facetEnumeration - {0, 1} if 1, run facet enumeration, otherwise vertex enumeration
-%                      * .redund - {0, 1} if 0, then remove redundant linear equalities
+%                      * .redund - {0, 1} if 0, then remove redundant inequalities from the
+%                        facets (facet enumeration), with the redund option of lrs
+%                        (lrslib 7 or later); the output file then takes the suffix _noR
 %
 % OUTPUTS:
 %    fileNameOut:    full path to the output file produced by lrs
 %
 % NOTE:
 %
-%    Any non-zero exit status of lrs, redund or the shell script (for example 127 when
-%    the lrs executable cannot start) raises the error `lrsRun:commandFailed`, whose
-%    message names the command, its exit status and its output. In shell-script mode,
-%    exit status 0 is success and `fileNameOut` is returned as in direct mode.
+%    Any non-zero exit status of lrs or the shell script (for example 127 when the lrs
+%    executable cannot start) raises the error `lrsRun:commandFailed`, whose message
+%    names the command, its exit status and its output. In shell-script mode, exit
+%    status 0 is success and `fileNameOut` is returned as in direct mode.
 %    (Feature 20261026-220121-fix-ci-test-failures, October 2026. Before, only exit
 %    status 1 was treated as a failure, and shell-script mode treated success as
 %    failure.)
+%
+%    With redund = 0 and facet enumeration, lrs is run a second time, on a temporary
+%    copy of its facet output that ends with the option line `redund 0 0`; the copy is
+%    removed afterwards. (Feature 20261120-140123-lrsrun-without-redund, November 2026,
+%    Constitution Principle XI. Before, the separate program redund was run, which
+%    lrslib 7 no longer needs and which COBRA's lrs for Linux does not include.)
 
 % Ronan Fleming 2021
 
@@ -86,12 +94,6 @@ else
     [status, result] = lrsSpecifyRows([modelName '.ine']);
 end
 
-if param.redund==0
-    %remove all redundant halfspaces
-    %http://cgm.cs.mcgill.ca/%7Eavis/C/lrslib/USERGUIDE.html#redopt
-    redundCmd = ['redund ' int2str(0) ' ' int2str(0)]; 
-end
-
 if isunix
     [status, result] = system('which lrs');
     if ~isempty(result)
@@ -125,18 +127,22 @@ if isunix
                 if param.redund == 0
                     fileNameIn = fileNameOut;
                     fileNameOut = [modelName '_noR.ine'];
-                    uselrsRedundOption =0;
-                    
+
                     [status, result] = lrsSpecifyRows(fileNameIn);
-                                        
-                    if uselrsRedundOption
-                        [status, result] =  system(['sed -i ''s/end/end\nredund 0 0/g'' ' fileNameIn]);
-                        systemCallText = ['lrs ' pwd filesep fileNameIn ' > ' pwd filesep fileNameOut];
-                        localCallText = ['lrs ' fileNameIn ' > ' fileNameOut];
-                    else
-                        systemCallText = ['redund ' pwd filesep fileNameIn ' > ' pwd filesep fileNameOut];
-                        localCallText = ['redund ' fileNameIn ' > ' fileNameOut];
-                    end
+
+                    % remove all redundant halfspaces with the redund option of lrs
+                    % (http://cgm.cs.mcgill.ca/%7Eavis/C/lrslib/USERGUIDE.html#redopt):
+                    % rows 0 to 0 means every row. The option goes after "end" in a
+                    % temporary copy, so the facet output fileNameIn is not modified
+                    optionFile = [tempname '.ine'];
+                    removeOptionFile = onCleanup(@() deleteIfPresent(optionFile));
+                    % a newline before the option puts it on a line of its own even when the
+                    % facet output does not end with one (lrs ignores the blank line)
+                    fid = fopen(optionFile, 'w');
+                    fprintf(fid, '%s\nredund 0 0\n', fileread(fileNameIn));
+                    fclose(fid);
+                    systemCallText = ['lrs ' optionFile ' > ' pwd filesep fileNameOut];
+                    localCallText = ['lrs ' fileNameIn ' (with option redund 0 0) > ' fileNameOut];
                     disp(localCallText);
                     [status, result] = system(systemCallText);
                     checkCommandStatus(status, result, systemCallText);
@@ -148,6 +154,13 @@ if isunix
     end
 else
     fprintf('non unix machines not yet supported\n');
+end
+end
+
+function deleteIfPresent(fileName)
+% removes the temporary lrs input, if it was written
+if isfile(fileName)
+    delete(fileName);
 end
 end
 

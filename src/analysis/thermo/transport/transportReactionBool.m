@@ -14,8 +14,8 @@ function transportRxnBool = transportReactionBool(model, originCompartment, dest
 %                                 * .ub - `n x 1` upper flux bounds
 %
 % OPTIONAL INPUTS:
-%    originCompartment:         origin compartment (only relevant for unidirectional)
-%    destinationCompartment:    destination compartment (only relevant for unidirectional)
+%    originCompartment:         origin compartment; when given with unidirectionalBool = 0, only the transport reactions between the two given compartments, in either direction, are returned
+%    destinationCompartment:    destination compartment (see originCompartment)
 %    unidirectionalBool:        1 = only return transport reactions between specified
 %                               compartments in the origin to destination direction
 %

@@ -1,0 +1,14 @@
+{
+ "extractFullRes": "lead (source read: header column Rxn added only when k==1; an infeasible first sample leaves the header one column short, lines 70-76)",
+ "calculateInteractionsByTaxon": "lead (source read: for i = 1:length(taxonInformation) takes the larger dimension of the cell array, line 42)",
+ "combineFluxResults": "lead (source read: load uses pathsRun1_commonSamples(i), the GF check on line 93 uses pathsRun1(i))",
+ "dimensionalityReductionAndMultivariateAnalysis": "lead (source read: generalTable has 10 variables, line 241; line 255 assigns 12 values when the regression warns)",
+ "generatePanAGORA2database": "lead (source read: strains = strains(1:3), line 26)",
+ "generatePanDatabase": "lead (source read: metsToAdd from setdiff is sorted, rows taken with the logical mask matches(model2.mets, metsToAdd) in model 2 order, lines 159-182)",
+ "generateStackedBarPlot": "lead (source read: one sample gives one Bar object; b(i).FaceColor on line 78 indexes past it)",
+ "clusterEcosystemPoints": "lead (source read: hierarchical branch returns k = kMax, line 173; OUTPUTS document k as the number of clusters)",
+ "getQualitativeFluxStates": "lead (source read: the -1 rule uses mx < delta, line 75, the zero rule mx <= delta; with delta = 0 a value at the threshold gets state 5 and a fixed flux never gets 3, lines 68 and 85)",
+ "findGenesAboveThresholdLocal2": "lead (source read: avg = expressionSum/length(row)-1, line 67)",
+ "findGenesBelowThresholdLocal2": "lead (source read: avg = expressionSum/length(row)-1, line 67)",
+ "Node": "lead (source read: removeDuplicateLiterals compares child indices with positions in the literal subset, lines 196-200; the isequal defects reproduced by the writer in MATLAB); no caller reaches them (quarantine-seeds.tsv)"
+}

@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	13	src/analysis/FVA/fvaJaccardIndex.m	1					
+a	3	src/analysis/FVA/fastFVA/cleanFilesFastFVA.m	1					reclassified testable (T008): input() prompt (line with input('\n Do you want to clean...')) runs only when userInteraction is true (the default); cleanFilesFastFVA(false) is exempt-free and testable for the empty-logFiles message and the log-file branch, where m is undefined when userInteraction=false (defect to quarantine)
+a	5	src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m	1			getCobraSolverVersion		
+a	14	src/analysis/KLdistance/KLdistance.m	1					
+a	15	src/analysis/ecosystem/computeEcosystemDistances.m	1				clusterEcosystemPoints	
+a	16	src/analysis/ecosystem/computeEcosystemLinkage.m	1				clusterEcosystemPoints,cobraClustergram	
+a	17	src/analysis/ecosystem/computeEcosystemDBSCAN.m	1				clusterEcosystemPoints	
+a	19	src/analysis/ecosystem/qualitativeStateLabels.m	1				compareEcosystemClusters,getEcosystemClusterDescriptor,getEcosystemClusterReactionValues,getQualitativeFluxStates,plotEcosystemGrid,plotQualitativeStateOverlap	
+a	22	src/analysis/ecosystem/filterEcosystemScenarios.m	1					
+a	29	src/analysis/ecosystem/matchEcosystemClusters.m	1					
+b	32	src/analysis/ecosystem/plotQuantitativeFluxCoupling.m	1					
+b	33	src/analysis/ecosystem/removeEcosystemPoints.m	1					
+b	34	src/analysis/ecosystem/selectEcosystemReactions.m	1					
+b	35	src/analysis/ecosystem/setEcosystemPoolBounds.m	1					
+b	38	src/analysis/exploration/plotEssentialRxns.m	1					
+b	39	src/analysis/fastForest/extractSubsetFeaturesfromFile.m	1					
+b	47	src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m	1				findHighlyLowlyExpressedGenesLT1	
+b	48	src/analysis/igemRNA/LT1/findGenesBelowThresholdLocal1.m	1				deleteInactiveGenes,findHighlyLowlyExpressedGenesLT1	
+b	36	src/analysis/topology/getCorrespondingCols.m	1				XomicsToModel,checkStoichiometricConsistency,findGenesFromMets,findMassLeaksAndSiphons,findStoichConsistentSubset,maxCardinalityConservationVector,modelExtraction,removeMapMol,removeMapReactions,removeMapSpecies,removeMapSpeciesOnly,removeMetabolites,thermoKernel	
+b	37	src/base/parseRxnFormula.m	1				LoadReaction,ReactionEq,addReaction,createModel,createModelNewCompartment,findTrspRxnFromMet,formula2mets,mapKBaseToVMHReactions,neighborRxn2data,similarity	
+c	12	src/base/io/utilities/getDefinedFieldProperties.m	1				addGenes,addMIRIAMAnnotations,addMultipleMetabolites,addMultipleReactions,addMultipleReactionsIT,checkDatabaseIDs,convertOldStyleModel,createEmptyFields,extendModelFieldsForType,generateFieldDescriptionFile,getDatabaseMappings,getModelFieldsForType,initFBAFields,orderModelFields,searchModel,verifyModel	
+c	25	src/base/io/utilities/readNumpyArray.m	1				loadEcosystemScenario	
+c	26	src/base/io/utilities/numpyBufferToArray.m	1				readPythonPickle	
+c	27	src/base/io/utilities/resolvePickleProxies.m	1				readPythonPickle	
+c	45	src/base/solvers/cplex/setCplexParam.m	1				SteadyComCplex,SteadyComFVA,SteadyComFVAgr,SteadyComPOA,SteadyComPOAgr,calculateGeneMCS,calculateMCS,mtFVA,setCplexParametersForProblem,solveCobraLPCPLEX,solveCobraLPCPLEX_2018,tuneParam	
+c	2	src/base/solvers/param/getCobraSolverParams.m	1			getCobraSolverParamsOptionsForType	GDLS,OptKnock,SteadyComCplex,SteadyComSubroutines,XomicsToModel,biomassPrecursorCheck,buildCplexProblemFromCOBRAStruct,checkGeneMCS,checkModelPreFBA,checkModelProperties,checkRankFR,checkSolFeas,checkStoichiometricConsistency,checkThermoFeasibility,computeReconstructionFeatures,constrainRxns,createDummyModel,createTissueSpecificModel,cycleFreeFlux,driver_testThermoQP,enumerateOptimalSolutions,fastCoreWeighted,fastGapFill,fastSNP,fastcc,fastcore,findExtremePool,findFluxConsistentSubset,findMassLeaksAndSiphons,findMinNull,findMinimalLeakageModeMet,findMinimalLeakageModeRxn,findSignedCyclicFluxConsistentSubset,findSparseMode,findSparsePathway,findStoichConsistentSubset,findThermoConsistentFluxSubset,fitExperimentalFlux,fluxVariability,identifyBlockedRxns,maxCardinalityConservationVector,mdFBA,metUtilisation,metabolomicsTomodel,minCardinalityConservationRelaxationVector,modelPredictiveCapacity,multiProductionEnvelope,optCardThermo,optimizeCardinality,optimizeCbModel,optimizeTwoCbModels,optimizeWBModel,parseSolverParameters,partition,performSanityChecksonRecon,plotRelaxedFBA,preprocessingOmicsModel,pruneModel,quanQualAcc,rFastcormics,relaxFBA_cappedL1,relaxedFBA,solveCobraNLP,sparseFBA,sparseLP,submitGapFill,thermoKernel,writePajekNet	
+c	9	src/base/utilities/restoreEnvironment.m	1			clearGlobal,setGlobal	SteadyComFVAgr,analyseObjectiveShadowPrices,analyseWBMs,batchTestAllReconstructionFunctions,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createBatchMWBM,createPanModels,cycleFreeFlux,findOptimalCoreCount,fluxVariability,getPanSpeciesMetProdCapacity,joinModelsPairwiseFromList,loadUncModels,microbiotaModelSimulator,plotATPTestResults,plotBiomassTestResults,predictMicrobeContributions,printReconstructionContent,runDebuggingTools,runDemeter,simulatePairwiseInteractions	
+c	11	src/base/utilities/getEnvironment.m	1			getGlobalValue	SteadyComFVAgr,analyseObjectiveShadowPrices,analyseWBMs,batchTestAllReconstructionFunctions,computeInternalMetaboliteProduction,computeReconstructionFeatures,computeUptakeSecretion,createBatchMWBM,createPanModels,cycleFreeFlux,findOptimalCoreCount,fluxVariability,getPanSpeciesMetProdCapacity,joinModelsPairwiseFromList,loadUncModels,microbiotaModelSimulator,plotATPTestResults,plotBiomassTestResults,predictMicrobeContributions,printReconstructionContent,runDebuggingTools,runDemeter,simulatePairwiseInteractions	
+c	40	src/reconstruction/refinement/GPRLogic/AndNode.m	1		AndNode,OrNode	OrNode	FormulaParser,LiteralNode,OrNode,combineChildren	
+c	41	src/reconstruction/refinement/GPRLogic/OrNode.m	1		AndNode,OrNode	AndNode	AndNode,FormulaParser,LiteralNode,combineChildren	

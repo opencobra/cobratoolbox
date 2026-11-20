@@ -1,0 +1,10 @@
+{
+ "lsqr": "lead (source read consistent with the writer's MATLAB reproduction: r1norm is not assigned on the early return for A'b = 0 when 4 or more outputs are requested)",
+ "nullSpaceOperator": "lead (source read consistent with the writer's MATLAB reproduction: scale = 0 reaches line 151, which reads the undefined A)",
+ "getRankLUSOL": "lead (writer's MATLAB reproduction: [r,p,q] = getRankLUSOL([0 1 2; 0 2 5]) gives q = [2;1;1], not a permutation)",
+ "py_addpath": "lead (source read: exist(directory,'dir') ~= 7 is inverted: '' becomes the absolute current folder and is added, a relative folder is added as given; the help says '' leaves the path unchanged)",
+ "getChargeFromInChI": "lead (source read: an empty component after strsplit on ';' is passed to eval, line 43, which errors)",
+ "compareTwoSamplesStat": "lead (source read: the chi-square p-value is the lower tail cobraChi2cdf(stat, nBin-1), line 75, where the p-value is the upper tail)",
+ "configCMatrix": "lead (source read: line 11 runs config, which exists nowhere in the repository)",
+ "loadSamples": "lead (source read: the regular-interval mode takes 1:pSkip:numPoints with pSkip = floor(numPoints/pointsPerFile), lines 50-51, more than pointsPerFile points; the header defines pointsPerFile as the number taken); severity raised to wrong-result by the lead"
+}

@@ -55,9 +55,9 @@ function [] = saveInputsMustSetsSecondOrder(model, minFluxesW, maxFluxesW, const
 % OUTPUTS:
 %    model.mat:           File containing the model
 %    minFluxesW.mat:      File containing the minimum fluxes for the wild-type
-%    maxFluxesW.mat:      File containing the maximum fluxes for the mutant
+%    maxFluxesW.mat:      File containing the maximum fluxes for the wild-type
 %    constrOpt.mat:       File containing the constraints used
-%    excludedRsns.mat:    File containing the excluded reactions
+%    excludedRxns.mat:    File containing the excluded reactions
 %
 % .. Author: - Sebastian Mendoza, May 30th 2017, Center for Mathematical Modeling, University of Chile, snmendoz@uc.cl
 

@@ -6,7 +6,7 @@ function solverVersion = getCobraSolverVersion(solverName, printLevel, rootPathS
 %
 % INPUT:
 %    solverName:        Name of the solver
-%    printLevel:        verbose level (default: 0)
+%    printLevel:        verbose level (default: 1)
 %    rootPathSolver:    Path to the solver installation
 %
 % OUTPUT:

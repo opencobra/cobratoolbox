@@ -17,7 +17,7 @@ function descriptorTable = getEcosystemClusterDescriptor(repValues, rxnIds, clus
 %
 % OUTPUT:
 %    descriptorTable:   (table) table with reactions as rows and variables
-%                       `status` (label of the representative state in the
+%                       `status_c<clusterId>`, e.g. `status_c14` (label of the representative state in the
 %                       cluster) and `diff` (number of clusters with a
 %                       different representative state; NaN when the state
 %                       in the cluster is not defined)

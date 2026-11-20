@@ -1,0 +1,13 @@
+{
+ "identifyConservedReactingSubgraphs": "lead (writer's MATLAB reproduction: rmnode on RBG uses dBTM node indices, so the reacting atom graph is wrong when a conserved bond comes first)",
+ "makeDietFormatConsistant": "lead (writer's MATLAB reproduction: fdTable.mat and fdCategoriesTable.mat are not in the repository; every call fails at line 21)",
+ "annotateModel": "lead (writer's MATLAB reproductions: with any exchange reaction every non-transport reaction gets the exchange SBO term; modelID without modelName stops the call)",
+ "physiologicalConstraintsHMDBbased_old": "lead (writer's MATLAB reproduction: ExclList ignored on the blood branch, as in the current version)",
+ "getExchangedMetaboliteTable": "lead (writer's MATLAB reproduction: the documented exRxnsOrdered = {} call fails, exchangeMetsL never assigned)",
+ "estimateDrGt0": "lead (writer's MATLAB reproduction: a model with field R stops at line 118, gasConstant undefined; line 58 checks for R, so the input is intended)",
+ "identifyConservedMoieties": "lead (writer's MATLAB reproductions: default options error at line 442 when two reactions share an atom transition, default sanityChecks 1 against the header's 0; moiety indices depend on atom order)",
+ "lrsReadHalfspace": "lead (writer's MATLAB reproduction: a row with rational coefficients is read as zeros)",
+ "lrsReadRay": "lead (writer's MATLAB reproductions: omitting param fails; a rational row gives an index error; a vertex whose coordinates sum to zero is dropped)",
+ "lrsWriteHalfspace": "lead (writer's MATLAB reproductions: omitting param fails; without equalities the row/column count is wrong; the sh option is unusable)",
+ "lrsWriteRay": "lead (writer's MATLAB reproduction: vertices written as lrs linearities; positivity rows not counted)"
+}

@@ -1,0 +1,3 @@
+test/verifiedTests/analysis/testEcosystem/testGetEcosystemClusterDescriptor.m|src/analysis/ecosystem/getEcosystemClusterDescriptor.m
+test/verifiedTests/analysis/testThermo/testTransportReactionBool.m|src/analysis/thermo/transport/transportReactionBool.m
+test/verifiedTests/analysis/testThermo/testDeltaG0concFluxConstraintBounds.m|src/analysis/thermo/thermoDirectionality/deltaG0concFluxConstraintBounds.m

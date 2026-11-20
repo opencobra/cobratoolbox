@@ -22,7 +22,7 @@ function webCGMtoTabDelimitedFile(model, webCGMoutputFile, gcmMetList)
 %                           same in `gcmMetList` and `webCGMoutputFile`.
 %
 % OUTPUT:
-%    gc_data_webCGM.txt:    tab delimited text file with group contribution data for
+%    gc_data_webGCM.txt:    tab delimited text file with group contribution data for
 %                           `createGroupContributionStruct.m`. The first two text columns in both files should correspond to: `abbreviation`, `formulaMarvin`,
 %                           the next three columns in both files should correspond to: `delta_G_formation`, `delta_G_formation_Uncertainty`, `chargeMarvin`.
 %

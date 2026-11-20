@@ -1,0 +1,11 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	606	src/analysis/topology/FR/plotFRresults.m	2			makeFRresultsTable		
+a	616	src/analysis/topology/reactingMoieties/createMoietyGraph.m	2			getMetMoietySubgraphs		
+a	678	src/dataIntegration/transcriptomics/FASTCORE/LP3cvx.m	2				fastcc_cvx	
+a	679	src/dataIntegration/transcriptomics/FASTCORE/LP7cvx.m	2				fastcc_cvx	
+a	680	src/dataIntegration/transcriptomics/FASTCORE/LP7cvx2.m	2					
+a	682	src/dataIntegration/transcriptomics/FASTCORE/tmplp7cvx.m	2					
+a	684	src/design/TrimGdel/readGeneRules.m	2				gDel_minRN,step2and3	
+a	685	src/design/optForce/saveInputsMustSetsFirstOrder.m	2				findMustL,findMustU	
+a	686	src/design/optForce/saveInputsMustSetsSecondOrder.m	2				findMustLL,findMustUL,findMustUU	
+a	687	src/design/optForce/saveInputsOptForce.m	2				optForce	

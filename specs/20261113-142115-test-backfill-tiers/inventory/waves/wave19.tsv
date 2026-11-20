@@ -1,0 +1,11 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	632	src/base/io/utilities/readBooleanRegModel.m	2			findRxnIDs		
+a	633	src/base/solvers/entropicFBA/addExoMetToEFBA.m	2				exoMetLOOCV	
+a	634	src/base/solvers/minos/minosCleanUp.m	2				solveCobraLP	
+a	637	src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelExtractStats.m	2					
+a	643	src/dataIntegration/chemoInformatics/inchi/compareInchis.m	2				generateChemicalDatabase	
+a	641	src/dataIntegration/chemoInformatics/metabolites/addMetInfoInCBmodel.m	2				atomicallyResolveModel	
+a	644	src/dataIntegration/chemoInformatics/metabolites/metDatabaseStatus.m	2					
+a	645	src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m	2	external-program		openBabelConverter	generateChemicalDatabase,getMolFilesMultipleSources	reclassified testable (T008): the webread sources (chebi, drugbank, hmdb, kegg, lipidmaps, pubchem) are exempt; with sources limited to inchi/smiles (local obabel) or with empty source ids, ID-field detection, metList handling and the molCollectionReport tables are testable
+a	635	src/dataIntegration/transcriptomics/preprocessing/mapExpressionToReactions.m	2				XomicsToModel,applyEFluxConstraints,efmEnrichmentAnalysis	
+a	646	src/reconstruction/modelGeneration/massBalance/computeElementalMatrix.m	2			findMetIDs,getElementalComposition,getElementalWeightMatrix	computeMW	
