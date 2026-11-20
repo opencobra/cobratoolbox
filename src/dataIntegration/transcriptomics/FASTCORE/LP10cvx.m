@@ -1,5 +1,5 @@
 function V = LP10cvx(K, P, model, epsilon)
-% CPLEX implementation of LP-9 for input sets K, P (see FASTCORE paper)
+% CVX implementation of LP-10 for input sets K, P (see FASTCORE paper)
 %
 % USAGE:
 %

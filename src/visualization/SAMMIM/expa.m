@@ -77,7 +77,7 @@ function [model, fullmodel] = expa(model, varargin)
 %                     `fullmodel` output, where the reversible
 %                     reactions that had been decomposed are combined
 %                     again. The extreme pathways (field `P`) are
-%                     combined as absolute value
+%                     combined as net value (forward column minus `_rev` column), so a pathway made only of a reaction and its reverse becomes a row of zeros
 
 if nargin > 1 && (varargin{1} == 'y' || varargin{1} == 'Y' || varargin{1} == 1)
     print = 1;

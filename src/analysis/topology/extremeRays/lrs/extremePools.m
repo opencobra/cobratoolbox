@@ -22,9 +22,9 @@ function [P, vertexBool, N] = extremePools(model, param)
 %                * .facetEnumeration - {(0), 1} 0 for vertex enumeration
 %
 % OUTPUTS:
-%    P:             `p x m` matrix of non-negative entries such that `P*N = 0`
+%    P:             `p x m` matrix of non-negative entries such that `P*N' = 0`
 %    vertexBool:    `n x 1` boolean vector indicating which columns of `P` are vertices
-%    N:             `m x n` stoichiometric matrix used such that `P*N = 0`
+%    N:             `n x m` transpose of the stoichiometric matrix used (columns of `model.S` of the reactions considered), such that `P*N' = 0`
 %
 % .. Author: - Ronan Fleming
 

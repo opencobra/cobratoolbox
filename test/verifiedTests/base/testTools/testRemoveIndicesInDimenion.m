@@ -21,18 +21,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The help text says the given indices are removed, but they are the ones kept
-%       SEVERITY: cosmetic
-%       TRIGGER: any call, e.g. removeIndicesInDimenion(magic(4), 1, [1 3])
-%       OBSERVED: rows 1 and 3 are returned (the given indices are kept); the only caller,
-%         removeFieldEntriesForType, relies on this and passes the complement of the entries to
-%         remove
-%       EXPECTED: a help text that describes the indices as the entries to keep (the code is
-%         consistent with its caller)
-%       LINES: 2-16
+%     None found.
 %
 % Authors:
 %     - Generated for feature 20261103-105830-tier2-safe-batch, 2026-11-03.
+%     - Help text of removeIndicesInDimenion corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

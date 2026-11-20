@@ -14,8 +14,8 @@ function printSolutionGEM(MatricesSUX, solution, logFile, itNum)
 %                      * .cont - Continuous solution vector (one entry per
 %                        reaction in `MatricesSUX`)
 %                      * .obj - Objective value of the MILP solution
-%    logFile:        solution is printed in this file (name of reaction added and
-%                    flux of that particular reaction) (Default = GEMLog.txt)
+%    logFile:        solution is printed in this file (name of reaction added and flux of that particular reaction); '.txt' is appended to the name
+%                    when missing, and `solution` is also saved to <logFile>_solution_<itNum>.mat. If omitted, the solution is printed to the command window
 %    itNum:          number of iterations
 %
 % .. Author:

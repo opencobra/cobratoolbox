@@ -34,18 +34,19 @@
 %       EXPECTED: the matrix built from the file, metabolite list and groups passed as
 %       arguments, as the INPUTS section documents them
 %       LINES: 26-28
-%     - DEFECT: The documented call name createGroupIncidenceMatrix_old does not exist
+%     - DEFECT: The function line names createGroupIncidenceMatrix_old, not the file name
 %       SEVERITY: cosmetic
-%       TRIGGER: createGroupIncidenceMatrix_old(model, 'gcm.txt', {'a'}, groupData), as USAGE
-%       shows
-%       OBSERVED: "Undefined function 'createGroupIncidenceMatrix_old' for input arguments of
-%       type 'struct'." (MATLAB R2025a): the signature names the function _old, but MATLAB
-%       resolves it by its file name createGroupIncidenceMatrix_jankowski
-%       EXPECTED: the signature and USAGE naming the function as its file
+%       TRIGGER: any use; the Code Analyzer reports the mismatch for the file
+%       OBSERVED: line 1 declares "function G = createGroupIncidenceMatrix_old(...)" in
+%         createGroupIncidenceMatrix_jankowski.m; MATLAB calls the function by its file name,
+%         so calls work (recorded 2026-11-20 when the USAGE line was corrected to the file
+%         name by feature 20261120-151023-doc-matches-code)
+%       EXPECTED: the function line names the file, createGroupIncidenceMatrix_jankowski
 %       LINES: 1
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Help text of createGroupIncidenceMatrix_jankowski corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

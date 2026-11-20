@@ -44,21 +44,10 @@
 %       EXPECTED: writeMatrix is a documented name-value parameter and is accepted in any
 %         position
 %       LINES: 57, 66-75
-%     - DEFECT: vartype is dropped from the default output
-%       SEVERITY: cosmetic
-%       TRIGGER: MILP = LP; MILP.vartype = ['I'; 'C']; writeLPProblem(MILP, 'fileName',
-%         'milp1.mps') with LP as above
-%       OBSERVED: (R2025a, 2026-11-15) the BOUNDS section of milp1.mps reads "UP BND1 X1 10"
-%         (continuous); with a non-default solverParams, e.g. 'solverParams', struct('x', 1),
-%         the same problem gives "UI BND1 X1 10" (integer). Line 206 calls BuildMPS without
-%         the 'Integer' and 'Binary' index lists that lines 186-187 build
-%       EXPECTED: the .vartype help saying that the index lists reach the MPS writer only for
-%         the full problem (writeMatrix false, line 209, or solverParams given), since the
-%         default writeMatrix true writes "only the Matrix, not the full problem" (lines 32-33)
-%       LINES: 205-207
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Help text of writeLPProblem corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

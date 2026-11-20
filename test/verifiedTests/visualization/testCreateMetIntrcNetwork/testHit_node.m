@@ -46,18 +46,11 @@
 %         for the main figure (its lines 210-218); the help text says the produced figure "has
 %         same property with main figure"
 %       LINES: 74, 134-137
-%     - DEFECT: The help text describes the fcont flag the wrong way round
-%       SEVERITY: cosmetic
-%       TRIGGER: reading the OPTIONAL INPUTS of hit_node (varargin{11})
-%       OBSERVED: fcont is documented as true if fluxes were supplied to
-%         createMetIntrcNetwork; createMetIntrcNetwork sets fcont = 1 when the fluxes are the
-%         default all-ones vector, and hit_node draws flux colours only for fcont = 0.
-%       EXPECTED: fcont = 1 when no fluxes were supplied
-%       LINES: 44-45
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
 %     - Converted to the quarantine layout after the independent review (T021), 2026-11-17.
+%     - Help text of hit_node corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

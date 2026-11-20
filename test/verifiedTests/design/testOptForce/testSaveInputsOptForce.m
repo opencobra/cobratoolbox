@@ -29,17 +29,10 @@
 %       EXPECTED: k.mat and nSets.mat written, as the OUTPUTS section documents, so that the
 %         kept inputs of an optForce run are complete
 %       LINES: 136-147
-%     - DEFECT: The wild-type maximum fluxes are written to maxFluxesW.mat, not maxFluxes.mat as documented
-%       SEVERITY: cosmetic
-%       TRIGGER: the call of the entry above
-%       OBSERVED: (R2025a, 2026-11-17) the folder holds maxFluxesW.mat (line 141) and no
-%         maxFluxes.mat; the call succeeds, and every other file is named after its variable,
-%         so the code's name is the consistent one and the OUTPUTS line misdescribes it
-%       EXPECTED: the OUTPUTS section (line 86) names the file maxFluxesW.mat
-%       LINES: 86, 141
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Help text of saveInputsOptForce corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

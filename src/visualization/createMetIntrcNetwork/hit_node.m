@@ -41,8 +41,8 @@ function hit_node(varargin)
 %                   * varargin{8} - Graphtitle, char, base title for the figure
 %                   * varargin{9} - nodecolour, colour for nodes (RGB triplet)
 %                   * varargin{10} - Hnodecolour, colour for highlighted nodes
-%                   * varargin{11} - fcont, logical/numeric flag: true if
-%                     fluxes were supplied to `createMetIntrcNetwork`
+%                   * varargin{11} - fcont, logical/numeric flag: 1 if the fluxes are the
+%                     default all-ones vector of `createMetIntrcNetwork` (no fluxes supplied), 0 if fluxes were supplied; flux colours and the colour bar title are drawn only for 0
 %                   * varargin{12} - scaleMin, minimum value for colorbar scaling
 %                   * varargin{13} - scaleMax, maximum value for colorbar scaling
 %                   * varargin{14} - nodeSize, size of nodes

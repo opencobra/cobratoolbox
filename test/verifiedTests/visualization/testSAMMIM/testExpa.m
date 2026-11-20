@@ -13,7 +13,7 @@
 %       so this file makes no assertion about the function. The wave 23 version of this test
 %       (git history) checked hand-derived extreme pathways of two three-metabolite models
 %       (each row verified with S * p' = 0) and is the starting point once the defect is fixed;
-%       its collapsed-P expectation followed the code's net formula, see the second entry.
+%       its collapsed-P expectation followed the code's net formula, which the help now documents.
 %
 % Function under test:
 %     src/visualization/SAMMIM/expa.m
@@ -43,24 +43,11 @@
 %       EXPECTED: "The model output matches the original model input" (OUTPUTS): the input's
 %         reaction order and objective, with only P added
 %       LINES: 184-198, 207
-%     - DEFECT: The help text says the collapsed pathways are combined as absolute values; they are net values
-%       SEVERITY: cosmetic
-%       TRIGGER: [model, fullmodel] = expa(m) for a model with a reversible internal reaction,
-%         for example m.S = sparse([-1 -1 0; 1 0 -1]), m.rxns = {'R1'; 'EX_A'; 'EX_B'},
-%         m.mets = {'A'; 'B'}, m.lb = [-10; 0; -10], m.ub = [10; 10; 0], m.rev = [1; 0; 0],
-%         m.c = [1; 0; 0]
-%       OBSERVED: (R2025a, 2026-11-17) line 473 sets P(:, R1) = P(:, R1) - P(:, R1_rev): the
-%         pathway B in -> A out (full row [0 1 1 -1] over R1 R1_rev EX_A EX_B) becomes
-%         [-1 1 -1], and the two-cycle R1 + R1_rev (full row [1 1 0 0]) becomes the zero row
-%         [0 0 0]. The net value keeps S * P' = 0 for the collapsed model, which absolute
-%         values (1 for R1) would break, so the code is taken as intended
-%       EXPECTED: OUTPUTS describing the net value (forward minus reverse) and the zero rows of
-%         two-cycles
-%       LINES: 79-80
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
 %     - Converted to the quarantine layout after the independent review (T021), 2026-11-17.
+%     - Help text of expa corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

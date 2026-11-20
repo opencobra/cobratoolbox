@@ -39,22 +39,10 @@
 %         minimum difference" computed as for reactions with several metabolites
 %         (min(..., [], 1))
 %       LINES: 81
-%     - DEFECT: The help names the third input seedMats and does not document the 'noSeed' form
-%       SEVERITY: cosmetic
-%       TRIGGER: help mapMatch; and the C, T of the entry above with [rmatch, mmatch] =
-%         mapMatch(C, T, 'noSeed')
-%       OBSERVED: (R2025a, 2026-11-17) the INPUTS section (line 12) describes "seedMats" while
-%         the signature and USAGE use seedMets; the help never mentions 'noSeed', the only form
-%         compareCbModels uses (its line 336). The call returns rmatch = [1 1; 1 1] and mmatch
-%         = zeros(2, 3): in the noSeed branch (lines 57-90) mmatch is never computed, and any
-%         other character argument (for example 'xyz') returns both outputs as zeros without
-%         a message. No call fails because of the help
-%       EXPECTED: the help names the input seedMets and documents 'noSeed' (topology score
-%         only, mmatch not computed)
-%       LINES: 1, 7, 12-14, 57-58
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Help text of mapMatch corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

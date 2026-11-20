@@ -27,7 +27,7 @@ function [formulaList, rxnsList, absentRxns, duplicatedRxns] = mapFormula(map, r
 % OUTPUTS:
 %    formulaList:        List of formulas
 %    rxnsList:           Present reactions from the list (rxnList) in the map
-%    absentRxns:         Reactions in the map not in the model
+%    absentRxns:         Reactions of the list (rxnList) not in the map
 %    duplicatedRxns:     Duplicated reactions in the map
 %
 % .. Authors:

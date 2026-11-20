@@ -21,21 +21,12 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The documented default figure width does not match the code
-%       SEVERITY: cosmetic
-%       TRIGGER: plotQuantitativeFluxCoupling(qfca) with fewer panels than colWrap, for
-%         example the three points of this test and the default colWrap 4
-%       OBSERVED: (R2025a, 2026-11-17) figure Position [100 100 900 260]: line 52 sets the
-%         default width to 300 * nCols with nCols = min(colWrap, nPanels) (line 49); the call
-%         succeeds, and the test does not assert the width for this input
-%       EXPECTED: the header (line 19) documents the default figureSize as [300 * colWrap,
-%         260 * nRows], i.e. a width of 1200 here; the code's width is the sensible one, so
-%         the header misdescribes it
-%       LINES: 49, 52
+%     None found.
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-13.
 %     - Cosmetic defect recorded after the independent review (T027/T028), 2026-11-17.
+%     - Help text of plotQuantitativeFluxCoupling corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;
@@ -67,9 +58,9 @@ qfca = table(rxn1, rxn2, fvaType, pointLabel, 'VariableNames', {'rxn1', 'rxn2', 
 fig = plotQuantitativeFluxCoupling(qfca);
 assert(isa(fig, 'matlab.ui.Figure'));
 % three panels in one row, placed at [100 100], 260 pixels high. The width is not asserted
-% here: with fewer panels than colWrap the header (300 * colWrap = 1200) and the code
-% (300 * 3 = 900) disagree (cosmetic defect in the header); the colWrap section below
-% checks the width where both agree
+% here: with fewer panels than colWrap it is 300 * 3 = 900, 300 times the number of panels,
+% as the header documents; the colWrap section below checks the width with more panels
+% than colWrap
 assert(isequal(fig.Position([1, 2, 4]), [100, 100, 260]));
 axesList = findobj(fig, 'Type', 'axes');
 assert(numel(axesList) == 3);

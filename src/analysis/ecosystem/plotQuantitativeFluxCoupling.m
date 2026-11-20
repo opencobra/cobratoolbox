@@ -16,7 +16,7 @@ function fig = plotQuantitativeFluxCoupling(qfca, varargin)
 %    faceColor:     (double) RGB color of the feasible region
 %                   (Default = [0.55 0.71 0.86])
 %    figureSize:    (double) [width, height] of the figure in pixels
-%                   (Default = [300 * colWrap, 260 * nRows])
+%                   (Default = [300 * nCols, 260 * nRows], with nCols = min(colWrap, number of panels))
 %
 % OUTPUT:
 %    fig:           figure handle

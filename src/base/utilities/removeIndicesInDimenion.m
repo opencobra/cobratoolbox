@@ -1,5 +1,5 @@
 function removed = removeIndicesInDimenion(input, dimension, indices)
-% Remove the indices in a specified field in the given dimension
+% Keep only the given indices of the input in the given dimension (all other entries in that dimension are removed)
 %
 % USAGE:
 %
@@ -8,12 +8,12 @@ function removed = removeIndicesInDimenion(input, dimension, indices)
 % INPUTS:
 %
 %    input:              The input matrix or array
-%    dimension:          The dimension from which to remove the indices
-%    indices:            The indices to remove
+%    dimension:          The dimension in which to select the indices
+%    indices:            The indices to keep (numeric indices or a logical vector); all other entries of that dimension are removed
 %
 % OUTPUT:
 %
-%    removed:          The array/matrix with the given indices removed.
+%    removed:          The array/matrix restricted to the given indices in the given dimension (all other entries of that dimension removed).
 %
 % NOTE:  
 %     Based on https://stackoverflow.com/questions/22537326/on-shape-agnostic-slicing-of-ndarrays

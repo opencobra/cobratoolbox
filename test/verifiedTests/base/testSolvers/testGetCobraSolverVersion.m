@@ -38,18 +38,11 @@
 %       EXPECTED: the version detected from the given solver installation path (INPUT
 %         rootPathSolver: "Path to the solver installation"), e.g. '1103'
 %       LINES: 38-40, 88, 91, 94
-%     - DEFECT: The help text gives the default printLevel as 0; the code uses 1
-%       SEVERITY: cosmetic
-%       TRIGGER: getCobraSolverVersion(solverName) without printLevel
-%       OBSERVED: (R2025a, 2026-11-13, pilot run of this test) the version message is printed
-%         for getCobraSolverVersion('gurobi'): line 34 sets printLevel = 1 when it is omitted
-%       EXPECTED: "printLevel: verbose level (default: 0)" (line 9), i.e. no message, or the
-%         help text giving the default 1
-%       LINES: 33-35
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-13.
 %     - Converted to the quarantine layout after the independent review (T027/T028), 2026-11-17.
+%     - Help text of getCobraSolverVersion corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

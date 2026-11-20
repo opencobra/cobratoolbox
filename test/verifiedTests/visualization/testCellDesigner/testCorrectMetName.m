@@ -23,22 +23,10 @@
 %       OBSERVED: line 41 lacks a terminating semicolon, so r_listN is printed on every call
 %       EXPECTED: no output
 %       LINES: 41
-%     - DEFECT: The EXAMPLE of the help text passes a cell column as cmpM_results and fails
-%       SEVERITY: cosmetic
-%       TRIGGER: the call of the EXAMPLE (line 28), correctMetName(ref,
-%         cmp_recon2map_M.listOfNotFound(:, 6), listForCorrection(:, 2)), e.g. with
-%         cmp.listOfNotFound = cell(1, 8), cmp.listOfNotFound{1, 6} = 'glc',
-%         cmp.listOfNotFound{1, 8} = 1 and listForCorrection = {'glc', 'glc_D'}
-%       OBSERVED: (R2025a, 2026-11-17) error 'Dot indexing is not supported for variables of
-%         this type.' at line 41, which reads cmpM_results.listOfNotFound(:, 8) from the
-%         structure that INPUTS documents ("the output of the cmpM function"); the documented
-%         input works (tested below), only the example is wrong
-%       EXPECTED: an EXAMPLE that passes the cmpM output structure, e.g.
-%         correctMetName(ref, cmp_recon2map_M, listForCorrection(:, 2))
-%       LINES: 28
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Help text of correctMetName corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

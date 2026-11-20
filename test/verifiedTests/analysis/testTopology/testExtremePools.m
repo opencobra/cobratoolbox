@@ -23,16 +23,11 @@
 %       OBSERVED: error "Unrecognized function or variable 'printLevel'": findSExRxnInd is called with printLevel-1, and printLevel is never defined
 %       EXPECTED: the exchange reactions are found heuristically, as the comments say, and the extreme pools are returned
 %       LINES: 55, 62
-%     - DEFECT: The third output is the transpose of what the help text states
-%       SEVERITY: cosmetic
-%       TRIGGER: any call, for example [P, vertexBool, N] = extremePools(model) with model.SConsistentRxnBool
-%       OBSERVED: N is the n x m matrix S', and P*N' = 0 holds
-%       EXPECTED: the help text states an m x n matrix N such that P*N = 0
-%       LINES: 44
 %
 % Authors:
 %     - Modified for CI integration - Thomas Pfau
 %     - Coverage completed by feature 20261104-115314-test-coverage-100, 2026-11-04.
+%     - Help text of extremePools corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 %
 % Test problem from
 %     Extreme Pathway Lengths and Reaction Participation in Genome-Scale Metabolic Networks

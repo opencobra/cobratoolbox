@@ -35,18 +35,10 @@
 %       EXPECTED: the metabolite without data is left out of the output file and its own
 %         identifier is printed with the reason, as the comments at lines 85 and 134-135 say
 %       LINES: 136
-%     - DEFECT: The output file is named gc_data_webGCM.txt, not gc_data_webCGM.txt as documented
-%       SEVERITY: cosmetic
-%       TRIGGER: any call, for example the call above with the NONE line second
-%       OBSERVED: MATLAB R2025a, 2026-11-16: exist('gc_data_webGCM.txt', 'file') = 2 and
-%         exist('gc_data_webCGM.txt', 'file') = 0 in the current folder after the call; line 44
-%         opens 'gc_data_webGCM.txt'
-%       EXPECTED: the OUTPUT section (line 25) naming the file that line 44 writes,
-%         gc_data_webGCM.txt, the name other code reads (dGfzeroGroupContToBiochemical.m line 104)
-%       LINES: 44
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Help text of webCGMtoTabDelimitedFile corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

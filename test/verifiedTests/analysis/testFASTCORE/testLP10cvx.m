@@ -24,20 +24,12 @@
 %     installed).
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The help text names the wrong solver and the wrong LP
-%       SEVERITY: cosmetic
-%       TRIGGER: help LP10cvx
-%       OBSERVED: (2026-11-17, by reading) the first help line (line 2) reads "CPLEX
-%         implementation of LP-9 for input sets K, P (see FASTCORE paper)", but the code
-%         (lines 36-54) states the problem in CVX, and the problem (minimise the L1 norm of
-%         the fluxes of P with the fluxes of K at least epsilon) is LP-10, as the file name
-%         says; no call is affected
-%       EXPECTED: "CVX implementation of LP-10 for input sets K, P (see FASTCORE paper)"
-%       LINES: 2
+%     None found.
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
 %     - Extended after the independent review (T027/T028), 2026-11-17.
+%     - Help text of LP10cvx corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

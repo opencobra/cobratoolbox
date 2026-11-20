@@ -40,17 +40,11 @@
 %         present in the map!!!', so absent reactions are an intended input, which fails when
 %         every listed reaction is absent (severity audit T009a)
 %       LINES: 51, 99-100
-%     - DEFECT: The help text describes absentRxns as reactions of the map not in the model
-%       SEVERITY: cosmetic
-%       TRIGGER: reading the OUTPUTS of mapFormula
-%       OBSERVED: absentRxns = setdiff(rxnList, map.rxnName), the reactions of rxnList that
-%         are not in the map
-%       EXPECTED: help text 'Reactions of rxnList not in the map'
-%       LINES: 30
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
 %     - Converted to the quarantine layout after the severity audit 2026-11-15 (T009a).
+%     - Help text of mapFormula corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

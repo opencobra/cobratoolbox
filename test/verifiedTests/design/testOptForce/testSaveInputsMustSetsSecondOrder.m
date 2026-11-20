@@ -23,15 +23,6 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: two output files are misdescribed in the help text
-%       SEVERITY: cosmetic
-%       TRIGGER: reading the OUTPUTS section of the help text
-%       OBSERVED: maxFluxesW.mat is described as the maximum fluxes for the mutant, but line 91
-%         saves maxFluxesW, the wild-type fluxes; the excluded reactions are listed as
-%         excludedRsns.mat, but line 93 writes excludedRxns.mat
-%       EXPECTED: maxFluxesW.mat described as the wild-type maximum fluxes, and the file name
-%         excludedRxns.mat
-%       LINES: 58, 60
 %     - DEFECT: the error messages for empty inputs name the first order function
 %       SEVERITY: cosmetic
 %       TRIGGER: saveInputsMustSetsSecondOrder with an empty model, minFluxesW, maxFluxesW or
@@ -42,6 +33,7 @@
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Help text of saveInputsMustSetsSecondOrder corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

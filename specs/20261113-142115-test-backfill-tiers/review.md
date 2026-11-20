@@ -106,7 +106,12 @@ Net effect:
    - transportReactionBool
 
    They are correct under the campaign's rule (R5: a header that documents a result the code does
-   not deliver), but each would clear with a documentation fix. Fixing the parseSolverParameters
+   not deliver), but each would clear with a documentation fix.
+   **Resolved 2026-11-20** (feature `specs/20261120-151023-doc-matches-code/`): the help of
+   parseSolverParameters, changeCobraSolverParams, getElementalWeightMatrix,
+   getEcosystemClusterDescriptor and transportReactionBool now matches their code, and all five
+   are TESTED. getDefinedFieldProperties keeps an `error` entry. readSimPhenyCMPD stays quarantined:
+   its entry rests on the code's own intent, not on help text. Fixing the parseSolverParameters
    and getCobraSolverParams help would unblock the most functions.
 3. **Defects the reviewers report in already-quarantined functions.** These were not reproduced and
    are not in the registry:

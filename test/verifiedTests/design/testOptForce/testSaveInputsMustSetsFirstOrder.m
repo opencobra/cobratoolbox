@@ -22,16 +22,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: maxFluxesW.mat is documented as the maximum fluxes of the mutant
-%       SEVERITY: cosmetic
-%       TRIGGER: reading the OUTPUTS section of the help text
-%       OBSERVED: the help text says maxFluxesW.mat holds the maximum fluxes for the mutant;
-%         line 86 saves maxFluxesW, the maximum fluxes of the wild type (INPUTS section)
-%       EXPECTED: maxFluxesW.mat described as the maximum fluxes for the wild type
-%       LINES: 54
+%     None found.
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Help text of saveInputsMustSetsFirstOrder corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

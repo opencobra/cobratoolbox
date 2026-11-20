@@ -35,22 +35,15 @@
 %       OBSERVED: error 'Array indices must be positive integers or logical values.'
 %         (calculateEPSILON:51): int64(0 * 0.7) = 0 is used as an index
 %       EXPECTED: epsilon = [0; 0] (no reaction is changed); the header documents rxnFBS as an
-%         "Array that contains the desired change: Forward, Backward and Unchanged (+1;0;-1)"
+%         "Array that contains the desired change: Forward, Backward and Unchanged (+1;-1;0)"
 %         and 'unique_epsilon' as an option, so an all-zero rxnFBS (no reaction changed) with
 %         unique_epsilon true is a documented input that fails when used (severity audit T009a)
 %       LINES: 51
-%     - DEFECT: The documented codes of rxnFBS do not match the code
-%       SEVERITY: cosmetic
-%       TRIGGER: reading the help of calculateEPSILON
-%       OBSERVED: the help lists "Forward, Backward and Unchanged (+1;0;-1)", i.e. 0 for a
-%         backward change, while the code (and rMTA) treat rxnFBS == 0 as unchanged and -1 as
-%         backward
-%       EXPECTED: Forward, Backward and Unchanged (+1;-1;0)
-%       LINES: 15-17
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
 %     - Converted to the quarantine layout after the severity audit 2026-11-15 (T009a).
+%     - Help text of calculateEPSILON corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

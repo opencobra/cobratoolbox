@@ -1,0 +1,732 @@
+[
+ {
+  "source": "src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m",
+  "title": "printLevel 2 prints a truncated compilation command and a warning",
+  "test": "test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m"
+ },
+ {
+  "source": "src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m",
+  "title": "the CPLEX root stays on the MATLAB path when the function stops with an error",
+  "test": "test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m"
+ },
+ {
+  "source": "src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m",
+  "title": "the existence of the CPLEX library file is never checked",
+  "test": "test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m"
+ },
+ {
+  "source": "src/analysis/dynamicFBA/dynamicFBA.m",
+  "title": "The number of tracked exchange reactions is printed on every call",
+  "test": "test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m"
+ },
+ {
+  "source": "src/analysis/ecosystem/plotQuantitativeFluxCoupling.m",
+  "title": "The documented default figure width does not match the code",
+  "test": "test/verifiedTests/analysis/testEcosystem/testPlotQuantitativeFluxCoupling.m"
+ },
+ {
+  "source": "src/analysis/exploration/surfNet.m",
+  "title": "The message for a partial field name shows a literal backslash n",
+  "test": "test/verifiedTests/analysis/testPrint/testSurfNet.m"
+ },
+ {
+  "source": "src/analysis/gMCS/calculateMCS.m",
+  "title": "The enumeration writes tmp.mat into the current folder",
+  "test": "test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m"
+ },
+ {
+  "source": "src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m",
+  "title": "Box plots print the handle array of every plot",
+  "test": "test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m"
+ },
+ {
+  "source": "src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/plotFluxesAgainstOrganismAbundances.m",
+  "title": "The current folder stays Metabolite_plots after an error",
+  "test": "test/verifiedTests/analysis/testAdditionalAnalysis/testPlotFluxesAgainstOrganismAbundances.m"
+ },
+ {
+  "source": "src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/updateTaxonomyInfoAGORA.m",
+  "title": "The row counter is printed for every strain",
+  "test": "test/verifiedTests/analysis/testMgPipe/testUpdateTaxonomyInfoAGORA.m"
+ },
+ {
+  "source": "src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/getMultiSpeciesModelId.m",
+  "title": "The compartmentalization error never names the species",
+  "test": "test/verifiedTests/analysis/testMultiSpeciesModelling/testGetMultiSpeciesModelId.m"
+ },
+ {
+  "source": "src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/printUptakeBoundCom.m",
+  "title": "Continuation lines of long names are printed as the literal text %30s in the host layout",
+  "test": "test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m"
+ },
+ {
+  "source": "src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m",
+  "title": "The loadings figure of PC 1 is saved as Loadings_PC11.png",
+  "test": "test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m"
+ },
+ {
+  "source": "src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m",
+  "title": "Hard-coded personal input folder",
+  "test": "test/verifiedTests/analysis/testPersephone/testGeneratePanAGORA2database.m"
+ },
+ {
+  "source": "src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m",
+  "title": "An unlabelled count is printed",
+  "test": "test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m"
+ },
+ {
+  "source": "src/analysis/persephone/additionalFunctions/microbiomeMappingStats.m",
+  "title": "The sheet of unmapped taxa is named 'Umapped'",
+  "test": "test/verifiedTests/analysis/testPersephone/testMicrobiomeMappingStats.m"
+ },
+ {
+  "source": "src/analysis/persephone/additionalFunctions/slimDownFBAresults.m",
+  "title": "The call leaves every MATLAB warning switched on",
+  "test": "test/verifiedTests/analysis/testPersephone/testSlimDownFBAresults.m"
+ },
+ {
+  "source": "src/analysis/persephone/readMetadataForPersephone.m",
+  "title": "All warnings are switched on after the call",
+  "test": "test/verifiedTests/analysis/testPersephone/testReadMetadataForPersephone.m"
+ },
+ {
+  "source": "src/analysis/rMTA/calculateEPSILON.m",
+  "title": "The documented codes of rxnFBS do not match the code",
+  "test": "test/verifiedTests/analysis/testRMTA/testCalculateEPSILON.m"
+ },
+ {
+  "source": "src/analysis/sampling/ACHR/ACHRSampler.m",
+  "title": "The time-limit exit leaves the error log open",
+  "test": "test/verifiedTests/analysis/testSampling/testACHRSampler.m"
+ },
+ {
+  "source": "src/analysis/sampling/ACHR/ACHRSampler.m",
+  "title": "printLevel 0 does not silence the header and the step warnings",
+  "test": "test/verifiedTests/analysis/testSampling/testACHRSampler.m"
+ },
+ {
+  "source": "src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m",
+  "title": "A log file is written into the current folder",
+  "test": "test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m"
+ },
+ {
+  "source": "src/analysis/sampling/plotSampleHist.m",
+  "title": "The subplot grid is transposed for perScreen = [nY, nX]",
+  "test": "test/verifiedTests/analysis/testSampling/testPlotSampleHist.m"
+ },
+ {
+  "source": "src/analysis/sampling/sampleScatterMatrix.m",
+  "title": "The progress of the two-set layout exceeds 100 %",
+  "test": "test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m"
+ },
+ {
+  "source": "src/analysis/subspaces/lsqr/lsqr.m",
+  "title": "The x = 0 message is printed even when show = 0",
+  "test": "test/verifiedTests/analysis/testSubspaces/testLsqr.m"
+ },
+ {
+  "source": "src/analysis/subspaces/lsqr/lsqrtest.m",
+  "title": "The function handle is printed by a statement without a semicolon",
+  "test": "test/verifiedTests/analysis/testSubspaces/testLsqrtest.m"
+ },
+ {
+  "source": "src/analysis/thermo/directionalityReport/directionalityStats.m",
+  "title": "The reverse -> uncertain count is labelled Reversible -> Uncertain",
+  "test": "test/verifiedTests/analysis/testThermo/testDirectionalityStats.m"
+ },
+ {
+  "source": "src/analysis/thermo/directionalityReport/directionalityStatsFigures.m",
+  "title": "The title of the standard Gibbs energy chart names the formation energy",
+  "test": "test/verifiedTests/analysis/testThermo/testDirectionalityStatsFigures.m"
+ },
+ {
+  "source": "src/analysis/thermo/directionalityReport/forwardReversibleFigures.m",
+  "title": "The warning about extra NaN probabilities is garbled",
+  "test": "test/verifiedTests/analysis/testThermo/testForwardReversibleFigures.m"
+ },
+ {
+  "source": "src/analysis/thermo/directionalityReport/writeReactionListThermo.m",
+  "title": "Non-integer stoichiometric coefficients are printed in exponent form",
+  "test": "test/verifiedTests/analysis/testThermo/testWriteReactionListThermo.m"
+ },
+ {
+  "source": "src/analysis/thermo/experimentalData/readMetRxnBoundsFiles.m",
+  "title": "The concMax error message says Minimum",
+  "test": "test/verifiedTests/analysis/testThermo/testReadMetRxnBoundsFiles.m"
+ },
+ {
+  "source": "src/analysis/thermo/groupContribution/jankowski/createGroupIncidenceMatrix_jankowski.m",
+  "title": "The documented call name createGroupIncidenceMatrix_old does not exist",
+  "test": "test/verifiedTests/analysis/testThermo/testCreateGroupIncidenceMatrix_jankowski.m"
+ },
+ {
+  "source": "src/analysis/thermo/groupContribution/jankowski/plotConcVSdGft0GroupContUncertainty.m",
+  "title": "An intermediate fraction is echoed to the command window",
+  "test": "test/verifiedTests/analysis/testThermo/testPlotConcVSdGft0GroupContUncertainty.m"
+ },
+ {
+  "source": "src/analysis/thermo/groupContribution/jankowski/webCGMtoTabDelimitedFile.m",
+  "title": "The output file is named gc_data_webGCM.txt, not gc_data_webCGM.txt as documented",
+  "test": "test/verifiedTests/analysis/testThermo/testWebCGMtoTabDelimitedFile.m"
+ },
+ {
+  "source": "src/analysis/thermo/molFiles/molFilesToCDFfile.m",
+  "title": "The share of metabolites without mol files is printed as a fraction labelled percentage",
+  "test": "test/verifiedTests/analysis/testThermo/testMolFilesToCDFfile.m"
+ },
+ {
+  "source": "src/analysis/thermo/thermoFBA/connectedRxnsByEFM.m",
+  "title": "The working directory is not restored when EFMtool fails",
+  "test": "test/verifiedTests/analysis/testThermo/testConnectedRxnsByEFM.m"
+ },
+ {
+  "source": "src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m",
+  "title": "The empty-producer branch labels the consumer axes",
+  "test": "test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m"
+ },
+ {
+  "source": "src/analysis/topology/extremeRays/lrs/extremePools.m",
+  "title": "The third output is the transpose of what the help text states",
+  "test": "test/verifiedTests/analysis/testTopology/testExtremePools.m"
+ },
+ {
+  "source": "src/analysis/topology/extremeRays/lrs/lrsInterface/lrsOutputReadRay.m",
+  "title": "the empty matrix P is printed to the command window",
+  "test": "test/verifiedTests/analysis/testLrsInterface/testLrsOutputReadRay.m"
+ },
+ {
+  "source": "src/analysis/topology/getCorrespondingCols.m",
+  "title": "The error for a colBool of the wrong length names rowBool",
+  "test": "test/verifiedTests/analysis/testTopology/testGetCorrespondingCols.m"
+ },
+ {
+  "source": "src/analysis/topology/getCorrespondingRows.m",
+  "title": "The error for a colBool of the wrong length names rowBool",
+  "test": "test/verifiedTests/analysis/testTopology/testGetCorrespondingRows.m"
+ },
+ {
+  "source": "src/analysis/topology/reactingMoieties/checkABRXNFiles.m",
+  "title": "The duplicates that stop the check are not shown",
+  "test": "test/verifiedTests/analysis/testReactingMoieties/testCheckABRXNFiles.m"
+ },
+ {
+  "source": "src/analysis/topology/reactingMoieties/readABRXNFile.m",
+  "title": "The two warnings about transition numbers print a literal backslash n",
+  "test": "test/verifiedTests/analysis/testReactingMoieties/testReadABRXNFile.m"
+ },
+ {
+  "source": "src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m",
+  "title": "The progress message has no space before the food source name",
+  "test": "test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m"
+ },
+ {
+  "source": "src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m",
+  "title": "The names of the new transport reactions lose their blanks",
+  "test": "test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m"
+ },
+ {
+  "source": "src/analysis/wholeBody/PSCMToolbox/setConstraints/setFeedingFastingConstraints.m",
+  "title": "The list of storable amino acids is printed on every call",
+  "test": "test/verifiedTests/analysis/testWholeBody/testSetFeedingFastingConstraints.m"
+ },
+ {
+  "source": "src/base/ci/addKeyToKnownHostsCT.m",
+  "title": "The error messages fail with a dot-indexing error when gitCmd is not set",
+  "test": "test/verifiedTests/base/testCi/testAddKeyToKnownHostsCT.m"
+ },
+ {
+  "source": "src/base/io/KEGG/mapMetName2KEGGID.m",
+  "title": "The message for a metabolite with several matches is never printed",
+  "test": "test/verifiedTests/base/testIO/testKEGG/testMapMetName2KEGGID.m"
+ },
+ {
+  "source": "src/base/io/convertCbModelToCNAModel.m",
+  "title": "without CellNetAnalyzer a call with an output stops with an unassigned-output error",
+  "test": "test/verifiedTests/base/testIO/testConvertCbModelToCNAModel.m"
+ },
+ {
+  "source": "src/base/io/utilities/creategrRulesField.m",
+  "title": "unknown reaction names in positions are not reported as intended",
+  "test": "test/verifiedTests/base/testIO/testUtilities/testCreategrRulesField.m"
+ },
+ {
+  "source": "src/base/io/utilities/getDistributedModelFolder.m",
+  "title": "the warning shows a literal \\n",
+  "test": "test/verifiedTests/base/testIO/testUtilities/testGetDistributedModelFolder.m"
+ },
+ {
+  "source": "src/base/io/utilities/readBooleanRegModel.m",
+  "title": "The message for a missing exchange reaction names the wrong metabolite",
+  "test": "test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m"
+ },
+ {
+  "source": "src/base/io/utilities/readBooleanRegModel.m",
+  "title": "The message for a missing internal reaction has no line break",
+  "test": "test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m"
+ },
+ {
+  "source": "src/base/io/writeLPProblem.m",
+  "title": "vartype is dropped from the default output",
+  "test": "test/verifiedTests/base/testIO/testWriteLPProblem.m"
+ },
+ {
+  "source": "src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m",
+  "title": "Diagnostic output is printed unconditionally",
+  "test": "test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m"
+ },
+ {
+  "source": "src/base/solvers/cplex/solveCobraLPCPLEXcard.m",
+  "title": "The cardinality solve prints the solution structure and a minimum-Euclidean-norm note",
+  "test": "test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m"
+ },
+ {
+  "source": "src/base/solvers/entropicFBA/processConcConstraints.m",
+  "title": "Documented defaults for the concentration unit and the maximum concentration differ from the code",
+  "test": "test/verifiedTests/base/testEntropicFBA/testProcessConcConstraints.m"
+ },
+ {
+  "source": "src/base/solvers/gams/checkGAMSSolvers.m",
+  "title": "The existence of licememo.gms is never checked",
+  "test": "test/verifiedTests/base/testSolvers/testCheckGAMSSolvers.m"
+ },
+ {
+  "source": "src/base/solvers/getSetSolver/getAvailableSolversByType.m",
+  "title": "The output of initCobraToolbox is not silenced",
+  "test": "test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m"
+ },
+ {
+  "source": "src/base/solvers/getSetSolver/getCobraSolverVersion.m",
+  "title": "The help text gives the default printLevel as 0; the code uses 1",
+  "test": "test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m"
+ },
+ {
+  "source": "src/base/solvers/gurobi/setGurobiParam.m",
+  "title": "the warning for an unknown lpmethod names param.qpmethod",
+  "test": "test/verifiedTests/base/testSolvers/testSetGurobiParam.m"
+ },
+ {
+  "source": "src/base/solvers/init/configEnvVars.m",
+  "title": "GUROBI_PATH from an environment variable ending in linux64 or mac64 gets a double separator",
+  "test": "test/verifiedTests/base/testSolvers/testConfigEnvVars.m"
+ },
+ {
+  "source": "src/base/solvers/param/changeCobraSolverParams.m",
+  "title": "The error for a parameter that is not allowed always names LP solvers",
+  "test": "test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m"
+ },
+ {
+  "source": "src/base/solvers/param/parseSolverParameters.m",
+  "title": "The invalid-parameters error message shows literal \\n instead of line breaks",
+  "test": "test/verifiedTests/base/testSolvers/testParseSolverParameters.m"
+ },
+ {
+  "source": "src/base/solvers/rescale/liftCouplingConstraints.m",
+  "title": "The model identifier gets two suffixes",
+  "test": "test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/BDCAmethods/BDCA.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testBDCA.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/BDCAmethods/DCA.m",
+  "title": "The display format is switched to longG and Niter and the status are printed",
+  "test": "test/verifiedTests/base/testSolvers/testDCA.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/derFreeMethods/BDF.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testBDF.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/derFreeMethods/CSDF.m",
+  "title": "The display format is switched to longG and Niter and the status are printed",
+  "test": "test/verifiedTests/base/testSolvers/testCSDF.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/derFreeMethods/DBDF.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testDBDF.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/levMarMethods/GLM_FY.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testGLM_FY.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/levMarMethods/GLM_YF.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testGLM_YF.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/levMarMethods/LLM.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testLLM.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/levMarMethods/LMLS.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testLMLS.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/levMarMethods/LMTR.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testLMTR.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/levMarMethods/LevMar.m",
+  "title": "The display format is switched to longG and the status is printed",
+  "test": "test/verifiedTests/base/testSolvers/testLevMar.m"
+ },
+ {
+  "source": "src/base/solvers/varKin/optimizeVKmodel0.m",
+  "title": "The display format is switched to long E and never restored",
+  "test": "test/verifiedTests/base/testSolvers/testOptimizeVKmodel0.m"
+ },
+ {
+  "source": "src/base/utilities/removeIndicesInDimenion.m",
+  "title": "The help text says the given indices are removed, but they are the ones kept",
+  "test": "test/verifiedTests/base/testTools/testRemoveIndicesInDimenion.m"
+ },
+ {
+  "source": "src/base/utilities/restoreEnvironment.m",
+  "title": "The printed path is cut at a folder name with a % sign",
+  "test": "test/verifiedTests/base/testUtilities/testRestoreEnvironment.m"
+ },
+ {
+  "source": "src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m",
+  "title": "The message about a feasible fit is never printed",
+  "test": "test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m"
+ },
+ {
+  "source": "src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m",
+  "title": "The session display format is changed",
+  "test": "test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m"
+ },
+ {
+  "source": "src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m",
+  "title": "The histogram marks the threshold at 2 whatever threshold is given",
+  "test": "test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m"
+ },
+ {
+  "source": "src/dataIntegration/chemoInformatics/RXN/writeRxnfile.m",
+  "title": "The reaction equation drops every \"1 \" it contains, not only unit coefficients",
+  "test": "test/verifiedTests/dataIntegration/testChemoInformatics/testWriteRxnfile.m"
+ },
+ {
+  "source": "src/dataIntegration/chemoInformatics/editChemicalFormula.m",
+  "title": "Element with zero atoms stays in the formula",
+  "test": "test/verifiedTests/dataIntegration/testChemoInformatics/testEditChemicalFormula.m"
+ },
+ {
+  "source": "src/dataIntegration/metaboAnnotator/analyseMetStruct/check4DuplicatesInList.m",
+  "title": "A repeated entry is used as the format of its message",
+  "test": "test/verifiedTests/dataIntegration/testMetaboAnnotator/testCheck4DuplicatesInList.m"
+ },
+ {
+  "source": "src/dataIntegration/metaboAnnotator/connect2resources/VMH2Seed.m",
+  "title": "A blank SEED cell overwrites the SEED id with NaN and writes a source",
+  "test": "test/verifiedTests/dataIntegration/testMetaboAnnotator/testVMH2Seed.m"
+ },
+ {
+  "source": "src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m",
+  "title": "The metabolite counter is printed for every identifier looked up",
+  "test": "test/verifiedTests/dataIntegration/testMetaboAnnotator/testGetIds2VMH.m"
+ },
+ {
+  "source": "src/dataIntegration/metaboAnnotator/connect2resources/parseBridgeDb.m",
+  "title": "The progress shown exceeds 100 percent when startSearch is above 1",
+  "test": "test/verifiedTests/dataIntegration/testMetaboAnnotator/testParseBridgeDb.m"
+ },
+ {
+  "source": "src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m",
+  "title": "The metabolite counter is printed for every metabolite",
+  "test": "test/verifiedTests/dataIntegration/testMetaboAnnotator/testGenerateInchiKeysSmilesFromInchiStrings.m"
+ },
+ {
+  "source": "src/dataIntegration/metabotools/make3Dplot.m",
+  "title": "The colour order is changed for every later figure of the session",
+  "test": "test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m"
+ },
+ {
+  "source": "src/dataIntegration/metabotools/make3Dplot.m",
+  "title": "The coordinates of every phenotype are printed to the console",
+  "test": "test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m"
+ },
+ {
+  "source": "src/dataIntegration/metabotools/statisticsAddedExchanges.m",
+  "title": "The sample counter is printed for every sample",
+  "test": "test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m"
+ },
+ {
+  "source": "src/dataIntegration/transcriptomics/FASTCORE/LP10cvx.m",
+  "title": "The help text names the wrong solver and the wrong LP",
+  "test": "test/verifiedTests/analysis/testFASTCORE/testLP10cvx.m"
+ },
+ {
+  "source": "src/design/optForce/optForce.m",
+  "title": "A wrong exclusion type leaves the report open and the folder changed",
+  "test": "test/verifiedTests/design/testOptForce/testOptForce.m"
+ },
+ {
+  "source": "src/design/optForce/optForce.m",
+  "title": "The documented exclusion type D is not recognised when the inputs are recorded",
+  "test": "test/verifiedTests/design/testOptForce/testOptForce.m"
+ },
+ {
+  "source": "src/design/optForce/optForce.m",
+  "title": "The report becomes a file named like the output folder",
+  "test": "test/verifiedTests/design/testOptForce/testOptForce.m"
+ },
+ {
+  "source": "src/design/optForce/saveInputsMustSetsFirstOrder.m",
+  "title": "maxFluxesW.mat is documented as the maximum fluxes of the mutant",
+  "test": "test/verifiedTests/design/testOptForce/testSaveInputsMustSetsFirstOrder.m"
+ },
+ {
+  "source": "src/design/optForce/saveInputsMustSetsSecondOrder.m",
+  "title": "the error messages for empty inputs name the first order function",
+  "test": "test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m"
+ },
+ {
+  "source": "src/design/optForce/saveInputsMustSetsSecondOrder.m",
+  "title": "two output files are misdescribed in the help text",
+  "test": "test/verifiedTests/design/testOptForce/testSaveInputsMustSetsSecondOrder.m"
+ },
+ {
+  "source": "src/design/optForce/saveInputsOptForce.m",
+  "title": "The wild-type maximum fluxes are written to maxFluxesW.mat, not maxFluxes.mat as documented",
+  "test": "test/verifiedTests/design/testOptForce/testSaveInputsOptForce.m"
+ },
+ {
+  "source": "src/reconstruction/comparison/modelBorgifier/mapMatch.m",
+  "title": "The help names the third input seedMats and does not document the 'noSeed' form",
+  "test": "test/verifiedTests/reconstruction/testModelBorgifier/testMapMatch.m"
+ },
+ {
+  "source": "src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m",
+  "title": "The call saves the whole MATLAB path to pathdef.m",
+  "test": "test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m"
+ },
+ {
+  "source": "src/reconstruction/demeter/src/integration/getUnannotatedReactionsFromPubSeedSpreadsheets.m",
+  "title": "The loop counter i is printed for every spreadsheet and every organism",
+  "test": "test/verifiedTests/reconstruction/testDemeter/testGetUnannotatedReactionsFromPubSeedSpreadsheets.m"
+ },
+ {
+  "source": "src/reconstruction/demeter/src/properties/plotMetaboliteProducersConsumers.m",
+  "title": "the metabolite counter is printed",
+  "test": "test/verifiedTests/reconstruction/testDemeter/testPlotMetaboliteProducersConsumers.m"
+ },
+ {
+  "source": "src/reconstruction/demeter/src/properties/producetSNEPlots.m",
+  "title": "the custom-feature branch filters on the taxa of the last taxon level",
+  "test": "test/verifiedTests/reconstruction/testDemeter/testProducetSNEPlots.m"
+ },
+ {
+  "source": "src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m",
+  "title": "the sensitivity column header loses its blank",
+  "test": "test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m"
+ },
+ {
+  "source": "src/reconstruction/growthExpMatch/printSolutionGEM.m",
+  "title": "The documented default log file GEMLog.txt is never used",
+  "test": "test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m"
+ },
+ {
+  "source": "src/reconstruction/metaboRePort/generateMetaboReport.m",
+  "title": "Every template line is printed twice to the console",
+  "test": "test/verifiedTests/reconstruction/testMetaboRePort/testGenerateMetaboReport.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m",
+  "title": "the biomass reaction found from biomassRxnAbbr is printed at every printLevel",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/massBalance/getElementalComposition.m",
+  "title": "Formula numbers in error messages lose their zero padding inside parentheses",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m",
+  "title": "A formula given as a cell or number stops with a MATLAB error, not the class error",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m",
+  "title": "Output is printed at printLevel 0",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m",
+  "title": "The report file is never closed",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testPHbalanceProtons.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m",
+  "title": "the thermodynamic consistency counts vary between runs",
+  "test": "test/verifiedTests/reconstruction/testCheckModelProperties/testCheckModelProperties.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m",
+  "title": "The progress message of each model column prints nothing",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testMakeModelPropertiesTable.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/removeCompartments.m",
+  "title": "An empty rev field is left when no reaction is removed",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/removeCompartments.m",
+  "title": "The default compartment and every reaction index are printed",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m",
+  "title": "printLevel is ignored and pdco always prints its iteration log",
+  "test": "test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m"
+ },
+ {
+  "source": "src/reconstruction/modelGeneration/test4HumanFctExt.m",
+  "title": "the diary is opened in the current folder and never closed",
+  "test": "test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m"
+ },
+ {
+  "source": "src/reconstruction/rBioNet/LegalRxnFormula.m",
+  "title": "The message has a spelling error",
+  "test": "test/verifiedTests/reconstruction/testRBioNet/testLegalRxnFormula.m"
+ },
+ {
+  "source": "src/reconstruction/rBioNet/ReactionChecks.m",
+  "title": "A new reaction identical to a database reaction leaves an empty row in data",
+  "test": "test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m"
+ },
+ {
+  "source": "src/reconstruction/rBioNet/ReactionChecks.m",
+  "title": "The balance check prints ans = [] for every new reaction",
+  "test": "test/verifiedTests/reconstruction/testRBioNet/testReactionChecks.m"
+ },
+ {
+  "source": "src/reconstruction/rBioNet/rBioNetSaveLoad.m",
+  "title": "Saving prints the whole database",
+  "test": "test/verifiedTests/reconstruction/testRBioNet/testRBioNetSaveLoad.m"
+ },
+ {
+  "source": "src/reconstruction/refinement/changeRxnMets.m",
+  "title": "A partly unknown reaction list is not reported",
+  "test": "test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m"
+ },
+ {
+  "source": "src/reconstruction/refinement/isSameCobraModel.m",
+  "title": "The message for differing nested subSystems names prints 0 positions",
+  "test": "test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m"
+ },
+ {
+  "source": "src/reconstruction/refinement/removeSubSystemsFromRxns.m",
+  "title": "The help text describes setRxnSubSystems, not the removal",
+  "test": "test/verifiedTests/reconstruction/testRefinement/testRemoveSubSystemsFromRxns.m"
+ },
+ {
+  "source": "src/visualization/SAMMIM/expa.m",
+  "title": "The help text says the collapsed pathways are combined as absolute values; they are net values",
+  "test": "test/verifiedTests/visualization/testSAMMIM/testExpa.m"
+ },
+ {
+  "source": "src/visualization/cellDesigner/cmpMet.m",
+  "title": "Every comparison prints the searched name",
+  "test": "test/verifiedTests/visualization/testCellDesigner/testCmpMet.m"
+ },
+ {
+  "source": "src/visualization/cellDesigner/cmpMet.m",
+  "title": "The help text names the third output field and its content wrongly",
+  "test": "test/verifiedTests/visualization/testCellDesigner/testCmpMet.m"
+ },
+ {
+  "source": "src/visualization/cellDesigner/correctMetName.m",
+  "title": "Debug output of the species row numbers",
+  "test": "test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m"
+ },
+ {
+  "source": "src/visualization/cellDesigner/correctMetName.m",
+  "title": "The EXAMPLE of the help text passes a cell column as cmpM_results and fails",
+  "test": "test/verifiedTests/visualization/testCellDesigner/testCorrectMetName.m"
+ },
+ {
+  "source": "src/visualization/cellDesigner/parseCD.m",
+  "title": "Debug output of the keyword table, of every line read and of intermediate values",
+  "test": "test/verifiedTests/visualization/testCellDesigner/testParseCD.m"
+ },
+ {
+  "source": "src/visualization/cellDesigner/position.m",
+  "title": "Debug output of the start index, the rest of the line and the end index",
+  "test": "test/verifiedTests/visualization/testCellDesigner/testPosition.m"
+ },
+ {
+  "source": "src/visualization/cellDesigner/readCD.m",
+  "title": "Debug output of the attribute list and of the whole partial result",
+  "test": "test/verifiedTests/visualization/testCellDesigner/testReadCD.m"
+ },
+ {
+  "source": "src/visualization/cellDesigner/updateCD.m",
+  "title": "Debug output of internal variables",
+  "test": "test/verifiedTests/visualization/testCellDesigner/testUpdateCD.m"
+ },
+ {
+  "source": "src/visualization/createMetIntrcNetwork/hit_node.m",
+  "title": "The help text describes the fcont flag the wrong way round",
+  "test": "test/verifiedTests/visualization/testCreateMetIntrcNetwork/testHit_node.m"
+ },
+ {
+  "source": "src/visualization/entropicFBA/calculateGeneWeight.m",
+  "title": "A model without SConsistentRxnBool fails before the function's own check",
+  "test": "test/verifiedTests/visualization/testEntropicFBA/testCalculateGeneWeight.m"
+ },
+ {
+  "source": "src/visualization/maps/ReconMap/printInRecon3Dmap.m",
+  "title": "The line width is written with a stray digit",
+  "test": "test/verifiedTests/visualization/testReconMap/testPrintInRecon3Dmap.m"
+ },
+ {
+  "source": "src/visualization/metabolicCartography/addNotes.m",
+  "title": "A metabolite shown twice in the map gets its note twice in each copy",
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m"
+ },
+ {
+  "source": "src/visualization/metabolicCartography/createColorsMap.m",
+  "title": "The help text says the map holds 143 colours; it holds 141",
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testCreateColorsMap.m"
+ },
+ {
+  "source": "src/visualization/metabolicCartography/mapFormula.m",
+  "title": "The help text describes absentRxns as reactions of the map not in the model",
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testMapFormula.m"
+ },
+ {
+  "source": "src/visualization/metabolicCartography/removeCDReactions.m",
+  "title": "A name listed twice is reported as not present in the map",
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m"
+ },
+ {
+  "source": "src/visualization/metabolicCartography/transformFullMap2XML.m",
+  "title": "Included species without notes are written with empty notes",
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m"
+ },
+ {
+  "source": "src/visualization/metabolicCartography/transformFullMap2XML.m",
+  "title": "The run time is printed on every call",
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m"
+ },
+ {
+  "source": "src/visualization/metabolicCartography/transformFullXML2Map.m",
+  "title": "The run time is printed on every call",
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testTransformFullXML2Map.m"
+ },
+ {
+  "source": "src/visualization/metabolicCartography/transformMap2XML.m",
+  "title": "The error for a single secondary reactant or product link with several map aliases says 'should not be cell'",
+  "test": "test/verifiedTests/visualization/testMetabolicCartography/testTransformMap2XML.m"
+ }
+]

@@ -36,7 +36,7 @@
 %         'Present in the Reference mode'; 'atp', [], 'Present in the Reference mode'}) and
 %         results has no field listOfNotFound: line 63 tests strfind(model IDs, entry), so 'h'
 %         matches h2o[c] and 'atp' matches datp[c], although neither species is in the model
-%       EXPECTED: both rows in listOfNotFound ("A list of reactions in the test model that are
+%       EXPECTED: both rows in listOfNotFound ("A list of metabolites in the test model that are
 %         NOT present in the reference COBRA model"); an exact, case-insensitive match as in
 %         the second pass of line 99
 %       LINES: 63
@@ -49,14 +49,6 @@
 %         101, so they no longer equal (or ismember) the IDs of model.mets
 %       EXPECTED: the model's own IDs ({'A[c]'})
 %       LINES: 42, 101
-%     - DEFECT: The help text names the third output field and its content wrongly
-%       SEVERITY: cosmetic
-%       TRIGGER: reading the OUTPUT section of cmpMet
-%       OBSERVED: the field is list_of_mets_not_present_in_ReferenceModel (line 101) and holds
-%         metabolites; the help text calls it list_of_rxns_not_present_in_ReferenceModel and
-%         speaks of reactions in all three fields
-%       EXPECTED: the field name of line 101 and "metabolites"
-%       LINES: 21-26
 %     - DEFECT: Every comparison prints the searched name
 %       SEVERITY: cosmetic
 %       TRIGGER: any call
@@ -68,6 +60,7 @@
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
 %     - Converted to the quarantine layout after the independent review (T021), 2026-11-17.
+%     - Help text of cmpMet corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;

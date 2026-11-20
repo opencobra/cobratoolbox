@@ -19,15 +19,11 @@
 %     None. Every executable line is reached below.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: The help text describes setRxnSubSystems, not the removal
-%       SEVERITY: cosmetic
-%       TRIGGER: help removeSubSystemsFromRxns
-%       OBSERVED: the summary says "Adds the subSystem to the specified reaction", the subSystems input says "If multiple strings are present, an empty string will be removed" and the output says "The model with the subSystems set to the respective reactions (old values will be removed)"
-%       EXPECTED: a description of the removal (the code removes the given names and leaves {''} when none remains, as tested below)
-%       LINES: 2, 21-22, 25-26
+%     None found.
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-16.
+%     - Help text of removeSubSystemsFromRxns corrected to match the code (feature 20261120-151023-doc-matches-code), 2026-11-20.
 
 % save the current path
 currentDir = pwd;
