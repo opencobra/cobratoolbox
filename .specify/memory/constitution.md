@@ -1,5 +1,32 @@
 <!--
 Sync Impact Report
+Version change: 1.9.0 -> 1.10.0
+Modified principles:
+- XI. Minimal Dependence On Third-Party Toolboxes And Proprietary Applications (same title).
+  Maintainer (2026-11-20): base MATLAB plus free components is "encouraged as much as possible";
+  proprietary software is used when there is no other way, but a local version reimplemented
+  from it is preferred to depending on it. The goal becomes a strongly preferred default
+  (SHOULD) instead of an absolute MUST; a MUST order of preference is added (base MATLAB, a free
+  component already shipped or required, an own clean reimplementation - from public
+  documentation and observed behaviour, never copied or decompiled, within licence terms - and
+  only then a proprietary toolbox or application); an option-4 dependency MUST be justified in
+  the plan and declared so tests skip, not fail. Test rules and the commercial-solver rule are
+  unchanged.
+Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/plan-template.md — the "Dependency minimisation" item asks for the option
+  chosen in the order of preference and why each earlier option is not feasible.
+- ✅ .specify/templates/spec-template.md, tasks-template.md — reviewed; no change.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers; no change.
+Rationale for MINOR bump: the principle is materially redefined (an absolute requirement
+becomes a preference with a mandatory order and a justification duty); plans approved under
+1.9.0 remain compliant, so no MAJOR bump.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.8.1 -> 1.9.0
 Modified principles: none redefined.
 Added sections:
@@ -995,23 +1022,34 @@ specified and gated can write better instructions for the LLM that implements th
 
 ### XI. Minimal Dependence On Third-Party Toolboxes And Proprietary Applications
 
-The toolbox and its test suite MUST run on base MATLAB plus free, open-source
-components that COBRA ships (for example the programs under `binary/` and the GLPK
-solver) or that every supported operating system provides. No function or test may
-require a paid MATLAB toolbox or a proprietary application.
+The toolbox and its test suite SHOULD run, as far as at all possible, on base MATLAB
+plus free, open-source components that COBRA ships (for example the programs under
+`binary/` and the GLPK solver) or that every supported operating system provides.
+This is the strongly preferred default. A paid MATLAB toolbox or a proprietary
+application is used only when no alternative is feasible.
 
-* New code MUST NOT add a dependency on a paid MATLAB toolbox, a proprietary
-  application, or a further third-party program when base MATLAB, an own
-  implementation, or a program the code already requires can do the job. Example:
-  `lrsRun` calls the separate program `redund`, although `lrs`, which it already
-  requires, removes redundant inequalities itself through its `redund` option
-  (lrslib 7 and later).
-* Existing dependencies of these kinds SHOULD be removed when the code that carries
-  them is touched, by a base-MATLAB alternative, an own implementation, or a feature
-  of a program already required. The toolbox-free replacement features are the
-  pattern: `cobra<MathWorksName>` functions in `src/base/utilities/toolboxFree/`,
-  named so as never to shadow a MathWorks function, documented with the function they
-  reproduce, and tested against it where it is installed.
+* When code needs a capability, it MUST take the first feasible option in this
+  order:
+  1. base MATLAB;
+  2. a free component COBRA already ships or the code already requires (example:
+     `lrsRun` needs no separate program `redund`, because `lrs`, which it already
+     requires, removes redundant inequalities itself through its `redund` option,
+     lrslib 7 and later);
+  3. an own implementation: a local version of the proprietary function or program,
+     reimplemented from its public documentation and observed behaviour, never by
+     copying or decompiling proprietary code, and within the terms of its licence.
+     The toolbox-free replacement features are the pattern: `cobra<MathWorksName>`
+     functions in `src/base/utilities/toolboxFree/`, named so as never to shadow a
+     MathWorks function, documented with the function they reproduce, and tested
+     against it where it is installed;
+  4. a paid MATLAB toolbox or proprietary application, only when none of the above
+     is feasible.
+* A dependency kept under option 4 MUST be justified in the feature's plan, stating
+  why each earlier option is not feasible. The function and its test MUST declare it
+  (for a test, with `prepareTest`) so that the test is skipped, not failed, where it
+  is unavailable.
+* Existing dependencies of option 4, and avoidable third-party programs, SHOULD be
+  replaced by an earlier option when the code that carries them is touched.
 * Commercial solvers remain optional backends behind the solver abstraction
   (Principle IV). A function or test that a free solver can serve MUST NOT require
   a commercial one.
@@ -1030,7 +1068,9 @@ Rationale: every paid toolbox, proprietary application, or extra program is a re
 a user cannot run an analysis and a reason CI skips a test. A skipped test verifies
 nothing, so an avoidable dependency silently removes coverage. A toolbox that runs on
 base MATLAB with free components stays usable by the whole community, and its test
-suite stays meaningful on every machine.
+suite stays meaningful on every machine. Where a proprietary capability is truly
+needed, a clean reimplementation keeps that benefit without the licence; only when
+that is not feasible is the dependency accepted, declared, and justified.
 
 ## Scientific Computing Constraints
 
@@ -1187,4 +1227,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.9.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-20
+**Version**: 1.10.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-20

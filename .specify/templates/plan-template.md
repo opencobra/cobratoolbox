@@ -61,10 +61,12 @@
   source/docs and the representative instance used. Write N/A if no external
   solver is invoked]
 - **Dependency minimisation**: [List every paid MATLAB toolbox, proprietary
-  application, or third-party program the feature's code and tests use; for each,
-  state why base MATLAB, an own implementation, or a program already required cannot
-  do the job, and the reason each test requirement declared with prepareTest is
-  unavoidable (Principle XI). Write None if there are none]
+  application, or third-party program the feature's code and tests use. For each,
+  name the option taken in Principle XI's order of preference (base MATLAB; a free
+  component already shipped or required; an own clean reimplementation; only then
+  the proprietary dependency) and why each earlier option is not feasible, and the
+  reason each test requirement declared with prepareTest is unavoidable. Write None
+  if there are none]
 - **Spec-driven scope control**: [List source paths to edit, read-only paths to
   avoid, migration boundary, and any justified new dependency or abstraction]
 - **MATLAB coding standards**: [Confirm: no evalc shadowing built-ins, warnings
