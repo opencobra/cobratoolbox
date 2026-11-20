@@ -1,0 +1,125 @@
+# Feature Specification: Fix the code defects of the core blocking functions
+
+**Feature Branch**: `20261120-161825-core-blocker-fixes`. It starts from
+`20261120-151023-doc-matches-code`, which starts from the open pull request's branch.
+
+**Created**: 2026-11-20
+
+**Status**: In progress. Fixes are added one function at a time, after the maintainer's review.
+
+**Input**: Maintainer, 2026-11-20: "ok now lets go through the 8 problematic functions one by one",
+then for #1: "ok lets fix it with respect to your suggestion. we need to push these 7 function fixes
+to a new branch. Yes use speckit to fix it. report to me if any output would be affected."
+
+## Context
+
+Seven quarantined functions block most of the 429 BLOCKED functions of the back-fill ledger. In the
+ledger's own words (the blocked reasons), and in order of reach:
+
+| # | Function | Blocks |
+|---|---|---|
+| 1 | getCobraSolverParams | 308 |
+| 2 | getModelFieldsForType | 306 |
+| 3 | setGurobiParam | 294 |
+| 4 | findSExRxnInd | 248 |
+| 5 | getFilesInDir | 245 |
+| 6 | checkBalance | 240 |
+| 7 | setCplexParametersForProblem | 239 |
+
+parseSolverParameters, the eighth, was cleared by a help-text fix in feature
+20261120-151023-doc-matches-code. The maintainer reviews each function with the lead (the defects,
+the code, the proposed fix). Only an approved fix is implemented, and every fix reports which outputs
+can change.
+
+## Decisions
+
+### 1. getCobraSolverParams: approved 2026-11-20
+
+- **Defect "the global solver parameters are ignored when no paramStructure is given":** fix the
+  code. One flag (`overRideDefaults`) decided both whether the global settings are read and whether
+  a structure is returned. Split it into `useGlobals` and `returnStructure`. The two-input form then
+  reads the global settings; the number of outputs of every calling form is unchanged.
+- **Defect "paramStructure 'default' returns the global values":** fix the code. With 'default',
+  `useGlobals = 0`.
+- **Defect "the structure output keeps the fields named in paramNames":** fix the help text, which
+  becomes "the fields named in paramNames are set to the returned values". No caller uses this
+  output.
+
+### 2-7: pending the maintainer's review
+
+## User Scenarios & Testing *(mandatory)*
+
+### User Story 1 - Settings and helpers that do what they document (Priority: P1)
+
+A user who sets a solver parameter with changeCobraSolverParams, or who calls one of the seven
+functions as documented, gets the documented result.
+
+**Independent Test**: each fixed function has a full test of its documented behaviour, including the
+inputs that showed the defect, and passes with coverage.
+
+**Acceptance Scenarios (getCobraSolverParams)**:
+
+1. **Given** `changeCobraSolverParams('LP', 'feasTol', 1e-9)`, **When**
+   `getCobraSolverParams('LP', 'feasTol')` runs, **Then** it returns 1e-9. Without a global
+   setting, it returns the built-in 1e-6.
+2. **Given** the same global setting, **When** `getCobraSolverParams('LP', 'feasTol', 'default')`
+   runs, **Then** it returns 1e-6 and, as before, a structure as the last output.
+3. **Given** a parameter structure, **When** the three-input form runs, **Then** the structure wins
+   over the global setting, which wins over the built-in default, as before.
+4. **Given** any calling form, **When** it runs, **Then** the number of outputs is as before.
+
+### User Story 2 - Impact report (Priority: P1)
+
+For every fix, the maintainer gets a report of which outputs of the toolbox can change, under which
+conditions, and the evidence that nothing else changed (the tests of the callers).
+
+### User Story 3 - More tested functions (Priority: P2)
+
+When a fix clears a quarantine, the blocked functions whose blockers are all cleared get tests,
+written after all approved fixes are in.
+
+### Edge Cases
+
+- A user who changed a global setting gets that setting where it was ignored before. This is the
+  documented behaviour, and the impact report names the affected callers.
+- A paramStructure that is neither a structure nor 'default' (for example another text): it reads
+  the global settings, as before.
+
+## Requirements *(mandatory)*
+
+### Functional Requirements
+
+- **FR-001**: Each fix implements exactly the decision recorded above. Interfaces (inputs, number
+  of outputs, error identifiers) are unchanged unless the decision says otherwise (Principle II).
+- **FR-002**: Each fixed function's test becomes a full test. It checks the formerly defective
+  inputs, has its defect entries removed, and passes with coverage of every line not exempted.
+- **FR-003**: Each fix reports the outputs that can change (callers, conditions) and runs the tests
+  of the callers that have tests. A test that changes result is reported, not adjusted silently.
+- **FR-004**: Ledger rows move to TESTED, blocked reasons drop the cleared functions, and the
+  registry is regenerated. `--check` and `--verify-coverage` report 0 problems.
+- **FR-005**: The functions unblocked by the approved fixes get tests (US3), or quarantine tests
+  with confirmed defects.
+
+## Success Criteria *(mandatory)*
+
+### Measurable Outcomes
+
+- **SC-001**: Every approved function is TESTED with full coverage. Its formerly defective inputs
+  give the documented result.
+- **SC-002**: The impact report lists, for each fix, every caller whose output can change, and the
+  caller tests pass.
+- **SC-003**: The number of BLOCKED functions falls by the number unblocked, each with a test.
+
+## Assumptions
+
+- The global solver settings are empty after initCobraToolbox (checked 2026-11-20 for LP, MILP and
+  QP). The getCobraSolverParams fix therefore changes nothing unless a user changes a setting.
+- The branch is stacked on the documentation branch and the pull request's branch.
+
+## Traceability
+
+| Acceptance criterion | Test | Source function |
+|---|---|---|
+| US1 getCobraSolverParams 1-4 | testGetCobraSolverParams | src/base/solvers/param/getCobraSolverParams.m |
+| US2 impact | tests of the callers (impact report in review.md) | callers of each fixed function |
+| US3 unblocked | the new tests | the unblocked functions |

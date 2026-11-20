@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-837 known defects in 458 functions (315 wrong-result, 259 error, 74 unusable-option, 126 cosmetic, 63 limitation).
+834 known defects in 457 functions (312 wrong-result, 259 error, 74 unusable-option, 126 cosmetic, 63 limitation).
 
 ## Summary
 
@@ -428,9 +428,6 @@
 | `src/base/solvers/minos/DQQCleanup.m` | limitation | fort.* and *.sol files are kept when the results folder is missing | `test/verifiedTests/base/testSolvers/testDQQCleanup.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
 | `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | The error for a parameter that is not allowed always names LP solvers | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
-| `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | The global solver parameters are ignored when no paramStructure is given | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
-| `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | The structure output keeps the fields named in paramNames | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
-| `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | paramStructure 'default' returns the global values instead of the defaults | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/param/parseSolverParameters.m` | cosmetic | The invalid-parameters error message shows literal \n instead of line breaks | `test/verifiedTests/base/testSolvers/testParseSolverParameters.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | error | A row with more than two variables cannot be lifted with the default options | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | cosmetic | The model identifier gets two suffixes | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
@@ -5119,35 +5116,6 @@
 - **Expected**: a message naming the solver type given, MILP
 - **Source lines**: 85
 - **Documented in**: `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m`
-
-### `src/base/solvers/param/getCobraSolverParams.m`
-
-#### The global solver parameters are ignored when no paramStructure is given
-
-- **Severity**: wrong-result
-- **Trigger**: changeCobraSolverParams('LP', 'feasTol', 1e-9); getCobraSolverParams('LP', 'feasTol')
-- **Observed**: 1e-06 (the default of the script; overRideDefaults is 0 without a third input, so CBT_LP_PARAMS is never read)
-- **Expected**: 1e-09, the global value (header: "gets ... from paramStructure, the global cobra parameters variable or default values ... with the following priority paramStructure > solver type paramStructure > default paramStructure")
-- **Source lines**: 64-68, 169-176
-- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
-
-#### The structure output keeps the fields named in paramNames
-
-- **Severity**: wrong-result
-- **Trigger**: [v, s] = getCobraSolverParams('LP', 'feasTol', struct('feasTol', 1e-3, 'other', 5))
-- **Observed**: s has the fields feasTol (1e-3) and other (5)
-- **Expected**: per OUTPUTS, "paramStructureOut, with fields removed corresponding to paramNames" (only other); no caller in src/ uses this output, so the header is the likely error. Severity audit 2026-11-15: the struct returned keeps and sets exactly those fields (lines 166, 181), the opposite of the documented result
-- **Source lines**: 166, 181, 186
-- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
-
-#### paramStructure 'default' returns the global values instead of the defaults
-
-- **Severity**: wrong-result
-- **Trigger**: changeCobraSolverParams('LP', 'feasTol', 1e-9); getCobraSolverParams('LP', 'feasTol', 'default')
-- **Observed**: 1e-09 (the global value; overRideDefaults is set to 1 for 'default')
-- **Expected**: 1e-06 (OPTIONAL INPUTS: "paramStructure can be set to 'default' to use the default values set within this script"; the comment of line 56 reads "overide defaults unless hack is asking for defaults")
-- **Source lines**: 60-62
-- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
 
 ### `src/base/solvers/param/parseSolverParameters.m`
 

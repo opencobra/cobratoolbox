@@ -28,8 +28,17 @@ function varargout = getCobraSolverParams(problemType, paramNames, paramStructur
 %    varargout:     Variables which each value corresponding to paramNames
 %                   is output to.
 %                   In addition, if paramStructure is passed as an input, then
-%                   the final output argument is paramStructureOut, with fields
-%                   removed corresponding to paramNames
+%                   the final output argument is paramStructureOut: the given
+%                   paramStructure with the fields named in paramNames set to the
+%                   returned values (a new structure when paramStructure is not a
+%                   structure, e.g. 'default')
+%
+% NOTE:
+%    Without paramStructure, the values come from the global settings made
+%    with `changeCobraSolverParams`, else from the defaults set within this
+%    script; with paramStructure 'default', only from the defaults. (Feature
+%    20261120-161825-core-blocker-fixes, November 2026. Before, the two-input
+%    form ignored the global settings and 'default' used them.)
 %
 % EXAMPLE:
 %    paramStructure.saveInput = 'LPproblem.mat';
@@ -52,18 +61,17 @@ else
     end
 end
 if exist('paramStructure','var')
-    overRideDefaults = 1;
-    %overide defaults unless hack is asking for defaults
+    % a third input: the structure is returned as the final output
+    returnStructure = 1;
+    % the global settings are used unless the defaults set within this script are asked for
+    useGlobals = ~(ischar(paramStructure) && strcmp(paramStructure,'default'));
     if isstruct(paramStructure)
         paramStructureOut = paramStructure;
-    else
-        if ischar(paramStructure) && strcmp(paramStructure,'default')
-           overRideDefaults=1;
-        end
     end
 else
-    %the last argument will be the structure with defaults
-    overRideDefaults=0;
+    % no third input: no structure output, but the global settings are used
+    returnStructure = 0;
+    useGlobals = 1;
     paramStructure=[];
 end
 
@@ -166,7 +174,7 @@ for i=1:length(paramNames)
         paramStructureOut.(paramNames{i})= valDef.(paramNames{i});
     end
 
-    if overRideDefaults
+    if useGlobals
         % second set values to global values
         if isfield(parametersGlobal,paramNames{i})
             %list of default parameter values 
@@ -174,15 +182,16 @@ for i=1:length(paramNames)
             %structure of default parameter values
             paramStructureOut.(paramNames{i})=parametersGlobal.(paramNames{i});
         end
-        % third set values to specified values in paramStructure
-        if isfield(paramStructure,paramNames{i})
-            varargout{i} = paramStructure.(paramNames{i});
-            %structure of default parameter values
-            paramStructureOut.(paramNames{i})=paramStructure.(paramNames{i});
-        end
+    end
+    % third set values to specified values in paramStructure (isfield is false when
+    % paramStructure is [] or a text such as 'default')
+    if isfield(paramStructure,paramNames{i})
+        varargout{i} = paramStructure.(paramNames{i});
+        %structure of default parameter values
+        paramStructureOut.(paramNames{i})=paramStructure.(paramNames{i});
     end
 end
-if overRideDefaults
+if returnStructure
     varargout{length(paramNames)+1}=paramStructureOut;
 end
 
