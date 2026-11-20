@@ -1,5 +1,31 @@
 <!--
 Sync Impact Report
+Version change: 1.8.1 -> 1.9.0
+Modified principles: none redefined.
+Added sections:
+- XI. Minimal Dependence On Third-Party Toolboxes And Proprietary Applications. Maintainer goal
+  (2026-11-20, feature 20261113-142115-test-backfill-tiers, after the pull request's CI skipped
+  testLrsRun for the missing program redund): the toolbox and its tests run on base MATLAB plus
+  free, open-source components COBRA ships or every supported OS provides; no new avoidable
+  dependency; existing ones removed when touched; commercial solvers stay optional (IV); a test
+  is not skipped for a dependency the code could avoid, every declared requirement is justified
+  in the test header, and no requirement the platform already satisfies is declared.
+Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/plan-template.md — Constitution Check gains a "Dependency minimisation"
+  item pointing to Principle XI (no rule text duplicated, Principle X).
+- ✅ .specify/templates/spec-template.md, tasks-template.md — reviewed; no dependency rules
+  restated, no change.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers; no change.
+Rationale for MINOR bump: a new principle with new MUST obligations; no existing principle is
+removed or redefined, so approved plans stay valid.
+Deferred items: none. Follow-up (not part of the amendment): lrsRun's use of redund and the
+c13 tests' Perl requirement on Windows are the first known cases to bring into compliance.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.8.0 -> 1.8.1
 Modified principles:
 - III-Defects, quarantine (clarification, no new obligation class): "every function that calls
@@ -967,6 +993,45 @@ slowly disagree, or where the live site diverges from the code. Publishing the
 development process closes the loop: contributors who can read how features are
 specified and gated can write better instructions for the LLM that implements them.
 
+### XI. Minimal Dependence On Third-Party Toolboxes And Proprietary Applications
+
+The toolbox and its test suite MUST run on base MATLAB plus free, open-source
+components that COBRA ships (for example the programs under `binary/` and the GLPK
+solver) or that every supported operating system provides. No function or test may
+require a paid MATLAB toolbox or a proprietary application.
+
+* New code MUST NOT add a dependency on a paid MATLAB toolbox, a proprietary
+  application, or a further third-party program when base MATLAB, an own
+  implementation, or a program the code already requires can do the job. Example:
+  `lrsRun` calls the separate program `redund`, although `lrs`, which it already
+  requires, removes redundant inequalities itself through its `redund` option
+  (lrslib 7 and later).
+* Existing dependencies of these kinds SHOULD be removed when the code that carries
+  them is touched, by a base-MATLAB alternative, an own implementation, or a feature
+  of a program already required. The toolbox-free replacement features are the
+  pattern: `cobra<MathWorksName>` functions in `src/base/utilities/toolboxFree/`,
+  named so as never to shadow a MathWorks function, documented with the function they
+  reproduce, and tested against it where it is installed.
+* Commercial solvers remain optional backends behind the solver abstraction
+  (Principle IV). A function or test that a free solver can serve MUST NOT require
+  a commercial one.
+* A test MUST NOT be skipped for a dependency the code could avoid. Every
+  requirement a test declares with `prepareTest` (`requiredSoftwares`,
+  `requiredToolboxes`, `requiredSolvers`, `needs*`) MUST be stated with its reason
+  in the test header. A requirement the source could avoid is a defect of the
+  source, fixed through the Spec Kit gate (Principle VI), not hidden in the test
+  (for example by a stand-in program placed first on the path). A test MUST NOT
+  declare a requirement the platform already satisfies (for example Perl on Windows,
+  where MATLAB's `perl` runs the Perl bundled with MATLAB).
+* Vendored code under `external/` stays read-only (Principles V and IX): a
+  dependency that lives there is replaced, not edited.
+
+Rationale: every paid toolbox, proprietary application, or extra program is a reason
+a user cannot run an analysis and a reason CI skips a test. A skipped test verifies
+nothing, so an avoidable dependency silently removes coverage. A toolbox that runs on
+base MATLAB with free components stays usable by the whole community, and its test
+suite stays meaningful on every machine.
+
 ## Scientific Computing Constraints
 
 Implementation plans MUST cite the stable references that govern their feature where
@@ -1122,4 +1187,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.8.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-15
+**Version**: 1.9.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-20
