@@ -1,0 +1,4 @@
+test/verifiedTests/dataIntegration/testFitC13Data/testSlvrCumomer.m|src/dataIntegration/fluxomics/c13solver/slvrCumomer.m
+test/verifiedTests/dataIntegration/testFitC13Data/testSlvrCumomer_fast.m|src/dataIntegration/fluxomics/c13solver/slvrCumomer_fast.m
+test/verifiedTests/dataIntegration/testFitC13Data/testSlvrEMU.m|src/dataIntegration/fluxomics/c13solver/slvrEMU.m
+test/verifiedTests/dataIntegration/testFitC13Data/testSlvrEMU_fast.m|src/dataIntegration/fluxomics/c13solver/slvrEMU_fast.m

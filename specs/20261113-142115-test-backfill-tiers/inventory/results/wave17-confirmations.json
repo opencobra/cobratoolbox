@@ -1,0 +1,8 @@
+{
+ "SteadyComSubroutines": "lead (writer's MATLAB reproduction: 'initialize' fails at line 72 for a model with only infoCom, indCom read before it is built)",
+ "compareSampleTraj": "lead (writer's MATLAB reproduction: omitting the optional nBins fails at line 50)",
+ "metaboliteMassBalancePlot": "lead (writer's MATLAB reproduction: reads the old model.rxn(k).directionality field, line 62)",
+ "configureSetupThermoModelInputs": "lead (writer's MATLAB reproductions: concMinDefault/concMaxDefault ignored; a model with concMin fails at line 188)",
+ "pHbalanceProtons": "lead (writer's MATLAB reproductions: nRxn used before definition at line 57 when massImbalance is omitted; stale indexHRxn at line 248)",
+ "changeRxnMets": "lead (writer's MATLAB reproduction: a numeric Rxn changes the wrong reactions or fewer than asked)"
+}

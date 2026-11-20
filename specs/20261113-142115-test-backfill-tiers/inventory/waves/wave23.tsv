@@ -1,0 +1,21 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	652	src/dataIntegration/fluxomics/c13solver/errorComputation2.m	2			scoreC13Fit	C13ConfidenceInterval,errorComputation2_grad	
+a	711	src/reconstruction/metaboRePort/populateModelwithRxnIDs.m	2	shadowed-name			tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m	
+a	710	src/reconstruction/metaboRePort/other/populateModelwithRxnIDs.m	2	shadowed-name			tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m	
+a	713	src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m	2					
+a	714	src/reconstruction/modelGeneration/modelProperties/plotModelConsistency.m	2					
+a	712	src/reconstruction/refinement/annotateSBOTerms.m	2				tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m	
+a	719	src/reconstruction/refinement/addMIRIAMAnnotations.m	2			getDefinedFieldProperties,getRegisteredDatabases		
+a	721	src/reconstruction/refinement/addSubSystemsToReactions.m	2				readSBML	
+a	723	src/reconstruction/refinement/assignGPRA.m	2					
+a	724	src/reconstruction/refinement/assignSubSystems.m	2					
+b	725	src/reconstruction/refinement/changeCOBRAConstraints.m	2					
+b	726	src/reconstruction/refinement/changeCOBRAVariable.m	2					
+b	727	src/reconstruction/refinement/isSameCobraModel.m	2					
+b	729	src/reconstruction/refinement/removeSubSystemsFromRxns.m	2					
+b	730	src/reconstruction/refinement/setRxnSubSystems.m	2					
+b	718	src/reconstruction/refinement/GPRLogic/NormaliseGPRs.m	2			FormulaParser,creategrRulesField		
+b	731	src/visualization/SAMMIM/expa.m	2					reclassified testable (T008): askinput/input() prompts run only after more than 15 s of tableau computation and keyboard only on an internal size mismatch (exempt); extreme-pathway computation on a small model is testable
+b	732	src/visualization/cellDesigner/addAnnotation.m	2					reclassified testable (T008): uiputfile/uigetfile run only when fname/fname_out are omitted and warndlg only for unmatched items (exempt); annotating a small CellDesigner XML fixture from a model with explicit arguments is testable
+b	733	src/visualization/cellDesigner/addFlux.m	2					
+b	734	src/visualization/cellDesigner/addMiriam.m	2					reclassified testable (T008): uiputfile/uigetfile run only when fname/fname_out are omitted and warndlg only when no MIRIAM relations/items match (exempt); adding MIRIAM annotations to a small XML fixture using the bundled MIRIAM.mat is testable

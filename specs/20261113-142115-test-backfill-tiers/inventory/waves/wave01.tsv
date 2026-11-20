@@ -1,0 +1,6 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers
+a	4	src/base/solvers/getSetSolver/getCobraSolverVersion.m	1				fastFVA,generateMexFastFVA,isCompatible
+a	1	src/base/solvers/param/getCobraSolverParamsOptionsForType.m	1				changeCobraSolverParams,computeMetFormulae,getCobraSolverParams,parseCobraVarargin,parseSolverParameters
+a	7	src/base/utilities/setGlobal.m	1				restoreEnvironment
+a	8	src/base/utilities/clearGlobal.m	1				restoreEnvironment
+a	10	src/base/utilities/getGlobalValue.m	1				getEnvironment

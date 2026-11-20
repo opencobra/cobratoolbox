@@ -1,0 +1,9 @@
+test/verifiedTests/visualization/testCellDesigner/testCmpMet.m|src/visualization/cellDesigner/cmpMet.m
+test/verifiedTests/visualization/testCellDesigner/testCmpRxn.m|src/visualization/cellDesigner/cmpRxn.m
+test/verifiedTests/visualization/testEntropicFBA/testCalculateGeneWeight.m|src/visualization/entropicFBA/calculateGeneWeight.m
+test/verifiedTests/visualization/testReconMap/testBuildFluxDistLayout.m|src/visualization/maps/ReconMap/buildFluxDistLayout.m
+test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBA.m|src/visualization/metabolicCartography/addFluxFBA.m
+test/verifiedTests/visualization/testMetabolicCartography/testAddFluxFBAdirectionAndColor.m|src/visualization/metabolicCartography/addFluxFBAdirectionAndColor.m
+test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m|src/visualization/metabolicCartography/addNotes.m
+test/verifiedTests/visualization/testMetabolicCartography/testColorSubsystemCD.m|src/visualization/metabolicCartography/colorSubsystemCD.m
+test/verifiedTests/visualization/testMetabolicCartography/testUniqueMetabolites.m|src/visualization/metabolicCartography/uniqueMetabolites.m

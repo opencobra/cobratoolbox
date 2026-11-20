@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	483	src/analysis/exploration/findRxnIDs.m	2				C13ConfidenceInterval,ICONGEMs,SteadyComFVAgr,SteadyComSubroutines,XomicsToModel,addMissingReactions,augmentBOF,bio_draw_by_met,bio_draw_by_rxn,bio_findNearRxns,buildUFBAmodel,calculateReactionMasses,changeObjective,changeRxnBounds,changeRxnMets,classifyRxns,compareSampleTraj,computeMetFormulae,constrainRxns,deleteModelGenes,doubleRobustnessAnalysis,draw_by_met,draw_by_rxn,fastFVA,findBondsBrokenAndFormed,findEnthalpyChange,findGenesFromRxns,findMetabolicJunctions,findMetsFromRxns,findNearRxns,findNeighborRxns,fluxVariability,keepCompartment,metUtilisation,milpOEReinserts,modelPredictiveCapacity,multiProductionEnvelope,normalizePoints,nutritionAlgorithmWBM,optEnvelope,optGeneFitness,pValDistForModelOverlap,phenotypePhasePlane,plotSampleHist,plotyy_eFBA,printGPRForRxns,printRxnFormula,printRxnFormulaLinked,readBooleanRegModel,robustnessAnalysis,robustnessAnalysisWB,setInSilicoDiet,solveBooleanRegModel,surfNet,theoretMaxProd	
+a	497	src/analysis/exploration/findCarbonRxns.m	2				multiProductionEnvelope	
+a	498	src/analysis/exploration/findExcRxns.m	2				GDLS,XomicsToModel,buildModelStorage,dynamicFBA,dynamicRFBA,findOrphanRxns,findTransRxns,loadUncModels,mediaConstraints,metabolomicsTomodel,multiProductionEnvelope,multiProductionEnvelopeInorg,optEnvelope,pFBA,printFluxVector,printUptakeBound,rFastcormics,randomKO,reporterMets,rumba,solveBooleanRegModel,testLeakingMetabolites,testModelMassChargeBalance,theoretMaxProd,writeCbModel	
+a	499	src/analysis/exploration/findGPRFromRxns.m	2					
+a	500	src/analysis/exploration/findGeneIDs.m	2				surfNet	
+a	502	src/analysis/exploration/findMetIDs.m	2				SteadyComSubroutines,addExchangeRxn,bio_draw_by_met,bio_draw_by_rxn,bio_findNearRxns,buildUFBAmodel,calculateReactionMasses,changeRxnMets,classifyRxns,computeElementalMatrix,computeMW,computeMetFormulae,draw_by_met,draw_by_rxn,findElementaryMoietyVectors,findNearRxns,findNeighborRxns,modelSetting,solveBooleanRegModel,surfNet	
+a	505	src/analysis/exploration/findSubSysGen.m	2					
+a	506	src/analysis/exploration/generateHyperlinkedModel.m	2					
+a	507	src/analysis/exploration/getMIRIAMAnnotations.m	2					
+a	508	src/analysis/exploration/printCouplingConstraints.m	2				XomicsToModel	
+b	509	src/analysis/exploration/printFluxBounds.m	2					
+b	524	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/retrieveModelStats.m	2			readInputTableForPipeline	mgPipe	
+b	521	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/useDiet.m	2				adaptVMHDietToAGORA,createPanModels,curateGrowthRequirements,debugModel,deleteSeedGapfilledReactions,doubleCheckGapfilledReactions,identifyFutileCycles,microbiotaModelSimulator,refinementPipeline,removeFutileCycles,removeUnannotatedReactions,runTestsOnModel,simulatePairwiseInteractions,testATP,testGrowth,testGrowthOnDefinedMedia	
+b	525	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/getMultiSpeciesModelId.m	2			getCompartment		
+b	526	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/printUptakeBoundCom.m	2					
+b	534	src/analysis/persephone/loadMinimalWBM.m	2				analyseWBMs,ensureWBMfeasibility	
+b	533	src/analysis/persephone/additionalFunctions/physiologicalConstraintsHMDBbasedTEMP.m	2			OrganLists		
+b	539	src/analysis/rMTA/diffexprs2rxnFBS.m	2					
+b	542	src/analysis/sampling/ACHR/ACBSampler.m	2					
+b	543	src/analysis/sampling/ACHR/ACHRSampler.m	2				performSampling,sampleCbModel	
+c	544	src/analysis/sampling/CHRR/chrrSampler.m	2			logBarrierRound	sampleCbModel,sanity_check	
+c	537	src/analysis/wholeBody/PSCMToolbox/calcOrganFract.m	2			getOrganWeightFraction	perform_BMR_newData,perform_sensi_BMR_all,persWBM	
+c	523	src/analysis/wholeBody/PSCMToolbox/setConstraints/setDietConstraints.m	2			AGORAEssentialMetabolites,EUAverageDietNew,HighFiberDiet,HighProteinDiet,UnhealthyDiet,VegetarianDiet	analyzeHMmodel,createMWBM,ensureWBMfeasibility,microbiotaModelSimulator,perform_BMR_newData,perform_sensi_BMR_all,persWBM,runIEM_HH,setInSilicoDiet	
+c	535	src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m	2			OrganLists	analyzeHMmodel,individualizedLabReport,perform_BMR_newData,perform_sensi_BMR_all,persWBM,persWBMmetabolomics,runIEM_HH	
+c	492	src/base/io/utilities/buildRxnGeneMat.m	2				GDLS,GPR2models,XomicsToModel,addEnv,colorRxnsFromGenes,computeRescuedGenes,deleteModelGenes,doubleGeneDeletion,extractSubNetwork,findGenesFromMets,findGenesFromRxns,findMetabolicJunctions,findNeighborRxns,mergeTwoModels,minActiveRxns,normalizePoints,optGeneFitness,optGeneFitnessTilt,pFBA,removeGeneVersions,removeUnusedGenes,sequentialOEReinserts,simpleOptKnock,singleGeneDeletion	
+c	494	src/base/io/utilities/creategrRulesField.m	2				GDLS,NormaliseGPRs,ReconstructionCreator,addmetabolites,changeGeneAssociation,convertOldStyleModel,createEcosystemModel,model2data,model2xls,removeGenesFromModel,translateKBaseModel2VMHModel,writeCbModel,writeMoominOutput,writeSBML	
+c	496	src/base/io/utilities/readCobrapyJSONModel.m	2				loadEcosystemScenario	
+c	519	src/base/io/utilities/readSimPhenyGprText.m	2				readCbModel	
+c	522	src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m	2			OrganLists,getCorrespondingRows	XomicsToModel,addLoopLawConstraints,checkModelProperties,checkRankFR,checkStoichiometricConsistency,componentContribution,connectedComponents,conservationAnalysis,consistentPotentials,extremePools,fastSetupCreator,findBondsBrokenAndFormed,findEnthalpyChange,findRXNFiles,findRXNFilesPlain,findStoichConsistentSubset,findThermoConsistentFluxSubset,generateChemicalDatabase,generateFullRowRankFR,generateMetaboScore,growthMediaToModel,integerizeS,metabolomicsTomodel,optCardThermo,optimalExtremePoolDriver,relaxedFBA,test4HumanFctExt,thermoFlux2QNty,thermoKernel	
+c	484	src/reconstruction/refinement/getModelFieldsForType.m	2			getDefinedFieldProperties	addGenes,addMultipleMetabolites,addMultipleReactions,addMultipleReactionsIT,buildUFBAmodel,convertToIrreversible,extendModelFieldsForType,mergeModelFieldPositions,mergeTwoModels,moveRxn,removeFieldEntriesForType,searchModel,updateFieldOrderForType	

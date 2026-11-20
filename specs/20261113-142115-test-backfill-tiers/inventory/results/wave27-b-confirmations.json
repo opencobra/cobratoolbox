@@ -1,0 +1,4 @@
+{
+ "SparseLP_old": "lead (read the code: line 49 checks max(Aeq*0-beq)==0, one side of the equality only, so an infeasible zero vector is returned when beq has a positive entry; writer's MATLAB reproductions of the other entries)",
+ "maxEntConsVector": "lead (severity raised to wrong-result by research R5: documented input, documented maximum-entropy result not delivered because the hard-coded entropy weight equals pdco's OptTol; writer's MATLAB reproduction)"
+}

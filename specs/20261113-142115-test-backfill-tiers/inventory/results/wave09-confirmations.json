@@ -1,0 +1,14 @@
+{
+ "calcMDVfromSamp": "lead (source read: a non-empty glc calls convert_input, line 34, which exists nowhere in the repository)",
+ "getBinsOfFluxes": "lead (writer's MATLAB reproduction: output starts as 0 and line 142 assigns output.samps, an error for 200 or more samples)",
+ "getElementalWeightMatrix": "lead (source read: the header documents an input printWarning, line 16; the signature takes only isotopeAbundance, line 1); severity raised to unusable-option by the lead (consistency rule)",
+ "changeCobraSolverParams": "lead (source read: the header documents solverType as optional with default 'LP', line 9, but it is the first positional argument, line 1); severity raised to unusable-option by the lead (consistency rule, revision of wave 03)",
+ "acceptIDsSuggested": "lead (writer's MATLAB reproductions: IDsAdded keeps only the last accepted row; fewer rows than columns gives an index error)",
+ "addAnnotations": "lead (writer's source read and reproduction: the documented option annotationVerification is never read)",
+ "createNewMetaboliteStructure": "lead (writer's MATLAB reproduction: the documented headers neutral_formula and charged_formula are silently dropped)",
+ "parseBridgeDb": "lead (writer's offline reproduction with a stand-in curl: a ChEBI hit, or a mismatch without fullName, errors inside a try without catch and drops the rest)",
+ "getIds2VMH": "lead (writer's MATLAB reproduction: strmatch finds nothing in columns with NaN blanks, so KEGG/BioCyc/BiGG lookups never match on the shipped table)",
+ "calculateQuantitativeDiffs": "lead (writer's MATLAB reproductions: no shared uptake or secretion exchange, or an empty requested output set, errors)",
+ "defineUptakeSecretionProfiles": "lead (writer's MATLAB reproductions: the documented essAA_excl 0/1 and its default fail at line 89; fewer than 4 rows fail at line 57)",
+ "illustrate_ppp": "lead (writer's MATLAB reproduction: more than two metabolite pairs give an index error at line 28)"
+}

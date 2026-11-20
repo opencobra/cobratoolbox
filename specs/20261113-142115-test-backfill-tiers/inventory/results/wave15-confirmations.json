@@ -1,0 +1,14 @@
+{
+ "generateHyperlinkedModel": "lead (writer's MATLAB reproduction: every call stops at the undefined variable addGrRulesLinked, line 57)",
+ "getMIRIAMAnnotations": "lead (writer's MATLAB reproduction: the typo cRessourcestruct at lines 170-174 duplicates resources or errors in deal; a char 'ids' option errors at line 92)",
+ "printCouplingConstraints": "lead (writer's MATLAB reproduction: the documented output is unassigned with the default printLevel on a model with C; consistency rule)",
+ "printFluxBounds": "lead (writer's MATLAB reproduction: the documented calls printFluxBounds(model) and (model, rxns) stop at line 36, no default for rxnNameFlag; consistency rule)",
+ "retrieveModelStats": "lead (source read in the planning research and the writer's reproduction: the condition at line 108 is always false by operator precedence, so the figure is never produced)",
+ "useDiet": "lead (writer's MATLAB reproduction: a diet with fewer rows than columns gives an index error at line 54, the loop runs to length(cell))",
+ "physiologicalConstraintsHMDBbasedTEMP": "lead (writer's MATLAB reproduction: strcat(cell{:}, ...) joins all metabolite IDs into one string, so ranges are never matched; line 440 lacks the [bc] suffix)",
+ "physiologicalConstraintsHMDBbased": "lead (writer's MATLAB reproduction, measured with the profiler: ExclList is ignored for blood exchanges outside the kidney)",
+ "readSimPhenyGprText": "lead (writer's MATLAB reproduction: renumbering corrupts multi-gene rules, 'x(3) & x(3)')",
+ "findSExRxnInd": "lead (writer's MATLAB reproductions: DM_atp(c) counted as exchange; c gets one entry per metabolite when missing; the Ex_ prefix never matches)",
+ "getModelFieldsForType": "lead (source read: line 104 uses length(type-1) where length(type)-1 is meant, so custom fields with the singular prefix are missed on that branch)",
+ "chrrSampler": "lead (writer's MATLAB reproduction: the documented outputs minFlux/maxFlux are never assigned when a roundedPolytope is passed); severity raised to error by the lead (precedent printCouplingConstraints)"
+}

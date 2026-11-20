@@ -1,0 +1,10 @@
+test/verifiedTests/dataIntegration/testMolecularMass/testComputeMW.m|src/dataIntegration/chemoInformatics/molecularWeight/computeMW.m
+test/verifiedTests/dataIntegration/testFluxomics/testCompareTwoSamp.m|src/dataIntegration/fluxomics/compareTwoSamp.m
+test/verifiedTests/dataIntegration/testFluxomics/testCompareMultSamp.m|src/dataIntegration/fluxomics/compareMultSamp.m
+test/verifiedTests/dataIntegration/testATN/testBuildAtomTransitionNetwork.m|src/dataIntegration/fluxomics/atomTransition/ATN/buildAtomTransitionNetwork.m
+test/verifiedTests/dataIntegration/testFitC13Data/testScoreC13Fit.m|src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m
+test/verifiedTests/dataIntegration/testMetaboAnnotator/testPopulateModelMetStr.m|src/dataIntegration/metaboAnnotator/buildMetStruct/populateModelMetStr.m
+test/verifiedTests/dataIntegration/testMetaboTools/testNetworkTopology.m|src/dataIntegration/metabotools/networkTopology.m
+test/verifiedTests/dataIntegration/testMetaboTools/testSetQualitativeConstraints.m|src/dataIntegration/metabotools/setQualitativeConstraints.m
+test/verifiedTests/dataIntegration/testMetaboTools/testSetSemiQuantConstraints.m|src/dataIntegration/metabotools/setSemiQuantConstraints.m
+test/verifiedTests/analysis/testFASTCORE/testLP10cvx.m|src/dataIntegration/transcriptomics/FASTCORE/LP10cvx.m

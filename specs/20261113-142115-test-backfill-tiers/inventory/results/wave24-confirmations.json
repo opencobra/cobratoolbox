@@ -1,0 +1,8 @@
+{
+ "cmpRxn": "lead (writer's MATLAB reproduction: no parsed reaction matching the model reads the undefined rea_M at line 217)",
+ "calculateGeneWeight": "lead (writer's MATLAB reproduction: one inconsistent reaction stops gene-less reactions getting the median weight, line 104)",
+ "buildFluxDistLayout": "lead (writer's MATLAB reproductions: maxThickness ignored, line 46; the largest flux gets the thinnest line)",
+ "addFluxFBA": "lead (writer's MATLAB reproduction: the third output returns the input map's widths, line 88)",
+ "addNotes": "lead (writer's MATLAB reproductions: fails on the subSystems format createModel writes; numeric confidence scores become control characters)",
+ "colorSubsystemCD": "lead (writer's MATLAB reproduction: a reaction in two subsystems colours the wrong reactions or errors, line 45)"
+}

@@ -1,0 +1,85 @@
+src/analysis/FVA/fastFVA/cleanFilesFastFVA.m	1	interactive input
+src/reconstruction/demeter/src/integration/parseNCBItaxonomy.m	1	internet
+src/analysis/persephone/additionalFunctions/downloadAGORA2.m	1	internet
+src/analysis/thermo/trainingModel/new/getInchies.m	1	internet
+src/analysis/thermo/molFiles/new/kegg2mol.m	1	internet
+src/base/install/portableGitSetup.m	1	internet
+src/base/io/definitions/getRegisteredDatabases.m	1	internet
+src/base/io/python/condalab/conda.m	1	interactive input
+src/base/utilities/issueConfirmationWarning.m	1	interactive input
+src/dataIntegration/metaboAnnotator/analyseMetStruct/checkAbbrExists.m	1	internet
+src/dataIntegration/metaboAnnotator/analyseMetStruct/checkLinkValidity.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseChebiIdWebPage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/getIDsfromFiehnLab.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromUniChem.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/getMetIdsFromInchiKeys.m	1	internet
+src/dataIntegration/metaboAnnotator/molFileFinder/getMolFileFromDrugbank.m	1	internet
+src/dataIntegration/metaboAnnotator/buildMetStruct/generateVMHMetAbbr.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseCHOmineWebpage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseBiggID4VMH.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseKeggWebpage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseMetaNetXWebpage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseFDAsisWebpage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseChemIDPlusWebpage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseEPA4VMH.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseHmdbWebPage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseWikipediaWebpage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseDrugBankWebpage.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/retrievePotHitsHMDB.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/assignClassyFire.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/getInchiStringFromHMDB.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/parseVMH4IDs.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/getIds2VMH.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/getRxnFromKegg.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/queryExposomeExplorer.m	1	internet
+src/dataIntegration/metaboAnnotator/connect2resources/queryLipidMaps.m	1	internet
+src/reconstruction/comparison/modelBorgifier/addMetInfo.m	1	GUI
+src/reconstruction/comparison/modelBorgifier/cleanTmodel.m	1	interactive input
+src/reconstruction/comparison/modelBorgifier/metCompareGUI.m	1	GUI
+src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m	1	GUI
+src/reconstruction/demeter/src/integration/createInfoFileDEMETER.m	1	internet
+src/reconstruction/rBioNet/CreateGPR.m	1	GUI
+src/reconstruction/rBioNet/GenesAndReactions.m	1	GUI
+src/reconstruction/rBioNet/Keep_reactions.m	1	GUI
+src/reconstruction/rBioNet/unbalanced.m	1	GUI
+src/reconstruction/rBioNet/ReactionChecks.m	1	interactive input
+src/reconstruction/rBioNet/load_reaction.m	1	GUI
+src/reconstruction/rBioNet/rBioNetAbout.m	1	GUI
+src/reconstruction/rBioNet/sim_general.m	1	GUI
+src/reconstruction/rBioNet/compartment.m	1	GUI
+src/reconstruction/rBioNet/rBioNetSettings.m	1	GUI
+src/reconstruction/rBioNet/addreactions.m	1	GUI
+src/reconstruction/rBioNet/metabolites_in_database.m	1	GUI
+src/reconstruction/rBioNet/met_charge_formula.m	1	GUI
+src/reconstruction/rBioNet/similarities.m	1	GUI
+src/reconstruction/rBioNet/closeGUI.m	1	interactive input
+src/visualization/cellDesigner/writeCD.m	1	interactive input
+src/visualization/cellDesigner/colourAll.m	1	interactive input
+src/visualization/cellDesigner/colourNode.m	1	interactive input
+src/visualization/cellDesigner/parseCD.m	1	interactive input
+src/visualization/cellDesigner/writeText2XML.m	1	interactive input
+src/visualization/cellDesigner/repairXML.m	1	interactive input
+src/visualization/cellDesigner/writeTXT.m	1	interactive input
+src/visualization/cellDesigner/writeXML.m	1	interactive input
+src/visualization/convert/mapFormatConversion.m	1	internet
+src/analysis/sampling/plotSampleHist.m	2	interactive input
+src/analysis/thermo/trainingModel/new/createTrainingModel.m	2	internet
+src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m	2	internet
+src/dataIntegration/chemoInformatics/reactions/obtainAtomMappingsRDT.m	2	internet
+src/dataIntegration/metaboAnnotator/buildMetStruct/createrBioNetStructure.m	2	internet
+src/reconstruction/comparison/modelBorgifier/readCbTmodel.m	2	interactive input
+src/reconstruction/comparison/modelBorgifier/mergeModelsBorg.m	2	interactive input
+src/reconstruction/comparison/modelBorgifier/verifyModelBorg.m	2	interactive input
+src/reconstruction/rBioNet/data2model.m	2	interactive input
+src/reconstruction/rBioNet/model_description.m	2	GUI
+src/reconstruction/rBioNet/model2text.m	2	interactive input
+src/visualization/SAMMIM/expa.m	2	interactive input
+src/visualization/cellDesigner/addAnnotation.m	2	interactive input
+src/visualization/cellDesigner/addMiriam.m	2	interactive input
+src/visualization/cellDesigner/intergrate.m	2	does not parse: Syntax Error: L 1 (C 11): SYNER: Parse error at '~': usage might be invalid MATLAB syntax. 
+src/base/io/readCbModel.m	4	interactive input
+src/reconstruction/rBioNet/addmetabolites.m	4	GUI
+src/reconstruction/rBioNet/ReconstructionCreator.m	4	GUI
+src/reconstruction/rBioNet/ReconstructionTool.m	4	GUI
+src/reconstruction/rBioNet/model_stats.m	4	GUI
+src/reconstruction/rBioNet/addmissing.m	4	GUI
