@@ -171,3 +171,7 @@ Windows (T039). The maintainer accepted a `src/` change into this pull request: 
 `lrs`'s own redund option instead of the program `redund` (T040). That work is recorded in
 `specs/20261120-140123-lrsrun-without-redund/`, which has its own receipt. The pull request now
 changes one file under `src/`.
+
+2026-11-20, last: `lrsSpecifyRows` no longer runs GNU `sed` (T041, feature
+`specs/20261120-144501-lrsspecifyrows-without-sed/`, with its own receipt). Its two recorded defects
+are fixed, and the registry lists 861 defects. The pull request changes two files under `src/`.

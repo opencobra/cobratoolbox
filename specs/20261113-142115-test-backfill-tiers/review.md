@@ -294,5 +294,13 @@ ends with the option `redund 0 0`. It no longer runs the separate program `redun
 The test passes with coverage of every line except the non-Unix branch (line 156), and also passes
 when the whole test runs on a `PATH` without `redund`. The ten tests of `testLrsInterface/` and
 `testTopology/` that use lrs pass as before.
-This is the only change to `src/` in this pull request. Outside this change: `lrsSpecifyRows`
-runs GNU-style `sed -i`, which BSD `sed` on macOS rejects.
+`lrsSpecifyRows`, which `lrsRun` calls, ran GNU-style `sed -i`, which BSD `sed` on macOS rejects.
+It is fixed in a second feature, `specs/20261120-144501-lrsspecifyrows-without-sed/`. The
+function now reads the file, replaces the `*****` placeholders with `regexprep`, and writes the
+file back, with no external program; on the test's inputs the output is byte for byte what GNU
+`sed` wrote. That change also fixed the two defects recorded in its test: the undefined-variable
+error for a file that cannot be opened, and the file identifier left open. The registry lists 861
+defects. testLrsSpecifyRows now declares no requirement, so it runs on every platform, and it
+reaches every line of the function, also with an empty `PATH`. testLrsRun's minimal `PATH` now
+holds only `lrs` and `which`.
+These two functions are the only changes to `src/` in this pull request.

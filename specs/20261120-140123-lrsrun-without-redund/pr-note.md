@@ -1,12 +1,13 @@
 # Pull request description: changes since it was opened
 
 Written for the opencobra maintainers reviewing the pull request. Replace the summary sentence
-"**No file under `src/` is changed.**" with the paragraph below, and add the section after it.
+"**No file under `src/` is changed.**" with the paragraph below, add the section after it, and
+in "What is added" change "863 defects" to "861 defects".
 
 ---
 
-One file under `src/` changes: `lrsRun` (see "Changes after review" below). Every other change is
-tests and records.
+Two files under `src/` change: `lrsRun` and `lrsSpecifyRows` (see "Changes after review"
+below). Every other change is tests and records.
 
 ## Changes after review
 
@@ -23,6 +24,11 @@ tests and records.
   Linux ships no `redund`. On the test inputs the result is identical to what `redund` produces. The
   interface, file names and error identifier are unchanged. `testLrsRun` now needs only `lrs`, so CI
   runs it instead of skipping it.
+- **`lrsSpecifyRows` no longer needs GNU `sed`.** It fills in lrs's `*****` row count in MATLAB
+  (read, `regexprep`, write back), with byte-for-byte the output the `sed` version wrote. It used
+  `sed -i`, which fails with BSD `sed` on macOS. Its two recorded defects are fixed: the wrong
+  error for a file that cannot be opened, and a file left open. `test/known-defects.md` now lists
+  861 defects instead of 863. Its test needs nothing, so it runs on every platform.
 - **Constitution 1.9.0 and 1.10.0** (`.specify/memory/constitution.md`): new Principle XI,
   minimal dependence on third-party toolboxes and proprietary applications. Options are taken in
   this order:

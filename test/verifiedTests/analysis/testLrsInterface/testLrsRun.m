@@ -12,7 +12,7 @@
 %       (1, 0) and (0, 1), facets x1 >= 0 and x2 >= 0 (lrs adds the trivial row 1 >= 0, which
 %       the redund option removes). Failing commands and a machine without lrs are simulated
 %       with stand-in scripts placed first on the PATH, and a machine without the program
-%       redund with a PATH holding only lrs, which and sed; the PATH is restored.
+%       redund with a PATH holding only lrs and which; the PATH is restored.
 %
 % Function under test:
 %     src/analysis/topology/extremeRays/lrs/lrsInterface/lrsRun.m
@@ -20,7 +20,7 @@
 % Tier (Constitution III-Coverage):
 %     Tier 2 - no solver; needs the external program lrs (lrslib 7 or later), declared with
 %     prepareTest('requiredSoftwares', {'lrs'}), because lrsRun is the interface to it (COBRA
-%     ships it in binary/), and a Unix shell with sed (used by lrsSpecifyRows).
+%     ships it in binary/), and a Unix shell.
 %
 % Coverage exemptions:
 %     Line 156: non-Unix branch (OS-specific); the test needs a Unix shell for lrs.
@@ -33,6 +33,8 @@
 %     - Declares redund, which the CI machine lacks (T034), 2026-11-20.
 %     - lrsRun no longer runs redund: requirement lrs only, checks of the redund option route
 %       (feature 20261120-140123-lrsrun-without-redund), 2026-11-20.
+%     - lrsSpecifyRows no longer runs sed: minimal PATH lrs and which (feature
+%       20261120-144501-lrsspecifyrows-without-sed), 2026-11-20.
 
 % save the current path
 currentDir = pwd;
@@ -116,11 +118,11 @@ assert(strcmp(fileNameOut, 'q8_noR.ine') && isequal(sortrows(readLrsRows(fileNam
 
 %% redund = 0 on a machine with lrs but without the program redund
 
-% only lrs, which (used by lrsRun) and sed (used by lrsSpecifyRows) are on the PATH, as on a
-% machine with COBRA's lrs for Linux, which ships no redund: a call of redund would fail with
-% exit status 127; the facets are the same
+% only lrs and which (both run by lrsRun) are on the PATH, as on a machine with COBRA's lrs for
+% Linux, which ships no redund: a call of redund would fail with exit status 127; the facets
+% are the same
 writeText('q9_noR.ext', quadrantExt);
-fileNameOut = runWithOnlyPrograms({'lrs', 'which', 'sed'}, 'q9', struct('redund', 0, 'facetEnumeration', 1));
+fileNameOut = runWithOnlyPrograms({'lrs', 'which'}, 'q9', struct('redund', 0, 'facetEnumeration', 1));
 assert(strcmp(fileNameOut, 'q9_noR_noR.ine'));
 assert(isequal(sortrows(readLrsRows(fileNameOut)), quadrantFacetsNoRedundancy));
 

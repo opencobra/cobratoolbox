@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-863 known defects in 467 functions (318 wrong-result, 258 error, 76 unusable-option, 147 cosmetic, 64 limitation).
+861 known defects in 466 functions (318 wrong-result, 258 error, 76 unusable-option, 146 cosmetic, 63 limitation).
 
 ## Summary
 
@@ -281,8 +281,6 @@
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadRay.m` | error | a row with rational coefficients is lost | `test/verifiedTests/analysis/testLrsInterface/testLrsReadRay.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadRay.m` | wrong-result | a vertex whose coordinates sum to zero is removed | `test/verifiedTests/analysis/testLrsInterface/testLrsReadRay.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadRay.m` | error | the optional param cannot be omitted | `test/verifiedTests/analysis/testLrsInterface/testLrsReadRay.m` |
-| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m` | cosmetic | a file that cannot be opened gives an undefined-variable error | `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m` |
-| `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m` | limitation | the file identifier is never closed | `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m` | wrong-result | the documented default positivity = 1 is implemented as 0 | `test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m` | error | the optional param cannot be omitted | `test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m` |
 | `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m` | unusable-option | the shell-script option fails | `test/verifiedTests/analysis/testLrsInterface/testLrsWriteHalfspace.m` |
@@ -3648,26 +3646,6 @@
 - **Expected**: param.inequality defaults to 0 (OPTIONAL INPUT param) and the file is read
 - **Source lines**: 33-35, 43
 - **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsReadRay.m`
-
-### `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsSpecifyRows.m`
-
-#### a file that cannot be opened gives an undefined-variable error
-
-- **Severity**: cosmetic
-- **Trigger**: lrsSpecifyRows(fullfile(tempname, 'nope.ext'))
-- **Observed**: error "Unrecognized function or variable 'fileNameOut'." (R2025a, 2026-11-15): line 22 displays fileNameOut, which is not defined in the function
-- **Expected**: error 'Could not open lrs output file.' (line 23)
-- **Source lines**: 22-23
-- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m`
-
-#### the file identifier is never closed
-
-- **Severity**: limitation
-- **Trigger**: any call, for example lrsSpecifyRows('x.ext') on a valid file
-- **Observed**: the identifier opened on line 20 stays in openedFiles() after the call (identifier 3 after the first call, 3 and 4 after a second call that stopped with an error); there is no fclose
-- **Expected**: no open file left behind; this test closes the identifiers the function leaves open
-- **Source lines**: 20
-- **Documented in**: `test/verifiedTests/analysis/testLrsInterface/testLrsSpecifyRows.m`
 
 ### `src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m`
 
