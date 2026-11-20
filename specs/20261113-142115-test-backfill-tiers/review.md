@@ -280,3 +280,19 @@ Two of the requirements above were checked against it:
   switched off at line 128, and that route's `sed` edit would also rewrite every `end` in the file.
   No task of this feature changes `src/`, so the requirement stays declared here. A separate feature
   that makes `lrsRun` use `lrs` alone would let testLrsRun drop `redund` and run on CI again.
+
+**testLrsRun no longer needs redund (feature 20261120-140123-lrsrun-without-redund, same day).**
+The maintainer accepted the source change into this pull request. `lrsRun` now removes redundant
+facets with `lrs` itself: it runs `lrs` a second time on a temporary copy of the facet output that
+ends with the option `redund 0 0`. It no longer runs the separate program `redund`, and the dead
+`sed` route is gone. `testLrsRun` declares only `lrs`, and checks that route four ways:
+- with `redund` installed;
+- with a `PATH` holding only `lrs`, `which` and `sed`;
+- with an `lrs` that fails in the redundancy step;
+- that the facet output and the temporary folder are left clean.
+
+The test passes with coverage of every line except the non-Unix branch (line 156), and also passes
+when the whole test runs on a `PATH` without `redund`. The ten tests of `testLrsInterface/` and
+`testTopology/` that use lrs pass as before.
+This is the only change to `src/` in this pull request. Outside this change: `lrsSpecifyRows`
+runs GNU-style `sed -i`, which BSD `sed` on macOS rejects.

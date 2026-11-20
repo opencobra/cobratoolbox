@@ -125,6 +125,7 @@ longer than MATLAB's 63-character limit (`namelengthmax`), which the CI coverage
 - [X] T037 [US7] Re-run the changed tests with coverage after removing the generated solver files from `src/` (as on CI), the c13 tests twice (each run generates new Perl hash orders); `--verify-coverage`, `--check` with 0 problems; review.md section and receipt addendum
 - [X] T038 Privacy scan and commit; push only when the maintainer asks
 - [X] T039 [US7] Constitution 1.9.0, Principle XI (maintainer, 2026-11-20: minimise dependence on third-party toolboxes and proprietary applications): the eight c13 tests of T035 declare Perl only outside Windows, where MATLAB's `perl` runs the Perl shipped with MATLAB; headers state the reason; re-run with coverage (`inventory/coverage/ci-fix-perl.jsonl`, `PERL_HASH_SEED=0` for the measurement as in T037), `--verify-coverage`; review.md; commit. testLrsRun's `redund` requirement is avoidable only in `src/` (lrsRun can use the `redund` option of `lrs`) and is left to a separate feature, since no task of this feature changes `src/`
+- [X] T040 [US7] The maintainer accepted the lrsRun source change into this pull request (2026-11-20): done as its own Spec Kit feature, `specs/20261120-140123-lrsrun-without-redund/` (spec, plan, tasks, receipt); testLrsRun now declares only lrs; ledger row of lrsRun updated (exempt 156)
 
 ## Dependencies & Execution Order
 

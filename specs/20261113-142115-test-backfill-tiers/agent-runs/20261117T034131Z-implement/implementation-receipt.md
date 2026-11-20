@@ -164,3 +164,10 @@ for three reasons:
 All ten pass with coverage, and they also passed twice when run as CI runs them from a `src/` without
 generated files. `--verify-coverage` and `--check` find 0 problems. Statuses and the registry are
 unchanged. See `review.md`, "Follow-up: CI failures of the pull request".
+
+2026-11-20, later: the constitution was amended twice (1.9.0, then 1.10.0, Principle XI on minimal
+dependence on third-party and proprietary software). The c13 tests then declare Perl only outside
+Windows (T039). The maintainer accepted a `src/` change into this pull request: `lrsRun` uses
+`lrs`'s own redund option instead of the program `redund` (T040). That work is recorded in
+`specs/20261120-140123-lrsrun-without-redund/`, which has its own receipt. The pull request now
+changes one file under `src/`.
