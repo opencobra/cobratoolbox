@@ -1,5 +1,105 @@
 <!--
 Sync Impact Report
+Version change: 1.9.0 -> 1.10.0
+Modified principles:
+- XI. Minimal Dependence On Third-Party Toolboxes And Proprietary Applications (same title).
+  Maintainer (2026-11-20): base MATLAB plus free components is "encouraged as much as possible";
+  proprietary software is used when there is no other way, but a local version reimplemented
+  from it is preferred to depending on it. The goal becomes a strongly preferred default
+  (SHOULD) instead of an absolute MUST; a MUST order of preference is added (base MATLAB, a free
+  component already shipped or required, an own clean reimplementation - from public
+  documentation and observed behaviour, never copied or decompiled, within licence terms - and
+  only then a proprietary toolbox or application); an option-4 dependency MUST be justified in
+  the plan and declared so tests skip, not fail. Test rules and the commercial-solver rule are
+  unchanged.
+Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/plan-template.md — the "Dependency minimisation" item asks for the option
+  chosen in the order of preference and why each earlier option is not feasible.
+- ✅ .specify/templates/spec-template.md, tasks-template.md — reviewed; no change.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers; no change.
+Rationale for MINOR bump: the principle is materially redefined (an absolute requirement
+becomes a preference with a mandatory order and a justification duty); plans approved under
+1.9.0 remain compliant, so no MAJOR bump.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
+Version change: 1.8.1 -> 1.9.0
+Modified principles: none redefined.
+Added sections:
+- XI. Minimal Dependence On Third-Party Toolboxes And Proprietary Applications. Maintainer goal
+  (2026-11-20, feature 20261113-142115-test-backfill-tiers, after the pull request's CI skipped
+  testLrsRun for the missing program redund): the toolbox and its tests run on base MATLAB plus
+  free, open-source components COBRA ships or every supported OS provides; no new avoidable
+  dependency; existing ones removed when touched; commercial solvers stay optional (IV); a test
+  is not skipped for a dependency the code could avoid, every declared requirement is justified
+  in the test header, and no requirement the platform already satisfies is declared.
+Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/plan-template.md — Constitution Check gains a "Dependency minimisation"
+  item pointing to Principle XI (no rule text duplicated, Principle X).
+- ✅ .specify/templates/spec-template.md, tasks-template.md — reviewed; no dependency rules
+  restated, no change.
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers; no change.
+Rationale for MINOR bump: a new principle with new MUST obligations; no existing principle is
+removed or redefined, so approved plans stay valid.
+Deferred items: none. Follow-up (not part of the amendment): lrsRun's use of redund and the
+c13 tests' Perl requirement on Windows are the first known cases to bring into compliance.
+-->
+
+<!--
+Sync Impact Report
+Version change: 1.8.0 -> 1.8.1
+Modified principles:
+- III-Defects, quarantine (clarification, no new obligation class): "every function that calls
+  f, directly or indirectly" is stated precisely as "every function that reaches f's defective
+  behaviour": through any chain of calls, including chains through already-tested functions;
+  when the defect is confined to a recognisable input or call form, only calls using that form
+  reach it. Maintainer decisions 2026-11-15 (feature 20261113-142115-test-backfill-tiers, on
+  the getCobraSolverParams two-input defect): blocking follows reach of the defect, through any
+  path, and the resulting 308 blocked functions are accepted.
+Modified sections: III-Defects. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; none restate defect handling (Principle X).
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers; no change.
+Rationale for PATCH bump: clarifies how an existing rule is applied (which callers count as
+calling f); no principle added, removed or redefined.
+Deferred items: none.
+-->
+
+<!--
+Sync Impact Report
+Version change: 1.7.1 -> 1.8.0
+Modified principles:
+- III-Defects (expanded, no new principle): adds QUARANTINE, an option a test back-fill
+  feature (III-Characterization) MAY adopt in its spec. When a defect is found in f, f's
+  test file records the defect, exempts every line and asserts nothing about f; every
+  function that calls f, directly or indirectly, gets no test in that feature and is
+  listed in the feature's quarantine ledger; both are tested normally once the defect is
+  fixed. Elsewhere the input-level rule is unchanged. Maintainer decision 2026-11-13.
+- III-Coverage (reference only): the exemption sentence now points to III-Defects for
+  defect exemptions (skipped defective input, or every line of a quarantined function).
+Modified sections: III-Defects, III-Coverage. Added sections: none. Removed sections: none.
+Templates requiring updates:
+- ✅ .specify/templates/*.md — reviewed; spec-template.md's Characterization Mode block
+  only references Principle III; no template restates defect handling (Principle X).
+Runtime guidance updated:
+- ✅ CLAUDE.md and AGENTS.md — remain thin pointers (Principle X); no change.
+Rationale for MINOR bump: a materially expanded option within an existing sub-clause (a
+new way a feature may handle defects, with its own obligations: test header, quarantine
+ledger, follow-up testing); no principle removed or redefined, and the existing
+input-level rule still applies by default.
+Deferred items: none. How "calls f, directly or indirectly" is determined (the call graph)
+is defined by the feature that adopts quarantine.
+-->
+
+<!--
+Sync Impact Report
 Version change: 1.7.0 -> 1.7.1
 Modified principles:
 - III-Defects (simplified, no new principle): the enforced staleness check is removed.
@@ -418,8 +518,9 @@ function have a test, and is it complete" a single lookup rather than a search.
 Every test file MUST aim for 100% line coverage of the single function it tests.
 A line that cannot be reached (unavailable solver or toolbox, GUI, OS-specific
 branch) is permitted to stay uncovered ONLY when the test file header documents the
-exemption: the line number(s) and the reason. Undocumented uncovered lines are a
-defect in the test.
+exemption: the line number(s) and the reason. Lines left uncovered because of a known
+defect are exempt as III-Defects defines (a skipped defective input, or every line of a
+quarantined function). Undocumented uncovered lines are a defect in the test.
 
 Every test file MUST open with a `prepareTest(...)` call placed after the
 `cd(fileDir)` boilerplate, declaring the test's requirements (solvers, MATLAB
@@ -508,11 +609,34 @@ resolve a defect MUST re-check the entry against the current source, then update
 test header (remove or correct the entry and, once the defect is fixed, write the test
 for the formerly skipped input) and regenerate the registry.
 
+Quarantine in back-fill campaigns. A feature that back-fills tests for untested functions
+(III-Characterization) MAY adopt QUARANTINE in its spec instead of skipping only the
+defective input. When a defect is found in a function f:
+
+* f's test file is still created. Its header records the defect in the standard format
+  above, and its "Coverage exemptions" state that every line is exempt because f is
+  quarantined for that defect. Its body is the standard opening with `prepareTest()`
+  only; it asserts nothing about f.
+* Every function that reaches f's defective behaviour, directly or indirectly, gets no test
+  in that feature. A function reaches it when it calls f, or calls a function that reaches
+  it, through any chain of calls, including chains through functions that already have a
+  test. When the defect is confined to one way of calling f (an input form or call form
+  that can be recognised in the calling code), only the calls that use that form reach it;
+  otherwise every call of f does. The feature lists each such function in its quarantine
+  ledger with the blocking defect.
+* When the defect is fixed (a separate, spec-driven change), f and its callers are tested
+  normally and the quarantine entries are removed.
+
+Outside such features, and in features whose spec does not adopt it, the input-level rule
+above applies.
+
 Rationale: defects found while back-filling tests are valuable and otherwise stay
 buried in individual headers. Generating one registry from those headers keeps a single
 source of truth that a hand-written list would not. A complete staleness check would need
 a far more complicated system; the registry is a navigational aid, and re-checking an
-entry when it is used or resolved is sufficient.
+entry when it is used or resolved is sufficient. Quarantine keeps a large back-fill from
+pinning behaviour built on a known defect: no test of f or of its callers asserts results
+that a fix of f may change, and a human reviews each blocking defect before they are tested.
 
 ### IV. Solver Abstraction, Numerical Integrity, And Performance
 
@@ -896,6 +1020,58 @@ slowly disagree, or where the live site diverges from the code. Publishing the
 development process closes the loop: contributors who can read how features are
 specified and gated can write better instructions for the LLM that implements them.
 
+### XI. Minimal Dependence On Third-Party Toolboxes And Proprietary Applications
+
+The toolbox and its test suite SHOULD run, as far as at all possible, on base MATLAB
+plus free, open-source components that COBRA ships (for example the programs under
+`binary/` and the GLPK solver) or that every supported operating system provides.
+This is the strongly preferred default. A paid MATLAB toolbox or a proprietary
+application is used only when no alternative is feasible.
+
+* When code needs a capability, it MUST take the first feasible option in this
+  order:
+  1. base MATLAB;
+  2. a free component COBRA already ships or the code already requires (example:
+     `lrsRun` needs no separate program `redund`, because `lrs`, which it already
+     requires, removes redundant inequalities itself through its `redund` option,
+     lrslib 7 and later);
+  3. an own implementation: a local version of the proprietary function or program,
+     reimplemented from its public documentation and observed behaviour, never by
+     copying or decompiling proprietary code, and within the terms of its licence.
+     The toolbox-free replacement features are the pattern: `cobra<MathWorksName>`
+     functions in `src/base/utilities/toolboxFree/`, named so as never to shadow a
+     MathWorks function, documented with the function they reproduce, and tested
+     against it where it is installed;
+  4. a paid MATLAB toolbox or proprietary application, only when none of the above
+     is feasible.
+* A dependency kept under option 4 MUST be justified in the feature's plan, stating
+  why each earlier option is not feasible. The function and its test MUST declare it
+  (for a test, with `prepareTest`) so that the test is skipped, not failed, where it
+  is unavailable.
+* Existing dependencies of option 4, and avoidable third-party programs, SHOULD be
+  replaced by an earlier option when the code that carries them is touched.
+* Commercial solvers remain optional backends behind the solver abstraction
+  (Principle IV). A function or test that a free solver can serve MUST NOT require
+  a commercial one.
+* A test MUST NOT be skipped for a dependency the code could avoid. Every
+  requirement a test declares with `prepareTest` (`requiredSoftwares`,
+  `requiredToolboxes`, `requiredSolvers`, `needs*`) MUST be stated with its reason
+  in the test header. A requirement the source could avoid is a defect of the
+  source, fixed through the Spec Kit gate (Principle VI), not hidden in the test
+  (for example by a stand-in program placed first on the path). A test MUST NOT
+  declare a requirement the platform already satisfies (for example Perl on Windows,
+  where MATLAB's `perl` runs the Perl bundled with MATLAB).
+* Vendored code under `external/` stays read-only (Principles V and IX): a
+  dependency that lives there is replaced, not edited.
+
+Rationale: every paid toolbox, proprietary application, or extra program is a reason
+a user cannot run an analysis and a reason CI skips a test. A skipped test verifies
+nothing, so an avoidable dependency silently removes coverage. A toolbox that runs on
+base MATLAB with free components stays usable by the whole community, and its test
+suite stays meaningful on every machine. Where a proprietary capability is truly
+needed, a clean reimplementation keeps that benefit without the licence; only when
+that is not feasible is the dependency accepted, declared, and justified.
+
 ## Scientific Computing Constraints
 
 Implementation plans MUST cite the stable references that govern their feature where
@@ -1051,4 +1227,4 @@ Versioning follows semantic versioning:
 When a feature conflicts with the constitution, the constitution controls unless the
 feature first amends it through this governance process.
 
-**Version**: 1.7.1 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-10-12
+**Version**: 1.10.0 | **Ratified**: 2026-07-12 | **Last Amended**: 2026-11-20

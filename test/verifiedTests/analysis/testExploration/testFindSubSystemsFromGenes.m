@@ -29,6 +29,21 @@
 %         letters, '/Gcegilnosuy' instead of 'Glycolysis/Gluconeogenesis'
 %       EXPECTED: the names of the sub-systems
 %       LINES: 87, 92
+%     - DEFECT: A gene that no reaction uses stops the call with onlyOneSub
+%       SEVERITY: error
+%       TRIGGER: findSubSystemsFromGenes(model, 'onlyOneSub', true) (the call findSubSysGen makes),
+%         or with that gene as the gene list, on a model with a gene in model.genes that no
+%         reaction uses, for example model = createModel({'R1'; 'R2'; 'R3'; 'EX_A'}, {'reaction 1';
+%         'reaction 2'; 'reaction 3'; 'A exchange'}, {'A[c] -> B[c]'; 'B[c] + C[c] <=> D[c]';
+%         'D[c] -> E[c]'; 'A[e] <=> '}, 'subSystemList', {'S1'; 'S2'; 'S3'; 'S4'}, 'grRuleList',
+%         {'g1 or g2'; 'g2 and g3'; ''; ''}, 'printLevel', 0); model.genes{end + 1} = 'g4';
+%         model.rxnGeneMat(:, end + 1) = 0
+%       OBSERVED: MATLAB R2025a: "Insufficient number of outputs from right hand side of equal sign
+%         to satisfy assignment." in @(x)model.subSystems{find(relAssocs(:,x),1)} at line 90: find
+%         returns [] for the unused gene, so the indexing yields no value for arrayfun; without
+%         onlyOneSub the same model gives the gene an empty (0 x 1) entry and the call succeeds
+%       EXPECTED: an empty sub-system entry for the unused gene, as without onlyOneSub
+%       LINES: 90
 %
 % Authors:
 %     - Original file: Thomas Pfau, June 2018

@@ -1,0 +1,11 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	681	src/dataIntegration/transcriptomics/FASTCORE/fastcc_cvx.m	2			LP3cvx,LP7cvx		
+a	688	src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m	2				findMustLLWithGAMS,findMustULWithGAMS,findMustUUWithGAMS	
+a	689	src/design/optForceGAMS/exportInputsMustToGAMS.m	2				findMustLWithGAMS,findMustUWithGAMS	
+a	690	src/design/optForceGAMS/exportInputsOptForceToGAMS.m	2				optForceWithGAMS	
+a	696	src/reconstruction/comparison/modelBorgifier/buildTmodel.m	2					
+a	697	src/reconstruction/comparison/modelBorgifier/readCbTmodel.m	2				mergeModelsBorg	reclassified testable (T008): input() runs only when modelName is not in Tmodel.Models or when no 'y'/'n' empty-array choice is passed (exempt); extracting a named model with the 'y' or 'n' option is testable on a hand-built Tmodel
+a	699	src/reconstruction/comparison/modelBorgifier/verifyModelBorg.m	2					reclassified testable (T008): input() runs only without the 'keepName' option or when the model description is missing/invalid (exempt); with 'keepName' and a valid description the field pruning, formula/name fixing and reordering are testable
+a	701	src/reconstruction/demeter/suite/tests/testGeneRules.m	2				runTestsOnModel	
+a	706	src/reconstruction/demeter/suite/tests/testInputFiles.m	2					
+a	709	src/reconstruction/metaboRePort/generateMetaboReport.m	2					

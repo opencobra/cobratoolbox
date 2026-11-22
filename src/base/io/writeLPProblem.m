@@ -19,8 +19,8 @@ function OK = writeLPProblem(LPProblem, varargin)
 %                    * .csense - Constraint senses, a string containting the constraint sense for
 %                      each row in A ('E', equality, 'G' greater than, 'L' less than).
 %                    * .vartype - (optional) variable types ('C' continuous,
-%                      'I' integer, 'B' binary), used to build the integer/
-%                      binary index lists passed to the MPS writer
+%                      'I' integer, 'B' binary); the integer/binary index lists built from it reach the
+%                      MPS writer only for the full problem ('writeMatrix' false, or 'solverParams' given); with the default 'writeMatrix' true every variable is written as continuous
 %                    * .x0 - (optional) initial solution vector
 %
 % OPTIONAL INPUT

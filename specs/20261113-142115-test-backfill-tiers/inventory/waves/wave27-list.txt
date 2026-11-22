@@ -1,0 +1,5 @@
+test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m|src/analysis/gMCS/calculateMCS.m
+test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m|src/base/solvers/cplex/solveCobraLPCPLEX_2018.m
+test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m|src/base/solvers/cplex/solveCobraLPCPLEXcard.m
+test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m|src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m
+test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m|src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m

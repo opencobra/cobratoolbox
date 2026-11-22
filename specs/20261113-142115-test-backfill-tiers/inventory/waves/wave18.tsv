@@ -1,0 +1,21 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	569	src/analysis/thermo/vonBertalanffy/estimateDrGt0.m	2			getCompartment,numAtomsOfElementInFormula,transportReactionBool	setupThermoModel	
+a	605	src/analysis/topology/FR/makeFRresultsTable.m	2				plotFRresults	
+a	607	src/analysis/topology/FR/printFRdependencies.m	2					
+a	608	src/analysis/topology/conservedMoieties/identifyConservedMoieties.m	2			getElementalComposition,getRankLUSOL	biomassPrecursorCheck	
+a	610	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadHalfspace.m	2					
+a	611	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsReadRay.m	2				extremePools	
+a	612	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsRun.m	2	external-program		lrsSpecifyRows	extremePools	
+a	613	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteHalfspace.m	2				extremePools	
+a	614	src/analysis/topology/extremeRays/lrs/lrsInterface/lrsWriteRay.m	2					
+a	615	src/analysis/topology/reactingMoieties/getMetMoietySubgraphs.m	2				createMoietyGraph	
+b	618	src/analysis/topology/reactingMoieties/identifyConservedReactingSubgraphs.m	2					
+b	619	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/makeDietFormatConsistant.m	2					
+b	621	src/analysis/wholeBody/PSCMToolbox/annotateModel.m	2				annotateHH,annotateOrganAtlas,getOrgansFromHarvey	
+b	624	src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased_old.m	2			OrganLists		
+b	625	src/base/getExchangedMetaboliteTable.m	2					
+b	628	src/base/io/convertCbModelToCNAModel.m	2			checkCNAinstallation		
+b	627	src/base/io/KEGG/transformKEGG2Model.m	2				generateSUXComp,generateSUXMatrix	
+b	629	src/base/io/newt/writeNewtExperiment.m	2					
+b	630	src/base/io/utilities/getDistributedModelFolder.m	2				getDistributedModel	
+b	631	src/base/io/utilities/model2xls.m	2			creategrRulesField	writeCbModel	

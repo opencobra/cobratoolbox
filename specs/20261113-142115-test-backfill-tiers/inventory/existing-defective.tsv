@@ -1,0 +1,3 @@
+src/analysis/topology/graphHypergraphConversion/convertHypergraphToBipartiteGraph.m	test/verifiedTests/analysis/testTopology/testConvertHypergraphToBipartiteGraph/testConvertHypergraph2BipartiteGraph.m	trailing empty hyperedges are missing from A and B
+src/analysis/exploration/findSubSystemsFromGenes.m	test/verifiedTests/analysis/testExploration/testFindSubSystemsFromGenes.m	A gene that no reaction uses stops the call with onlyOneSub
+src/base/io/KEGG/mapMetName2KEGGID.m	test/verifiedTests/base/testIO/testKEGG/testMapMetName2KEGGID.m	A metabolite without compartment that is in the dictionary stops with an error

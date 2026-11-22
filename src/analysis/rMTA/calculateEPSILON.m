@@ -13,7 +13,7 @@ function epsilon = calculateEPSILON(samples, rxnFBS, varargin)
 % INPUT:
 %    samples:           Matrix of sampled fluxes.
 %    rxnFBS:            Array that contains the desired change: Forward,
-%                       Backward and Unchanged (+1;0;-1). This is calculated
+%                       Backward and Unchanged (+1;-1;0). This is calculated
 %                       from the rules and differential expression analysis.
 %
 % OPTIONAL INPUTS:

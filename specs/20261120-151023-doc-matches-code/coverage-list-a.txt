@@ -1,0 +1,3 @@
+test/verifiedTests/base/testSolvers/testParseSolverParameters.m|src/base/solvers/param/parseSolverParameters.m
+test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m|src/base/solvers/param/changeCobraSolverParams.m
+test/verifiedTests/dataIntegration/testMolecularMass/testGetElementalWeightMatrix.m|src/dataIntegration/chemoInformatics/molecularWeight/basicPhysicochemicalData/getElementalWeightMatrix.m

@@ -4,7 +4,7 @@ function G = createGroupIncidenceMatrix_old(model, gcmOutputFile, gcmMetList, ja
 %
 % USAGE:
 %
-%    G = createGroupIncidenceMatrix_old(model, gcmOutputFile, gcmMetList, jankowskiGroupData)
+%    G = createGroupIncidenceMatrix_jankowski(model, gcmOutputFile, gcmMetList, jankowskiGroupData)
 %
 % INPUTS:
 %    model:                COBRA model structure, read for the fields:

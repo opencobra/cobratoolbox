@@ -9,8 +9,8 @@ function [rmatch, mmatch] = mapMatch(Cmodel, Tmodel, seedMets)
 % INPUTS:
 %    Cmodel:      model to be compared
 %    Tmodel:      reference model
-%    seedMats:    two column cell array with pairs of metabolite names in the
-%                 two models that are the same
+%    seedMets:    two column cell array with pairs of metabolite names in the
+%                 two models that are the same, or the character array 'noSeed' to score only the reactions by local network topology (requires the field `Tmodel.Models`; `mmatch` is then returned as zeros). Any other character array returns both outputs as zeros
 %
 % OUTPUTS:
 %    rmatch:      pairwise match score between reactions

@@ -1,0 +1,11 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	647	src/dataIntegration/chemoInformatics/molecularWeight/computeMW.m	2			computeElementalMatrix,findMetIDs	calculateReactionMasses,theoretMaxProd	
+a	655	src/dataIntegration/fluxomics/compareTwoSamp.m	2			calcMDVfromSamp	compareBinsOfFluxes	
+a	657	src/dataIntegration/fluxomics/compareMultSamp.m	2			calcMDVfromSamp		
+a	653	src/dataIntegration/fluxomics/atomTransition/ATN/buildAtomTransitionNetwork.m	2					
+a	651	src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m	2			slvrCumomer_fast,slvrEMU_fast	errorComputation2	
+a	669	src/dataIntegration/metaboAnnotator/buildMetStruct/populateModelMetStr.m	2			translateMetStr2COBRAmodel	tutorial_MetaboRePort,tutorial_MetaboRePort_APOLLO,tutorial_MetaboRePort_m	
+a	674	src/dataIntegration/metabotools/networkTopology.m	2					
+a	675	src/dataIntegration/metabotools/setQualitativeConstraints.m	2					
+a	676	src/dataIntegration/metabotools/setSemiQuantConstraints.m	2					
+a	677	src/dataIntegration/transcriptomics/FASTCORE/LP10cvx.m	2					

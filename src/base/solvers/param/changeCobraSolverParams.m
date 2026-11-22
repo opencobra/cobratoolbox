@@ -6,7 +6,7 @@ function changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %    changeOK = changeCobraSolverParams(solverType, paramName, paramValue)
 %
 % INPUTS:
-%    solverType:        Solver type, 'LP' or 'MILP' (opt, default, 'LP')
+%    solverType:        Solver type, 'LP' or 'MILP' (required; the first input is always taken as the solver type)
 %    paramName:         Parameter name
 %    paramValue:        Parameter value
 %

@@ -1,0 +1,14 @@
+{
+ "makeModelPropertiesTable": "lead (writer's MATLAB reproduction: line 194 needs balancedRxnBool, which checkModelProperties never sets)",
+ "plotModelConsistency": "lead (writer's MATLAB reproduction: line 75 computes the consistent-row fraction upside down, no model is flagged)",
+ "annotateSBOTerms": "lead (writer's MATLAB reproduction: metSBOTerms and geneSBOTerms come out as rows, which verifyModel reports as inconsistent)",
+ "assignGPRA": "lead (source read: parseSimPhenyGPRA, called at line 24, exists nowhere in the repository)",
+ "assignSubSystems": "lead (source read: parseSimPhenyGPRA, called at line 23, exists nowhere in the repository)",
+ "changeCOBRAConstraints": "lead (writer's MATLAB reproduction: the documented index form of the constraint ID errors)",
+ "changeCOBRAVariable": "lead (writer's MATLAB reproductions: the index form of variableID errors; the Name option looks for evarName instead of evarNames)",
+ "isSameCobraModel": "lead (writer's MATLAB reproductions: different reaction counts error; logical fields never compared; punctuation stripped so 'R-1' equals 'R1')",
+ "NormaliseGPRs": "lead (writer's MATLAB reproduction: 'x(1) | (x(1) & x(2))' is not reduced to the minimal DNF the help promises)",
+ "addAnnotation": "lead (writer's MATLAB reproduction: annotating a reaction of a createModel model errors)",
+ "addFlux": "lead (writer's MATLAB reproductions: the (e) to _e mapping condition is inverted; reactions stored under their own ID left unchanged)",
+ "addMiriam": "lead (writer's MATLAB reproductions: every matched species gets the last infix entry's MIRIAM IDs; the miriam_path option errors)"
+}

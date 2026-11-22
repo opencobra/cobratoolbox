@@ -1,0 +1,14 @@
+test/verifiedTests/analysis/testKLdistance/testKLdistance.m|src/analysis/KLdistance/KLdistance.m
+test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m|src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m
+test/verifiedTests/analysis/testRumba/testClassifyRxns.m|src/analysis/rumba/classifyRxns.m
+test/verifiedTests/analysis/testThermo/testDirectionalityStatsFigures.m|src/analysis/thermo/directionalityReport/directionalityStatsFigures.m
+test/verifiedTests/analysis/testTopology/testMakeFRresultsTable.m|src/analysis/topology/FR/makeFRresultsTable.m
+test/verifiedTests/base/testCi/testAddKeyToKnownHostsCT.m|src/base/ci/addKeyToKnownHostsCT.m
+test/verifiedTests/base/testCobrarrow/testCOBRArrowSolver.m|src/base/cobrarrow/COBRArrowSolver.m
+test/verifiedTests/base/testPaths/testEditCobraToolboxPath.m|src/base/paths/editCobraToolboxPath.m
+test/verifiedTests/dataIntegration/testChemoInformatics/testOpenBabelConverter.m|src/dataIntegration/chemoInformatics/openBabelConverter.m
+test/verifiedTests/dataIntegration/testMetaboAnnotator/testGenerateInchiKeysSmilesFromInchiStrings.m|src/dataIntegration/metaboAnnotator/generateMetInfo/generateInchiKeysSmilesFromInchiStrings.m
+test/verifiedTests/visualization/testSAMMIM/testExpa.m|src/visualization/SAMMIM/expa.m
+test/verifiedTests/visualization/testCellDesigner/testCmpMet.m|src/visualization/cellDesigner/cmpMet.m
+test/verifiedTests/visualization/testCreateMetIntrcNetwork/testHit_node.m|src/visualization/createMetIntrcNetwork/hit_node.m
+test/verifiedTests/reconstruction/testModelGeneration/testMakeModelPropertiesTable.m|src/reconstruction/modelGeneration/modelProperties/makeModelPropertiesTable.m

@@ -1,0 +1,5 @@
+{
+ "calculateMCS": "lead (read the code: line 139 concatenates a row cell rxn_set with {KO} vertically; header documents rxn_set as a cell array; writer's plain-MATLAB reproduction)",
+ "solveCobraLPCPLEX_2018": "lead (read the code: without the documented-optional csense, nMet=size(LPProblem.A) is a vector and line 170 LPProblem.csense(1:nMet,1) errors; writer's plain-MATLAB reproduction)",
+ "solveCobraLPCPLEXcard": "lead (read the code: same missing-csense error at line 160; writer's plain-MATLAB reproduction; sign defects confirmed by the writer with stand-in Cplex functions only)"
+}

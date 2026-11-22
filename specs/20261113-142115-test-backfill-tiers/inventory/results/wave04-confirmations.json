@@ -1,0 +1,22 @@
+{
+ "microbiomeMappingStats": "lead (source read: erase(MARS.Taxon,'pan') removes the text anywhere in a name, line 118)",
+ "plotAbsentTaxaEffectOnMARScoverage": "lead (source read: line 79 assigns stdCov_readCounts(1) to meanCov_readCounts_onlyNamedTaxa(1))",
+ "setResultPath": "lead (source read: the non-Windows branch splits on a backslash, so topDir is empty and the folder is created at the root, lines 19-24)",
+ "validateDietPath": "lead (source read: the file-path branch uses the undefined lower-case diet, lines 50-53 and 65)",
+ "rMTAsaveInExcel": "lead (source read: alpha_values is positional in the signature, line 1, so the documented default cannot be omitted; num_alphas is taken before -1 is expanded, lines 51-53)",
+ "ACHRSamplerParallelGeneral": "lead (source read: the worker command passes -r ACHRSamplerParallelGeneral(...);exit unquoted to the shell, lines 125-128; bash rejects the parentheses)",
+ "verifyPoints": "lead (source read: find on LHS(LIndex,:) etc. returns positions within each sense subset, lines 56-58, not rows of A as documented)",
+ "analyseWBMsol": "lead (source read consistent with the writer's MATLAB reproduction: stat table not de-duplicated with the fluxes, line 111; the gfiWBM/miWBM branch, lines 598-599)",
+ "generateStackedBarPlot_PhylumMARScoverage": "lead (source read: base_colors is used on line 121 and never defined in the file)",
+ "runMars": "lead (source read: the processedData and mappedData sheets are written from originalData, lines 474-475 and 479-480)",
+ "convertVMHIDName": "lead (source read: the documented skip flag 0 reaches VMHIDs{i} on a number, line 52)",
+ "getVMHID": "lead (source read: suggestions(:, i) = [] shifts every later column, line 63)",
+ "readMetadataForPersephone": "lead (source read: header lines 7-8 and 19-20 promise VariableUnits; lines 52-55 only delete the units row); severity raised to wrong-result by the lead",
+ "performRegressions": "lead (source read: the MATLAB version is read from ver(1), the first listed toolbox, lines 136-141, against the evident intent stated in the comment of lines 133-134: Firth regression above R2024b); severity raised to wrong-result by the lead",
+ "performStatisticalAnalysis": "lead (source read: str2double on numeric data gives NaN, so all-zero samples are never removed, line 75)",
+ "correlateFluxWithTaxonAbundance": "lead (source read: taxonCol = 'Phylum'; taxonCol+1 is a numeric vector used as a colon operand, line 262)",
+ "mgSimResCollect": "lead (source read: sp and up are not reset per sample, so a missing exchange keeps the previous sample's value, lines 92-100)",
+ "plotMappingInfo": "lead (source read: the heatmap draws reacPat(:,2:5), individuals 1-4 only, line 48)",
+ "runNonparametricTests": "lead (source read: the skip branch sets p = nan but never writes it, so the preallocated p-value 0 is reported, lines 155-163)",
+ "plotFluxesAgainstOrganismAbundances": "lead (writer reproduced in MATLAB: the documented flux orientation fails); severity raised to error by the lead, as for plotEssentialRxns"
+}

@@ -13,7 +13,7 @@ function elementalWeightMatrix = getElementalWeightMatrix(isotopeAbundance)
 %                                isotopeAbundance{i, 2} = Mass_Number;
 %                                isotopeAbundance{i, 3} = abundance;
 %                                (where sum of abundances of all isotopes of an element must be one)
-%    printWarning:             true to print warning if there are unknown elements in isotopeAbundance
+%                              An unknown element in a user defined isotopeAbundance raises an error.
 %
 % OUTPUT:
 %    elementalWeightMatrix:    #elements x 2 cell array, the 1st coloumn being the symbols

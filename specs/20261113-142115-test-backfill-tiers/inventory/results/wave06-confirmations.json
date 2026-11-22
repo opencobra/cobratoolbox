@@ -1,0 +1,17 @@
+{
+ "printSampleStats": "lead (source read: the loop over samples around line 56 is commented out; only sampleStats.mode(i) of the first sample is printed)",
+ "CMatrix": "lead (source read: the triplet constructor builds the pattern with sparse(i,j,...) and fills s in triplet order, lines 133-136, which differs from sparse's ordering for unsorted triplets)",
+ "ddouble": "lead (identical to CMatrix.m except for the class name; same triplet constructor defect)",
+ "qdouble": "lead (identical to CMatrix.m except for the class name; same triplet constructor defect)",
+ "getMetaboliteMsDistr": "lead (source read: regexp(..., '.mol', 'split') with an unescaped dot splits names that contain 'mol' anywhere; runs on every platform, lines 20-22)",
+ "getMetabolitepKa": "lead (source read: regexp(..., '.mol', 'split') with an unescaped dot, lines 18-20; runs on every platform)",
+ "constructElementalMatrix": "lead (source read: line 30 loads atomicNumbers.mat, which is not in the repository)",
+ "createUSDAdatabase": "lead (source read: brandedFoods path: for i = 1:size(brandedNames.fdc_id) uses a size vector as colon operand, line 127, and line 133 reads the undefined foodsnutrients)",
+ "prepareTest": "lead (source read: needsLinux compares computer('arch') with 'glnx64'; Linux returns 'glnxa64', line 177)",
+ "py_rmpath": "lead (source read: line 48 calls rnpath, a misspelling of rmpath, when MATLAB_too is true)",
+ "getFormulaFromInChI": "lead (writer's MATLAB reproductions: element counts assigned to the wrong elements for C2H3Cl, and a proton added to sulfate with /p-2)",
+ "representativeMoiety": "lead (source read: fractMinimalMass = minimumMass / Mass of the metabolite that has minimumMass, line 35: always 1)",
+ "lrsOutputReadRay": "lead (source consistent with the writer's MATLAB reproduction: lines with fractions, lines 68-78, are not stored as vertices)",
+ "lrsInputHalfspace": "lead (writer's MATLAB reproductions: wrong row/column count for empty A, malformed objective; source lines 74-81 consistent)",
+ "identifyIsomorphicClasses": "lead (writer's MATLAB reproduction: sanityChecks = true errors for every class with 2 or more members)"
+}

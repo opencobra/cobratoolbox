@@ -1,0 +1,7 @@
+{
+ "exportInputsMustOrder2ToGAMS": "lead (writer's MATLAB reproduction: 7 inputs but line 76 checks nargin < 8, so every call stops)",
+ "exportInputsMustToGAMS": "lead (writer's MATLAB reproduction: 5 inputs but line 58 checks nargin < 6, so every call stops)",
+ "exportInputsOptForceToGAMS": "lead (writer's MATLAB reproduction: line 179 uses the undefined nSets; the input is n_sets)",
+ "readCbTmodel": "lead (writer's MATLAB reproduction: lines 161 and 188 shift rxnID/metID entries when one is empty; buildTmodel keeps empty entries on purpose, line 46)",
+ "generateMetaboReport": "lead (writer's MATLAB reproduction: template lines used as fprintf formats, a '%' cuts line 2315; the first template line is dropped)"
+}

@@ -1,0 +1,195 @@
+# defective function<TAB>src file whose code reaches the defect (constitution 1.8.1)
+# getCobraSolverParams: the defect is confined to the two-input call form (no paramStructure),
+# which ignores the global parameters; these files make such a call outside comments.
+getCobraSolverParams	src/analysis/FBA/enumerateOptimalSolutions.m
+getCobraSolverParams	src/analysis/FBA/optimizeCbModel.m
+getCobraSolverParams	src/analysis/FVA/fluxVariability.m
+getCobraSolverParams	src/analysis/exploration/biomassPrecursorCheck.m
+getCobraSolverParams	src/analysis/gMCS/checkGeneMCS.m
+getCobraSolverParams	src/analysis/mdFBA/mdFBA.m
+getCobraSolverParams	src/analysis/relaxedFBA/plotRelaxedFBA.m
+getCobraSolverParams	src/analysis/relaxedFBA/relaxFBA_cappedL1.m
+getCobraSolverParams	src/analysis/relaxedFBA/relaxedFBA.m
+getCobraSolverParams	src/analysis/sparseFBA/findSparsePathway.m
+getCobraSolverParams	src/analysis/sparseFBA/sparseFBA.m
+getCobraSolverParams	src/analysis/thermo/findThermoConsistentFluxSubset/findThermoConsistentFluxSubset.m
+getCobraSolverParams	src/analysis/thermo/optCardThermo/checkThermoFeasibility.m
+getCobraSolverParams	src/analysis/thermo/optCardThermo/optCardThermo.m
+getCobraSolverParams	src/analysis/thermo/thermoFBA/cycleFreeFlux.m
+getCobraSolverParams	src/analysis/thermo/thermoFBA/fastSNP.m
+getCobraSolverParams	src/analysis/thermo/thermoFBA/findMinNull.m
+getCobraSolverParams	src/analysis/topology/FR/checkRankFR.m
+getCobraSolverParams	src/analysis/topology/extremeRays/optimalRays/findExtremePool.m
+getCobraSolverParams	src/analysis/wholeBody/PSCMToolbox/performSanityChecksonRecon.m
+getCobraSolverParams	src/base/io/utilities/writePajekNet.m
+getCobraSolverParams	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinalityOld.m
+getCobraSolverParams	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_RF.m
+getCobraSolverParams	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_old.m
+getCobraSolverParams	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_weighted_Minh.m
+getCobraSolverParams	src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m
+getCobraSolverParams	src/base/solvers/cardOpt/sparseLP/sparseLP.m
+getCobraSolverParams	src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m
+getCobraSolverParams	src/base/solvers/cplex/checkSolFeas.m
+getCobraSolverParams	src/base/solvers/optimizeTwoCbModels.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/XomicsToModel.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/analysis/metUtilisation.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/analysis/quanQualAcc.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/metabolomics/metabolomicsTomodel.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/oneRxnPerActiveGene/createDummyModel.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/prepareData/preprocessingOmicsModel.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/thermoKernel/thermoKernel.m
+getCobraSolverParams	src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/driver_testThermoQP.m
+getCobraSolverParams	src/dataIntegration/metabotools/pruneModel.m
+getCobraSolverParams	src/dataIntegration/modelPredictiveCapacity.m
+getCobraSolverParams	src/dataIntegration/transcriptomics/FASTCORE/fastCoreWeighted.m
+getCobraSolverParams	src/dataIntegration/transcriptomics/FASTCORE/fastcc.m
+getCobraSolverParams	src/dataIntegration/transcriptomics/FASTCORE/fastcore.m
+getCobraSolverParams	src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m
+getCobraSolverParams	src/dataIntegration/transcriptomics/SWIFTCORE/partition.m
+getCobraSolverParams	src/dataIntegration/transcriptomics/createTissueSpecificModel.m
+getCobraSolverParams	src/dataIntegration/transcriptomics/rFASTCORMICS/rFastcormics.m
+getCobraSolverParams	src/design/GDLS.m
+getCobraSolverParams	src/design/OptKnock.m
+getCobraSolverParams	src/design/multiProductionEnvelope.m
+getCobraSolverParams	src/reconstruction/demeter/src/properties/computeReconstructionFeatures.m
+getCobraSolverParams	src/reconstruction/fastGapFill/fastGapFill.m
+getCobraSolverParams	src/reconstruction/fastGapFill/identifyBlockedRxns.m
+getCobraSolverParams	src/reconstruction/fastGapFill/submitGapFill.m
+getCobraSolverParams	src/reconstruction/modelGeneration/checkModelPreFBA.m
+getCobraSolverParams	src/reconstruction/modelGeneration/fluxConsistency/findFluxConsistentSubset.m
+getCobraSolverParams	src/reconstruction/modelGeneration/fluxConsistency/findSignedCyclicFluxConsistentSubset.m
+getCobraSolverParams	src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m
+getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/checkStoichiometricConsistency.m
+getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m
+getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m
+getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m
+getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/findStoichConsistentSubset.m
+getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m
+getCobraSolverParams	src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m
+# Node: the defects are confined to the methods removeDuplicateLiterals (wrong children removed
+# when literal children are not the first children) and isequal. isequal is called on nodes
+# nowhere in src/; the only call of removeDuplicateLiterals (combineChildren.m:64) is on a CNF
+# clause flattened by reduce(), whose children are all literals, so no caller reaches the defects.
+Node	NONE
+# getRankLUSOL: only the third output q is wrong (zero columns); callers that take q reach it.
+getRankLUSOL	src/reconstruction/modelGeneration/modelProperties/checkModelProperties.m
+getRankLUSOL	src/analysis/topology/FR/checkRankFR.m
+getRankLUSOL	src/analysis/topology/extremeRays/lrs/extremePools.m
+getRankLUSOL	src/analysis/topology/FR/testFRconnectedness.m
+# nullSpaceOperator: only scale = 0 fails; both callers (fourFundamentalSubpaces, getNullSpace) pass 1.
+nullSpaceOperator	NONE
+# lsqr: fails only with 4 or more outputs (r1norm unassigned); lsqrtest requests 7 outputs.
+lsqr	src/analysis/subspaces/lsqr/lsqrtest.m
+# configCMatrix: reached through loadModular('CMatrix') (str2func of the module name); configPolytopeSimplifier makes that call.
+configCMatrix	src/analysis/sampling/BarrierRound/PolytopeSimplifier/configPolytopeSimplifier.m
+# CMatrix, ddouble, qdouble: only the sparse triplet constructor CMatrix(i,j,s,...) is defective. The only src caller using that form is CMatrixTest.externalFunc (ddouble, lines 210-212; found in wave 14).
+CMatrix	NONE
+ddouble	src/analysis/sampling/BarrierRound/CMatrix/coverage/CMatrixTest.m
+qdouble	NONE
+# prepareTest: only the needsLinux option fails; no src file passes it.
+prepareTest	NONE
+# py_rmpath: only MATLAB_too = true fails; the only caller (initPythonEnvironment) passes 0.
+py_rmpath	NONE
+# writeLPProblem: the unusable outputFormat/writeMatrix-first forms are used by no caller; vartype is dropped only for problems with vartype and no solverParams, and the callers without solverParams write LP/QP problems.
+writeLPProblem	NONE
+# setCplexParametersForProblem: only the MIQP path is defective; solveCobraMIQP is the only caller that takes it.
+setCplexParametersForProblem	src/base/solvers/solveCobraMIQP.m
+# checkGAMSSolvers: only problem types GAMS does not list fail; all callers pass 'MIP'.
+checkGAMSSolvers	NONE
+# BDCA: x_error/Time are wrong on every call, so BDCA is its own seed (default: every caller reaches it).
+# setGurobiParam: the timelimit override depends on the user's parameters (both names set); solveCobraLP and solveCobraQP pass the user's parameters.
+setGurobiParam	src/base/solvers/solveCobraLP.m
+setGurobiParam	src/base/solvers/solveCobraQP.m
+# getDietComposition: only the documented model (struct) input fails; all callers pass cell arrays.
+getDietComposition	NONE
+# calcMDVfromSamp: only a non-empty glc reaches convert_input; runHiLoExp passes one.
+calcMDVfromSamp	src/dataIntegration/fluxomics/runHiLoExp.m
+# getElementalWeightMatrix: only the documented printWarning input fails; callers pass 0 or 1 argument.
+getElementalWeightMatrix	NONE
+# changeCobraSolverParams: only omitting the documented-optional solverType fails; callers pass all three arguments.
+changeCobraSolverParams	NONE
+# addAnnotations: only the documented option annotationVerification is ignored; no caller passes it.
+addAnnotations	NONE
+# addInfoFromMolFiles: only the second output IDAdded is unassigned; every caller requests one output.
+addInfoFromMolFiles	NONE
+# optimalScores: only an rxnList with exactly one matched reaction fails; only reactionCompareGUI (EXCLUDED, GUI) passes rxnList.
+optimalScores	src/reconstruction/comparison/modelBorgifier/reactionCompareGUI.m
+# elementalMatrixToFormulae: only dMax = 0 drops counts of 1; every caller (computeMetFormulae) passes 10 and the default is 12.
+elementalMatrixToFormulae	NONE
+# changeNodesArea: only the documented three-input call fails; no src file calls it.
+changeNodesArea	NONE
+# initPythonEnvironment: only the default/'CPython3' environment reaches the version check; both callers (writeModelinJSON, autoFragment) pass a conda environment name.
+initPythonEnvironment	NONE
+# Severity audit T009a (2026-11-15)
+# getDefinedFieldProperties: both defects need SpecificFields (an undefined name, or the option with Descriptions/DataBaseFields). The only caller passing SpecificFields is createEmptyFields, whose callers pass literal names from the definitions table (addCOBRAConstraints, addCOBRAVariables, changeCOBRAConstraints, buildOptProblemFromModel) or user-given names that createEmptyFields rejects with its own error in any case (addMultipleReactions, addMultipleMetabolites, addGenes, addMultipleReactionsIT): no caller's result changes.
+getDefinedFieldProperties	NONE
+# AndNode, OrNode: deleteLiteral with a numeric id; every caller passes text (num2str, literals from getLiterals).
+AndNode	NONE
+OrNode	NONE
+# duplicates: only multi-column input gives a wrong M; the only such caller is the excluded regulariseGroupIncidenceMatrix (thermo new/, off the path).
+duplicates	src/analysis/thermo/groupContribution/new/regulariseGroupIncidenceMatrix.m
+# ReactionChecks: the crashes need an empty formula or a metabolite without charged formula from the rBioNet data; its only caller addreactions is an excluded GUI.
+# readSimPhenyCMPD: alternative names keep a leading blank on every call; reached through readCbModel only for SimPheny files, which no src caller requests, but readCbModel's own code reaches it: default seed (blocks no pending row).
+# printCouplingConstraints: only calls that request the output with printLevel <= 0 on a model with C fail; XomicsToModel:1414 requests the output with the user's printLevel.
+printCouplingConstraints	src/dataIntegration/XomicsToModel/XomicsToModel.m
+# printFluxBounds: only calls with fewer than 3 inputs fail; no src caller makes one.
+printFluxBounds	NONE
+# chrrSampler: only requesting minFlux/maxFlux with a roundedPolytope input fails; sampleCbModel does not request them.
+chrrSampler	NONE
+# transportReactionBool: only calls passing an origin/destination with unidirectionalBool 0 reach it; deltaG0concFluxConstraintBounds does (numChar as origin).
+transportReactionBool	src/analysis/thermo/thermoDirectionality/deltaG0concFluxConstraintBounds.m
+# SteadyComSubroutines: only the 'initialize' call on a model with only infoCom fails; the SteadyCom entry points pass the caller's model to 'initialize'.
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComPOAgr.m
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComFVAgr.m
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyCom.m
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyComFVA.m
+SteadyComSubroutines	src/analysis/multiSpecies/SteadyCom/SteadyComPOA.m
+# changeRxnMets: only a numeric Rxn is defective; the only caller (GPR2models) passes a reaction name.
+changeRxnMets	NONE
+# addMetInfoInCBmodel: replace = true and struct inputData fail; atomicallyResolveModel forwards param.replaceMetID as replace.
+addMetInfoInCBmodel	src/dataIntegration/chemoInformatics/atomicallyResolveModel.m
+# estimateDrGt0: only a model with field R fails; its only caller setupThermoModel removes R first.
+estimateDrGt0	NONE
+# saveInputsOptForce: only called by optForce when keepInputs is true (the user's option).
+saveInputsOptForce	src/design/optForce/optForce.m
+# scoreC13Fit: only the 6th input method is ignored; the only caller (errorComputation2) passes 3 arguments.
+scoreC13Fit	NONE
+# calculateMCS (wave 27): the error needs KO together with a row cell rxn_set of two or more
+# entries; its only caller, buildGmatrix, passes a column rxn_set and no KO.
+calculateMCS	NONE
+# Independent review T021 (2026-11-17), functions quarantined after the review:
+# classifyRxns: the defaults are not implemented; its only caller, rumba.m, always passes all six inputs.
+classifyRxns	NONE
+# directionalityStatsFigures: its only call site (analyseThermoConstrainedModel.m line 98) is inside `if 0`.
+directionalityStatsFigures	NONE
+# openBabelConverter: the defects need an output other than mol saved to a file, a folder as saveFileDir,
+# or the 'rxn' output; metaboliteStructuresTable converts to inchikey/inchi/smiles without saving and
+# obtainMetStructures saves only 'mol' to a file path.
+openBabelConverter	NONE
+# COBRArrowSolver: copies share one parameter map; COBRArrow.optimizeModel never calls setParameter/removeParameter.
+COBRArrowSolver	NONE
+# editCobraToolboxPath: only the default basePath on Windows; driver_createTrainingModel passes no Windows path.
+editCobraToolboxPath	NONE
+# transformMap2XML: its five tested callers only change names, colours and widths; none sets reversibility to true or relies on the reference check (review T027).
+transformMap2XML	NONE
+# review T027/T028 (list 3): model2xls only the 3-argument call (writeCbModel passes 4); comparePaths only the 'PYTHON' form (initPythonEnvironment);
+# getCobraSolverVersion only a third argument (generateMexFastFVA); configEnvVars only with ENV_VARS lacking STATUS (initCobraToolbox always sets it);
+# compareInchis depends on model data (generateChemicalDatabase, tested before this feature); metaboliteStructuresTable has no callers.
+model2xls	NONE
+comparePaths	src/base/io/python/initPythonEnvironment.m
+getCobraSolverVersion	src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m
+configEnvVars	NONE
+compareInchis	src/dataIntegration/chemoInformatics/generateChemicalDatabase.m
+metaboliteStructuresTable	NONE
+# review T027/T028 (list 2): getNutritionDatabaseFile only the ('usda','foodItems') form; setDietConstraints only a Diet cell with numeric values (no src caller passes one).
+getNutritionDatabaseFile	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/vmhFoodFinder.m
+getNutritionDatabaseFile	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/nutritionAlgorithmWBM.m
+setDietConstraints	NONE
+# review T027/T028 (lists 1 and 4): the only callers pass a folder (prepareInputData, computeModelProperties); setSemiQuantConstraints has no callers;
+# TmodelStats only ids without an [x] suffix, and mergeModelsBorg's models are forced to [x] by verifyModelBorg.
+writeReactionsFromPubSeedSpreadsheets	NONE
+getSubsystemPresence	NONE
+setSemiQuantConstraints	NONE
+TmodelStats	NONE

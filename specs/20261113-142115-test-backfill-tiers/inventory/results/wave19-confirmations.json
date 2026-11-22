@@ -1,0 +1,6 @@
+{
+ "addExoMetToEFBA": "lead (writer's MATLAB reproduction: lines 69 and 75 read an undefined printLevel when data names a missing or repeated reaction)",
+ "addMetInfoInCBmodel": "lead (writer's MATLAB reproductions: replace = true always errors; a struct inputData errors)",
+ "metDatabaseStatus": "lead (writer's MATLAB reproductions: inconsistentCharge and inconsistentFormula labels swapped; an ID like 'amol' reported missing by the '.mol' pattern)",
+ "obtainMetStructures": "lead (writer's MATLAB reproductions: a model without an HMDB field fails on the undefined hmdbIDs; the documented source 'lipidmass' errors)"
+}

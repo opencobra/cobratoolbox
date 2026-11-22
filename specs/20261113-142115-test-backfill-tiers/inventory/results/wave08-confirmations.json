@@ -1,0 +1,21 @@
+{
+ "normalizeDiet": "lead (source read: line 20 loads fdTable.mat, which is not in the repository)",
+ "getFilesInDir": "lead (source read: outside git the listing comes from rdir('**/*'), lines 107 and 129, which includes folders; the writer reproduced the empty-git-listing and default-subfolder defects in MATLAB)",
+ "DCA": "lead (same flag_psi_error and x_error/Time defects as the quarantined BDCA; writer reproduced them in MATLAB)",
+ "BDF": "lead (same flag_psi_error and x_error/Time defects as BDCA; writer reproduced them)",
+ "CSDF": "lead (same flag_psi_error and x_error/Time defects as BDCA; writer reproduced them)",
+ "DBDF": "lead (same flag_psi_error and x_error/Time defects as BDCA; writer reproduced them)",
+ "GLM_FY": "lead (same flag_psi_error and x_error/Time defects as the quarantined BDCA; writer reproduced them in MATLAB)",
+ "GLM_YF": "lead (same flag_psi_error and x_error/Time defects as the quarantined BDCA; writer reproduced them in MATLAB)",
+ "LLM": "lead (same flag_psi_error and x_error/Time defects as the quarantined BDCA; writer reproduced them in MATLAB)",
+ "LMLS": "lead (same flag_psi_error and x_error/Time defects as the quarantined BDCA; writer reproduced them in MATLAB)",
+ "LMTR": "lead (same flag_psi_error and x_error/Time defects as the quarantined BDCA; writer reproduced them in MATLAB)",
+ "LevMar": "lead (same flag_psi_error and x_error/Time defects as BDCA, plus out.Ngmap always 1; writer reproduced them in MATLAB)",
+ "issueConfirmationWarning": "lead (source read: line 20 stalls only when HOME contains jenkins, the reverse of the header (blocks until confirmation) and of the comment on line 21)",
+ "plotOverlapResults": "lead (writer's MATLAB reproduction: savepath fails on the undefined ax at line 64 after changing the working directory)",
+ "plotPredictedExchange": "lead (writer's MATLAB reproductions: saveFigures fails on the undefined names; extraFluxes without otherFluxes fails on the undefined v2)",
+ "summaryConcentrations": "lead (writer's MATLAB reproductions: a lookup table without a model reads the undefined model at line 97; contains() at line 73 maps isocitrate to cit[e])",
+ "activeProteinList": "lead (writer's MATLAB reproduction: line 39 uses > so proteins above the threshold land in the inactive list)",
+ "checkChemoinformaticDependencies": "lead (writer's MATLAB reproduction: without java, line 39 reads the undefined options.atomMapping)",
+ "standardiseMolDatabase": "lead (writer's MATLAB reproduction: with no MOL file selected, standardised is undefined at line 221)"
+}

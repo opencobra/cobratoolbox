@@ -1,0 +1,13 @@
+{
+ "addColour": "lead (writer's MATLAB reproductions: an ID in the last row of r_info.ID is never mapped; the html colour column is unused; the second output can be unassigned)",
+ "position": "lead (writer's MATLAB reproduction: str_ID occurring twice in the line, e.g. 'id' inside 'metaid', gives a colon-operand error)",
+ "writeTXT": "lead (writer's MATLAB reproductions: one-column input and colours without '#'/'FF' error; '#00FF00' becomes '#00')",
+ "compareVersions": "lead (writer's MATLAB reproduction: Test_MassChargeBalance and 9 other Test_* functions called at line 278 exist nowhere in the repository; line 166 compares reactions instead of metabolites)",
+ "printRefinementReport": "lead (writer's MATLAB reproduction with the table plotTestSuiteResults writes: rows 6 and 7 labelled bile acid and drug, the drug row 8 dropped)",
+ "printSolutionGEM": "lead (writer's MATLAB reproduction: a logFile name shorter than 4 characters fails at line 27)",
+ "elementalMatrixToFormulae": "lead (writer's MATLAB reproduction: with dMax = 0 counts of 1 are dropped, ([1 4],{'C','H'},0) gives 'H4')",
+ "ispolymer": "lead (writer's MATLAB reproduction: the element 'FULLR2' passed to numAtomsOfElementInFormula errors on every call)",
+ "findMetMatch": "lead (source read: iscell(pipePos) at line 145 shows cell ids are intended; writer's MATLAB reproduction: a SEED id as a cell fails at line 168); revision of wave 10",
+ "generateSubsytemsLayout": "lead (writer's MATLAB reproduction: sprintf(content) treats the overlay content as a format and cuts it to 'name' on every call)",
+ "changeNodesArea": "lead (writer's MATLAB reproduction: the documented three-input call fails at line 42; consistency rule)"
+}

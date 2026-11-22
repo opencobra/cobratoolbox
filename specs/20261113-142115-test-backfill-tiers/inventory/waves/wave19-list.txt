@@ -1,0 +1,9 @@
+test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m|src/base/io/utilities/readBooleanRegModel.m
+test/verifiedTests/base/testEntropicFBA/testAddExoMetToEFBA.m|src/base/solvers/entropicFBA/addExoMetToEFBA.m
+test/verifiedTests/base/testSolvers/testMinosCleanUp.m|src/base/solvers/minos/minosCleanUp.m
+test/verifiedTests/dataIntegration/testXomicsToModel/testPlotThermoKernelExtractStats.m|src/dataIntegration/XomicsToModel/thermoKernel/plotThermoKernelExtractStats.m
+test/verifiedTests/dataIntegration/testChemoInformatics/testCompareInchis.m|src/dataIntegration/chemoInformatics/inchi/compareInchis.m
+test/verifiedTests/dataIntegration/testChemoInformatics/testAddMetInfoInCBmodel.m|src/dataIntegration/chemoInformatics/metabolites/addMetInfoInCBmodel.m
+test/verifiedTests/dataIntegration/testChemoInformatics/testMetDatabaseStatus.m|src/dataIntegration/chemoInformatics/metabolites/metDatabaseStatus.m
+test/verifiedTests/dataIntegration/testChemoInformatics/testObtainMetStructures.m|src/dataIntegration/chemoInformatics/metabolites/obtainMetStructures.m
+test/verifiedTests/reconstruction/testModelGeneration/testComputeElementalMatrix.m|src/reconstruction/modelGeneration/massBalance/computeElementalMatrix.m

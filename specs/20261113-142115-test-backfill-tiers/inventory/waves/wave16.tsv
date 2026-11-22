@@ -1,0 +1,31 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	548	src/analysis/sampling/plotHistConv.m	2					
+a	550	src/analysis/sampling/sampleScatterMatrix.m	2					
+a	546	src/analysis/sampling/CHRR/chrrExpSampler.m	2				sampleCbModel	
+a	551	src/analysis/subspaces/checkScaling.m	2					
+a	560	src/analysis/thermo/directionalityReport/directionalityStats.m	2				analyseThermoConstrainedModel	
+a	561	src/analysis/thermo/directionalityReport/forwardTransportQuantReverseFigures.m	2				analyseThermoConstrainedModel	
+a	562	src/analysis/thermo/directionalityReport/forwardProbablyReverseFigures.m	2				analyseThermoConstrainedModel	
+a	563	src/analysis/thermo/directionalityReport/forwardReversibleFigures.m	2				analyseThermoConstrainedModel	
+a	564	src/analysis/thermo/directionalityReport/directionalityChangeReport.m	2				analyseThermoConstrainedModel	
+a	566	src/analysis/thermo/directionalityReport/generateThermodynamicTables.m	2					
+b	567	src/analysis/thermo/directionalityReport/plotFeasibleReactionEnergyRanges.m	2					
+b	572	src/analysis/thermo/directionalityReport/singleMetaboliteThermoFigure.m	2					
+b	573	src/analysis/thermo/directionalityReport/standardGibbsFormationEnergyStats.m	2					
+b	574	src/analysis/thermo/directionalityReport/writeReactionListThermo.m	2					
+b	575	src/analysis/thermo/experimentalData/boundsToFiles.m	2					
+b	576	src/analysis/thermo/experimentalData/readMetRxnBoundsFiles.m	2					
+b	577	src/analysis/thermo/experimentalDesign/priorityKeqMeasurement.m	2					
+b	580	src/analysis/thermo/formulae/compareMetaboliteFormulae.m	2					
+b	582	src/analysis/thermo/groupContribution/jankowski/createGroupIncidenceMatrix_jankowski.m	2					
+b	583	src/analysis/thermo/groupContribution/jankowski/plotConcVSdGft0GroupContUncertainty.m	2					
+c	585	src/analysis/thermo/groupContribution/jankowski/webCGMtoTabDelimitedFile.m	2					
+c	587	src/analysis/thermo/inchi/addInchiToModel.m	2			createInChIStruct,mol2sdf	createTrainingModel	
+c	588	src/analysis/thermo/molFiles/molFilesToCDFfile.m	2					
+c	591	src/analysis/thermo/protons/moleFractionStats.m	2					
+c	592	src/analysis/thermo/protons/plotActivityCoefficients.m	2					
+c	593	src/analysis/thermo/reactantContribution/setCommonZeroStandardGibbsEnergyOfFormation.m	2			getCompartment		
+c	594	src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m	2			getCompartment		
+c	596	src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m	2					
+c	556	src/analysis/thermo/transport/transportReactionBool.m	2			getCompartment	componentContribution,deltaG0concFluxConstraintBounds,estimateDrGt0	
+c	578	src/reconstruction/modelGeneration/massBalance/checkBalance.m	2			numAtomsOfElementInFormula	checkMassChargeBalance	

@@ -1,0 +1,11 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	495	src/analysis/ecosystem/createEcosystemModel.m	2			creategrRulesField		
+a	520	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m	2			findMetIDs,findRxnIDs,getCobraSolverParams	SteadyCom,SteadyComCplex,SteadyComFVA,SteadyComFVAgr,SteadyComPOA,SteadyComPOAgr	
+a	541	src/analysis/rumba/classifyRxns.m	2			findMetIDs,findRxnIDs	rumba	
+a	547	src/analysis/sampling/compareSampleTraj.m	2			findRxnIDs		
+a	549	src/analysis/sampling/plotSampleHist.m	2			findRxnIDs		reclassified testable (T008): input() paging prompts run only when the number of reactions exceeds perScreen (exempt); with the default perScreen (1e5) it plots and returns, so reaction filtering, histogram/smoothing and figure creation are testable headless
+a	597	src/analysis/thermo/thermoFBA/connectedRxnsByEFM.m	2				addLoopLawConstraints	
+a	598	src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m	2					
+a	602	src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m	2			getCompartment		
+a	603	src/reconstruction/modelGeneration/massBalance/pHbalanceProtons.m	2			numAtomsOfElementInFormula	estimateDG_temp	
+a	512	src/reconstruction/refinement/changeRxnMets.m	2			findMetIDs,findRxnIDs	GPR2models	
