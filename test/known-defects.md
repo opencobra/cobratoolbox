@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-898 known defects in 490 functions (330 wrong-result, 290 error, 75 unusable-option, 138 cosmetic, 65 limitation).
+904 known defects in 493 functions (331 wrong-result, 295 error, 75 unusable-option, 138 cosmetic, 65 limitation).
 
 ## Summary
 
@@ -382,6 +382,9 @@
 | `src/base/io/utilities/readBooleanRegModel.m` | limitation | The default file iMHruletest.xls is not distributed | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
 | `src/base/io/utilities/readBooleanRegModel.m` | cosmetic | The message for a missing exchange reaction names the wrong metabolite | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
 | `src/base/io/utilities/readBooleanRegModel.m` | cosmetic | The message for a missing internal reaction has no line break | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
+| `src/base/io/utilities/readCobrapyJSONModel.m` | error | a metabolite identifier containing a brace makes the reaction stoichiometry unreadable | `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m` |
+| `src/base/io/utilities/readCobrapyJSONModel.m` | error | an empty model cannot be read | `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m` |
+| `src/base/io/utilities/readCobrapyJSONModel.m` | error | metabolite identifiers written with a \u escape are not found | `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m` |
 | `src/base/io/utilities/readSBML.m` | error | The documented default of defaultBound does not exist | `test/verifiedTests/base/testIO/testReadSBML.m` |
 | `src/base/io/utilities/readSimPhenyCMPD.m` | limitation | A file without metabolite lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
 | `src/base/io/utilities/readSimPhenyCMPD.m` | wrong-result | Alternative names keep the blank that follows a '/' | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
@@ -605,6 +608,8 @@
 | `src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m` | wrong-result | A nonzero right hand side b is not scaled with the bounds | `test/verifiedTests/analysis/testFASTCORE/testLP10weighted.m` |
 | `src/dataIntegration/transcriptomics/FASTCORE/LP3.m` | cosmetic | The optional input basis is ignored | `test/verifiedTests/analysis/testFASTCORE/testLP3.m` |
 | `src/dataIntegration/transcriptomics/FASTCORE/LP7.m` | cosmetic | The optional input basis is ignored | `test/verifiedTests/analysis/testFASTCORE/testLP7.m` |
+| `src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m` | wrong-result | An empty set P returns no support although reactions of J carry flux | `test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m` |
+| `src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m` | error | Omitting the documented optional inputs stops with an error | `test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m` |
 | `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m` | wrong-result | The json format writes colour names without quotes | `test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m` |
 | `src/dataIntegration/transcriptomics/SWIFTCORE/core.m` | cosmetic | An infeasible LP ends with MATLAB's unassigned-output error | `test/verifiedTests/dataIntegration/testSWIFTCORE/testCore.m` |
 | `src/dataIntegration/transcriptomics/SWIFTCORE/core.m` | wrong-result | The weights of reversible and irreversible reactions are given to the wrong reactions | `test/verifiedTests/dataIntegration/testSWIFTCORE/testCore.m` |
@@ -707,6 +712,7 @@
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
+| `src/reconstruction/modelGeneration/fluxConsistency/DCA/fastcc_nonconvex.m` | error | Every call stops with an error because LP7 is called with the wrong arguments | `test/verifiedTests/reconstruction/testDCA/testFastcc_nonconvex.m` |
 | `src/reconstruction/modelGeneration/fluxConsistency/GREEDY/checkFluxConsistency.m` | wrong-result | The stoichiometric matrix of the LP is zero | `test/verifiedTests/reconstruction/testModelGeneration/testCheckFluxConsistency.m` |
 | `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | wrong-result | imBalancedMass is [] instead of an nRxn x 1 cell when every reaction is mass balanced | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | error | printLevel -1 and 2 stop when every reaction is mass balanced and a charge is not | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
@@ -4721,6 +4727,35 @@
 - **Source lines**: 125
 - **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m`
 
+### `src/base/io/utilities/readCobrapyJSONModel.m`
+
+#### a metabolite identifier containing a brace makes the reaction stoichiometry unreadable
+
+- **Severity**: error
+- **Trigger**: a metabolite identifier with { or }, for example {"metabolites":[{"id":"A{x}"},{"id":"B"}],"reactions":[{"id":"R1", "metabolites":{"A{x}":-1,"B":1},"lower_bound":0,"upper_bound":1}]}
+- **Observed**: MATLAB R2025a, 2026-11-23: error "The number of reaction stoichiometries (0) differs from the number of reactions (1)." The pattern of line 96 does not allow braces inside a "metabolites" object
+- **Expected**: the model is read with S = [-1; 1]
+- **Source lines**: 96
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m`
+
+#### an empty model cannot be read
+
+- **Severity**: error
+- **Trigger**: the file of an empty cobrapy model, {"metabolites":[],"reactions":[],"genes":[],"id":"e"}
+- **Observed**: MATLAB R2025a, 2026-11-23: error "Input #2 expected to be a cell array, was double instead." at line 62: jsondecode returns an empty double for [], which is neither a struct nor a cell array
+- **Expected**: a model with no metabolites, reactions and genes
+- **Source lines**: 62, 74
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m`
+
+#### metabolite identifiers written with a \u escape are not found
+
+- **Severity**: error
+- **Trigger**: a metabolite identifier with a non-ASCII character, which Python's json.dump (ensure_ascii, the cobrapy default) writes as a \u escape, for example {"metabolites":[{"id":"A\u00e9"},{"id":"B"}],"reactions":[{"id":"R1", "metabolites":{"A\u00e9":-1,"B":1},"lower_bound":0,"upper_bound":1}]}
+- **Observed**: MATLAB R2025a, 2026-11-23: error "Metabolite Au00e9 of reaction R1 is not defined in the model." jsondecode decodes the identifier to A followed by char 233, but line 106 only removes the backslash of an escape, giving Au00e9
+- **Expected**: the model is read with S = [-1; 1], as the NOTE of the help says identifiers are kept exactly as written
+- **Source lines**: 106
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m`
+
 ### `src/base/io/utilities/readSBML.m`
 
 #### The documented default of defaultBound does not exist
@@ -6960,6 +6995,26 @@
 - **Source lines**: 58, 69-74
 - **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testLP7.m`
 
+### `src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m`
+
+#### An empty set P returns no support although reactions of J carry flux
+
+- **Severity**: wrong-result
+- **Trigger**: with model and LPproblem as above, findSparseMode([1 2], [], false, model, LPproblem, 1e-4, 0, [], [])
+- **Observed**: (R2025a, gurobi, 2026-11-23) Supp = [] (0 x 0): LP7 finds R1 and R2 active (K = [1 2]), but LP10 returns [] at once for an empty P (LP10 lines 35-36) and line 71 takes the support of that empty vector. Through fastcore: fastcore(model, 1:3, 1e-4, 0) on the consistent chain R1 (-> A), R2 (A -> B), R3 (B ->) (every reaction in the core, so P is empty) warns "Global network is not flux consistent, ignoring the following irreversible core reactions" and lists R1, R2 and R3
+- **Expected**: the help text says [] is returned only "if no reaction from J can get flux above epsilon"; with nothing to minimise, the support of the LP7 flux vector (here R1, R2, R3) is the sparse mode
+- **Source lines**: 70-71
+- **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m`
+
+#### Omitting the documented optional inputs stops with an error
+
+- **Severity**: error
+- **Trigger**: chain R1 (-> A), R2 (A -> B), R3 (B ->): S = sparse([1 -1 0; 0 1 -1]); model.S = S; LPproblem = struct('A', S, 'b', zeros(2, 1), 'csense', ['E'; 'E'], 'lb', zeros(3, 1), 'ub', 10 * ones(3, 1)); findSparseMode([1 2], 3, false, model, LPproblem, 1e-4) (also with 7 or 8 inputs)
+- **Observed**: (R2025a, gurobi, 2026-11-23) error "Not enough input arguments." at line 43 with 6 inputs and at line 50 with 7 or 8 inputs: lines 43 and 50 call isempty on adaptiveScalingFlag and nonPen without checking that they were passed, and the defaults of epsilon (line 40) and basis (line 36) can therefore never be used
+- **Expected**: the help text lists adaptiveScalingFlag, basis and nonPen as OPTIONAL INPUT and gives epsilon a default, so the call with 6 inputs returns the support [1; 2; 3] that the full call findSparseMode([1 2], 3, false, model, LPproblem, 1e-4, 0, [], []) returns
+- **Source lines**: 36, 40, 43, 50
+- **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m`
+
 ### `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m`
 
 #### The json format writes colour names without quotes
@@ -7985,6 +8040,17 @@
 - **Expected**: the list of leaking reactions is returned
 - **Source lines**: 61
 - **Documented in**: `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m`
+
+### `src/reconstruction/modelGeneration/fluxConsistency/DCA/fastcc_nonconvex.m`
+
+#### Every call stops with an error because LP7 is called with the wrong arguments
+
+- **Severity**: error
+- **Trigger**: model = struct('S', sparse([1 -1 0; 0 1 -1]), 'lb', zeros(3, 1), 'ub', 10 * ones(3, 1), 'rxns', {{'R1'; 'R2'; 'R3'}}); fastcc_nonconvex(model, 1e-4, 0) (any model, epsilon, printLevel and modeFlag)
+- **Observed**: (R2025a, gurobi, 2026-11-23) error "Dot indexing is not supported for variables of this type." in LP7 line 38: line 61 calls LP7(J, model, epsilon), but LP7's signature is LP7(J, model, LPproblem, epsilon, basis), so epsilon is taken as the LP problem structure and LP7 reads epsilon.A
+- **Expected**: A, the n x 1 indicator of the flux consistent reactions (here all three reactions of the chain), as the help text says
+- **Source lines**: 61
+- **Documented in**: `test/verifiedTests/reconstruction/testDCA/testFastcc_nonconvex.m`
 
 ### `src/reconstruction/modelGeneration/fluxConsistency/GREEDY/checkFluxConsistency.m`
 

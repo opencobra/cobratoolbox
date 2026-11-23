@@ -1,0 +1,6 @@
+test/verifiedTests/analysis/testQFCA/testBlockedReac.m|src/analysis/QFCA/blockedReac.m
+test/verifiedTests/dataIntegration/testSWIFTCORE/testSwiftcc.m|src/dataIntegration/transcriptomics/SWIFTCORE/swiftcc.m
+test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m|src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m
+test/verifiedTests/reconstruction/testDCA/testFastcc_nonconvex.m|src/reconstruction/modelGeneration/fluxConsistency/DCA/fastcc_nonconvex.m
+test/verifiedTests/base/testIO/testUtilities/testBuildRxnGeneMat.m|src/base/io/utilities/buildRxnGeneMat.m
+test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m|src/base/io/utilities/readCobrapyJSONModel.m
