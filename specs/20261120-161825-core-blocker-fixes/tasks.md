@@ -58,7 +58,13 @@ are added when the maintainer approves their fix.
 - [X] T031 [US2] Impact: old and new dE on the shipped test models; tests of checkMassChargeBalance and its callers; report
 - [X] T032 Commit
 
-## Phase 8: function 7
+## Phase 8: setCplexParametersForProblem (approved 2026-11-23, option A)
+
+- [X] T033 [US1] Test first: full `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m` (no earlier full version): a hand-built stand-in for the Cplex object (setDefault, Param, DisplayFunc, Start); display, the four log destinations (file in a tempname folder), tolerances, MIP parameters, qpmethod, lpmethod, the MIQP method codes and names, the solver-specific fields, the errors; see it fail on the current code
+- [X] T034 [US1] Fix `src/base/solvers/cplex/setCplexParametersForProblem.m` (no barrier default after an MIQP method name); help NOTE
+- [X] T035 [US1] Coverage run; ledger TESTED; blocked reasons drop setCplexParametersForProblem; registry; `--check`, `--verify-coverage`
+- [X] T036 [US2] Impact: callers solveCobraLP/QP/MILP/MIQP (ibm_cplex branch, CPLEX not installed here: only the parameter structure can be checked); run their tests; report
+- [X] T037 Commit
 
 Added after each review.
 

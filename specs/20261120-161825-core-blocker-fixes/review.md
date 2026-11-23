@@ -312,3 +312,39 @@ function's own third output, which marks every empty formula.
 **Unblocked.** checkBalance was one of the blockers of 240 functions; 2 have no blocker left:
 checkMassChargeBalance and the DEMETER test testModelMassChargeBalance. PENDING: 114. Registry:
 822 defects.
+
+## 7. setCplexParametersForProblem (approved 2026-11-23, option A)
+
+**Fix.** The barrier default for lpmethod (4 for every problem type other than LP, "best benchmark
+performance on Harvetta") is not applied when, for MIQP, lpmethod was just set from a name given
+in problemTypeParams.method. Before, the name was always replaced by the barrier. The help NOTE
+states when lpmethod is 4. Option A was chosen over B (names setting qpmethod, as the numeric
+legacy codes do); not changed: names set lpmethod while numeric codes set qpmethod, and the
+warning "check the problemTypeParams.method mapping to algorithm numbers is correct" on every
+MIQP call.
+
+**Test.** testSetCplexParametersForProblem is a full test, written new: 120/129 lines, nothing left
+behind. A hand-built structure (setDefault, Param, DisplayFunc, Start) stands in for the Cplex
+object, as in testSetCplexParam: display settings, the four log destinations (a log file in a
+tempname folder, appended to), tolerances, MIP parameters, lpmethod and qpmethod (codes and
+names), the legacy MIQP method codes with their warning, the MIQP method names, the solver-specific
+fields and the advanced start. It failed on the old code at the MIQP method names. Exempt: lines
+320 and 329 (the condition of line 313 ends in "&& 0") and 371-384 (inside "if 0").
+
+**Impact: which outputs can change.** Only solveCobraMIQP with ibm_cplex and a named method: CPLEX
+gets the named lpmethod instead of 4. LP, QP, MILP, and MIQP with a numeric or no method, get the
+same parameters as before. CPLEX is not installed on this machine, so the effect on a CPLEX solve
+could not be run; the parameter structure is checked by the test. testSetCplexParam,
+testSolveCobraLP, testSolveCobraQP, testSolveCobraMILP and testSolveCobraMIQP pass (their CPLEX
+parts are skipped where CPLEX is absent).
+
+**Unblocked.** setCplexParametersForProblem was one of the blockers of 239 functions; 144 have no
+blocker left, among them fluxVariability, singleGeneDeletion, doubleGeneDeletion,
+singleRxnDeletion, linearMOMA, removeRxns, removeMetabolites, extractSubNetwork, GIMME,
+fastCoreWeighted, phenotypePhasePlane, doubleRobustnessAnalysis, the optForce, optEnvelope and
+metabotools functions, and most of the DEMETER refinement functions. PENDING: 258. Registry: 821
+defects.
+
+**Ledger check.** `--check` reports one ordering issue: chrrExpSampler (QUARANTINED for its own
+defect) precedes its callee fluxVariability, now PENDING. It clears when fluxVariability is tested
+(T090).

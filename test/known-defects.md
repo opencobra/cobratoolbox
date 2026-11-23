@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-822 known defects in 452 functions (303 wrong-result, 258 error, 74 unusable-option, 124 cosmetic, 63 limitation).
+821 known defects in 451 functions (303 wrong-result, 258 error, 73 unusable-option, 124 cosmetic, 63 limitation).
 
 ## Summary
 
@@ -395,7 +395,6 @@
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Output z is not assigned when every entry of the LP solution is below zeps | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | wrong-result | The zero vector is returned as the solution although it violates Aeq*x = beq | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Theta L0 iteration errors when the l1 solution has no positive entry | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
-| `src/base/solvers/cplex/setCplexParametersForProblem.m` | unusable-option | text values of problemTypeParams.method have no effect for MIQP | `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m` | error | An LPProblem without csense stops with an error | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m` | wrong-result | The documented solution fields solver (every interface) and stat (ILOGsimple) are missing | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | error | An LPProblem without csense stops with an error | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
@@ -4775,17 +4774,6 @@
 - **Expected**: z = -1, result_tab = [1, 1] (the only feasible point); the smoothing function theta1 uses abs(t), so negative entries are allowed
 - **Source lines**: 142, 149
 - **Documented in**: `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m`
-
-### `src/base/solvers/cplex/setCplexParametersForProblem.m`
-
-#### text values of problemTypeParams.method have no effect for MIQP
-
-- **Severity**: unusable-option
-- **Trigger**: cp.setDefault = []; cp.Param = struct(); cp.DisplayFunc = @disp; ptp = struct('printLevel', 0, 'logFile', 0, 'feasTol', 1e-6, 'optTol', 1e-6, 'relMipGapTol', 1e-4, 'intTol', 1e-5, 'absMipGapTol', 0, 'timeLimit', 100, 'method', 'PRIMAL'); out = setCplexParametersForProblem(cp, ptp, struct(), 'MIQP')
-- **Observed**: (R2025a, 2026-11-15) out.Param.lpmethod.Cur = 4 (barrier) for 'PRIMAL' (and for every other text value). Lines 248-260 set lpmethod from the text value, then line 302 (else branch of the 'LP' test on line 268) sets lpmethod to 4 for every problem type other than 'LP'
-- **Expected**: INPUTS document .method as "LP/QP algorithm selector used when problemType is MIQP (numeric legacy code, or 'AUTOMATIC'/'PRIMAL'/...)", so 'PRIMAL' selects algorithm 1; the numeric values do take effect (method 0 gives qpmethod 1)
-- **Source lines**: 248-260, 302
-- **Documented in**: `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m`
 
 ### `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m`
 

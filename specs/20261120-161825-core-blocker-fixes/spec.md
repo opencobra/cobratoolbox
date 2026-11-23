@@ -116,7 +116,16 @@ can change.
 - **Help text (found in the review, cosmetic):** the help gives printLevel default 0 ({-1, (0),
   1}), the code uses 1. The help is corrected to the code's default; no output change.
 
-### 7: pending the maintainer's review
+### 7. setCplexParametersForProblem: approved 2026-11-23 (option A)
+
+- **Defect "text values of problemTypeParams.method have no effect for MIQP":** fix the code
+  with the smallest change: the barrier default for lpmethod (lpmethod = 4 for every problem type
+  other than LP) is not applied when lpmethod was just set from a text value of
+  problemTypeParams.method for MIQP, so the named algorithm is kept, as the code and help
+  describe. Not changed (maintainer chose option A over B): names set lpmethod while the numeric
+  legacy codes set qpmethod, and the warning "check the problemTypeParams.method mapping ..." on
+  every MIQP call. Output change: solveCobraMIQP with ibm_cplex and a text method gets the named
+  lpmethod instead of 4; LP, QP, MILP and MIQP with a numeric or no method are unchanged.
 
 ## User Scenarios & Testing *(mandatory)*
 
