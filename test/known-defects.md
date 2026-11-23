@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-904 known defects in 493 functions (331 wrong-result, 295 error, 75 unusable-option, 138 cosmetic, 65 limitation).
+909 known defects in 497 functions (332 wrong-result, 297 error, 75 unusable-option, 140 cosmetic, 65 limitation).
 
 ## Summary
 
@@ -30,6 +30,8 @@
 | `src/analysis/coupling/constrainRxnListAboveBound.m` | error | A coefficient vector c in the documented k x 1 shape stops with an error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
 | `src/analysis/coupling/constrainRxnListAboveBound.m` | cosmetic | The EXAMPLE of the help text passes an undefined variable C instead of c | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
 | `src/analysis/coupling/constrainRxnListAboveBound.m` | error | The documented optional inputs c, d and ineqSense cannot be omitted | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
+| `src/analysis/deletion/deleteModelGenes.m` | cosmetic | Deleting a gene that is already marked deleted appends the suffix again | `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m` |
+| `src/analysis/deletion/deleteModelGenes.m` | cosmetic | The error for several genes that are not in the model joins their names | `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m` |
 | `src/analysis/dynamicFBA/dynamicFBA.m` | cosmetic | The number of tracked exchange reactions is printed on every call | `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m` |
 | `src/analysis/ecosystem/clusterEcosystemPoints.m` | wrong-result | The hierarchical method returns the requested maximum k as the number of clusters | `test/verifiedTests/analysis/testEcosystem/testClusterEcosystemPoints.m` |
 | `src/analysis/ecosystem/getQualitativeFluxStates.m` | wrong-result | Zero band applied inconsistently to the maximum and to max - min | `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m` |
@@ -37,6 +39,8 @@
 | `src/analysis/exploration/findCarbonRxns.m` | wrong-result | Two-letter element symbols beginning with C are counted as carbon | `test/verifiedTests/analysis/testExploration/testFindCarbonRxns.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | limitation | A compartment letter without brackets matches every identifier with that letter | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | error | A compartment without metabolites stops with an error | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
+| `src/analysis/exploration/findMetabolicJunctions.m` | error | Every call that finds a junction stops on an undefined variable | `test/verifiedTests/analysis/testExploration/testFindMetabolicJunctions.m` |
+| `src/analysis/exploration/findNeighborRxns.m` | wrong-result | withComp is not passed to the recursive call, so common metabolites count as edges from the second order on | `test/verifiedTests/analysis/testExploration/testFindNeighborRxns.m` |
 | `src/analysis/exploration/findRxnFromCompartment.m` | wrong-result | A compartment with a single metabolite returns the first reaction of the model | `test/verifiedTests/analysis/testExploration/testFindRxnFromCompartment.m` |
 | `src/analysis/exploration/findRxnsFromGenes.m` | error | Calling with the optional numericFlag only stops with an error | `test/verifiedTests/analysis/testExploration/testFindRxnsFromGenes.m` |
 | `src/analysis/exploration/findRxnsFromMets.m` | error | The documented positional printFlag alone stops with an error | `test/verifiedTests/analysis/testExploration/testFindRxnsFromMets.m` |
@@ -876,6 +880,7 @@
 | `src/visualization/metabolicCartography/addNotes.m` | error | Subsystems stored as cells of cells raise an error | `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m` |
 | `src/visualization/metabolicCartography/changeNodesArea.m` | error | The optional areaWidth is not defaulted when areaHeight is given | `test/verifiedTests/visualization/testMetabolicCartography/testChangeNodesArea.m` |
 | `src/visualization/metabolicCartography/colorProtein.m` | error | The default colour 'Red' is not a key of createColorsMap | `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m` |
+| `src/visualization/metabolicCartography/colorRxnsFromGenes.m` | error | A gene list with no gene of the model stops with an error | `test/verifiedTests/visualization/testMetabolicCartography/testColorRxnsFromGenes.m` |
 | `src/visualization/metabolicCartography/colorSubsystemCD.m` | wrong-result | Reactions with several subsystems shift the selection to the wrong reactions | `test/verifiedTests/visualization/testMetabolicCartography/testColorSubsystemCD.m` |
 | `src/visualization/metabolicCartography/defaultColorCD.m` | error | Secondary reaction lines are coloured with the undefined function Colors | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultColorCD.m` |
 | `src/visualization/metabolicCartography/defaultLookMap.m` | wrong-result | An included species named as an ion makes the main species of the same index an ION | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultLookMap.m` |
@@ -1121,6 +1126,26 @@
 - **Source lines**: 35
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m`
 
+### `src/analysis/deletion/deleteModelGenes.m`
+
+#### Deleting a gene that is already marked deleted appends the suffix again
+
+- **Severity**: cosmetic
+- **Trigger**: model = deleteModelGenes(model, 'g1'); model = deleteModelGenes(model, 'g1')
+- **Observed**: (R2025a, 2026-11-23) model.genes{1} is 'g1_deleted_deleted' after the second call; the constraints are the same as after the first call, because lines 66 and 84 strip or search every '_deleted'
+- **Expected**: the gene name stays 'g1_deleted' ("appends '_deleted' to the gene(s)")
+- **Source lines**: 77
+- **Documented in**: `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m`
+
+#### The error for several genes that are not in the model joins their names
+
+- **Severity**: cosmetic
+- **Trigger**: deleteModelGenes(model, {'g8', 'g9'}) with neither gene in model.genes
+- **Observed**: (R2025a, 2026-11-23) error "Gene g8g9 not in model!": the names of the missing genes are concatenated without a separator
+- **Expected**: the missing gene names listed separately (for example "Genes g8, g9 not in model!")
+- **Source lines**: 108
+- **Documented in**: `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m`
+
 ### `src/analysis/dynamicFBA/dynamicFBA.m`
 
 #### The number of tracked exchange reactions is printed on every call
@@ -1195,6 +1220,28 @@
 - **Expected**: an empty list
 - **Source lines**: 29-34
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m`
+
+### `src/analysis/exploration/findMetabolicJunctions.m`
+
+#### Every call that finds a junction stops on an undefined variable
+
+- **Severity**: error
+- **Trigger**: model = struct('rxns', {{'A'; 'B'; 'C'}}, 'mets', {{'x[c]'}}, 'S', sparse([1 -1 -1]), 'c', [0; 0; 0], 'genes', {{'g1'; 'g2'; 'g3'}}, 'rules', {{'x(1)'; 'x(2)'; 'x(3)'}}); findMetabolicJunctions(model, 3)
+- **Observed**: (R2025a, 2026-11-23) error "Unrecognized function or variable 'verbFlag'." (line 56): verbFlag is neither an input nor defined in the function, so the first valid junction found always ends the call; only calls that find no junction (for example the same model with nRxnsJnc = 4) return, with an empty list
+- **Expected**: the list of junction metabolites ({'x(c)'} here, as lines 55 and 75-77 build it), with the verbose listing of lines 56-69 behind an optional flag
+- **Source lines**: 56-69
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testFindMetabolicJunctions.m`
+
+### `src/analysis/exploration/findNeighborRxns.m`
+
+#### withComp is not passed to the recursive call, so common metabolites count as edges from the second order on
+
+- **Severity**: wrong-result
+- **Trigger**: model = struct('rxns', {{'R1'; 'R2'; 'R3'}}, 'mets', {{'a[c]'; 'b[c]'; 'atp[c]'; 'adp[c]'}}, 'S', sparse([-1 0 0; 1 -1 0; -1 0 -1; 1 0 1]), 'genes', {{'g1'}}, 'rules', {{'x(1)'; ''; ''}}); findNeighborRxns(model, 'R2', true, 2, {'atp[c]', 'adp[c]'}, true)
+- **Observed**: (R2025a, 2026-11-23) {'R1'; 'R2'; 'R3'}: line 150 calls findNeighborRxns without withComp, so the recursion appends the compartment again ('atp[c][c]'), finds no common metabolite and links R1 to R3 through atp[c] and adp[c]; the same call with order 1 returns {'R1'}, and with commonMets {'atp', 'adp'} and withComp false (default) order 2 returns {'R1'; 'R2'}
+- **Expected**: {'R1'; 'R2'}, as for the equivalent call with withComp false: atp[c] and adp[c] "should not count as edges between reactions" at any order
+- **Source lines**: 149-150
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testFindNeighborRxns.m`
 
 ### `src/analysis/exploration/findRxnFromCompartment.m`
 
@@ -9672,6 +9719,17 @@
 - **Expected**: the protein node coloured 'FFFF0000' (RED), the documented default
 - **Source lines**: 32
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m`
+
+### `src/visualization/metabolicCartography/colorRxnsFromGenes.m`
+
+#### A gene list with no gene of the model stops with an error
+
+- **Severity**: error
+- **Trigger**: model = struct('rxns', {{'R1'}}, 'genes', {{'10.1'}}, 'rules', {{'x(1)'}}); map = struct('rxnName', {{'R1'}}); colorRxnsFromGenes(map, model, {'99'})
+- **Observed**: (R2025a, 2026-11-23) error "Input A of class cell and input B of class double must be cell arrays of character vectors, unless one is a character vector." raised by ismember at line 82: with no matching gene, globalList stays [] (line 67), so rxnName = unique([]) is a double; the same call with {'10', '99'} returns the map with R1 coloured
+- **Expected**: the map returned unchanged, since no reaction is implicated by the given genes
+- **Source lines**: 67, 78, 82
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorRxnsFromGenes.m`
 
 ### `src/visualization/metabolicCartography/colorSubsystemCD.m`
 

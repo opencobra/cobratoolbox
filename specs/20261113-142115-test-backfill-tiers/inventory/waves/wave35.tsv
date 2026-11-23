@@ -1,0 +1,6 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	493	src/analysis/deletion/deleteModelGenes.m	2			buildRxnGeneMat,findRxnIDs	GetOptGeneSol,XomicsToModel,addEnv,analyzeOptKnock,calculateGeneKOMatrix,checkGeneMCS,computeRescuedGenes,deleteInactiveGenes,doubleProductionEnvelope,dynamicRFBA,findSubsystemOfGenes,integrateGeneExpressionData,multiProductionEnvelope,multiProductionEnvelopeInorg,optGeneFitness,optGeneFitnessTilt,optimizeRegModel,productionEnvelope,sequentialOEReinserts,simpleOptKnock,singleGeneDeletion,singleProductionEnvelope,solveBooleanRegModel	
+a	501	src/analysis/exploration/findGenesFromRxns.m	2			buildRxnGeneMat,findRxnIDs	pFBA	
+a	503	src/analysis/exploration/findMetabolicJunctions.m	2			buildRxnGeneMat,findRxnIDs		
+a	504	src/analysis/exploration/findNeighborRxns.m	2			buildRxnGeneMat,findMetIDs,findRxnIDs	neighborRxn2data	
+a	745	src/visualization/metabolicCartography/colorRxnsFromGenes.m	2			buildRxnGeneMat,createColorsMap		

@@ -251,3 +251,6 @@ optimizeCardinality	src/dataIntegration/modelMultipleObjectives.m
 optimizeCardinality	src/dataIntegration/transcriptomics/rFASTCORMICS/rFastcormics.m
 optimizeCardinality	src/reconstruction/demeter/src/debugging/findFutileCycle.m
 optimizeCardinality	src/reconstruction/modelGeneration/test4HumanFctExt.m
+# findNeighborRxns (wave 35): the defect needs withComp true and order >= 2; the only src caller,
+# neighborRxn2data, passes two inputs (lead, 2026-11-23).
+findNeighborRxns	NONE
