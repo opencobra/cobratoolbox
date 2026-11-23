@@ -271,3 +271,44 @@ getFilesInDir and removeTempFiles) and the 13 other tests of test/verifiedTests/
 
 **Unblocked.** getFilesInDir was one of the blockers of 245 functions; 3 have no blocker left:
 removeTempFiles, getCobraSolver and CPLEXParamSet. PENDING: 112. Registry: 823 defects.
+
+## 6. checkBalance (approved 2026-11-23, fix and help correction)
+
+**Fix.** Line 92 (now 98) finds the reactions that use a metabolite without a usable formula with
+any(..., 1), column by column. With exactly one such metabolite, any() of the 1 x n row was a
+scalar, so reaction 1 was set to NaN and the reactions that use the metabolite kept a number
+(that metabolite counted as 0 atoms). The help now gives the code's default printLevel, 1 (it said
+0). The help has a NOTE describing the change.
+
+**Test.** testCheckBalance is a full test, written new: 37/37 lines, nothing left behind. E and dE
+are counted by hand for C, Co, H and an absent element on a seven-metabolite model, with no, one
+(not in reaction 1) and two metabolites without a formula, a non-standard formula, a given
+missingFormulaeBool, the printed list (default and printLevel 1, silent at 0), the printLevel -1
+file, and the errors. It failed on the old code at the case of exactly one missing formula.
+
+**Impact: which outputs can change.** dE of a model with exactly one metabolite without a usable
+formula (with none, any() of the 0 x n matrix and, with two or more, any() of the rows already
+worked by column). Of the shipped test models, Recon3DModel_301 and Recon3D_301 (protein[c], no
+formula). checkMassChargeBalance(model, 0) with the old and new checkBalance:
+- **massImbalance**, three reactions, all 19 elements: 10FTHF5GLUtl (reaction 1) from NaN to 0
+  (it is balanced); PROTEIN_BS from numbers (for example -32.57 C, -66.04 for the first element)
+  to NaN; DM_PROTEIN from 0 to NaN.
+- **imBalancedRxnBool**: unchanged (the same reactions are listed as imbalanced).
+Every other output and model is unchanged.
+
+14 tests of checkMassChargeBalance and its callers (verifyModel, findStoichConsistentSubset,
+checkRankFR, generateMetaboScore) were run after the fix: 12 pass (testMassChargeBalance,
+testVerifyModel, testStoichiometricConsistency, testCycleFreeFlux, testCheckNullspaceBasis,
+testGreedyExtremeRayBasis, testNullspaceAccuracyTarget, testConvertOldStyleModel,
+testBuildOptProblemFromModel, testModelManipulationOri, testBatchAddition,
+testExtractMetModel), none fail; 2 are skipped (testGeneMCS: ibm_cplex;
+testEntropicFluxBalanceAnalysis: mosek).
+
+**Open item (not a defect, not changed).** A given missingFormulaeBool that leaves an empty
+formula unmarked stops with "Index exceeds array bounds" (line 63, the '(' check reads the first
+character of the empty formula). The input contradicts itself, and the only caller passes the
+function's own third output, which marks every empty formula.
+
+**Unblocked.** checkBalance was one of the blockers of 240 functions; 2 have no blocker left:
+checkMassChargeBalance and the DEMETER test testModelMassChargeBalance. PENDING: 114. Registry:
+822 defects.

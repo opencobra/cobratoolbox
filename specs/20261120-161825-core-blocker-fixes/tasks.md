@@ -50,7 +50,15 @@ are added when the maintainer approves their fix.
 - [X] T026 [US2] Impact: callers initCobraToolbox, removeTempFiles, changeCobraSolver, testAll; run testRemoveTempFiles, testChangeCobraSolver and other tests of the callers; report
 - [X] T027 Commit
 
-## Phase 7: functions 6-7
+## Phase 7: checkBalance (approved 2026-11-23, fix and help correction)
+
+- [X] T028 [US1] Test first: full `test/verifiedTests/reconstruction/testModelGeneration/testCheckBalance.m` (no earlier full version): E and dE by hand for several elements, none, one and several missing formulas, non-standard formulae, missingFormulaeBool given, printLevel 1 and -1 (file in a tempname folder), the errors; see it fail on the current code
+- [X] T029 [US1] Fix `src/reconstruction/modelGeneration/massBalance/checkBalance.m` line 92 (any(..., 1)); help: printLevel default 1; NOTE
+- [X] T030 [US1] Coverage run; ledger TESTED; blocked reasons drop checkBalance; registry; `--check`, `--verify-coverage`
+- [X] T031 [US2] Impact: old and new dE on the shipped test models; tests of checkMassChargeBalance and its callers; report
+- [X] T032 Commit
+
+## Phase 8: function 7
 
 Added after each review.
 

@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-823 known defects in 453 functions (304 wrong-result, 258 error, 74 unusable-option, 124 cosmetic, 63 limitation).
+822 known defects in 452 functions (303 wrong-result, 258 error, 74 unusable-option, 124 cosmetic, 63 limitation).
 
 ## Summary
 
@@ -657,7 +657,6 @@
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
-| `src/reconstruction/modelGeneration/massBalance/checkBalance.m` | wrong-result | With exactly one metabolite without a formula, the wrong reactions are set to NaN | `test/verifiedTests/reconstruction/testModelGeneration/testCheckBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m` | wrong-result | A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1 | `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m` |
 | `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m` | cosmetic | Formula numbers in error messages lose their zero padding inside parentheses | `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m` |
 | `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | error | Every formula stops with an error because the group name FULLR2 contains a digit | `test/verifiedTests/reconstruction/testModelGeneration/testIspolymer.m` |
@@ -7406,17 +7405,6 @@
 - **Expected**: the list of leaking reactions is returned
 - **Source lines**: 61
 - **Documented in**: `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m`
-
-### `src/reconstruction/modelGeneration/massBalance/checkBalance.m`
-
-#### With exactly one metabolite without a formula, the wrong reactions are set to NaN
-
-- **Severity**: wrong-result
-- **Trigger**: model.S = sparse([-1 0 0; 1 -1 0; 0 1 -1; 0 0 1]), model.mets = {'a'; 'b'; 'c'; 'd'}, model.metFormulas = {'C2'; 'C2'; ''; 'C2'}, [dE, E] = checkBalance(model, 'C', 0)
-- **Observed**: MATLAB R2025a, 2026-11-16: dE = [NaN -2 2] and E = [2 2 NaN 2]. With a single missing formula model.S(missingFormulaeBool, :) is a 1 x n row and any() of it is a scalar, so line 92 sets dE(1) to NaN (whenever that metabolite is in some reaction) instead of the reactions that use it. With two missing formulas ({'C2'; ''; ''; 'C2'}) dE = [NaN NaN NaN] is correct
-- **Expected**: dE = [0 NaN NaN]: reaction 1 (a -> b) is balanced and reactions 2 and 3 involve c, as the OUTPUTS section says (isnan(dE(n)) when the reaction involves a metabolite without a formula)
-- **Source lines**: 92
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testCheckBalance.m`
 
 ### `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m`
 

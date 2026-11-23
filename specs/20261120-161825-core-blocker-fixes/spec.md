@@ -104,7 +104,19 @@ can change.
 - **Defect "folders are listed as files in folders not under git":** fix the code, keep only the
   entries of rdir that are not folders. removeTempFiles no longer tries to delete folders.
 
-### 6-7: pending the maintainer's review
+### 6. checkBalance: approved 2026-11-23 (fix and help correction)
+
+- **Defect "with exactly one metabolite without a formula, the wrong reactions are set to NaN":**
+  fix the code, any(..., 1), so the reactions that use a metabolite without a formula are found
+  column by column whatever the number of such metabolites. Output change: dE of a model with
+  exactly one metabolite without a usable formula. Of the shipped test models, Recon3D_301 and
+  Recon3DModel_301 (protein[c]): 10FTHF5GLUtl (reaction 1) goes from NaN to its balance,
+  PROTEIN_BS from -32.5694 (carbon) and DM_PROTEIN from 0 to NaN; checkMassChargeBalance's
+  results follow.
+- **Help text (found in the review, cosmetic):** the help gives printLevel default 0 ({-1, (0),
+  1}), the code uses 1. The help is corrected to the code's default; no output change.
+
+### 7: pending the maintainer's review
 
 ## User Scenarios & Testing *(mandatory)*
 
