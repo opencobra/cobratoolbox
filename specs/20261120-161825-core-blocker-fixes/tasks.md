@@ -71,4 +71,5 @@ Added after each review.
 ## Final Phase: unblocked functions, records, push
 
 - [ ] T090 [US3] Tests for the functions whose blockers are all cleared
-- [ ] T091 Registry, ledger checks, receipt, privacy scan, commit, push the branch
+- [X] T091 Registry, ledger checks, receipt, privacy scan, commit, push the branch (the seven fixes)
+- [ ] T092 After T090: registry, ledger checks, second receipt, privacy scan, commit, push
