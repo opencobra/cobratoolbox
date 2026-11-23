@@ -348,3 +348,46 @@ defects.
 **Ledger check.** `--check` reports one ordering issue: chrrExpSampler (QUARANTINED for its own
 defect) precedes its callee fluxVariability, now PENDING. It clears when fluxVariability is tested
 (T090).
+
+## T090: tests for the functions unblocked by the seven fixes (2026-11-23)
+
+Run with the back-fill feature's wave procedure W (helpers write the tests, the lead confirms every
+quarantine and its reach, applies, re-runs each wave with coverage, commits). Waves 28-37, seven
+commits (968b27c53 to 8f0c772f7).
+
+**Result.** The 258 PENDING rows are all final: 33 TESTED (1,233 newly covered lines), 39
+QUARANTINED, 3 EXCLUDED (two OptArrow test helpers needing an external virtualenv, and
+checkMassChargeBalance, already tested by a legacy test); the others became BLOCKED by defects
+found on the way. Ledger: TESTED 191 -> 224, QUARANTINED 280 -> 319, EXCLUDED 185 -> 188, BLOCKED
+171 -> 354, PENDING 258 -> 0. Registry: 821 -> 913 defects. No previously tested row lost its test
+(every apply was dry-run on a copy of the ledger first).
+
+**New blockers.** Three defects found in this run block most of the BLOCKED rows:
+- **optimizeCardinality** (247 rows, 8 blocked by it alone): line 906 `case 1 || 3` evaluates to
+  `case true`, so an LP status 3 is discarded and stat -1 returned. Seeded by call form (every
+  direct caller; findGenesFromMets for findRxnsFromMets' minimalReactionN; the files passing
+  minNorm 'zero' to optimizeCbModel).
+- **checkMassChargeBalance** (239 rows; existing-defective, legacy test): imBalancedMass is []
+  instead of an nRxn x 1 cell when every reaction is mass balanced (lines 200-202), and printLevel
+  -1 and 2 then stop (lines 235, 260).
+- **changeGeneAssociation** (128 rows, 22 alone): nGenes is never updated, so new genes do not
+  extend proteins, geneNames and the other gene fields (line 88); reached by addReaction and
+  addMultipleReactions.
+
+**Lead decisions to review.**
+- readCobrapyJSONModel graded error (helper: limitation) by research R5's consistency rule: valid
+  cobrapy files stop the call (\u escapes, the cobrapy default for non-ASCII identifiers; braces in
+  identifiers; an empty model). Blocks loadEcosystemScenario. Its passing full test is kept in
+  the back-fill feature's inventory/review/quarantined-full-tests/, with that of colorRxnsFromGenes.
+- preprocessingOmicsModel graded error: xlsfinfo cannot read a valid .xlsx written by writetable.
+- LP3 and LP7 graded cosmetic (tested): the documented warm-start basis is switched off on
+  purpose in the code (`&& 0`, "cant reuse basis without size change"); the help is stale.
+- convertToIrreversible: default reach (C not negated for flipped reactions, model-dependent);
+  blocks GIMME, ICONGEMs, calculateGeneMCS, prepareModelNutrientGeneMCS, milpOEReinserts.
+- Seeds by call form or NONE where the defect is confined to a recognisable form:
+  checkSolFeas, sparseFBA, getCobraSolver, buildCplexProblemFromCOBRAStruct, findNeighborRxns,
+  addCOBRAConstraints (the coupling wrappers only), relaxFBA_cappedL1 (relaxedFBA), optimizeCardinality.
+
+**Process note.** `update_ledger.py --next-wave` never issues again a row listed in an earlier wave
+file; buildRxnGeneMat and readCobrapyJSONModel (tested in wave 15, test removed before commit) were
+re-issued by hand as wave 34.
