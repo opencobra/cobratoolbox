@@ -1,0 +1,12 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	540	src/analysis/relaxedFBA/plotRelaxedFBA.m	2			getCobraSolverParams		
+a	617	src/analysis/topology/reactingMoieties/findRXNFilesPlain.m	2			findSExRxnInd	checkABRXNFiles	
+a	636	src/dataIntegration/XomicsToModel/analysis/metUtilisation.m	2			findRxnIDs,getCobraSolverParams,getCompartment		
+a	638	src/dataIntegration/chemoInformatics/RXN/findRXNFiles.m	2			findSExRxnInd	checkRXNFiles	
+a	648	src/dataIntegration/chemoInformatics/reactions/findBondsBrokenAndFormed.m	2			findRxnIDs,findSExRxnInd	generateChemicalDatabase	
+a	649	src/dataIntegration/chemoInformatics/reactions/findEnthalpyChange.m	2			findRxnIDs,findSExRxnInd	generateChemicalDatabase	
+a	579	src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m	2			checkBalance,getCorrespondingRows	checkRankFR,driver_createTrainingModel,findStoichConsistentSubset,generateMetaboScore,testModelMassChargeBalance,verifyModel	
+a	485	src/reconstruction/refinement/extendModelFieldsForType.m	2			getDefinedFieldProperties,getModelFieldsForType	addCOBRAConstraints,addCOBRAVariables,addGenes,addMultipleMetabolites,addMultipleReactions,addMultipleReactionsIT,addReaction,addReactionGEM,changeGeneAssociation,mergeTwoModels	
+a	487	src/reconstruction/refinement/convertToIrreversible.m	2			getModelFieldsForType	GIMME,ICONGEMs,OptKnock,findMinCardModel,generateSUXMatrix,milpOEReinserts,minimizeModelFlux,optEnvelope,pFBA,prepareModelNutrientGeneMCS	
+a	722	src/reconstruction/refinement/alphabetizeModel.m	2					
+b	728	src/reconstruction/refinement/moveRxn.m	2			getModelFieldsForType		

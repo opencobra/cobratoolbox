@@ -1,0 +1,14 @@
+test/verifiedTests/base/testInstall/testRemoveTempFiles.m|src/base/install/removeTempFiles.m
+test/verifiedTests/base/testSolvers/testCheckSolFeas.m|src/base/solvers/cplex/checkSolFeas.m
+test/verifiedTests/dataIntegration/testXomicsToModel/testQuanQualAcc.m|src/dataIntegration/XomicsToModel/analysis/quanQualAcc.m
+test/verifiedTests/dataIntegration/testXomicsToModel/testPreprocessingOmicsModel.m|src/dataIntegration/XomicsToModel/prepareData/preprocessingOmicsModel.m
+test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m|src/analysis/relaxedFBA/plotRelaxedFBA.m
+test/verifiedTests/analysis/testReactingMoieties/testFindRXNFilesPlain.m|src/analysis/topology/reactingMoieties/findRXNFilesPlain.m
+test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m|src/dataIntegration/XomicsToModel/analysis/metUtilisation.m
+test/verifiedTests/dataIntegration/testChemoInformatics/testFindRXNFiles.m|src/dataIntegration/chemoInformatics/RXN/findRXNFiles.m
+test/verifiedTests/dataIntegration/testChemoInformatics/testFindBondsBrokenAndFormed.m|src/dataIntegration/chemoInformatics/reactions/findBondsBrokenAndFormed.m
+test/verifiedTests/dataIntegration/testChemoInformatics/testFindEnthalpyChange.m|src/dataIntegration/chemoInformatics/reactions/findEnthalpyChange.m
+test/verifiedTests/reconstruction/testRefinement/testExtendModelFieldsForType.m|src/reconstruction/refinement/extendModelFieldsForType.m
+test/verifiedTests/reconstruction/testRefinement/testConvertToIrreversible.m|src/reconstruction/refinement/convertToIrreversible.m
+test/verifiedTests/reconstruction/testRefinement/testAlphabetizeModel.m|src/reconstruction/refinement/alphabetizeModel.m
+test/verifiedTests/reconstruction/testRefinement/testMoveRxn.m|src/reconstruction/refinement/moveRxn.m

@@ -193,3 +193,17 @@ writeReactionsFromPubSeedSpreadsheets	NONE
 getSubsystemPresence	NONE
 setSemiQuantConstraints	NONE
 TmodelStats	NONE
+# checkSolFeas: the defects are confined to a solution structure with .x but no .full, and to two
+# outputs with a structure solution; every src call (fluxVariability, SteadyCom family, fastSNP,
+# findMinNull, computeMetFormulae) passes a solveCobraLP/solveCobraMILP result (always .full) or a
+# Cplex object, and asks for one output (lead, 2026-11-23).
+checkSolFeas	NONE
+# checkMassChargeBalance (existing-defective, 2026-11-23): the error is confined to printLevel -1
+# and 2; these files call it with -1 or pass a caller's printLevel through. Every other src call
+# uses 0 or the default.
+checkMassChargeBalance	src/reconstruction/modelGeneration/stoichConsistency/findStoichConsistentSubset.m
+checkMassChargeBalance	src/analysis/thermo/trainingModel/new/driver_createTrainingModel.m
+checkMassChargeBalance	src/analysis/topology/FR/checkRankFR.m
+# convertToIrreversible: the error defect is confined to orderReactions true (OptKnock,
+# generateSUXMatrix), but the wrong-result defect (C not negated for flipped reactions) is reached
+# by every call with the default flipOrientation, so every call reaches it (default seed).
