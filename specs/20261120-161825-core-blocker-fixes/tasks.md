@@ -26,7 +26,15 @@ are added when the maintainer approves their fix.
 - [X] T011 [US2] Impact: the 13 callers in src/; run the tests of those that have one; report in `F/review.md`
 - [X] T012 Commit
 
-## Phase 4: functions 3-7
+## Phase 4: setGurobiParam (approved 2026-11-23, fixes 1-3)
+
+- [X] T013 [US1] Test first: full `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` (no earlier full version): every branch, the three defect cases; see it fail on the current code
+- [X] T014 [US1] Fix `src/base/solvers/gurobi/setGurobiParam.m` (timelimit only without TimeLimit; OutputFlag/DisplayInterval without printLevel; tolerances only when given; lpmethod warning); help and NOTE
+- [X] T015 [US1] Coverage run; ledger TESTED; blocked reasons drop setGurobiParam; registry; `--check`, `--verify-coverage`
+- [X] T016 [US2] Impact: callers solveCobraLP and solveCobraQP (Gurobi branch); run testSolveCobraLP, testSolveCobraQP and other Gurobi-solving tests; report
+- [X] T017 Commit
+
+## Phase 5: functions 4-7
 
 Added after each review.
 

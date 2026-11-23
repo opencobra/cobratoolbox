@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-833 known defects in 456 functions (311 wrong-result, 259 error, 74 unusable-option, 126 cosmetic, 63 limitation).
+830 known defects in 455 functions (310 wrong-result, 258 error, 74 unusable-option, 125 cosmetic, 63 limitation).
 
 ## Summary
 
@@ -419,9 +419,6 @@
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | The problem type is matched as a substring | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/getAvailableSolversByType.m` | cosmetic | The output of initCobraToolbox is not silenced | `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m` |
 | `src/base/solvers/getSetSolver/getCobraSolverVersion.m` | unusable-option | The documented input rootPathSolver has no effect | `test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m` |
-| `src/base/solvers/gurobi/setGurobiParam.m` | error | printLevel, feasTol and optTol are required although the fields are documented as optional | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
-| `src/base/solvers/gurobi/setGurobiParam.m` | cosmetic | the warning for an unknown lpmethod names param.qpmethod | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
-| `src/base/solvers/gurobi/setGurobiParam.m` | wrong-result | timelimit overrides TimeLimit although the help text says it is copied only when TimeLimit is absent | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
 | `src/base/solvers/init/configEnvVars.m` | cosmetic | GUROBI_PATH from an environment variable ending in linux64 or mac64 gets a double separator | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
 | `src/base/solvers/init/configEnvVars.m` | error | The call stops with an error when ENV_VARS.STATUS is not set | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
 | `src/base/solvers/isCompatible.m` | wrong-result | The distributed compatibility matrix is not understood by the parser | `test/verifiedTests/base/testSolvers/testIsCompatible.m` |
@@ -5022,35 +5019,6 @@
 - **Expected**: the version detected from the given solver installation path (INPUT rootPathSolver: "Path to the solver installation"), e.g. '1103'
 - **Source lines**: 38-40, 88, 91, 94
 - **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m`
-
-### `src/base/solvers/gurobi/setGurobiParam.m`
-
-#### printLevel, feasTol and optTol are required although the fields are documented as optional
-
-- **Severity**: error
-- **Trigger**: setGurobiParam(struct())
-- **Observed**: error Unrecognized field name "printLevel". (MATLAB:nonExistentField); without OutputFlag and DisplayInterval the field printLevel is read, without FeasibilityTol the field feasTol, without OptimalityTol the field optTol
-- **Expected**: all fields optional (help text: with fields (all optional))
-- **Source lines**: 182, 194, 214, 223
-- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
-
-#### the warning for an unknown lpmethod names param.qpmethod
-
-- **Severity**: cosmetic
-- **Trigger**: param.lpmethod = 'FOO'
-- **Observed**: warning FOO is an unrecognised param.qpmethod for gurobi
-- **Expected**: the warning names param.lpmethod
-- **Source lines**: 145
-- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
-
-#### timelimit overrides TimeLimit although the help text says it is copied only when TimeLimit is absent
-
-- **Severity**: wrong-result
-- **Trigger**: setGurobiParam(struct('timelimit', 10, 'TimeLimit', 20, 'printLevel', 0, 'feasTol', 1e-7, 'optTol', 1e-8))
-- **Observed**: gurobiParam.TimeLimit = 10 (R2025a, 2026-11-15); line 80 copies timelimit unconditionally
-- **Expected**: TimeLimit = 20 kept, as the help text says timelimit is copied to TimeLimit if TimeLimit is absent
-- **Source lines**: 79-81
-- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
 
 ### `src/base/solvers/init/configEnvVars.m`
 

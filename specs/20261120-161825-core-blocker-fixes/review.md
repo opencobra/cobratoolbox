@@ -133,3 +133,41 @@ addMetabolite, addMultipleReactions, addMultipleMetabolites, addGenes, convertTo
 extendModelFieldsForType, moveRxn, deleteModelGenes, addExchangeRxn, addDemandReaction and
 addSinkReactions. With the 12 from #1, 58 functions are PENDING; their tests come in the final
 phase. The registry lists 833 defects.
+
+## 3. setGurobiParam (approved 2026-11-23, fixes 1-3)
+
+**Fix.**
+1. Every field is optional. OutputFlag = 0 and DisplayInterval = 1 are set directly when absent:
+   every printLevel case set these values, so the output is unchanged. FeasibilityTol and
+   OptimalityTol are copied from feasTol and optTol only if those are given; otherwise Gurobi's
+   defaults apply.
+2. timelimit is copied to TimeLimit only when TimeLimit is absent, as the help says.
+3. The warning for an unknown lpmethod names param.lpmethod.
+
+The help text and a NOTE describe the changes.
+
+**Test.** testSetGurobiParam is a full test, written new: 243/244 lines, nothing left behind. It
+failed on the old code with `Unrecognized field name "printLevel"`. Line 419 is exempt: it removes
+a field logFile, but the filter of Gurobi parameter names before it (LogFile) always removes that
+field first, so the line is unreachable.
+
+**Impact: which outputs can change.** The only callers are solveCobraLP and solveCobraQP (Gurobi
+branch), which pass the merged COBRA parameters. Those always contain printLevel, feasTol and
+optTol, and never both timelimit and TimeLimit, so their Gurobi settings are unchanged:
+- **A direct call without those fields:** works, where it stopped with an error.
+- **A call with both timelimit and TimeLimit:** keeps TimeLimit.
+- **The lpmethod warning:** names the right field.
+
+Eight tests that solve with Gurobi pass after the fix: testSolveCobraLP, testSolveCobraQP,
+testOptimizeCbModel, testFVA, testGurobiQP, testGurobiSettings, testGurobiWarmstartBasis and
+testBuildGurobiProblemFromModel.
+
+**Open item (not included, maintainer 2026-11-23).** COBRA's camel-case `timeLimit`, which
+solveCobraLP/QP document ("if supported by the solver") and which is always present (default
+1e36 s), is not translated: setGurobiParam drops it, so a COBRA time limit has no effect with
+Gurobi.
+
+**Unblocked.** 43 functions, among them sparseFBA, optimizeCardinality, swiftcc, fastSNP,
+findMinNull, the FASTCORE LP routines (LP3, LP7, LP9weighted, LP10, LP10weighted),
+findSparseMode, checkFluxConsistency, leakTest and the minimal-leakage-mode functions. PENDING:
+101. Registry: 830 defects.

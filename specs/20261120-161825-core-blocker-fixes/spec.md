@@ -62,7 +62,21 @@ can change.
   field and points to the standard COBRA field names (getDefinedFieldProperties, and
   documentation/source/guides/COBRAModelFields.rst).
 
-### 3-7: pending the maintainer's review
+### 3. setGurobiParam: approved 2026-11-23 (fixes 1-3)
+
+- **Defect "printLevel, feasTol and optTol are required although the fields are documented as
+  optional":** fix the code. OutputFlag = 0 and DisplayInterval = 1 are set directly when absent:
+  every printLevel case set these same values, so the output is unchanged. FeasibilityTol and
+  OptimalityTol are copied from feasTol and optTol only if those are given; otherwise Gurobi's
+  defaults apply.
+- **Defect "timelimit overrides TimeLimit":** fix the code. timelimit is copied only when
+  TimeLimit is absent, as the help says.
+- **Defect "the warning for an unknown lpmethod names param.qpmethod":** fix the message.
+- **Not included (maintainer, 2026-11-23):** translating COBRA's camel-case `timeLimit`, which
+  setGurobiParam drops, so a COBRA time limit has no effect with Gurobi. It stays an open item in
+  review.md.
+
+### 4-7: pending the maintainer's review
 
 ## User Scenarios & Testing *(mandatory)*
 
