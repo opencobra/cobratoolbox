@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-909 known defects in 497 functions (332 wrong-result, 297 error, 75 unusable-option, 140 cosmetic, 65 limitation).
+913 known defects in 499 functions (332 wrong-result, 299 error, 75 unusable-option, 140 cosmetic, 67 limitation).
 
 ## Summary
 
@@ -601,6 +601,8 @@
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | The documented essAA_excl flag and its default stop the call | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
 | `src/dataIntegration/metabotools/illustrate_ppp.m` | error | More than two metabolite pairs stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
 | `src/dataIntegration/metabotools/illustrate_ppp.m` | error | The mets of performPPP (one pair per row) do not select its results | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
+| `src/dataIntegration/metabotools/integrateGeneExpressionData.m` | limitation | A gene identifier that is not a number stops the call for two or more absent genes | `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m` |
+| `src/dataIntegration/metabotools/integrateGeneExpressionData.m` | error | A list of absent genes none of which is in the model stops with an error | `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | wrong-result | Only the first two phenotypes are plotted | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The colour order is changed for every later figure of the session | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The coordinates of every phenotype are printed to the console | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
@@ -654,6 +656,8 @@
 | `src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m` | error | Every call stops with the error that not all inputs are given | `test/verifiedTests/design/testOptForce/testExportInputsMustOrder2ToGAMS.m` |
 | `src/design/optForceGAMS/exportInputsMustToGAMS.m` | error | Every call stops with the error that not all inputs are given | `test/verifiedTests/design/testOptForce/testExportInputsMustToGAMS.m` |
 | `src/design/optForceGAMS/exportInputsOptForceToGAMS.m` | error | Every call stops on the undefined variable nSets and leaves the current folder changed | `test/verifiedTests/design/testOptForce/testExportInputsOptForceToGAMS.m` |
+| `src/design/optGeneFitness.m` | error | A knock-out that makes the model infeasible stops the function with an error | `test/verifiedTests/design/testDesign/testOptGeneFitness.m` |
+| `src/design/optGeneFitness.m` | limitation | The global hash table HTABLE is required but not documented | `test/verifiedTests/design/testDesign/testOptGeneFitness.m` |
 | `src/design/simpleOptKnock.m` | limitation | Single-deletion growth is stored in the first column in double-deletion mode | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/simpleOptKnock.m` | wrong-result | The wild-type minimum production is the maximum | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/reconstruction/comparison/modelBorgifier/TmodelStats.m` | wrong-result | The share of metabolites with a compartment ('Total' row) is inverted | `test/verifiedTests/reconstruction/testModelBorgifier/testTmodelStats.m` |
@@ -6927,6 +6931,26 @@
 - **Source lines**: 27, 29, 31, 44-45, 50, 96
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m`
 
+### `src/dataIntegration/metabotools/integrateGeneExpressionData.m`
+
+#### A gene identifier that is not a number stops the call for two or more absent genes
+
+- **Severity**: limitation
+- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'}, {'R1'; 'R2'; 'R3'}, {' -> A'; 'A -> B'; 'B -> '}, 'grRuleList', {''; '535.1'; 'b0001'}); integrateGeneExpressionData(model, [535; 7])
+- **Observed**: (R2025a, 2026-11-23) MATLAB:sizeDimensionsMustMatch "Arrays have incompatible sizes for this operation.": str2num('b0001') is empty and dataGenes == [] has incompatible sizes for a non-scalar dataGenes (with a scalar dataGenes the non-numeric gene is skipped and the call succeeds)
+- **Expected**: the non-numeric gene skipped, as for a scalar dataGenes
+- **Source lines**: 28
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m`
+
+#### A list of absent genes none of which is in the model stops with an error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1'; 'R2'}, {'R1'; 'R2'}, {' -> A'; 'A -> '}, 'grRuleList', {''; '535.1'}); integrateGeneExpressionData(model, 99) (the same with dataGenes = [] or [99; 98])
+- **Observed**: (R2025a, 2026-11-23) MATLAB:UndefinedFunction "Unrecognized function or variable 'ExpressionData'.": the structure ExpressionData is created only inside the loop when a transcript matches, and is read unconditionally by the deleteModelGenes call
+- **Expected**: the model returned unchanged (no gene to constrain)
+- **Source lines**: 40
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m`
+
 ### `src/dataIntegration/metabotools/make3Dplot.m`
 
 #### Only the first two phenotypes are plotted
@@ -7459,6 +7483,26 @@
 - **Expected**: nMax.val = n_sets, MtoGOF.gdx written and the current folder restored
 - **Source lines**: 179, 183
 - **Documented in**: `test/verifiedTests/design/testOptForce/testExportInputsOptForceToGAMS.m`
+
+### `src/design/optGeneFitness.m`
+
+#### A knock-out that makes the model infeasible stops the function with an error
+
+- **Severity**: error
+- **Trigger**: global HTABLE MaxKnockOuts; HTABLE = java.util.Hashtable; MaxKnockOuts = 2; model = createModel({'EX_A'; 'R1'; 'R3'; 'BIO'; 'EX_P'; 'ATPM'}, {'EX_A'; 'R1'; 'R3'; 'BIO'; 'EX_P'; 'ATPM'}, {' -> A'; 'A -> B'; 'A -> B + P'; 'B -> '; 'P -> '; 'B -> '}, 'lowerBoundList', [0 0 0 0 0 1], 'upperBoundList', [10 1000 1000 1000 1000 1000]); model = changeObjective(model, 'BIO'); optGeneFitness([1 1], model, 'EX_P', {'R1'; 'R3'}, false)
+- **Observed**: (R2025a, gurobi, 2026-11-23) "Unable to perform assignment because the left and right sides have a different number of elements." at line 91: solveCobraLP returns stat 0 and obj = [] for the infeasible knock-out model, the status is not checked, [] < .10 is false, and growthrate - gamma = [] is assigned to one lower bound
+- **Expected**: fitness 0 for that row, as for any knock-out that does not reach the growth rate 0.1 (optGeneFitnessTilt, which optGene uses, skips such rows: it checks isempty(solKO.x))
+- **Source lines**: 70, 74, 91
+- **Documented in**: `test/verifiedTests/design/testDesign/testOptGeneFitness.m`
+
+#### The global hash table HTABLE is required but not documented
+
+- **Severity**: limitation
+- **Trigger**: clear global HTABLE; optGeneFitness([1 0], model, 'EX_P', {'R1'; 'R3'}, false) with a model as above without ATPM
+- **Observed**: (R2025a, gurobi, 2026-11-23) MATLAB:structRefFromNonStruct "Dot indexing is not supported for variables of this type." at line 136; the function works only after the caller sets global HTABLE = java.util.Hashtable (optGene does); the global MaxKnockOuts is used without documentation as well
+- **Expected**: the globals documented in the help text, or an empty cache created when HTABLE is not set
+- **Source lines**: 131-136
+- **Documented in**: `test/verifiedTests/design/testDesign/testOptGeneFitness.m`
 
 ### `src/design/simpleOptKnock.m`
 

@@ -1,0 +1,3 @@
+test/verifiedTests/analysis/testRMTA/testCalculateGeneKOMatrix.m|src/analysis/rMTA/calculateGeneKOMatrix.m
+test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m|src/dataIntegration/metabotools/integrateGeneExpressionData.m
+test/verifiedTests/design/testDesign/testOptGeneFitness.m|src/design/optGeneFitness.m
