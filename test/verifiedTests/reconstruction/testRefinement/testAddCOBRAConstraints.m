@@ -71,6 +71,17 @@
 %         251 uses dupRows of the last loop iteration
 %       EXPECTED: the warning names Constraint1 and Constraint2
 %       LINES: 251
+%     - DEFECT: A coefficient vector c given as a column stops the call
+%       SEVERITY: error
+%       TRIGGER: model = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]','b[c] -> c[c]',
+%         'c[c] -> '}, 'printLevel', 0); addCOBRAConstraints(model, {'R1','R2'}, 10, 'c', [1; 2])
+%       OBSERVED: (R2025a, 2026-11-23, lead and writer of wave 31) the parser (line 137) accepts c
+%         because its length equals that of idList, but line 230 loops over the rows of c and
+%         indexes c(i, rxnpos), beyond the single column ("The logical indices in position 2
+%         contain a true value outside of the array bounds."); the same c as a row gives C = [1 2 0]
+%       EXPECTED: the constraint R1 + 2 R2 <= 10 ("c: a vector with coefficients for each element
+%         in idList"; only a matrix means several constraints)
+%       LINES: 137, 229-230
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-23.

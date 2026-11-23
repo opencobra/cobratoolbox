@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-851 known defects in 466 functions (314 wrong-result, 268 error, 74 unusable-option, 130 cosmetic, 65 limitation).
+862 known defects in 470 functions (316 wrong-result, 274 error, 74 unusable-option, 133 cosmetic, 65 limitation).
 
 ## Summary
 
@@ -24,6 +24,12 @@
 | `src/analysis/KLdistance/KLdistance.m` | wrong-result | The two densities are compared on different grids, so distinct populations get a zero distance | `test/verifiedTests/analysis/testKLdistance/testKLdistance.m` |
 | `src/analysis/MOMA/MOMA.m` | error | Models with different reaction sets stop with an error | `test/verifiedTests/analysis/testMOMA/testMOMA.m` |
 | `src/analysis/QFCA/QFCA.m` | error | A network that reduces to one metabolite stops with an error | `test/verifiedTests/analysis/testQFCA/testQFCA.m` |
+| `src/analysis/coupling/addCouplingConstraint.m` | error | A coefficient vector c in the documented k x 1 shape stops with an error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
+| `src/analysis/coupling/addCouplingConstraint.m` | cosmetic | The EXAMPLE of the help text calls another function with an undefined C | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
+| `src/analysis/coupling/addCouplingConstraint.m` | error | The documented optional inputs c, d and ineqSense cannot be omitted | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
+| `src/analysis/coupling/constrainRxnListAboveBound.m` | error | A coefficient vector c in the documented k x 1 shape stops with an error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
+| `src/analysis/coupling/constrainRxnListAboveBound.m` | cosmetic | The EXAMPLE of the help text passes an undefined variable C instead of c | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
+| `src/analysis/coupling/constrainRxnListAboveBound.m` | error | The documented optional inputs c, d and ineqSense cannot be omitted | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
 | `src/analysis/dynamicFBA/dynamicFBA.m` | cosmetic | The number of tracked exchange reactions is printed on every call | `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m` |
 | `src/analysis/ecosystem/clusterEcosystemPoints.m` | wrong-result | The hierarchical method returns the requested maximum k as the number of clusters | `test/verifiedTests/analysis/testEcosystem/testClusterEcosystemPoints.m` |
 | `src/analysis/ecosystem/getQualitativeFluxStates.m` | wrong-result | Zero band applied inconsistently to the maximum and to max - min | `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m` |
@@ -581,6 +587,9 @@
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | wrong-result | The table is not ordered by frequency as documented; the sorted copy goes to a differently spelled variable | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
 | `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m` | wrong-result | The json format writes colour names without quotes | `test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m` |
+| `src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m` | error | Every call with reaction targets stops with an error | `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m` |
+| `src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m` | wrong-result | The documented default preprocessed = false (gene targets) is implemented as true | `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m` |
+| `src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m` | wrong-result | With softBounds the forward bounds are not softened | `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m` |
 | `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` | wrong-result | With minSum the reported gene does not belong to the selected alternative | `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` |
 | `src/design/GDLS.m` | error | A single knockout cost in the model stops with an error | `test/verifiedTests/design/testGDLS/testGDLS.m` |
 | `src/design/GDLS.m` | error | Options in a structure, or no options at all, stop with an error | `test/verifiedTests/design/testGDLS/testGDLS.m` |
@@ -735,6 +744,7 @@
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | wrong-result | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | limitation | convertToCNF of an OrNode without children returns an empty AndNode, which evaluates to true, while the empty OrNode evaluates to false | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | error | A coefficient vector c given as a column stops the call | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
 | `src/reconstruction/refinement/addCOBRAConstraints.m` | cosmetic | The duplicate warning names the constraint matched by the last input row only | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
 | `src/reconstruction/refinement/addCOBRAConstraints.m` | wrong-result | checkDuplicates does not detect an existing constraint that involves extra variables | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
 | `src/reconstruction/refinement/addCOBRAConstraints.m` | wrong-result | checkDuplicates drops a distinct constraint of the input when the ids are not sorted | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
@@ -743,6 +753,7 @@
 | `src/reconstruction/refinement/addCOBRAVariables.m` | limitation | A single name given as a character array is rejected | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAVariables.m` |
 | `src/reconstruction/refinement/addGenes.m` | limitation | A single gene id given as a character array is stored as a column of characters | `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m` |
 | `src/reconstruction/refinement/addGenes.m` | cosmetic | The error messages name reactions instead of genes | `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m` |
+| `src/reconstruction/refinement/addMetabolite.m` | cosmetic | The second EXAMPLE of the help text uses the parameter name metCharge and fails | `test/verifiedTests/reconstruction/testRefinement/testAddMetabolite.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | error | A formula whose first metabolite has no coefficient stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A new metabolite used twice in one call is added twice or loses a coefficient | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A proteins field of another size than the gene list discards the result | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
@@ -1009,6 +1020,64 @@
 - **Expected**: the flux coupling table of the network
 - **Source lines**: 125
 - **Documented in**: `test/verifiedTests/analysis/testQFCA/testQFCA.m`
+
+### `src/analysis/coupling/addCouplingConstraint.m`
+
+#### A coefficient vector c in the documented k x 1 shape stops with an error
+
+- **Severity**: error
+- **Trigger**: model as above; addCouplingConstraint(model, {'R1','R2'}, [1; 2], 6, 'G')
+- **Observed**: (R2025a, 2026-11-23) "The logical indices in position 2 contain a true value outside of the array bounds." at line 230 of addCOBRAConstraints, which reads a column c as one coefficient per constraint row; the row [1 2] gives full(C) = [1 2 0], d = 6, dsense 'G', ctrs {'Constraint1'}
+- **Expected**: the help text documents c as a k x 1 vector, so the column [1; 2] gives the same constraint as the row [1 2]
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m`
+
+#### The EXAMPLE of the help text calls another function with an undefined C
+
+- **Severity**: cosmetic
+- **Trigger**: running the EXAMPLE as written
+- **Observed**: the EXAMPLE calls constrainRxnListAboveBound, not addCouplingConstraint, and passes the undefined C instead of the c it defines
+- **Expected**: an example that calls addCouplingConstraint with the variables it defines
+- **Source lines**: 33
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m`
+
+#### The documented optional inputs c, d and ineqSense cannot be omitted
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A -> B','B -> C', 'C -> '}, 'printLevel', 0); addCouplingConstraint(model, {'R1','R2'}) or addCouplingConstraint(model, {'R1','R2'}, [1 1], 6)
+- **Observed**: (R2025a, 2026-11-23) "Not enough input arguments." at line 35 for both calls: line 35 passes c, d and ineqSense to addCOBRAConstraints without a default
+- **Expected**: the help text lists c, d and ineqSense under OPTIONAL INPUTS, so a call without them adds a constraint with defaults (for example those of addCOBRAConstraints: c = 1 per reaction, sense 'L'), or the help text says they are required
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m`
+
+### `src/analysis/coupling/constrainRxnListAboveBound.m`
+
+#### A coefficient vector c in the documented k x 1 shape stops with an error
+
+- **Severity**: error
+- **Trigger**: model as above; constrainRxnListAboveBound(model, {'R1','R2'}, [1; 2], 6, 'G')
+- **Observed**: (R2025a, 2026-11-23) "The logical indices in position 2 contain a true value outside of the array bounds." at line 230 of addCOBRAConstraints, which reads a column c as one coefficient per constraint row; the row [1 2] gives full(C) = [1 2 0], d = 6, dsense 'G', ctrs {'Constraint1'}
+- **Expected**: the help text documents c as a k x 1 vector, so the column [1; 2] gives the same constraint as the row [1 2]
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m`
+
+#### The EXAMPLE of the help text passes an undefined variable C instead of c
+
+- **Severity**: cosmetic
+- **Trigger**: running the EXAMPLE as written
+- **Observed**: the EXAMPLE passes the undefined C instead of the c it defines
+- **Expected**: an example that calls constrainRxnListAboveBound with the variables it defines
+- **Source lines**: 33
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m`
+
+#### The documented optional inputs c, d and ineqSense cannot be omitted
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A -> B','B -> C', 'C -> '}, 'printLevel', 0); constrainRxnListAboveBound(model, {'R1','R2'}) or constrainRxnListAboveBound(model, {'R1','R2'}, [1 1], 6)
+- **Observed**: (R2025a, 2026-11-23) "Not enough input arguments." at line 35 for both calls: line 35 passes c, d and ineqSense to addCOBRAConstraints without a default
+- **Expected**: the help text lists c, d and ineqSense under OPTIONAL INPUTS, so a call without them adds a constraint with defaults (for example those of addCOBRAConstraints: c = 1 per reaction, sense 'L'), or the help text says they are required
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m`
 
 ### `src/analysis/dynamicFBA/dynamicFBA.m`
 
@@ -6671,6 +6740,35 @@
 - **Source lines**: 140-141, 148-149
 - **Documented in**: `test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m`
 
+### `src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m`
+
+#### Every call with reaction targets stops with an error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A <=> B','B -> C', 'C -> '}, 'printLevel', 0, 'grRuleList', {'g1','g2 or g3','g1 and g2'}); applyEFluxConstraints(model, struct('target', {{'R1';'R2'}}, 'value', [2; 4], 'preprocessed', true))
+- **Observed**: (R2025a, 2026-11-23) "Conversion to double from cell is not possible." at line 82, which assigns expression.target (the names) instead of expression.value; the same error occurs when no target is a reaction of the model
+- **Expected**: per the help text (.value is the value of each target), lb = [-0.5; 0; 0] and ub = [0.5; 1; 1]: R1 and R2 get 2/4 and 4/4, R3 has no value and stays unconstrained (bound 1)
+- **Source lines**: 82
+- **Documented in**: `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m`
+
+#### The documented default preprocessed = false (gene targets) is implemented as true
+
+- **Severity**: wrong-result
+- **Trigger**: model as above; applyEFluxConstraints(model, struct('target', {{'g1';'g2';'g3'}}, 'value', [2; 4; 1])) (no preprocessed field)
+- **Observed**: (R2025a, 2026-11-23) "Conversion to double from cell is not possible." at line 82: lines 51-53 set preprocessed = true, so the gene targets are read as reactions
+- **Expected**: the help text gives "Default: false", so the genes are mapped to reactions as with 'preprocessed', false, which gives lb = [-0.4; 0; 0] and ub = [0.4; 1; 0.4]
+- **Source lines**: 51-53
+- **Documented in**: `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m`
+
+#### With softBounds the forward bounds are not softened
+
+- **Severity**: wrong-result
+- **Trigger**: model as above; applyEFluxConstraints(model, struct('target', {{'g1';'g2';'g3'}}, 'value', [2; 4; 1], 'preprocessed', false), 'softBounds', true)
+- **Observed**: (R2025a, 2026-11-23) evars {'Alpha_R1','Beta_R1','Beta_R2','Beta_R3'}, full(C) = [1 0 0; 1 0 0; 0 1 0; 0 0 1], full(D) = eye(4), d = [-0.4 0.4 1 0.4], dsense 'GLLL', evarlb 0: the forward rows read v + beta <= e with beta >= 0, so beta can only tighten the bound and a forward flux can never exceed e (the backward rows v + alpha >= -e are softened as intended)
+- **Expected**: flexibility variables that relax the forward bounds, v - beta <= e (D coefficient -1), penalised by weightFactor as the backward ones are
+- **Source lines**: 113, 117
+- **Documented in**: `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m`
+
 ### `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m`
 
 #### With minSum the reported gene does not belong to the selected alternative
@@ -8207,6 +8305,15 @@
 
 ### `src/reconstruction/refinement/addCOBRAConstraints.m`
 
+#### A coefficient vector c given as a column stops the call
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]','b[c] -> c[c]', 'c[c] -> '}, 'printLevel', 0); addCOBRAConstraints(model, {'R1','R2'}, 10, 'c', [1; 2])
+- **Observed**: (R2025a, 2026-11-23, lead and writer of wave 31) the parser (line 137) accepts c because its length equals that of idList, but line 230 loops over the rows of c and indexes c(i, rxnpos), beyond the single column ("The logical indices in position 2 contain a true value outside of the array bounds."); the same c as a row gives C = [1 2 0]
+- **Expected**: the constraint R1 + 2 R2 <= 10 ("c: a vector with coefficients for each element in idList"; only a matrix means several constraints)
+- **Source lines**: 137, 229-230
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
 #### The duplicate warning names the constraint matched by the last input row only
 
 - **Severity**: cosmetic
@@ -8282,6 +8389,17 @@
 - **Expected**: messages about gene ids and the size of the gene list
 - **Source lines**: 40, 66
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m`
+
+### `src/reconstruction/refinement/addMetabolite.m`
+
+#### The second EXAMPLE of the help text uses the parameter name metCharge and fails
+
+- **Severity**: cosmetic
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A -> B','B -> C', 'C -> '}, 'printLevel', 0); addMetabolite(model, 'MetWithForm', 'metFormula', 'H3O', 'metCharge', 1)
+- **Observed**: (R2025a, 2026-11-23) "'metCharge' is not a recognized parameter. For a list of valid name-value pair arguments, see the documentation for this function." at line 97
+- **Expected**: the example works; the parameter list of the help text names it Charge, and addMetabolite(model, 'MetWithForm', 'metFormula', 'H3O', 'Charge', 1) works
+- **Source lines**: 34
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMetabolite.m`
 
 ### `src/reconstruction/refinement/addReactionGEM.m`
 

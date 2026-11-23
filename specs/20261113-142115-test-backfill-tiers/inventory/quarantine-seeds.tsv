@@ -201,9 +201,12 @@ checkSolFeas	NONE
 # checkMassChargeBalance (existing-defective, 2026-11-23): imBalancedMass is returned as [] instead
 # of the documented nRxn x 1 cell whenever every reaction is mass balanced (lines 200-202), in every
 # call form, so every call reaches it (default seed; widened after wave 30, lead).
-addCOBRAConstraints	NONE
-# addCOBRAConstraints: every defect is in the checkDuplicates branch (default false); no src call
-# passes checkDuplicates (lead, 2026-11-23).
+# addCOBRAConstraints: the checkDuplicates defects need checkDuplicates (default false), which no
+# src call passes; the column-c defect (wave 31) is reached by the two coupling wrappers, which pass
+# a caller's c documented as k x 1 (addRatioReaction passes a row literal, coupleRxnList2Rxn and
+# applyEFluxConstraints a constraints x reactions matrix) (lead, 2026-11-23).
+addCOBRAConstraints	src/analysis/coupling/addCouplingConstraint.m
+addCOBRAConstraints	src/analysis/coupling/constrainRxnListAboveBound.m
 # convertToIrreversible: the error defect is confined to orderReactions true (OptKnock,
 # generateSUXMatrix), but the wrong-result defect (C not negated for flipped reactions) is reached
 # by every call with the default flipOrientation, so every call reaches it (default seed).

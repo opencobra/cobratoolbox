@@ -1,0 +1,6 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	489	src/analysis/coupling/addCouplingConstraint.m	2			addCOBRAConstraints		
+a	490	src/analysis/coupling/addRatioReaction.m	2			addCOBRAConstraints		
+a	491	src/analysis/coupling/constrainRxnListAboveBound.m	2			addCOBRAConstraints		
+a	683	src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m	2			addCOBRAConstraints,addCOBRAVariables,mapExpressionToReactions	eFlux	
+a	511	src/reconstruction/refinement/addMetabolite.m	2			addMultipleMetabolites	GPR2models,addElementTracker,addReaction,createPeriplasmaticSpace,findViableDiet,integrate_cVector_into_model,minimizeModelFlux,nutritionAlgorithm,nutritionAlgorithmWBM,pFBA	

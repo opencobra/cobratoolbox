@@ -1,0 +1,6 @@
+test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m|src/analysis/coupling/addCouplingConstraint.m
+test/verifiedTests/analysis/testMultiSpeciesModelling/testAddRatioReaction.m|src/analysis/coupling/addRatioReaction.m
+test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m|src/analysis/coupling/constrainRxnListAboveBound.m
+test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m|src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m
+test/verifiedTests/reconstruction/testRefinement/testAddMetabolite.m|src/reconstruction/refinement/addMetabolite.m
+test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m|src/reconstruction/refinement/addCOBRAConstraints.m
