@@ -77,3 +77,59 @@ lines are the same as before), and nothing is left behind.
 **Impact.** Compared with the toolbox before this feature, a global minNorm of 0 again means no norm,
 which is what the old code did when it ignored the global value. So the two fixes together change
 optimizeCbModel's output only when a user sets a global minNorm above 0, as documented.
+
+## 2. getModelFieldsForType (approved 2026-11-23)
+
+**Fix.** Line 104 read `length(type-1)`, the length of the whole type name, so in a model with 0 or
+1 elements of the type, custom fields named after the type (`rxnCustom`, ...) were not found. It
+now reads `length(type)-1`, as the comment and line 184 intend. Before the fix, the maintainer and
+the lead checked this against the 80 standard COBRA fields:
+- all 80 are in the field definitions;
+- every one that starts with a type's prefix belongs to that type;
+- the one overlap (rxnNames with the map type rxnName) matched already before the fix.
+
+**Guiding error (maintainer's choice).** Writing the test found a second defect, older than this
+fix. An undefined field named after the type, square in the type's size, in a model where another
+type has the same size, got the dimension -1. Callers then failed, for example removeRxns with
+"Array indices must be positive integers or logical values." (reproduced on the old and the new
+code). The name cannot settle such a field: rxnPairMat (rxns x rxns) and rxnMetMat (rxns x mets)
+look the same at 2 x 2. So instead of a guess, the function raises
+`getModelFieldsForType:ambiguousField`. The message names the field, says why its dimension cannot
+be determined, and asks the user to use the standard COBRA field names (getDefinedFieldProperties,
+documentation/source/guides/COBRAModelFields.rst) or to rename or remove the field. It is
+documented in the help.
+
+**Test.** testGetModelFieldsForType is a full test, written new: 94/94 lines, nothing left behind,
+no exemptions. A helper wrote it; the lead verified it and added the error section. It fails on the
+old function (the one-reaction rxnCustom check) and passes on the fix. It covers:
+- input errors;
+- an empty model;
+- one-reaction and one-metabolite models with the standard fields, and no field of another type;
+- the former trigger, compared with a two-reaction model;
+- a non-standard 1 x 1 field named after the type (listed, as the documented rule says);
+- square fields with and without another type of the same size, including the guiding error and
+  removeRxns stopping with it;
+- rxnNotes;
+- the fieldSize option.
+
+**Impact: which outputs can change.**
+1. A model with 0 or 1 elements of a type that has custom fields named after the type: those fields
+   are now edited along with the type (as in larger models).
+2. A model with an ambiguous custom square field: the indexing error becomes the guiding error.
+
+Nothing else changes. Standard fields are found through their definitions either way. The tests of
+the 5 direct callers that have one (searchModel, mergeModelFieldPositions, mergeTwoModels,
+removeFieldEntriesForType, updateFieldOrderForType) pass. So do 13 older tests that use the
+model-editing functions most:
+- testModelManipulationOri (63 editing calls), testEcosystemToy, testBatchAddition;
+- testDynamicModelFieldModification, testFastLeakTest, testUpdateGenes, testElementalBalance;
+- testBiomassPrecursorCheck, testNeighborRxn2data, testRemoveDuplicateRxn, testGenerateRules;
+- testConstraintModifciation, testAddReactionsHH.
+
+All of them were run before and after the guiding error was added.
+
+**Unblocked.** 46 functions now have no blocker left, among them createModel, addReaction,
+addMetabolite, addMultipleReactions, addMultipleMetabolites, addGenes, convertToIrreversible,
+extendModelFieldsForType, moveRxn, deleteModelGenes, addExchangeRxn, addDemandReaction and
+addSinkReactions. With the 12 from #1, 58 functions are PENDING; their tests come in the final
+phase. The registry lists 833 defects.

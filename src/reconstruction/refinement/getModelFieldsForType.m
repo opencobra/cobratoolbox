@@ -34,6 +34,21 @@ function [matchingFields, dimensions] = getModelFieldsForType(model, type, varar
 % NOTE:
 %    rxnName and specName refer to a map field; see
 %    https://github.com/opencobra/cobratoolbox/blob/master/docs/source/notes/simpleMATLABStructure.md
+%    For a model with 0 or 1 elements of the type, fields named after the
+%    type (e.g. rxnXYZ for 'rxns') are found as for larger models. (Feature
+%    20261120-161825-core-blocker-fixes, November 2026: before, only names
+%    starting with the whole type name, e.g. rxnsXYZ, were found.)
+%
+%    A field that is not one of the standard COBRA fields (see
+%    `getDefinedFieldProperties`), is named after the type, and has the size
+%    of the type in more than one dimension, in a model where another type has
+%    the same size (e.g. a 2 x 2 rxnPairMat with 2 reactions and 2
+%    metabolites), raises the error 'getModelFieldsForType:ambiguousField':
+%    which dimension belongs to the type cannot be determined. Use the standard
+%    field names, or rename or remove such a field before changing the model.
+%    (Feature 20261120-161825-core-blocker-fixes, November 2026: before, such
+%    a field got the dimension -1, and the callers failed with an indexing
+%    error.)
 %
 % .. Authors:
 %       - Thomas Pfau June 2017, adapted to merge all fields.
@@ -101,7 +116,7 @@ if fieldSize == 1 || fieldSize == 0
     fields = definedFields;
     fields = fields(cellfun(@(x) isequal(x,type),fields(:,3)) | cellfun(@(x) isequal(x,type),fields(:,2)),1);    
     %modelFields with the "correct" startingID
-    relModelFields = modelFields(cellfun(@(x) strncmp(x,type,length(type-1)),modelFields)); %Remove the s from the type for this
+    relModelFields = modelFields(cellfun(@(x) strncmp(x,type,length(type)-1),modelFields)); %Remove the s from the type for this
     fields = columnVector(union(fields,relModelFields));    
     posFields = ismember(possibleFields,fields);
     possibleFields = possibleFields(posFields);
@@ -184,6 +199,20 @@ if sameSizeExists
     undefinedFields = ~(ismember(possibleFields,definedFields(:,1))) & cellfun(@(x) strncmp(x,type,length(type)-1),possibleFields);
     undefDims = dimensions(undefinedFields);
     undefpossibleFieldNames = possibleFields(undefinedFields);        
+    % an undefined field named after the type that has the size of the type in more than one
+    % dimension (placeholder dimension -1, set above) cannot be resolved: no definition says
+    % which of its dimensions belongs to the type, and another type has the same size
+    ambiguousFields = undefpossibleFieldNames(undefDims == -1);
+    if ~isempty(ambiguousFields)
+        error('getModelFieldsForType:ambiguousField', ['getModelFieldsForType: the field(s) %s ' ...
+            'have the size of ''%s'' (%d) in more than one dimension, and another type of the ' ...
+            'model has the same size, so the dimension that belongs to ''%s'' cannot be ' ...
+            'determined.\nUse the standard COBRA field names where possible: they are recognised ' ...
+            'by their definition (see getDefinedFieldProperties, or the COBRA model field ' ...
+            'definitions in documentation/source/guides/COBRAModelFields.rst). Otherwise rename ' ...
+            'or remove the field(s) before changing the model.'], ...
+            strjoin(ambiguousFields, ', '), type, fieldSize, type);
+    end
     dimensions = [definedFieldDims;undefDims];
     possibleFields = [fields; undefpossibleFieldNames];
     %Now, we also need to take care of rxnGeneMat and S, otherwise we could

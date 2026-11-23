@@ -18,7 +18,15 @@ are added when the maintainer approves their fix.
 - [X] T006 Commit (as the maintainer, no co-author)
 - [X] T007 [US2] (approved 2026-11-20) in `src/analysis/FBA/optimizeCbModel.m`, after reading the global minNorm (line 321), treat 0 as no minNorm ([]), as lines 302-304 do for the input; test the case in testOptimizeCbModel (global minNorm 0, model without objective)
 
-## Phase 3: functions 2-7
+## Phase 3: getModelFieldsForType (approved 2026-11-23)
+
+- [X] T008 [US1] Fix line 104 of `src/reconstruction/refinement/getModelFieldsForType.m` (`length(type-1)` -> `length(type)-1`); NOTE in the help
+- [X] T009 [US1] Full test `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m` (written new; no earlier full version): every branch, the defect trigger (one-reaction model with rxnCustom), a custom 1x1 field with a type prefix (recorded behaviour), the 80 standard fields; run against the old function (shadowing copy first on the path) to see it fail, then against the fix
+- [X] T010 [US1] Coverage run (`F/coverage-getModelFieldsForType.jsonl`); defect entry removed; ledger TESTED; blocked reasons drop getModelFieldsForType; registry; `--check`, `--verify-coverage`
+- [X] T011 [US2] Impact: the 13 callers in src/; run the tests of those that have one; report in `F/review.md`
+- [X] T012 Commit
+
+## Phase 4: functions 3-7
 
 Added after each review.
 

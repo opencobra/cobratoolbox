@@ -45,7 +45,24 @@ can change.
   becomes "the fields named in paramNames are set to the returned values". No caller uses this
   output.
 
-### 2-7: pending the maintainer's review
+### 2. getModelFieldsForType: approved 2026-11-23
+
+- **Defect "custom fields named after the type are missed for a model with one or no element of
+  that type":** fix the code. Line 104 reads `length(type-1)`, which is the length of the whole type
+  name; it becomes `length(type)-1`, as the comment and line 184 intend. Checked with the maintainer
+  against the 80 standard COBRA fields: all of them are in the field definitions, and every one that
+  starts with a type's prefix belongs to that type. The fix therefore changes the result only for
+  non-standard fields named after a type (`rxnCustom`, ...), in models with 0 or 1 elements of the
+  type.
+- **Found while writing the test:** an undefined field named after the type, square in the type's
+  size, in a model where another type has the same size, got the placeholder dimension -1, so
+  removeRxns and the other callers failed with an indexing error. Guessing "both dimensions" would
+  silently mistreat a reactions x metabolites field such as rxnMetMat. The maintainer chose (2026-11-23)
+  a guiding error, `getModelFieldsForType:ambiguousField`, documented in the help. It names the
+  field and points to the standard COBRA field names (getDefinedFieldProperties, and
+  documentation/source/guides/COBRAModelFields.rst).
+
+### 3-7: pending the maintainer's review
 
 ## User Scenarios & Testing *(mandatory)*
 

@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-834 known defects in 457 functions (312 wrong-result, 259 error, 74 unusable-option, 126 cosmetic, 63 limitation).
+833 known defects in 456 functions (311 wrong-result, 259 error, 74 unusable-option, 126 cosmetic, 63 limitation).
 
 ## Summary
 
@@ -748,7 +748,6 @@
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | The extra reactions are drawn from a set that already contains the selected ones | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | With one metabolite to change, the random selection reduces the S row to a scalar | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/extractSubSysModel.m` | wrong-result | A single subsystem name given as text selects almost every reaction | `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m` |
-| `src/reconstruction/refinement/getModelFieldsForType.m` | wrong-result | custom fields named after the type are missed for a model with one or no element of that type | `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | wrong-result | Logical fields are never compared | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | wrong-result | Text fields are compared with every non-word character removed, not only white space | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | cosmetic | The message for differing nested subSystems names prints 0 positions | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
@@ -8312,17 +8311,6 @@
 - **Expected**: the reactions annotated with that subsystem only, as for {'Exchange'}
 - **Source lines**: 20
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m`
-
-### `src/reconstruction/refinement/getModelFieldsForType.m`
-
-#### custom fields named after the type are missed for a model with one or no element of that type
-
-- **Severity**: wrong-result
-- **Trigger**: model = createModel({'R1'}, {'r1'}, {'a -> b'}); model.rxnCustom = {'z'}; getModelFieldsForType(model, 'rxns')
-- **Observed**: MATLAB R2025a: rxnCustom is not in the result (S, rxnGeneMat, c, grRules, lb, rules, rxnNames, rxns, subSystems, ub), while the same model with two reactions lists it. Line 104 reads strncmp(x, type, length(type-1)): type-1 subtracts one from each character code, so the length is that of the whole type name and the fields must start with 'rxns', not 'rxn' as the comment ("Remove the s from the type") and line 184 intend
-- **Expected**: rxnCustom listed with dimension 1, as documented ("fields named e.g. rxnXYZ are associated with rxns") and as for two or more reactions
-- **Source lines**: 104
-- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m`
 
 ### `src/reconstruction/refinement/isSameCobraModel.m`
 
