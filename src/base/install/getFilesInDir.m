@@ -43,6 +43,13 @@ function files = getFilesInDir(varargin)
 %
 %    % get only the gitIgnored files in the current folder
 %    files = getFilesInDir('type', 'ignored');
+%
+% NOTE:
+%    Feature 20261120-161825-core-blocker-fixes, November 2026: an empty
+%    listing gives an empty cell array (before, the folder itself, as
+%    `[dirToList filesep]`); outside git, `checkSubFolders` defaults to true
+%    as documented (before, only the top level was listed) and folders are
+%    no longer listed as files.
 
 persistent COBRAIgnored
 
@@ -55,7 +62,7 @@ parser = inputParser();
 parser.addParamValue('dirToList',pwd,@(x) exist(x,'file') == 7);
 parser.addParamValue('type','all',@(x) ischar(x) && any(strcmpi(x,gitFileTypes)));
 parser.addParamValue('restrictToPattern','',@(x) ischar(x));
-parser.addParamValue('checkSubFolders','',@(x) islogical(x) || (isnumeric(x) && x == 0 || x == 1));
+parser.addParamValue('checkSubFolders',true,@(x) islogical(x) || (isnumeric(x) && x == 0 || x == 1));
 parser.addParamValue('printLevel',0,@(x) isnumeric(x));
 
 parser.parse(varargin{:});
@@ -105,7 +112,8 @@ switch selectedType
                rdircall = ['*'];
            end
            files = rdir(rdircall);
-           files = {files.name}'; %Need to transpose to give consistent results.
+           %rdir also lists folders: keep the files only
+           files = {files(~[files.isdir]).name}'; %Need to transpose to give consistent results.
         end
 
     case 'tracked'
@@ -127,7 +135,8 @@ switch selectedType
             files = [trackedfiles,untrackedfiles];
         else
            files = rdir(['**' filesep '*']);
-           files = {files.name}'; %Need to transpose to give consistent results.
+           %rdir also lists folders: keep the files only
+           files = {files(~[files.isdir]).name}'; %Need to transpose to give consistent results.
         end
         matching = false(size(files));
         for i = 1:numel(COBRAIgnored)
@@ -136,6 +145,8 @@ switch selectedType
         files = files(matching);
 
 end
+%an empty git listing gives an empty name: drop it
+files = files(~cellfun('isempty', files));
 if ~parser.Results.checkSubFolders
     files = files(cellfun(@(x) isempty(regexp(x,regexptranslate('escape',filesep))),files));
 end

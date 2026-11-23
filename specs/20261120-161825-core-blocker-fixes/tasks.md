@@ -42,7 +42,15 @@ are added when the maintainer approves their fix.
 - [X] T021 [US2] Impact: tests of the callers (checkStoichiometricConsistency, findStoichConsistentSubset, conservationAnalysis, extremePools and others with tests); report
 - [X] T022 Commit
 
-## Phase 6: functions 5-7
+## Phase 6: getFilesInDir (approved 2026-11-23, fixes 1-3)
+
+- [X] T023 [US1] Test first: full `test/verifiedTests/base/testInstall/testGetFilesInDir.m` (no earlier full version): folders outside git and git repositories made with git init in a tempname folder (every type, checkSubFolders, restrictToPattern, the default folder, the COBRA remote switch to ignored, empty listings); requires git; see it fail on the current code
+- [X] T024 [US1] Fix `src/base/install/getFilesInDir.m` (empty names dropped; checkSubFolders default true; rdir folders dropped); help NOTE
+- [X] T025 [US1] Coverage run; ledger TESTED; blocked reasons drop getFilesInDir; registry; `--check`, `--verify-coverage`
+- [X] T026 [US2] Impact: callers initCobraToolbox, removeTempFiles, changeCobraSolver, testAll; run testRemoveTempFiles, testChangeCobraSolver and other tests of the callers; report
+- [X] T027 Commit
+
+## Phase 7: functions 6-7
 
 Added after each review.
 

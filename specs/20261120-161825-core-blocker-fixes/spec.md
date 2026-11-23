@@ -90,7 +90,21 @@ can change.
 - **Defect "the biomass reaction found from biomassRxnAbbr is printed at every printLevel":** gate
   the message with printLevel > 0, as every other message. Screen output only.
 
-### 5-7: pending the maintainer's review
+### 5. getFilesInDir: approved 2026-11-23 (fixes 1-3)
+
+- **Defect "an empty git listing returns the folder itself as a file":** fix the code. Empty names
+  are dropped after the listing, so an empty listing gives an empty cell array and a clean
+  repository lists no folder entry for 'all'. removeTempFiles could only try to delete the folder
+  path (a warning and status false); it no longer tries.
+- **Defect "the default checkSubFolders omits subfolders in folders not under git":** fix the
+  code, default true as documented. Inside git the old default '' already behaved as true, so only
+  folders outside git change. In a COBRA copy not under git, initCobraToolbox's snapshot now
+  includes subfolders, so the final removeTempFiles(CBTDIR, ...) deletes only files that are new,
+  not every subfolder file matching COBRA's .gitignore.
+- **Defect "folders are listed as files in folders not under git":** fix the code, keep only the
+  entries of rdir that are not folders. removeTempFiles no longer tries to delete folders.
+
+### 6-7: pending the maintainer's review
 
 ## User Scenarios & Testing *(mandatory)*
 

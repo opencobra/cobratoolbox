@@ -231,3 +231,43 @@ of text), so it is recorded here, not as a defect.
 findRXNFilesPlain, findRXNFiles, checkRXNFiles, buildAtomTransitionMultigraph,
 findBondsBrokenAndFormed, findEnthalpyChange, obtainAtomMappingsRDT and consistentPotentials.
 PENDING: 109. Registry: 826 defects.
+
+## 5. getFilesInDir (approved 2026-11-23, fixes 1-3)
+
+**Fix.**
+1. Empty names are dropped after the listing: an empty git listing gives an empty cell array,
+   not the folder itself (`[dirToList filesep]`), and type 'all' in a repository without
+   untracked files lists no folder entry.
+2. checkSubFolders defaults to true, as documented. In a git repository the old default '' already
+   behaved as true; outside git only the top level was listed.
+3. Outside git, the folders returned by rdir are dropped: only files are listed, as in a git
+   repository.
+
+The help has a NOTE describing the changes.
+
+**Test.** testGetFilesInDir is a full test, written new: 72/72 lines, nothing left behind. It
+requires git and builds, in a tempname folder (GIT_CEILING_DIRECTORIES set to it, restored after),
+a folder outside git and git repositories made with git init (no commit, no network): every type,
+checkSubFolders, restrictToPattern, the default folder, the switch of ignoredByCOBRA to ignored for
+a cobratoolbox.git remote, empty listings and the invalid options. It failed on the old code at the
+default call outside git (subfolders missing).
+
+**Impact: which outputs can change.** Callers: initCobraToolbox (snapshot of CBTDIR, type all),
+removeTempFiles (deletes the files listed after but not before), changeCobraSolver (validation
+level 2, type ignoredByCOBRA without subfolders) and test/testAll (type all, and tracked .m files).
+- **Inside a git checkout (developers, CI):** unchanged, except that a listing that was empty
+  now is empty instead of holding the folder path. removeTempFiles could only try to delete that
+  path, which fails with a warning and a false status; it no longer tries.
+- **A COBRA copy not under git (for example a zip download):** initCobraToolbox's snapshot now
+  holds the files of the subfolders. Its final removeTempFiles(CBTDIR, ...) lists recursively, so
+  before the fix every file in a subfolder matching a COBRA .gitignore pattern (for example *.log)
+  looked new and was deleted, even if it was there before initCobraToolbox ran; now only files
+  that are new are deleted. Folders are no longer listed, so removeTempFiles no longer tries to
+  delete folders.
+
+Tests run after the fix: testChangeCobraSolver (which runs the validation-level-2 path through
+getFilesInDir and removeTempFiles) and the 13 other tests of test/verifiedTests/base/testInstall:
+13 pass, testInitCobraToolboxAgentMode is skipped (mosek required).
+
+**Unblocked.** getFilesInDir was one of the blockers of 245 functions; 3 have no blocker left:
+removeTempFiles, getCobraSolver and CPLEXParamSet. PENDING: 112. Registry: 823 defects.

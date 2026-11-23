@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-826 known defects in 454 functions (307 wrong-result, 258 error, 74 unusable-option, 124 cosmetic, 63 limitation).
+823 known defects in 453 functions (304 wrong-result, 258 error, 74 unusable-option, 124 cosmetic, 63 limitation).
 
 ## Summary
 
@@ -333,9 +333,6 @@
 | `src/base/generateSystemConfigReport.m` | error | A short answer from curl stops the report at the summary | `test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m` |
 | `src/base/getExchangedMetaboliteTable.m` | error | exRxnsOrdered = {} stops the call | `test/verifiedTests/base/testTools/testGetExchangedMetaboliteTable.m` |
 | `src/base/install/adaptMacPath.m` | wrong-result | pre-Sierra macOS versions with a patch number or a one-digit minor select postSierra | `test/verifiedTests/base/testInstall/testAdaptMacPath.m` |
-| `src/base/install/getFilesInDir.m` | wrong-result | An empty git listing returns the folder itself as a file | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
-| `src/base/install/getFilesInDir.m` | wrong-result | Folders are listed as files in folders not under git | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
-| `src/base/install/getFilesInDir.m` | wrong-result | The default checkSubFolders omits subfolders in folders not under git | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
 | `src/base/install/prepareTest.m` | unusable-option | needsLinux makes every test skip on Linux | `test/verifiedTests/base/testInstall/testPrepareTest.m` |
 | `src/base/install/updateCobraToolbox.m` | error | A commit count that git cannot compute stops the function with an undefined variable instead of the intended warning | `test/verifiedTests/base/testInstall/testUpdateCobraToolbox.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A dictionary abbreviation with several entries stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
@@ -4153,35 +4150,6 @@
 - **Expected**: preSierra for every macOS version below 10.12 (the help text: "Sierra/High Sierra or higher and Anything below"), e.g. 10.11.6 (the last El Capitan release) and 10.9.5; the version should be compared component by component
 - **Source lines**: 20-21
 - **Documented in**: `test/verifiedTests/base/testInstall/testAdaptMacPath.m`
-
-### `src/base/install/getFilesInDir.m`
-
-#### An empty git listing returns the folder itself as a file
-
-- **Severity**: wrong-result
-- **Trigger**: d = tempname; mkdir(d); system(['cd ' d ' && git init -q .']); getFilesInDir('dirToList', d, 'type', 'tracked') (likewise type untracked in a repository without untracked files, and type all in an empty repository)
-- **Observed**: (R2025a, 2026-11-15) a 1 x 1 cell {[d '/']} for tracked and two copies of [d '/'] for all: strsplit(strtrim(''), '\n') gives {''}, which is then prefixed with the folder path
-- **Expected**: an empty cell array, since no file matches
-- **Source lines**: 98-100, 113, 117, 120, 150
-- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
-
-#### Folders are listed as files in folders not under git
-
-- **Severity**: wrong-result
-- **Trigger**: same folder as above; getFilesInDir('dirToList', d, 'checkSubFolders', true)
-- **Observed**: (R2025a, 2026-11-15) {[d '/sub'], [d '/a.txt'], [d '/sub/b.txt']}: rdir returns folders too, and they are kept
-- **Expected**: only files, {[d '/a.txt'], [d '/sub/b.txt']}, as in a git repository
-- **Source lines**: 107-108, 129-130
-- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
-
-#### The default checkSubFolders omits subfolders in folders not under git
-
-- **Severity**: wrong-result
-- **Trigger**: a folder d outside any git repository holding a.txt and sub/b.txt; getFilesInDir('dirToList', d)
-- **Observed**: (R2025a, 2026-11-15) {[d '/sub'], [d '/a.txt']}: the default of checkSubFolders is '' (false in the if at line 102), so rdir lists only the top level; with checkSubFolders = true the list also holds [d '/sub/b.txt']; in a git repository the same default lists the files of subfolders
-- **Expected**: the files of the subfolders as well, as the documented default true says
-- **Source lines**: 58, 102-106
-- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
 
 ### `src/base/install/prepareTest.m`
 
