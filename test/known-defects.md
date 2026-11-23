@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-839 known defects in 462 functions (308 wrong-result, 266 error, 74 unusable-option, 128 cosmetic, 63 limitation).
+851 known defects in 466 functions (314 wrong-result, 268 error, 74 unusable-option, 130 cosmetic, 65 limitation).
 
 ## Summary
 
@@ -669,6 +669,7 @@
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
+| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | wrong-result | imBalancedMass is [] instead of an nRxn x 1 cell when every reaction is mass balanced | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | error | printLevel -1 and 2 stop when every reaction is mass balanced and a charge is not | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | cosmetic | printLevel 2 lists the mass balanced, charge imbalanced reactions by a stale index | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m` | wrong-result | A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1 | `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m` |
@@ -734,6 +735,14 @@
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | wrong-result | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | limitation | convertToCNF of an OrNode without children returns an empty AndNode, which evaluates to true, while the empty OrNode evaluates to false | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | cosmetic | The duplicate warning names the constraint matched by the last input row only | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | wrong-result | checkDuplicates does not detect an existing constraint that involves extra variables | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | wrong-result | checkDuplicates drops a distinct constraint of the input when the ids are not sorted | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | error | checkDuplicates stops when the model holds the constraint twice | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | error | checkDuplicates stops when the number of ids equals the number of constraints | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAVariables.m` | limitation | A single name given as a character array is rejected | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAVariables.m` |
+| `src/reconstruction/refinement/addGenes.m` | limitation | A single gene id given as a character array is stored as a column of characters | `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m` |
+| `src/reconstruction/refinement/addGenes.m` | cosmetic | The error messages name reactions instead of genes | `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | error | A formula whose first metabolite has no coefficient stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A new metabolite used twice in one call is added twice or loses a coefficient | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A proteins field of another size than the gene list discards the result | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
@@ -747,6 +756,9 @@
 | `src/reconstruction/refinement/changeCOBRAConstraints.m` | error | The documented constraint index cannot be used as constraintID | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAConstraints.m` |
 | `src/reconstruction/refinement/changeCOBRAVariable.m` | unusable-option | The documented option Name stops with an error | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m` |
 | `src/reconstruction/refinement/changeCOBRAVariable.m` | error | The documented variable index cannot be used as variableID | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m` |
+| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | A requested rxnGeneMat is created with one row per reaction up to the changed one | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
+| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | New genes do not extend the other gene fields | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
+| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | Translated gene names are taken from the wrong positions | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | cosmetic | A partly unknown reaction list is not reported | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | The extra reactions are drawn from a set that already contains the selected ones | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | With one metabolite to change, the random selection reduces the S row to a scalar | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
@@ -7547,6 +7559,15 @@
 
 ### `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m`
 
+#### imBalancedMass is [] instead of an nRxn x 1 cell when every reaction is mass balanced
+
+- **Severity**: wrong-result
+- **Trigger**: a model without exchange reactions whose reactions are all mass balanced, for example cm = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> c[c]'}, 'printLevel', 0); cm.metFormulas = {'C';'C';'C'}; cm.metCharges = [0;0;1]; [~, imBalancedMass] = checkMassChargeBalance(cm)
+- **Observed**: (R2025a, 2026-11-23) imBalancedMass = [] (lines 200-202); callers that index it as a cell stop, for example testModelMassChargeBalance at its line 83 ("Brace indexing is not supported for variables of this type.")
+- **Expected**: an nRxn x 1 cell of '' (OUTPUTS: "nRxn x 1 cell with mass imbalance")
+- **Source lines**: 200-202
+- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
+
 #### printLevel -1 and 2 stop when every reaction is mass balanced and a charge is not
 
 - **Severity**: error
@@ -8184,6 +8205,84 @@
 - **Source lines**: 53-63
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m`
 
+### `src/reconstruction/refinement/addCOBRAConstraints.m`
+
+#### The duplicate warning names the constraint matched by the last input row only
+
+- **Severity**: cosmetic
+- **Trigger**: model as above without variables; m1 = addCOBRAConstraints(model, {'R2','R1'}, [3 4], 'c', [2 1; 4 3]); addCOBRAConstraints(m1, {'R2','R1'}, [3 4 4], 'c', [2 1; 4 3; 3 4], 'checkDuplicates', true, 'ConstraintID', {'x','y','z'})
+- **Observed**: (R2025a, 2026-11-23) the two existing constraints are correctly skipped and z is added, but the warning reads "... already exists with ID: Constraint2" only: line 251 uses dupRows of the last loop iteration
+- **Expected**: the warning names Constraint1 and Constraint2
+- **Source lines**: 251
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### checkDuplicates does not detect an existing constraint that involves extra variables
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]', 'b[c] -> c[c]', 'c[c] -> '}, 'printLevel', 0); model = addCOBRAVariables(model, {'v1','v2'}); m1 = addCOBRAConstraints(model, {'R1','v1'}, 3, 'c', [1 2]); m2 = addCOBRAConstraints(m1, {'R1','v1'}, 3, 'c', [1 2], 'checkDuplicates', true)
+- **Observed**: (R2025a, 2026-11-23) m2.ctrs = {'Constraint1'; 'Constraint2'}, full(m2.C) = [1 0 0; 1 0 0], full(m2.D) = [2 0; 2 0], no warning: line 241 compares the coefficients of the extra variables with the rows of E (metabolites x variables) instead of the rows of D (constraints x variables)
+- **Expected**: the warning "Constraint(s) not added, because it already exists with ID: Constraint1" and m2 equal to m1, as for the same constraint on reactions only
+- **Source lines**: 241-242
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### checkDuplicates drops a distinct constraint of the input when the ids are not sorted
+
+- **Severity**: wrong-result
+- **Trigger**: model as above without variables; addCOBRAConstraints(model, {'R2','R1'}, [3 3 5], 'c', [2 1; 1 2; 1 1], 'checkDuplicates', true)
+- **Observed**: (R2025a, 2026-11-23) two constraints, full(C) = [1 1 0; 1 2 0] with d = [5; 3]: 2*R1 + R2 <= 3 is dropped as a duplicate of R1 + 2*R2 <= 3, because lines 200-202 sort the coefficients of the first input row only (the loop runs over size(idList, 1) = 1 row); with idList {'R1','R2'} the same call adds all three constraints
+- **Expected**: three constraints (rows [1 2 0], [2 1 0], [1 1 0]), none being a duplicate
+- **Source lines**: 197-205
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### checkDuplicates stops when the model holds the constraint twice
+
+- **Severity**: error
+- **Trigger**: model as above without variables; m3 = addCOBRAConstraints(model, {'R1'}, [3 3], 'dsense', 'LL'); addCOBRAConstraints(m3, {'R1'}, 3, 'checkDuplicates', true)
+- **Observed**: (R2025a, 2026-11-23) "Operands to the logical AND (&&) and OR (||) operators must be convertible to logical scalar values. ..." at line 246: dsense and d of every matching row are compared with && instead of any matching row
+- **Expected**: the duplicate warning and the model returned unchanged
+- **Source lines**: 246
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### checkDuplicates stops when the number of ids equals the number of constraints
+
+- **Severity**: error
+- **Trigger**: model as above without variables; addCOBRAConstraints(model, {'R1','R2'}, [3 4], 'c', [1 2; 3 4], 'checkDuplicates', true) (also with idList {'R1';'R2'})
+- **Observed**: (R2025a, 2026-11-23) "Dimensions of arrays being concatenated are not consistent." at line 204: idList is turned into a column (line 104) and the sort of line 197 along dimension 2 then gives a column that does not fit the coefficient rows
+- **Expected**: two constraints added (none of them exists), as without checkDuplicates
+- **Source lines**: 104, 197-204
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+### `src/reconstruction/refinement/addCOBRAVariables.m`
+
+#### A single name given as a character array is rejected
+
+- **Severity**: limitation
+- **Trigger**: addCOBRAVariables(model, 'v1', 'Names', 'Variable one')
+- **Observed**: (R2025a, 2026-11-23) "The value of 'Names' is invalid. Invalid data type. Argument must be numeric, char, or logical." from the input parser: the validator evaluates numel(idList == 1), and == is not defined for the cell idList
+- **Expected**: one variable named 'Variable one', as the char branch of the validator intends; the documented form, a cell array of names, works and is tested below
+- **Source lines**: 79
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAVariables.m`
+
+### `src/reconstruction/refinement/addGenes.m`
+
+#### A single gene id given as a character array is stored as a column of characters
+
+- **Severity**: limitation
+- **Trigger**: addGenes(model, 'g5') for a model with genes {'g1'}
+- **Observed**: (R2025a, 2026-11-23) model.genes becomes {'g1'; ['g'; '5']}: columnVector turns the char id into a 2 x 1 char array, which is appended as one cell
+- **Expected**: model.genes = {'g1'; 'g5'} ("Add Genes (or a single gene)"); the documented form, a cell array of ids, works and is tested below
+- **Source lines**: 54
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m`
+
+#### The error messages name reactions instead of genes
+
+- **Severity**: cosmetic
+- **Trigger**: addGenes(model, {'g1'}) with g1 in the model; addGenes(model, {'g3', 'g4', 'g5'}, 'geneNames', {'a', 'b'})
+- **Observed**: (R2025a, 2026-11-23) "Duplicate Reaction ID detected." and "Size of field geneNames does not fit to the rxnList size"
+- **Expected**: messages about gene ids and the size of the gene list
+- **Source lines**: 40, 66
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m`
+
 ### `src/reconstruction/refinement/addReactionGEM.m`
 
 #### A formula whose first metabolite has no coefficient stops with an error
@@ -8312,6 +8411,35 @@
 - **Expected**: model.evarlb(1) = 1 (INPUTS: "variableID: The ID of the variable (or the index in the evars field)")
 - **Source lines**: 32
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m`
+
+### `src/reconstruction/refinement/changeGeneAssociation.m`
+
+#### A requested rxnGeneMat is created with one row per reaction up to the changed one
+
+- **Severity**: wrong-result
+- **Trigger**: model as above without rxnGeneMat (rmfield); changeGeneAssociation(model, 'R1', 'g2', [], [], true)
+- **Observed**: (R2025a, 2026-11-23) size(rxnGeneMat) = [1 2]: line 66 creates the field by assigning row rxnID only
+- **Expected**: size [3 2] (reactions x genes) with the entries of R1 set
+- **Source lines**: 66, 81
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
+
+#### New genes do not extend the other gene fields
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]', 'b[c] -> c[c]', 'c[c] -> '}, 'grRuleList', {'g1','',''}, 'printLevel', 0); model.proteins = {'P1'}; model2 = changeGeneAssociation(model, 'R2', 'g2')
+- **Observed**: (R2025a, 2026-11-23) numel(model2.genes) = 2 but numel(model2.proteins) = 1 (likewise geneNames): nGenes is never updated after the new genes are appended (line 74), so the test nGenes > nGenesInit of line 88 is always false and extendModelFieldsForType (line 89) never runs
+- **Expected**: model2.proteins = {'P1'; 'COBRAProtein2'} (the field default), every gene field as long as model2.genes
+- **Source lines**: 57-58, 88-90
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
+
+#### Translated gene names are taken from the wrong positions
+
+- **Severity**: wrong-result
+- **Trigger**: model as above; changeGeneAssociation(model, 'R2', 'a and b', {'b'; 'a'}, {'B'; 'A'}); changeGeneAssociation(model, 'R2', 'a', {'x'; 'a'}, {'X'; 'A'})
+- **Observed**: (R2025a, 2026-11-23) first call: genes {'g1'; 'B'; 'A'} and grRules{2} = 'B and A' (gene a is named B); second call: "Index exceeds the number of array elements. Index must not exceed 1." at line 72, which indexes the presence vector pres with the list positions pos (systNameList(pres(pos)) instead of systNameList(pos(pres)))
+- **Expected**: grRules{2} = 'A and B' and genes {'g1'; 'A'; 'B'}; genes {'g1'; 'A'} and grRules{2} = 'A'
+- **Source lines**: 71-72
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
 
 ### `src/reconstruction/refinement/changeRxnMets.m`
 

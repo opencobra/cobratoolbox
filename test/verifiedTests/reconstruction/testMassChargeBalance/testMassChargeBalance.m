@@ -7,6 +7,17 @@
 %     src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m
 %
 % Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: imBalancedMass is [] instead of an nRxn x 1 cell when every reaction is mass balanced
+%       SEVERITY: wrong-result
+%       TRIGGER: a model without exchange reactions whose reactions are all mass balanced, for
+%         example cm = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> c[c]'},
+%         'printLevel', 0); cm.metFormulas = {'C';'C';'C'}; cm.metCharges = [0;0;1];
+%         [~, imBalancedMass] = checkMassChargeBalance(cm)
+%       OBSERVED: (R2025a, 2026-11-23) imBalancedMass = [] (lines 200-202); callers that index
+%         it as a cell stop, for example testModelMassChargeBalance at its line 83 ("Brace
+%         indexing is not supported for variables of this type.")
+%       EXPECTED: an nRxn x 1 cell of '' (OUTPUTS: "nRxn x 1 cell with mass imbalance")
+%       LINES: 200-202
 %     - DEFECT: printLevel -1 and 2 stop when every reaction is mass balanced and a charge is not
 %       SEVERITY: error
 %       TRIGGER: cm = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> c[c]'},
