@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-830 known defects in 455 functions (310 wrong-result, 258 error, 74 unusable-option, 125 cosmetic, 63 limitation).
+826 known defects in 454 functions (307 wrong-result, 258 error, 74 unusable-option, 124 cosmetic, 63 limitation).
 
 ## Summary
 
@@ -662,10 +662,6 @@
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
 | `src/reconstruction/modelGeneration/massBalance/checkBalance.m` | wrong-result | With exactly one metabolite without a formula, the wrong reactions are set to NaN | `test/verifiedTests/reconstruction/testModelGeneration/testCheckBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m` | wrong-result | A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1 | `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m` |
-| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | a mass-balanced reaction named DM_atp(c) is classified as an exchange | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
-| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | a model without c gets a c with one entry per metabolite | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
-| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | cosmetic | the biomass reaction found from biomassRxnAbbr is printed at every printLevel | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
-| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | the exchange prefix Ex_ is never recognised | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
 | `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m` | cosmetic | Formula numbers in error messages lose their zero padding inside parentheses | `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m` |
 | `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | error | Every formula stops with an error because the group name FULLR2 contains a digit | `test/verifiedTests/reconstruction/testModelGeneration/testIspolymer.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | A formula given as a cell or number stops with a MATLAB error, not the class error | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
@@ -7464,44 +7460,6 @@
 - **Expected**: {'CH4'} and {'C0.1H2'} (dMax is documented as the maximum number of decimal places, so 0 and 1 are valid and 1 and 0.1 are written exactly at those precisions)
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m`
-
-### `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m`
-
-#### a mass-balanced reaction named DM_atp(c) is classified as an exchange
-
-- **Severity**: wrong-result
-- **Trigger**: model = createModel({'R1'; 'DM_atp(c)'; 'EX_a'; 'DM_atp_c_'}, {'r1'; 'dm'; 'ex'; 'dm2'}, {'a -> b'; 'atp + h2o -> adp + pi'; 'a <=> '; 'atp2 + h2o -> adp2 + pi'}); out = findSExRxnInd(model)
-- **Observed**: MATLAB R2025a: out.DMRxnBool(2) = 0 but out.SIntRxnBool(2) = 0, while out.SIntRxnBool(4) = 1 for the same reaction named DM_atp_c_. The variable bool used at line 198 to remove the ATP demand from the heuristic exchange set is the one computed for DM_atp_c_ at line 189, so DM_atp(c) (and ATPM) are only removed from DMRxnBool (lines 179, 187) and stay in SExRxnBoolHeuristic, computed at line 170 before the removal
-- **Expected**: SIntRxnBool true for DM_atp(c), as for DM_atp_c_ and as the message of line 184 announces ("not considered an exchange reaction by default")
-- **Source lines**: 189, 198
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
-
-#### a model without c gets a c with one entry per metabolite
-
-- **Severity**: wrong-result
-- **Trigger**: findSExRxnInd(rmfield(model, 'c')) with the model of defect 1 (S is 8 x 4)
-- **Observed**: MATLAB R2025a: the returned model.c is 8 x 1 (zeros(nMet, 1), line 68)
-- **Expected**: an n x 1 vector (4 x 1), as documented for .c ("created as zeros if absent")
-- **Source lines**: 68
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
-
-#### the biomass reaction found from biomassRxnAbbr is printed at every printLevel
-
-- **Severity**: cosmetic
-- **Trigger**: model.biomassRxnAbbr = 'Biomass_x'; findSExRxnInd(model, [], 0)
-- **Observed**: MATLAB R2025a: "Found biomass reaction: Biomass_x" is printed at printLevel 0
-- **Expected**: no output at printLevel 0, as for the other messages of the function
-- **Source lines**: 98
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
-
-#### the exchange prefix Ex_ is never recognised
-
-- **Severity**: wrong-result
-- **Trigger**: model = createModel({'Ex_h'; 'R1'}, {'1'; '2'}, {'h <=> '; 'h -> g'}); out = findSExRxnInd(model)
-- **Observed**: MATLAB R2025a: out.ExchRxnBool(1) = 0 (SIntRxnBool is still false through the one-coefficient heuristic); strncmp('Ex_', rxns, 5) at lines 159 and 162 compares five characters of a three-character prefix and is always false
-- **Expected**: ExchRxnBool true (documented: "Prefix EX_ or Exch_ or Ex_")
-- **Source lines**: 159, 162
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
 
 ### `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m`
 

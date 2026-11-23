@@ -171,3 +171,63 @@ Gurobi.
 findMinNull, the FASTCORE LP routines (LP3, LP7, LP9weighted, LP10, LP10weighted),
 findSparseMode, checkFluxConsistency, leakTest and the minimal-leakage-mode functions. PENDING:
 101. Registry: 830 defects.
+
+## 4. findSExRxnInd (approved 2026-11-23, fixes 1-4)
+
+**Fix.**
+1. The ATP maintenance and demand names (ATPM, DM_atp(c), DM_atp_c_) are collected in one
+   boolean, removed from both DMRxnBool and the heuristic exchange set. Before, each name check
+   overwrote the same variable, so only DM_atp_c_ became internal.
+2. A missing c is created with one entry per reaction (zeros(n, 1)), not per metabolite.
+3. The prefix Ex_ is compared on three characters; on five it never matched.
+4. "Found biomass reaction: ..." is printed only at printLevel > 0, as every other message.
+
+The help has a NOTE describing the changes.
+
+**Test.** testFindSExRxnInd is the full test written before the quarantine, extended with
+DM_atp(c), Ex_, a model without c, each ATP name on its own, ATPM in an exchange subsystem, a
+whole-body DM_atp(c) and Ex_, and the printed output at printLevel 0 and 1 (diary file in a
+temporary folder): 116/118 lines, nothing left behind. It failed on the old code at the first
+classification check. Exempt: line 65 (printLevel is the third input, so it is 0 whenever
+nRealMet is absent) and line 282 (the sanity check compares an expression with itself); both
+were already exempt before the quarantine.
+
+**Impact: which outputs can change.**
+- **SIntRxnBool and the metabolite booleans of a model with a reaction named DM_atp(c)** with more
+  than one coefficient: the reaction becomes internal. Old and new outputs were compared on all
+  37 shipped test models: only cardiac_mit_glcuptake_atpmax changes. DM_atp(c) (atp + h2o -> adp
+  + h + pi) becomes internal, and adp, atp, h, h2o and pi move from "external" (SExMetBool) to
+  "internal only" (SOnlyIntMetBool). Every other field and every other model is unchanged.
+- **ATPM or DM_atp(c) marked as exchange by an HMR subsystem or compartment x:** now internal, as
+  DM_atp_c_ already was. No shipped model.
+- **Reactions named Ex_...:** ExchRxnBool true; with more than one coefficient they become
+  external. No shipped model has the prefix.
+- **A model without c:** the returned c has n entries. Classification unchanged (DAS and subDas,
+  the shipped models without c, are square, so their outputs are identical).
+- **printLevel 0 with biomassRxnAbbr matching one reaction:** one line less on screen.
+
+Callers that use SIntRxnBool for stoichiometric consistency (checkStoichiometricConsistency,
+findStoichConsistentSubset and those built on them) now check DM_atp(c) like any other internal
+reaction; it is mass balanced, so a consistent model stays consistent.
+
+23 tests that call findSExRxnInd or one of its callers were run after the fix: 18 pass
+(testCheckModelPreFBA, testRelaxedFBA, testConservationAnalysis, testSubspaces,
+testAddLoopLawConstraints, testCycleFreeFlux, testSetCommonZeroStandardGibbsEnergyOfFormation,
+testCheckNullspaceBasis, testExtremePools, testGenerateFullRowRankFR, testGreedyExtremeRayBasis,
+testIntegerizeS, testNullspaceAccuracyTarget, testWrite4ti2, testCheckModelProperties,
+testModelManipulationOri, testTest4HumanFctExt, testStoichiometricConsistency), none fail; 5
+are skipped by their declared requirements
+(testConnectedComponents: Image Processing Toolbox; testEntropicFluxBalanceAnalysis: mosek;
+testGenerateChemicalDatabase: cxcalc; testXomicsToModel_fastCore and _thermoKernel: full mode
+only).
+
+**Open item (pre-existing, not changed).** A model whose subSystems entries are not text stops
+at line 165 (the HMR subsystem heuristic) with "Input A of class cell and input B of class double
+must be ...". Two shipped models, AntCore and ME_matrix_GlcAer_WT, have empty numeric subSystems
+entries; the old code stops in the same way. This breaks the COBRA field definition (a cell array
+of text), so it is recorded here, not as a defect.
+
+**Unblocked.** findSExRxnInd was one of the blockers of 248 functions; 8 have no blocker left:
+findRXNFilesPlain, findRXNFiles, checkRXNFiles, buildAtomTransitionMultigraph,
+findBondsBrokenAndFormed, findEnthalpyChange, obtainAtomMappingsRDT and consistentPotentials.
+PENDING: 109. Registry: 826 defects.

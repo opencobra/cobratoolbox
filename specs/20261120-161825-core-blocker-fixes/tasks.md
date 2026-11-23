@@ -34,7 +34,15 @@ are added when the maintainer approves their fix.
 - [X] T016 [US2] Impact: callers solveCobraLP and solveCobraQP (Gurobi branch); run testSolveCobraLP, testSolveCobraQP and other Gurobi-solving tests; report
 - [X] T017 Commit
 
-## Phase 5: functions 4-7
+## Phase 5: findSExRxnInd (approved 2026-11-23, fixes 1-4)
+
+- [X] T018 [US1] Test first: full `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` from the pre-quarantine version, extended with DM_atp(c), Ex_, a model without c and the printLevel-0 silence (diary); see it fail on the current code
+- [X] T019 [US1] Fix `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` (one ATP boolean removed from DMRxnBool and the exchange set; c of size n; Ex_ with three characters; biomass message gated by printLevel); help and NOTE
+- [X] T020 [US1] Coverage run; ledger TESTED; blocked reasons drop findSExRxnInd; registry; `--check`, `--verify-coverage`
+- [X] T021 [US2] Impact: tests of the callers (checkStoichiometricConsistency, findStoichConsistentSubset, conservationAnalysis, extremePools and others with tests); report
+- [X] T022 Commit
+
+## Phase 6: functions 5-7
 
 Added after each review.
 

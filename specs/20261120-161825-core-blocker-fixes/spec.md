@@ -76,7 +76,21 @@ can change.
   setGurobiParam drops, so a COBRA time limit has no effect with Gurobi. It stays an open item in
   review.md.
 
-### 4-7: pending the maintainer's review
+### 4. findSExRxnInd: approved 2026-11-23 (fixes 1-4)
+
+- **Defect "a mass-balanced reaction named DM_atp(c) is classified as an exchange":** fix the
+  code. The three ATP names (ATPM, DM_atp(c), DM_atp_c_) are collected in one boolean, which is
+  removed from both DMRxnBool and the heuristic exchange set, as the printed message says. Output
+  change: SIntRxnBool (and the metabolite booleans) of a model with a multi-coefficient DM_atp(c);
+  of the shipped test models only cardiac_mit_glcuptake_atpmax.
+- **Defect "a model without c gets a c with one entry per metabolite":** fix the code, zeros(n, 1).
+  No classification changes; the returned c has the documented size.
+- **Defect "the exchange prefix Ex_ is never recognised":** fix the code, compare three
+  characters. Reactions named Ex_... become exchanges; none in the shipped test models.
+- **Defect "the biomass reaction found from biomassRxnAbbr is printed at every printLevel":** gate
+  the message with printLevel > 0, as every other message. Screen output only.
+
+### 5-7: pending the maintainer's review
 
 ## User Scenarios & Testing *(mandatory)*
 
