@@ -65,3 +65,15 @@ settings): 20 passed and testFastGapFill was skipped (solver not installed). The
 - writePajekNet, sparseLP, optimizeTwoCbModels, constrainRxns, pruneModel;
 - fastcc, fastcore, partition, rFastcormics;
 - GDLS, OptKnock, multiProductionEnvelope, checkModelPreFBA, checkModelProperties.
+
+### Companion fix: optimizeCbModel and a global minNorm of 0 (approved 2026-11-20, T007)
+
+After reading the global minNorm (line 321), optimizeCbModel now turns 0 into `[]` (no norm), as
+lines 302-304 already do for the minNorm input. testOptimizeCbModel has a new section: a global
+minNorm of 0, the toy pathway without an objective (f = 0) and with it (f = 10, no f2). It passes
+with coverage of 382/410 lines (before: 380/408; the two new lines are reached, and the 28 missed
+lines are the same as before), and nothing is left behind.
+
+**Impact.** Compared with the toolbox before this feature, a global minNorm of 0 again means no norm,
+which is what the old code did when it ignored the global value. So the two fixes together change
+optimizeCbModel's output only when a user sets a global minNorm above 0, as documented.

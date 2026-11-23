@@ -16,7 +16,7 @@ are added when the maintainer approves their fix.
 - [X] T004 [US1] Coverage run (`F/coverage-getCobraSolverParams.jsonl`); defect entries removed; ledger row TESTED; blocked reasons drop getCobraSolverParams; registry; `--check`, `--verify-coverage`
 - [X] T005 [US2] Impact: list the callers of the two-input form (outside old/ and deprecated/), state the condition under which their outputs change, and run the tests of the callers that have one (runScriptFile); report in `F/review.md`
 - [X] T006 Commit (as the maintainer, no co-author)
-- [ ] T007 [US2] PENDING the maintainer's approval: in `src/analysis/FBA/optimizeCbModel.m`, after reading the global minNorm (line 321), treat 0 as no minNorm ([]), as lines 302-304 do for the input; test the case in testOptimizeCbModel (global minNorm 0, model without objective)
+- [X] T007 [US2] (approved 2026-11-20) in `src/analysis/FBA/optimizeCbModel.m`, after reading the global minNorm (line 321), treat 0 as no minNorm ([]), as lines 302-304 do for the input; test the case in testOptimizeCbModel (global minNorm 0, model without objective)
 
 ## Phase 3: functions 2-7
 

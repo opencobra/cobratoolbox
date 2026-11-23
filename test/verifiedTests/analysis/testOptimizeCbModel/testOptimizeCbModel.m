@@ -587,6 +587,29 @@ for covK = 1:length(covSolverPkgs.LP)
     fprintf('Done.\n');
 end
 
+%% A global minNorm setting of 0 means no norm (changeCobraSolverParams)
+% Without the minNorm input, optimizeCbModel uses the global minNorm setting, and
+% changeCobraSolverParams documents 0 as no minimisation of the norm. A model without an
+% objective is the case where a global 0 started the regularisation step and failed
+% (feature 20261120-161825-core-blocker-fixes); with or without an objective, the result is the
+% plain LP: f = 0 without an objective, f = 10 (by hand, see above) and no f2 with one.
+minNormGlobalsBefore = who('global');
+minNormStateBefore = CobraSolverState.get();
+minNormSolverPkgs = prepareTest('needsLP', true);
+changeCobraSolver(minNormSolverPkgs.LP{1}, 'LP', 0);
+changeCobraSolverParams('LP', 'minNorm', 0);
+minNormModel = buildCharToyModel();
+minNormModel.c(:) = 0;
+covS = optimizeCbModel(minNormModel);
+assert(covS.stat == 1 && covS.f == 0);
+covS = optimizeCbModel(buildCharToyModel());
+assert(covS.stat == 1 && abs(covS.f - 10) < covTol && isnan(covS.f2));
+CobraSolverState.restore(minNormStateBefore);
+minNormNewGlobals = setdiff(who('global'), minNormGlobalsBefore);
+for k = 1:numel(minNormNewGlobals)
+    clearvars('-global', minNormNewGlobals{k});
+end
+
 %% Coverage completion: solver status values that come from a stand-in for solveCobraLP
 % the stand-in lives in a temporary folder, which the cleanup object removes again
 sandboxDir = tempname;

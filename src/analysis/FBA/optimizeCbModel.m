@@ -319,6 +319,10 @@ if exist('minNorm', 'var')
 else
     %use global solver parameter for minNorm
     minNorm = getCobraSolverParams('LP','minNorm');
+    if isequal(minNorm,0)
+        % 0 means no minimisation of the norm, as for the minNorm input (see above)
+        minNorm = [];
+    end
 end
 if exist('allowLoops', 'var')
     if isempty(allowLoops)
