@@ -50,6 +50,10 @@ function [cplexProblem, logFile, logToFile] = setCplexParametersForProblem(cplex
 % NOTE:
 %    See https://www.ibm.com/docs/en/icos/12.10.0?topic=cplex-list-parameters
 %    and https://www.ibm.com/docs/en/icos/12.10.0 for the full CPLEX parameter reference.
+%    `lpmethod` is set to 4 (barrier) for every problem type other than `'LP'`, unless
+%    `problemType` is `'MIQP'` and `problemTypeParams.method` names an algorithm.
+%    Feature 20261120-161825-core-blocker-fixes, November 2026: before, the barrier
+%    also replaced the algorithm named in `problemTypeParams.method`.
 %
 
 % set the default parameters so we can see what they are
@@ -221,6 +225,8 @@ if isfield(solverParams,'qpmethod') && strcmp(problemType,'QP')
     % end
 end
 
+%true when lpmethod is set below from a name given in problemTypeParams.method (MIQP)
+lpmethodFromMethod = false;
 if strcmp(problemType,'MIQP')
     %this is how it was, it seems wrong - Ronan
     warning('check the problemTypeParams.method mapping to algorithm numbers is correct')
@@ -261,6 +267,7 @@ if strcmp(problemType,'MIQP')
             otherwise
                 error('unrecognised option for solverParams.lpmethod')
         end
+        lpmethodFromMethod = true;
     end
 end
 
@@ -298,7 +305,8 @@ if isfield(solverParams,'lpmethod') && strcmp(problemType,'LP')
                 error('unrecognised option for solverParams.lpmethod')
         end
     end
-else
+elseif ~lpmethodFromMethod
+    %unless an algorithm was named in problemTypeParams.method (MIQP)
     cplexProblem.Param.lpmethod.Cur=4;%BARRIER provided best benchmark performance on Harvetta
 end
 

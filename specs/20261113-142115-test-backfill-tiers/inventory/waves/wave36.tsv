@@ -1,0 +1,3 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	538	src/analysis/rMTA/calculateGeneKOMatrix.m	2			deleteModelGenes	MTA,rMTA	
+a	673	src/dataIntegration/metabotools/integrateGeneExpressionData.m	2			deleteModelGenes		

@@ -1,52 +1,36 @@
 % The COBRAToolbox: testSetGurobiParam.m
 %
 % Purpose:
-%     - setGurobiParam translates a COBRA parameter structure into the parameter structure of
-%       the Gurobi MATLAB interface: timelimit becomes TimeLimit, multiscale = 1 sets
-%       ScaleFlag = 0, lifted = 1 sets Aggregate = 1 and Presolve = 0, method is copied to
-%       lpmethod or qpmethod, the algorithm names of lpmethod and qpmethod become the numeric
-%       Method, printLevel, feasTol and optTol give OutputFlag, DisplayInterval,
-%       FeasibilityTol and OptimalityTol, and every field that is not a Gurobi parameter is
-%       removed. The function is QUARANTINED (Constitution III-Defects, quarantine in back-fill
-%       campaigns): a given TimeLimit is overridden by timelimit and the fields documented as
-%       optional are required, so no assertion about the function is made.
+%     - setGurobiParam(param) turns a COBRA-style solver parameter structure into the
+%       parameter structure of Gurobi's MATLAB interface: timelimit, multiscale, lifted,
+%       method, lpmethod and qpmethod are translated to TimeLimit, ScaleFlag, Aggregate and
+%       Presolve, and Method; OutputFlag (0) and DisplayInterval (1) are set when absent;
+%       FeasibilityTol and OptimalityTol are taken from feasTol and optTol when absent; and
+%       every field that is not a Gurobi parameter name is removed. The test checks each
+%       translation against the values written in the help and the code (the Gurobi method
+%       codes -1 to 4), that the documented optional fields can be left out, that TimeLimit
+%       wins over timelimit, the warnings for unknown method names, and the filtering. No
+%       solver is called.
 %
 % Function under test:
 %     src/base/solvers/gurobi/setGurobiParam.m
 %
 % Tier (Constitution III-Coverage):
-%     Tier 1 - no model, no solver; a test would use hand-built parameter structures.
+%     Tier 1 - no model, no solver; parameter structures written by hand.
 %
 % Coverage exemptions:
-%     every line - setGurobiParam is quarantined for the defects below (feature
-%     20261113-142115-test-backfill-tiers)
+%     Line 419: unreachable. Lines 418-419 remove a field logFile, but the filter just before
+%     keeps only Gurobi parameter names (LogFile, not logFile), so logFile is never present.
 %
 % Known defects documented (NOT tested, NOT fixed here):
-%     - DEFECT: timelimit overrides TimeLimit although the help text says it is copied only when TimeLimit is absent
-%       SEVERITY: wrong-result
-%       TRIGGER: setGurobiParam(struct('timelimit', 10, 'TimeLimit', 20, 'printLevel', 0, 'feasTol', 1e-7, 'optTol', 1e-8))
-%       OBSERVED: gurobiParam.TimeLimit = 10 (R2025a, 2026-11-15); line 80 copies timelimit
-%         unconditionally
-%       EXPECTED: TimeLimit = 20 kept, as the help text says timelimit is copied to TimeLimit if
-%         TimeLimit is absent
-%       LINES: 79-81
-%     - DEFECT: printLevel, feasTol and optTol are required although the fields are documented as optional
-%       SEVERITY: error
-%       TRIGGER: setGurobiParam(struct())
-%       OBSERVED: error Unrecognized field name "printLevel". (MATLAB:nonExistentField); without
-%         OutputFlag and DisplayInterval the field printLevel is read, without FeasibilityTol
-%         the field feasTol, without OptimalityTol the field optTol
-%       EXPECTED: all fields optional (help text: with fields (all optional))
-%       LINES: 182, 194, 214, 223
-%     - DEFECT: the warning for an unknown lpmethod names param.qpmethod
-%       SEVERITY: cosmetic
-%       TRIGGER: param.lpmethod = 'FOO'
-%       OBSERVED: warning FOO is an unrecognised param.qpmethod for gurobi
-%       EXPECTED: the warning names param.lpmethod
-%       LINES: 145
+%     None found. (The three defects recorded on 2026-11-15, the documented optional fields
+%     printLevel, feasTol and optTol being required, timelimit overriding TimeLimit, and the
+%     lpmethod warning naming qpmethod, were fixed by feature
+%     20261120-161825-core-blocker-fixes and are tested below.)
 %
 % Authors:
 %     - Generated for feature 20261113-142115-test-backfill-tiers, 2026-11-15.
+%     - Full test after the fix (feature 20261120-161825-core-blocker-fixes), 2026-11-23.
 
 % save the current path
 currentDir = pwd;
@@ -59,6 +43,86 @@ cd(fileDir);
 % or particular operating system, so none is listed; the call is the standard opening
 % of a COBRA test and the place where a requirement would be added later
 prepareTest();
+
+%% every field is optional: an empty structure gives only the two output settings
+
+gurobiParam = setGurobiParam(struct());
+assert(isequal(gurobiParam, struct('OutputFlag', 0, 'DisplayInterval', 1)));
+
+%% the COBRA fields of solveCobraLP: tolerances translated, COBRA names removed
+
+cobraParam = struct('printLevel', 2, 'feasTol', 1e-7, 'optTol', 1e-8, 'timeLimit', 1e36, ...
+    'problemType', 'LP', 'saveInput', [], 'logFile', []);
+gurobiParam = setGurobiParam(cobraParam);
+assert(isequal(orderfields(gurobiParam), orderfields(struct('OutputFlag', 0, 'DisplayInterval', 1, ...
+    'FeasibilityTol', 1e-7, 'OptimalityTol', 1e-8))));
+% the output settings are the same for every printLevel
+for printLevel = [0, 1, 3]
+    gurobiParam = setGurobiParam(struct('printLevel', printLevel));
+    assert(gurobiParam.OutputFlag == 0 && gurobiParam.DisplayInterval == 1);
+end
+% Gurobi-style values already given are kept
+gurobiParam = setGurobiParam(struct('OutputFlag', 1, 'DisplayInterval', 5, 'FeasibilityTol', 1e-9, ...
+    'OptimalityTol', 1e-9, 'feasTol', 1e-3, 'optTol', 1e-3));
+assert(isequal([gurobiParam.OutputFlag, gurobiParam.DisplayInterval, gurobiParam.FeasibilityTol, ...
+    gurobiParam.OptimalityTol], [1, 5, 1e-9, 1e-9]));
+
+%% timelimit is copied to TimeLimit only when TimeLimit is absent
+
+gurobiParam = setGurobiParam(struct('timelimit', 10));
+assert(gurobiParam.TimeLimit == 10 && ~isfield(gurobiParam, 'timelimit'));
+gurobiParam = setGurobiParam(struct('timelimit', 10, 'TimeLimit', 20));
+assert(gurobiParam.TimeLimit == 20);
+
+%% multiscale and lifted
+
+gurobiParam = setGurobiParam(struct('multiscale', 1));
+assert(gurobiParam.ScaleFlag == 0 && ~isfield(gurobiParam, 'multiscale'));
+gurobiParam = setGurobiParam(struct('multiscale', 0));
+assert(~isfield(gurobiParam, 'ScaleFlag'));
+gurobiParam = setGurobiParam(struct('lifted', 1));
+assert(gurobiParam.Aggregate == 1 && gurobiParam.Presolve == 0 && ~isfield(gurobiParam, 'lifted'));
+gurobiParam = setGurobiParam(struct('lifted', 0));
+assert(~isfield(gurobiParam, 'Aggregate') && ~isfield(gurobiParam, 'Presolve'));
+
+%% lpmethod and qpmethod: the names of the help, translated to the Gurobi method codes
+
+lpNames = {'AUTOMATIC', 'PRIMAL', 'DUAL', 'BARRIER', 'CONCURRENT', 'DETERMINISTIC_CONCURRENT'};
+for k = 1:numel(lpNames)
+    gurobiParam = setGurobiParam(struct('lpmethod', lpNames{k}));
+    assert(gurobiParam.Method == k - 2 && ~isfield(gurobiParam, 'lpmethod'));
+end
+qpNames = {'AUTOMATIC', 'PRIMAL', 'DUAL', 'BARRIER'};
+for k = 1:numel(qpNames)
+    gurobiParam = setGurobiParam(struct('qpmethod', qpNames{k}));
+    assert(gurobiParam.Method == k - 2 && ~isfield(gurobiParam, 'qpmethod'));
+end
+% an unknown name: a warning naming the field it came from, and no Method
+lastwarn('');
+gurobiParam = setGurobiParam(struct('lpmethod', 'FOO'));
+assert(strcmp(lastwarn, 'FOO is an unrecognised param.lpmethod for gurobi') && ~isfield(gurobiParam, 'Method'));
+lastwarn('');
+gurobiParam = setGurobiParam(struct('qpmethod', 'CONCURRENT'));
+assert(strcmp(lastwarn, 'CONCURRENT is an unrecognised param.qpmethod for gurobi') && ~isfield(gurobiParam, 'Method'));
+
+%% method (backward compatible): copied to lpmethod or qpmethod by problemType, unless given
+
+gurobiParam = setGurobiParam(struct('method', 'DUAL', 'problemType', 'LP'));
+assert(gurobiParam.Method == 1);
+gurobiParam = setGurobiParam(struct('method', 'BARRIER', 'problemType', 'QP'));
+assert(gurobiParam.Method == 2);
+% an explicit lpmethod wins over method
+gurobiParam = setGurobiParam(struct('method', 'DUAL', 'lpmethod', 'PRIMAL', 'problemType', 'LP'));
+assert(gurobiParam.Method == 0);
+% an empty method is removed and nothing is set
+gurobiParam = setGurobiParam(struct('method', '', 'problemType', 'LP'));
+assert(~isfield(gurobiParam, 'Method') && ~isfield(gurobiParam, 'method'));
+
+%% only Gurobi parameter names are kept
+
+gurobiParam = setGurobiParam(struct('Threads', 2, 'MIPGap', 1e-4, 'notAGurobiName', 1, 'Seed', 7));
+assert(isequal(orderfields(gurobiParam), orderfields(struct('Threads', 2, 'MIPGap', 1e-4, 'Seed', 7, ...
+    'OutputFlag', 0, 'DisplayInterval', 1))));
 
 % change the directory
 cd(currentDir)

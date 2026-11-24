@@ -1,0 +1,37 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	756	src/analysis/QFCA/directionallyCoupled.m	3				QFCA,blockedReac	
+a	753	src/analysis/exploration/findBlockedIrrRxns.m	3				fluxVariability	
+a	774	src/analysis/exploration/findTrspRxnFromMet.m	3			parseRxnFormula		
+a	785	src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComCplex.m	3			SteadyComSubroutines,checkSolFeas,getCobraSolverParams,setCplexParam	SteadyCom	
+a	810	src/analysis/rMTA/MTA_MIQP.m	3				MTA,rMTA	
+a	812	src/analysis/relaxedFBA/relaxFBA_cappedL1.m	3			getCobraSolverParams	relaxedFBA	
+a	752	src/analysis/sparseFBA/sparseFBA.m	3			getCobraSolverParams	compareModelsFeatures,fluxVariability	
+a	836	src/analysis/thermo/thermoFBA/consistentPotentials.m	3			findSExRxnInd		
+b	837	src/analysis/thermo/thermoFBA/fastSNP.m	3			checkSolFeas,getCobraSolverParams	addLoopLawConstraints	
+b	838	src/analysis/thermo/thermoFBA/findMinNull.m	3			checkSolFeas,getCobraSolverParams	addLoopLawConstraints	
+b	845	src/analysis/topology/conservedMoieties/decomposeMoietyVectors.m	3					
+b	848	src/analysis/topology/conservedMoieties/relateConservedMoietiesToConservationRelations.m	3					
+b	849	src/analysis/topology/extremeRays/optimalRays/findExtremePool.m	3			getCobraSolverParams	greedyExtremeRayBasis,optimalExtremePoolDriver	
+b	821	src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m	3			getCobraSolverParams	checkThermoFeasibility,findFluxConsistentSubset,findMassLeaksAndSiphons,findMinimalLeakageMode,findMinimalLeakageModeMet,findMinimalLeakageModeRxn,findRxnsFromMets,findSparsePathway,fitExperimentalFlux,leakTest,maxCardinalityConservationVector,minCardinalityConservationRelaxationVector,optCardThermo,optimalConservationVectors,optimizeCbModel	
+b	875	src/base/solvers/cplex/CPLEXParamSet.m	3					
+b	876	src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m	3			getCobraSolverParams	solveCobraLP,solveCobraMILP,solveCobraMIQP,solveCobraQP	
+c	801	src/base/solvers/getSetSolver/getCobraSolver.m	3				SteadyCom,optimizeWBModel	
+c	882	src/base/solvers/optarrow/testOptArrowBackend.m	3					
+c	883	src/base/solvers/optarrow/testOptArrowQPBackend.m	3					
+c	902	src/dataIntegration/XomicsToModel/metabolomics/mediaConstraints.m	3			findExcRxns		
+c	906	src/dataIntegration/fluxomics/defineLinearConstraints.m	3				C13ConfidenceInterval,fitC13Data	
+c	924	src/dataIntegration/transcriptomics/FASTCORE/LP10.m	3				findSparseMode	
+c	925	src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m	3					
+c	926	src/dataIntegration/transcriptomics/FASTCORE/LP3.m	3				fastcc	
+d	927	src/dataIntegration/transcriptomics/FASTCORE/LP7.m	3				fastcc,fastcc_nonconvex,findSparseMode,findSparseModeWeighted	
+d	826	src/dataIntegration/transcriptomics/SWIFTCORE/blocked.m	3				swiftcc	
+d	932	src/dataIntegration/transcriptomics/SWIFTCORE/core.m	3				swiftcore	
+d	933	src/dataIntegration/transcriptomics/rFASTCORMICS/constrainModelOnMedium.m	3				rFastcormics	
+d	953	src/design/optForce/findMustLL.m	3			saveInputsMustSetsSecondOrder		
+d	955	src/design/optForce/findMustUL.m	3			saveInputsMustSetsSecondOrder		
+d	956	src/design/optForce/findMustUU.m	3			saveInputsMustSetsSecondOrder		
+d	979	src/reconstruction/demeter/suite/tests/validateCompartments.m	3				runTestsOnModel	
+e	928	src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m	3				findSparseModeWeighted	
+e	1014	src/reconstruction/modelGeneration/fluxConsistency/GREEDY/checkFluxConsistency.m	3				testFluxConsistency	
+e	1032	src/visualization/paint4Net/Draw_by_met/findNearRxns.m	3			findMetIDs,findRxnIDs	bio_draw_by_met,draw_by_met	
+e	1036	src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m	3			findMetIDs,findRxnIDs		

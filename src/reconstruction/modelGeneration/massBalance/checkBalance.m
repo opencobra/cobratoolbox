@@ -15,11 +15,11 @@ function [dE, E, missingFormulaeBool] = checkBalance(model, element, printLevel,
 %    element:                Abbreviation of element e.g. C or Mg
 %
 % OPTIONAL INPUTS:
-%    printLevel:             {-1, (0), 1} where:
+%    printLevel:             {-1, 0, (1)} where:
 %
 %                            -1 = print out missing formulae to a file;
 %                            0 = silent;
-%                            1 = print out  missing formulae to screen reactions to screen
+%                            1 = print out  missing formulae to screen reactions to screen (default)
 %    fileName:               name of the file
 %    missingFormulaeBool:    boolean variable for missing formulae
 %
@@ -28,6 +28,12 @@ function [dE, E, missingFormulaeBool] = checkBalance(model, element, printLevel,
 %                            If `isnan(dE(n))` then the reaction involves a metabolite without a formula.
 %    E:                      `m` x 1 vector with number of elements in each metabolite
 %    missingFormulaeBool:    boolean variable for missing formulae
+%
+% NOTE:
+%    Feature 20261120-161825-core-blocker-fixes, November 2026: with exactly
+%    one metabolite without a formula, the reactions that use it are NaN in
+%    `dE` (before, reaction 1 was set to NaN instead); the help gives the
+%    default printLevel of the code, 1 (it said 0).
 %
 % .. Author: - Ronan M.T. Fleming, July 2009
 %            - Uri David Akavia, May 2019
@@ -89,7 +95,7 @@ dE=model.S'*E;
 dE(abs(dE) < 1e-12) = 0;
 % setting reactions with unknown metabolites to NaN
 % inidcating that the mass balance of the reaction is unknown.
-dE(any(model.S(missingFormulaeBool, :))) = NaN;
+dE(any(model.S(missingFormulaeBool, :), 1)) = NaN;
 % Setting E for unknown metaoblties to NaN
 E(missingFormulaeBool) = NaN;
 

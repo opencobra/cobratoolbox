@@ -1,0 +1,7 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	702	src/reconstruction/demeter/suite/tests/testModelMassChargeBalance.m	2			checkMassChargeBalance,findExcRxns	reportPDF,runTestsOnModel	
+a	486	src/reconstruction/refinement/addCOBRAConstraints.m	2			extendModelFieldsForType	ROOM,XomicsToModel,addCouplingConstraint,addRatioReaction,applyEFluxConstraints,constrainRxnListAboveBound,coupleRxnList2Rxn,fluxVariability,linearROOM	
+a	488	src/reconstruction/refinement/addCOBRAVariables.m	2			extendModelFieldsForType	ROOM,applyEFluxConstraints,linearROOM	
+a	510	src/reconstruction/refinement/addMultipleMetabolites.m	2			extendModelFieldsForType,getDefinedFieldProperties,getModelFieldsForType	addDemandReaction,addExchangeRxn,addMetabolite,addMicrobeCommunityBiomass,buildModelStorage,createModel,createMultipleSpeciesModel,fastSetupCreator,setFoodRxnsWbm	
+a	513	src/reconstruction/refinement/addGenes.m	2			extendModelFieldsForType,getDefinedFieldProperties,getModelFieldsForType	addMultipleReactions,addMultipleReactionsIT,generateRules,mergeTwoModels	
+a	514	src/reconstruction/refinement/changeGeneAssociation.m	2			creategrRulesField,extendModelFieldsForType	addMultipleReactions,addMultipleReactionsIT,addReaction,addReactionsHH,getOrgansFromHarvey,prepareModelNutrientGeneMCS	

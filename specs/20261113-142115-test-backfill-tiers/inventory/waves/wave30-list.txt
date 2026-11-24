@@ -1,0 +1,5 @@
+test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m|src/reconstruction/refinement/addCOBRAConstraints.m
+test/verifiedTests/reconstruction/testRefinement/testAddCOBRAVariables.m|src/reconstruction/refinement/addCOBRAVariables.m
+test/verifiedTests/reconstruction/testRefinement/testAddMultipleMetabolites.m|src/reconstruction/refinement/addMultipleMetabolites.m
+test/verifiedTests/reconstruction/testRefinement/testAddGenes.m|src/reconstruction/refinement/addGenes.m
+test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m|src/reconstruction/refinement/changeGeneAssociation.m

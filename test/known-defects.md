@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-837 known defects in 458 functions (315 wrong-result, 259 error, 74 unusable-option, 126 cosmetic, 63 limitation).
+913 known defects in 499 functions (332 wrong-result, 299 error, 75 unusable-option, 140 cosmetic, 67 limitation).
 
 ## Summary
 
@@ -24,6 +24,14 @@
 | `src/analysis/KLdistance/KLdistance.m` | wrong-result | The two densities are compared on different grids, so distinct populations get a zero distance | `test/verifiedTests/analysis/testKLdistance/testKLdistance.m` |
 | `src/analysis/MOMA/MOMA.m` | error | Models with different reaction sets stop with an error | `test/verifiedTests/analysis/testMOMA/testMOMA.m` |
 | `src/analysis/QFCA/QFCA.m` | error | A network that reduces to one metabolite stops with an error | `test/verifiedTests/analysis/testQFCA/testQFCA.m` |
+| `src/analysis/coupling/addCouplingConstraint.m` | error | A coefficient vector c in the documented k x 1 shape stops with an error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
+| `src/analysis/coupling/addCouplingConstraint.m` | cosmetic | The EXAMPLE of the help text calls another function with an undefined C | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
+| `src/analysis/coupling/addCouplingConstraint.m` | error | The documented optional inputs c, d and ineqSense cannot be omitted | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
+| `src/analysis/coupling/constrainRxnListAboveBound.m` | error | A coefficient vector c in the documented k x 1 shape stops with an error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
+| `src/analysis/coupling/constrainRxnListAboveBound.m` | cosmetic | The EXAMPLE of the help text passes an undefined variable C instead of c | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
+| `src/analysis/coupling/constrainRxnListAboveBound.m` | error | The documented optional inputs c, d and ineqSense cannot be omitted | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
+| `src/analysis/deletion/deleteModelGenes.m` | cosmetic | Deleting a gene that is already marked deleted appends the suffix again | `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m` |
+| `src/analysis/deletion/deleteModelGenes.m` | cosmetic | The error for several genes that are not in the model joins their names | `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m` |
 | `src/analysis/dynamicFBA/dynamicFBA.m` | cosmetic | The number of tracked exchange reactions is printed on every call | `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m` |
 | `src/analysis/ecosystem/clusterEcosystemPoints.m` | wrong-result | The hierarchical method returns the requested maximum k as the number of clusters | `test/verifiedTests/analysis/testEcosystem/testClusterEcosystemPoints.m` |
 | `src/analysis/ecosystem/getQualitativeFluxStates.m` | wrong-result | Zero band applied inconsistently to the maximum and to max - min | `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m` |
@@ -31,6 +39,8 @@
 | `src/analysis/exploration/findCarbonRxns.m` | wrong-result | Two-letter element symbols beginning with C are counted as carbon | `test/verifiedTests/analysis/testExploration/testFindCarbonRxns.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | limitation | A compartment letter without brackets matches every identifier with that letter | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | error | A compartment without metabolites stops with an error | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
+| `src/analysis/exploration/findMetabolicJunctions.m` | error | Every call that finds a junction stops on an undefined variable | `test/verifiedTests/analysis/testExploration/testFindMetabolicJunctions.m` |
+| `src/analysis/exploration/findNeighborRxns.m` | wrong-result | withComp is not passed to the recursive call, so common metabolites count as edges from the second order on | `test/verifiedTests/analysis/testExploration/testFindNeighborRxns.m` |
 | `src/analysis/exploration/findRxnFromCompartment.m` | wrong-result | A compartment with a single metabolite returns the first reaction of the model | `test/verifiedTests/analysis/testExploration/testFindRxnFromCompartment.m` |
 | `src/analysis/exploration/findRxnsFromGenes.m` | error | Calling with the optional numericFlag only stops with an error | `test/verifiedTests/analysis/testExploration/testFindRxnsFromGenes.m` |
 | `src/analysis/exploration/findRxnsFromMets.m` | error | The documented positional printFlag alone stops with an error | `test/verifiedTests/analysis/testExploration/testFindRxnsFromMets.m` |
@@ -144,6 +154,11 @@
 | `src/analysis/rMTA/calculateEPSILON.m` | error | 'unique_epsilon' stops with an error when no reaction changes | `test/verifiedTests/analysis/testRMTA/testCalculateEPSILON.m` |
 | `src/analysis/rMTA/rMTAsaveInExcel.m` | unusable-option | The documented default of alpha_values cannot be used | `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m` |
 | `src/analysis/rMTA/rMTAsaveInExcel.m` | unusable-option | The sheets written with xlswrite need Microsoft Excel | `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m` |
+| `src/analysis/relaxedFBA/plotRelaxedFBA.m` | cosmetic | The count of external bounds relaxed also counts internal lower bounds | `test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m` |
+| `src/analysis/relaxedFBA/plotRelaxedFBA.m` | cosmetic | The first character of each reaction formula is printed as its character code | `test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m` |
+| `src/analysis/relaxedFBA/plotRelaxedFBA.m` | cosmetic | The tables of upper bound relaxations are headed "lower bounds relaxed" | `test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m` |
+| `src/analysis/relaxedFBA/relaxFBA_cappedL1.m` | error | Omitting the documented option toBeUnblockedReactions stops with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxFBA_cappedL1.m` |
+| `src/analysis/relaxedFBA/relaxFBA_cappedL1.m` | unusable-option | The documented option minLB is ignored and replaced by its default | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxFBA_cappedL1.m` |
 | `src/analysis/relaxedFBA/relaxedFBA.m` | limitation | A generic LP without rxns and mets stops with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m` |
 | `src/analysis/relaxedFBA/relaxedFBA.m` | error | Extra variables given only by model.D stop with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m` |
 | `src/analysis/rumba/classifyRxns.m` | error | The documented defaults of maxMetConn, maxNumPnts and LoopRxnsToIgnore are not implemented, so these arguments cannot be omitted | `test/verifiedTests/analysis/testRumba/testClassifyRxns.m` |
@@ -178,6 +193,7 @@
 | `src/analysis/sampling/printSampleStats.m` | wrong-result | With several samples only the first sample's mode is printed | `test/verifiedTests/analysis/testSampling/testPrintSampleStats.m` |
 | `src/analysis/sampling/sampleScatterMatrix.m` | error | The documented optional inputs cannot be omitted one at a time | `test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m` |
 | `src/analysis/sampling/sampleScatterMatrix.m` | cosmetic | The progress of the two-set layout exceeds 100 % | `test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m` |
+| `src/analysis/sparseFBA/sparseFBA.m` | error | A model with coupling constraints and checkEssentialSet = false stops with an error | `test/verifiedTests/analysis/testFindSparsePathway/testSparseFBA.m` |
 | `src/analysis/subspaces/checkScaling.m` | error | A model whose lower bounds are all zero stops with an error | `test/verifiedTests/analysis/testSubspaces/testCheckScaling.m` |
 | `src/analysis/subspaces/checkScaling.m` | error | A model with C and d but without b stops with an error | `test/verifiedTests/analysis/testSubspaces/testCheckScaling.m` |
 | `src/analysis/subspaces/lsqr/lsqr.m` | cosmetic | The x = 0 message is printed even when show = 0 | `test/verifiedTests/analysis/testSubspaces/testLsqr.m` |
@@ -242,6 +258,7 @@
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | wrong-result | The objective bound of the lp approach is tightened when it should be relaxed | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | unusable-option | The relaxedFBA fallback of the regularised approach can never succeed | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | error | param.removeFixedBool = 1 stops the regularised approach | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
+| `src/analysis/thermo/thermoFBA/fastSNP.m` | cosmetic | The weight vector is returned in resInfo.weights, not in the documented resInfo.weight | `test/verifiedTests/analysis/testThermo/testFastSNP.m` |
 | `src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m` | cosmetic | The empty-producer branch labels the consumer axes | `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m` |
 | `src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m` | error | The reaction labels read an undocumented legacy field model.rxn(k).directionality | `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m` |
 | `src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m` | error | A model with concMin or concMax fails unless concMinDefault and concMaxDefault are passed | `test/verifiedTests/analysis/testVonBertalanffy/testConfigureSetupThermoModelInputs.m` |
@@ -263,6 +280,8 @@
 | `src/analysis/topology/conservedMoieties/estimateMoietyFormulas.m` | wrong-result | M is not the r x p matrix the documentation describes | `test/verifiedTests/analysis/testConservedMoieties/testEstimateMoietyFormulas.m` |
 | `src/analysis/topology/conservedMoieties/identifyConservedMoieties.m` | error | the default sanity checks stop when an atom transition has two instances | `test/verifiedTests/analysis/testConservedMoieties/testIdentifyConservedMoieties.m` |
 | `src/analysis/topology/conservedMoieties/identifyConservedMoieties.m` | wrong-result | the moiety index of a non-canonical component follows its atom order | `test/verifiedTests/analysis/testConservedMoieties/testIdentifyConservedMoieties.m` |
+| `src/analysis/topology/conservedMoieties/relateConservedMoietiesToConservationRelations.m` | error | A conserved moiety that needs a negative coefficient stops with an error | `test/verifiedTests/analysis/testConservedMoieties/testRelateConservedMoietiesToConservationRelations.m` |
+| `src/analysis/topology/conservedMoieties/relateConservedMoietiesToConservationRelations.m` | wrong-result | The LP maximises the sum of x, so X is not of minimal cardinality | `test/verifiedTests/analysis/testConservedMoieties/testRelateConservedMoietiesToConservationRelations.m` |
 | `src/analysis/topology/conservedMoieties/representativeMoiety.m` | error | MMN.moi is required but not documented | `test/verifiedTests/analysis/testConservedMoieties/testRepresentativeMoiety.m` |
 | `src/analysis/topology/conservedMoieties/representativeMoiety.m` | wrong-result | minimalMassFraction is always 1 | `test/verifiedTests/analysis/testConservedMoieties/testRepresentativeMoiety.m` |
 | `src/analysis/topology/extremeRays/lrs/extremePools.m` | error | A model with mets but no usable SIntRxnBool stops on an undefined variable | `test/verifiedTests/analysis/testTopology/testExtremePools.m` |
@@ -333,9 +352,6 @@
 | `src/base/generateSystemConfigReport.m` | error | A short answer from curl stops the report at the summary | `test/verifiedTests/base/testTools/testGenerateSystemConfigReport.m` |
 | `src/base/getExchangedMetaboliteTable.m` | error | exRxnsOrdered = {} stops the call | `test/verifiedTests/base/testTools/testGetExchangedMetaboliteTable.m` |
 | `src/base/install/adaptMacPath.m` | wrong-result | pre-Sierra macOS versions with a patch number or a one-digit minor select postSierra | `test/verifiedTests/base/testInstall/testAdaptMacPath.m` |
-| `src/base/install/getFilesInDir.m` | wrong-result | An empty git listing returns the folder itself as a file | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
-| `src/base/install/getFilesInDir.m` | wrong-result | Folders are listed as files in folders not under git | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
-| `src/base/install/getFilesInDir.m` | wrong-result | The default checkSubFolders omits subfolders in folders not under git | `test/verifiedTests/base/testInstall/testGetFilesInDir.m` |
 | `src/base/install/prepareTest.m` | unusable-option | needsLinux makes every test skip on Linux | `test/verifiedTests/base/testInstall/testPrepareTest.m` |
 | `src/base/install/updateCobraToolbox.m` | error | A commit count that git cannot compute stops the function with an undefined variable instead of the intended warning | `test/verifiedTests/base/testInstall/testUpdateCobraToolbox.m` |
 | `src/base/io/KEGG/mapKEGGID2Model.m` | error | A dictionary abbreviation with several entries stops with an error | `test/verifiedTests/base/testIO/testKEGG/testMapKEGGID2Model.m` |
@@ -370,6 +386,9 @@
 | `src/base/io/utilities/readBooleanRegModel.m` | limitation | The default file iMHruletest.xls is not distributed | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
 | `src/base/io/utilities/readBooleanRegModel.m` | cosmetic | The message for a missing exchange reaction names the wrong metabolite | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
 | `src/base/io/utilities/readBooleanRegModel.m` | cosmetic | The message for a missing internal reaction has no line break | `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m` |
+| `src/base/io/utilities/readCobrapyJSONModel.m` | error | a metabolite identifier containing a brace makes the reaction stoichiometry unreadable | `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m` |
+| `src/base/io/utilities/readCobrapyJSONModel.m` | error | an empty model cannot be read | `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m` |
+| `src/base/io/utilities/readCobrapyJSONModel.m` | error | metabolite identifiers written with a \u escape are not found | `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m` |
 | `src/base/io/utilities/readSBML.m` | error | The documented default of defaultBound does not exist | `test/verifiedTests/base/testIO/testReadSBML.m` |
 | `src/base/io/utilities/readSimPhenyCMPD.m` | limitation | A file without metabolite lines stops with an error | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
 | `src/base/io/utilities/readSimPhenyCMPD.m` | wrong-result | Alternative names keep the blank that follows a '/' | `test/verifiedTests/base/testIO/testUtilities/testReadSimPhenyCMPD.m` |
@@ -398,7 +417,12 @@
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Output z is not assigned when every entry of the LP solution is below zeps | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | wrong-result | The zero vector is returned as the solution although it violates Aeq*x = beq | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Theta L0 iteration errors when the l1 solution has no positive entry | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
-| `src/base/solvers/cplex/setCplexParametersForProblem.m` | unusable-option | text values of problemTypeParams.method have no effect for MIQP | `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m` |
+| `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m` | wrong-result | An LP status 3 ends the iterations with status -1 instead of proceeding | `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m` |
+| `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m` | cosmetic | The random warm start is not protected against infinite bounds | `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m` |
+| `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m` | error | A Problem without the documented optional csense stops with an error | `test/verifiedTests/base/testSolvers/testBuildCplexProblemFromCOBRAStruct.m` |
+| `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m` | wrong-result | The documented b_L and b_U are never used | `test/verifiedTests/base/testSolvers/testBuildCplexProblemFromCOBRAStruct.m` |
+| `src/base/solvers/cplex/checkSolFeas.m` | error | A solution structure with .x and no .full field is an error | `test/verifiedTests/base/testSolvers/testCheckSolFeas.m` |
+| `src/base/solvers/cplex/checkSolFeas.m` | unusable-option | The solution structure output is never returned and its stat is never set | `test/verifiedTests/base/testSolvers/testCheckSolFeas.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m` | error | An LPProblem without csense stops with an error | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m` | wrong-result | The documented solution fields solver (every interface) and stat (ILOGsimple) are missing | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEX_2018.m` |
 | `src/base/solvers/cplex/solveCobraLPCPLEXcard.m` | error | An LPProblem without csense stops with an error | `test/verifiedTests/base/testSolvers/testSolveCobraLPCPLEXcard.m` |
@@ -418,19 +442,16 @@
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | A failed validation with printLevel above 0 keeps the failed solver selected | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/changeCobraSolver.m` | wrong-result | The problem type is matched as a substring | `test/verifiedTests/base/testSolvers/testChangeCobraSolver.m` |
 | `src/base/solvers/getSetSolver/getAvailableSolversByType.m` | cosmetic | The output of initCobraToolbox is not silenced | `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m` |
+| `src/base/solvers/getSetSolver/getCobraSolver.m` | error | The documented default solverType LP is not implemented | `test/verifiedTests/base/testSolvers/testGetCobraSolver.m` |
+| `src/base/solvers/getSetSolver/getCobraSolver.m` | error | The documented solverType all returns no solver name | `test/verifiedTests/base/testSolvers/testGetCobraSolver.m` |
+| `src/base/solvers/getSetSolver/getCobraSolver.m` | error | validate given as false leaves solverOK unassigned | `test/verifiedTests/base/testSolvers/testGetCobraSolver.m` |
 | `src/base/solvers/getSetSolver/getCobraSolverVersion.m` | unusable-option | The documented input rootPathSolver has no effect | `test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m` |
-| `src/base/solvers/gurobi/setGurobiParam.m` | error | printLevel, feasTol and optTol are required although the fields are documented as optional | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
-| `src/base/solvers/gurobi/setGurobiParam.m` | cosmetic | the warning for an unknown lpmethod names param.qpmethod | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
-| `src/base/solvers/gurobi/setGurobiParam.m` | wrong-result | timelimit overrides TimeLimit although the help text says it is copied only when TimeLimit is absent | `test/verifiedTests/base/testSolvers/testSetGurobiParam.m` |
 | `src/base/solvers/init/configEnvVars.m` | cosmetic | GUROBI_PATH from an environment variable ending in linux64 or mac64 gets a double separator | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
 | `src/base/solvers/init/configEnvVars.m` | error | The call stops with an error when ENV_VARS.STATUS is not set | `test/verifiedTests/base/testSolvers/testConfigEnvVars.m` |
 | `src/base/solvers/isCompatible.m` | wrong-result | The distributed compatibility matrix is not understood by the parser | `test/verifiedTests/base/testSolvers/testIsCompatible.m` |
 | `src/base/solvers/minos/DQQCleanup.m` | limitation | fort.* and *.sol files are kept when the results folder is missing | `test/verifiedTests/base/testSolvers/testDQQCleanup.m` |
 | `src/base/solvers/mosek/setMosekParam.m` | wrong-result | The strict option never switches MOSEK to a free solve form | `test/verifiedTests/base/testSolvers/testSetMosekParam.m` |
 | `src/base/solvers/param/changeCobraSolverParams.m` | cosmetic | The error for a parameter that is not allowed always names LP solvers | `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m` |
-| `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | The global solver parameters are ignored when no paramStructure is given | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
-| `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | The structure output keeps the fields named in paramNames | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
-| `src/base/solvers/param/getCobraSolverParams.m` | wrong-result | paramStructure 'default' returns the global values instead of the defaults | `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m` |
 | `src/base/solvers/param/parseSolverParameters.m` | cosmetic | The invalid-parameters error message shows literal \n instead of line breaks | `test/verifiedTests/base/testSolvers/testParseSolverParameters.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | error | A row with more than two variables cannot be lifted with the default options | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
 | `src/base/solvers/rescale/liftCouplingConstraints.m` | cosmetic | The model identifier gets two suffixes | `test/verifiedTests/base/testLifting/testLiftCouplingConstraints.m` |
@@ -494,7 +515,11 @@
 | `src/base/utilities/setGlobal.m` | limitation | A global named globalName cannot be set | `test/verifiedTests/base/testUtilities/testSetGlobal.m` |
 | `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
 | `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` | wrong-result | A given list of deleted metabolites is discarded when the old model is empty and no deleted reactions are given | `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` |
+| `src/dataIntegration/XomicsToModel/analysis/metUtilisation.m` | error | Every call without param.modelName and param.saveFig errors | `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m` |
+| `src/dataIntegration/XomicsToModel/analysis/metUtilisation.m` | wrong-result | The default flux threshold is 1e6, not the documented 1e-6 | `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m` |
+| `src/dataIntegration/XomicsToModel/analysis/metUtilisation.m` | error | The flux-sampling branch reads the nonexistent table variable metRxns | `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m` |
 | `src/dataIntegration/XomicsToModel/analysis/plotOverlapResults.m` | unusable-option | The optional input savepath cannot be used | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotOverlapResults.m` |
+| `src/dataIntegration/XomicsToModel/analysis/quanQualAcc.m` | wrong-result | A predicted flux below boundPrecisionLimit is not treated as zero | `test/verifiedTests/dataIntegration/testXomicsToModel/testQuanQualAcc.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | error | A reaction listed three times stops the constraint step | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | wrong-result | A tiny bound of the unusual sign changes sign | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | error | An unknown varID stops the mode allConstraints on a model without extra variables | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
@@ -503,13 +528,16 @@
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | cosmetic | The message about a feasible fit is never printed | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | error | The mode allConstraints needs the extra variable fields it treats as optional | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | cosmetic | The session display format is changed | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
+| `src/dataIntegration/XomicsToModel/metabolomics/mediaConstraints.m` | wrong-result | The lower bound set is 1e4 times the highest uptake rate | `test/verifiedTests/dataIntegration/testXomicsToModel/testMediaConstraints.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m` | unusable-option | The option saveFigures cannot be used | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m` | error | extraFluxes without otherFluxes stops with an error | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m` | limitation | predictedFluxes without lb and ub stops with an error | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/summaryConcentrations.m` | wrong-result | A compound whose name contains another compound's name receives that metabolite | `test/verifiedTests/dataIntegration/testXomicsToModel/testSummaryConcentrations.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/summaryConcentrations.m` | error | param.metLookupTable without param.model stops with an undefined variable | `test/verifiedTests/dataIntegration/testXomicsToModel/testSummaryConcentrations.m` |
+| `src/dataIntegration/XomicsToModel/prepareData/preprocessingOmicsModel.m` | error | A workbook written by MATLAB writetable is an error | `test/verifiedTests/dataIntegration/testXomicsToModel/testPreprocessingOmicsModel.m` |
 | `src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m` | cosmetic | The histogram marks the threshold at 2 whatever threshold is given | `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m` |
 | `src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m` | wrong-result | The inactive proteins are those above the threshold | `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m` |
+| `src/dataIntegration/chemoInformatics/RXN/findRXNFiles.m` | error | internalRxnBool is not assigned when every reaction has an RXN file | `test/verifiedTests/dataIntegration/testChemoInformatics/testFindRXNFiles.m` |
 | `src/dataIntegration/chemoInformatics/RXN/writeRxnfile.m` | cosmetic | The reaction equation drops every "1 " it contains, not only unit coefficients | `test/verifiedTests/dataIntegration/testChemoInformatics/testWriteRxnfile.m` |
 | `src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m` | error | A system without java stops with an undefined variable options | `test/verifiedTests/dataIntegration/testChemoInformatics/testCheckChemoinformaticDependencies.m` |
 | `src/dataIntegration/chemoInformatics/deleteProtons.m` | wrong-result | Reactions that carried only protons are removed from the reaction fields but not from S | `test/verifiedTests/dataIntegration/testChemoInformatics/testDeleteProtons.m` |
@@ -533,10 +561,14 @@
 | `src/dataIntegration/chemoInformatics/openBabelConverter.m` | error | Saving fails for every output format except mol | `test/verifiedTests/dataIntegration/testChemoInformatics/testOpenBabelConverter.m` |
 | `src/dataIntegration/chemoInformatics/openBabelConverter.m` | unusable-option | The documented output format rxn returns nothing | `test/verifiedTests/dataIntegration/testChemoInformatics/testOpenBabelConverter.m` |
 | `src/dataIntegration/chemoInformatics/openBabelConverter.m` | error | saveFileDir is documented as a directory but opened as a file | `test/verifiedTests/dataIntegration/testChemoInformatics/testOpenBabelConverter.m` |
+| `src/dataIntegration/chemoInformatics/reactions/findBondsBrokenAndFormed.m` | wrong-result | Exchange reactions without an RXN file get NaN, and the first reaction gets 0 | `test/verifiedTests/dataIntegration/testChemoInformatics/testFindBondsBrokenAndFormed.m` |
+| `src/dataIntegration/chemoInformatics/reactions/findEnthalpyChange.m` | error | A reaction whose products have no bond errors | `test/verifiedTests/dataIntegration/testChemoInformatics/testFindEnthalpyChange.m` |
 | `src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m` | unusable-option | The input method is ignored, method 1 (cumomer) cannot be selected | `test/verifiedTests/dataIntegration/testFitC13Data/testScoreC13Fit.m` |
 | `src/dataIntegration/fluxomics/calcMDVfromSamp.m` | error | A non-empty substrate label distribution glc stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCalcMDVfromSamp.m` |
 | `src/dataIntegration/fluxomics/compareMultSamp.m` | error | calcMDVfromSamp is called with four arguments, every non-empty sample set stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCompareMultSamp.m` |
 | `src/dataIntegration/fluxomics/compareTwoSamp.m` | error | calcMDVfromSamp is called as calcMDVfromSamp(points, measuredMetabolites), every call stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCompareTwoSamp.m` |
+| `src/dataIntegration/fluxomics/defineLinearConstraints.m` | wrong-result | Method 2 returns b_L and b_U that do not match the rows of A | `test/verifiedTests/dataIntegration/testFluxomics/testDefineLinearConstraints.m` |
+| `src/dataIntegration/fluxomics/defineLinearConstraints.m` | wrong-result | The reactions given an offset bound depend on the LP solver's feasible point | `test/verifiedTests/dataIntegration/testFluxomics/testDefineLinearConstraints.m` |
 | `src/dataIntegration/fluxomics/getBinsOfFluxes.m` | error | Every call with at least 200 samples stops with an error instead of returning the bins | `test/verifiedTests/dataIntegration/testFluxomics/testGetBinsOfFluxes.m` |
 | `src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m` | error | A suggestion list with fewer rows than columns stops with an index error | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m` |
 | `src/dataIntegration/metaboAnnotator/analyseMetStruct/acceptIDsSuggested.m` | wrong-result | IDsAdded keeps only the last accepted suggestion | `test/verifiedTests/dataIntegration/testMetaboAnnotator/testAcceptIDsSuggested.m` |
@@ -569,6 +601,8 @@
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | The documented essAA_excl flag and its default stop the call | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
 | `src/dataIntegration/metabotools/illustrate_ppp.m` | error | More than two metabolite pairs stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
 | `src/dataIntegration/metabotools/illustrate_ppp.m` | error | The mets of performPPP (one pair per row) do not select its results | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
+| `src/dataIntegration/metabotools/integrateGeneExpressionData.m` | limitation | A gene identifier that is not a number stops the call for two or more absent genes | `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m` |
+| `src/dataIntegration/metabotools/integrateGeneExpressionData.m` | error | A list of absent genes none of which is in the model stops with an error | `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | wrong-result | Only the first two phenotypes are plotted | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The colour order is changed for every later figure of the session | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The coordinates of every phenotype are printed to the console | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
@@ -577,7 +611,17 @@
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | cosmetic | The sample counter is printed for every sample | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | wrong-result | The table is not ordered by frequency as documented; the sorted copy goes to a differently spelled variable | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
+| `src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m` | wrong-result | A nonzero right hand side b is not scaled with the bounds | `test/verifiedTests/analysis/testFASTCORE/testLP10weighted.m` |
+| `src/dataIntegration/transcriptomics/FASTCORE/LP3.m` | cosmetic | The optional input basis is ignored | `test/verifiedTests/analysis/testFASTCORE/testLP3.m` |
+| `src/dataIntegration/transcriptomics/FASTCORE/LP7.m` | cosmetic | The optional input basis is ignored | `test/verifiedTests/analysis/testFASTCORE/testLP7.m` |
+| `src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m` | wrong-result | An empty set P returns no support although reactions of J carry flux | `test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m` |
+| `src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m` | error | Omitting the documented optional inputs stops with an error | `test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m` |
 | `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m` | wrong-result | The json format writes colour names without quotes | `test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m` |
+| `src/dataIntegration/transcriptomics/SWIFTCORE/core.m` | cosmetic | An infeasible LP ends with MATLAB's unassigned-output error | `test/verifiedTests/dataIntegration/testSWIFTCORE/testCore.m` |
+| `src/dataIntegration/transcriptomics/SWIFTCORE/core.m` | wrong-result | The weights of reversible and irreversible reactions are given to the wrong reactions | `test/verifiedTests/dataIntegration/testSWIFTCORE/testCore.m` |
+| `src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m` | error | Every call with reaction targets stops with an error | `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m` |
+| `src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m` | wrong-result | The documented default preprocessed = false (gene targets) is implemented as true | `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m` |
+| `src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m` | wrong-result | With softBounds the forward bounds are not softened | `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m` |
 | `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m` | wrong-result | With minSum the reported gene does not belong to the selected alternative | `test/verifiedTests/dataIntegration/testPreprocessing/testSelectGeneFromGPR.m` |
 | `src/design/GDLS.m` | error | A single knockout cost in the model stops with an error | `test/verifiedTests/design/testGDLS/testGDLS.m` |
 | `src/design/GDLS.m` | error | Options in a structure, or no options at all, stop with an error | `test/verifiedTests/design/testGDLS/testGDLS.m` |
@@ -595,6 +639,12 @@
 | `src/design/optEnvelope/optEnvelope.m` | error | The mid output is not assigned without mid points | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
 | `src/design/optEnvelope/optEnvelope.m` | unusable-option | The numKO option always stops with an error | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
 | `src/design/optEnvelope/optEnvelope.m` | wrong-result | With prodMol the peaks of the mid envelopes are zero | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
+| `src/design/optForce/findMustLL.m` | error | The documented default of excludedRxns (empty) is a function handle, so a call without it stops | `test/verifiedTests/design/testOptForce/testFindMustLL.m` |
+| `src/design/optForce/findMustLL.m` | wrong-result | The positions of the second reaction of each pair are not returned | `test/verifiedTests/design/testOptForce/testFindMustLL.m` |
+| `src/design/optForce/findMustUL.m` | error | The documented default of excludedRxns (empty) is a function handle, so a call without it stops | `test/verifiedTests/design/testOptForce/testFindMustUL.m` |
+| `src/design/optForce/findMustUL.m` | wrong-result | The positions of the second reaction of each pair are not returned | `test/verifiedTests/design/testOptForce/testFindMustUL.m` |
+| `src/design/optForce/findMustUU.m` | error | The documented default of excludedRxns (empty) is a function handle, so a call without it stops | `test/verifiedTests/design/testOptForce/testFindMustUU.m` |
+| `src/design/optForce/findMustUU.m` | wrong-result | The positions of the second reaction of each pair are not returned | `test/verifiedTests/design/testOptForce/testFindMustUU.m` |
 | `src/design/optForce/optForce.m` | error | A progress message of the option loop is written to the report file | `test/verifiedTests/design/testOptForce/testOptForce.m` |
 | `src/design/optForce/optForce.m` | cosmetic | A wrong exclusion type leaves the report open and the folder changed | `test/verifiedTests/design/testOptForce/testOptForce.m` |
 | `src/design/optForce/optForce.m` | cosmetic | The documented exclusion type D is not recognised when the inputs are recorded | `test/verifiedTests/design/testOptForce/testOptForce.m` |
@@ -606,6 +656,8 @@
 | `src/design/optForceGAMS/exportInputsMustOrder2ToGAMS.m` | error | Every call stops with the error that not all inputs are given | `test/verifiedTests/design/testOptForce/testExportInputsMustOrder2ToGAMS.m` |
 | `src/design/optForceGAMS/exportInputsMustToGAMS.m` | error | Every call stops with the error that not all inputs are given | `test/verifiedTests/design/testOptForce/testExportInputsMustToGAMS.m` |
 | `src/design/optForceGAMS/exportInputsOptForceToGAMS.m` | error | Every call stops on the undefined variable nSets and leaves the current folder changed | `test/verifiedTests/design/testOptForce/testExportInputsOptForceToGAMS.m` |
+| `src/design/optGeneFitness.m` | error | A knock-out that makes the model infeasible stops the function with an error | `test/verifiedTests/design/testDesign/testOptGeneFitness.m` |
+| `src/design/optGeneFitness.m` | limitation | The global hash table HTABLE is required but not documented | `test/verifiedTests/design/testDesign/testOptGeneFitness.m` |
 | `src/design/simpleOptKnock.m` | limitation | Single-deletion growth is stored in the first column in double-deletion mode | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/simpleOptKnock.m` | wrong-result | The wild-type minimum production is the maximum | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/reconstruction/comparison/modelBorgifier/TmodelStats.m` | wrong-result | The share of metabolites with a compartment ('Total' row) is inverted | `test/verifiedTests/reconstruction/testModelBorgifier/testTmodelStats.m` |
@@ -657,6 +709,8 @@
 | `src/reconstruction/demeter/suite/reports/printRefinementReport.m` | wrong-result | Aromatic amino acid results are reported as bile acids, bile acids as drugs, drugs are left out | `test/verifiedTests/reconstruction/testDemeter/testPrintRefinementReport.m` |
 | `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | wrong-result | growth on the defined medium is lost when the file holds only numbers | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
 | `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | cosmetic | the sensitivity column header loses its blank | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
+| `src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m` | wrong-result | A nonzero right hand side b is not scaled with the bounds | `test/verifiedTests/reconstruction/testFastGapFill/testLP9weighted.m` |
+| `src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m` | wrong-result | The bound of the auxiliary variables ignores the weights | `test/verifiedTests/reconstruction/testFastGapFill/testLP9weighted.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | A SUX structure without exchange reactions cannot be solved | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | An empty objective stops with an undefined variable | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
 | `src/reconstruction/growthExpMatch/printSolutionGEM.m` | error | A log file name shorter than four characters stops the function | `test/verifiedTests/reconstruction/testGrowthExpMatch/testPrintSolutionGEM.m` |
@@ -666,12 +720,12 @@
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'FR' method removes the last reaction of a group after testing the first two | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/checkDuplicateRxn.m` | wrong-result | the 'rxnAbbr' method returns the unique reactions as the duplicates | `test/verifiedTests/reconstruction/testCheckDuplicateRxn/testCheckDuplicateRxn.m` |
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
-| `src/reconstruction/modelGeneration/massBalance/checkBalance.m` | wrong-result | With exactly one metabolite without a formula, the wrong reactions are set to NaN | `test/verifiedTests/reconstruction/testModelGeneration/testCheckBalance.m` |
+| `src/reconstruction/modelGeneration/fluxConsistency/DCA/fastcc_nonconvex.m` | error | Every call stops with an error because LP7 is called with the wrong arguments | `test/verifiedTests/reconstruction/testDCA/testFastcc_nonconvex.m` |
+| `src/reconstruction/modelGeneration/fluxConsistency/GREEDY/checkFluxConsistency.m` | wrong-result | The stoichiometric matrix of the LP is zero | `test/verifiedTests/reconstruction/testModelGeneration/testCheckFluxConsistency.m` |
+| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | wrong-result | imBalancedMass is [] instead of an nRxn x 1 cell when every reaction is mass balanced | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
+| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | error | printLevel -1 and 2 stop when every reaction is mass balanced and a charge is not | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
+| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | cosmetic | printLevel 2 lists the mass balanced, charge imbalanced reactions by a stale index | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m` | wrong-result | A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1 | `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m` |
-| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | a mass-balanced reaction named DM_atp(c) is classified as an exchange | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
-| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | a model without c gets a c with one entry per metabolite | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
-| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | cosmetic | the biomass reaction found from biomassRxnAbbr is printed at every printLevel | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
-| `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m` | wrong-result | the exchange prefix Ex_ is never recognised | `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m` |
 | `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m` | cosmetic | Formula numbers in error messages lose their zero padding inside parentheses | `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m` |
 | `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | error | Every formula stops with an error because the group name FULLR2 contains a digit | `test/verifiedTests/reconstruction/testModelGeneration/testIspolymer.m` |
 | `src/reconstruction/modelGeneration/massBalance/numAtomsOfElementInFormula.m` | cosmetic | A formula given as a cell or number stops with a MATLAB error, not the class error | `test/verifiedTests/reconstruction/testModelGeneration/testNumAtomsOfElementInFormula.m` |
@@ -734,6 +788,16 @@
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | wrong-result | A numeric literal ID is not deleted | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/OrNode.m` | limitation | convertToCNF of an OrNode without children returns an empty AndNode, which evaluates to true, while the empty OrNode evaluates to false | `test/verifiedTests/reconstruction/testGPRLogic/testOrNode.m` |
 | `src/reconstruction/refinement/GPRLogic/combineChildren.m` | wrong-result | Identical generated clauses delete the earlier clause | `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | error | A coefficient vector c given as a column stops the call | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | cosmetic | The duplicate warning names the constraint matched by the last input row only | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | wrong-result | checkDuplicates does not detect an existing constraint that involves extra variables | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | wrong-result | checkDuplicates drops a distinct constraint of the input when the ids are not sorted | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | error | checkDuplicates stops when the model holds the constraint twice | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAConstraints.m` | error | checkDuplicates stops when the number of ids equals the number of constraints | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m` |
+| `src/reconstruction/refinement/addCOBRAVariables.m` | limitation | A single name given as a character array is rejected | `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAVariables.m` |
+| `src/reconstruction/refinement/addGenes.m` | limitation | A single gene id given as a character array is stored as a column of characters | `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m` |
+| `src/reconstruction/refinement/addGenes.m` | cosmetic | The error messages name reactions instead of genes | `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m` |
+| `src/reconstruction/refinement/addMetabolite.m` | cosmetic | The second EXAMPLE of the help text uses the parameter name metCharge and fails | `test/verifiedTests/reconstruction/testRefinement/testAddMetabolite.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | error | A formula whose first metabolite has no coefficient stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A new metabolite used twice in one call is added twice or loses a coefficient | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A proteins field of another size than the gene list discards the result | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
@@ -747,17 +811,22 @@
 | `src/reconstruction/refinement/changeCOBRAConstraints.m` | error | The documented constraint index cannot be used as constraintID | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAConstraints.m` |
 | `src/reconstruction/refinement/changeCOBRAVariable.m` | unusable-option | The documented option Name stops with an error | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m` |
 | `src/reconstruction/refinement/changeCOBRAVariable.m` | error | The documented variable index cannot be used as variableID | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m` |
+| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | A requested rxnGeneMat is created with one row per reaction up to the changed one | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
+| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | New genes do not extend the other gene fields | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
+| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | Translated gene names are taken from the wrong positions | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | cosmetic | A partly unknown reaction list is not reported | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | The extra reactions are drawn from a set that already contains the selected ones | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | With one metabolite to change, the random selection reduces the S row to a scalar | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
+| `src/reconstruction/refinement/convertToIrreversible.m` | wrong-result | Coupling constraints keep their sign for flipped (_r) reactions | `test/verifiedTests/reconstruction/testRefinement/testConvertToIrreversible.m` |
+| `src/reconstruction/refinement/convertToIrreversible.m` | error | orderReactions errors for a model with coupling constraints | `test/verifiedTests/reconstruction/testRefinement/testConvertToIrreversible.m` |
 | `src/reconstruction/refinement/extractSubSysModel.m` | wrong-result | A single subsystem name given as text selects almost every reaction | `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m` |
-| `src/reconstruction/refinement/getModelFieldsForType.m` | wrong-result | custom fields named after the type are missed for a model with one or no element of that type | `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | wrong-result | Logical fields are never compared | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | wrong-result | Text fields are compared with every non-word character removed, not only white space | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | cosmetic | The message for differing nested subSystems names prints 0 positions | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | error | Two models with different numbers of reactions stop with an error | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
 | `src/reconstruction/refinement/mergeModelFieldPositions.m` | error | A cell field that does not hold text or cell arrays cannot be merged | `test/verifiedTests/base/testTools/testMergeModelFieldPositions.m` |
 | `src/reconstruction/refinement/mergeTwoModels.m` | wrong-result | A field that cannot be concatenated is dropped with a debug message | `test/verifiedTests/reconstruction/testModelManipulation/testMergeTwoModels.m` |
+| `src/reconstruction/refinement/moveRxn.m` | wrong-result | Reaction-indexed fields are permuted along the wrong dimension when another dimension has the same size | `test/verifiedTests/reconstruction/testRefinement/testMoveRxn.m` |
 | `src/reconstruction/refinement/removeFieldEntriesForType.m` | error | removing genes from a model that has grRules but no rules field fails | `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | limitation | An order that repeats indices is accepted | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | unusable-option | The type proteins is accepted but always stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
@@ -815,6 +884,7 @@
 | `src/visualization/metabolicCartography/addNotes.m` | error | Subsystems stored as cells of cells raise an error | `test/verifiedTests/visualization/testMetabolicCartography/testAddNotes.m` |
 | `src/visualization/metabolicCartography/changeNodesArea.m` | error | The optional areaWidth is not defaulted when areaHeight is given | `test/verifiedTests/visualization/testMetabolicCartography/testChangeNodesArea.m` |
 | `src/visualization/metabolicCartography/colorProtein.m` | error | The default colour 'Red' is not a key of createColorsMap | `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m` |
+| `src/visualization/metabolicCartography/colorRxnsFromGenes.m` | error | A gene list with no gene of the model stops with an error | `test/verifiedTests/visualization/testMetabolicCartography/testColorRxnsFromGenes.m` |
 | `src/visualization/metabolicCartography/colorSubsystemCD.m` | wrong-result | Reactions with several subsystems shift the selection to the wrong reactions | `test/verifiedTests/visualization/testMetabolicCartography/testColorSubsystemCD.m` |
 | `src/visualization/metabolicCartography/defaultColorCD.m` | error | Secondary reaction lines are coloured with the undefined function Colors | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultColorCD.m` |
 | `src/visualization/metabolicCartography/defaultLookMap.m` | wrong-result | An included species named as an ion makes the main species of the same index an ION | `test/verifiedTests/visualization/testMetabolicCartography/testDefaultLookMap.m` |
@@ -843,6 +913,12 @@
 | `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | error | A custom colour scheme in the documented format stops with an index error | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
 | `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | wrong-result | A second call on the same folder counts the previous heatmap as a map | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
 | `src/visualization/metabolicCartography/visualizeNormalizedRxnPresence.m` | wrong-result | Reaction colours written in lower case are not counted as present | `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m` |
+| `src/visualization/paint4Net/Draw_by_met/findNearRxns.m` | error | A call that selects no metabolite fails | `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m` |
+| `src/visualization/paint4Net/Draw_by_met/findNearRxns.m` | error | A row cell Rxns with more than one reaction fails | `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m` |
+| `src/visualization/paint4Net/Draw_by_met/findNearRxns.m` | error | The documented defaults of direction and flux are not implemented | `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m` |
+| `src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m` | error | A call that selects no metabolite fails | `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m` |
+| `src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m` | error | A row cell Rxns with more than one reaction fails | `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m` |
+| `src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m` | error | The documented defaults of direction and flux are not implemented | `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m` |
 | `src/visualization/upsetPlot/upsetPlot.m` | error | Sets without any element stop with an index error | `test/verifiedTests/visualization/testUpsetPlot/testUpsetPlot.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | error | A reaction with several subsystems stops with an error | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
 | `src/visualization/visualizeEpistasis/findSubsystemOfGenes.m` | wrong-result | Only the last reaction of a gene gives its subsystem | `test/verifiedTests/visualization/testVisualizeEpistasis/testFindSubsystemOfGenes.m` |
@@ -996,6 +1072,84 @@
 - **Source lines**: 125
 - **Documented in**: `test/verifiedTests/analysis/testQFCA/testQFCA.m`
 
+### `src/analysis/coupling/addCouplingConstraint.m`
+
+#### A coefficient vector c in the documented k x 1 shape stops with an error
+
+- **Severity**: error
+- **Trigger**: model as above; addCouplingConstraint(model, {'R1','R2'}, [1; 2], 6, 'G')
+- **Observed**: (R2025a, 2026-11-23) "The logical indices in position 2 contain a true value outside of the array bounds." at line 230 of addCOBRAConstraints, which reads a column c as one coefficient per constraint row; the row [1 2] gives full(C) = [1 2 0], d = 6, dsense 'G', ctrs {'Constraint1'}
+- **Expected**: the help text documents c as a k x 1 vector, so the column [1; 2] gives the same constraint as the row [1 2]
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m`
+
+#### The EXAMPLE of the help text calls another function with an undefined C
+
+- **Severity**: cosmetic
+- **Trigger**: running the EXAMPLE as written
+- **Observed**: the EXAMPLE calls constrainRxnListAboveBound, not addCouplingConstraint, and passes the undefined C instead of the c it defines
+- **Expected**: an example that calls addCouplingConstraint with the variables it defines
+- **Source lines**: 33
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m`
+
+#### The documented optional inputs c, d and ineqSense cannot be omitted
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A -> B','B -> C', 'C -> '}, 'printLevel', 0); addCouplingConstraint(model, {'R1','R2'}) or addCouplingConstraint(model, {'R1','R2'}, [1 1], 6)
+- **Observed**: (R2025a, 2026-11-23) "Not enough input arguments." at line 35 for both calls: line 35 passes c, d and ineqSense to addCOBRAConstraints without a default
+- **Expected**: the help text lists c, d and ineqSense under OPTIONAL INPUTS, so a call without them adds a constraint with defaults (for example those of addCOBRAConstraints: c = 1 per reaction, sense 'L'), or the help text says they are required
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m`
+
+### `src/analysis/coupling/constrainRxnListAboveBound.m`
+
+#### A coefficient vector c in the documented k x 1 shape stops with an error
+
+- **Severity**: error
+- **Trigger**: model as above; constrainRxnListAboveBound(model, {'R1','R2'}, [1; 2], 6, 'G')
+- **Observed**: (R2025a, 2026-11-23) "The logical indices in position 2 contain a true value outside of the array bounds." at line 230 of addCOBRAConstraints, which reads a column c as one coefficient per constraint row; the row [1 2] gives full(C) = [1 2 0], d = 6, dsense 'G', ctrs {'Constraint1'}
+- **Expected**: the help text documents c as a k x 1 vector, so the column [1; 2] gives the same constraint as the row [1 2]
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m`
+
+#### The EXAMPLE of the help text passes an undefined variable C instead of c
+
+- **Severity**: cosmetic
+- **Trigger**: running the EXAMPLE as written
+- **Observed**: the EXAMPLE passes the undefined C instead of the c it defines
+- **Expected**: an example that calls constrainRxnListAboveBound with the variables it defines
+- **Source lines**: 33
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m`
+
+#### The documented optional inputs c, d and ineqSense cannot be omitted
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A -> B','B -> C', 'C -> '}, 'printLevel', 0); constrainRxnListAboveBound(model, {'R1','R2'}) or constrainRxnListAboveBound(model, {'R1','R2'}, [1 1], 6)
+- **Observed**: (R2025a, 2026-11-23) "Not enough input arguments." at line 35 for both calls: line 35 passes c, d and ineqSense to addCOBRAConstraints without a default
+- **Expected**: the help text lists c, d and ineqSense under OPTIONAL INPUTS, so a call without them adds a constraint with defaults (for example those of addCOBRAConstraints: c = 1 per reaction, sense 'L'), or the help text says they are required
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m`
+
+### `src/analysis/deletion/deleteModelGenes.m`
+
+#### Deleting a gene that is already marked deleted appends the suffix again
+
+- **Severity**: cosmetic
+- **Trigger**: model = deleteModelGenes(model, 'g1'); model = deleteModelGenes(model, 'g1')
+- **Observed**: (R2025a, 2026-11-23) model.genes{1} is 'g1_deleted_deleted' after the second call; the constraints are the same as after the first call, because lines 66 and 84 strip or search every '_deleted'
+- **Expected**: the gene name stays 'g1_deleted' ("appends '_deleted' to the gene(s)")
+- **Source lines**: 77
+- **Documented in**: `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m`
+
+#### The error for several genes that are not in the model joins their names
+
+- **Severity**: cosmetic
+- **Trigger**: deleteModelGenes(model, {'g8', 'g9'}) with neither gene in model.genes
+- **Observed**: (R2025a, 2026-11-23) error "Gene g8g9 not in model!": the names of the missing genes are concatenated without a separator
+- **Expected**: the missing gene names listed separately (for example "Genes g8, g9 not in model!")
+- **Source lines**: 108
+- **Documented in**: `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m`
+
 ### `src/analysis/dynamicFBA/dynamicFBA.m`
 
 #### The number of tracked exchange reactions is printed on every call
@@ -1070,6 +1224,28 @@
 - **Expected**: an empty list
 - **Source lines**: 29-34
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m`
+
+### `src/analysis/exploration/findMetabolicJunctions.m`
+
+#### Every call that finds a junction stops on an undefined variable
+
+- **Severity**: error
+- **Trigger**: model = struct('rxns', {{'A'; 'B'; 'C'}}, 'mets', {{'x[c]'}}, 'S', sparse([1 -1 -1]), 'c', [0; 0; 0], 'genes', {{'g1'; 'g2'; 'g3'}}, 'rules', {{'x(1)'; 'x(2)'; 'x(3)'}}); findMetabolicJunctions(model, 3)
+- **Observed**: (R2025a, 2026-11-23) error "Unrecognized function or variable 'verbFlag'." (line 56): verbFlag is neither an input nor defined in the function, so the first valid junction found always ends the call; only calls that find no junction (for example the same model with nRxnsJnc = 4) return, with an empty list
+- **Expected**: the list of junction metabolites ({'x(c)'} here, as lines 55 and 75-77 build it), with the verbose listing of lines 56-69 behind an optional flag
+- **Source lines**: 56-69
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testFindMetabolicJunctions.m`
+
+### `src/analysis/exploration/findNeighborRxns.m`
+
+#### withComp is not passed to the recursive call, so common metabolites count as edges from the second order on
+
+- **Severity**: wrong-result
+- **Trigger**: model = struct('rxns', {{'R1'; 'R2'; 'R3'}}, 'mets', {{'a[c]'; 'b[c]'; 'atp[c]'; 'adp[c]'}}, 'S', sparse([-1 0 0; 1 -1 0; -1 0 -1; 1 0 1]), 'genes', {{'g1'}}, 'rules', {{'x(1)'; ''; ''}}); findNeighborRxns(model, 'R2', true, 2, {'atp[c]', 'adp[c]'}, true)
+- **Observed**: (R2025a, 2026-11-23) {'R1'; 'R2'; 'R3'}: line 150 calls findNeighborRxns without withComp, so the recursion appends the compartment again ('atp[c][c]'), finds no common metabolite and links R1 to R3 through atp[c] and adp[c]; the same call with order 1 returns {'R1'}, and with commonMets {'atp', 'adp'} and withComp false (default) order 2 returns {'R1'; 'R2'}
+- **Expected**: {'R1'; 'R2'}, as for the equivalent call with withComp false: atp[c] and adp[c] "should not count as edges between reactions" at any order
+- **Source lines**: 149-150
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testFindNeighborRxns.m`
 
 ### `src/analysis/exploration/findRxnFromCompartment.m`
 
@@ -2224,6 +2400,55 @@
 - **Source lines**: 98-103, 116-117, 133-134, 199
 - **Documented in**: `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m`
 
+### `src/analysis/relaxedFBA/plotRelaxedFBA.m`
+
+#### The count of external bounds relaxed also counts internal lower bounds
+
+- **Severity**: cosmetic
+- **Trigger**: the main section below (R1 internal with p = 2, EX_A with p and q, EX_C with p, EX_B with q): the line "external lower or upper bounds relaxed"
+- **Observed**: (R2025a, 2026-11-23) "4 external lower or upper bounds relaxed": line 74 computes nnz(p | q & ~model.SIntRxnBool), and & binds before |, so every relaxed lower bound counts, also the internal one of R1
+- **Expected**: 3, i.e. nnz((p | q) & ~model.SIntRxnBool) (EX_A, EX_C and EX_B)
+- **Source lines**: 74
+- **Documented in**: `test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m`
+
+#### The first character of each reaction formula is printed as its character code
+
+- **Severity**: cosmetic
+- **Trigger**: the main section below (any table row)
+- **Observed**: (R2025a, 2026-11-23) the R1 row ends with "65[c]  -> B[c]" instead of "A[c]  -> B[c]": the format '%6g%-100s' gives the formula text to %6g first, which prints the code of its first character (65 for 'A')
+- **Expected**: the formula as text, e.g. "A[c]  -> B[c]" (one %s conversion)
+- **Source lines**: 106, 123, 140, 157
+- **Documented in**: `test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m`
+
+#### The tables of upper bound relaxations are headed "lower bounds relaxed"
+
+- **Severity**: cosmetic
+- **Trigger**: the main section below (R2 internal with q = 3, EX_B external with q = 0.7)
+- **Observed**: (R2025a, 2026-11-23) the R2 table is headed "1 internal reaction lower bounds relaxed..." and the EX_B table "1 external reaction lower bounds relaxed..."; with nothing relaxed the messages are "No internal reaction lower bounds relaxed" and "No external reaction lower bounds relaxed" twice each
+- **Expected**: "upper bounds" in the headings and messages of lines 117, 128, 151 and 162 (the tables select q ~= 0 and p == 0)
+- **Source lines**: 117, 128, 151, 162
+- **Documented in**: `test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m`
+
+### `src/analysis/relaxedFBA/relaxFBA_cappedL1.m`
+
+#### Omitting the documented option toBeUnblockedReactions stops with an error
+
+- **Severity**: error
+- **Trigger**: relaxFBA_cappedL1(model, struct('printLevel', 0, 'nbMaxIteration', 2)) with the model above (no toBeUnblockedReactions field), gurobi
+- **Observed**: (R2025a, 2026-11-23) 'Unrecognized field name "toBeUnblockedReactions".' at line 326 (relaxFBA_cappedL1_solveSubProblem): every other option gets a default in lines 70-141, this one none
+- **Expected**: a default of zeros(n, 1) (no reaction to unblock), as relaxedFBA uses
+- **Source lines**: 326
+- **Documented in**: `test/verifiedTests/analysis/testRelaxedFBA/testRelaxFBA_cappedL1.m`
+
+#### The documented option minLB is ignored and replaced by its default
+
+- **Severity**: unusable-option
+- **Trigger**: relaxFBA_cappedL1(model, param) with param.minLB set and no param.maxLB, e.g. model.S = sparse([1 -1]), b = 0, c = [0; 0], lb = [-5; 1], ub = [10; 10], csense = 'E', param = struct('minLB', -1, 'printLevel', 2, 'nbMaxIteration', 1, 'toBeUnblockedReactions', zeros(2, 1)), gurobi
+- **Observed**: (R2025a, 2026-11-23) the parameter display of line 151 shows minLB: -10: line 73 tests isfield(param, 'maxLB') (an option that is not documented or used) instead of 'minLB', so line 74 always overwrites minLB with min(-max(ub), min(lb)) = -10
+- **Expected**: minLB: -1 - a given minLB is kept and bounds the relaxed lower bounds (line 431)
+- **Source lines**: 73-74
+- **Documented in**: `test/verifiedTests/analysis/testRelaxedFBA/testRelaxFBA_cappedL1.m`
+
 ### `src/analysis/relaxedFBA/relaxedFBA.m`
 
 #### A generic LP without rxns and mets stops with an error
@@ -2573,6 +2798,17 @@
 - **Expected**: the progress ends at 100 % ((i - 1) * nRxns2 + j)
 - **Source lines**: 84
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testSampleScatterMatrix.m`
+
+### `src/analysis/sparseFBA/sparseFBA.m`
+
+#### A model with coupling constraints and checkEssentialSet = false stops with an error
+
+- **Severity**: error
+- **Trigger**: sparseFBA(model, 'max', false, false, 'cappedL1', 0) with model.S = sparse([1 -1 0; 0 1 -1]), b = [0; 0], c = [0; 0; 1], lb = zeros(3, 1), ub = 10 * ones(3, 1), csense = ['E'; 'E'], C = sparse([1 0 0]), d = 5, dsense = 'L', gurobi
+- **Observed**: (R2025a, 2026-11-23) 'Index in position 1 exceeds array bounds.' at line 535: line 452 sets essentialRxnBool = [] when the essential set is not checked, and line 535 then indexes it with (1:nRxns, 1); the same model with checkEssentialSet = true returns v = [5 5 5]
+- **Expected**: the sparse flux vector is returned (essentialRxnBool empty, as without C)
+- **Source lines**: 452, 535
+- **Documented in**: `test/verifiedTests/analysis/testFindSparsePathway/testSparseFBA.m`
 
 ### `src/analysis/subspaces/checkScaling.m`
 
@@ -3230,6 +3466,17 @@
 - **Source lines**: 991
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m`
 
+### `src/analysis/thermo/thermoFBA/fastSNP.m`
+
+#### The weight vector is returned in resInfo.weights, not in the documented resInfo.weight
+
+- **Severity**: cosmetic
+- **Trigger**: [N, resInfo] = fastSNP(model) for any model
+- **Observed**: (R2025a, gurobi, 2026-11-23) resInfo has the field weights and no field weight
+- **Expected**: the help text (OUTPUT resInfo) documents the field .weight
+- **Source lines**: 130
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testFastSNP.m`
+
 ### `src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m`
 
 #### The empty-producer branch labels the consumer axes
@@ -3444,6 +3691,26 @@
 - **Expected**: MoietyIndex = [1; 2; 2; 1; 3; 4] (each atom takes the moiety of the metabolite it belongs to), as for the same network with the atoms in the order A, B
 - **Source lines**: 883-890
 - **Documented in**: `test/verifiedTests/analysis/testConservedMoieties/testIdentifyConservedMoieties.m`
+
+### `src/analysis/topology/conservedMoieties/relateConservedMoietiesToConservationRelations.m`
+
+#### A conserved moiety that needs a negative coefficient stops with an error
+
+- **Severity**: error
+- **Trigger**: r1, r2 as above; relateConservedMoietiesToConservationRelations([r1 - r2; r1], [r1; r2]) or relateConservedMoietiesToConservationRelations([r1; r1], [r1; -r1])
+- **Observed**: (R2025a, gurobi, 2026-11-23) "Unable to perform assignment because the indices on the left side are not compatible with the size of the right side." at line 56: x >= 0 (line 40) makes the LP infeasible (or, for the second call, the maximisation unbounded) and the empty solution.full is assigned to X(j, :)
+- **Expected**: the help text asks only C*N = 0 and R*N = 0 and promises C = X*R, so X = [1 -1; 1 0] (first call), or a documented sign restriction and a defined result when no solution exists
+- **Source lines**: 40, 56
+- **Documented in**: `test/verifiedTests/analysis/testConservedMoieties/testRelateConservedMoietiesToConservationRelations.m`
+
+#### The LP maximises the sum of x, so X is not of minimal cardinality
+
+- **Severity**: wrong-result
+- **Trigger**: r1 = [1 0 1 0]; r2 = [0 1 0 1]; relateConservedMoietiesToConservationRelations(r1 + r2, [r1; r2; r1 + r2]) (rows of R are left null vectors of N = [-1; -1; 1; 1], A + B -> C + D)
+- **Observed**: (R2025a, gurobi, 2026-11-23) X = [1 1 0], cardinality 2: the LP has no osense field, so solveCobraLP uses its default -1 (maximise) and the objective ones(n, 1) maximises sum(x)
+- **Expected**: the help text promises rows of minimal cardinality; X = [0 0 1] (cardinality 1) also solves R'*x = C', and minimising sum(x) (osense = 1) returns it
+- **Source lines**: 39-42, 54-55
+- **Documented in**: `test/verifiedTests/analysis/testConservedMoieties/testRelateConservedMoietiesToConservationRelations.m`
 
 ### `src/analysis/topology/conservedMoieties/representativeMoiety.m`
 
@@ -4165,35 +4432,6 @@
 - **Source lines**: 20-21
 - **Documented in**: `test/verifiedTests/base/testInstall/testAdaptMacPath.m`
 
-### `src/base/install/getFilesInDir.m`
-
-#### An empty git listing returns the folder itself as a file
-
-- **Severity**: wrong-result
-- **Trigger**: d = tempname; mkdir(d); system(['cd ' d ' && git init -q .']); getFilesInDir('dirToList', d, 'type', 'tracked') (likewise type untracked in a repository without untracked files, and type all in an empty repository)
-- **Observed**: (R2025a, 2026-11-15) a 1 x 1 cell {[d '/']} for tracked and two copies of [d '/'] for all: strsplit(strtrim(''), '\n') gives {''}, which is then prefixed with the folder path
-- **Expected**: an empty cell array, since no file matches
-- **Source lines**: 98-100, 113, 117, 120, 150
-- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
-
-#### Folders are listed as files in folders not under git
-
-- **Severity**: wrong-result
-- **Trigger**: same folder as above; getFilesInDir('dirToList', d, 'checkSubFolders', true)
-- **Observed**: (R2025a, 2026-11-15) {[d '/sub'], [d '/a.txt'], [d '/sub/b.txt']}: rdir returns folders too, and they are kept
-- **Expected**: only files, {[d '/a.txt'], [d '/sub/b.txt']}, as in a git repository
-- **Source lines**: 107-108, 129-130
-- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
-
-#### The default checkSubFolders omits subfolders in folders not under git
-
-- **Severity**: wrong-result
-- **Trigger**: a folder d outside any git repository holding a.txt and sub/b.txt; getFilesInDir('dirToList', d)
-- **Observed**: (R2025a, 2026-11-15) {[d '/sub'], [d '/a.txt']}: the default of checkSubFolders is '' (false in the if at line 102), so rdir lists only the top level; with checkSubFolders = true the list also holds [d '/sub/b.txt']; in a git repository the same default lists the files of subfolders
-- **Expected**: the files of the subfolders as well, as the documented default true says
-- **Source lines**: 58, 102-106
-- **Documented in**: `test/verifiedTests/base/testInstall/testGetFilesInDir.m`
-
 ### `src/base/install/prepareTest.m`
 
 #### needsLinux makes every test skip on Linux
@@ -4540,6 +4778,35 @@
 - **Source lines**: 125
 - **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadBooleanRegModel.m`
 
+### `src/base/io/utilities/readCobrapyJSONModel.m`
+
+#### a metabolite identifier containing a brace makes the reaction stoichiometry unreadable
+
+- **Severity**: error
+- **Trigger**: a metabolite identifier with { or }, for example {"metabolites":[{"id":"A{x}"},{"id":"B"}],"reactions":[{"id":"R1", "metabolites":{"A{x}":-1,"B":1},"lower_bound":0,"upper_bound":1}]}
+- **Observed**: MATLAB R2025a, 2026-11-23: error "The number of reaction stoichiometries (0) differs from the number of reactions (1)." The pattern of line 96 does not allow braces inside a "metabolites" object
+- **Expected**: the model is read with S = [-1; 1]
+- **Source lines**: 96
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m`
+
+#### an empty model cannot be read
+
+- **Severity**: error
+- **Trigger**: the file of an empty cobrapy model, {"metabolites":[],"reactions":[],"genes":[],"id":"e"}
+- **Observed**: MATLAB R2025a, 2026-11-23: error "Input #2 expected to be a cell array, was double instead." at line 62: jsondecode returns an empty double for [], which is neither a struct nor a cell array
+- **Expected**: a model with no metabolites, reactions and genes
+- **Source lines**: 62, 74
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m`
+
+#### metabolite identifiers written with a \u escape are not found
+
+- **Severity**: error
+- **Trigger**: a metabolite identifier with a non-ASCII character, which Python's json.dump (ensure_ascii, the cobrapy default) writes as a \u escape, for example {"metabolites":[{"id":"A\u00e9"},{"id":"B"}],"reactions":[{"id":"R1", "metabolites":{"A\u00e9":-1,"B":1},"lower_bound":0,"upper_bound":1}]}
+- **Observed**: MATLAB R2025a, 2026-11-23: error "Metabolite Au00e9 of reaction R1 is not defined in the model." jsondecode decodes the identifier to A followed by char 233, but line 106 only removes the backslash of an escape, giving Au00e9
+- **Expected**: the model is read with S = [-1; 1], as the NOTE of the help says identifiers are kept exactly as written
+- **Source lines**: 106
+- **Documented in**: `test/verifiedTests/base/testIO/testUtilities/testReadCobrapyJSONModel.m`
+
 ### `src/base/io/utilities/readSBML.m`
 
 #### The documented default of defaultBound does not exist
@@ -4820,16 +5087,65 @@
 - **Source lines**: 142, 149
 - **Documented in**: `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m`
 
-### `src/base/solvers/cplex/setCplexParametersForProblem.m`
+### `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m`
 
-#### text values of problemTypeParams.method have no effect for MIQP
+#### An LP status 3 ends the iterations with status -1 instead of proceeding
+
+- **Severity**: wrong-result
+- **Trigger**: any problem for which solveCobraLP returns stat 3 for a sub-problem (for example ibm_cplex codes 5, 6, 10-12, 21, 22); reproduced with a stand-in solveCobraLP that returns stat 3: problem = struct('p', 2, 'q', 0, 'r', 0, 'A', [1 1], 'b', 1, 'csense', 'E', 'lb', [0; 0], 'ub', [2; 2], 'c', [0; 0]); rng(1); optimizeCardinality(problem)
+- **Observed**: (R2025a, stand-in solveCobraLP, 2026-11-23) the sub-problem prints "optimizeCardinality: LPsolution.stat == 3, proceeding but check inputs for numerical instability" and keeps the solution, but line 906 reads "case 1 || 3", which is "case true" and matches stat 1 only, so stat 3 falls to "otherwise": solution.stat = -1 and solution.x is the previous iterate (with gurobi, which never returns stat 3 for an LP, the same problem returns stat 1)
+- **Expected**: stat 3 is treated as stat 1, as the sub-problem (line 1159) and the final assignment (line 1059, solution.stat == 1 || solution.stat == 3) intend: "case {1, 3}"
+- **Source lines**: 906, 1037-1047
+- **Documented in**: `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m`
+
+#### The random warm start is not protected against infinite bounds
+
+- **Severity**: cosmetic
+- **Trigger**: problem = struct('p', 2, 'q', 0, 'r', 0, 'A', [1 1], 'b', 1, 'csense', 'E', 'lb', [-inf; -inf], 'ub', [2; 2], 'c', [0; 0]); rng(1); optimizeCardinality(problem, struct('printLevel', 1))
+- **Observed**: (R2025a, gurobi, 2026-11-23) the starting point is -Inf where lb is -Inf: line 741 starts from lb2, not from the clipped minlb2 that lines 736-739 compute "to protect against inf or -inf in bounds"; the first iteration prints ||dx|| = Inf and del_obj = NaN; the result (stat 1, obj 1) is not affected
+- **Expected**: a finite random starting point between minlb2 and maxub2
+- **Source lines**: 741
+- **Documented in**: `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m`
+
+### `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m`
+
+#### A Problem without the documented optional csense stops with an error
+
+- **Severity**: error
+- **Trigger**: Problem = struct('A', sparse([1 1; 1 -1]), 'b', [2; 0], 'lb', [0; 0], 'ub', [10; 10], 'c', [1; 1], 'osense', -1); buildCplexProblemFromCOBRAStruct(Problem), with a Cplex class (or a stand-in Cplex function) on the path
+- **Observed**: (R2025a, stand-in Cplex, 2026-11-23) "Unrecognized field name "csense"." at line 42, which reads Problem.csense before checking that the field exists
+- **Expected**: the help text lists csense as optional with the default assumption that all constraints are equalities, so lhs = rhs = b = [2; 0]
+- **Source lines**: 42
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBuildCplexProblemFromCOBRAStruct.m`
+
+#### The documented b_L and b_U are never used
+
+- **Severity**: wrong-result
+- **Trigger**: the Problem above with csense = '', b_L = [1; -inf] and b_U = [3; 0]
+- **Observed**: (R2025a, stand-in Cplex, 2026-11-23) Model.lhs = [2; 0] and Model.rhs = [2; 0], taken from b: line 53 tests isfield(Problem.csense, 'b_L'), which is false for any char csense, instead of isfield(Problem, 'b_L')
+- **Expected**: the help text says b_L and b_U are used if csense does not resolve the sides, so Model.lhs = [1; -inf] and Model.rhs = [3; 0]
+- **Source lines**: 53-56
+- **Documented in**: `test/verifiedTests/base/testSolvers/testBuildCplexProblemFromCOBRAStruct.m`
+
+### `src/base/solvers/cplex/checkSolFeas.m`
+
+#### A solution structure with .x and no .full field is an error
+
+- **Severity**: error
+- **Trigger**: LP.A = sparse([1 1 0; 0 1 -1]); LP.b = [2; 0]; LP.csense = ['E'; 'L']; LP.lb = [0; 0; 0]; LP.ub = [10; 10; 10]; checkSolFeas(LP, struct('x', [1; 1; 1]))
+- **Observed**: (R2025a, 2026-11-23) error "Unrecognized field name "full"." - the test for .x reads sol.full; with sol.x and an empty sol.full the call returns NaN
+- **Expected**: 0, the infeasibility of sol.x (the header: ".x - solution vector, read if .full is absent")
+- **Source lines**: 106-107
+- **Documented in**: `test/verifiedTests/base/testSolvers/testCheckSolFeas.m`
+
+#### The solution structure output is never returned and its stat is never set
 
 - **Severity**: unusable-option
-- **Trigger**: cp.setDefault = []; cp.Param = struct(); cp.DisplayFunc = @disp; ptp = struct('printLevel', 0, 'logFile', 0, 'feasTol', 1e-6, 'optTol', 1e-6, 'relMipGapTol', 1e-4, 'intTol', 1e-5, 'absMipGapTol', 0, 'timeLimit', 100, 'method', 'PRIMAL'); out = setCplexParametersForProblem(cp, ptp, struct(), 'MIQP')
-- **Observed**: (R2025a, 2026-11-15) out.Param.lpmethod.Cur = 4 (barrier) for 'PRIMAL' (and for every other text value). Lines 248-260 set lpmethod from the text value, then line 302 (else branch of the 'LP' test on line 268) sets lpmethod to 4 for every problem type other than 'LP'
-- **Expected**: INPUTS document .method as "LP/QP algorithm selector used when problemType is MIQP (numeric legacy code, or 'AUTOMATIC'/'PRIMAL'/...)", so 'PRIMAL' selects algorithm 1; the numeric values do take effect (method 0 gives qpmethod 1)
-- **Source lines**: 248-260, 302
-- **Documented in**: `test/verifiedTests/base/testSolvers/testSetCplexParametersForProblem.m`
+- **Trigger**: the same LP; s.full = [1; 1; 1]; [infeas, sol] = checkSolFeas(LP, s)
+- **Observed**: (R2025a, 2026-11-23) error "Output argument "varargout{2}" (and possibly others) not assigned a value in the execution with "checkSolFeas" function." - sol is overwritten by the vector sol.full, so isstruct(sol) is false and lines 154-160 (and the tol input) are never reached; with one output the call returns 0
+- **Expected**: infeas = 0 and sol = s with sol.stat = 1 (the header: "sol - solution structure, returned only when the input sol was itself a structure. If infeas <= tol, sol.stat = 1")
+- **Source lines**: 105, 153-160
+- **Documented in**: `test/verifiedTests/base/testSolvers/testCheckSolFeas.m`
 
 ### `src/base/solvers/cplex/solveCobraLPCPLEX_2018.m`
 
@@ -5016,6 +5332,35 @@
 - **Source lines**: 17, 19
 - **Documented in**: `test/verifiedTests/base/testSolvers/testGetAvailableSolversByType.m`
 
+### `src/base/solvers/getSetSolver/getCobraSolver.m`
+
+#### The documented default solverType LP is not implemented
+
+- **Severity**: error
+- **Trigger**: solverName = getCobraSolver()
+- **Observed**: (R2025a, 2026-11-23) "Not enough input arguments." (MATLAB:minrhs) at line 31; the help text says solverType is optional with default LP
+- **Expected**: the LP solver name, as getCobraSolver('LP') returns ('gurobi' in the same session)
+- **Source lines**: 31
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolver.m`
+
+#### The documented solverType all returns no solver name
+
+- **Severity**: error
+- **Trigger**: solverName = getCobraSolver('all')
+- **Observed**: (R2025a, 2026-11-23) "Output argument "solverName" (and possibly others) not assigned a value in the execution with "getCobraSolver" function." (MATLAB:unassignedOutputs); the switch has no case for 'all'
+- **Expected**: the solver names for all problem types, as the help text documents 'all'
+- **Source lines**: 31-47
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolver.m`
+
+#### validate given as false leaves solverOK unassigned
+
+- **Severity**: error
+- **Trigger**: [solverName, solverOK] = getCobraSolver('LP', false)
+- **Observed**: (R2025a, 2026-11-23) "Output argument "solverOK" (and possibly others) not assigned a value in the execution with "getCobraSolver" function." (MATLAB:unassignedOutputs); solverOK = NaN is set only when validate is omitted
+- **Expected**: solverName 'gurobi' and solverOK NaN, as the help text documents for false
+- **Source lines**: 26-29
+- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolver.m`
+
 ### `src/base/solvers/getSetSolver/getCobraSolverVersion.m`
 
 #### The documented input rootPathSolver has no effect
@@ -5026,35 +5371,6 @@
 - **Expected**: the version detected from the given solver installation path (INPUT rootPathSolver: "Path to the solver installation"), e.g. '1103'
 - **Source lines**: 38-40, 88, 91, 94
 - **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverVersion.m`
-
-### `src/base/solvers/gurobi/setGurobiParam.m`
-
-#### printLevel, feasTol and optTol are required although the fields are documented as optional
-
-- **Severity**: error
-- **Trigger**: setGurobiParam(struct())
-- **Observed**: error Unrecognized field name "printLevel". (MATLAB:nonExistentField); without OutputFlag and DisplayInterval the field printLevel is read, without FeasibilityTol the field feasTol, without OptimalityTol the field optTol
-- **Expected**: all fields optional (help text: with fields (all optional))
-- **Source lines**: 182, 194, 214, 223
-- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
-
-#### the warning for an unknown lpmethod names param.qpmethod
-
-- **Severity**: cosmetic
-- **Trigger**: param.lpmethod = 'FOO'
-- **Observed**: warning FOO is an unrecognised param.qpmethod for gurobi
-- **Expected**: the warning names param.lpmethod
-- **Source lines**: 145
-- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
-
-#### timelimit overrides TimeLimit although the help text says it is copied only when TimeLimit is absent
-
-- **Severity**: wrong-result
-- **Trigger**: setGurobiParam(struct('timelimit', 10, 'TimeLimit', 20, 'printLevel', 0, 'feasTol', 1e-7, 'optTol', 1e-8))
-- **Observed**: gurobiParam.TimeLimit = 10 (R2025a, 2026-11-15); line 80 copies timelimit unconditionally
-- **Expected**: TimeLimit = 20 kept, as the help text says timelimit is copied to TimeLimit if TimeLimit is absent
-- **Source lines**: 79-81
-- **Documented in**: `test/verifiedTests/base/testSolvers/testSetGurobiParam.m`
 
 ### `src/base/solvers/init/configEnvVars.m`
 
@@ -5119,35 +5435,6 @@
 - **Expected**: a message naming the solver type given, MILP
 - **Source lines**: 85
 - **Documented in**: `test/verifiedTests/base/testSolvers/testChangeCobraSolverParams.m`
-
-### `src/base/solvers/param/getCobraSolverParams.m`
-
-#### The global solver parameters are ignored when no paramStructure is given
-
-- **Severity**: wrong-result
-- **Trigger**: changeCobraSolverParams('LP', 'feasTol', 1e-9); getCobraSolverParams('LP', 'feasTol')
-- **Observed**: 1e-06 (the default of the script; overRideDefaults is 0 without a third input, so CBT_LP_PARAMS is never read)
-- **Expected**: 1e-09, the global value (header: "gets ... from paramStructure, the global cobra parameters variable or default values ... with the following priority paramStructure > solver type paramStructure > default paramStructure")
-- **Source lines**: 64-68, 169-176
-- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
-
-#### The structure output keeps the fields named in paramNames
-
-- **Severity**: wrong-result
-- **Trigger**: [v, s] = getCobraSolverParams('LP', 'feasTol', struct('feasTol', 1e-3, 'other', 5))
-- **Observed**: s has the fields feasTol (1e-3) and other (5)
-- **Expected**: per OUTPUTS, "paramStructureOut, with fields removed corresponding to paramNames" (only other); no caller in src/ uses this output, so the header is the likely error. Severity audit 2026-11-15: the struct returned keeps and sets exactly those fields (lines 166, 181), the opposite of the documented result
-- **Source lines**: 166, 181, 186
-- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
-
-#### paramStructure 'default' returns the global values instead of the defaults
-
-- **Severity**: wrong-result
-- **Trigger**: changeCobraSolverParams('LP', 'feasTol', 1e-9); getCobraSolverParams('LP', 'feasTol', 'default')
-- **Observed**: 1e-09 (the global value; overRideDefaults is set to 1 for 'default')
-- **Expected**: 1e-06 (OPTIONAL INPUTS: "paramStructure can be set to 'default' to use the default values set within this script"; the comment of line 56 reads "overide defaults unless hack is asking for defaults")
-- **Source lines**: 60-62
-- **Documented in**: `test/verifiedTests/base/testSolvers/testGetCobraSolverParams.m`
 
 ### `src/base/solvers/param/parseSolverParameters.m`
 
@@ -5772,6 +6059,35 @@
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m`
 
+### `src/dataIntegration/XomicsToModel/analysis/metUtilisation.m`
+
+#### Every call without param.modelName and param.saveFig errors
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1', 'R2', 'R3'}, {'n1', 'n2', 'n3'}, {'a[c] -> b[c]', 'b[c] -> c[c]', 'b[c] <=> d[c]'}, 'printLevel', 0); [graphData, summary] = metUtilisation(model, 'b[c]', [], 0)
+- **Observed**: (R2025a, 2026-11-23) "Unrecognized field name "modelName"." at line 721 after the graph and the summary were built; with param.modelName but no param.saveFig the error moves to line 722
+- **Expected**: both fields are optional (the help lists them as optional parameters and the calls with fewer than five inputs never set them): no file name is built and no figure is saved unless param.saveFig is true
+- **Source lines**: 721-722
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m`
+
+#### The default flux threshold is 1e6, not the documented 1e-6
+
+- **Severity**: wrong-result
+- **Trigger**: the model above; metUtilisation(model, 'b[c]', [1; 2; 3], 0)
+- **Observed**: (R2025a, 2026-11-23) "Index exceeds array bounds." at line 378: with param.treshold_v = 1e6 (line 124) no reaction is active (line 329), so the graph has no node; the message printed just before says "Default values for flux treshold (1e-6) and labels will be used"
+- **Expected**: the threshold 1e-6 of the help and the message, so R1, R2 and R3 are active
+- **Source lines**: 124
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m`
+
+#### The flux-sampling branch reads the nonexistent table variable metRxns
+
+- **Severity**: error
+- **Trigger**: the model above; param.modelName = 'm'; param.saveFig = false; metUtilisation(model, 'b[c]', [ones(1, 5); ones(1, 5); zeros(1, 5)], 0, param)
+- **Observed**: (R2025a, 2026-11-23) "Unrecognized table variable name 'metRxns'." at line 614: the summary table of line 225 has the variable rxns, not metRxns
+- **Expected**: edge labels "mean +/- sd" for the reactions of the summary (summary.rxns)
+- **Source lines**: 614, 616
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m`
+
 ### `src/dataIntegration/XomicsToModel/analysis/plotOverlapResults.m`
 
 #### The optional input savepath cannot be used
@@ -5782,6 +6098,17 @@
 - **Expected**: the figure saved as overlap_test.fig in savepath, with the working directory of the session unchanged
 - **Source lines**: 60-65
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotOverlapResults.m`
+
+### `src/dataIntegration/XomicsToModel/analysis/quanQualAcc.m`
+
+#### A predicted flux below boundPrecisionLimit is not treated as zero
+
+- **Severity**: wrong-result
+- **Trigger**: validationData = table({'EX_glc_D[e]'; 'EX_lac_L[e]'; 'EX_ala_L[e]'}, [-1; 2; 0], [0.1; 0.5; 0.2], 'VariableNames', {'rxns', 'mean', 'SD'}); predicted = table({'EX_glc_D[e]'; 'EX_lac_L[e]'; 'EX_ala_L[e]'}, [-0.8; 1e-9; 1e-9], 'VariableNames', {'rxns', 'v'}); c = quanQualAcc(validationData, predicted)
+- **Observed**: (R2025a, 2026-11-23, feasTol 1e-6 so boundPrecisionLimit 1e-5) the row of EX_ala_L[e] has target 0, v 1e-09, predict 1, agree false; EX_lac_L[e] has v 1e-09, predict 1, agree true - line 104 compares abs(sign(v)), which is 0 or 1, with the limit instead of abs(v)
+- **Expected**: predict 0 for both (the header: boundPrecisionLimit is the "flux magnitude below which a value is treated as zero"; the comment at lines 102-103: "if the predicted flux magnitude is below fluxEpsilon, the predicted flux is considered zero"), so agree true for EX_ala_L[e] and false for EX_lac_L[e]
+- **Source lines**: 104
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testQuanQualAcc.m`
 
 ### `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m`
 
@@ -5857,6 +6184,17 @@
 - **Source lines**: 1244
 - **Documented in**: `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m`
 
+### `src/dataIntegration/XomicsToModel/metabolomics/mediaConstraints.m`
+
+#### The lower bound set is 1e4 times the highest uptake rate
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'EX_a','EX_b','EX_c','R1','DM_d'}, {'a','b','c','d','e'}, {' a[e] <=> ',' b[e] <=> ',' c[e] <=> ','a[e] + b[e] -> c[e] + d[c]','d[c] -> '}, 'lowerBoundList', [-10 -10 -10 0 0], 'upperBoundList', [10 10 10 10 10]); model.metInChIString = {'InChI=a'; 'InChI=b'; 'InChI=c'; 'InChI=d'}; m2 = mediaConstraints(model, [-2 -3; 1 4; -1 5], {'InChI=a'; 'InChI=c'; 'InChI=z'}, {'nameA'; 'nameC'; 'nameZ'})
+- **Observed**: (R2025a, 2026-11-23) m2.lb(1) (EX_a) = -30000 for the uptake rates -2 and -3; line 37 multiplies min(min(Rates(i,:)), 0) by 1e4, a factor the help text does not mention (the secretion-only metabolite c correctly gets lower bound 0, the unmapped name nameZ is returned in metsUnmapped)
+- **Expected**: m2.lb(1) = -3, the highest uptake rate set as the lower bound, as the help text (and the original description: "sets this value as a lower boundary") says
+- **Source lines**: 37
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testMediaConstraints.m`
+
 ### `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m`
 
 #### The option saveFigures cannot be used
@@ -5906,6 +6244,17 @@
 - **Source lines**: 97, 102
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testSummaryConcentrations.m`
 
+### `src/dataIntegration/XomicsToModel/prepareData/preprocessingOmicsModel.m`
+
+#### A workbook written by MATLAB writetable is an error
+
+- **Severity**: error
+- **Trigger**: f = fullfile(tempname, 'in.xlsx'), its folder made with mkdir; writetable(table({'g1'; 'g2'}, 'VariableNames', {'genes'}), f, 'Sheet', 'activeGenes'); preprocessingOmicsModel(f, 1, 1)
+- **Observed**: (R2025a, Linux, 2026-11-23) error "Brace indexing is not supported for variables of this type." - xlsfinfo returns, instead of the sheet names, the text "Unreadable Excel file: Could not open file .../docProps/app.xml. No such file or directory." (the workbook has no docProps/app.xml), and line 61 indexes that text with braces; with a docProps/app.xml added, xlsfinfo lists no sheet (it does not recognise the worksheet relations MATLAB writes) and only specificData.inputData is returned; readtable reads the same workbook
+- **Expected**: specificData.activeGenes = {'g1'; 'g2'} (the header: every sheet of the file is read; sheetnames, the replacement of xlsfinfo, lists the sheets of such a file)
+- **Source lines**: 57, 60-62
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testPreprocessingOmicsModel.m`
+
 ### `src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m`
 
 #### The histogram marks the threshold at 2 whatever threshold is given
@@ -5925,6 +6274,17 @@
 - **Expected**: inactive = {'a'}, the proteins whose expression is below the threshold, the complement of the active set
 - **Source lines**: 39
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m`
+
+### `src/dataIntegration/chemoInformatics/RXN/findRXNFiles.m`
+
+#### internalRxnBool is not assigned when every reaction has an RXN file
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1'}, {''}, {'h2[c] -> 2 h[c]'}, 'printLevel', 0); a folder holding R1.rxn; [metRXNBool, rxnRXNBool, internalRxnBool] = findRXNFiles(model, folder)
+- **Observed**: (R2025a, 2026-11-23) "Output argument "internalRxnBool" (and possibly others) not assigned a value in the execution with "findRXNFiles" function." (MATLAB:unassignedOutputs): internalRxnBool is set only inside the block of line 45, which runs when some reaction has no RXN file; with two outputs the call works
+- **Expected**: the documented n x 1 internalRxnBool (here true, R1 is internal), as findRXNFilesPlain returns it
+- **Source lines**: 45-73
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testFindRXNFiles.m`
 
 ### `src/dataIntegration/chemoInformatics/RXN/writeRxnfile.m`
 
@@ -6161,6 +6521,28 @@
 - **Source lines**: 123-125
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testOpenBabelConverter.m`
 
+### `src/dataIntegration/chemoInformatics/reactions/findBondsBrokenAndFormed.m`
+
+#### Exchange reactions without an RXN file get NaN, and the first reaction gets 0
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1', 'EX_h2', 'R3'}, {'', '', ''}, {'h2[c] -> 2 h[c]', 'h2[c] <=> ', 'h[c] -> q[c]'}, 'printLevel', 0); a folder holding only R1.rxn (H2 -> H + H, one single bond broken); findBondsBrokenAndFormed(model, {'R3'; 'EX_h2'; 'R1'}, folder, 0)
+- **Observed**: (R2025a, 2026-11-23) [0 NaN 1]: line 223 tests ismember(i, exIdx) with exIdx = ExchRxnBool(rxnsIdx) a logical vector, which is true only for i = 1 when the list holds an exchange reaction
+- **Expected**: [NaN 0 1] as the help says (R3 has no file, EX_h2 is an exchange reaction), i.e. exIdx(i) as in findEnthalpyChange
+- **Source lines**: 223, 226, 231
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testFindBondsBrokenAndFormed.m`
+
+### `src/dataIntegration/chemoInformatics/reactions/findEnthalpyChange.m`
+
+#### A reaction whose products have no bond errors
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1', 'EX_h2', 'R3'}, {'', '', ''}, {'h2[c] -> 2 h[c]', 'h2[c] <=> ', 'h[c] -> q[c]'}, 'printLevel', 0); a folder holding R1.rxn (H2 -> H + H, atoms mapped 1 and 2, one single bond in the substrate); findEnthalpyChange(model, model.rxns, folder, 0)
+- **Observed**: (R2025a, 2026-11-23) "Unrecognized function or variable 'matrixS_BBF'." at line 227 (case 1 of the switch, bonds only in the substrates): the line was copied from findBondsBrokenAndFormed and refers to a matrix this function never builds
+- **Expected**: the H-H bond enthalpy of the bond table ('1 H H') for R1, NaN for R3 (no file) and 0 for EX_h2 (exchange)
+- **Source lines**: 227
+- **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testFindEnthalpyChange.m`
+
 ### `src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m`
 
 #### The input method is ignored, method 1 (cumomer) cannot be selected
@@ -6204,6 +6586,26 @@
 - **Expected**: calcMDVfromSamp(xglc, samp.points, experiment) for each sample, then the z-scores of compareTwoMDVs
 - **Source lines**: 57-58
 - **Documented in**: `test/verifiedTests/dataIntegration/testFluxomics/testCompareTwoSamp.m`
+
+### `src/dataIntegration/fluxomics/defineLinearConstraints.m`
+
+#### Method 2 returns b_L and b_U that do not match the rows of A
+
+- **Severity**: wrong-result
+- **Trigger**: lm.S = sparse([1 -1 0 0; 0 1 -1 -1]); lm.mets = {'A'; 'B'}; lm.lb = [1; 0; 0; 0]; lm.ub = [10; 10; 10; 10]; lm.N = null(full(lm.S)); [A, b_L, b_U] = defineLinearConstraints(lm, 2)
+- **Observed**: (R2025a, 2026-11-23, gurobi) size(A) = [2 4], b_L = [1 1e-4], b_U = [10 10]: line 163 tests the m rows of A = S but lines 164-165 index the n reaction bounds with that m-element mask, which keeps the first m reaction bounds; with more metabolites than reactions (S = sparse([1 -1; 1 -1; 1 -1]), lb = [1; 0], ub = [10; 10]) the call stops with "The logical indices contain a true value outside of the array bounds." (MATLAB:badsubscript) at line 164
+- **Expected**: bounds that belong to A = S as the help text says ("lower bounds on the constraints": one per row of S), or the n reaction bounds that fitC13Data's method-2 branch takes as variable bounds; not the bounds of the first m reactions
+- **Source lines**: 157-158, 163-165
+- **Documented in**: `test/verifiedTests/dataIntegration/testFluxomics/testDefineLinearConstraints.m`
+
+#### The reactions given an offset bound depend on the LP solver's feasible point
+
+- **Severity**: wrong-result
+- **Trigger**: lm as above; [A, b_L, b_U] = defineLinearConstraints(lm) (gurobi)
+- **Observed**: (R2025a, 2026-11-23) b_L = [1 1e-4 0 1e-4]: reaction 4 gets the lower bound 1e-4 and reaction 3 does not, although both export B with identical columns and bounds and neither is forced away from zero (v = [1 1 1 0] and [1 1 0 1] are both feasible); in the first iteration nothing is marked, so lines 118-119 set the objective to zero and lines 131-133 mark whatever reactions the returned feasible point uses
+- **Expected**: the offset only for reactions forced away from zero, as the help text says (here reaction 2: b_L = [1 1e-4 0 0]); in any reading, reactions 3 and 4 treated alike and a result that does not depend on the solver's choice of feasible point
+- **Source lines**: 118-119, 131-133
+- **Documented in**: `test/verifiedTests/dataIntegration/testFluxomics/testDefineLinearConstraints.m`
 
 ### `src/dataIntegration/fluxomics/getBinsOfFluxes.m`
 
@@ -6529,6 +6931,26 @@
 - **Source lines**: 27, 29, 31, 44-45, 50, 96
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m`
 
+### `src/dataIntegration/metabotools/integrateGeneExpressionData.m`
+
+#### A gene identifier that is not a number stops the call for two or more absent genes
+
+- **Severity**: limitation
+- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'}, {'R1'; 'R2'; 'R3'}, {' -> A'; 'A -> B'; 'B -> '}, 'grRuleList', {''; '535.1'; 'b0001'}); integrateGeneExpressionData(model, [535; 7])
+- **Observed**: (R2025a, 2026-11-23) MATLAB:sizeDimensionsMustMatch "Arrays have incompatible sizes for this operation.": str2num('b0001') is empty and dataGenes == [] has incompatible sizes for a non-scalar dataGenes (with a scalar dataGenes the non-numeric gene is skipped and the call succeeds)
+- **Expected**: the non-numeric gene skipped, as for a scalar dataGenes
+- **Source lines**: 28
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m`
+
+#### A list of absent genes none of which is in the model stops with an error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1'; 'R2'}, {'R1'; 'R2'}, {' -> A'; 'A -> '}, 'grRuleList', {''; '535.1'}); integrateGeneExpressionData(model, 99) (the same with dataGenes = [] or [99; 98])
+- **Observed**: (R2025a, 2026-11-23) MATLAB:UndefinedFunction "Unrecognized function or variable 'ExpressionData'.": the structure ExpressionData is created only inside the loop when a transcript matches, and is read unconditionally by the deleteModelGenes call
+- **Expected**: the model returned unchanged (no gene to constrain)
+- **Source lines**: 40
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m`
+
 ### `src/dataIntegration/metabotools/make3Dplot.m`
 
 #### Only the first two phenotypes are plotted
@@ -6611,6 +7033,59 @@
 - **Source lines**: 137
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m`
 
+### `src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m`
+
+#### A nonzero right hand side b is not scaled with the bounds
+
+- **Severity**: wrong-result
+- **Trigger**: LPp.A = sparse([1 -1; 1 0]); LPp.b = [0; 1]; LPp.csense = ['E'; 'E']; LPp.lb = [0; 0]; LPp.ub = [10; 10]; model.S = LPp.A(1, :); V = LP10weighted([1; 1], 2, 1, model, LPp, 1e-4) (gurobi)
+- **Observed**: (R2025a, 2026-11-23) "0 = sol.stat", "INFEASIBLE = sol.origStat", the warning "LP solution may not be optimal" and V = [NaN NaN]: line 58 scales the core bound (v(2) >= 1e-4 * 1e5 = 10) and lines 61-62 the bounds, but line 50 keeps b unscaled, so v(1) = 1 and v(2) >= 10 cannot both hold
+- **Expected**: an optimal solution (v = [1; 1] is feasible for the unscaled problem: v(1) = 1, v(2) = 1 >= 1e-4), as LP10 returns for the same problem because it scales b (line 145)
+- **Source lines**: 50, 65
+- **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testLP10weighted.m`
+
+### `src/dataIntegration/transcriptomics/FASTCORE/LP3.m`
+
+#### The optional input basis is ignored
+
+- **Severity**: cosmetic
+- **Trigger**: [v, basis] = LP3(J, model, LPproblem); LP3(J, model, LPproblem, basis)
+- **Observed**: (R2025a, 2026-11-23, gurobi) line 58 sets basis = [] before the solve, so the basis passed in is never given to solveCobraLP (lines 71-72 cannot run; the comment of line 67 says the basis cannot be reused); the optimum is the same, only the warm start the help text promises does not happen
+- **Expected**: the basis used to warm-start the LP solve, as the help text says, or the help text saying that the input is ignored
+- **Source lines**: 58, 70-72
+- **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testLP3.m`
+
+### `src/dataIntegration/transcriptomics/FASTCORE/LP7.m`
+
+#### The optional input basis is ignored
+
+- **Severity**: cosmetic
+- **Trigger**: [v, basis] = LP7(J, model, LPproblem, epsilon); LP7(J, model, LPproblem, epsilon, basis)
+- **Observed**: (R2025a, 2026-11-23, gurobi) line 58 sets basis = [] before the solve, so the basis passed in is never given to solveCobraLP (lines 73-74 cannot run; the comment of line 69 says the basis cannot be reused); the optimum is the same, only the warm start the help text promises does not happen
+- **Expected**: the basis used to warm-start the LP solve, as the help text says, or the help text saying that the input is ignored
+- **Source lines**: 58, 69-74
+- **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testLP7.m`
+
+### `src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m`
+
+#### An empty set P returns no support although reactions of J carry flux
+
+- **Severity**: wrong-result
+- **Trigger**: with model and LPproblem as above, findSparseMode([1 2], [], false, model, LPproblem, 1e-4, 0, [], [])
+- **Observed**: (R2025a, gurobi, 2026-11-23) Supp = [] (0 x 0): LP7 finds R1 and R2 active (K = [1 2]), but LP10 returns [] at once for an empty P (LP10 lines 35-36) and line 71 takes the support of that empty vector. Through fastcore: fastcore(model, 1:3, 1e-4, 0) on the consistent chain R1 (-> A), R2 (A -> B), R3 (B ->) (every reaction in the core, so P is empty) warns "Global network is not flux consistent, ignoring the following irreversible core reactions" and lists R1, R2 and R3
+- **Expected**: the help text says [] is returned only "if no reaction from J can get flux above epsilon"; with nothing to minimise, the support of the LP7 flux vector (here R1, R2, R3) is the sparse mode
+- **Source lines**: 70-71
+- **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m`
+
+#### Omitting the documented optional inputs stops with an error
+
+- **Severity**: error
+- **Trigger**: chain R1 (-> A), R2 (A -> B), R3 (B ->): S = sparse([1 -1 0; 0 1 -1]); model.S = S; LPproblem = struct('A', S, 'b', zeros(2, 1), 'csense', ['E'; 'E'], 'lb', zeros(3, 1), 'ub', 10 * ones(3, 1)); findSparseMode([1 2], 3, false, model, LPproblem, 1e-4) (also with 7 or 8 inputs)
+- **Observed**: (R2025a, gurobi, 2026-11-23) error "Not enough input arguments." at line 43 with 6 inputs and at line 50 with 7 or 8 inputs: lines 43 and 50 call isempty on adaptiveScalingFlag and nonPen without checking that they were passed, and the defaults of epsilon (line 40) and basis (line 36) can therefore never be used
+- **Expected**: the help text lists adaptiveScalingFlag, basis and nonPen as OPTIONAL INPUT and gives epsilon a default, so the call with 6 inputs returns the support [1; 2; 3] that the full call findSparseMode([1 2], 3, false, model, LPproblem, 1e-4, 0, [], []) returns
+- **Source lines**: 36, 40, 43, 50
+- **Documented in**: `test/verifiedTests/analysis/testFASTCORE/testFindSparseMode.m`
+
 ### `src/dataIntegration/transcriptomics/MOOMIN/writeMoominOutput.m`
 
 #### The json format writes colour names without quotes
@@ -6621,6 +7096,55 @@
 - **Expected**: quoted values, {"rxn1": "red", "rxn2": "blue", "rxn3": "yellow"}
 - **Source lines**: 140-141, 148-149
 - **Documented in**: `test/verifiedTests/dataIntegration/testMOOMIN/testWriteMoominOutput.m`
+
+### `src/dataIntegration/transcriptomics/SWIFTCORE/core.m`
+
+#### An infeasible LP ends with MATLAB's unassigned-output error
+
+- **Severity**: cosmetic
+- **Trigger**: m.S = speye(2); m.rev = [0; 0]; m.lb = [0; 0]; m.ub = [10; 10]; core(m, [0; 0], [0; 1], 'gurobi') (the core reaction 1 is forced to carry flux but cannot)
+- **Observed**: (R2025a, 2026-11-23, gurobi) the warning "Optimization was stopped with status 0" and then 'Output argument "flux" (and possibly others) not assigned a value'
+- **Expected**: an error that names the cause (the LP status), or an output that marks the failure
+- **Source lines**: 71-75
+- **Documented in**: `test/verifiedTests/dataIntegration/testSWIFTCORE/testCore.m`
+
+#### The weights of reversible and irreversible reactions are given to the wrong reactions
+
+- **Severity**: wrong-result
+- **Trigger**: an irreversible weighted reaction placed before a reversible weighted one with another weight; m.S = sparse([1 -1 -1]); m.rev = [0; 0; 1]; m.lb = [0; 0; -10]; m.ub = [10; 10; 10]; rng(0); flux = core(m, [0; 0; 0], [0; 10; 1], 'gurobi')
+- **Observed**: (R2025a, 2026-11-23, gurobi) flux = [1 1 0]: the flux leaves through R2 (weight 10) instead of R3 (weight 1). Line 36 orders the penalty variables as [reversible weighted; irreversible weighted], while lines 39-41 pair the i-th penalty variable with the i-th weighted reaction in model order, so R2 is charged the weight of R3 and R3 the weight of R2; with R2 reversible and R3 irreversible (weights [0; 1; 10]) the flux correctly uses the cheaper R2
+- **Expected**: each reaction penalised by its own weight: flux = [1 0 1] (cost 1 instead of 10)
+- **Source lines**: 36, 39-41
+- **Documented in**: `test/verifiedTests/dataIntegration/testSWIFTCORE/testCore.m`
+
+### `src/dataIntegration/transcriptomics/eFlux/applyEFluxConstraints.m`
+
+#### Every call with reaction targets stops with an error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A <=> B','B -> C', 'C -> '}, 'printLevel', 0, 'grRuleList', {'g1','g2 or g3','g1 and g2'}); applyEFluxConstraints(model, struct('target', {{'R1';'R2'}}, 'value', [2; 4], 'preprocessed', true))
+- **Observed**: (R2025a, 2026-11-23) "Conversion to double from cell is not possible." at line 82, which assigns expression.target (the names) instead of expression.value; the same error occurs when no target is a reaction of the model
+- **Expected**: per the help text (.value is the value of each target), lb = [-0.5; 0; 0] and ub = [0.5; 1; 1]: R1 and R2 get 2/4 and 4/4, R3 has no value and stays unconstrained (bound 1)
+- **Source lines**: 82
+- **Documented in**: `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m`
+
+#### The documented default preprocessed = false (gene targets) is implemented as true
+
+- **Severity**: wrong-result
+- **Trigger**: model as above; applyEFluxConstraints(model, struct('target', {{'g1';'g2';'g3'}}, 'value', [2; 4; 1])) (no preprocessed field)
+- **Observed**: (R2025a, 2026-11-23) "Conversion to double from cell is not possible." at line 82: lines 51-53 set preprocessed = true, so the gene targets are read as reactions
+- **Expected**: the help text gives "Default: false", so the genes are mapped to reactions as with 'preprocessed', false, which gives lb = [-0.4; 0; 0] and ub = [0.4; 1; 0.4]
+- **Source lines**: 51-53
+- **Documented in**: `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m`
+
+#### With softBounds the forward bounds are not softened
+
+- **Severity**: wrong-result
+- **Trigger**: model as above; applyEFluxConstraints(model, struct('target', {{'g1';'g2';'g3'}}, 'value', [2; 4; 1], 'preprocessed', false), 'softBounds', true)
+- **Observed**: (R2025a, 2026-11-23) evars {'Alpha_R1','Beta_R1','Beta_R2','Beta_R3'}, full(C) = [1 0 0; 1 0 0; 0 1 0; 0 0 1], full(D) = eye(4), d = [-0.4 0.4 1 0.4], dsense 'GLLL', evarlb 0: the forward rows read v + beta <= e with beta >= 0, so beta can only tighten the bound and a forward flux can never exceed e (the backward rows v + alpha >= -e are softened as intended)
+- **Expected**: flexibility variables that relax the forward bounds, v - beta <= e (D coefficient -1), penalised by weightFactor as the backward ones are
+- **Source lines**: 113, 117
+- **Documented in**: `test/verifiedTests/dataIntegration/testEFlux/testApplyEFluxConstraints.m`
 
 ### `src/dataIntegration/transcriptomics/preprocessing/selectGeneFromGPR.m`
 
@@ -6789,6 +7313,66 @@
 - **Source lines**: 240
 - **Documented in**: `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m`
 
+### `src/design/optForce/findMustLL.m`
+
+#### The documented default of excludedRxns (empty) is a function handle, so a call without it stops
+
+- **Severity**: error
+- **Trigger**: the model and inputs above; findMustLL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, 'printLevel', 0, 'printExcel', 0), with or without 'printReport', 0, 'keepInputs', 0
+- **Observed**: (R2025a, 2026-11-23) "Brace indexing is not supported for variables of this type." at line 249 (report on, the default); with 'printReport', 0, 'keepInputs', 0: "Input A of class cell and input B of class function_handle must be the same class, unless one is double." in intersect, called from line 425. Line 159 passes the validation function as the default value (addParamValue has no validator argument here)
+- **Expected**: excludedRxns defaults to an empty list (help text: "Default: empty") and a call without it searches all reactions
+- **Source lines**: 159, 248-250, 421, 425
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustLL.m`
+
+#### The positions of the second reaction of each pair are not returned
+
+- **Severity**: wrong-result
+- **Trigger**: any call that finds a set; reproduction: model = getDistributedModel('AntCore.mat'); model.c(strcmp(model.rxns, 'R75')) = 1; lower bounds of EX_gluc, EX_o2, EX_so4, EX_nh3, EX_cit, EX_glyc set to -100; model = changeObjective(model, 'EX_suc'); [minFluxesW, maxFluxesW] = FVAOptForce(model, struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b'), struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], 'rxnBoundType', 'bb')); constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]'); findMustLL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, 'excludedRxns', exchangeRxns, 'printLevel', 0, 'printExcel', 0), exchangeRxns = the reactions named EX_*
+- **Observed**: (R2025a, 2026-11-23, gurobi) with 'excludedRxns' set to the EX_* reactions the 687 sets found all have posMustLL(:, 2) = 0, while mustLL(:, 2) holds the second reaction (for example mustLL(1, :) = {'R37', 'R73'}, posMustLL(1, :) = [37 0]): line 298 repeats line 297 and column 2 is never assigned
+- **Expected**: posMustLL(i, :) holds the positions of both reactions of mustLL(i, :), as the help text says (number of sets found x 2)
+- **Source lines**: 297-298
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustLL.m`
+
+### `src/design/optForce/findMustUL.m`
+
+#### The documented default of excludedRxns (empty) is a function handle, so a call without it stops
+
+- **Severity**: error
+- **Trigger**: the model and inputs above; findMustUL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, 'printLevel', 0, 'printExcel', 0), with or without 'printReport', 0, 'keepInputs', 0
+- **Observed**: (R2025a, 2026-11-23) "Brace indexing is not supported for variables of this type." at line 247 (report on, the default); with 'printReport', 0, 'keepInputs', 0: "Input A of class cell and input B of class function_handle must be the same class, unless one is double." in intersect, called from line 423. Line 158 passes the validation function as the default value (addParamValue has no validator argument here)
+- **Expected**: excludedRxns defaults to an empty list (help text: "Default: empty") and a call without it searches all reactions
+- **Source lines**: 158, 246-248, 419, 423
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustUL.m`
+
+#### The positions of the second reaction of each pair are not returned
+
+- **Severity**: wrong-result
+- **Trigger**: any call that finds a set; reproduction: model = getDistributedModel('AntCore.mat'); model.c(strcmp(model.rxns, 'R75')) = 1; lower bounds of EX_gluc, EX_o2, EX_so4, EX_nh3, EX_cit, EX_glyc set to -100; model = changeObjective(model, 'EX_suc'); [minFluxesW, maxFluxesW] = FVAOptForce(model, struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b'), struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], 'rxnBoundType', 'bb')); constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]'); findMustUL(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, 'excludedRxns', exchangeRxns, 'printLevel', 0, 'printExcel', 0), exchangeRxns = the reactions named EX_*
+- **Observed**: (R2025a, 2026-11-23, gurobi) with 'excludedRxns' set to the EX_* reactions the 58 sets found all have posMustUL(:, 2) = 0, while mustUL(:, 2) holds the second reaction: line 296 repeats line 295 and column 2 is never assigned
+- **Expected**: posMustUL(i, :) holds the positions of both reactions of mustUL(i, :), as the help text says (number of sets found x 2)
+- **Source lines**: 295-296
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustUL.m`
+
+### `src/design/optForce/findMustUU.m`
+
+#### The documented default of excludedRxns (empty) is a function handle, so a call without it stops
+
+- **Severity**: error
+- **Trigger**: the model and inputs above; findMustUU(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, 'printLevel', 0, 'printExcel', 0), with or without 'printReport', 0, 'keepInputs', 0
+- **Observed**: (R2025a, 2026-11-23) "Brace indexing is not supported for variables of this type." at line 250 (report on, the default); with 'printReport', 0, 'keepInputs', 0: "Input A of class cell and input B of class function_handle must be the same class, unless one is double." in intersect, called from line 426. Line 159 passes the validation function as the default value (addParamValue has no validator argument here)
+- **Expected**: excludedRxns defaults to an empty list (help text: "Default: empty") and a call without it searches all reactions
+- **Source lines**: 159, 249-251, 422, 426
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustUU.m`
+
+#### The positions of the second reaction of each pair are not returned
+
+- **Severity**: wrong-result
+- **Trigger**: any call that finds a set; reproduction: model = getDistributedModel('AntCore.mat'); model.c(strcmp(model.rxns, 'R75')) = 1; lower bounds of EX_gluc, EX_o2, EX_so4, EX_nh3, EX_cit, EX_glyc set to -100; model = changeObjective(model, 'EX_suc'); [minFluxesW, maxFluxesW] = FVAOptForce(model, struct('rxnList', {{'R75'}}, 'rxnValues', 14, 'rxnBoundType', 'b'), struct('rxnList', {{'R75', 'EX_suc'}}, 'rxnValues', [0, 155.55], 'rxnBoundType', 'bb')); constrOpt = struct('rxnList', {{'EX_gluc', 'R75', 'EX_suc'}}, 'values', [-100, 0, 155.5]'); findMustUU(model, minFluxesW, maxFluxesW, 'constrOpt', constrOpt, 'excludedRxns', excludedRxns, 'printLevel', 0, 'printExcel', 0), excludedRxns = the first order must sets (findMustU, findMustL) and the EX_* reactions, as in the OptForce tutorial
+- **Observed**: (R2025a, 2026-11-23, gurobi) with the tutorial inputs below mustUU = {'R30', 'R65'; 'R31', 'R65'} but posMustUU = [30 0; 31 0] (expected [30 65; 31 65]): line 299 repeats line 298 and column 2 is never assigned
+- **Expected**: posMustUU(i, :) holds the positions of both reactions of mustUU(i, :), as the help text says (number of sets found x 2)
+- **Source lines**: 298-299
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustUU.m`
+
 ### `src/design/optForce/optForce.m`
 
 #### A progress message of the option loop is written to the report file
@@ -6899,6 +7483,26 @@
 - **Expected**: nMax.val = n_sets, MtoGOF.gdx written and the current folder restored
 - **Source lines**: 179, 183
 - **Documented in**: `test/verifiedTests/design/testOptForce/testExportInputsOptForceToGAMS.m`
+
+### `src/design/optGeneFitness.m`
+
+#### A knock-out that makes the model infeasible stops the function with an error
+
+- **Severity**: error
+- **Trigger**: global HTABLE MaxKnockOuts; HTABLE = java.util.Hashtable; MaxKnockOuts = 2; model = createModel({'EX_A'; 'R1'; 'R3'; 'BIO'; 'EX_P'; 'ATPM'}, {'EX_A'; 'R1'; 'R3'; 'BIO'; 'EX_P'; 'ATPM'}, {' -> A'; 'A -> B'; 'A -> B + P'; 'B -> '; 'P -> '; 'B -> '}, 'lowerBoundList', [0 0 0 0 0 1], 'upperBoundList', [10 1000 1000 1000 1000 1000]); model = changeObjective(model, 'BIO'); optGeneFitness([1 1], model, 'EX_P', {'R1'; 'R3'}, false)
+- **Observed**: (R2025a, gurobi, 2026-11-23) "Unable to perform assignment because the left and right sides have a different number of elements." at line 91: solveCobraLP returns stat 0 and obj = [] for the infeasible knock-out model, the status is not checked, [] < .10 is false, and growthrate - gamma = [] is assigned to one lower bound
+- **Expected**: fitness 0 for that row, as for any knock-out that does not reach the growth rate 0.1 (optGeneFitnessTilt, which optGene uses, skips such rows: it checks isempty(solKO.x))
+- **Source lines**: 70, 74, 91
+- **Documented in**: `test/verifiedTests/design/testDesign/testOptGeneFitness.m`
+
+#### The global hash table HTABLE is required but not documented
+
+- **Severity**: limitation
+- **Trigger**: clear global HTABLE; optGeneFitness([1 0], model, 'EX_P', {'R1'; 'R3'}, false) with a model as above without ATPM
+- **Observed**: (R2025a, gurobi, 2026-11-23) MATLAB:structRefFromNonStruct "Dot indexing is not supported for variables of this type." at line 136; the function works only after the caller sets global HTABLE = java.util.Hashtable (optGene does); the global MaxKnockOuts is used without documentation as well
+- **Expected**: the globals documented in the help text, or an empty cache created when HTABLE is not set
+- **Source lines**: 131-136
+- **Documented in**: `test/verifiedTests/design/testDesign/testOptGeneFitness.m`
 
 ### `src/design/simpleOptKnock.m`
 
@@ -7417,6 +8021,26 @@
 - **Source lines**: 120
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m`
 
+### `src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m`
+
+#### A nonzero right hand side b is not scaled with the bounds
+
+- **Severity**: wrong-result
+- **Trigger**: LPp.A = sparse([1 -1; 1 0]); LPp.b = [0; 1]; LPp.csense = ['E'; 'E']; LPp.lb = [0; 0]; LPp.ub = [10; 10]; model.S = LPp.A(1, :); V = LP9weighted([1; 1], 2, 1, model, LPp, 1e-4) (gurobi)
+- **Observed**: (R2025a, 2026-11-23) "0 = sol.stat", "INFEASIBLE = sol.origStat", the warning "LP solution may not be optimal" (line 83) and V = [NaN NaN]: line 64 scales the core bound (v(2) >= 1e-4 * 1e5 = 10) and lines 67-68 the bounds, but line 56 keeps b unscaled, so v(1) = 1 and v(2) = v(1) >= 10 cannot both hold
+- **Expected**: an optimal solution (v = [1; 1] is feasible for the unscaled problem: v(1) = 1, v(2) = 1 >= 1e-4), as LP10 returns for the same problem because it scales b (LP10.m line 145)
+- **Source lines**: 56, 71
+- **Documented in**: `test/verifiedTests/reconstruction/testFastGapFill/testLP9weighted.m`
+
+#### The bound of the auxiliary variables ignores the weights
+
+- **Severity**: wrong-result
+- **Trigger**: LPz.A = sparse([1 -1]); LPz.b = 0; LPz.csense = 'E'; LPz.lb = [0; 0]; LPz.ub = [10; 10]; mz.S = LPz.A; V = LP9weighted([2; 1], 2, 1, mz, LPz, 6) (gurobi)
+- **Observed**: (R2025a, 2026-11-23) "0 = sol.stat", "INFEASIBLE = sol.origStat" and V = [NaN NaN]: line 68 bounds z(P) by max(|ub(P)|, |lb(P)|) * 1e5 = 1e6 while lines 59-63 require z(P) >= W(P) * |v(P)| = 2 * 6e5; the same call with W = [1; 1] returns V = [600000 600000]
+- **Expected**: an optimal solution (v = [6; 6] is within the bounds and v(2) >= 6; the help text allows any nonnegative W), with z(P) bounded by W(P) times the flux bound
+- **Source lines**: 68
+- **Documented in**: `test/verifiedTests/reconstruction/testFastGapFill/testLP9weighted.m`
+
 ### `src/reconstruction/growthExpMatch/growthExpMatch.m`
 
 #### A SUX structure without exchange reactions cannot be solved
@@ -7508,16 +8132,56 @@
 - **Source lines**: 61
 - **Documented in**: `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m`
 
-### `src/reconstruction/modelGeneration/massBalance/checkBalance.m`
+### `src/reconstruction/modelGeneration/fluxConsistency/DCA/fastcc_nonconvex.m`
 
-#### With exactly one metabolite without a formula, the wrong reactions are set to NaN
+#### Every call stops with an error because LP7 is called with the wrong arguments
+
+- **Severity**: error
+- **Trigger**: model = struct('S', sparse([1 -1 0; 0 1 -1]), 'lb', zeros(3, 1), 'ub', 10 * ones(3, 1), 'rxns', {{'R1'; 'R2'; 'R3'}}); fastcc_nonconvex(model, 1e-4, 0) (any model, epsilon, printLevel and modeFlag)
+- **Observed**: (R2025a, gurobi, 2026-11-23) error "Dot indexing is not supported for variables of this type." in LP7 line 38: line 61 calls LP7(J, model, epsilon), but LP7's signature is LP7(J, model, LPproblem, epsilon, basis), so epsilon is taken as the LP problem structure and LP7 reads epsilon.A
+- **Expected**: A, the n x 1 indicator of the flux consistent reactions (here all three reactions of the chain), as the help text says
+- **Source lines**: 61
+- **Documented in**: `test/verifiedTests/reconstruction/testDCA/testFastcc_nonconvex.m`
+
+### `src/reconstruction/modelGeneration/fluxConsistency/GREEDY/checkFluxConsistency.m`
+
+#### The stoichiometric matrix of the LP is zero
 
 - **Severity**: wrong-result
-- **Trigger**: model.S = sparse([-1 0 0; 1 -1 0; 0 1 -1; 0 0 1]), model.mets = {'a'; 'b'; 'c'; 'd'}, model.metFormulas = {'C2'; 'C2'; ''; 'C2'}, [dE, E] = checkBalance(model, 'C', 0)
-- **Observed**: MATLAB R2025a, 2026-11-16: dE = [NaN -2 2] and E = [2 2 NaN 2]. With a single missing formula model.S(missingFormulaeBool, :) is a 1 x n row and any() of it is a scalar, so line 92 sets dE(1) to NaN (whenever that metabolite is in some reaction) instead of the reactions that use it. With two missing formulas ({'C2'; ''; ''; 'C2'}) dE = [NaN NaN NaN] is correct
-- **Expected**: dE = [0 NaN NaN]: reaction 1 (a -> b) is balanced and reactions 2 and 3 involve c, as the OUTPUTS section says (isnan(dE(n)) when the reaction involves a metabolite without a formula)
-- **Source lines**: 92
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testCheckBalance.m`
+- **Trigger**: S = zeros(4, 6); S(1, 1) = -1; S(2, 1) = 1; S(2, 2) = -1; S(3, 2) = 1; S(3, 3) = 1; S(1, 3) = -1; S(2, 4) = -1; S(4, 4) = 1; S(1, 5) = 1; S(3, 6) = -1; m1.S = S; m1.b = zeros(4, 1); [fc, sol1] = checkFluxConsistency(m1, 1e-8); m2 = m1; m2.S = zeros(4, 6); [fc, sol2] = checkFluxConsistency(m2, 1e-8) (gurobi)
+- **Observed**: (R2025a, 2026-11-23) sol1.stat = sol2.stat = 1, sol1.obj = sol2.obj = 1.2e-07 (= 2 * 6 * epsilon) and max(abs(sol1.full - sol2.full)) = 0: line 21 evaluates [model.S - model.S] as a subtraction (zero matrix), so the constraints of lines 31-33 never see the model; with m1.b = [1; 0; 0; 0] the LP is infeasible (0 = S * v = b) and for m3.S = sparse([1 0; 0 0]) (both reactions blocked) the objective is again 2 * n * epsilon
+- **Expected**: an LP built from model.S (the comment of line 21, "assumes all reactions are reversible", and the blocks [S -S] of line 31 split each reaction into forward and reverse fluxes of the model), whose solution depends on the stoichiometry
+- **Source lines**: 21
+- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testCheckFluxConsistency.m`
+
+### `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m`
+
+#### imBalancedMass is [] instead of an nRxn x 1 cell when every reaction is mass balanced
+
+- **Severity**: wrong-result
+- **Trigger**: a model without exchange reactions whose reactions are all mass balanced, for example cm = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> c[c]'}, 'printLevel', 0); cm.metFormulas = {'C';'C';'C'}; cm.metCharges = [0;0;1]; [~, imBalancedMass] = checkMassChargeBalance(cm)
+- **Observed**: (R2025a, 2026-11-23) imBalancedMass = [] (lines 200-202); callers that index it as a cell stop, for example testModelMassChargeBalance at its line 83 ("Brace indexing is not supported for variables of this type.")
+- **Expected**: an nRxn x 1 cell of '' (OUTPUTS: "nRxn x 1 cell with mass imbalance")
+- **Source lines**: 200-202
+- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
+
+#### printLevel -1 and 2 stop when every reaction is mass balanced and a charge is not
+
+- **Severity**: error
+- **Trigger**: cm = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> c[c]'}, 'printLevel', 0); cm.metFormulas = {'C';'C';'C'}; cm.metCharges = [0;0;1]; cm = findSExRxnInd(cm); checkMassChargeBalance(cm, -1, 'x') (or printLevel 2)
+- **Observed**: (R2025a, 2026-11-23) "Brace indexing is not supported for variables of this type." at line 235 (printLevel -1) and line 260 (printLevel 2): imBalancedMass is set to [] at line 201 when every reaction is mass balanced, then read as a cell
+- **Expected**: the mass balanced, charge imbalanced reactions written to the file (-1) or printed (2), as for a model with some mass imbalanced reaction
+- **Source lines**: 200-202, 235, 260
+- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
+
+#### printLevel 2 lists the mass balanced, charge imbalanced reactions by a stale index
+
+- **Severity**: cosmetic
+- **Trigger**: the model above with metFormulas {'C';'C';'CH'} and metCharges [0;1;1], checkMassChargeBalance(cm, 2)
+- **Observed**: (R2025a, 2026-11-23) R1 (mass balanced, charge imbalanced) is not printed under "Mass balanced, but charged imbalanced reactions:": line 260 tests imBalancedMass{p, 1}, p being the last index of the loop of line 180, instead of q
+- **Expected**: every mass balanced, charge imbalanced internal reaction printed
+- **Source lines**: 260
+- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
 
 ### `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m`
 
@@ -7529,44 +8193,6 @@
 - **Expected**: {'CH4'} and {'C0.1H2'} (dMax is documented as the maximum number of decimal places, so 0 and 1 are valid and 1 and 0.1 are written exactly at those precisions)
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m`
-
-### `src/reconstruction/modelGeneration/massBalance/findSExRxnInd.m`
-
-#### a mass-balanced reaction named DM_atp(c) is classified as an exchange
-
-- **Severity**: wrong-result
-- **Trigger**: model = createModel({'R1'; 'DM_atp(c)'; 'EX_a'; 'DM_atp_c_'}, {'r1'; 'dm'; 'ex'; 'dm2'}, {'a -> b'; 'atp + h2o -> adp + pi'; 'a <=> '; 'atp2 + h2o -> adp2 + pi'}); out = findSExRxnInd(model)
-- **Observed**: MATLAB R2025a: out.DMRxnBool(2) = 0 but out.SIntRxnBool(2) = 0, while out.SIntRxnBool(4) = 1 for the same reaction named DM_atp_c_. The variable bool used at line 198 to remove the ATP demand from the heuristic exchange set is the one computed for DM_atp_c_ at line 189, so DM_atp(c) (and ATPM) are only removed from DMRxnBool (lines 179, 187) and stay in SExRxnBoolHeuristic, computed at line 170 before the removal
-- **Expected**: SIntRxnBool true for DM_atp(c), as for DM_atp_c_ and as the message of line 184 announces ("not considered an exchange reaction by default")
-- **Source lines**: 189, 198
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
-
-#### a model without c gets a c with one entry per metabolite
-
-- **Severity**: wrong-result
-- **Trigger**: findSExRxnInd(rmfield(model, 'c')) with the model of defect 1 (S is 8 x 4)
-- **Observed**: MATLAB R2025a: the returned model.c is 8 x 1 (zeros(nMet, 1), line 68)
-- **Expected**: an n x 1 vector (4 x 1), as documented for .c ("created as zeros if absent")
-- **Source lines**: 68
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
-
-#### the biomass reaction found from biomassRxnAbbr is printed at every printLevel
-
-- **Severity**: cosmetic
-- **Trigger**: model.biomassRxnAbbr = 'Biomass_x'; findSExRxnInd(model, [], 0)
-- **Observed**: MATLAB R2025a: "Found biomass reaction: Biomass_x" is printed at printLevel 0
-- **Expected**: no output at printLevel 0, as for the other messages of the function
-- **Source lines**: 98
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
-
-#### the exchange prefix Ex_ is never recognised
-
-- **Severity**: wrong-result
-- **Trigger**: model = createModel({'Ex_h'; 'R1'}, {'1'; '2'}, {'h <=> '; 'h -> g'}); out = findSExRxnInd(model)
-- **Observed**: MATLAB R2025a: out.ExchRxnBool(1) = 0 (SIntRxnBool is still false through the one-coefficient heuristic); strncmp('Ex_', rxns, 5) at lines 159 and 162 compares five characters of a three-character prefix and is always false
-- **Expected**: ExchRxnBool true (documented: "Prefix EX_ or Exch_ or Ex_")
-- **Source lines**: 159, 162
-- **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testFindSExRxnInd.m`
 
 ### `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m`
 
@@ -8176,6 +8802,104 @@
 - **Source lines**: 53-63
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testCombineChildren.m`
 
+### `src/reconstruction/refinement/addCOBRAConstraints.m`
+
+#### A coefficient vector c given as a column stops the call
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]','b[c] -> c[c]', 'c[c] -> '}, 'printLevel', 0); addCOBRAConstraints(model, {'R1','R2'}, 10, 'c', [1; 2])
+- **Observed**: (R2025a, 2026-11-23, lead and writer of wave 31) the parser (line 137) accepts c because its length equals that of idList, but line 230 loops over the rows of c and indexes c(i, rxnpos), beyond the single column ("The logical indices in position 2 contain a true value outside of the array bounds."); the same c as a row gives C = [1 2 0]
+- **Expected**: the constraint R1 + 2 R2 <= 10 ("c: a vector with coefficients for each element in idList"; only a matrix means several constraints)
+- **Source lines**: 137, 229-230
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### The duplicate warning names the constraint matched by the last input row only
+
+- **Severity**: cosmetic
+- **Trigger**: model as above without variables; m1 = addCOBRAConstraints(model, {'R2','R1'}, [3 4], 'c', [2 1; 4 3]); addCOBRAConstraints(m1, {'R2','R1'}, [3 4 4], 'c', [2 1; 4 3; 3 4], 'checkDuplicates', true, 'ConstraintID', {'x','y','z'})
+- **Observed**: (R2025a, 2026-11-23) the two existing constraints are correctly skipped and z is added, but the warning reads "... already exists with ID: Constraint2" only: line 251 uses dupRows of the last loop iteration
+- **Expected**: the warning names Constraint1 and Constraint2
+- **Source lines**: 251
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### checkDuplicates does not detect an existing constraint that involves extra variables
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]', 'b[c] -> c[c]', 'c[c] -> '}, 'printLevel', 0); model = addCOBRAVariables(model, {'v1','v2'}); m1 = addCOBRAConstraints(model, {'R1','v1'}, 3, 'c', [1 2]); m2 = addCOBRAConstraints(m1, {'R1','v1'}, 3, 'c', [1 2], 'checkDuplicates', true)
+- **Observed**: (R2025a, 2026-11-23) m2.ctrs = {'Constraint1'; 'Constraint2'}, full(m2.C) = [1 0 0; 1 0 0], full(m2.D) = [2 0; 2 0], no warning: line 241 compares the coefficients of the extra variables with the rows of E (metabolites x variables) instead of the rows of D (constraints x variables)
+- **Expected**: the warning "Constraint(s) not added, because it already exists with ID: Constraint1" and m2 equal to m1, as for the same constraint on reactions only
+- **Source lines**: 241-242
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### checkDuplicates drops a distinct constraint of the input when the ids are not sorted
+
+- **Severity**: wrong-result
+- **Trigger**: model as above without variables; addCOBRAConstraints(model, {'R2','R1'}, [3 3 5], 'c', [2 1; 1 2; 1 1], 'checkDuplicates', true)
+- **Observed**: (R2025a, 2026-11-23) two constraints, full(C) = [1 1 0; 1 2 0] with d = [5; 3]: 2*R1 + R2 <= 3 is dropped as a duplicate of R1 + 2*R2 <= 3, because lines 200-202 sort the coefficients of the first input row only (the loop runs over size(idList, 1) = 1 row); with idList {'R1','R2'} the same call adds all three constraints
+- **Expected**: three constraints (rows [1 2 0], [2 1 0], [1 1 0]), none being a duplicate
+- **Source lines**: 197-205
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### checkDuplicates stops when the model holds the constraint twice
+
+- **Severity**: error
+- **Trigger**: model as above without variables; m3 = addCOBRAConstraints(model, {'R1'}, [3 3], 'dsense', 'LL'); addCOBRAConstraints(m3, {'R1'}, 3, 'checkDuplicates', true)
+- **Observed**: (R2025a, 2026-11-23) "Operands to the logical AND (&&) and OR (||) operators must be convertible to logical scalar values. ..." at line 246: dsense and d of every matching row are compared with && instead of any matching row
+- **Expected**: the duplicate warning and the model returned unchanged
+- **Source lines**: 246
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+#### checkDuplicates stops when the number of ids equals the number of constraints
+
+- **Severity**: error
+- **Trigger**: model as above without variables; addCOBRAConstraints(model, {'R1','R2'}, [3 4], 'c', [1 2; 3 4], 'checkDuplicates', true) (also with idList {'R1';'R2'})
+- **Observed**: (R2025a, 2026-11-23) "Dimensions of arrays being concatenated are not consistent." at line 204: idList is turned into a column (line 104) and the sort of line 197 along dimension 2 then gives a column that does not fit the coefficient rows
+- **Expected**: two constraints added (none of them exists), as without checkDuplicates
+- **Source lines**: 104, 197-204
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAConstraints.m`
+
+### `src/reconstruction/refinement/addCOBRAVariables.m`
+
+#### A single name given as a character array is rejected
+
+- **Severity**: limitation
+- **Trigger**: addCOBRAVariables(model, 'v1', 'Names', 'Variable one')
+- **Observed**: (R2025a, 2026-11-23) "The value of 'Names' is invalid. Invalid data type. Argument must be numeric, char, or logical." from the input parser: the validator evaluates numel(idList == 1), and == is not defined for the cell idList
+- **Expected**: one variable named 'Variable one', as the char branch of the validator intends; the documented form, a cell array of names, works and is tested below
+- **Source lines**: 79
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddCOBRAVariables.m`
+
+### `src/reconstruction/refinement/addGenes.m`
+
+#### A single gene id given as a character array is stored as a column of characters
+
+- **Severity**: limitation
+- **Trigger**: addGenes(model, 'g5') for a model with genes {'g1'}
+- **Observed**: (R2025a, 2026-11-23) model.genes becomes {'g1'; ['g'; '5']}: columnVector turns the char id into a 2 x 1 char array, which is appended as one cell
+- **Expected**: model.genes = {'g1'; 'g5'} ("Add Genes (or a single gene)"); the documented form, a cell array of ids, works and is tested below
+- **Source lines**: 54
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m`
+
+#### The error messages name reactions instead of genes
+
+- **Severity**: cosmetic
+- **Trigger**: addGenes(model, {'g1'}) with g1 in the model; addGenes(model, {'g3', 'g4', 'g5'}, 'geneNames', {'a', 'b'})
+- **Observed**: (R2025a, 2026-11-23) "Duplicate Reaction ID detected." and "Size of field geneNames does not fit to the rxnList size"
+- **Expected**: messages about gene ids and the size of the gene list
+- **Source lines**: 40, 66
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m`
+
+### `src/reconstruction/refinement/addMetabolite.m`
+
+#### The second EXAMPLE of the help text uses the parameter name metCharge and fails
+
+- **Severity**: cosmetic
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A -> B','B -> C', 'C -> '}, 'printLevel', 0); addMetabolite(model, 'MetWithForm', 'metFormula', 'H3O', 'metCharge', 1)
+- **Observed**: (R2025a, 2026-11-23) "'metCharge' is not a recognized parameter. For a list of valid name-value pair arguments, see the documentation for this function." at line 97
+- **Expected**: the example works; the parameter list of the help text names it Charge, and addMetabolite(model, 'MetWithForm', 'metFormula', 'H3O', 'Charge', 1) works
+- **Source lines**: 34
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMetabolite.m`
+
 ### `src/reconstruction/refinement/addReactionGEM.m`
 
 #### A formula whose first metabolite has no coefficient stops with an error
@@ -8305,6 +9029,35 @@
 - **Source lines**: 32
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m`
 
+### `src/reconstruction/refinement/changeGeneAssociation.m`
+
+#### A requested rxnGeneMat is created with one row per reaction up to the changed one
+
+- **Severity**: wrong-result
+- **Trigger**: model as above without rxnGeneMat (rmfield); changeGeneAssociation(model, 'R1', 'g2', [], [], true)
+- **Observed**: (R2025a, 2026-11-23) size(rxnGeneMat) = [1 2]: line 66 creates the field by assigning row rxnID only
+- **Expected**: size [3 2] (reactions x genes) with the entries of R1 set
+- **Source lines**: 66, 81
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
+
+#### New genes do not extend the other gene fields
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]', 'b[c] -> c[c]', 'c[c] -> '}, 'grRuleList', {'g1','',''}, 'printLevel', 0); model.proteins = {'P1'}; model2 = changeGeneAssociation(model, 'R2', 'g2')
+- **Observed**: (R2025a, 2026-11-23) numel(model2.genes) = 2 but numel(model2.proteins) = 1 (likewise geneNames): nGenes is never updated after the new genes are appended (line 74), so the test nGenes > nGenesInit of line 88 is always false and extendModelFieldsForType (line 89) never runs
+- **Expected**: model2.proteins = {'P1'; 'COBRAProtein2'} (the field default), every gene field as long as model2.genes
+- **Source lines**: 57-58, 88-90
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
+
+#### Translated gene names are taken from the wrong positions
+
+- **Severity**: wrong-result
+- **Trigger**: model as above; changeGeneAssociation(model, 'R2', 'a and b', {'b'; 'a'}, {'B'; 'A'}); changeGeneAssociation(model, 'R2', 'a', {'x'; 'a'}, {'X'; 'A'})
+- **Observed**: (R2025a, 2026-11-23) first call: genes {'g1'; 'B'; 'A'} and grRules{2} = 'B and A' (gene a is named B); second call: "Index exceeds the number of array elements. Index must not exceed 1." at line 72, which indexes the presence vector pres with the list positions pos (systNameList(pres(pos)) instead of systNameList(pos(pres)))
+- **Expected**: grRules{2} = 'A and B' and genes {'g1'; 'A'; 'B'}; genes {'g1'; 'A'} and grRules{2} = 'A'
+- **Source lines**: 71-72
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
+
 ### `src/reconstruction/refinement/changeRxnMets.m`
 
 #### A partly unknown reaction list is not reported
@@ -8334,6 +9087,26 @@
 - **Source lines**: 63-64
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m`
 
+### `src/reconstruction/refinement/convertToIrreversible.m`
+
+#### Coupling constraints keep their sign for flipped (_r) reactions
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1', 'R2', 'R3'}, {'', '', ''}, {'a[c] <=> b[c]', 'b[c] <=> c[c]', 'c[c] <=> a[c]'}, 'lowerBoundList', [-10 -10 -10], 'upperBoundList', [10 0 10], 'printLevel', 0); model.C = sparse([1 2 3]); model.d = 5; model.dsense = 'L'; model.ctrs = {'k1'}; model.ctrNames = {'k1'}; irrev = convertToIrreversible(model)
+- **Observed**: (R2025a, 2026-11-23) irrev.rxns = {R1_f, R2_r, R3_f, R1_b, R3_b} and full(irrev.C) = [1 2 3 -1 -3]: lines 83-88 negate S(:, R2), c and the bounds of the flipped R2 but not C(:, R2), so the constraint v1 + 2*v2 + 3*v3 <= 5 becomes v1 - 2*v2 + 3*v3 <= 5 in the original fluxes
+- **Expected**: C = [1 -2 3 -1 -3]; the split backward reactions are negated (line 127), and C must be negated in the same way for flipped reactions
+- **Source lines**: 82-89
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testConvertToIrreversible.m`
+
+#### orderReactions errors for a model with coupling constraints
+
+- **Severity**: error
+- **Trigger**: the model above; convertToIrreversible(model, 'orderReactions', true)
+- **Observed**: (R2025a, 2026-11-23) "Unable to perform assignment because the indices on the left side are not compatible with the size of the right side." at line 182: C (1 x 5) .* reacdir (5 x 1) expands to 5 x 5; with k constraints, k ~= 1 and k ~= n, the product errors at line 181; the new columns were already negated at line 127, so multiplying by reacdir would negate them a second time
+- **Expected**: C with columns reordered as the reactions (backward after forward), signs as after line 127
+- **Source lines**: 180-182
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testConvertToIrreversible.m`
+
 ### `src/reconstruction/refinement/extractSubSysModel.m`
 
 #### A single subsystem name given as text selects almost every reaction
@@ -8344,17 +9117,6 @@
 - **Expected**: the reactions annotated with that subsystem only, as for {'Exchange'}
 - **Source lines**: 20
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m`
-
-### `src/reconstruction/refinement/getModelFieldsForType.m`
-
-#### custom fields named after the type are missed for a model with one or no element of that type
-
-- **Severity**: wrong-result
-- **Trigger**: model = createModel({'R1'}, {'r1'}, {'a -> b'}); model.rxnCustom = {'z'}; getModelFieldsForType(model, 'rxns')
-- **Observed**: MATLAB R2025a: rxnCustom is not in the result (S, rxnGeneMat, c, grRules, lb, rules, rxnNames, rxns, subSystems, ub), while the same model with two reactions lists it. Line 104 reads strncmp(x, type, length(type-1)): type-1 subtracts one from each character code, so the length is that of the whole type name and the fields must start with 'rxns', not 'rxn' as the comment ("Remove the s from the type") and line 184 intend
-- **Expected**: rxnCustom listed with dimension 1, as documented ("fields named e.g. rxnXYZ are associated with rxns") and as for two or more reactions
-- **Source lines**: 104
-- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testGetModelFieldsForType.m`
 
 ### `src/reconstruction/refinement/isSameCobraModel.m`
 
@@ -8415,6 +9177,17 @@
 - **Expected**: an error, or a warning that names the field that is lost
 - **Source lines**: 236-237
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testMergeTwoModels.m`
+
+### `src/reconstruction/refinement/moveRxn.m`
+
+#### Reaction-indexed fields are permuted along the wrong dimension when another dimension has the same size
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1','R2','R3'}, {'R1','R2','R3'}, {'A -> B','B -> C','C -> '}); model2 = moveRxn(model, 1, 3) (3 metabolites, 3 reactions: S is square); likewise a model with 3 constraints (C 3 x 3) or a custom 3 x 3 field rxnPair
+- **Observed**: (R2025a, 2026-11-23) model2.rxns = {'R2','R3','R1'} but model2.S equals model.S([2 3 1],:) (metabolite rows moved, columns left in place, so each column of S no longer belongs to its reaction); model2.C equals model.C([2 3 1],:); a custom 3 x 3 rxnPair equals rxnPair([2 3 1],:) (columns not moved). Line 42 tests size(field,1) first and never uses the dimensions output of getModelFieldsForType, which gives dimension 2 for S and C
+- **Expected**: model2.S equals model.S(:,[2 3 1]) and model2.C equals model.C(:,[2 3 1]), as for a non-square S; a reaction x reaction field moved in both dimensions
+- **Source lines**: 38, 42-50
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testMoveRxn.m`
 
 ### `src/reconstruction/refinement/removeFieldEntriesForType.m`
 
@@ -8991,6 +9764,17 @@
 - **Source lines**: 32
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorProtein.m`
 
+### `src/visualization/metabolicCartography/colorRxnsFromGenes.m`
+
+#### A gene list with no gene of the model stops with an error
+
+- **Severity**: error
+- **Trigger**: model = struct('rxns', {{'R1'}}, 'genes', {{'10.1'}}, 'rules', {{'x(1)'}}); map = struct('rxnName', {{'R1'}}); colorRxnsFromGenes(map, model, {'99'})
+- **Observed**: (R2025a, 2026-11-23) error "Input A of class cell and input B of class double must be cell arrays of character vectors, unless one is a character vector." raised by ismember at line 82: with no matching gene, globalList stays [] (line 67), so rxnName = unique([]) is a double; the same call with {'10', '99'} returns the map with R1 coloured
+- **Expected**: the map returned unchanged, since no reaction is implicated by the given genes
+- **Source lines**: 67, 78, 82
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testColorRxnsFromGenes.m`
+
 ### `src/visualization/metabolicCartography/colorSubsystemCD.m`
 
 #### Reactions with several subsystems shift the selection to the wrong reactions
@@ -9266,6 +10050,64 @@
 - **Expected**: the reactions of that colour counted as present, as hexadecimal colour codes are case-insensitive and the function "extracts reactions with a specific colour" (lines 2-3)
 - **Source lines**: 101, 117
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testVisualizeNormalizedRxnPresence.m`
+
+### `src/visualization/paint4Net/Draw_by_met/findNearRxns.m`
+
+#### A call that selects no metabolite fails
+
+- **Severity**: error
+- **Trigger**: r = findNearRxns(fm, {'R2'}, 'sub', zeros(3, 1)) (fm as above)
+- **Observed**: (R2025a, 2026-11-23) "Array indices must be positive integers or logical values." (MATLAB:badsubscript) at line 188: no metabolite passes the flux test, so metIndexes keeps its placeholder -1 (line 59) and model.mets{-1} is read; the same call with flux = [1; 1; 1] returns {'R2', 'R1'}
+- **Expected**: Rxns returned with no neighbouring reaction added (zero flux is the documented default and the help text treats it as no flux)
+- **Source lines**: 59, 187-188
+- **Documented in**: `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m`
+
+#### A row cell Rxns with more than one reaction fails
+
+- **Severity**: error
+- **Trigger**: r = findNearRxns(fm, {'R2', 'R3'}, 'struc', [1; 1; 1]) (fm as above)
+- **Observed**: (R2025a, 2026-11-23) "Index in position 1 exceeds array bounds. Index must not exceed 1." (MATLAB:badsubscript) at line 268: Rxns{w, 1} indexes rows of a 1 x 2 cell; the column cell {'R2'; 'R3'} returns {'R2'; 'R3'; 'R1'}
+- **Expected**: the same result as for the column cell (the help text documents a cell array or cell vector of reaction abbreviations, with no orientation)
+- **Source lines**: 264-268, 276
+- **Documented in**: `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m`
+
+#### The documented defaults of direction and flux are not implemented
+
+- **Severity**: error
+- **Trigger**: fm = createModel({'R1', 'R2', 'R3'}, {'a', 'b', 'c'}, ... {'a -> b', 'b -> c', 'c -> '}); r = findNearRxns(fm, {'R2'}); r = findNearRxns(fm, {'R2'}, 'sub')
+- **Observed**: (R2025a, 2026-11-23) "Not enough input arguments." (MATLAB:minrhs) at line 67 for the two-input call (direction undefined) and at line 72 for the three-input call (flux undefined); only direction 'struc' runs without flux
+- **Expected**: direction = 'struc' and flux = a vector of zeros when omitted (help text, OPTIONAL INPUTS)
+- **Source lines**: 67, 72, 100, 128
+- **Documented in**: `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m`
+
+### `src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m`
+
+#### A call that selects no metabolite fails
+
+- **Severity**: error
+- **Trigger**: r = bio_findNearRxns(fm, {'R2'}, 'sub', zeros(3, 1)) (fm as above)
+- **Observed**: (R2025a, 2026-11-23) "Array indices must be positive integers or logical values." (MATLAB:badsubscript) at line 190: no metabolite passes the flux test, so metIndexes keeps its placeholder -1 (line 61) and model.mets{-1} is read; the same call with flux = [1; 1; 1] returns {'R2', 'R1'}
+- **Expected**: Rxns returned with no neighbouring reaction added (zero flux is the documented default and the help text treats it as no flux)
+- **Source lines**: 61, 189-190
+- **Documented in**: `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m`
+
+#### A row cell Rxns with more than one reaction fails
+
+- **Severity**: error
+- **Trigger**: r = bio_findNearRxns(fm, {'R2', 'R3'}, 'struc', [1; 1; 1]) (fm as above)
+- **Observed**: (R2025a, 2026-11-23) "Index in position 1 exceeds array bounds. Index must not exceed 1." (MATLAB:badsubscript) at line 270: Rxns{w, 1} indexes rows of a 1 x 2 cell; the column cell {'R2'; 'R3'} returns {'R2'; 'R3'; 'R1'}
+- **Expected**: the same result as for the column cell (the help text documents a cell array or cell vector of reaction abbreviations, with no orientation)
+- **Source lines**: 266-270, 278
+- **Documented in**: `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m`
+
+#### The documented defaults of direction and flux are not implemented
+
+- **Severity**: error
+- **Trigger**: fm = createModel({'R1', 'R2', 'R3'}, {'a', 'b', 'c'}, ... {'a -> b', 'b -> c', 'c -> '}); r = bio_findNearRxns(fm, {'R2'}); r = bio_findNearRxns(fm, {'R2'}, 'prod')
+- **Observed**: (R2025a, 2026-11-23) "Not enough input arguments." (MATLAB:minrhs) at line 69 for the two-input call (direction undefined) and at line 102 for the three-input call (flux undefined); only direction 'struc' runs without flux
+- **Expected**: direction = 'struc' and flux = a vector of zeros when omitted (help text, OPTIONAL INPUTS)
+- **Source lines**: 69, 74, 102, 130
+- **Documented in**: `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m`
 
 ### `src/visualization/upsetPlot/upsetPlot.m`
 

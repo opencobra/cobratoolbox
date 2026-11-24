@@ -52,21 +52,21 @@ function gurobiParam = setGurobiParam(param)
 %                           continuous models (-1 automatic, 0 primal
 %                           simplex, 1 dual simplex, 2 barrier, 3
 %                           concurrent, 4 deterministic concurrent)
-%                         * .printLevel - COBRA print level, used to set
-%                           `.OutputFlag` and `.DisplayInterval` when they
-%                           are not already present (both are set silent in
-%                           the current implementation, regardless of level)
+%                         * .printLevel - COBRA print level; not used:
+%                           `.OutputFlag` is set to 0 and `.DisplayInterval`
+%                           to 1 when they are not already present, whatever
+%                           the level
 %                         * .OutputFlag - Gurobi console output flag
 %                         * .DisplayInterval - Gurobi console display
 %                           interval in seconds
 %                         * .FeasibilityTol - Gurobi primal feasibility
 %                           tolerance, set from `.feasTol` if not already
-%                           present
+%                           present (if neither is given, Gurobi's default)
 %                         * .feasTol - COBRA-style primal feasibility
 %                           tolerance, source value for `.FeasibilityTol`
 %                         * .OptimalityTol - Gurobi dual feasibility
 %                           tolerance, set from `.optTol` if not already
-%                           present
+%                           present (if neither is given, Gurobi's default)
 %                         * .optTol - COBRA-style dual feasibility
 %                           tolerance, source value for `.OptimalityTol`
 %
@@ -75,8 +75,14 @@ function gurobiParam = setGurobiParam(param)
 %                       the Gurobi `gurobi.m` interface (the permitted
 %                       parameter list), translated from the COBRA-style
 %                       names in `param`
+%
+% NOTE:
+%    Feature 20261120-161825-core-blocker-fixes, November 2026: every field
+%    is optional (before, printLevel, feasTol and optTol were required), and
+%    timelimit is copied only when TimeLimit is absent (before, it always
+%    overrode TimeLimit).
 
-if isfield(param,'timelimit')
+if isfield(param,'timelimit') && ~isfield(param,'TimeLimit')
     param.TimeLimit=param.timelimit;
 end
 
@@ -142,7 +148,7 @@ if isfield(param,'lpmethod')
         otherwise
             %https://www.gurobi.com/documentation/current/refman/method.html
             %Concurrent methods aren't available for QP and QCP.
-            warning([param.lpmethod ' is an unrecognised param.qpmethod for gurobi'])
+            warning([param.lpmethod ' is an unrecognised param.lpmethod for gurobi'])
     end
     param = rmfield(param,'lpmethod');
 end
@@ -178,31 +184,18 @@ if isfield(param,'qpmethod')
     param = rmfield(param,'qpmethod');
 end
 
+% Gurobi's console output is off and its display interval is 1 s, whatever the COBRA
+% printLevel (every printLevel gave these values); the COBRA solve functions print their own
+% summaries
 if ~isfield(param,'OutputFlag')
-    switch param.printLevel
-        case 0
-            param.OutputFlag = 0;
-        case 1
-            param.OutputFlag = 0;
-        otherwise
-            % silent
-            param.OutputFlag = 0;
-    end
+    param.OutputFlag = 0;
 end
 
 if ~isfield(param,'DisplayInterval')
-    switch param.printLevel
-        case 0
-            param.DisplayInterval = 1;
-        case 1
-            param.DisplayInterval = 1;
-        otherwise
-            % silent
-            param.DisplayInterval = 1;
-    end
+    param.DisplayInterval = 1;
 end
 
-if ~isfield(param,'FeasibilityTol')
+if ~isfield(param,'FeasibilityTol') && isfield(param,'feasTol')
     % Primal feasibility tolerance
     % Type:	double
     % Default value:	1e-6
@@ -213,7 +206,7 @@ if ~isfield(param,'FeasibilityTol')
     % numerically challenging models it can sometimes lead to much larger iteration counts.
      param.FeasibilityTol = param.feasTol;
 end
-if ~isfield(param,'OptimalityTol')
+if ~isfield(param,'OptimalityTol') && isfield(param,'optTol')
     % Dual feasibility tolerance
     % Type:	double
     % Default value:	1e-6

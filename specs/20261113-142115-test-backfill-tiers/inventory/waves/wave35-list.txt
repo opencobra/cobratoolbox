@@ -1,0 +1,5 @@
+test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m|src/analysis/deletion/deleteModelGenes.m
+test/verifiedTests/analysis/testExploration/testFindGenesFromRxns.m|src/analysis/exploration/findGenesFromRxns.m
+test/verifiedTests/analysis/testExploration/testFindMetabolicJunctions.m|src/analysis/exploration/findMetabolicJunctions.m
+test/verifiedTests/analysis/testExploration/testFindNeighborRxns.m|src/analysis/exploration/findNeighborRxns.m
+test/verifiedTests/visualization/testMetabolicCartography/testColorRxnsFromGenes.m|src/visualization/metabolicCartography/colorRxnsFromGenes.m

@@ -1,0 +1,5 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	757	src/analysis/QFCA/blockedReac.m	3			directionallyCoupled	QFCA	
+a	931	src/dataIntegration/transcriptomics/FASTCORE/findSparseMode.m	3			LP10,LP7,getCobraSolverParams	fastcore	
+a	827	src/dataIntegration/transcriptomics/SWIFTCORE/swiftcc.m	3			blocked	findFluxConsistentSubset,partition	
+a	1013	src/reconstruction/modelGeneration/fluxConsistency/DCA/fastcc_nonconvex.m	3			LP7		
