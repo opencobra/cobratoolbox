@@ -102,12 +102,18 @@ class Ledger:
         the files listed in quarantine-seeds.tsv for a defect confined to a call form, otherwise
         the defective function itself."""
         listed = collections.defaultdict(set)
+        self.stops = collections.defaultdict(set)
         path = os.path.join(self.inv, 'quarantine-seeds.tsv')
         if os.path.exists(path):
             for line in open(path):
                 if line.strip() and not line.startswith('#'):
                     name, seed = line.rstrip('\n').split('\t')[:2]
-                    listed[name].add(seed)
+                    if seed.startswith('!'):
+                        # a caller whose call form avoids the defect: the reach stops there
+                        # (constitution 1.8.1, call-form rule; feature 20261125-161147-blocker-fixes-two)
+                        self.stops[name].add(seed[1:])
+                    else:
+                        listed[name].add(seed)
         roots = {name_of(r['file']): r['file'] for r in self.rows if r['status'] == 'QUARANTINED'}
         roots.update({n: v[0] for n, v in self.existing.items()})
         # a defect listed with the seed NONE is reached by no caller (every call site avoids the
@@ -124,12 +130,13 @@ class Ledger:
         reached = collections.defaultdict(set)
         for name, seeds in self._seeds().items():
             root_file = self.by_name[name]['file'] if name in self.by_name else self.existing[name][0]
+            stops = self.stops.get(name, set())
             frontier = [x for x in seeds]
             seen = set(x for x in seeds if x != root_file)
             while frontier:
                 current = frontier.pop()
                 for c in callers.get(current, ()):
-                    if c not in seen and c != root_file:
+                    if c not in seen and c != root_file and c not in stops:
                         seen.add(c)
                         frontier.append(c)
             for f in seen:

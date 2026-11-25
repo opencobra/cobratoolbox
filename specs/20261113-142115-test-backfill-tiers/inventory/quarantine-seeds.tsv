@@ -1,4 +1,5 @@
 # defective function<TAB>src file whose code reaches the defect (constitution 1.8.1)
+# defective function<TAB>!src file: that caller's call form avoids the defect, so the reach stops there
 # getCobraSolverParams: the defect is confined to the two-input call form (no paramStructure),
 # which ignores the global parameters; these files make such a call outside comments.
 getCobraSolverParams	src/analysis/FBA/enumerateOptimalSolutions.m
@@ -245,3 +246,13 @@ createHRWarmup	NONE
 processingLLCs	NONE
 # optimizeWBModel: the defect needs solveWBMmethod QPold, which no src caller passes. Lead, 2026-11-25.
 optimizeWBModel	NONE
+# minCardinalityConservationRelaxationVector: the swapped bounds (line 102) are reached on every call
+# by findStoichConsistentSubset (line 227, unconditional), so the default reach holds, except through
+# verifyModel, which calls findStoichConsistentSubset only with stoichiometricConsistency = true, an option
+# no src caller passes (buildOptProblemFromModel calls verifyModel with FBAOnly only). Lead, 2026-11-25.
+minCardinalityConservationRelaxationVector	!src/reconstruction/modelGeneration/modelVerification/verifyModel.m
+# findMassLeaksAndSiphons: its callers (checkModelProperties, checkModelPreFBA, findStoichConsistentSubset)
+# pass modelBoundsFlag and method dc explicitly, leave theta at its default, and do not use statp/statn
+# (findStoichConsistentSubset receives leakY/siphonY in those positions; the others only in comments).
+# Lead, 2026-11-25.
+findMassLeaksAndSiphons	NONE

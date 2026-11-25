@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-987 known defects in 539 functions (348 wrong-result, 324 error, 78 unusable-option, 162 cosmetic, 75 limitation).
+1015 known defects in 553 functions (359 wrong-result, 331 error, 82 unusable-option, 171 cosmetic, 72 limitation).
 
 ## Summary
 
@@ -37,8 +37,13 @@
 | `src/analysis/coupling/constrainRxnListAboveBound.m` | error | A coefficient vector c in the documented k x 1 shape stops with an error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
 | `src/analysis/coupling/constrainRxnListAboveBound.m` | cosmetic | The EXAMPLE of the help text passes an undefined variable C instead of c | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
 | `src/analysis/coupling/constrainRxnListAboveBound.m` | error | The documented optional inputs c, d and ineqSense cannot be omitted | `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m` |
+| `src/analysis/deletion/Syntheticlethals/Fast-SL/doubleSL.m` | unusable-option | The documented atpm input is ignored | `test/verifiedTests/analysis/testFastSL/testDoubleSL.m` |
+| `src/analysis/deletion/Syntheticlethals/Fast-SL/doubleSL.m` | cosmetic | The outputs are reaction identifiers, not the documented indices | `test/verifiedTests/analysis/testFastSL/testDoubleSL.m` |
+| `src/analysis/deletion/Syntheticlethals/Fast-SL/tripleSL.m` | error | A model without an ATPM reaction stops with an error when eliList is not given | `test/verifiedTests/analysis/testFastSL/testTripleSL.m` |
+| `src/analysis/deletion/Syntheticlethals/Fast-SL/tripleSL.m` | wrong-result | Triple lethal reaction sets are dropped when there is no double lethal pair | `test/verifiedTests/analysis/testFastSL/testTripleSL.m` |
 | `src/analysis/deletion/deleteModelGenes.m` | cosmetic | Deleting a gene that is already marked deleted appends the suffix again | `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m` |
 | `src/analysis/deletion/deleteModelGenes.m` | cosmetic | The error for several genes that are not in the model joins their names | `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m` |
+| `src/analysis/deletion/singleGeneDeletion.m` | wrong-result | Unique gene deletion also deletes the transcripts of other genes whose identifier starts with the same characters | `test/verifiedTests/analysis/testDeletionStudy/testSingleGeneDeletion.m` |
 | `src/analysis/dynamicFBA/dynamicFBA.m` | cosmetic | The number of tracked exchange reactions is printed on every call | `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m` |
 | `src/analysis/ecosystem/clusterEcosystemPoints.m` | wrong-result | The hierarchical method returns the requested maximum k as the number of clusters | `test/verifiedTests/analysis/testEcosystem/testClusterEcosystemPoints.m` |
 | `src/analysis/ecosystem/getQualitativeFluxStates.m` | wrong-result | Zero band applied inconsistently to the maximum and to max - min | `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m` |
@@ -179,6 +184,8 @@
 | `src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m` | wrong-result | objRxn is ignored unless objType is also given | `test/verifiedTests/analysis/testRobustnessAnalysis/testDoubleRobustnessAnalysis.m` |
 | `src/analysis/robustnessAnalysis/phenotypePhasePlane.m` | limitation | Fewer than three points per axis stop in the plot after every LP was solved | `test/verifiedTests/analysis/testRobustnessAnalysis/testPhenotypePhasePlane.m` |
 | `src/analysis/robustnessAnalysis/phenotypePhasePlane.m` | cosmetic | primalOnly is left switched on when it was not set before the call | `test/verifiedTests/analysis/testRobustnessAnalysis/testPhenotypePhasePlane.m` |
+| `src/analysis/robustnessAnalysis/robustnessAnalysisWB.m` | unusable-option | The documented objType input is ignored | `test/verifiedTests/analysis/testRobustnessAnalysis/testRobustnessAnalysisWB.m` |
+| `src/analysis/robustnessAnalysis/robustnessAnalysisWB.m` | cosmetic | The function inside the file is named robustnessAnalysis | `test/verifiedTests/analysis/testRobustnessAnalysis/testRobustnessAnalysisWB.m` |
 | `src/analysis/rumba/classifyRxns.m` | error | The documented defaults of maxMetConn, maxNumPnts and LoopRxnsToIgnore are not implemented, so these arguments cannot be omitted | `test/verifiedTests/analysis/testRumba/testClassifyRxns.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
 | `src/analysis/rumba/normalizePoints.m` | error | The documented defaults of NormalizePointsParam and LoopRxnsToIgnore are not implemented, so these arguments cannot be omitted | `test/verifiedTests/analysis/testRumba/testNormalizePoints.m` |
@@ -655,10 +662,6 @@
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | cosmetic | The sample counter is printed for every sample | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | wrong-result | The table is not ordered by frequency as documented; the sorted copy goes to a differently spelled variable | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
-| `src/dataIntegration/modelMultipleObjectives.m` | limitation | A model with bondsE but without bondsBF stops with an error | `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m` |
-| `src/dataIntegration/modelMultipleObjectives.m` | limitation | A model without expressionRxns stops with an error unless all three weight fields are given | `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m` |
-| `src/dataIntegration/modelMultipleObjectives.m` | cosmetic | After the first failed objective, every later objective prints the error report again | `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m` |
-| `src/dataIntegration/modelMultipleObjectives.m` | limitation | The objective weightedTCBMflux stores its solution under unWeightedTCBMflux | `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m` |
 | `src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m` | wrong-result | A nonzero right hand side b is not scaled with the bounds | `test/verifiedTests/analysis/testFASTCORE/testLP10weighted.m` |
 | `src/dataIntegration/transcriptomics/FASTCORE/LP3.m` | cosmetic | The optional input basis is ignored | `test/verifiedTests/analysis/testFASTCORE/testLP3.m` |
 | `src/dataIntegration/transcriptomics/FASTCORE/LP7.m` | cosmetic | The optional input basis is ignored | `test/verifiedTests/analysis/testFASTCORE/testLP7.m` |
@@ -821,9 +824,26 @@
 | `src/reconstruction/modelGeneration/removeCompartments.m` | cosmetic | The default compartment and every reaction index are printed | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
 | `src/reconstruction/modelGeneration/removeCompartments.m` | wrong-result | metNames is a row and holds the metabolite identifiers | `test/verifiedTests/reconstruction/testModelGeneration/testRemoveCompartments.m` |
 | `src/reconstruction/modelGeneration/setConstraintsIrrevModel.m` | wrong-result | Reactions with names of one or two characters get the wrong sign | `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m` | wrong-result | The 'quasiConcave' method reports siphons as leaks and leaks as siphons | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m` | error | The 'quasiConcave' method stops with an error when the leak problem is infeasible | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m` | cosmetic | The documented default method is 'quasiConcave' but the code uses 'dc' | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m` | wrong-result | The model bounds are ignored by default although the documented default uses them | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m` | cosmetic | The printed list of leaking or siphon metabolites starts with metabolites that do not leak | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m` | wrong-result | The status outputs are empty instead of 0 when a problem is infeasible | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m` | unusable-option | param.theta has no effect | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m` | wrong-result | Every reaction is blocked when model.SConsistentRxnBool is absent, so no leakage mode is found | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageMode.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m` | cosmetic | The function switches every warning on when it returns | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageMode.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m` | cosmetic | Output is printed whatever printLevel | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageModeMet.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m` | cosmetic | The function switches every warning off and leaves them off | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageModeMet.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m` | wrong-result | leakY holds the siphon modes and siphonY the leak modes | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageModeMet.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/leakTest.m` | cosmetic | The zero norms of v and s are printed whatever printLevel | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testLeakTest.m` |
 | `src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m` | wrong-result | The entropy maximiser is resolved only to the pdco optimality tolerance | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m` |
 | `src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m` | wrong-result | The objective passed to pdco does not match its gradient and Hessian | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m` |
 | `src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m` | cosmetic | printLevel is ignored and pdco always prints its iteration log | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m` | error | The consistency check stops with an error instead of relaxing an inconsistent network | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMinCardinalityConservationRelaxationVector.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m` | error | The upper bounds of the relaxation problem are built with swapped lengths | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMinCardinalityConservationRelaxationVector.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m` | error | Every call stops with an error because delta is passed as a parameter | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testOptimalConservationVectors.m` |
+| `src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m` | wrong-result | The bounds of x and y are built with swapped lengths | `test/verifiedTests/reconstruction/testStoichiometricConsistency/testOptimalConservationVectors.m` |
 | `src/reconstruction/modelGeneration/test4HumanFctExt.m` | error | an error when no test carried flux | `test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m` |
 | `src/reconstruction/modelGeneration/test4HumanFctExt.m` | cosmetic | the diary is opened in the current folder and never closed | `test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m` |
 | `src/reconstruction/modelGeneration/test4HumanFctExt.m` | unusable-option | the documented option 'IECori' is not recognised | `test/verifiedTests/reconstruction/testModelGeneration/testTest4HumanFctExt.m` |
@@ -893,6 +913,7 @@
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | With one metabolite to change, the random selection reduces the S row to a scalar | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/convertToIrreversible.m` | wrong-result | Coupling constraints keep their sign for flipped (_r) reactions | `test/verifiedTests/reconstruction/testRefinement/testConvertToIrreversible.m` |
 | `src/reconstruction/refinement/convertToIrreversible.m` | error | orderReactions errors for a model with coupling constraints | `test/verifiedTests/reconstruction/testRefinement/testConvertToIrreversible.m` |
+| `src/reconstruction/refinement/convertToReversible.m` | wrong-result | The objective coefficient of a reverse-only reaction keeps the sign of the irreversible model | `test/verifiedTests/reconstruction/testRefinement/testConvertToReversible.m` |
 | `src/reconstruction/refinement/extractSubSysModel.m` | wrong-result | A single subsystem name given as text selects almost every reaction | `test/verifiedTests/reconstruction/testModelManipulation/testExtractSubSysModel.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | wrong-result | Logical fields are never compared | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
 | `src/reconstruction/refinement/isSameCobraModel.m` | wrong-result | Text fields are compared with every non-word character removed, not only white space | `test/verifiedTests/reconstruction/testRefinement/testIsSameCobraModel.m` |
@@ -905,6 +926,10 @@
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | limitation | An order that repeats indices is accepted | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | unusable-option | The type proteins is accepted but always stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateGenes.m` | wrong-result | With two duplicated genes, different genes are merged | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m` |
+| `src/visualization/EscherMap/flux2json.m` | error | A reaction id with parentheses stops the function with an error | `test/verifiedTests/visualization/testEscherMap/testFlux2json.m` |
+| `src/visualization/EscherMap/flux2json.m` | wrong-result | Fluxes of reactions whose id contains '[' or '-' are left out of the file | `test/verifiedTests/visualization/testEscherMap/testFlux2json.m` |
+| `src/visualization/EscherMap/flux2json.m` | error | The optional FBAtype cannot be omitted | `test/verifiedTests/visualization/testEscherMap/testFlux2json.m` |
+| `src/visualization/EscherMap/flux2json.m` | unusable-option | outputFolder is ignored and data.json is always written to the current folder | `test/verifiedTests/visualization/testEscherMap/testFlux2json.m` |
 | `src/visualization/SAMMIM/expa.m` | wrong-result | The collapsed model does not match the input model: its objective is zero and its reactions are reordered | `test/verifiedTests/visualization/testSAMMIM/testExpa.m` |
 | `src/visualization/cellDesigner/addAnnotation.m` | error | Annotating a reaction of a standard COBRA model stops with an error | `test/verifiedTests/visualization/testCellDesigner/testAddAnnotation.m` |
 | `src/visualization/cellDesigner/addColour.m` | wrong-result | A reaction listed by an ID in the last row of r_info.ID is not coloured | `test/verifiedTests/visualization/testCellDesigner/testAddColour.m` |
@@ -970,6 +995,9 @@
 | `src/visualization/metabolicCartography/removeCDReactions.m` | wrong-result | A species that only modifies removed reactions is kept | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveCDReactions.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | wrong-result | Aliases of a removed reaction are removed even when kept reactions use them | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
 | `src/visualization/metabolicCartography/removeMapMol.m` | limitation | Reactions keep a removed alias of a species that has other aliases | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m` |
+| `src/visualization/metabolicCartography/removeMapReactions.m` | cosmetic | A name listed twice is reported as not present in the map | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapReactions.m` |
+| `src/visualization/metabolicCartography/removeMapSpecies.m` | cosmetic | A name listed twice is reported as not present in the map | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapSpecies.m` |
+| `src/visualization/metabolicCartography/removeMapSpeciesOnly.m` | wrong-result | Reactions that keep all their species get their reactant/product IDs and aliases sorted apart, so IDs and aliases no longer match | `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapSpeciesOnly.m` |
 | `src/visualization/metabolicCartography/transformFullMap2XML.m` | error | A map with exactly one complex or one included species cannot be written | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
 | `src/visualization/metabolicCartography/transformFullMap2XML.m` | cosmetic | Included species without notes are written with empty notes | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
 | `src/visualization/metabolicCartography/transformFullMap2XML.m` | wrong-result | The complex aliases and complex species of the map are not written | `test/verifiedTests/visualization/testMetabolicCartography/testTransformFullMap2XML.m` |
@@ -1273,6 +1301,46 @@
 - **Source lines**: 35
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testConstrainRxnListAboveBound.m`
 
+### `src/analysis/deletion/Syntheticlethals/Fast-SL/doubleSL.m`
+
+#### The documented atpm input is ignored
+
+- **Severity**: unusable-option
+- **Trigger**: doubleSL(model, [], [], 'BIO') on the six-reaction toy model of testSingleSL.m: EX_A ( -> A, ub 10), R1 (A -> B), R2 (A -> C, ub 5), R3 (C -> B), BIO (B -> , objective), ATPM (A -> , lb 1)
+- **Observed**: (R2025a, gurobi, 2026-11-25) Jsl = {'EX_A', 'BIO'}, the same as doubleSL(model); singleSL(model, [], [], 'BIO') returns {'EX_A'}. The default eliList is built from the literal 'ATPM' and atpm is never read, so a maintenance reaction with another identifier cannot be excluded through atpm
+- **Expected**: BIO excluded from the analysis (Jsl = {'EX_A'}), as the help says atpm is the ATPM reaction id when it is not 'ATPM' and as singleSL and tripleSL do
+- **Source lines**: 38-44
+- **Documented in**: `test/verifiedTests/analysis/testFastSL/testDoubleSL.m`
+
+#### The outputs are reaction identifiers, not the documented indices
+
+- **Severity**: cosmetic
+- **Trigger**: [Jsl, Jdl] = doubleSL(model) on the toy model above
+- **Observed**: (R2025a, gurobi, 2026-11-25) Jsl = {'EX_A', 'BIO'} and Jdl = {'R1', 'R2'; 'R1', 'R3'}: cell arrays of reaction identifiers
+- **Expected**: the help (OUTPUTS) describes Jsl and Jdl as indices of reactions
+- **Source lines**: 123-124
+- **Documented in**: `test/verifiedTests/analysis/testFastSL/testDoubleSL.m`
+
+### `src/analysis/deletion/Syntheticlethals/Fast-SL/tripleSL.m`
+
+#### A model without an ATPM reaction stops with an error when eliList is not given
+
+- **Severity**: error
+- **Trigger**: tripleSL(model) on the toy model EX_A ( -> A, ub 10), R1, R2, R3 (each A -> B), BIO (B -> , objective), which has no reaction named atpm ('ATPM')
+- **Observed**: (R2025a, gurobi, 2026-11-25) MATLAB:UndefinedFunction "Unrecognized function or variable 'Jnz_copy'." at line 71: the default eliList is empty, and Jnz_copy is only assigned inside the branch for a non-empty eliList (lines 64-67)
+- **Expected**: the analysis of every reaction that carries flux (eliList is optional), as singleSL and doubleSL do for the same model
+- **Source lines**: 64-67, 71
+- **Documented in**: `test/verifiedTests/analysis/testFastSL/testTripleSL.m`
+
+#### Triple lethal reaction sets are dropped when there is no double lethal pair
+
+- **Severity**: wrong-result
+- **Trigger**: [Jsl, Jdl, Jtl] = tripleSL(model, [], {'EX_A'}) on the toy model above, or tripleSL(model) on the same model with ATPM (A -> , lb 1) added
+- **Observed**: (R2025a, gurobi, 2026-11-25) Jsl = {'BIO'} (with ATPM: {'EX_A', 'BIO'}), Jdl and Jtl empty. The filter of lines 222-235 keeps a triplet only if max(g) < 2; with no double lethal pair g = zeros(1, 0), max(g) is empty and the condition is false for every triplet
+- **Expected**: Jtl = {'R1', 'R2', 'R3'}: knocking out the three parallel routes gives growth 0, while every single or double knock-out leaves a route with growth 10 (9 with ATPM)
+- **Source lines**: 222-235
+- **Documented in**: `test/verifiedTests/analysis/testFastSL/testTripleSL.m`
+
 ### `src/analysis/deletion/deleteModelGenes.m`
 
 #### Deleting a gene that is already marked deleted appends the suffix again
@@ -1292,6 +1360,17 @@
 - **Expected**: the missing gene names listed separately (for example "Genes g8, g9 not in model!")
 - **Source lines**: 108
 - **Documented in**: `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m`
+
+### `src/analysis/deletion/singleGeneDeletion.m`
+
+#### Unique gene deletion also deletes the transcripts of other genes whose identifier starts with the same characters
+
+- **Severity**: wrong-result
+- **Trigger**: singleGeneDeletion(model, 'FBA', [], false, 1) on the toy model EX_A ( -> A, ub 10), R1 (A -> B, rule 1.1), R2 (A -> B, rule 10.1), BIO (B -> , objective)
+- **Observed**: (R2025a, gurobi, 2026-11-25) grRateKO = [0 10] and delRxns{1} = {'R1'; 'R2'}: the transcripts of gene 1 are looked up with strmatch('1', model.genes), a prefix match that also returns 10.1, so the deletion of gene 1 deletes gene 10 too
+- **Expected**: grRateKO = [10 10] and delRxns{1} = {'R1'}: R1 and R2 are parallel, so deleting only the transcripts of gene 1 (1.1) leaves the growth of 10 through R2
+- **Source lines**: 92
+- **Documented in**: `test/verifiedTests/analysis/testDeletionStudy/testSingleGeneDeletion.m`
 
 ### `src/analysis/dynamicFBA/dynamicFBA.m`
 
@@ -2726,6 +2805,26 @@
 - **Expected**: the solver parameters of the session as they were before the call (the comment of line 54 says the state is saved)
 - **Source lines**: 76-77
 - **Documented in**: `test/verifiedTests/analysis/testRobustnessAnalysis/testPhenotypePhasePlane.m`
+
+### `src/analysis/robustnessAnalysis/robustnessAnalysisWB.m`
+
+#### The documented objType input is ignored
+
+- **Severity**: unusable-option
+- **Trigger**: robustnessAnalysisWB(model, 'EX_A', 3, false, 'EX_B', 'min') on the toy model EX_A ( -> A, ub 10), R1 (A -> B), R2 (A -> C), EX_B (B -> ), EX_C (C -> ) with model.osenseStr = 'max'
+- **Observed**: (R2025a, gurobi, 2026-11-25) controlFlux = [0; 5; 10], objFlux = [0; 5; 10] (EX_B maximised); robustnessAnalysis with the same inputs returns objFlux = [0; 0; 0]. Line 61 sets objType on tmpModel, but the model optimised at line 62 is modelControlled, which keeps the sense of the input model
+- **Expected**: objFlux = [0; 0; 0]: EX_B minimised at each EX_A value (all flux through R2), as the help documents for objType
+- **Source lines**: 61
+- **Documented in**: `test/verifiedTests/analysis/testRobustnessAnalysis/testRobustnessAnalysisWB.m`
+
+#### The function inside the file is named robustnessAnalysis
+
+- **Severity**: cosmetic
+- **Trigger**: reading the file or its help text
+- **Observed**: line 1 declares robustnessAnalysis and the USAGE line names robustnessAnalysis; MATLAB calls the function by its file name robustnessAnalysisWB, and the help does not say that the optimisations use optimizeWBModel
+- **Expected**: the function and USAGE named robustnessAnalysisWB
+- **Source lines**: 1
+- **Documented in**: `test/verifiedTests/analysis/testRobustnessAnalysis/testRobustnessAnalysisWB.m`
 
 ### `src/analysis/rumba/classifyRxns.m`
 
@@ -7551,44 +7650,6 @@
 - **Source lines**: 137
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m`
 
-### `src/dataIntegration/modelMultipleObjectives.m`
-
-#### A model with bondsE but without bondsBF stops with an error
-
-- **Severity**: limitation
-- **Trigger**: the model of the first entry with model.expressionRxns = [1; 2; NaN] and model.bondsE = [1; 2; 3], no bondsBF; modelMultipleObjectives(model, struct('objectives', {{'unWeighted1norm'}}))
-- **Observed**: (R2025a, 2026-11-25) "Unrecognized field name "bondsBF"." at line 191, which compares the length of bondsBF (not bondsE) with the reactions; line 196 also uses the NaN entries of bondsBF; the bond-enthalpy weights are not used by any objective
-- **Expected**: the documented model lists both fields; the check of line 191 was evidently meant for bondsE
-- **Source lines**: 191, 196
-- **Documented in**: `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m`
-
-#### A model without expressionRxns stops with an error unless all three weight fields are given
-
-- **Severity**: limitation
-- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'}, {'r1'; 'r2'; 'r3'}, {' -> A'; 'A -> B'; 'B -> '}); model.lb = [0; 0; 0]; model.ub = [10; 10; 10]; model.c = [0; 0; 1]; model.SConsistentRxnBool = [false; true; false]; modelMultipleObjectives(model, struct('objectives', {{'unWeighted1norm'}}))
-- **Observed**: (R2025a, 2026-11-25) "Unrecognized field name "expressionRxns"." at line 213, although lines 203-204 handle a model without expressionRxns; line 204 removes the objectives containing 'GE0', a text that no objective name contains
-- **Expected**: the documented model lists expressionRxns among its fields, so the input is not documented; the code's check suggests it was meant to be optional
-- **Source lines**: 204, 213, 219
-- **Documented in**: `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m`
-
-#### After the first failed objective, every later objective prints the error report again
-
-- **Severity**: cosmetic
-- **Trigger**: any objective list in which an objective fails, for example the model of the last section with several objectives
-- **Observed**: (R2025a, 2026-11-25) hasErrored (line 297) is never reset, so line 510 prints the report of the last error after every following objective, also after objectives that were solved
-- **Expected**: one report per failed objective
-- **Source lines**: 297, 509-510
-- **Documented in**: `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m`
-
-#### The objective weightedTCBMflux stores its solution under unWeightedTCBMflux
-
-- **Severity**: limitation
-- **Trigger**: modelMultipleObjectives(model, struct('objectives', {{'weightedTCBMflux'}})) for any model
-- **Observed**: (code reading, R2025a, 2026-11-25) lines 333-336 assign solutions.unWeightedTCBMflux, so the output field weightedTCBMflux listed in the help is never set and a requested unWeightedTCBMflux is overwritten; the objective is not among the supported objectives of the help, its weights are a TODO (line 325), and it needs MOSEK
-- **Expected**: the solution in solutions.weightedTCBMflux, as the output list documents
-- **Source lines**: 333, 335-336
-- **Documented in**: `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m`
-
 ### `src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m`
 
 #### A nonzero right hand side b is not scaled with the bounds
@@ -9219,6 +9280,131 @@
 - **Source lines**: 22
 - **Documented in**: `test/verifiedTests/reconstruction/testModelGeneration/testSetConstraintsIrrevModel.m`
 
+### `src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m`
+
+#### The 'quasiConcave' method reports siphons as leaks and leaks as siphons
+
+- **Severity**: wrong-result
+- **Trigger**: the model above; findMassLeaksAndSiphons(model, true, true, 1, struct('method', 'quasiConcave'))
+- **Observed**: (R2025a, gurobi, 2026-11-25) leakMetBool = 1, siphonMetBool = 0 (leakY = 10): the leak LP is S*v + p = 0, p >= 0 (line 162), i.e. net consumption, and the siphon LP is S*v - p = 0 (line 201), the opposite of the 'dc' method and of the help text (S*v - y = 0 with y >= 0 is the leak). method 'dc' returns leakMetBool = 0, siphonMetBool = 1
+- **Expected**: leakMetBool = 0, siphonMetBool = 1 (A can only be consumed)
+- **Source lines**: 162-163, 184, 201-202, 213
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m`
+
+#### The 'quasiConcave' method stops with an error when the leak problem is infeasible
+
+- **Severity**: error
+- **Trigger**: model.S = sparse(1) (EX: -> A), model.lb = 1, model.ub = 10; findMassLeaksAndSiphons(model, true, true, 1, struct('method', 'quasiConcave'))
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Infeasibility while detecting semipositive leaking metabolites." then "length of rowBool must equal size(A,1)" from getCorrespondingCols line 64: line 188 sets leakY = [], so leakMetBool (line 312) is empty; the 'dc' method sets leakY = sparse(nMet, 1) in the same case (line 282)
+- **Expected**: no leaking metabolite (leakMetBool = false) and the siphon result
+- **Source lines**: 186-190, 312-314
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m`
+
+#### The documented default method is 'quasiConcave' but the code uses 'dc'
+
+- **Severity**: cosmetic
+- **Trigger**: findMassLeaksAndSiphons(model) or a param without method
+- **Observed**: (R2025a, gurobi, 2026-11-25) "dc method" is printed with printLevel 1; lines 101 and 114 set method = 'dc' (help text: {('quasiConcave'), 'dc'})
+- **Expected**: the help text and the code name the same default
+- **Source lines**: 101, 114
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m`
+
+#### The model bounds are ignored by default although the documented default uses them
+
+- **Severity**: wrong-result
+- **Trigger**: model.S = sparse(-1) (EX: A ->), model.lb = 0, model.ub = 10, model.mets, model.rxns, model.metFormulas; [lM, lR, sM, sR, lY, sY] = findMassLeaksAndSiphons(model)
+- **Observed**: (R2025a, gurobi, 2026-11-25) leakMetBool = 1 and siphonMetBool = 1 (leakY = siphonY = 2): line 92 defaults modelBoundsFlag to 0, so the irreversible consumption runs backwards. findMassLeaksAndSiphons(model, true, true, 1) returns leakMetBool = 0, siphonMetBool = 1
+- **Expected**: the help text gives modelBoundsFlag {0, (1)} and "with (default) or without the bounds on a model": leakMetBool = 0, siphonMetBool = 1
+- **Source lines**: 91-93
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m`
+
+#### The printed list of leaking or siphon metabolites starts with metabolites that do not leak
+
+- **Severity**: cosmetic
+- **Trigger**: model.S = sparse([-1 0 1 -1 0 0; 1 -1 0 0 0 0; 0 1 -1 2 0 0; 0 0 0 0 -1 1; 0 0 0 0 1 -1]) (A, B, C inconsistent through R4; D, E in a consistent cycle), lb = -10, ub = 10, metFormulas {'C'; 'C'; 'C'; 'H'; 'H'}; findMassLeaksAndSiphons(model, true(5, 1), true(6, 1), 1, struct('method', 'dc'), 1)
+- **Observed**: (R2025a, gurobi, 2026-11-25) leakMetBool = [1 1 1 0 0] but the three metabolites printed are D, E and A: log10(leakY) is sorted in ascending order (lines 334, 377), so the zero entries (-Inf) come first
+- **Expected**: the leaking (siphon) metabolites printed, largest first
+- **Source lines**: 334, 377
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m`
+
+#### The status outputs are empty instead of 0 when a problem is infeasible
+
+- **Severity**: wrong-result
+- **Trigger**: model.S = sparse(-1), model.lb = 1, model.ub = 10; [lM, lR, sM, sR, lY, sY, statp, statn] = findMassLeaksAndSiphons(model, true, true, 1)
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Infeasibility while detecting semipositive leaking metabolites.", statp = [] (0 x 0) and statn = 1; any status other than 1 of optimizeCardinality or solveCobraLP becomes [] (lines 189, 218, 283, 305), so statp == 0 is empty and an unbounded or invalid problem cannot be told apart
+- **Expected**: statp = 0 (help text: 0 = Infeasible, 2 = Unbounded, -1 = Invalid input)
+- **Source lines**: 189, 218, 283, 305
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m`
+
+#### param.theta has no effect
+
+- **Severity**: unusable-option
+- **Trigger**: model.S = sparse([-1 0 1 -1; 1 -1 0 0; 0 1 -1 2]), lb = -10, ub = 10; findMassLeaksAndSiphons(model, true(3, 1), true(4, 1), 1, struct('theta', 0.5)) and the same with struct('theta', 100), each after rng(0)
+- **Observed**: (R2025a, gurobi, 2026-11-25) identical leakY: theta is read at line 121 and never used; optimizeCardinality is called without a parameter structure (lines 262, 265, 289), so it uses its own default theta
+- **Expected**: the documented "param.theta - (0.5) parameter of capped l1 approximation" passed to optimizeCardinality
+- **Source lines**: 121, 258-266, 289
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMassLeaksAndSiphons.m`
+
+### `src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m`
+
+#### Every reaction is blocked when model.SConsistentRxnBool is absent, so no leakage mode is found
+
+- **Severity**: wrong-result
+- **Trigger**: model.S = sparse([-1 0 1 -1; 1 -1 0 0; 0 1 -1 2]) (A, B, C; R1: A -> B, R2: B -> C, R3: C -> A, R4: A -> 2 C), model.lb = -10*ones(4, 1), model.ub = 10*ones(4, 1), model.mets, model.rxns, no SConsistentRxnBool; [Vp, Yp, statp, Vn, Yn, statn] = findMinimalLeakageMode(model, true(3, 1), 0, 1e-6, 3) or findMinimalLeakageMode(model)
+- **Observed**: (R2025a, gurobi, 2026-11-25) statp = statn = [0 0 0] ("A has no semipositive leakage mode." for every metabolite): line 70 defaults SConsistentRxnBool to false(n, 1) and lines 108-109 fix every reaction with a false entry at zero, overriding modelBoundsFlag = 0 ("set all reaction bounds to -inf, inf"). With model.SConsistentRxnBool = true(4, 1) the same call returns statp = [1 1 1], e.g. C with v = [0 0 1 1] and y = [0 0 1]. With a truthful SConsistentRxnBool (consistent reactions true) only consistent reactions stay free, and they cannot form a leakage mode at all
+- **Expected**: only S, lb and ub are required (help text); without SConsistentRxnBool no reaction is known to be inconsistent and A, B and C each have a semipositive leakage mode (statp = [1 1 1])
+- **Source lines**: 69-70, 108-109
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageMode.m`
+
+#### The function switches every warning on when it returns
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the call above
+- **Observed**: (R2025a, gurobi, 2026-11-25) line 132 runs "warning off" and line 218 "warning on", so warnings that were off before the call (MATLAB's defaults included) are on after it, and warnings raised inside the loop are hidden
+- **Expected**: the caller's warning state restored and the solver's warnings visible
+- **Source lines**: 132, 218
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageMode.m`
+
+### `src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m`
+
+#### Output is printed whatever printLevel
+
+- **Severity**: cosmetic
+- **Trigger**: the call above, printLevel = 0
+- **Observed**: (R2025a, gurobi, 2026-11-25) the table header "#mets #rxns result metAbbr" and one empty line per leaking metabolite are printed although printLevel = 0
+- **Expected**: no output for printLevel = 0
+- **Source lines**: 192, 239-241
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageModeMet.m`
+
+#### The function switches every warning off and leaves them off
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the call above
+- **Observed**: (R2025a, gurobi, 2026-11-25) warning('query', 'all').state is 'off' after the call: line 191 runs "warning off" and nothing restores the state
+- **Expected**: the caller's warning state restored
+- **Source lines**: 191
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageModeMet.m`
+
+#### leakY holds the siphon modes and siphonY the leak modes
+
+- **Severity**: wrong-result
+- **Trigger**: model.S = sparse([-1 0 1 -1; 1 -1 0 0; 0 1 -1 2]) (A, B, C; R1: A -> B, R2: B -> C, R3: C -> A, R4: A -> 2 C), model.lb = zeros(4, 1), model.ub = 10*ones(4, 1), model.mets, model.rxns; [mLM, mLR, mSM, mSR, leakY, siphonY, statp, statn] = findMinimalLeakageModeMet(model, true(3, 1), true(4, 1), 1, [], 0)
+- **Observed**: (R2025a, gurobi, 2026-11-25) statp = [1 1 1], statn = [0 0 0], minLeakMetBool = eye(3), minSiphonMetBool = zeros(3), but leakY = zeros(3) and siphonY = eye(3): the y of the semipositive (leak) problem is stored in siphonY (lines 162, 224) and the y of the seminegative (siphon) problem in leakY (lines 172, 309)
+- **Expected**: leakY "metabolites in a positive leakage mode" = eye(3) and siphonY "metabolites in a negative siphon mode" = zeros(3) (help text, lines 50-51); with every reaction forward only no metabolite can be consumed without a producer
+- **Source lines**: 162, 172, 222-224, 307-309
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testFindMinimalLeakageModeMet.m`
+
+### `src/reconstruction/modelGeneration/stoichConsistency/leakTest.m`
+
+#### The zero norms of v and s are printed whatever printLevel
+
+- **Severity**: cosmetic
+- **Trigger**: leakTest(model, struct('epsilon', 1e-4), 0)
+- **Observed**: (R2025a, gurobi, 2026-11-25) '||v||_0 =1' and '||s||_0 =2' are printed although printLevel = 0
+- **Expected**: no output for printLevel = 0
+- **Source lines**: 63-64
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testLeakTest.m`
+
 ### `src/reconstruction/modelGeneration/stoichConsistency/maxEntConsVector.m`
 
 #### The entropy maximiser is resolved only to the pdco optimality tolerance
@@ -9247,6 +9433,46 @@
 - **Expected**: no output for printLevel = 0 (options.Print = printLevel - 1 is commented out)
 - **Source lines**: 34
 - **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMaxEntConsVector.m`
+
+### `src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m`
+
+#### The consistency check stops with an error instead of relaxing an inconsistent network
+
+- **Severity**: error
+- **Trigger**: S = sparse([-1 0 1 -1; 1 -1 0 0; 0 1 -1 2]) (R4: A -> 2 C makes it inconsistent); minCardinalityConservationRelaxationVector(S, struct('epsilon', 1e-4), 0) (param given without checkConsistency, whose default is then 1, line 55) or with checkConsistency = 1
+- **Observed**: (R2025a, gurobi, 2026-11-25) the consistency LP is infeasible (stat 0) and the function stops with "solve for minimum cardinality of conservation relaxation vector failed" (line 166); with printLevel 3 it stops earlier with 'Unrecognized field name "x".' at line 148. Line 83 sets done = 1 whatever the LP status, so the relaxation never runs after the check. The same S with param omitted (checkConsistency = 0) returns relaxRxnBool = [0 0 0 1]
+- **Expected**: the check "prior to relaxation" (help text) followed by the relaxation when S is inconsistent: relaxRxnBool = [0 0 0 1]
+- **Source lines**: 54-56, 63-86, 148, 165-166
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMinCardinalityConservationRelaxationVector.m`
+
+#### The upper bounds of the relaxation problem are built with swapped lengths
+
+- **Severity**: error
+- **Trigger**: minCardinalityConservationRelaxationVector(sparse([1 -3]), struct('epsilon', 0.5, 'checkConsistency', 0), 0)
+- **Observed**: (R2025a, gurobi, 2026-11-25) optimizeCardinality returns stat 0 (INF_OR_UNBD) and the function stops with "solve for minimum cardinality of conservation relaxation vector failed": with [mlt, nlt] = size(S') (mlt reactions, nlt metabolites) line 102 builds ub = [inf(nlt, 1); (1/epsilon)*ones(mlt, 1)], so the second relaxation x(2) = 3*z >= 3 is capped at 1/epsilon = 2. The documented problem is feasible: solveCobraLP of x + S'*z = 0, x free, 1 <= z <= 2 returns stat 1 with x = [-1; 3], z = 1. The mirrored S = sparse([-3 1]) returns relaxRxnBool = [1 1]
+- **Expected**: ub = [inf(mlt, 1); (1/epsilon)*ones(nlt, 1)] (line 100 builds lb in that order) and relaxRxnBool = [1 1] for S = [1 -3]
+- **Source lines**: 102
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testMinCardinalityConservationRelaxationVector.m`
+
+### `src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m`
+
+#### Every call stops with an error because delta is passed as a parameter
+
+- **Severity**: error
+- **Trigger**: optimalConservationVectors(sparse([-1 0 1 -1; 1 -1 0 0; 0 1 -1 2])), and the same with sparse([-1 0 1; 1 -1 0; 0 1 -1]) or any other S, lambda and delta
+- **Observed**: (R2025a, gurobi, 2026-11-25) "param should not contain delta* field(s), rather they are problem fields" from optimizeCardinality line 144: line 42 sets params.delta, and optimizeCardinality rejects delta (and lambda) in its parameter structure; lambda is also misspelt params.lamda (line 41), so neither weight would reach the problem
+- **Expected**: a solution structure of optimizeCardinality with lambda and delta set as prob.lambda and prob.delta
+- **Source lines**: 41-43
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testOptimalConservationVectors.m`
+
+#### The bounds of x and y are built with swapped lengths
+
+- **Severity**: wrong-result
+- **Trigger**: any S with a different number of rows and columns, e.g. the 3 x 4 S above
+- **Observed**: by reading (2026-11-25, not reachable while the first defect stands): with [mlt, nlt] = size(S') (mlt reactions, nlt metabolites) line 39 builds ub = [inf(nlt, 1); 1e4*ones(mlt, 1)], so for n > m reactions m+1..n of x get the upper bound 1e4 and for n < m entries of y get no upper bound
+- **Expected**: ub = [inf(mlt, 1); 1e4*ones(nlt, 1)] as the documented 0 <= y <= 1e4 and a free x need (line 38 builds lb in that order)
+- **Source lines**: 39
+- **Documented in**: `test/verifiedTests/reconstruction/testStoichiometricConsistency/testOptimalConservationVectors.m`
 
 ### `src/reconstruction/modelGeneration/test4HumanFctExt.m`
 
@@ -9927,6 +10153,17 @@
 - **Source lines**: 180-182
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testConvertToIrreversible.m`
 
+### `src/reconstruction/refinement/convertToReversible.m`
+
+#### The objective coefficient of a reverse-only reaction keeps the sign of the irreversible model
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1';'R2';'R3';'R4';'R5'}, {'r1';'r2';'r3';'r4';'r5'}, {' -> A'; 'A <=> B'; 'B -> '; 'C -> A'; 'C -> '}, [], [0; -10; 0; -4; 0], [10; 10; 10; 0; 10]); model.c = [0; 0; 0; -1; 0]; irr = convertToIrreversible(model); rev = convertToReversible(irr); optimizeCbModel(model), optimizeCbModel(irr), optimizeCbModel(rev) (glpk)
+- **Observed**: (R2025a, 2026-11-25) objective 4 for model and irr, 0 for rev: the S column and the bounds of R4_r are negated back (rev.S(:,4) = [1; 0; -1], rev.lb(4) = -4, rev.ub(4) = 0, as in model) but rev.c(4) = 1 keeps the sign that convertToIrreversible gave it (model.c(4) = -1), so rev maximises +R4 instead of -R4
+- **Expected**: rev.c(4) = -1: the model in reversible format describes the same problem as the input (the objective coefficient flipped together with the S column and the bounds, as convertToIrreversible does: "Also flip the objective coefficient, as otherwise the target changes")
+- **Source lines**: 50-53
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testConvertToReversible.m`
+
 ### `src/reconstruction/refinement/extractSubSysModel.m`
 
 #### A single subsystem name given as text selects almost every reaction
@@ -10050,6 +10287,44 @@
 - **Expected**: the genes g1 and g2, the first two reactions with rule x(1) and the others x(2)
 - **Source lines**: 43
 - **Documented in**: `test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m`
+
+### `src/visualization/EscherMap/flux2json.m`
+
+#### A reaction id with parentheses stops the function with an error
+
+- **Severity**: error
+- **Trigger**: m4 = createModel({'EX_a(e)';'R4'}, {'a';'d'}, {' -> A'; 'A -> '}, [], [0;0], [10;10]); m4.c = [0;1]; flux2json(m4, 'FBA') (ids as in ecoli_core_model)
+- **Observed**: (R2025a, 2026-11-25) error "Invalid field name: 'x_EX_a(e)'." at line 77, inside the catch block of line 69, which nothing protects
+- **Expected**: the file is written with one entry per reaction
+- **Source lines**: 76-77
+- **Documented in**: `test/verifiedTests/visualization/testEscherMap/testFlux2json.m`
+
+#### Fluxes of reactions whose id contains '[' or '-' are left out of the file
+
+- **Severity**: wrong-result
+- **Trigger**: m3 = createModel({'EX_a[e]';'R-2';'3R';'R4'}, {'a';'b';'c';'d'}, {' -> A'; 'A -> B'; 'B -> C'; 'C -> '}, [], [0;0;0;0], [10;10;10;10]); m3.c = [0;0;0;1]; flux2json(m3, 'FBA')
+- **Observed**: (R2025a, 2026-11-25) data.json = {"x_3R":10,"R4":10}: EX_a[e] and R-2 are missing; lines 70-73 change the key but never assign it
+- **Expected**: one entry per reaction (the help: "A data.json file with the reaction fluxes"), with the key made a valid field name as lines 70-77 intend
+- **Source lines**: 70-73
+- **Documented in**: `test/verifiedTests/visualization/testEscherMap/testFlux2json.m`
+
+#### The optional FBAtype cannot be omitted
+
+- **Severity**: error
+- **Trigger**: m = createModel({'R1';'R2'}, {'r1';'r2'}, {' -> A'; 'A -> '}, [], [0;0], [10;10]); m.c = [0;1]; flux2json(m)
+- **Observed**: (R2025a, 2026-11-25) error "Unrecognized function or variable 'solution'." at line 51: without FBAtype no solution is computed
+- **Expected**: the call succeeds with a default analysis, as the help lists FBAtype under OPTIONAL INPUTS
+- **Source lines**: 32-42, 51
+- **Documented in**: `test/verifiedTests/visualization/testEscherMap/testFlux2json.m`
+
+#### outputFolder is ignored and data.json is always written to the current folder
+
+- **Severity**: unusable-option
+- **Trigger**: flux2json(m, 'FBA', outFolder) with m as above and outFolder an existing folder other than pwd
+- **Observed**: (R2025a, 2026-11-25) no data.json in outFolder; data.json written to pwd with {"R1":10,"R2":10}: line 44 tests the undefined name outputFilename, so line 45 always overwrites outputFolder with pwd
+- **Expected**: data.json written to outputFolder, as the help says
+- **Source lines**: 44-47
+- **Documented in**: `test/verifiedTests/visualization/testEscherMap/testFlux2json.m`
 
 ### `src/visualization/SAMMIM/expa.m`
 
@@ -10707,6 +10982,39 @@
 - **Expected**: the reaction removed, or its reference to the alias removed ("also removing the corresponding reaction if necessary")
 - **Source lines**: 80, 87
 - **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapMol.m`
+
+### `src/visualization/metabolicCartography/removeMapReactions.m`
+
+#### A name listed twice is reported as not present in the map
+
+- **Severity**: cosmetic
+- **Trigger**: removeMapReactions(xmlStruct, map, {'ACYP', 'ACYP'}) on the map of glycolysisAndTCA.xml, which contains ACYP
+- **Observed**: (R2025a, 2026-11-25) rxnNotInMap = [false; true] and 'ACYP not present in the map' is printed (ismember returns only the first position of ACYP in the list, so the second position is counted as missing); ACYP is removed. The input is skipped below.
+- **Expected**: rxnNotInMap = [false; false] and no message, as ACYP is in the map
+- **Source lines**: 46, 51
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapReactions.m`
+
+### `src/visualization/metabolicCartography/removeMapSpecies.m`
+
+#### A name listed twice is reported as not present in the map
+
+- **Severity**: cosmetic
+- **Trigger**: removeMapSpecies(xmlStruct, map, {'itp[c]', 'itp[c]'}) on the map of glycolysisAndTCA.xml, which contains itp[c]
+- **Observed**: (R2025a, 2026-11-25) specNotInMap = [false; true] and 'itp[c] not present in the map' is printed (ismember returns only the first position of itp[c] in the list, so the second position is counted as missing); itp[c] is removed. The input is skipped below.
+- **Expected**: specNotInMap = [false; false] and no message, as itp[c] is in the map
+- **Source lines**: 63, 68
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapSpecies.m`
+
+### `src/visualization/metabolicCartography/removeMapSpeciesOnly.m`
+
+#### Reactions that keep all their species get their reactant/product IDs and aliases sorted apart, so IDs and aliases no longer match
+
+- **Severity**: wrong-result
+- **Trigger**: [xmlStruct, map] = transformXML2Map('testCD/glycolysisAndTCA.xml'); [x3, m3] = removeMapSpeciesOnly(xmlStruct, map, {'itp[c]'}, [], 0) (itp[c] takes part in r0354 only)
+- **Observed**: (R2025a, 2026-11-25) in 12 reactions without itp[c] (ACYP, GAPD, HEX1, PYK, r0153, r0165, r0413, AKGDm, CSm, MDHm, PCm, SUCOASm) the i-th secondary reactant or product ID no longer belongs to the i-th alias (32 pairs): GAPD has reactants {s4410 (nad[c]), s5962 (pi[c])} with aliases {sa31, sa30} in the input (sa31 is an alias of s4410) and aliases {sa30, sa31} in the output, so nad[c] is paired with an alias of pi[c]. Lines 155, 190, 235 and 275 rebuild every list with setdiff, which sorts the IDs and the aliases independently. transformMap2XML writes rxnReactantID{r}{x} and rxnReactantAlias{r}{x} into the same reactantLink, so the written map links species to the wrong aliases.
+- **Expected**: reactions whose species are all kept are unchanged, and in every reaction the i-th ID still belongs to the i-th alias (the help: only the entries of the removed species and aliases are stripped)
+- **Source lines**: 155, 190, 235, 275
+- **Documented in**: `test/verifiedTests/visualization/testMetabolicCartography/testRemoveMapSpeciesOnly.m`
 
 ### `src/visualization/metabolicCartography/transformFullMap2XML.m`
 
