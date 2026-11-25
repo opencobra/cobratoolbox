@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-979 known defects in 533 functions (346 wrong-result, 323 error, 76 unusable-option, 159 cosmetic, 75 limitation).
+987 known defects in 539 functions (348 wrong-result, 324 error, 78 unusable-option, 162 cosmetic, 75 limitation).
 
 ## Summary
 
@@ -690,11 +690,18 @@
 | `src/design/optEnvelope/addEnv.m` | error | An infeasible knock-out strain stops the function with a solver error | `test/verifiedTests/design/testOptEnvelope/testAddEnv.m` |
 | `src/design/optEnvelope/addEnv.m` | error | The output line is not assigned when the objective range is zero | `test/verifiedTests/design/testOptEnvelope/testAddEnv.m` |
 | `src/design/optEnvelope/addEnv.m` | wrong-result | The range of the model objective is used as the range of the biomass flux | `test/verifiedTests/design/testOptEnvelope/testAddEnv.m` |
+| `src/design/optEnvelope/minActiveRxns.m` | error | A protected biomass reaction stops the reaction branch with an error | `test/verifiedTests/design/testOptEnvelope/testMinActiveRxns.m` |
+| `src/design/optEnvelope/minActiveRxns.m` | unusable-option | The documented options toDel = 1 (genes) and toDel = 2 (enzymes) always stop with an error | `test/verifiedTests/design/testOptEnvelope/testMinActiveRxns.m` |
 | `src/design/optEnvelope/optEnvelope.m` | error | The mid output is not assigned without mid points | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
 | `src/design/optEnvelope/optEnvelope.m` | unusable-option | The numKO option always stops with an error | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
 | `src/design/optEnvelope/optEnvelope.m` | wrong-result | With prodMol the peaks of the mid envelopes are zero | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
+| `src/design/optEnvelope/sequentialOEReinserts.m` | unusable-option | The documented options toDel = 1 (genes) and toDel = 2 (enzymes) always stop with an error | `test/verifiedTests/design/testOptEnvelope/testSequentialOEReinserts.m` |
+| `src/design/optForce/analyzeOptForceSol.m` | cosmetic | The example of the help text names R21 twice | `test/verifiedTests/design/testOptForce/testAnalyzeOptForceSol.m` |
+| `src/design/optForce/findMustL.m` | cosmetic | The inputs are saved in a folder named InputsMustU | `test/verifiedTests/design/testOptForce/testFindMustL.m` |
+| `src/design/optForce/findMustL.m` | wrong-result | The minimum mutant flux written for each MustL reaction ignores constrOpt | `test/verifiedTests/design/testOptForce/testFindMustL.m` |
 | `src/design/optForce/findMustLL.m` | error | The documented default of excludedRxns (empty) is a function handle, so a call without it stops | `test/verifiedTests/design/testOptForce/testFindMustLL.m` |
 | `src/design/optForce/findMustLL.m` | wrong-result | The positions of the second reaction of each pair are not returned | `test/verifiedTests/design/testOptForce/testFindMustLL.m` |
+| `src/design/optForce/findMustU.m` | wrong-result | The maximum mutant flux written for each MustU reaction ignores constrOpt | `test/verifiedTests/design/testOptForce/testFindMustU.m` |
 | `src/design/optForce/findMustUL.m` | error | The documented default of excludedRxns (empty) is a function handle, so a call without it stops | `test/verifiedTests/design/testOptForce/testFindMustUL.m` |
 | `src/design/optForce/findMustUL.m` | wrong-result | The positions of the second reaction of each pair are not returned | `test/verifiedTests/design/testOptForce/testFindMustUL.m` |
 | `src/design/optForce/findMustUU.m` | error | The documented default of excludedRxns (empty) is a function handle, so a call without it stops | `test/verifiedTests/design/testOptForce/testFindMustUU.m` |
@@ -733,6 +740,7 @@
 | `src/reconstruction/comparison/modelBorgifier/readCbTmodel.m` | wrong-result | rxnID and metID entries are shifted when an entry has no ID of the model | `test/verifiedTests/reconstruction/testModelBorgifier/testReadCbTmodel.m` |
 | `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m` | wrong-result | A rule with a present- and an absent-condition applies when only the absent reaction is missing | `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m` |
 | `src/reconstruction/demeter/src/debugging/conditionSpecificGapFilling.m` | wrong-result | The lower bound is not changed for a rule whose present-condition uses OR | `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m` |
+| `src/reconstruction/demeter/src/debugging/findFutileCycle.m` | cosmetic | The FBA solution is printed to the console | `test/verifiedTests/reconstruction/testDemeter/testFindFutileCycle.m` |
 | `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m` | limitation | A metabolite without time stamp stops the conversion with an error | `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m` |
 | `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m` | cosmetic | The call saves the whole MATLAB path to pathdef.m | `test/verifiedTests/reconstruction/testDemeter/testCreateRBioNetDBFromVMHDB.m` |
 | `src/reconstruction/demeter/src/integration/gapfillRefinedGenomeReactions.m` | wrong-result | The first gap-filled row overwrites the last annotation row | `test/verifiedTests/reconstruction/testDemeter/testGapfillRefinedGenomeReactions.m` |
@@ -7892,6 +7900,26 @@
 - **Source lines**: 95-97, 105-116
 - **Documented in**: `test/verifiedTests/design/testOptEnvelope/testAddEnv.m`
 
+### `src/design/optEnvelope/minActiveRxns.m`
+
+#### A protected biomass reaction stops the reaction branch with an error
+
+- **Severity**: error
+- **Trigger**: the model and minP above with toDel 0: minActiveRxns(m, zeros(5,1), [1 4 5], minP), K containing minP.bioID (the biomass reaction protected from knockout)
+- **Observed**: (R2025a, 2026-11-25, gurobi) "Unrecognized function or variable 'ActiveRxns'." at line 174. Lines 120 and 126 address the binary variable of the biomass and the product as column nRxnsR + bioID (+ proID), but the binary variables exist only for the reactions not in K (numbered in that order), so the column is wrong or beyond the problem; the solver call fails inside try, and the catch block reads ActiveRxns, which is not yet assigned
+- **Expected**: the binary variable of the reaction itself is used (or none when it is in K), and data is returned
+- **Source lines**: 119-120, 125-126, 173-176
+- **Documented in**: `test/verifiedTests/design/testOptEnvelope/testMinActiveRxns.m`
+
+#### The documented options toDel = 1 (genes) and toDel = 2 (enzymes) always stop with an error
+
+- **Severity**: unusable-option
+- **Trigger**: m = createModel({'EX_a','R1','R2','BIO','EX_p'}, {'','','','',''}, {' -> a[c]', 'a[c] -> b[c]','a[c] -> p[c]','b[c] -> ','p[c] -> '}, 'lowerBoundList', [0 0 0 0 0], 'upperBoundList', [10 1000 1000 1000 1000], 'grRuleList', {'','g1','g2','',''}, 'printLevel', 0); m = changeObjective(m, 'BIO'); minP = struct('bioID', 4, 'bioMin', 0.1, 'bioMax', 10, 'proID', 5, 'proMin', 0.1, 'proMax', 10); data = minActiveRxns(m, zeros(5,1), [1 4 5], minP, 1) (or toDel 2)
+- **Observed**: (R2025a, 2026-11-25, gurobi) 'Output argument "data" (and possibly others) not assigned a value in the execution with "minActiveRxns" function.' for toDel 1 and 2: the gene branch computes ActiveRxns and never assigns data; the enzyme branch is empty
+- **Expected**: data with the active genes (toDel 1), or an error that says the option is not available, as optEnvelope does
+- **Source lines**: 188-237
+- **Documented in**: `test/verifiedTests/design/testOptEnvelope/testMinActiveRxns.m`
+
 ### `src/design/optEnvelope/optEnvelope.m`
 
 #### The mid output is not assigned without mid points
@@ -7921,6 +7949,48 @@
 - **Source lines**: 240
 - **Documented in**: `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m`
 
+### `src/design/optEnvelope/sequentialOEReinserts.m`
+
+#### The documented options toDel = 1 (genes) and toDel = 2 (enzymes) always stop with an error
+
+- **Severity**: unusable-option
+- **Trigger**: m = createModel({'EX_a','R1','R2','BIO','EX_p'}, {'','','','',''}, {' -> a[c]', 'a[c] -> b[c]','a[c] -> p[c]','b[c] -> ','p[c] -> '}, 'lowerBoundList', [0 0 0 0 0], 'upperBoundList', [10 1000 1000 1000 1000], 'grRuleList', {'','g1','g2','',''}, 'printLevel', 0); minP = struct('bioID', 4, 'proID', 5); [ko, midKo] = sequentialOEReinserts(m, struct(), [1 4 5], 1, minP, 0, 1, 60) (or toDel 2)
+- **Observed**: (R2025a, 2026-11-25) toDel 1: "Unrecognized function or variable 'ActiveRxns'." at line 150 (ActiveRxns is a variable of minActiveRxns, not an input here); toDel 2: 'Output argument "mainKnockouts" (and possibly others) not assigned a value in the execution with "sequentialOEReinserts" function.'
+- **Expected**: the gene knockouts (toDel 1), or an error that says the option is not available, as optEnvelope does
+- **Source lines**: 148-159
+- **Documented in**: `test/verifiedTests/design/testOptEnvelope/testSequentialOEReinserts.m`
+
+### `src/design/optForce/analyzeOptForceSol.m`
+
+#### The example of the help text names R21 twice
+
+- **Severity**: cosmetic
+- **Trigger**: the help text of the input solution
+- **Observed**: "the reaction R21 will be regulated at 10 ... and R21 will be regulated at 0" for the example with the reactions R21 and R24
+- **Expected**: the second reaction of the example is R24
+- **Source lines**: 33-35
+- **Documented in**: `test/verifiedTests/design/testOptForce/testAnalyzeOptForceSol.m`
+
+### `src/design/optForce/findMustL.m`
+
+#### The inputs are saved in a folder named InputsMustU
+
+- **Severity**: cosmetic
+- **Trigger**: any call with keepInputs = 1 (the default)
+- **Observed**: the run folder holds InputsMustU, the name used by findMustU
+- **Expected**: a folder named after findMustL (InputsMustL)
+- **Source lines**: 256
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustL.m`
+
+#### The minimum mutant flux written for each MustL reaction ignores constrOpt
+
+- **Severity**: wrong-result
+- **Trigger**: any call with constrOpt that finds a set and writes the info files; reproduction: t = createModel({'EX_A','R1','R2','EX_B','EX_C'}, {'','','','',''}, {' -> A[c]','A[c] -> B[c]', 'A[c] -> C[c]','B[c] -> ','C[c] -> '}, 'lowerBoundList', zeros(1,5), 'upperBoundList', 10*ones(1,5), 'printLevel', 0); minW = [10; 0; 8; 0; 8]; maxW = [10; 2; 10; 2; 10]; constrOpt = struct('rxnList', {{'EX_A'; 'EX_B'}}, 'values', [10; 8]); findMustL(t, minW, maxW, 'constrOpt', constrOpt, 'runID', 'L1', 'printLevel', 0)
+- **Observed**: (R2025a, 2026-11-25, gurobi) the set {'R2'; 'EX_C'} (positions [3; 5]) is correct, but MustLSet_Info.txt (and MustLSet_Info.xlsx) give "Min Flux in Mutant strain" 0.0000 for R2 and EX_C, while the mutant fixes both at 2 (EX_A = 10, EX_B = 8). Lines 297-299 minimise each reaction over the model without the constrOpt fluxes
+- **Expected**: the minimum flux of the reaction in the mutant (model with the constrOpt fluxes), 2 here, as the column title and the help text (C4) say
+- **Source lines**: 297-299, 331, 352
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustL.m`
+
 ### `src/design/optForce/findMustLL.m`
 
 #### The documented default of excludedRxns (empty) is a function handle, so a call without it stops
@@ -7940,6 +8010,17 @@
 - **Expected**: posMustLL(i, :) holds the positions of both reactions of mustLL(i, :), as the help text says (number of sets found x 2)
 - **Source lines**: 297-298
 - **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustLL.m`
+
+### `src/design/optForce/findMustU.m`
+
+#### The maximum mutant flux written for each MustU reaction ignores constrOpt
+
+- **Severity**: wrong-result
+- **Trigger**: any call with constrOpt that finds a set and writes the info files; reproduction: t = createModel({'EX_A','R1','R2','EX_B','EX_C'}, {'','','','',''}, {' -> A[c]','A[c] -> B[c]', 'A[c] -> C[c]','B[c] -> ','C[c] -> '}, 'lowerBoundList', zeros(1,5), 'upperBoundList', 10*ones(1,5), 'printLevel', 0); minW = [10; 0; 8; 0; 8]; maxW = [10; 2; 10; 2; 10]; constrOpt = struct('rxnList', {{'EX_A'; 'EX_B'}}, 'values', [10; 8]); findMustU(t, minW, maxW, 'constrOpt', constrOpt, 'runID', 'U1', 'printLevel', 0)
+- **Observed**: (R2025a, 2026-11-25, gurobi) the set {'R1'} (position 2) is correct, but MustUSet_Info.txt (and MustUSet_Info.xlsx) give "Max Flux in Mutant strain" 10.0000 for R1, while the mutant fixes it at 8 (EX_A = 10, EX_B = 8). Lines 290-292 maximise the reaction over the model without the constrOpt fluxes
+- **Expected**: the maximum flux of the reaction in the mutant (model with the constrOpt fluxes), 8 here, as the column title and the help text (C5) say
+- **Source lines**: 290-292, 324, 345
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFindMustU.m`
 
 ### `src/design/optForce/findMustUL.m`
 
@@ -8330,6 +8411,17 @@
 - **Expected**: the lower bound of each listed reaction that is in the model set to 0
 - **Source lines**: 36, 51, 400-402
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testConditionSpecificGapFilling.m`
+
+### `src/reconstruction/demeter/src/debugging/findFutileCycle.m`
+
+#### The FBA solution is printed to the console
+
+- **Severity**: cosmetic
+- **Trigger**: every call
+- **Observed**: the statement fba = optimizeCbModel(...) has no semicolon, so the whole solution structure is displayed ("fba = struct with fields: ... f: 1000")
+- **Expected**: no console output apart from the formulas printed by printRxnFormula
+- **Source lines**: 43
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testFindFutileCycle.m`
 
 ### `src/reconstruction/demeter/src/integration/createRBioNetDBFromVMHDB.m`
 

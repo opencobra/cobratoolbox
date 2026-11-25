@@ -1,0 +1,7 @@
+test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m|src/dataIntegration/modelMultipleObjectives.m
+test/verifiedTests/dataIntegration/testXomicsToModel/testDebugXomicsToModel.m|src/dataIntegration/XomicsToModel/analysis/debugXomicsToModel.m
+test/verifiedTests/dataIntegration/testXomicsToModel/testFitExperimentalFlux.m|src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m
+test/verifiedTests/dataIntegration/testXomicsToModel/testThermoQP.m|src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/thermoQP.m
+test/verifiedTests/dataIntegration/testFluxomics/testGoodInitialPoint.m|src/dataIntegration/fluxomics/goodInitialPoint.m
+test/verifiedTests/dataIntegration/testMetaboTools/testCheckEffectRxnKO.m|src/dataIntegration/metabotools/checkEffectRxnKO.m
+test/verifiedTests/dataIntegration/testMetaboTools/testPerformPPP.m|src/dataIntegration/metabotools/performPPP.m
