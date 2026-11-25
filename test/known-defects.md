@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-1047 known defects in 568 functions (371 wrong-result, 336 error, 88 unusable-option, 178 cosmetic, 74 limitation).
+1052 known defects in 571 functions (371 wrong-result, 339 error, 88 unusable-option, 180 cosmetic, 74 limitation).
 
 ## Summary
 
@@ -104,6 +104,9 @@
 | `src/analysis/igemRNA/findUpDownRegulatedGenes/findUpDownRegulatedGenes.m` | wrong-result | Genes are matched by row position, not by gene ID | `test/verifiedTests/analysis/testFindUpDownRegulatedGenes/testFindUpDownRegulatedGenes.m` |
 | `src/analysis/multiSpecies/SteadyCom/subroutines/SteadyComSubroutines.m` | error | 'initialize' reads modelCom.indCom before building it from infoCom | `test/verifiedTests/analysis/testSteadyCom/testSteadyComSubroutines.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/correlateFluxWithTaxonAbundance.m` | error | Every call stops with an error when the taxonomy is prepared for export | `test/verifiedTests/analysis/testAdditionalAnalysis/testCorrelateFluxWithTaxonAbundance.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/drawSecPot.m` | error | No reaction above the cutoff stops with an error instead of drawing | `test/verifiedTests/analysis/testAdditionalAnalysis/testDrawSecPot.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/drawSecPot.m` | cosmetic | The help describes the cutoff test differently from the code | `test/verifiedTests/analysis/testAdditionalAnalysis/testDrawSecPot.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/drawSecPot.m` | cosmetic | Unsuppressed console output | `test/verifiedTests/analysis/testAdditionalAnalysis/testDrawSecPot.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m` | cosmetic | Box plots print the handle array of every plot | `test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m` | wrong-result | Features with negative values are dropped as if they were all zero | `test/verifiedTests/analysis/testAdditionalAnalysis/testMakeViolinPlots.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/performStatisticalAnalysis.m` | wrong-result | Fecal exchange features never get a metabolite description | `test/verifiedTests/analysis/testAdditionalAnalysis/testPerformStatisticalAnalysis.m` |
@@ -802,6 +805,7 @@
 | `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | wrong-result | growth on the defined medium is lost when the file holds only numbers | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
 | `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | cosmetic | the sensitivity column header loses its blank | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
 | `src/reconstruction/demeter/suite/tests/testMetaboliteUptake.m` | wrong-result | an uptake through a second or later exchange of a metabolite is reported in neither list | `test/verifiedTests/reconstruction/testDemeter/testTestMetaboliteUptake.m` |
+| `src/reconstruction/demeter/suite/tests/testModelMassChargeBalance.m` | error | A model whose reactions are all mass balanced but not all charge balanced stops with an error | `test/verifiedTests/reconstruction/testDemeter/testTestModelMassChargeBalance.m` |
 | `src/reconstruction/demeter/suite/tests/testSecretionProducts.m` | wrong-result | A product secreted only through a second or third exchange is in neither output list | `test/verifiedTests/reconstruction/testDemeter/testTestSecretionProducts.m` |
 | `src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m` | wrong-result | A nonzero right hand side b is not scaled with the bounds | `test/verifiedTests/reconstruction/testFastGapFill/testLP9weighted.m` |
 | `src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m` | wrong-result | The bound of the auxiliary variables ignores the weights | `test/verifiedTests/reconstruction/testFastGapFill/testLP9weighted.m` |
@@ -1050,6 +1054,7 @@
 | `src/visualization/paint4Net/Draw_by_met/findNearRxns.m` | error | A call that selects no metabolite fails | `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m` |
 | `src/visualization/paint4Net/Draw_by_met/findNearRxns.m` | error | A row cell Rxns with more than one reaction fails | `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m` |
 | `src/visualization/paint4Net/Draw_by_met/findNearRxns.m` | error | The documented defaults of direction and flux are not implemented | `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m` |
+| `src/visualization/paint4Net/Draw_by_rxn/draw_by_rxn.m` | error | An empty list of reactions stops with an error | `test/verifiedTests/visualization/testPaint4Net/testPaint4Net_draw_by_rxn.m` |
 | `src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m` | error | A call that selects no metabolite fails | `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m` |
 | `src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m` | error | A row cell Rxns with more than one reaction fails | `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m` |
 | `src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m` | error | The documented defaults of direction and flux are not implemented | `test/verifiedTests/visualization/testPaint4Net/testBio_findNearRxns.m` |
@@ -2021,6 +2026,35 @@
 - **Expected**: the correlations, p-values and taxonomy information returned and written to Taxon_Flux_Correlations
 - **Source lines**: 260-262
 - **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testCorrelateFluxWithTaxonAbundance.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/drawSecPot.m`
+
+#### No reaction above the cutoff stops with an error instead of drawing
+
+- **Severity**: error
+- **Trigger**: drawSecPot(dietPath, rxnmax, startMet, levels, cutoff) with a cutoff at or above the absolute flux of every reaction within levels of startMet, e.g. a model with reactions R1 a[c] -> b[c], R2 b[c] -> c[c] (fluxes 2 and 0.3), startMet 'b[c]', levels 1, cutoff 10
+- **Observed**: (R2025a, 2026-11-25, stand-in fastFVA) "Conversion to cellstr from double is not possible." from findRxnIDs line 21, called by draw_by_rxn line 181 from line 61: rxngz stays the double [] set at line 46 and is passed as the reaction list, which draw_by_rxn documents as a cell array (with {} draw_by_rxn stops at its line 480, "Unrecognized function or variable 'matrix'")
+- **Expected**: no reaction drawn (an empty map or a message), since the help allows any cutoff
+- **Source lines**: 46, 61
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testDrawSecPot.m`
+
+#### The help describes the cutoff test differently from the code
+
+- **Severity**: cosmetic
+- **Trigger**: a negative cutoff or a negative flux, e.g. the model above with levels 1, cutoff -1
+- **Observed**: (R2025a, 2026-11-25, stand-in fastFVA) R2 (flux 0.3) is drawn: line 52 keeps abs(flux) > cutoff
+- **Expected**: the help says "only fluxes>abs(cutoff) are considered", which excludes R2 (0.3 < 1) and every negative flux
+- **Source lines**: 52
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testDrawSecPot.m`
+
+#### Unsuppressed console output
+
+- **Severity**: cosmetic
+- **Trigger**: any call
+- **Observed**: (R2025a, 2026-11-25) "n = <count>" and one "ans = 'Progress ...'" per reaction are printed (no semicolon at lines 48 and 51)
+- **Expected**: no output, or output gated behind a printLevel
+- **Source lines**: 48, 51
+- **Documented in**: `test/verifiedTests/analysis/testAdditionalAnalysis/testDrawSecPot.m`
 
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/makeViolinPlots.m`
 
@@ -9096,6 +9130,17 @@
 - **Source lines**: 145
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testTestMetaboliteUptake.m`
 
+### `src/reconstruction/demeter/suite/tests/testModelMassChargeBalance.m`
+
+#### A model whose reactions are all mass balanced but not all charge balanced stops with an error
+
+- **Severity**: error
+- **Trigger**: m = struct('S', sparse([-1 0; 1 -1; 0 1]), 'rxns', {{'R1'; 'R2'}}, 'mets', {{'a[c]'; 'b[c]'; 'c[c]'}}, 'metNames', {{'A'; 'B'; 'C'}}, 'metFormulas', {{'C'; 'C'; 'C'}}, 'metCharges', [0; 0; 1], 'lb', [0; 0], 'ub', [1000; 1000]); testModelMassChargeBalance(m) (no exchange reaction; R2 is charge imbalanced)
+- **Observed**: (R2025a, 2026-11-25) "Conversion to double from cell is not possible." at line 83; with testModelMassChargeBalance(m, false) "Mass imbalanced reactions: 1" is printed (R1 is listed as mass imbalanced, line 100) and the call stops at line 113 with "The logical indices contain a true value outside of the array bounds." checkMassChargeBalance returns imBalancedMass = [] when every reaction is mass balanced, as its help documents; lines 83, 90, 100 and 113 index it as an nRxn x 1 cell
+- **Expected**: massImbalancedRxns with the header row only, chargeImbalancedRxns listing R2 with its formula and charge imbalance 1, imbalancedRxnMets listing b[c] and c[c]
+- **Source lines**: 83, 90, 100, 113
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testTestModelMassChargeBalance.m`
+
 ### `src/reconstruction/demeter/suite/tests/testSecretionProducts.m`
 
 #### A product secreted only through a second or third exchange is in neither output list
@@ -11557,6 +11602,17 @@
 - **Expected**: direction = 'struc' and flux = a vector of zeros when omitted (help text, OPTIONAL INPUTS)
 - **Source lines**: 67, 72, 100, 128
 - **Documented in**: `test/verifiedTests/visualization/testPaint4Net/testFindNearRxns.m`
+
+### `src/visualization/paint4Net/Draw_by_rxn/draw_by_rxn.m`
+
+#### An empty list of reactions stops with an error
+
+- **Severity**: error
+- **Trigger**: draw_by_rxn(model, {}, 'true', 'struc', {''}, {'d[c]'; 'e[c]'}, flux) for any model and flux vector (an empty cell array is of the documented type of rxns)
+- **Observed**: (R2025a, 2026-11-25, reproduced by the wave 43 writer through drawSecPot) "Unrecognized function or variable 'matrix'." at line 480: matrix is built only inside the loop over the reactions
+- **Expected**: an empty drawing (or a clear message that no reaction was given)
+- **Source lines**: 480
+- **Documented in**: `test/verifiedTests/visualization/testPaint4Net/testPaint4Net_draw_by_rxn.m`
 
 ### `src/visualization/paint4net/bio_paint4Net/bio_draw_by_met/bio_findNearRxns.m`
 
