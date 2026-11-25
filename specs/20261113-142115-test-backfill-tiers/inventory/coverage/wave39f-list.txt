@@ -1,0 +1,6 @@
+test/verifiedTests/design/testOptEnvelope/testMinActiveRxns.m|src/design/optEnvelope/minActiveRxns.m
+test/verifiedTests/design/testOptEnvelope/testSequentialOEReinserts.m|src/design/optEnvelope/sequentialOEReinserts.m
+test/verifiedTests/design/testOptForce/testAnalyzeOptForceSol.m|src/design/optForce/analyzeOptForceSol.m
+test/verifiedTests/design/testOptForce/testFindMustL.m|src/design/optForce/findMustL.m
+test/verifiedTests/design/testOptForce/testFindMustU.m|src/design/optForce/findMustU.m
+test/verifiedTests/reconstruction/testDemeter/testFindFutileCycle.m|src/reconstruction/demeter/src/debugging/findFutileCycle.m

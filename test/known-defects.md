@@ -7906,7 +7906,7 @@
 
 - **Severity**: error
 - **Trigger**: the model and minP above with toDel 0: minActiveRxns(m, zeros(5,1), [1 4 5], minP), K containing minP.bioID (the biomass reaction protected from knockout)
-- **Observed**: (R2025a, 2026-11-25, gurobi) "Unrecognized function or variable 'ActiveRxns'." at line 174. Lines 120 and 126 address the binary variable of the biomass and the product as column nRxnsR + bioID (+ proID), but the binary variables exist only for the reactions not in K (numbered in that order), so the column is wrong or beyond the problem; the solver call fails inside try, and the catch block reads ActiveRxns, which is not yet assigned
+- **Observed**: (R2025a, 2026-11-25, gurobi) "Unrecognized function or variable 'ActiveRxns'." at line 174. Lines 120 and 126 address the binary variable of the biomass and the product as column nRxnsR + bioID (+ proID), but the binary variables exist only for the reactions not in K (numbered in that order), so the column is wrong or beyond the problem; the solver call fails inside try, and the catch block reads ActiveRxns, which is not yet assigned. With the inputs optEnvelope builds (ecoli_core_model made irreversible, product EX_ac(e), K = its 27 exchanges) no error occurs, but the product constraint of line 126 acts on the binary variable of FBA_f, since the product exchange is in K and has no binary variable of its own
 - **Expected**: the binary variable of the reaction itself is used (or none when it is in K), and data is returned
 - **Source lines**: 119-120, 125-126, 173-176
 - **Documented in**: `test/verifiedTests/design/testOptEnvelope/testMinActiveRxns.m`
