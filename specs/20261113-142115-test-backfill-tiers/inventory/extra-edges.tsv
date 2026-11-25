@@ -46,3 +46,7 @@ src/dataIntegration/fluxomics/c13solver/errorComputation2.m	src/dataIntegration/
 src/analysis/exploration/findCarbonRxns.m	src/base/utilities/parseMetNames.m
 src/analysis/exploration/findCarbonRxns.m	src/base/utilities/columnVector.m
 src/analysis/sampling/plotSampleHist.m	src/base/utilities/toolboxFree/cobraSmooth.m
+src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m	src/analysis/FBA/changeObjective.m
+src/analysis/wholeBody/PSCMToolbox/organEssentiality.m	src/base/solvers/changeCobraSolver.m
+src/analysis/wholeBody/PSCMToolbox/organEssentiality.m	src/analysis/FBA/changeRxnBounds.m
+src/analysis/wholeBody/PSCMToolbox/organEssentiality.m	src/analysis/FBA/changeObjective.m
