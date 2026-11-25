@@ -262,3 +262,5 @@ findMassLeaksAndSiphons	NONE
 removeRxns	!src/reconstruction/modelGeneration/modelVerification/verifyModel.m
 removeMetabolites	!src/reconstruction/modelGeneration/modelVerification/verifyModel.m
 removeMetabolites	!src/reconstruction/refinement/removeRxns.m
+# singleGeneDeletion: the transcript prefix match needs uniqueGene = 1, which only analyzeSingleGeneDeletion passes. Lead, 2026-11-25.
+singleGeneDeletion	src/dataIntegration/metabotools/analyzeSingleGeneDeletion.m

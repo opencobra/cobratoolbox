@@ -1,0 +1,7 @@
+test/verifiedTests/analysis/testDeletionStudy/testSingleGeneDeletion.m|src/analysis/deletion/singleGeneDeletion.m
+test/verifiedTests/analysis/testDeletionStudy/testSingleRxnDeletion.m|src/analysis/deletion/singleRxnDeletion.m
+test/verifiedTests/analysis/testFastSL/testDoubleSL.m|src/analysis/deletion/Syntheticlethals/Fast-SL/doubleSL.m
+test/verifiedTests/analysis/testFastSL/testTripleSL.m|src/analysis/deletion/Syntheticlethals/Fast-SL/tripleSL.m
+test/verifiedTests/analysis/testPersephone/testGetMissingDietPersephone.m|src/analysis/persephone/getMissingDietPersephone.m
+test/verifiedTests/analysis/testPersephone/testFindOptimalCoreCount.m|src/analysis/persephone/additionalFunctions/findOptimalCoreCount.m
+test/verifiedTests/analysis/testRobustnessAnalysis/testRobustnessAnalysisWB.m|src/analysis/robustnessAnalysis/robustnessAnalysisWB.m
