@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-974 known defects in 529 functions (346 wrong-result, 323 error, 76 unusable-option, 158 cosmetic, 71 limitation).
+979 known defects in 533 functions (346 wrong-result, 323 error, 76 unusable-option, 159 cosmetic, 75 limitation).
 
 ## Summary
 
@@ -548,6 +548,7 @@
 | `src/base/utilities/setGlobal.m` | limitation | A global named globalName cannot be set | `test/verifiedTests/base/testUtilities/testSetGlobal.m` |
 | `src/base/utilities/updateStructData.m` | limitation | A structure update is ignored when the original field is not a structure | `test/verifiedTests/base/testTools/testUpdateStructData.m` |
 | `src/dataIntegration/XomicsToModel/analysis/coreMetRxnAnalysis.m` | wrong-result | A given list of deleted metabolites is discarded when the old model is empty and no deleted reactions are given | `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m` |
+| `src/dataIntegration/XomicsToModel/analysis/debugXomicsToModel.m` | cosmetic | Numeric gene identifiers leave the command window in format long g | `test/verifiedTests/dataIntegration/testXomicsToModel/testDebugXomicsToModel.m` |
 | `src/dataIntegration/XomicsToModel/analysis/metUtilisation.m` | error | Every call without param.modelName and param.saveFig errors | `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m` |
 | `src/dataIntegration/XomicsToModel/analysis/metUtilisation.m` | wrong-result | The default flux threshold is 1e6, not the documented 1e-6 | `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m` |
 | `src/dataIntegration/XomicsToModel/analysis/metUtilisation.m` | error | The flux-sampling branch reads the nonexistent table variable metRxns | `test/verifiedTests/dataIntegration/testXomicsToModel/testMetUtilisation.m` |
@@ -683,6 +684,7 @@
 | `src/design/TrimGdel/readGeneRules.m` | wrong-result | reactionKO2term points into the term list before it is reordered | `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m` |
 | `src/design/analyzeOptKnock.m` | error | An infeasible knock-out strain stops the function with a solver error | `test/verifiedTests/design/testDesign/testAnalyzeOptKnock.m` |
 | `src/design/analyzeOptKnock.m` | wrong-result | The objective value is used as the biomass flux | `test/verifiedTests/design/testDesign/testAnalyzeOptKnock.m` |
+| `src/design/doubleProductionEnvelope.m` | limitation | An infeasible knock-out strain stops the function with a solver error | `test/verifiedTests/design/testDesign/testDoubleProductionEnvelope.m` |
 | `src/design/multiProductionEnvelope.m` | error | An unbounded minimum is stored in the upper bounds | `test/verifiedTests/design/testMultiProductionEnvelope.m` |
 | `src/design/multiProductionEnvelope.m` | wrong-result | The wrong reaction is removed when a later substrate is next to the end of the list | `test/verifiedTests/design/testMultiProductionEnvelope.m` |
 | `src/design/optEnvelope/addEnv.m` | error | An infeasible knock-out strain stops the function with a solver error | `test/verifiedTests/design/testOptEnvelope/testAddEnv.m` |
@@ -710,6 +712,9 @@
 | `src/design/optForceGAMS/exportInputsOptForceToGAMS.m` | error | Every call stops on the undefined variable nSets and leaves the current folder changed | `test/verifiedTests/design/testOptForce/testExportInputsOptForceToGAMS.m` |
 | `src/design/optGeneFitness.m` | error | A knock-out that makes the model infeasible stops the function with an error | `test/verifiedTests/design/testDesign/testOptGeneFitness.m` |
 | `src/design/optGeneFitness.m` | limitation | The global hash table HTABLE is required but not documented | `test/verifiedTests/design/testDesign/testOptGeneFitness.m` |
+| `src/design/optGeneFitnessTilt.m` | limitation | The globals HTABLE and MaxKnockOuts are required but not documented | `test/verifiedTests/design/testDesign/testOptGeneFitnessTilt.m` |
+| `src/design/randomKO.m` | limitation | N larger than the number of selectable reactions never returns | `test/verifiedTests/design/testDesign/testRandomKO.m` |
+| `src/design/randomKO.m` | limitation | When every selectable knock-out set is infeasible the function never returns | `test/verifiedTests/design/testDesign/testRandomKO.m` |
 | `src/design/simpleOptKnock.m` | limitation | Single-deletion growth is stored in the first column in double-deletion mode | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/simpleOptKnock.m` | wrong-result | The wild-type minimum production is the maximum | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/testOptKnockSol.m` | wrong-result | The growth rate is not fixed when the objective coefficient is not 1 | `test/verifiedTests/design/testDesign/testTestOptKnockSol.m` |
@@ -6453,6 +6458,17 @@
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testCoreMetRxnAnalysis.m`
 
+### `src/dataIntegration/XomicsToModel/analysis/debugXomicsToModel.m`
+
+#### Numeric gene identifiers leave the command window in format long g
+
+- **Severity**: cosmetic
+- **Trigger**: debugXomicsToModel(genericModel, debugDir, [], struct('genes', [10; 30])) (coreData.genes numeric, as in the first section below)
+- **Observed**: (code reading, R2025a, 2026-11-25) line 43 runs "format long g", which changes the display format of the whole MATLAB session and is not restored; the conversion of line 46 (num2str) does not depend on it. The test restores the format and asserts nothing about it
+- **Expected**: no change of the session's display format, which the help does not mention
+- **Source lines**: 43
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testDebugXomicsToModel.m`
+
 ### `src/dataIntegration/XomicsToModel/analysis/metUtilisation.m`
 
 #### Every call without param.modelName and param.saveFig errors
@@ -7816,6 +7832,17 @@
 - **Source lines**: 34, 56, 69-77
 - **Documented in**: `test/verifiedTests/design/testDesign/testAnalyzeOptKnock.m`
 
+### `src/design/doubleProductionEnvelope.m`
+
+#### An infeasible knock-out strain stops the function with a solver error
+
+- **Severity**: limitation
+- **Trigger**: model = createModel({'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'A <=> '; 'A -> B'; 'A -> B + P'; 'D -> P'; 'D <=> '; 'B -> '; 'B -> '; 'P <=> '; 'Q <=> '}, 'lowerBoundList', [-10 0 0 0 -5 0 1 0 0], 'upperBoundList', 1000 * ones(1, 9)); model = changeObjective(model, 'BIO'); figure('Visible', 'off'); doubleProductionEnvelope(model, {'R1'; 'R2'}, 'EX_P', 'EX_Q', 'BIO', false, 3)
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Gurobi error 10003: Element 0 of a double array is Nan." from solveCobraLP called at line 72: the strain cannot carry the ATPM flux, so the LPs of lines 52 and 58 are infeasible (f = NaN), the grid of lines 62-63 is NaN and line 72 passes NaN bounds to the solver
+- **Expected**: a clear error or an empty envelope for a strain without a feasible flux
+- **Source lines**: 52-53, 58-59, 62-63, 72
+- **Documented in**: `test/verifiedTests/design/testDesign/testDoubleProductionEnvelope.m`
+
 ### `src/design/multiProductionEnvelope.m`
 
 #### An unbounded minimum is stored in the upper bounds
@@ -8084,6 +8111,37 @@
 - **Expected**: the globals documented in the help text, or an empty cache created when HTABLE is not set
 - **Source lines**: 131-136
 - **Documented in**: `test/verifiedTests/design/testDesign/testOptGeneFitness.m`
+
+### `src/design/optGeneFitnessTilt.m`
+
+#### The globals HTABLE and MaxKnockOuts are required but not documented
+
+- **Severity**: limitation
+- **Trigger**: clear global HTABLE; optGeneFitnessTilt([0 1 0], model, 'EX_P', {'R1'; 'R2'; 'R5'}, false) with the model of this test
+- **Observed**: (R2025a, gurobi, 2026-11-25) MATLAB:structRefFromNonStruct "Dot indexing is not supported for variables of this type." at line 147; the cache works only after the caller sets global HTABLE = java.util.Hashtable (optGene does); the limit MaxKnockOuts (line 47) is read from an undocumented global as well (unset, the comparison with [] is false and no limit applies). The test sets both globals and restores them.
+- **Expected**: the globals documented in the help text, or an empty cache created when HTABLE is not set
+- **Source lines**: 21, 47, 142-153
+- **Documented in**: `test/verifiedTests/design/testDesign/testOptGeneFitnessTilt.m`
+
+### `src/design/randomKO.m`
+
+#### N larger than the number of selectable reactions never returns
+
+- **Severity**: limitation
+- **Trigger**: randomKO(model, {'R1'; 'R2'}, 3) with the model of this test
+- **Observed**: (R2025a, gurobi, 2026-11-25) the call had not returned when the session was killed after 100 s: three distinct indices cannot be drawn from two, so the while loop redraws forever
+- **Expected**: an error saying that N exceeds the number of selectable reactions
+- **Source lines**: 25-36
+- **Documented in**: `test/verifiedTests/design/testDesign/testRandomKO.m`
+
+#### When every selectable knock-out set is infeasible the function never returns
+
+- **Severity**: limitation
+- **Trigger**: randomKO(model, {'R2'; 'R5'}, 2) with the model of this test
+- **Observed**: (R2025a, gurobi, 2026-11-25) the call had not returned when the session was killed after 150 s: the catch block (no error identifier or message checked) redraws and recurses for every failure, whatever its cause
+- **Expected**: an error once no feasible knock-out set can be found (or the original error propagated)
+- **Source lines**: 45-61
+- **Documented in**: `test/verifiedTests/design/testDesign/testRandomKO.m`
 
 ### `src/design/simpleOptKnock.m`
 
