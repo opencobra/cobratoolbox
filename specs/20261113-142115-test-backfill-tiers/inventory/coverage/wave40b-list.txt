@@ -1,0 +1,3 @@
+test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m|src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m
+test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m|src/analysis/wholeBody/PSCMToolbox/organEssentiality.m
+test/verifiedTests/dataIntegration/testMetaboTools/testPerformSampling.m|src/dataIntegration/metabotools/performSampling.m

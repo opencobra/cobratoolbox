@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-1025 known defects in 557 functions (364 wrong-result, 332 error, 82 unusable-option, 175 cosmetic, 72 limitation).
+1034 known defects in 559 functions (366 wrong-result, 333 error, 86 unusable-option, 176 cosmetic, 73 limitation).
 
 ## Summary
 
@@ -369,6 +369,11 @@
 | `src/analysis/wholeBody/PSCMToolbox/annotateModel.m` | wrong-result | every non-transport reaction gets the exchange SBO term when any reaction is an exchange | `test/verifiedTests/analysis/testWholeBody/testAnnotateModel.m` |
 | `src/analysis/wholeBody/PSCMToolbox/annotateModel.m` | error | modelID without modelName stops the call | `test/verifiedTests/analysis/testWholeBody/testAnnotateModel.m` |
 | `src/analysis/wholeBody/PSCMToolbox/calcOrganFract.m` | wrong-result | The lung of a whole-body model keeps the reference weight instead of the lung polynomial | `test/verifiedTests/analysis/testWholeBody/testCalcOrganFract.m` |
+| `src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m` | wrong-result | Biomarker upper bounds are set by prefix match | `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m` |
+| `src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m` | unusable-option | The LPSolver input is ignored | `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m` |
+| `src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m` | wrong-result | The minimisation of a biomarker in the disease model maximises it | `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m` |
+| `src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m` | unusable-option | fractionKO is ignored, and with fixIEMlb = 1 it makes the disease model infeasible | `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m` |
+| `src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m` | unusable-option | reverseDirObj is ignored | `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m` |
 | `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m` | error | Reactions missing from a model are collected in a character matrix, which fails for names of different lengths | `test/verifiedTests/analysis/testWholeBody/testCompareBounds2Models.m` |
 | `src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m` | limitation | All MATLAB warnings are switched off and never switched back on | `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m` |
 | `src/analysis/wholeBody/PSCMToolbox/createModelNewCompartment.m` | cosmetic | The names of the new transport reactions lose their blanks | `test/verifiedTests/analysis/testWholeBody/testCreateModelNewCompartment.m` |
@@ -380,6 +385,10 @@
 | `src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m` | wrong-result | QPold rescales the bounds but not the coupling constraints | `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m` |
 | `src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m` | cosmetic | The CPLEX status text is never printed | `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m` |
 | `src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m` | cosmetic | The original status of gurobi is printed as a number | `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m` |
+| `src/analysis/wholeBody/PSCMToolbox/organEssentiality.m` | error | A solve without a solution stops the function with an undefined-function error | `test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m` |
+| `src/analysis/wholeBody/PSCMToolbox/organEssentiality.m` | unusable-option | The documented LPSolver value 'ILOGcomplex' stops the function with an error | `test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m` |
+| `src/analysis/wholeBody/PSCMToolbox/organEssentiality.m` | limitation | The status column holds the solver's own status, not the documented codes | `test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m` |
+| `src/analysis/wholeBody/PSCMToolbox/organEssentiality.m` | cosmetic | The time per organ is printed in exponential notation | `test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m` | wrong-result | ExclList is ignored for the blood exchanges of every organ but the kidney | `test/verifiedTests/analysis/testWholeBody/testPhysiologicalConstraintsHMDBbased.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased_old.m` | wrong-result | ExclList is ignored for the blood exchanges of every organ but the kidney | `test/verifiedTests/analysis/testWholeBody/testPhysiologicalConstraintsHMDBbased_old.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m` | limitation | Flux values are rounded to the default precision of num2str | `test/verifiedTests/analysis/testWholeBody/testReadInDietFromVMH.m` |
@@ -4713,6 +4722,53 @@
 - **Source lines**: 70, 88, 174-188
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCalcOrganFract.m`
 
+### `src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m`
+
+#### Biomarker upper bounds are set by prefix match
+
+- **Severity**: wrong-result
+- **Trigger**: m of the Purpose with a fifth, closed reaction DM_ab ( -> a[c], bounds 0 0): S = checkIEM_WBM(m, {'IEM1'}, {'DM_a','Increased (blood)'}, 0.75)
+- **Observed**: (R2025a, gurobi, 2026-11-25) 'Healthy:DM_a' = '100000' and 'Disease:DM_a' = '100000'; without DM_ab they are '2.5' and '10'. strmatch without 'exact' (lines 238 and 288) also sets the upper bound of DM_ab, a reaction whose identifier starts with the biomarker's, to 100000 and opens an unlimited source of a
+- **Expected**: only the biomarker reaction's bound changed ('2.5' and '10'), as line 122 ('exact') and line 240 (strcmp) select it
+- **Source lines**: 238, 288
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m`
+
+#### The LPSolver input is ignored
+
+- **Severity**: unusable-option
+- **Trigger**: m of the Purpose: checkIEM_WBM(m, {'IEM1'}, {'DM_a','Increased (blood)'}, 0.75, 0, 1, 0, 0, 'noSuchSolver')
+- **Observed**: (R2025a, gurobi, 2026-11-25) the output is identical to the call without LPSolver: lines 106-109 only set a default that nothing reads (the changeCobraSolver call of line 110 is commented out), so the global LP solver is always used
+- **Expected**: the documented LP solver ('ILOGcomplex' default, 'tomlab_cplex') is used
+- **Source lines**: 106-109
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m`
+
+#### The minimisation of a biomarker in the disease model maximises it
+
+- **Severity**: wrong-result
+- **Trigger**: m of the Purpose: S = checkIEM_WBM(m, {'IEM1'}, {'DM_a','Increased (blood)'}, 0.75, 0, 1, 1)
+- **Observed**: (R2025a, gurobi, 2026-11-25) S{6,4} ('Disease:DM_a', minimum) = '10', the same as the maximum S{6,2} = '10'; the healthy minimum S{5,4} is '0'. Line 316 sets modelIEM.osense = 1 but leaves modelIEM.osenseStr = 'max' (copied at line 209 from line 143), and optimizeWBModel uses osenseStr when it is present
+- **Expected**: S{6,4} = '0': with IEM1 knocked out, DM_a equals the uptake EX_a, whose lower bound is 0 (lines 270-271 set both fields for the healthy model)
+- **Source lines**: 316-318
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m`
+
+#### fractionKO is ignored, and with fixIEMlb = 1 it makes the disease model infeasible
+
+- **Severity**: unusable-option
+- **Trigger**: m of the Purpose: checkIEM_WBM(m, {'IEM1'}, {'DM_a','Increased (blood)'}, 0.75, 0, 0.5, 0, 0) and checkIEM_WBM(m, {'IEM1'}, ..., 0.75, 0, 0.5, 1, 1)
+- **Observed**: (R2025a, gurobi, 2026-11-25) with fixIEMlb = 0 the output is identical to fractionKO = 1 ('IEM Rxns All obj - Disease' = '0', 'Disease:DM_a' = '10'): lines 178-179 always set both bounds of the IEM reactions to 0 (the partial knock-out of lines 175-176 is behind 'if 0'); with fixIEMlb = 1, line 168 requires the dummy reaction (the sum of the IEM fluxes) to carry 5 while lines 178-179 fix them to 0, so the disease LP is infeasible and the output stops after 3 rows ('NaN')
+- **Expected**: a knock-out of the documented fraction (default 1 for 100% knockout): the IEM flux limited to (1 - fractionKO) of its healthy maximum
+- **Source lines**: 167-180
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m`
+
+#### reverseDirObj is ignored
+
+- **Severity**: unusable-option
+- **Trigger**: m of the Purpose: checkIEM_WBM(m, {'IEM1'}, {'DM_a','Increased (blood)'}, 0.75, 1)
+- **Observed**: (R2025a, gurobi, 2026-11-25) the output is identical to reverseDirObj = 0 ('IEM Rxns All obj - Healthy' = '10', the maximum): line 136 sets model.osense = 1, but line 143 sets model.osenseStr = 'max', which optimizeWBModel uses
+- **Expected**: the minimisation problem is also checked, as the help of reverseDirObj says
+- **Source lines**: 135-139, 143
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCheckIEM_WBM.m`
+
 ### `src/analysis/wholeBody/PSCMToolbox/compareBounds2Models.m`
 
 #### Reactions missing from a model are collected in a character matrix, which fails for names of different lengths
@@ -4821,6 +4877,44 @@
 - **Expected**: "First solution.origStat = OPTIMAL"
 - **Source lines**: 275, 349
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/organEssentiality.m`
+
+#### A solve without a solution stops the function with an undefined-function error
+
+- **Severity**: error
+- **Trigger**: any organ whose LP returns stat -1 (time limit, numerical failure; the time limit is the 100 s that optimizeWBModel sets) or 2; reproduced with a stand-in optimizeWBModel first on the path that returns struct('f', NaN, 'v', [], 'stat', -1, 'origStat', 'TIME_LIMIT'), then organEssentiality(model, 'gurobi') with the model of the Purpose
+- **Observed**: (R2025a, 2026-11-25) "Undefined function 'fprinf' for input arguments of type 'char'." (MATLAB:UndefinedFunction) at line 87, after the first organ; fprinf is a misspelling of fprintf
+- **Expected**: the message and the solution are displayed, the row of the organ is filled with NaN and the loop goes on to the next organ (lines 86-94)
+- **Source lines**: 87
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m`
+
+#### The documented LPSolver value 'ILOGcomplex' stops the function with an error
+
+- **Severity**: unusable-option
+- **Trigger**: organEssentiality(model, 'ILOGcomplex') with any model, e.g. the model of the Purpose
+- **Observed**: (R2025a, 2026-11-25) changeCobraSolver('ILOGcomplex', 'LP') at line 38: "changeCobraSolver: The solver ILOGcomplex is not available to the COBRA Toolbox on your machine." - 'ILOGcomplex' is an interface name of the former solveCobraLPCPLEX, not a COBRA solver name, and line 38 now passes LPSolver to changeCobraSolver
+- **Expected**: the ILOG CPLEX solver is used, as the help of LPSolver lists ('ILOGcomplex', 'tomlab_cplex' default)
+- **Source lines**: 38
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m`
+
+#### The status column holds the solver's own status, not the documented codes
+
+- **Severity**: limitation
+- **Trigger**: organEssentiality(model, 'gurobi') with the model of the Purpose
+- **Observed**: (R2025a, gurobi, 2026-11-25) column 4 is 'OPTIMAL' for the feasible organs and 'INFEASIBLE' for Brain: num2str(FBA.origStat) is the original status of the solver, which is text for gurobi
+- **Expected**: the documented codes (1 feasible, 5 feasible with numerical difficulties, 3 infeasible), which only CPLEX returns
+- **Source lines**: 83, 94
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m`
+
+#### The time per organ is printed in exponential notation
+
+- **Severity**: cosmetic
+- **Trigger**: organEssentiality(model, 'gurobi') with the model of the Purpose
+- **Observed**: (R2025a, gurobi, 2026-11-25) "2.985500e-02 sec. Heart obj = 10.000000": the seconds (not an integer) are printed with %u
+- **Expected**: "0.029855 sec. Heart obj = 10.000000"
+- **Source lines**: 69
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testOrganEssentiality.m`
 
 ### `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m`
 
