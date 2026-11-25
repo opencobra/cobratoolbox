@@ -1,0 +1,10 @@
+test/verifiedTests/dataIntegration/testMetaboTools/testFindOptExchRxns.m|src/dataIntegration/metabotools/findOptExchRxns.m
+test/verifiedTests/design/testOptForce/testFVAOptForce.m|src/design/optForce/FVAOptForce.m
+test/verifiedTests/reconstruction/testDemeter/testTestDrugMetabolism.m|src/reconstruction/demeter/suite/tests/testDrugMetabolism.m
+test/verifiedTests/reconstruction/testDemeter/testTestAromaticAADegradation.m|src/reconstruction/demeter/suite/tests/testAromaticAADegradation.m
+test/verifiedTests/reconstruction/testDemeter/testTestBileAcidBiosynthesis.m|src/reconstruction/demeter/suite/tests/testBileAcidBiosynthesis.m
+test/verifiedTests/reconstruction/testDemeter/testTestSecretionProducts.m|src/reconstruction/demeter/suite/tests/testSecretionProducts.m
+test/verifiedTests/reconstruction/testDemeter/testTestFermentationProducts.m|src/reconstruction/demeter/suite/tests/testFermentationProducts.m
+test/verifiedTests/reconstruction/testDemeter/testTestPutrefactionPathways.m|src/reconstruction/demeter/suite/tests/testPutrefactionPathways.m
+test/verifiedTests/reconstruction/testDemeter/testTestMetaboliteUptake.m|src/reconstruction/demeter/suite/tests/testMetaboliteUptake.m
+test/verifiedTests/reconstruction/testDemeter/testTestCarbonSources.m|src/reconstruction/demeter/suite/tests/testCarbonSources.m

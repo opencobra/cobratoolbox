@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-1034 known defects in 559 functions (366 wrong-result, 333 error, 86 unusable-option, 176 cosmetic, 73 limitation).
+1047 known defects in 568 functions (371 wrong-result, 336 error, 88 unusable-option, 178 cosmetic, 74 limitation).
 
 ## Summary
 
@@ -43,6 +43,7 @@
 | `src/analysis/deletion/Syntheticlethals/Fast-SL/tripleSL.m` | wrong-result | Triple lethal reaction sets are dropped when there is no double lethal pair | `test/verifiedTests/analysis/testFastSL/testTripleSL.m` |
 | `src/analysis/deletion/deleteModelGenes.m` | cosmetic | Deleting a gene that is already marked deleted appends the suffix again | `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m` |
 | `src/analysis/deletion/deleteModelGenes.m` | cosmetic | The error for several genes that are not in the model joins their names | `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m` |
+| `src/analysis/deletion/doubleGeneDeletion.m` | wrong-result | With two different gene lists the growth rates are written to the transposed position of the result matrix, so pairs get the growth rate of another pair | `test/verifiedTests/analysis/testDeletionStudy/testDoubleGeneDeletion.m` |
 | `src/analysis/deletion/singleGeneDeletion.m` | wrong-result | Unique gene deletion also deletes the transcripts of other genes whose identifier starts with the same characters | `test/verifiedTests/analysis/testDeletionStudy/testSingleGeneDeletion.m` |
 | `src/analysis/dynamicFBA/dynamicFBA.m` | cosmetic | The number of tracked exchange reactions is printed on every call | `test/verifiedTests/analysis/testDynamicFBA/testDynamicFBA.m` |
 | `src/analysis/ecosystem/clusterEcosystemPoints.m` | wrong-result | The hierarchical method returns the requested maximum k as the number of clusters | `test/verifiedTests/analysis/testEcosystem/testClusterEcosystemPoints.m` |
@@ -111,6 +112,7 @@
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/plotFluxesAgainstOrganismAbundances.m` | error | The documented orientation of the flux table and relative file paths stop with an error | `test/verifiedTests/analysis/testAdditionalAnalysis/testPlotFluxesAgainstOrganismAbundances.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/addMicrobeCommunityBiomass.m` | wrong-result | Abundance weights are rounded to six significant digits | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddMicrobeCommunityBiomass.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/extractFullRes.m` | error | Errors when the first sample is infeasible and a later one is feasible | `test/verifiedTests/analysis/testMgPipe/testExtractFullRes.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/guidedSim.m` | cosmetic | The help text gives a wrong usage and an input that does not exist | `test/verifiedTests/analysis/testMgPipe/testGuidedSim.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m` | wrong-result | The feasibility of every diet is read from the last diet | `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m` | error | Two samples stop with an error in the PCoA | `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m` | wrong-result | Uptake of an exchange missing from a sample is copied from the previous sample | `test/verifiedTests/analysis/testMgPipe/testMgSimResCollect.m` |
@@ -162,6 +164,7 @@
 | `src/analysis/persephone/analyseWBMsol.m` | error | Errors for germ-free and microbiome-personalised iWBMs with analyseGF | `test/verifiedTests/analysis/testPersephone/testAnalyseWBMsol.m` |
 | `src/analysis/persephone/analyseWBMsol.m` | error | Errors when the reaction list contains a duplicate | `test/verifiedTests/analysis/testPersephone/testAnalyseWBMsol.m` |
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
+| `src/analysis/persephone/ensureWBMfeasibility.m` | unusable-option | The solver option is ignored; the current LP solver is always used | `test/verifiedTests/analysis/testPersephone/testEnsureWBMfeasibility.m` |
 | `src/analysis/persephone/generateStackedBarPlot_PhylumMARScoverage.m` | error | Errors for more than seven phyla | `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot_PhylumMARScoverage.m` |
 | `src/analysis/persephone/getMissingDietPersephone.m` | cosmetic | Progress values are printed without being asked for | `test/verifiedTests/analysis/testPersephone/testGetMissingDietPersephone.m` |
 | `src/analysis/persephone/performRegressions.m` | wrong-result | The MATLAB version check reads the first product listed by ver | `test/verifiedTests/analysis/testPersephone/testPerformRegressions.m` |
@@ -356,6 +359,7 @@
 | `src/analysis/topology/testForTypeIIIPathways.m` | cosmetic | All warnings are switched off and left off | `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m` |
 | `src/analysis/topology/testForTypeIIIPathways.m` | wrong-result | An X3 answer of zero Type III pathways is reported as pathways found | `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m` |
 | `src/analysis/topology/testForTypeIIIPathways.m` | cosmetic | The clean-up commands name files that cannot exist | `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m` |
+| `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDietPerformance.m` | error | Every call fails because the diet function setFoodConstraints no longer exists | `test/verifiedTests/analysis/testWholeBody/testCompareDietPerformance.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m` | cosmetic | The progress message has no space before the food source name | `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m` | unusable-option | brandedFoods = true always raises an error | `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietComposition.m` | error | A whole-body model (struct) input is rejected | `test/verifiedTests/analysis/testWholeBody/testGetDietComposition.m` |
@@ -620,6 +624,7 @@
 | `src/dataIntegration/chemoInformatics/openBabelConverter.m` | error | saveFileDir is documented as a directory but opened as a file | `test/verifiedTests/dataIntegration/testChemoInformatics/testOpenBabelConverter.m` |
 | `src/dataIntegration/chemoInformatics/reactions/findBondsBrokenAndFormed.m` | wrong-result | Exchange reactions without an RXN file get NaN, and the first reaction gets 0 | `test/verifiedTests/dataIntegration/testChemoInformatics/testFindBondsBrokenAndFormed.m` |
 | `src/dataIntegration/chemoInformatics/reactions/findEnthalpyChange.m` | error | A reaction whose products have no bond errors | `test/verifiedTests/dataIntegration/testChemoInformatics/testFindEnthalpyChange.m` |
+| `src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m` | limitation | Without an experiment the solver generation fails in Perl | `test/verifiedTests/dataIntegration/testFitC13Data/testGenerateIsotopomerSolver.m` |
 | `src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m` | unusable-option | The input method is ignored, method 1 (cumomer) cannot be selected | `test/verifiedTests/dataIntegration/testFitC13Data/testScoreC13Fit.m` |
 | `src/dataIntegration/fluxomics/calcMDVfromSamp.m` | error | A non-empty substrate label distribution glc stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCalcMDVfromSamp.m` |
 | `src/dataIntegration/fluxomics/compareMultSamp.m` | error | calcMDVfromSamp is called with four arguments, every non-empty sample set stops with an error | `test/verifiedTests/dataIntegration/testFluxomics/testCompareMultSamp.m` |
@@ -658,6 +663,9 @@
 | `src/dataIntegration/metabotools/checkEffectRxnKO.m` | wrong-result | With several samples to test only the last sample's results are returned | `test/verifiedTests/dataIntegration/testMetaboTools/testCheckEffectRxnKO.m` |
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | Fewer than four exchanges stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | The documented essAA_excl flag and its default stop the call | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
+| `src/dataIntegration/metabotools/findOptExchRxns.m` | wrong-result | An exchange that can both take up and secrete is returned twice | `test/verifiedTests/dataIntegration/testMetaboTools/testFindOptExchRxns.m` |
+| `src/dataIntegration/metabotools/findOptExchRxns.m` | error | Ex_Rxns given as a row vector gives a matrix of names or stops | `test/verifiedTests/dataIntegration/testMetaboTools/testFindOptExchRxns.m` |
+| `src/dataIntegration/metabotools/findOptExchRxns.m` | unusable-option | The documented option parFVA has no effect | `test/verifiedTests/dataIntegration/testMetaboTools/testFindOptExchRxns.m` |
 | `src/dataIntegration/metabotools/illustrate_ppp.m` | error | More than two metabolite pairs stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
 | `src/dataIntegration/metabotools/illustrate_ppp.m` | error | The mets of performPPP (one pair per row) do not select its results | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
 | `src/dataIntegration/metabotools/integrateGeneExpressionData.m` | limitation | A gene identifier that is not a number stops the call for two or more absent genes | `test/verifiedTests/dataIntegration/testMetaboTools/testIntegrateGeneExpressionData.m` |
@@ -711,6 +719,9 @@
 | `src/design/optEnvelope/optEnvelope.m` | unusable-option | The numKO option always stops with an error | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
 | `src/design/optEnvelope/optEnvelope.m` | wrong-result | With prodMol the peaks of the mid envelopes are zero | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
 | `src/design/optEnvelope/sequentialOEReinserts.m` | unusable-option | The documented options toDel = 1 (genes) and toDel = 2 (enzymes) always stop with an error | `test/verifiedTests/design/testOptEnvelope/testSequentialOEReinserts.m` |
+| `src/design/optForce/FVAOptForce.m` | error | Constraints for only one strain stop the function although the help asks for at least one | `test/verifiedTests/design/testOptForce/testFVAOptForce.m` |
+| `src/design/optForce/FVAOptForce.m` | cosmetic | The help describes maxFluxesM as the minimum values of the wild-type strain | `test/verifiedTests/design/testOptForce/testFVAOptForce.m` |
+| `src/design/optForce/FVAOptForce.m` | wrong-result | The third column of boundsW and boundsM holds the minimum fluxes instead of the maximum fluxes | `test/verifiedTests/design/testOptForce/testFVAOptForce.m` |
 | `src/design/optForce/analyzeOptForceSol.m` | cosmetic | The example of the help text names R21 twice | `test/verifiedTests/design/testOptForce/testAnalyzeOptForceSol.m` |
 | `src/design/optForce/findMustL.m` | cosmetic | The inputs are saved in a folder named InputsMustU | `test/verifiedTests/design/testOptForce/testFindMustL.m` |
 | `src/design/optForce/findMustL.m` | wrong-result | The minimum mutant flux written for each MustL reaction ignores constrOpt | `test/verifiedTests/design/testOptForce/testFindMustL.m` |
@@ -790,6 +801,8 @@
 | `src/reconstruction/demeter/suite/reports/printRefinementReport.m` | wrong-result | Aromatic amino acid results are reported as bile acids, bile acids as drugs, drugs are left out | `test/verifiedTests/reconstruction/testDemeter/testPrintRefinementReport.m` |
 | `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | wrong-result | growth on the defined medium is lost when the file holds only numbers | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
 | `src/reconstruction/demeter/suite/tests/plotTestSuiteResults.m` | cosmetic | the sensitivity column header loses its blank | `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m` |
+| `src/reconstruction/demeter/suite/tests/testMetaboliteUptake.m` | wrong-result | an uptake through a second or later exchange of a metabolite is reported in neither list | `test/verifiedTests/reconstruction/testDemeter/testTestMetaboliteUptake.m` |
+| `src/reconstruction/demeter/suite/tests/testSecretionProducts.m` | wrong-result | A product secreted only through a second or third exchange is in neither output list | `test/verifiedTests/reconstruction/testDemeter/testTestSecretionProducts.m` |
 | `src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m` | wrong-result | A nonzero right hand side b is not scaled with the bounds | `test/verifiedTests/reconstruction/testFastGapFill/testLP9weighted.m` |
 | `src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m` | wrong-result | The bound of the auxiliary variables ignores the weights | `test/verifiedTests/reconstruction/testFastGapFill/testLP9weighted.m` |
 | `src/reconstruction/growthExpMatch/growthExpMatch.m` | error | A SUX structure without exchange reactions cannot be solved | `test/verifiedTests/reconstruction/testGrowthExpMatch/testGrowthExpMatch.m` |
@@ -1379,6 +1392,17 @@
 - **Expected**: the missing gene names listed separately (for example "Genes g8, g9 not in model!")
 - **Source lines**: 108
 - **Documented in**: `test/verifiedTests/analysis/testDeletionStudy/testDeleteModelGenes.m`
+
+### `src/analysis/deletion/doubleGeneDeletion.m`
+
+#### With two different gene lists the growth rates are written to the transposed position of the result matrix, so pairs get the growth rate of another pair
+
+- **Severity**: wrong-result
+- **Trigger**: doubleGeneDeletion(model, 'FBA', {'g1'; 'g2'}, {'g3'; 'g4'}) on the toy model EX_A ( -> A, ub 10), R1 (A -> B, ub 4, rule g1), R2 (A -> B, rule g2), R3 (B -> C, rule g3), R4 (B -> C, ub 6, rule g4), BIO (C -> , objective)
+- **Observed**: (R2025a, gurobi, 2026-11-25) grRateKO = [6 4; 4 4]: entry (1, 2) of the pair g1-g4 holds 4, the growth rate of the pair g2-g3. Rows index geneList1 and columns geneList2, but the loop also writes each rate to (geneNo2, geneNo1) (lines 167 and 179), which is the position of the pair geneList1{geneNo2}-geneList2{geneNo1}, and a later pair overwrites the correct value
+- **Expected**: grRateKO = [6 10; 4 4] (g1-g3: R2 and R4 give 6; g1-g4: R2 and R3 give 10; g2-g3: R1 and R4 give 4; g2-g4: R1 and R3 give 4)
+- **Source lines**: 167, 170, 179
+- **Documented in**: `test/verifiedTests/analysis/testDeletionStudy/testDoubleGeneDeletion.m`
 
 ### `src/analysis/deletion/singleGeneDeletion.m`
 
@@ -2080,6 +2104,17 @@
 - **Source lines**: 70-76
 - **Documented in**: `test/verifiedTests/analysis/testMgPipe/testExtractFullRes.m`
 
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/guidedSim.m`
+
+#### The help text gives a wrong usage and an input that does not exist
+
+- **Severity**: cosmetic
+- **Trigger**: help guidedSim
+- **Observed**: USAGE shows guidedSim(model, fvaType, rl) and INPUTS list solver (char with solver name), and the description says the solver is set to 'cplex'; the function is guidedSim(model, rl), has no fvaType or solver input and does not change the solver (fastFVA uses CPLEX, the fallbacks the current COBRA solver)
+- **Expected**: USAGE guidedSim(model, rl) and the inputs model and rl only
+- **Source lines**: 9, 15
+- **Documented in**: `test/verifiedTests/analysis/testMgPipe/testGuidedSim.m`
+
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/mgSimResCollect.m`
 
 #### The feasibility of every diet is read from the last diet
@@ -2598,6 +2633,17 @@
 - **Expected**: Bray-Curtis = 1 - 2*sum(min)/(a+b), that is 1/2 and 2/3 for the same counts
 - **Source lines**: 38, 66-67
 - **Documented in**: `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m`
+
+### `src/analysis/persephone/ensureWBMfeasibility.m`
+
+#### The solver option is ignored; the current LP solver is always used
+
+- **Severity**: unusable-option
+- **Trigger**: ensureWBMfeasibility(folder, 'solver', 'glpk') while the current LP solver (global CBT_LP_SOLVER) is gurobi; folder is an empty temporary folder
+- **Observed**: (R2025a, 2026-11-25) CBT_LP_SOLVER is still 'gurobi' after the call: when CBT_LP_SOLVER is not empty the else branch sets solver = CBT_LP_SOLVER whatever the option says, and changeCobraSolver(solver, 'LP') then selects gurobi; the elseif branch is unreachable (same empty test as the if branch)
+- **Expected**: the models are solved with the solver given by the option (help text: "solver: LP solver to use (default '', i.e. the current solver)"), i.e. glpk
+- **Source lines**: 55-58, 62
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testEnsureWBMfeasibility.m`
 
 ### `src/analysis/persephone/generateStackedBarPlot_PhylumMARScoverage.m`
 
@@ -4584,6 +4630,17 @@
 - **Expected**: the result files of X3 are removed on every platform
 - **Source lines**: 71, 74
 - **Documented in**: `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m`
+
+### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDietPerformance.m`
+
+#### Every call fails because the diet function setFoodConstraints no longer exists
+
+- **Severity**: error
+- **Trigger**: any call with at least one diet, e.g. compareDietPerformance(model, {{'A', 1}}, {'R1'}) on a three-reaction toy model
+- **Observed**: (R2025a, gurobi, 2026-11-25) error MATLAB:UndefinedFunction "Undefined function 'setFoodConstraints' for input arguments of type 'struct'." at line 69; no file setFoodConstraints.m exists in the repository (removed by the commit "Overhaul of nutrition toolbox")
+- **Expected**: a table with the minimum and maximum flux of each reaction of interest under each diet, as the help text describes
+- **Source lines**: 69
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testCompareDietPerformance.m`
 
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m`
 
@@ -7235,6 +7292,17 @@
 - **Source lines**: 227
 - **Documented in**: `test/verifiedTests/dataIntegration/testChemoInformatics/testFindEnthalpyChange.m`
 
+### `src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m`
+
+#### Without an experiment the solver generation fails in Perl
+
+- **Severity**: limitation
+- **Trigger**: generateIsotopomerSolver(modelNoBlocked, 'xglcDe') (no experiment; the help lists experiment among the inputs, but the code treats it as optional, nargin > 2)
+- **Observed**: (R2025a, 2026-11-25) IsotopomerModel.txt is written without measured metabolites, then perl(generatorEMU.pl) fails with "outputs file not found.  assuming everything is output / should not get here because outputs must be known" (the script dies when no measured metabolite is listed); the working folder is left at the c13solver folder of src, as the cd back to the caller's folder is not reached
+- **Expected**: experiment is required (an error saying so), or the call works without it
+- **Source lines**: 35-37, 104
+- **Documented in**: `test/verifiedTests/dataIntegration/testFitC13Data/testGenerateIsotopomerSolver.m`
+
 ### `src/dataIntegration/fluxomics/c13solver/scoreC13Fit.m`
 
 #### The input method is ignored, method 1 (cumomer) cannot be selected
@@ -7622,6 +7690,35 @@
 - **Expected**: with 0 nothing removed; with 1 the nine essential amino acid exchanges of the help removed from the secretion profiles
 - **Source lines**: 45-47, 87-92
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m`
+
+### `src/dataIntegration/metabotools/findOptExchRxns.m`
+
+#### An exchange that can both take up and secrete is returned twice
+
+- **Severity**: wrong-result
+- **Trigger**: any exchange in Ex_Rxns whose flux range includes values below -1e-6 and above 1e-6; reproduction: model = createModel({'EX_a'; 'EX_b'; 'T'}, {''; ''; ''}, {'a[e] <=> '; 'b[e] <=> '; 'a[e] <=> b[e]'}, 'printLevel', 0); model.c(:) = 0; OptExchRxns = findOptExchRxns(model, {'EX_a'; 'EX_b'})
+- **Observed**: (R2025a, 2026-11-25, gurobi) OptExchRxns = {'EX_a'; 'EX_b'; 'EX_a'; 'EX_b'}: line 44 concatenates the reactions that can take up (OptUptake) and those that can secrete (OptSecr), and a reversible exchange is in both. With T irreversible (lower bound 0: EX_a uptake only, EX_b secretion only) the result is {'EX_a'; 'EX_b'}
+- **Expected**: each exchange that is neither obligate uptake nor obligate secretion once (help text); the caller generateCompactExchModel compares length(OptExchRxns) between iterations
+- **Source lines**: 35-44
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testFindOptExchRxns.m`
+
+#### Ex_Rxns given as a row vector gives a matrix of names or stops
+
+- **Severity**: error
+- **Trigger**: Ex_Rxns as a row cell array ("Vector of exchange reactions" in the help); with the model above: findOptExchRxns(model, {'EX_a', 'EX_b'}); with six exchanges {'EX_up', 'EX_opt', 'EX_sec', 'EX_oblsec', 'EX_bi', 'EX_blk'} of a hand-built model whose FVA ranges are [-10,-1], [-10,-1], [1,10], [1,10], [-10,8], [0,0]
+- **Observed**: (R2025a, 2026-11-25, gurobi) a 2x2 cell array {'EX_a', 'EX_b'; 'EX_a', 'EX_b'} for the first call; "Dimensions of arrays being concatenated are not consistent." at line 37 for the second: the row results of lines 36 and 41 are stacked with ";"
+- **Expected**: the same list as for the column vector
+- **Source lines**: 36-37, 41-42, 44
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testFindOptExchRxns.m`
+
+#### The documented option parFVA has no effect
+
+- **Severity**: unusable-option
+- **Trigger**: findOptExchRxns(model, Ex_Rxns, 1)
+- **Observed**: (R2025a, 2026-11-25) parFVA is only compared with 0 (line 25) and sets the unused variable matlabpool; the call of line 32 is the same for every parFVA, so the analysis is never parallelised by this option (the same result and the same solver calls as with parFVA = 0)
+- **Expected**: parFVA = 1 uses parallelization of the flux variability analysis (help text)
+- **Source lines**: 25-29, 32
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testFindOptExchRxns.m`
 
 ### `src/dataIntegration/metabotools/illustrate_ppp.m`
 
@@ -8155,6 +8252,35 @@
 - **Expected**: the gene knockouts (toDel 1), or an error that says the option is not available, as optEnvelope does
 - **Source lines**: 148-159
 - **Documented in**: `test/verifiedTests/design/testOptEnvelope/testSequentialOEReinserts.m`
+
+### `src/design/optForce/FVAOptForce.m`
+
+#### Constraints for only one strain stop the function although the help asks for at least one
+
+- **Severity**: error
+- **Trigger**: constrW or constrM omitted or empty; with the model and structures above: FVAOptForce(model, constrW) or FVAOptForce(model, [], constrM)
+- **Observed**: (R2025a, 2026-11-25) error "OptForce: You should specify constraints for at least one strain" at line 82 in both calls; the condition of line 81 joins the two tests with || instead of &&, so lines 86 and 109 (the empty defaults) are unreachable
+- **Expected**: "Constraints should be specified for at least one strain" (help text): a missing constrW or constrM means no constraint for that strain (lines 85-86, 108-109)
+- **Source lines**: 81-82, 86, 109
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFVAOptForce.m`
+
+#### The help describes maxFluxesM as the minimum values of the wild-type strain
+
+- **Severity**: cosmetic
+- **Trigger**: reading the help text of the output maxFluxesM
+- **Observed**: "maxFluxesM: (double array) minimum values for reactions in the wild-type strain"
+- **Expected**: maximum values for reactions in the mutant strain (what line 156 returns)
+- **Source lines**: 51-53
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFVAOptForce.m`
+
+#### The third column of boundsW and boundsM holds the minimum fluxes instead of the maximum fluxes
+
+- **Severity**: wrong-result
+- **Trigger**: any call that requests boundsW or boundsM; reproduction: model = createModel( {'EX_a'; 'EX_b'; 'T'}, {''; ''; ''}, {'a[e] <=> '; 'b[e] <=> '; 'a[e] <=> b[e]'}, 'printLevel', 0); model.c(:) = 0; model = changeRxnBounds(model, 'T', 0, 'l'); [minW, maxW, minM, maxM, boundsW, boundsM] = FVAOptForce(model, struct('rxnList', {{'T'}}, 'rxnValues', 4, 'rxnBoundType', 'u'), struct('rxnList', {{'T'}}, 'rxnValues', 2, 'rxnBoundType', 'l'))
+- **Observed**: (R2025a, 2026-11-25, gurobi) maxW = [0; 4; 4] but boundsW(:, 3) = {-4; 0; 0} (equal to boundsW(:, 2) and minW); maxM = [-2; 1000; 1000] but boundsM(:, 3) = {-1000; 2; 2}: lines 145 and 159 put num2cell of the minimum fluxes in both columns
+- **Expected**: the third column holds the maximum values (help text of boundsW and boundsM)
+- **Source lines**: 145, 159
+- **Documented in**: `test/verifiedTests/design/testOptForce/testFVAOptForce.m`
 
 ### `src/design/optForce/analyzeOptForceSol.m`
 
@@ -8958,6 +9084,28 @@
 - **Expected**: 'Sensitivity v'
 - **Source lines**: 120
 - **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testPlotTestSuiteResults.m`
+
+### `src/reconstruction/demeter/suite/tests/testMetaboliteUptake.m`
+
+#### an uptake through a second or later exchange of a metabolite is reported in neither list
+
+- **Severity**: wrong-result
+- **Trigger**: uptakeTable.txt marks Menaquinone 1 for the microbe and the model can take up EX_mqn8(e) but not EX_mqn7(e) (the first exchange listed for Menaquinone); the same holds for Niacin, Cobalamin and Pyridoxal, which also have several exchanges
+- **Observed**: MATLAB R2025a, hand-built model (EX_mqn7(e) dead end, EX_mqn8(e) feeding the biomass reaction; minimum flux of EX_mqn8(e) -1000): TruePositives {'Glycerol', 'Ammonium'} and FalseNegatives {'Hydrogen', 'Nitrate'} - Menaquinone appears in neither list. Line 145 keeps only intersect(allEx{1}, flux), the first exchange, which is empty although intersect(allEx, flux) is not (line 142)
+- **Expected**: the help lists in TruePositives all metabolites (exchange reactions) that the model can take up and that are taken up in vitro, so Menaquinone 8 (EX_mqn8(e)) should be a true positive; the comment before line 127 says that one consumed exchange of the metabolite is enough
+- **Source lines**: 145
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testTestMetaboliteUptake.m`
+
+### `src/reconstruction/demeter/suite/tests/testSecretionProducts.m`
+
+#### A product secreted only through a second or third exchange is in neither output list
+
+- **Severity**: wrong-result
+- **Trigger**: a product with several exchanges (for example Folate: EX_fol(e), EX_5mthf(e), EX_thf(e)) whose first exchange cannot carry flux while another can; reproduction in a temporary folder sb: m = createModel({'EX_glc_D(e)'; 'GLCt'; 'bio1'; 'EX_fol(e)'; 'EX_5mthf(e)'; 'MTHFsec'}, repmat({''}, 6, 1), {'glc_D[e] <=> '; 'glc_D[e] -> glc_D[c]'; 'glc_D[c] -> '; 'fol[e] <=> '; '5mthf[e] <=> '; 'glc_D[c] -> 5mthf[e]'}, 'printLevel', 0); db.metabolites = {'fol', 'Folate'; '5mthf', '5-Methyltetrahydrofolate'}; secretionProductTable.txt in sb = "MicrobeID<TAB>Folate" / "Microbe_A<TAB>1"; [tp, fn] = testSecretionProducts(m, 'Microbe_A', 'bio1', db, sb)
+- **Observed**: (R2025a, 2026-11-25, gurobi) tp = 0x1 empty cell, fn = 0x0 empty cell, although the FVA the function runs gives maxFlux = 0 for EX_fol(e) and 1000 for EX_5mthf(e): line 146 keeps only intersect(allEx{1}, flux), which is empty when the first exchange carries no flux, and line 144 is not reached because another exchange carries flux
+- **Expected**: Folate is a true positive: the help counts the secretions the model can secrete, and the comment of lines 122-126 says that with several exchanges per product at least one should carry flux
+- **Source lines**: 142-147
+- **Documented in**: `test/verifiedTests/reconstruction/testDemeter/testTestSecretionProducts.m`
 
 ### `src/reconstruction/fastGapFill/AuxillaryFiles/LP9weighted.m`
 

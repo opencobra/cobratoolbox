@@ -1,0 +1,21 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	764	src/analysis/deletion/doubleGeneDeletion.m	3			buildRxnGeneMat,linearMOMA,singleGeneDeletion		
+a	768	src/analysis/ecosystem/setEcosystemClusterReactions.m	3			fluxVariability	ecosystemQualitativeFVA	
+a	771	src/analysis/ecosystem/quantitativeFluxCoupling.m	3			fluxVariability		
+a	772	src/analysis/exploration/essentialRxn4MultipleModels.m	3			singleRxnDeletion		
+a	796	src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/guidedSim.m	3			fluxVariability	getPanSpeciesMetProdCapacity,microbiotaModelSimulator	
+a	807	src/analysis/persephone/ensureWBMfeasibility.m	3			getMissingDietPersephone,loadMinimalWBM,optimizeWBModel,setDietConstraints	createBatchMWBM,persWBM,setInSilicoDiet	
+a	855	src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDietPerformance.m	3			fluxVariability		
+a	908	src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m	3			fluxVariability		
+b	915	src/dataIntegration/metabotools/findOptExchRxns.m	3			fluxVariability	generateCompactExchModel	
+b	950	src/design/optForce/FVAOptForce.m	3			fluxVariability		
+b	976	src/reconstruction/demeter/suite/tests/testDrugMetabolism.m	3			fluxVariability,readInputTableForPipeline	runTestsOnModel	
+b	977	src/reconstruction/demeter/suite/tests/testAromaticAADegradation.m	3			fluxVariability,readInputTableForPipeline	runTestsOnModel	
+b	978	src/reconstruction/demeter/suite/tests/testBileAcidBiosynthesis.m	3			fluxVariability,readInputTableForPipeline	reportPDF,runTestsOnModel	
+b	980	src/reconstruction/demeter/suite/tests/testSecretionProducts.m	3			fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,reportPDF,runTestsOnModel	
+b	981	src/reconstruction/demeter/suite/tests/testFermentationProducts.m	3			fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,reportPDF,runTestsOnModel	
+b	982	src/reconstruction/demeter/suite/tests/testPutrefactionPathways.m	3			fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,runTestsOnModel	
+c	983	src/reconstruction/demeter/suite/tests/testMetaboliteUptake.m	3			fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,reportPDF,runTestsOnModel	
+c	984	src/reconstruction/demeter/suite/tests/testCarbonSources.m	3			fluxVariability,readInputTableForPipeline	performDataDrivenRefinement,reportPDF,runTestsOnModel	
+c	787	src/visualization/paint4Net/Draw_by_rxn/draw_by_rxn.m	3			findMetIDs,findRxnIDs,fluxVariability	drawSecPot,draw_by_met,runFindSparsePathway	
+c	1034	src/visualization/paint4net/bio_paint4Net/bio_draw_by_rxn/bio_draw_by_rxn.m	3			findMetIDs,findRxnIDs,fluxVariability	bio_draw_by_met	
