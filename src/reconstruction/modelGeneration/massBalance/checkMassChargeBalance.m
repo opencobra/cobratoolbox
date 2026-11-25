@@ -32,8 +32,9 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, el
 %    massImbalance:          `nRxn` x `nElement` matrix with mass imbalance
 %                            for each element checked. 0 if balanced.
 %    imBalancedMass:         `nRxn` x 1 cell with mass imbalance
-%                            e.g. -3 H means three hydrogens disappear in the reaction.
-%    imBalancedCharge:       `nRxn` x 1 vector with charge imbalance, empty if no imbalanced reactions
+%                            e.g. -3 H means three hydrogens disappear in the reaction;
+%                            empty (`[]`) if every reaction is mass balanced
+%    imBalancedCharge:       `nRxn` x 1 vector with charge imbalance
 %    imBalancedRxnBool:      boolean vector indicating imbalanced reactions (including exchange reactions!)
 %    elements:               `nElement` x 1 cell array of element abbreviations checked
 %    missingFormulaeBool:    `nMet` x 1 boolean vector indicating metabolites without formulae
@@ -66,6 +67,16 @@ function [massImbalance, imBalancedMass, imBalancedCharge, imBalancedRxnBool, el
 %    63	       Lcyst[c]	1	C3H6NO5S
 %    64	         pap[c]	1	C10H11N5O10P2
 % 
+% NOTE:
+%    Feature 20261125-161147-blocker-fixes-two, 2026-11-25: with printLevel
+%    -1 or 2, a model whose reactions are all mass balanced no longer stops
+%    with an indexing error when a reaction is charge imbalanced (an empty
+%    `imBalancedMass` is read as every reaction mass balanced); printLevel 2
+%    lists the mass balanced, charge imbalanced reactions by the mass balance
+%    of each reaction (it used that of the last reaction); the help says that
+%    `imBalancedMass` is empty when every reaction is mass balanced, and no
+%    longer that `imBalancedCharge` is (it is always `nRxn` x 1).
+%
 % .. Authors:
 %       - Ines Thiele 12/09
 %       - IT, 06/10, Corrected some bugs and improved speed.
@@ -232,7 +243,7 @@ if printLevel==-1 && isfield(model,'SIntRxnBool')
     firstMissing=0;
     if any(imBalancedCharge)
         for q=1:nRxn
-            if model.SIntRxnBool(q) && strcmp(imBalancedMass{q, 1}, '') && imBalancedCharge(q) ~= 0
+            if model.SIntRxnBool(q) && (isempty(imBalancedMass) || strcmp(imBalancedMass{q, 1}, '')) && imBalancedCharge(q) ~= 0
                 if ~firstMissing
                     fid=fopen([modelName 'mass_balanced_charge_imbalanced_reactions.txt'],'w');
                     fprintf('%s\n',['There are mass balanced, but charge imbalanced reactions, see ' modelName 'charge_imbalanced_reactions.txt'])
@@ -257,7 +268,7 @@ if printLevel==2 && isfield(model,'SIntRxnBool')
     if any(imBalancedCharge)
         fprintf('%s\n', 'Mass balanced, but charged imbalanced reactions:')
         for q=1:nRxn
-            if model.SIntRxnBool(q) && strcmp(imBalancedMass{p, 1}, '') && imBalancedCharge(q) ~= 0
+            if model.SIntRxnBool(q) && (isempty(imBalancedMass) || strcmp(imBalancedMass{q, 1}, '')) && imBalancedCharge(q) ~= 0
                 equation=printRxnFormula(model, model.rxns(q), 0);
                 fprintf('%s\t%s\t%s\n', int2str(q), model.rxns{q}, equation{1});
                 for m=1:size(model.S, 1)

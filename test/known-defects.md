@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-913 known defects in 499 functions (332 wrong-result, 299 error, 75 unusable-option, 140 cosmetic, 67 limitation).
+914 known defects in 499 functions (328 wrong-result, 298 error, 75 unusable-option, 146 cosmetic, 67 limitation).
 
 ## Summary
 
@@ -417,8 +417,10 @@
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Output z is not assigned when every entry of the LP solution is below zeps | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | wrong-result | The zero vector is returned as the solution although it violates Aeq*x = beq | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
 | `src/base/solvers/cardOpt/smoothConcave/SparseLP_old.m` | error | Theta L0 iteration errors when the l1 solution has no positive entry | `test/verifiedTests/base/testSmoothConcave/testSparseLP_old.m` |
-| `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m` | wrong-result | An LP status 3 ends the iterations with status -1 instead of proceeding | `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m` |
+| `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m` | cosmetic | A missing q, r, b or csense stops with MATLAB's error instead of the function's message | `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m` |
+| `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m` | cosmetic | Boolean p, q and r whose lengths differ in one pair only pass the size check | `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m` |
 | `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m` | cosmetic | The random warm start is not protected against infinite bounds | `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m` |
+| `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m` | cosmetic | The size warning of the one-norm weight vector o names d | `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m` |
 | `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m` | error | A Problem without the documented optional csense stops with an error | `test/verifiedTests/base/testSolvers/testBuildCplexProblemFromCOBRAStruct.m` |
 | `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m` | wrong-result | The documented b_L and b_U are never used | `test/verifiedTests/base/testSolvers/testBuildCplexProblemFromCOBRAStruct.m` |
 | `src/base/solvers/cplex/checkSolFeas.m` | error | A solution structure with .x and no .full field is an error | `test/verifiedTests/base/testSolvers/testCheckSolFeas.m` |
@@ -722,9 +724,9 @@
 | `src/reconstruction/modelGeneration/fastLeakTest.m` | error | an error when every tested reaction leaks | `test/verifiedTests/reconstruction/testFastLeakTest/testFastLeakTest.m` |
 | `src/reconstruction/modelGeneration/fluxConsistency/DCA/fastcc_nonconvex.m` | error | Every call stops with an error because LP7 is called with the wrong arguments | `test/verifiedTests/reconstruction/testDCA/testFastcc_nonconvex.m` |
 | `src/reconstruction/modelGeneration/fluxConsistency/GREEDY/checkFluxConsistency.m` | wrong-result | The stoichiometric matrix of the LP is zero | `test/verifiedTests/reconstruction/testModelGeneration/testCheckFluxConsistency.m` |
-| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | wrong-result | imBalancedMass is [] instead of an nRxn x 1 cell when every reaction is mass balanced | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
-| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | error | printLevel -1 and 2 stop when every reaction is mass balanced and a charge is not | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
-| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | cosmetic | printLevel 2 lists the mass balanced, charge imbalanced reactions by a stale index | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
+| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | cosmetic | metabolites_without_charge.txt is left open | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
+| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | cosmetic | the printLevel -1 message names a file that is not written | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
+| `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m` | cosmetic | the progress line every 1000 reactions is never printed | `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m` |
 | `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m` | wrong-result | A count equal to 10^-dMax or smaller is dropped, so dMax = 0 drops every count of 1 | `test/verifiedTests/reconstruction/testModelGeneration/testElementalMatrixToFormulae.m` |
 | `src/reconstruction/modelGeneration/massBalance/getElementalComposition.m` | cosmetic | Formula numbers in error messages lose their zero padding inside parentheses | `test/verifiedTests/reconstruction/testModelGeneration/testGetElementalComposition.m` |
 | `src/reconstruction/modelGeneration/massBalance/ispolymer.m` | error | Every formula stops with an error because the group name FULLR2 contains a digit | `test/verifiedTests/reconstruction/testModelGeneration/testIspolymer.m` |
@@ -811,9 +813,8 @@
 | `src/reconstruction/refinement/changeCOBRAConstraints.m` | error | The documented constraint index cannot be used as constraintID | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAConstraints.m` |
 | `src/reconstruction/refinement/changeCOBRAVariable.m` | unusable-option | The documented option Name stops with an error | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m` |
 | `src/reconstruction/refinement/changeCOBRAVariable.m` | error | The documented variable index cannot be used as variableID | `test/verifiedTests/reconstruction/testRefinement/testChangeCOBRAVariable.m` |
-| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | A requested rxnGeneMat is created with one row per reaction up to the changed one | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
-| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | New genes do not extend the other gene fields | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
-| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | Translated gene names are taken from the wrong positions | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
+| `src/reconstruction/refinement/changeGeneAssociation.m` | wrong-result | A requested rxnGeneMat that the model lacks marks the genes of the changed reaction only | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
+| `src/reconstruction/refinement/changeGeneAssociation.m` | cosmetic | The help gives true as the default of addRxnGeneMat | `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | cosmetic | A partly unknown reaction list is not reported | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | The extra reactions are drawn from a set that already contains the selected ones | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
 | `src/reconstruction/refinement/changeRxnMets.m` | wrong-result | With one metabolite to change, the random selection reduces the S row to a scalar | `test/verifiedTests/reconstruction/testModelManipulation/testChangeRxnMets.m` |
@@ -5089,22 +5090,40 @@
 
 ### `src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m`
 
-#### An LP status 3 ends the iterations with status -1 instead of proceeding
+#### A missing q, r, b or csense stops with MATLAB's error instead of the function's message
 
-- **Severity**: wrong-result
-- **Trigger**: any problem for which solveCobraLP returns stat 3 for a sub-problem (for example ibm_cplex codes 5, 6, 10-12, 21, 22); reproduced with a stand-in solveCobraLP that returns stat 3: problem = struct('p', 2, 'q', 0, 'r', 0, 'A', [1 1], 'b', 1, 'csense', 'E', 'lb', [0; 0], 'ub', [2; 2], 'c', [0; 0]); rng(1); optimizeCardinality(problem)
-- **Observed**: (R2025a, stand-in solveCobraLP, 2026-11-23) the sub-problem prints "optimizeCardinality: LPsolution.stat == 3, proceeding but check inputs for numerical instability" and keeps the solution, but line 906 reads "case 1 || 3", which is "case true" and matches stat 1 only, so stat 3 falls to "otherwise": solution.stat = -1 and solution.x is the previous iterate (with gurobi, which never returns stat 3 for an LP, the same problem returns stat 1)
-- **Expected**: stat 3 is treated as stat 1, as the sub-problem (line 1159) and the final assignment (line 1059, solution.stat == 1 || solution.stat == 3) intend: "case {1, 3}"
-- **Source lines**: 906, 1037-1047
+- **Severity**: cosmetic
+- **Trigger**: problem = struct('p', 2, 'q', 0, 'r', 0, 'A', [1 1], 'b', 1, 'csense', 'E', 'lb', [0; 0], 'ub', [2; 2], 'c', [0; 0]); optimizeCardinality(rmfield(problem, 'b')) (likewise without q, r or csense)
+- **Observed**: (R2025a, glpk, 2026-11-25) "Unrecognized field name "b"." at line 471 (q and r: lines 232-233; csense: line 471); the checks written for these fields (lines 247-249, 257-259, 553-556, 565-568) come after the first use of the field
+- **Expected**: the function's own messages, for example "Error: the size/location of vector y is not defined" for q
+- **Source lines**: 232-233, 248-249, 258-259, 471, 554-556, 566-568
+- **Documented in**: `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m`
+
+#### Boolean p, q and r whose lengths differ in one pair only pass the size check
+
+- **Severity**: cosmetic
+- **Trigger**: problem as above with p = logical([1 1 0]), q = logical([0 0 1]), r = logical([0 0]), A = [1 1 1], lb = [0; 0; 0], ub = [2; 2; 2], c = [0; 0; 0]
+- **Observed**: (R2025a, glpk, 2026-11-25) "Arrays have incompatible sizes for this operation." at line 475: line 240 tests "ltp~=ltq && ltq~=ltr", which is true only when both pairs differ
+- **Expected**: "Error: if p,q,r are Boolean vectors, they should be the same dimension" (the test with ||)
+- **Source lines**: 240
 - **Documented in**: `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m`
 
 #### The random warm start is not protected against infinite bounds
 
 - **Severity**: cosmetic
 - **Trigger**: problem = struct('p', 2, 'q', 0, 'r', 0, 'A', [1 1], 'b', 1, 'csense', 'E', 'lb', [-inf; -inf], 'ub', [2; 2], 'c', [0; 0]); rng(1); optimizeCardinality(problem, struct('printLevel', 1))
-- **Observed**: (R2025a, gurobi, 2026-11-23) the starting point is -Inf where lb is -Inf: line 741 starts from lb2, not from the clipped minlb2 that lines 736-739 compute "to protect against inf or -inf in bounds"; the first iteration prints ||dx|| = Inf and del_obj = NaN; the result (stat 1, obj 1) is not affected
+- **Observed**: (R2025a, gurobi, 2026-11-23) the starting point is -Inf where lb is -Inf: line 747 starts from lb2, not from the clipped minlb2 that lines 742-745 compute "to protect against inf or -inf in bounds"; the first iteration prints ||dx|| = Inf and del_obj = NaN; the result (stat 1, obj 1) is not affected
 - **Expected**: a finite random starting point between minlb2 and maxub2
-- **Source lines**: 741
+- **Source lines**: 747
+- **Documented in**: `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m`
+
+#### The size warning of the one-norm weight vector o names d
+
+- **Severity**: cosmetic
+- **Trigger**: problem as above with o = [1; 1; 1]
+- **Observed**: (R2025a, glpk, 2026-11-25) stat -1 with the warning "Error: the size of weight vector d is not correct"
+- **Expected**: a warning that names o
+- **Source lines**: 404
 - **Documented in**: `test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m`
 
 ### `src/base/solvers/cplex/buildCplexProblemFromCOBRAStruct.m`
@@ -8156,31 +8175,31 @@
 
 ### `src/reconstruction/modelGeneration/massBalance/checkMassChargeBalance.m`
 
-#### imBalancedMass is [] instead of an nRxn x 1 cell when every reaction is mass balanced
-
-- **Severity**: wrong-result
-- **Trigger**: a model without exchange reactions whose reactions are all mass balanced, for example cm = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> c[c]'}, 'printLevel', 0); cm.metFormulas = {'C';'C';'C'}; cm.metCharges = [0;0;1]; [~, imBalancedMass] = checkMassChargeBalance(cm)
-- **Observed**: (R2025a, 2026-11-23) imBalancedMass = [] (lines 200-202); callers that index it as a cell stop, for example testModelMassChargeBalance at its line 83 ("Brace indexing is not supported for variables of this type.")
-- **Expected**: an nRxn x 1 cell of '' (OUTPUTS: "nRxn x 1 cell with mass imbalance")
-- **Source lines**: 200-202
-- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
-
-#### printLevel -1 and 2 stop when every reaction is mass balanced and a charge is not
-
-- **Severity**: error
-- **Trigger**: cm = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> c[c]'}, 'printLevel', 0); cm.metFormulas = {'C';'C';'C'}; cm.metCharges = [0;0;1]; cm = findSExRxnInd(cm); checkMassChargeBalance(cm, -1, 'x') (or printLevel 2)
-- **Observed**: (R2025a, 2026-11-23) "Brace indexing is not supported for variables of this type." at line 235 (printLevel -1) and line 260 (printLevel 2): imBalancedMass is set to [] at line 201 when every reaction is mass balanced, then read as a cell
-- **Expected**: the mass balanced, charge imbalanced reactions written to the file (-1) or printed (2), as for a model with some mass imbalanced reaction
-- **Source lines**: 200-202, 235, 260
-- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
-
-#### printLevel 2 lists the mass balanced, charge imbalanced reactions by a stale index
+#### metabolites_without_charge.txt is left open
 
 - **Severity**: cosmetic
-- **Trigger**: the model above with metFormulas {'C';'C';'CH'} and metCharges [0;1;1], checkMassChargeBalance(cm, 2)
-- **Observed**: (R2025a, 2026-11-23) R1 (mass balanced, charge imbalanced) is not printed under "Mass balanced, but charged imbalanced reactions:": line 260 tests imBalancedMass{p, 1}, p being the last index of the loop of line 180, instead of q
-- **Expected**: every mass balanced, charge imbalanced internal reaction printed
-- **Source lines**: 260
+- **Trigger**: cm = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> c[c]'}, 'printLevel', 0); cm.metFormulas = {'C';'C';'C'}; cm.metCharges = [0;NaN;0]; checkMassChargeBalance(cm, -1, prefix)
+- **Observed**: (R2025a, 2026-11-25) the file [prefix 'metabolites_without_charge.txt'] is written, but its file identifier, opened at line 231, is never closed: openedFiles still lists it after the call
+- **Expected**: the file closed before the function returns, as the other printLevel -1 files are (lines 186-188, 261-263)
+- **Source lines**: 229-234
+- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
+
+#### the printLevel -1 message names a file that is not written
+
+- **Severity**: cosmetic
+- **Trigger**: any model with a mass balanced, charge imbalanced internal reaction, checkMassChargeBalance(model, -1, prefix), e.g. the model above with metCharges [0;0;1]
+- **Observed**: (R2025a, 2026-11-25) "There are mass balanced, but charge imbalanced reactions, see <prefix>charge_imbalanced_reactions.txt", while the list is written to <prefix>mass_balanced_charge_imbalanced_reactions.txt (line 248)
+- **Expected**: the message names the file written at line 248
+- **Source lines**: 249
+- **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
+
+#### the progress line every 1000 reactions is never printed
+
+- **Severity**: cosmetic
+- **Trigger**: any model with 1000 reactions or more, e.g. the 1000-reaction chain below, checkMassChargeBalance(model, 2)
+- **Observed**: (R2025a, 2026-11-25) nothing is printed at line 158: '%n' is not an fprintf conversion, so fprintf stops there; the line is also not gated by printLevel and names elements{j} with j left at the last element (FULLR). The test reaches the line but asserts nothing about its output
+- **Expected**: a progress line such as '1000 reactions checked' at printLevel > 0 only, as the element progress lines (lines 115-117, 122-124)
+- **Source lines**: 157-159
 - **Documented in**: `test/verifiedTests/reconstruction/testMassChargeBalance/testMassChargeBalance.m`
 
 ### `src/reconstruction/modelGeneration/massBalance/elementalMatrixToFormulae.m`
@@ -9031,31 +9050,22 @@
 
 ### `src/reconstruction/refinement/changeGeneAssociation.m`
 
-#### A requested rxnGeneMat is created with one row per reaction up to the changed one
+#### A requested rxnGeneMat that the model lacks marks the genes of the changed reaction only
 
 - **Severity**: wrong-result
-- **Trigger**: model as above without rxnGeneMat (rmfield); changeGeneAssociation(model, 'R1', 'g2', [], [], true)
-- **Observed**: (R2025a, 2026-11-23) size(rxnGeneMat) = [1 2]: line 66 creates the field by assigning row rxnID only
-- **Expected**: size [3 2] (reactions x genes) with the entries of R1 set
-- **Source lines**: 66, 81
+- **Trigger**: m = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]', 'b[c] -> c[c]', 'c[c] -> '}, 'grRuleList', {'g1','',''}, 'printLevel', 0); m = rmfield(m, 'rxnGeneMat'); m2 = changeGeneAssociation(m, 'R2', 'g2', [], [], true)
+- **Observed**: (R2025a, 2026-11-25) full(m2.rxnGeneMat) = [0 0; 0 1; 0 0]: the row of R1 is empty although its rule is g1; the matrix is created empty (line 85) and only the row of the changed reaction is filled (lines 87, 106-109). No caller in src requests a rxnGeneMat for a model without one. The input is skipped below: the test requests rxnGeneMat only on models whose other reactions have no rule.
+- **Expected**: every reaction's row marks the genes of its rule (reactions x genes, as buildRxnGeneMat builds it)
+- **Source lines**: 82-87, 106-109
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
 
-#### New genes do not extend the other gene fields
+#### The help gives true as the default of addRxnGeneMat
 
-- **Severity**: wrong-result
-- **Trigger**: model = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]', 'b[c] -> c[c]', 'c[c] -> '}, 'grRuleList', {'g1','',''}, 'printLevel', 0); model.proteins = {'P1'}; model2 = changeGeneAssociation(model, 'R2', 'g2')
-- **Observed**: (R2025a, 2026-11-23) numel(model2.genes) = 2 but numel(model2.proteins) = 1 (likewise geneNames): nGenes is never updated after the new genes are appended (line 74), so the test nGenes > nGenesInit of line 88 is always false and extendModelFieldsForType (line 89) never runs
-- **Expected**: model2.proteins = {'P1'; 'COBRAProtein2'} (the field default), every gene field as long as model2.genes
-- **Source lines**: 57-58, 88-90
-- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
-
-#### Translated gene names are taken from the wrong positions
-
-- **Severity**: wrong-result
-- **Trigger**: model as above; changeGeneAssociation(model, 'R2', 'a and b', {'b'; 'a'}, {'B'; 'A'}); changeGeneAssociation(model, 'R2', 'a', {'x'; 'a'}, {'X'; 'A'})
-- **Observed**: (R2025a, 2026-11-23) first call: genes {'g1'; 'B'; 'A'} and grRules{2} = 'B and A' (gene a is named B); second call: "Index exceeds the number of array elements. Index must not exceed 1." at line 72, which indexes the presence vector pres with the list positions pos (systNameList(pres(pos)) instead of systNameList(pos(pres)))
-- **Expected**: grRules{2} = 'A and B' and genes {'g1'; 'A'; 'B'}; genes {'g1'; 'A'} and grRules{2} = 'A'
-- **Source lines**: 71-72
+- **Severity**: cosmetic
+- **Trigger**: changeGeneAssociation(model, rxnName, grRule) on a model without rxnGeneMat
+- **Observed**: (R2025a, 2026-11-25) no rxnGeneMat is created: the default is true only when the model already has rxnGeneMat, false otherwise (lines 56-62)
+- **Expected**: the help states the default as the code applies it
+- **Source lines**: 22, 56-62
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testChangeGeneAssociation.m`
 
 ### `src/reconstruction/refinement/changeRxnMets.m`

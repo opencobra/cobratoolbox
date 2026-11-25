@@ -230,27 +230,6 @@ buildCplexProblemFromCOBRAStruct	NONE
 # except findRxnsFromMets (only with minimalReactionN true: seeded through findGenesFromMets, whose
 # param.minimal = 1 path passes it) and optimizeCbModel (only with minNorm 'zero': seeded through the
 # files that pass 'zero' literally) (lead, 2026-11-23).
-optimizeCardinality	src/analysis/exploration/findGenesFromMets.m
-optimizeCardinality	src/analysis/sparseFBA/findSparsePathway.m
-optimizeCardinality	src/analysis/thermo/optCardThermo/checkThermoFeasibility.m
-optimizeCardinality	src/analysis/thermo/optCardThermo/optCardThermo.m
-optimizeCardinality	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_RF.m
-optimizeCardinality	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_old.m
-optimizeCardinality	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_weighted_Minh.m
-optimizeCardinality	src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m
-optimizeCardinality	src/reconstruction/modelGeneration/fluxConsistency/findFluxConsistentSubset.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/leakTest.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m
-optimizeCardinality	src/dataIntegration/modelMultipleObjectives.m
-optimizeCardinality	src/dataIntegration/transcriptomics/rFASTCORMICS/rFastcormics.m
-optimizeCardinality	src/reconstruction/demeter/src/debugging/findFutileCycle.m
-optimizeCardinality	src/reconstruction/modelGeneration/test4HumanFctExt.m
 # findNeighborRxns (wave 35): the defect needs withComp true and order >= 2; the only src caller,
 # neighborRxn2data, passes two inputs (lead, 2026-11-23).
 findNeighborRxns	NONE
