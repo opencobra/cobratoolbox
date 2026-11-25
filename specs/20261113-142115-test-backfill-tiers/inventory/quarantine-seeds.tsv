@@ -239,3 +239,9 @@ linearMOMA	NONE
 identifyFastBlockedRxns	NONE
 # normalizePoints: the documented defaults of NormalizePointsParam and LoopRxnsToIgnore are missing; its only caller rumba passes all four inputs. Lead, 2026-11-25.
 normalizePoints	NONE
+# createHRWarmup: only a non-empty bias fails; its only caller gpSampler passes the bias it is given, and generateRandomSample (the only src caller of gpSampler) passes []. Lead, 2026-11-25.
+createHRWarmup	NONE
+# processingLLCs: reached only through fluxVariability with an LLC loop method; no src caller of fluxVariability uses one. Lead, 2026-11-25.
+processingLLCs	NONE
+# optimizeWBModel: the defect needs solveWBMmethod QPold, which no src caller passes. Lead, 2026-11-25.
+optimizeWBModel	NONE

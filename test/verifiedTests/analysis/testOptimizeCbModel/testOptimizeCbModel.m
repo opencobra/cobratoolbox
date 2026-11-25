@@ -76,6 +76,17 @@
 %         and solution.f is empty
 %       EXPECTED: the regularised problem keeps the linear objective of the model
 %       LINES: 441
+%     - DEFECT: param.solveWBMmethod 'QP' or 'QRLP' with param.minNorm 0 solves nothing and stops
+%       SEVERITY: error
+%       TRIGGER: m = createModel({'R1','R2','R3'}, {'','',''}, {' -> a[c]','a[c] -> b[c]',
+%         'b[c] -> '}, 'lowerBoundList', [0 0 0], 'upperBoundList', [10 10 10], 'printLevel', 0);
+%         m.c(3) = 1; optimizeCbModel(m, 'max', 0, true, struct('solveWBMmethod', 'QP', 'minNorm', 0))
+%       OBSERVED: (R2025a, gurobi, 2026-11-25) "Unrecognized field name "stat"." at line 847:
+%         line 447 copies param.minNorm without the 0 -> [] normalisation of the minNorm input,
+%         so line 503 enters the norm branch and no case of lines 606-766 matches 0
+%       EXPECTED: the documented solveWBMmethod problem is solved (or minNorm 0 is treated as no
+%         norm, as for the minNorm input)
+%       LINES: 447, 503, 847
 %
 % Authors:
 %     - CI integration: Laurent Heirendt, Ronan Fleming

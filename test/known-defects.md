@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-941 known defects in 514 functions (337 wrong-result, 309 error, 76 unusable-option, 151 cosmetic, 68 limitation).
+974 known defects in 529 functions (346 wrong-result, 323 error, 76 unusable-option, 158 cosmetic, 71 limitation).
 
 ## Summary
 
@@ -15,6 +15,7 @@
 | `src/analysis/FBA/optimizeCbModel.m` | wrong-result | The residual and the slack of QRLP are read from the wrong positions | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
 | `src/analysis/FBA/optimizeCbModel.m` | error | minNorm oneInternal fails for a model without linear objective | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
 | `src/analysis/FBA/optimizeCbModel.m` | wrong-result | param.osenseStr and the sense of the model are ignored for a parameter structure | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
+| `src/analysis/FBA/optimizeCbModel.m` | error | param.solveWBMmethod 'QP' or 'QRLP' with param.minNorm 0 solves nothing and stops | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
 | `src/analysis/FBA/randomObjFBASol.m` | wrong-result | The minimum objective is not imposed when the objective coefficient is not 1 | `test/verifiedTests/analysis/testFBA/testRandomObjFBASol.m` |
 | `src/analysis/FVA/fastFVA/cleanFilesFastFVA.m` | error | cleanFilesFastFVA(false) fails when there are log files to remove | `test/verifiedTests/analysis/testFVA/testCleanFilesFastFVA.m` |
 | `src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m` | limitation | CPLEX 12.10 and later 12.1x versions are classed as older than 12.8 | `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m` |
@@ -186,6 +187,7 @@
 | `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m` | cosmetic | A log file is written into the current folder | `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m` |
 | `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m` | unusable-option | The parallel mode cannot start its worker processes on Linux and macOS | `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m` |
 | `src/analysis/sampling/ACHR/convRevSamples.m` | wrong-result | Bounds of a reverse-only reaction are not exchanged correctly | `test/verifiedTests/analysis/testSampling/testConvRevSamples.m` |
+| `src/analysis/sampling/ACHR/createHRWarmup.m` | error | Any bias structure stops with an error at the loop over the biased reactions | `test/verifiedTests/analysis/testSampling/testCreateHRWarmup.m` |
 | `src/analysis/sampling/ACHR/gpSampler.m` | unusable-option | A bias distribution stops with an error | `test/verifiedTests/analysis/testSampling/testGpSampler.m` |
 | `src/analysis/sampling/ACHR/gpSampler.m` | error | A problem given by A without S stops with an error | `test/verifiedTests/analysis/testSampling/testGpSampler.m` |
 | `src/analysis/sampling/ACHR/gpSampler.m` | unusable-option | The distributed sampler does not exist | `test/verifiedTests/analysis/testSampling/testGpSampler.m` |
@@ -265,10 +267,13 @@
 | `src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m` | error | An internal reaction with carbon dioxide stops with an index error | `test/verifiedTests/analysis/testThermo/testThermodynamicAdjustmentToStoichiometry.m` |
 | `src/analysis/thermo/reactantContribution/thermodynamicAdjustmentToStoichiometry.m` | error | Every call stops at getCompartment with Too many input arguments | `test/verifiedTests/analysis/testThermo/testThermodynamicAdjustmentToStoichiometry.m` |
 | `src/analysis/thermo/thermoDirectionality/deltaG0concFluxConstraintBounds.m` | error | every call stops with an undefined function createGroupIncidenceMatrix_old | `test/verifiedTests/analysis/testThermo/testDeltaG0concFluxConstraintBounds.m` |
+| `src/analysis/thermo/thermoDirectionality/setThermoReactionDirectionalityiAF1260.m` | error | The growth check fails with an error when the LP solver reports a text status | `test/verifiedTests/analysis/testThermo/testSetThermoReactionDirectionalityiAF1260.m` |
 | `src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m` | error | A Gibbs energy range with one bound at zero stops the call | `test/verifiedTests/analysis/testThermo/testThermoConstrainFluxBounds.m` |
 | `src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m` | limitation | A confidence level outside the built-in table stops the call | `test/verifiedTests/analysis/testThermo/testThermoConstrainFluxBounds.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | error | A wrong input ends with an unassigned output | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
 | `src/analysis/thermo/thermoFBA/addLoopLawConstraints.m` | wrong-result | Method 3 without a vartype returns numbers instead of characters | `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m` |
+| `src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m` | error | Every model with a nonzero biomass flux makes the LP infeasible | `test/verifiedTests/analysis/testThermo/testCheckThermodynamicConsistency.m` |
+| `src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m` | error | The optional weighting vector q stops with an error | `test/verifiedTests/analysis/testThermo/testCheckThermodynamicConsistency.m` |
 | `src/analysis/thermo/thermoFBA/connectedRxnsByEFM.m` | cosmetic | The working directory is not restored when EFMtool fails | `test/verifiedTests/analysis/testThermo/testConnectedRxnsByEFM.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | wrong-result | A solution of the relaxed problem under param.debug is dropped | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
 | `src/analysis/thermo/thermoFBA/cycleFreeFlux.m` | wrong-result | Lower bounds are checked only when an upper bound is violated | `test/verifiedTests/analysis/testThermo/testCycleFreeFlux.m` |
@@ -279,6 +284,7 @@
 | `src/analysis/thermo/thermoFBA/fastSNP.m` | cosmetic | The weight vector is returned in resInfo.weights, not in the documented resInfo.weight | `test/verifiedTests/analysis/testThermo/testFastSNP.m` |
 | `src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m` | cosmetic | The empty-producer branch labels the consumer axes | `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m` |
 | `src/analysis/thermo/thermoFBA/metaboliteMassBalancePlot.m` | error | The reaction labels read an undocumented legacy field model.rxn(k).directionality | `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m` |
+| `src/analysis/thermo/thermoFBA/processingLLCs.m` | error | Preprocessing stops with an error for a coupling constraint of sense G or E | `test/verifiedTests/analysis/testThermo/testProcessingLLCs.m` |
 | `src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m` | error | A model with concMin or concMax fails unless concMinDefault and concMaxDefault are passed | `test/verifiedTests/analysis/testVonBertalanffy/testConfigureSetupThermoModelInputs.m` |
 | `src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m` | unusable-option | concMinDefault and concMaxDefault are ignored | `test/verifiedTests/analysis/testVonBertalanffy/testConfigureSetupThermoModelInputs.m` |
 | `src/analysis/thermo/vonBertalanffy/estimateDrGt0.m` | error | a model with the field R (gas constant) stops with an undefined variable | `test/verifiedTests/analysis/testVonBertalanffy/testEstimateDrGt0.m` |
@@ -336,6 +342,10 @@
 | `src/analysis/topology/reactingMoieties/identifyIsomorphicClasses.m` | unusable-option | sanityChecks = true raises an error for any class with two or more members | `test/verifiedTests/analysis/testReactingMoieties/testIdentifyIsomorphicClasses.m` |
 | `src/analysis/topology/reactingMoieties/readABRXNFile.m` | cosmetic | The two warnings about transition numbers print a literal backslash n | `test/verifiedTests/analysis/testReactingMoieties/testReadABRXNFile.m` |
 | `src/analysis/topology/reactingMoieties/readABRXNFile.m` | unusable-option | options.readBonds = 0 cannot be used | `test/verifiedTests/analysis/testReactingMoieties/testReadABRXNFile.m` |
+| `src/analysis/topology/testForTypeIIIPathways.m` | error | A model without blocked reactions stops with an error | `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m` |
+| `src/analysis/topology/testForTypeIIIPathways.m` | cosmetic | All warnings are switched off and left off | `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m` |
+| `src/analysis/topology/testForTypeIIIPathways.m` | wrong-result | An X3 answer of zero Type III pathways is reported as pathways found | `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m` |
+| `src/analysis/topology/testForTypeIIIPathways.m` | cosmetic | The clean-up commands name files that cannot exist | `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m` | cosmetic | The progress message has no space before the food source name | `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m` | unusable-option | brandedFoods = true always raises an error | `test/verifiedTests/analysis/testWholeBody/testCreateUSDAdatabase.m` |
 | `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/getDietComposition.m` | error | A whole-body model (struct) input is rejected | `test/verifiedTests/analysis/testWholeBody/testGetDietComposition.m` |
@@ -357,6 +367,9 @@
 | `src/analysis/wholeBody/PSCMToolbox/getStatsOrganComp.m` | wrong-result | The results file named in the help text is never written | `test/verifiedTests/analysis/testWholeBody/testGetStatsOrganComp.m` |
 | `src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m` | unusable-option | The coupling factor given by the caller is ignored | `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m` |
 | `src/analysis/wholeBody/PSCMToolbox/io/addReactionsHH.m` | wrong-result | rxnGeneMat is not updated for the gene rules of the added reactions | `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m` |
+| `src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m` | wrong-result | QPold rescales the bounds but not the coupling constraints | `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m` |
+| `src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m` | cosmetic | The CPLEX status text is never printed | `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m` |
+| `src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m` | cosmetic | The original status of gurobi is printed as a number | `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m` | wrong-result | ExclList is ignored for the blood exchanges of every organ but the kidney | `test/verifiedTests/analysis/testWholeBody/testPhysiologicalConstraintsHMDBbased.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased_old.m` | wrong-result | ExclList is ignored for the blood exchanges of every organ but the kidney | `test/verifiedTests/analysis/testWholeBody/testPhysiologicalConstraintsHMDBbased_old.m` |
 | `src/analysis/wholeBody/PSCMToolbox/setConstraints/readInDietFromVMH.m` | limitation | Flux values are rounded to the default precision of num2str | `test/verifiedTests/analysis/testWholeBody/testReadInDietFromVMH.m` |
@@ -548,6 +561,8 @@
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | cosmetic | The message about a feasible fit is never printed | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | error | The mode allConstraints needs the extra variable fields it treats as optional | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/constrainRxns.m` | cosmetic | The session display format is changed | `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m` |
+| `src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m` | cosmetic | An infeasible cardinality fit stops with a MATLAB error instead of the function's message | `test/verifiedTests/dataIntegration/testXomicsToModel/testFitExperimentalFlux.m` |
+| `src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m` | wrong-result | The objective value of the methods zeroOne and oneTwo is NaN when vExp holds a NaN | `test/verifiedTests/dataIntegration/testXomicsToModel/testFitExperimentalFlux.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/mediaConstraints.m` | wrong-result | The lower bound set is 1e4 times the highest uptake rate | `test/verifiedTests/dataIntegration/testXomicsToModel/testMediaConstraints.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m` | unusable-option | The option saveFigures cannot be used | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m` |
 | `src/dataIntegration/XomicsToModel/metabolomics/plotPredictedExchange.m` | error | extraFluxes without otherFluxes stops with an error | `test/verifiedTests/dataIntegration/testXomicsToModel/testPlotPredictedExchange.m` |
@@ -557,6 +572,8 @@
 | `src/dataIntegration/XomicsToModel/prepareData/preprocessingOmicsModel.m` | error | A workbook written by MATLAB writetable is an error | `test/verifiedTests/dataIntegration/testXomicsToModel/testPreprocessingOmicsModel.m` |
 | `src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m` | cosmetic | The histogram marks the threshold at 2 whatever threshold is given | `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m` |
 | `src/dataIntegration/XomicsToModel/proteomics/activeProteinList.m` | wrong-result | The inactive proteins are those above the threshold | `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m` |
+| `src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/thermoQP.m` | error | An omitted param, or a param without the field fbaOptimal, stops with an error | `test/verifiedTests/dataIntegration/testXomicsToModel/testThermoQP.m` |
+| `src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/thermoQP.m` | error | The QP solve passes an invalid parameter name, so every call stops | `test/verifiedTests/dataIntegration/testXomicsToModel/testThermoQP.m` |
 | `src/dataIntegration/chemoInformatics/RXN/findRXNFiles.m` | error | internalRxnBool is not assigned when every reaction has an RXN file | `test/verifiedTests/dataIntegration/testChemoInformatics/testFindRXNFiles.m` |
 | `src/dataIntegration/chemoInformatics/RXN/writeRxnfile.m` | cosmetic | The reaction equation drops every "1 " it contains, not only unit coefficients | `test/verifiedTests/dataIntegration/testChemoInformatics/testWriteRxnfile.m` |
 | `src/dataIntegration/chemoInformatics/checkChemoinformaticDependencies.m` | error | A system without java stops with an undefined variable options | `test/verifiedTests/dataIntegration/testChemoInformatics/testCheckChemoinformaticDependencies.m` |
@@ -617,6 +634,8 @@
 | `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | wrong-result | Higher secretion is reported for the other condition, contrary to the code's own comments | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
 | `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | wrong-result | Higher uptake is reported for the other condition for the slope ratio of defineUptakeSecretionProfiles | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
 | `src/dataIntegration/metabotools/calculateQuantitativeDiffs.m` | error | No uptake or no secretion exchange common to both conditions stops the call | `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m` |
+| `src/dataIntegration/metabotools/checkEffectRxnKO.m` | wrong-result | Fewer than six reactions give extra result rows that belong to no reaction | `test/verifiedTests/dataIntegration/testMetaboTools/testCheckEffectRxnKO.m` |
+| `src/dataIntegration/metabotools/checkEffectRxnKO.m` | wrong-result | With several samples to test only the last sample's results are returned | `test/verifiedTests/dataIntegration/testMetaboTools/testCheckEffectRxnKO.m` |
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | Fewer than four exchanges stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
 | `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m` | error | The documented essAA_excl flag and its default stop the call | `test/verifiedTests/dataIntegration/testMetaboTools/testDefineUptakeSecretionProfiles.m` |
 | `src/dataIntegration/metabotools/illustrate_ppp.m` | error | More than two metabolite pairs stop the call with an index error | `test/verifiedTests/dataIntegration/testMetaboTools/testIllustrate_ppp.m` |
@@ -627,10 +646,18 @@
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The colour order is changed for every later figure of the session | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/make3Dplot.m` | cosmetic | The coordinates of every phenotype are printed to the console | `test/verifiedTests/dataIntegration/testMetaboTools/testMake3Dplot.m` |
 | `src/dataIntegration/metabotools/mkTableOfAddedExchanges.m` | error | An exchange list with fewer rows than columns stops the function | `test/verifiedTests/dataIntegration/testMetaboTools/testMkTableOfAddedExchanges.m` |
+| `src/dataIntegration/metabotools/performPPP.m` | cosmetic | Every call writes the undocumented file PPP120.mat into the current folder | `test/verifiedTests/dataIntegration/testMetaboTools/testPerformPPP.m` |
+| `src/dataIntegration/metabotools/prepIntegrationQuant.m` | error | A sample with no secretion stops the function with an error | `test/verifiedTests/dataIntegration/testMetaboTools/testPrepIntegrationQuant.m` |
+| `src/dataIntegration/metabotools/prepIntegrationQuant.m` | error | A single exchange reaction stops the function with an error | `test/verifiedTests/dataIntegration/testMetaboTools/testPrepIntegrationQuant.m` |
+| `src/dataIntegration/metabotools/prepIntegrationQuant.m` | wrong-result | An exchange whose forced secretion or uptake is infeasible is kept as possible | `test/verifiedTests/dataIntegration/testMetaboTools/testPrepIntegrationQuant.m` |
 | `src/dataIntegration/metabotools/setSemiQuantConstraints.m` | error | An empty cond1_upt_higher list stops with an error | `test/verifiedTests/dataIntegration/testMetaboTools/testSetSemiQuantConstraints.m` |
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | cosmetic | The sample counter is printed for every sample | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metabotools/statisticsAddedExchanges.m` | wrong-result | The table is not ordered by frequency as documented; the sorted copy goes to a differently spelled variable | `test/verifiedTests/dataIntegration/testMetaboTools/testStatisticsAddedExchanges.m` |
 | `src/dataIntegration/metanetxMapper/metanetxMapper.m` | error | Name search stops with an error when the search replies have the same field order | `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m` |
+| `src/dataIntegration/modelMultipleObjectives.m` | limitation | A model with bondsE but without bondsBF stops with an error | `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m` |
+| `src/dataIntegration/modelMultipleObjectives.m` | limitation | A model without expressionRxns stops with an error unless all three weight fields are given | `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m` |
+| `src/dataIntegration/modelMultipleObjectives.m` | cosmetic | After the first failed objective, every later objective prints the error report again | `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m` |
+| `src/dataIntegration/modelMultipleObjectives.m` | limitation | The objective weightedTCBMflux stores its solution under unWeightedTCBMflux | `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m` |
 | `src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m` | wrong-result | A nonzero right hand side b is not scaled with the bounds | `test/verifiedTests/analysis/testFASTCORE/testLP10weighted.m` |
 | `src/dataIntegration/transcriptomics/FASTCORE/LP3.m` | cosmetic | The optional input basis is ignored | `test/verifiedTests/analysis/testFASTCORE/testLP3.m` |
 | `src/dataIntegration/transcriptomics/FASTCORE/LP7.m` | cosmetic | The optional input basis is ignored | `test/verifiedTests/analysis/testFASTCORE/testLP7.m` |
@@ -654,8 +681,13 @@
 | `src/design/TrimGdel/readGeneRules.m` | error | A model without any gene rule stops with an error | `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m` |
 | `src/design/TrimGdel/readGeneRules.m` | error | A rule enclosed in parentheses stops with an error | `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m` |
 | `src/design/TrimGdel/readGeneRules.m` | wrong-result | reactionKO2term points into the term list before it is reordered | `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m` |
+| `src/design/analyzeOptKnock.m` | error | An infeasible knock-out strain stops the function with a solver error | `test/verifiedTests/design/testDesign/testAnalyzeOptKnock.m` |
+| `src/design/analyzeOptKnock.m` | wrong-result | The objective value is used as the biomass flux | `test/verifiedTests/design/testDesign/testAnalyzeOptKnock.m` |
 | `src/design/multiProductionEnvelope.m` | error | An unbounded minimum is stored in the upper bounds | `test/verifiedTests/design/testMultiProductionEnvelope.m` |
 | `src/design/multiProductionEnvelope.m` | wrong-result | The wrong reaction is removed when a later substrate is next to the end of the list | `test/verifiedTests/design/testMultiProductionEnvelope.m` |
+| `src/design/optEnvelope/addEnv.m` | error | An infeasible knock-out strain stops the function with a solver error | `test/verifiedTests/design/testOptEnvelope/testAddEnv.m` |
+| `src/design/optEnvelope/addEnv.m` | error | The output line is not assigned when the objective range is zero | `test/verifiedTests/design/testOptEnvelope/testAddEnv.m` |
+| `src/design/optEnvelope/addEnv.m` | wrong-result | The range of the model objective is used as the range of the biomass flux | `test/verifiedTests/design/testOptEnvelope/testAddEnv.m` |
 | `src/design/optEnvelope/optEnvelope.m` | error | The mid output is not assigned without mid points | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
 | `src/design/optEnvelope/optEnvelope.m` | unusable-option | The numKO option always stops with an error | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
 | `src/design/optEnvelope/optEnvelope.m` | wrong-result | With prodMol the peaks of the mid envelopes are zero | `test/verifiedTests/design/testOptEnvelope/testOptEnvelope.m` |
@@ -680,6 +712,7 @@
 | `src/design/optGeneFitness.m` | limitation | The global hash table HTABLE is required but not documented | `test/verifiedTests/design/testDesign/testOptGeneFitness.m` |
 | `src/design/simpleOptKnock.m` | limitation | Single-deletion growth is stored in the first column in double-deletion mode | `test/verifiedTests/design/testSimpleOptKnock.m` |
 | `src/design/simpleOptKnock.m` | wrong-result | The wild-type minimum production is the maximum | `test/verifiedTests/design/testSimpleOptKnock.m` |
+| `src/design/testOptKnockSol.m` | wrong-result | The growth rate is not fixed when the objective coefficient is not 1 | `test/verifiedTests/design/testDesign/testTestOptKnockSol.m` |
 | `src/reconstruction/comparison/modelBorgifier/TmodelStats.m` | wrong-result | The share of metabolites with a compartment ('Total' row) is inverted | `test/verifiedTests/reconstruction/testModelBorgifier/testTmodelStats.m` |
 | `src/reconstruction/comparison/modelBorgifier/charpos.m` | wrong-result | The letters i and j count as digits | `test/verifiedTests/reconstruction/testModelBorgifier/testCharpos.m` |
 | `src/reconstruction/comparison/modelBorgifier/cleanTmodel.m` | wrong-result | Lengthening a short lb, ub or c array overwrites its last value with 0 | `test/verifiedTests/reconstruction/testModelBorgifier/testCleanTmodel.m` |
@@ -1007,6 +1040,15 @@
 - **Observed**: the else branch sets model.osenseStr to 'max', so the model is maximised
 - **Expected**: param.osenseStr is used when given, otherwise the sense of the model
 - **Source lines**: 259-263
+- **Documented in**: `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m`
+
+#### param.solveWBMmethod 'QP' or 'QRLP' with param.minNorm 0 solves nothing and stops
+
+- **Severity**: error
+- **Trigger**: m = createModel({'R1','R2','R3'}, {'','',''}, {' -> a[c]','a[c] -> b[c]', 'b[c] -> '}, 'lowerBoundList', [0 0 0], 'upperBoundList', [10 10 10], 'printLevel', 0); m.c(3) = 1; optimizeCbModel(m, 'max', 0, true, struct('solveWBMmethod', 'QP', 'minNorm', 0))
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Unrecognized field name "stat"." at line 847: line 447 copies param.minNorm without the 0 -> [] normalisation of the minNorm input, so line 503 enters the norm branch and no case of lines 606-766 matches 0
+- **Expected**: the documented solveWBMmethod problem is solved (or minNorm 0 is treated as no norm, as for the minNorm input)
+- **Source lines**: 447, 503, 847
 - **Documented in**: `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m`
 
 ### `src/analysis/FBA/randomObjFBASol.m`
@@ -2756,6 +2798,17 @@
 - **Source lines**: 31-32
 - **Documented in**: `test/verifiedTests/analysis/testSampling/testConvRevSamples.m`
 
+### `src/analysis/sampling/ACHR/createHRWarmup.m`
+
+#### Any bias structure stops with an error at the loop over the biased reactions
+
+- **Severity**: error
+- **Trigger**: m = createModel({'EX_a','R1','R2','R3','R4','EX_b'}, {'','','','','',''}, {' -> a[c]','a[c] -> b[c]','b[c] <=> c[c]','c[c] <=> d[c]','d[c] <=> b[c]','b[c] -> '}, 'printLevel', 0); m.lb(1) = 0; m.ub(1) = 10; m = changeObjective(m, 'EX_b'); bias = struct('method', 'uniform', 'index', [3 4], 'param', [100 200; 300 400]); createHRWarmup(m, 12, false, bias) (the same with 'index', [3; 4] or a scalar index)
+- **Observed**: (R2025a, gurobi, 2026-11-25) error "Colon operands must be real scalars." at line 54, "for k = 1:size(bias.index)": size returns a vector, which the colon operator of R2025a rejects (older releases silently used its first element, so a row vector of indices biased only the first reaction). Line 98 has the same loop. In addition, a biased value below zero fixes the reaction to [0.99999999*v, 1.00000001*v], an empty interval: with v = -500 gurobi reports the LP infeasible (stat 0, empty full), which lines 128-151 do not handle (they clip and store the empty solution vector)
+- **Expected**: the documented bias option fixes each of the nBias reactions to a value drawn from its distribution, as the help text states
+- **Source lines**: 54, 98, 113-114
+- **Documented in**: `test/verifiedTests/analysis/testSampling/testCreateHRWarmup.m`
+
 ### `src/analysis/sampling/ACHR/gpSampler.m`
 
 #### A bias distribution stops with an error
@@ -3573,6 +3626,17 @@
 - **Source lines**: 307
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testDeltaG0concFluxConstraintBounds.m`
 
+### `src/analysis/thermo/thermoDirectionality/setThermoReactionDirectionalityiAF1260.m`
+
+#### The growth check fails with an error when the LP solver reports a text status
+
+- **Severity**: error
+- **Trigger**: with gurobi as LP solver, m = createModel({'EX_a','R1','R2','R3','R4','EX_b'}, {'','','','','',''}, {' -> a[c]','a[c] -> b[c]','b[c] <=> c[c]','c[c] <=> d[c]', 'd[c] <=> b[c]','b[c] -> '}, 'printLevel', 0); m.lb(1) = 0; m.ub(1) = 10; m = changeObjective(m, 'EX_b'); m.directions.fwdThermoOnlyBool = false(6, 1); m.directions.revThermoOnlyBool = false(6, 1); m.directions.reversibleThermoOnlyBool = false(6, 1); m.SIntRxnBool = false(6, 1); m.NaNdG0RxnBool = false(6, 1); setThermoReactionDirectionalityiAF1260(m)
+- **Observed**: (R2025a, gurobi, 2026-11-25) both growth rates are 10, then the error "Operands to the logical AND (&&) and OR (||) operators must be convertible to logical scalar values." at line 292: solution.origStat is the text 'OPTIMAL' under gurobi (optimizeCbModel returns the solver's own status), so solution.origStat~=1 is a 7-element vector; under glpk origStat is the number 5, which never equals 1, so the relaxation block of lines 293-514 runs even for an optimal solution
+- **Expected**: the relaxation block runs only when the thermodynamic directions reduce the growth rate below a tenth or the FBA is not optimal (test of the standardised solution.stat)
+- **Source lines**: 292
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testSetThermoReactionDirectionalityiAF1260.m`
+
 ### `src/analysis/thermo/thermoDirectionality/thermoConstrainFluxBounds.m`
 
 #### A Gibbs energy range with one bound at zero stops the call
@@ -3612,6 +3676,26 @@
 - **Expected**: a character vector, as with methods 1 and 2
 - **Source lines**: 333
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testAddLoopLawConstraints.m`
+
+### `src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m`
+
+#### Every model with a nonzero biomass flux makes the LP infeasible
+
+- **Severity**: error
+- **Trigger**: the model above with gurobi as LP solver; checkThermodynamicConsistency(m)
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Biomass flux, should be non-zero: 10", then error "Index exceeds array bounds." at line 93: the LP of lines 62-90 has stat 0 and an empty sol.full. With Q = I, S*S'*y = b = 0 forces S'*y = 0 (y'*S*S'*y = norm(S'*y)^2), so the bound lb(biomass) = 0.001*FBA flux > 0 of line 46 cannot be met; under glpk the same call prints "no thermodynamically consistent production of biomass" with norm(v) = 0, and the message of line 97 cannot be reached for b = 0
+- **Expected**: the infeasible LP is reported (or a feasible formulation is used) instead of reading sol.full, and a model that grows can be found consistent
+- **Source lines**: 46, 66-72, 90-93
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testCheckThermodynamicConsistency.m`
+
+#### The optional weighting vector q stops with an error
+
+- **Severity**: error
+- **Trigger**: m = createModel({'EX_a','R1','R2','R3','R4','EX_b'}, {'','','','','',''}, {' -> a[c]','a[c] -> b[c]','b[c] <=> c[c]','c[c] <=> d[c]','d[c] <=> b[c]','b[c] -> '}, 'printLevel', 0); m.lb(1) = 0; m.ub(1) = 10; m = changeObjective(m, 'EX_b'); checkThermodynamicConsistency(m, ones(6, 1))
+- **Observed**: (R2025a, gurobi, 2026-11-25) error "Too many input arguments." at line 28, Q=spdiag(q,0,n,n): spdiag is not a COBRA or MATLAB function; the one on the path comes from a PolytopeSamplerMatlab copy (papers/ or external/) and takes one argument
+- **Expected**: Q is the diagonal matrix of q (spdiags(q, 0, n, n)), as the help text states
+- **Source lines**: 28
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testCheckThermodynamicConsistency.m`
 
 ### `src/analysis/thermo/thermoFBA/connectedRxnsByEFM.m`
 
@@ -3710,6 +3794,17 @@
 - **Expected**: the documented fields only (S, mets, rxns) are used; the labels are the reaction identifiers of the top consumers and producers
 - **Source lines**: 62-67, 82-87
 - **Documented in**: `test/verifiedTests/analysis/testThermo/testMetaboliteMassBalancePlot.m`
+
+### `src/analysis/thermo/thermoFBA/processingLLCs.m`
+
+#### Preprocessing stops with an error for a coupling constraint of sense G or E
+
+- **Severity**: error
+- **Trigger**: m = createModel({'EX_a','R1','R2','R3','R4','EX_b'}, {'','','','','',''}, {' -> a[c]','a[c] -> b[c]','b[c] <=> c[c]','c[c] <=> d[c]','d[c] <=> b[c]','b[c] -> '}, 'printLevel', 0); m.lb(1) = 0; m.ub(1) = 10; m = changeObjective(m, 'EX_b'); mC = addCOBRAConstraints(m, {'R2'}, 1, 'dsense', 'G'); LPproblem = buildOptProblemFromModel(mC); [MILP, loopInfo] = addLoopLawConstraints(LPproblem, mC, 1:6, [], [], struct('method', 'LLC-NS', 'printLevel', 0)); processingLLCs('preprocess', loopInfo, LPproblem, mC, 6, 'max', MILP)
+- **Observed**: (R2025a, gurobi, 2026-11-25) error "Unrecognized function or variable 'con3A2'." in preprocessLLCs at line 129 (typo for cond3A2). The same model with 'dsense', 'L' is preprocessed (solveLP = 1). fluxVariability(mC, 100, 'max', [], 0, 0, 'LLC-NS') stops with the same error
+- **Expected**: condition III of Prop. 2 is evaluated for '>=' and '=' rows as it is for '<=' rows (lines 119-126)
+- **Source lines**: 129
+- **Documented in**: `test/verifiedTests/analysis/testThermo/testProcessingLLCs.m`
 
 ### `src/analysis/thermo/vonBertalanffy/configureSetupThermoModelInputs.m`
 
@@ -4290,6 +4385,44 @@
 - **Source lines**: 260
 - **Documented in**: `test/verifiedTests/analysis/testReactingMoieties/testReadABRXNFile.m`
 
+### `src/analysis/topology/testForTypeIIIPathways.m`
+
+#### A model without blocked reactions stops with an error
+
+- **Severity**: error
+- **Trigger**: ml = createModel({'R2','R3','R4'}, {'','',''}, {'b[c] <=> c[c]', 'c[c] <=> d[c]', 'd[c] <=> b[c]'}, 'printLevel', 0); testForTypeIIIPathways(ml, [], fullfile(tempname, 'toy'))
+- **Observed**: (R2025a, gurobi, 2026-11-25) error "Unrecognized function or variable 'rxnzero'." at line 54: rxnzero is assigned only inside the loop (line 42) when a reaction is blocked
+- **Expected**: an empty list of blocked reactions is passed to convertModelToEX
+- **Source lines**: 41-43, 54
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m`
+
+#### All warnings are switched off and left off
+
+- **Severity**: cosmetic
+- **Trigger**: any call, e.g. the first trigger above
+- **Observed**: (R2025a, 2026-11-25) after the call warning('query', 'all').state is 'off': line 22 runs "warning off all" and nothing restores the state of the caller
+- **Expected**: warnings of the caller's session stay visible (Constitution VII-B)
+- **Source lines**: 22
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m`
+
+#### An X3 answer of zero Type III pathways is reported as pathways found
+
+- **Severity**: wrong-result
+- **Trigger**: m = createModel({'EX_a','R1','R2','R3','R4','EX_b'}, {'','','','','',''}, {' -> a[c]','a[c] -> b[c]','b[c] <=> c[c]','c[c] <=> d[c]','d[c] <=> b[c]','b[c] -> '}, 'printLevel', 0); m.lb(1) = 0; m.ub(1) = 10; m = changeObjective(m, 'EX_b'); testForTypeIIIPathways(m, [1; 6], fullfile(tempname, 'toy')) with a stand-in X3 first on the PATH that prints "There are 0 Type III pathways"
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Type III pathways were found in model. A table of Type III pathways can be found in .../toy_myT3.txt": line 64 compares the character after 'There are ' with 0, and every character code is above 0, so the branch of lines 69-71 is reached only when the text is absent
+- **Expected**: "No Type III pathways can be found in model." when X3 counts zero pathways (the digit, not its character code, is compared)
+- **Source lines**: 64
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m`
+
+#### The clean-up commands name files that cannot exist
+
+- **Severity**: cosmetic
+- **Trigger**: the first trigger above with a stand-in X3 that prints neither ERROR nor 'There are '
+- **Observed**: (R2025a, Linux, 2026-11-25) "rm: cannot remove '<f>_myT3_Sprs.txt<f>_myT3.txt <f>_myRxnMet.txt': No such file or directory" (the three names are joined without spaces, line 71) and "del: command not found" (line 74 uses the Windows command)
+- **Expected**: the result files of X3 are removed on every platform
+- **Source lines**: 71, 74
+- **Documented in**: `test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m`
+
 ### `src/analysis/wholeBody/Nutrition_Modelling_Toolbox/createUSDAdatabase.m`
 
 #### The progress message has no space before the food source name
@@ -4506,6 +4639,35 @@
 - **Expected**: rxnGeneMat with one column per gene and the associations of the new rule
 - **Source lines**: 60
 - **Documented in**: `test/verifiedTests/analysis/testWholeBody/testAddReactionsHH.m`
+
+### `src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m`
+
+#### QPold rescales the bounds but not the coupling constraints
+
+- **Severity**: wrong-result
+- **Trigger**: m = createModel({'EX_a','R1','EX_b'}, {'','',''}, {' -> a[c]','a[c] -> b[c]', 'b[c] -> '}, 'printLevel', 0); m = changeObjective(m, 'EX_b'); m.ub(:) = 1e6; m.ub(1) = 20000; m.lb(1) = 0; m.osenseStr = 'max'; mC = addCOBRAConstraints(m, {'R1'}, 5000, 'dsense', 'L'); s = optimizeWBModel(mC, struct('solveWBMmethod', 'QPold'))
+- **Observed**: (R2025a, gurobi, 2026-11-25) s.stat = 1, s.f = 10000, s.v = [10000 10000 10000], so mC.C*s.v = 10000 > mC.d = 5000; the default method gives f = 5000. Lines 311-320 divide lb and ub by 1000 but leave d (and b) unscaled, so the second problem is C*v <= 1000*d; lines 335-345 then multiply the solution by 1000. In the same call s.ctrs_s = 4990 is the slack of the scaled problem: optimizeCbModel returns ctrs_s, while lines 343-344 rescale a field ctrs_slack
+- **Expected**: the rescaled solution solves the original problem (C*v <= d, f = 5000), as the comments of lines 316-317 and 325 state, with all fields scaled back
+- **Source lines**: 311-320, 343-344
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m`
+
+#### The CPLEX status text is never printed
+
+- **Severity**: cosmetic
+- **Trigger**: param.solveWBMmethod = 'QPold', param.printLevel = 2 with ibm_cplex as LP solver
+- **Observed**: (R2025a, 2026-11-25) solverName = 'ibm_cplex'; solverName(:,1) is 'i' and any(contains(solverName(:,1), 'cplex')) is 0: solverName is a character row, so solverName(:,1) is its first character and the condition is false for every solver
+- **Expected**: the CPLEX status text is printed for CPLEX solvers
+- **Source lines**: 276-278, 350-352, 388-391
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m`
+
+#### The original status of gurobi is printed as a number
+
+- **Severity**: cosmetic
+- **Trigger**: param.solveWBMmethod = 'QPold', param.printLevel = 1 with gurobi
+- **Observed**: (R2025a, gurobi, 2026-11-25) "First solution.origStat = 79" followed by "PTIMAL": origStat is the text 'OPTIMAL' and is printed with %i
+- **Expected**: "First solution.origStat = OPTIMAL"
+- **Source lines**: 275, 349
+- **Documented in**: `test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m`
 
 ### `src/analysis/wholeBody/PSCMToolbox/setConstraints/physiologicalConstraintsHMDBbased.m`
 
@@ -6416,6 +6578,26 @@
 - **Source lines**: 1244
 - **Documented in**: `test/verifiedTests/dataIntegration/testConstrainRxns/testConstrainRxns.m`
 
+### `src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m`
+
+#### An infeasible cardinality fit stops with a MATLAB error instead of the function's message
+
+- **Severity**: cosmetic
+- **Trigger**: the model of the first entry, fitExperimentalFlux(model, [NaN; NaN], [Inf; Inf], [Inf; Inf], [1; 1], struct('method', 'zero')) (infinite weights forbid every relaxation, lines 289-294)
+- **Observed**: (R2025a, 2026-11-25, gurobi) MATLAB:nonExistentField "Unrecognized field name "xyz"." at line 347; with the default method 'two' the same input ends with the error fitExperimentalFlux:infeasibleFit of line 384 after two retries
+- **Expected**: the error fitExperimentalFlux:infeasibleFit of line 384, as for method 'two'
+- **Source lines**: 345-347
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testFitExperimentalFlux.m`
+
+#### The objective value of the methods zeroOne and oneTwo is NaN when vExp holds a NaN
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1'; 'R2'}, {'r1'; 'r2'}, {' -> A'; 'A -> '}); model.lb = [6; 0]; model.ub = [10; 2]; model.c = [0; 0]; [v, p, q, dv, obj] = fitExperimentalFlux(model, [NaN; NaN], [1; 1], [1; 1], [1; 1], struct('method', 'oneTwo')) (the same with method 'zeroOne')
+- **Observed**: (R2025a, 2026-11-25, gurobi) oneTwo: v = [4; 4], p = [2; 0], q = [0; 2] and obj = NaN; zeroOne: v = [6; 6], p = [0; 0], q = [0; 4] and obj = NaN. dv is NaN for every reaction without an experimental flux (line 394), and the objective adds norm(dv, 1) (lines 401 and 403), which is NaN
+- **Expected**: a finite objective value; vExp is documented as "NaN if no info", and the fitted problem itself (lines 141 and 156) leaves those reactions out
+- **Source lines**: 394, 401, 403
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testFitExperimentalFlux.m`
+
 ### `src/dataIntegration/XomicsToModel/metabolomics/mediaConstraints.m`
 
 #### The lower bound set is 1e4 times the highest uptake rate
@@ -6506,6 +6688,26 @@
 - **Expected**: inactive = {'a'}, the proteins whose expression is below the threshold, the complement of the active set
 - **Source lines**: 39
 - **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testActiveProteinList.m`
+
+### `src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/thermoQP.m`
+
+#### An omitted param, or a param without the field fbaOptimal, stops with an error
+
+- **Severity**: error
+- **Trigger**: thermoQP(model, [1; 1; 1]) with the model of the first entry (param is an optional input; lines 54-56 replace an omitted param by struct())
+- **Observed**: (R2025a, 2026-11-25) "Unrecognized field name "fbaOptimal"." at line 194
+- **Expected**: a default for param.fbaOptimal, as for the omitted param
+- **Source lines**: 54-56, 194
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testThermoQP.m`
+
+#### The QP solve passes an invalid parameter name, so every call stops
+
+- **Severity**: error
+- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'}, {'r1'; 'r2'; 'r3'}, {' -> A'; 'A -> B'; 'B -> '}); model.lb = [0; 0; 0]; model.ub = [10; 10; 10]; model.c = [0; 0; 1]; thermoQP(model, [1; 1; 1], struct('fbaOptimal', false)) (also with fbaOptimal true, SConsistentRxnBool and osenseStr 'max')
+- **Observed**: (R2025a, 2026-11-25, gurobi) "All parameters have to be valid matlab field names. param.printLevel is not a valid field name" from parseSolverParameters, called by solveCobraQP(QPproblem, 'param.printLevel', 0) at line 237
+- **Expected**: the QP solution in sol (fields f, v, y, w, s, stat), as the help documents
+- **Source lines**: 237
+- **Documented in**: `test/verifiedTests/dataIntegration/testXomicsToModel/testThermoQP.m`
 
 ### `src/dataIntegration/chemoInformatics/RXN/findRXNFiles.m`
 
@@ -7123,6 +7325,26 @@
 - **Source lines**: 81, 101
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testCalculateQuantitativeDiffs.m`
 
+### `src/dataIntegration/metabotools/checkEffectRxnKO.m`
+
+#### Fewer than six reactions give extra result rows that belong to no reaction
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'; 'R4'}, {'r1'; 'r2'; 'r3'; 'r4'}, {' -> A'; 'A -> B'; 'A -> B'; 'B -> '}, 'grRuleList', {''; 'g1'; 'g2'; 'g1 or g3'}); model.lb = zeros(4, 1); model.ub = 10 * ones(4, 1); model.c = [0; 0; 0; 1]; R.S1.modelMin = model; [FBA_Rxns_KO, ListResults] = checkEffectRxnKO({'S1'}, NaN, {'g1'}, {'S1'}, R)
+- **Observed**: (R2025a, 2026-11-25, gurobi) FBA_Rxns_KO has 7 rows: the header, R2 (f 10, stat 1), R4 (f 0, stat 1) and four rows with an empty reaction and the fill value NaN; ListResults is 2 x 6, and the loop of line 35 runs over length(ListResults) = 6, so ListResults{i} also takes the formulas and the cells of columns 2 and 3
+- **Expected**: one row per reaction of the genes (2 rows after the header), in the order of ListResults, as the help documents
+- **Source lines**: 35
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testCheckEffectRxnKO.m`
+
+#### With several samples to test only the last sample's results are returned
+
+- **Severity**: wrong-result
+- **Trigger**: the model of the first entry with R.S1.modelMin = model, R.S2.modelMin = the same model with ub(3) = 4; checkEffectRxnKO({'S1'; 'S2'}, 100, {'g1'; 'g2'}, {'S1'; 'S2'}, R)
+- **Observed**: (R2025a, 2026-11-25, gurobi) rows R2 (f 4), R4 (f 0), R3 (f 10): the objective 10 of S1 with R2 blocked is overwritten by the 4 of S2, because n = 1 (line 23) is never advanced, so every sample writes the same columns
+- **Expected**: the results of every sample in samples_to_test, which the function loops over (line 27)
+- **Source lines**: 23, 39-41, 44-45
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testCheckEffectRxnKO.m`
+
 ### `src/dataIntegration/metabotools/defineUptakeSecretionProfiles.m`
 
 #### Fewer than four exchanges stop the call with an index error
@@ -7223,6 +7445,46 @@
 - **Source lines**: 19-20
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testMkTableOfAddedExchanges.m`
 
+### `src/dataIntegration/metabotools/performPPP.m`
+
+#### Every call writes the undocumented file PPP120.mat into the current folder
+
+- **Severity**: cosmetic
+- **Trigger**: any call, for example performPPP(R, {'EX_glc(e)', 'EX_o2(e)'}, [2 3], {'S1'}, [3 4], [-1 -1]) with R.S1.modelPruned a model with these exchanges
+- **Observed**: (R2025a, 2026-11-25, gurobi) after each sample, save('PPP120', '-v7.3') (line 69) writes the whole workspace of the function to PPP120.mat in the current folder, overwriting a file of that name; the test runs the function in a temporary folder and removes it
+- **Expected**: the results only in the returned ResultsAllCellLines, as the help documents
+- **Source lines**: 69
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testPerformPPP.m`
+
+### `src/dataIntegration/metabotools/prepIntegrationQuant.m`
+
+#### A sample with no secretion stops the function with an error
+
+- **Severity**: error
+- **Trigger**: model and outDir as above; prepIntegrationQuant(model, [-1; -1; -2], {'EX_P'; 'EX_Q'; 'EX_D'}, {'s3'}, 500, 1e-5, outDir)
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Variable 'secr_value' not found." at line 156: lines 148-152 create an empty uptake_value when a sample has no uptake, but nothing creates secr_value when a sample has no secretion (for the first sample secretion even keeps the last exchange name set at line 94)
+- **Expected**: a saved profile with empty secretion and secr_value, as for a sample without uptake
+- **Source lines**: 133, 148-152, 156
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testPrepIntegrationQuant.m`
+
+#### A single exchange reaction stops the function with an error
+
+- **Severity**: error
+- **Trigger**: model and outDir as above; prepIntegrationQuant(model, 2, {'EX_P'}, {'s4'}, 500, 1e-5, outDir)
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Index in position 1 exceeds array bounds. Index must not exceed 1." at line 77: the loops of lines 76 and 100 run to length(FBA_all_secreted) of an n x 2 matrix, which is 2 when n = 1
+- **Expected**: one profile saved for the sample (a vector of one exchange is allowed by the help text); the loops should run to size(FBA_all_secreted, 1)
+- **Source lines**: 76-77, 100-101
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testPrepIntegrationQuant.m`
+
+#### An exchange whose forced secretion or uptake is infeasible is kept as possible
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'A <=> '; 'A -> B'; 'A -> B + P'; 'D -> P'; 'D <=> '; 'B -> '; 'B -> '; 'P <=> '; 'Q <=> '}, 'lowerBoundList', [-10 0 0 0 -5 0 1 0 0], 'upperBoundList', 1000 * ones(1, 9)); model = changeObjective(model, 'BIO'); outDir = tempname; mkdir(outDir); prepIntegrationQuant(model, [2 -1; 3 1; -1 -2], {'EX_P'; 'EX_Q'; 'EX_D'}, {'s1'; 's2'}, 500, 1e-5, outDir)
+- **Observed**: (R2025a, gurobi, 2026-11-25) Q has no producer, so forcing EX_Q >= 1e-5 is infeasible: FBA_all_secreted(2, :) = [NaN 0]; likewise the uptake of EX_P (lb 0) gives FBA_all_uptake(1, :) = [NaN 0]. Lines 77 and 101 test FBA.f == 0, NaN == 0 is false, so neither is listed as not possible: s1.mat holds secretion = {'EX_P'; 'EX_Q'} and s2.mat holds uptake = {'EX_P'; 'EX_D'}
+- **Expected**: EX_Q in Secretion_not_possible and EX_P in Uptake_not_possible, so that s1 secretes only EX_P and s2 takes up only EX_D, as the help text says (exchanges the model cannot realise are removed from each sample)
+- **Source lines**: 65-68, 77, 89-92, 101
+- **Documented in**: `test/verifiedTests/dataIntegration/testMetaboTools/testPrepIntegrationQuant.m`
+
 ### `src/dataIntegration/metabotools/setSemiQuantConstraints.m`
 
 #### An empty cond1_upt_higher list stops with an error
@@ -7264,6 +7526,44 @@
 - **Expected**: the first result taken from a struct array as well as from a cell array
 - **Source lines**: 137
 - **Documented in**: `test/verifiedTests/dataIntegration/testMetanetxMapper/testMetanetxMapper.m`
+
+### `src/dataIntegration/modelMultipleObjectives.m`
+
+#### A model with bondsE but without bondsBF stops with an error
+
+- **Severity**: limitation
+- **Trigger**: the model of the first entry with model.expressionRxns = [1; 2; NaN] and model.bondsE = [1; 2; 3], no bondsBF; modelMultipleObjectives(model, struct('objectives', {{'unWeighted1norm'}}))
+- **Observed**: (R2025a, 2026-11-25) "Unrecognized field name "bondsBF"." at line 191, which compares the length of bondsBF (not bondsE) with the reactions; line 196 also uses the NaN entries of bondsBF; the bond-enthalpy weights are not used by any objective
+- **Expected**: the documented model lists both fields; the check of line 191 was evidently meant for bondsE
+- **Source lines**: 191, 196
+- **Documented in**: `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m`
+
+#### A model without expressionRxns stops with an error unless all three weight fields are given
+
+- **Severity**: limitation
+- **Trigger**: model = createModel({'R1'; 'R2'; 'R3'}, {'r1'; 'r2'; 'r3'}, {' -> A'; 'A -> B'; 'B -> '}); model.lb = [0; 0; 0]; model.ub = [10; 10; 10]; model.c = [0; 0; 1]; model.SConsistentRxnBool = [false; true; false]; modelMultipleObjectives(model, struct('objectives', {{'unWeighted1norm'}}))
+- **Observed**: (R2025a, 2026-11-25) "Unrecognized field name "expressionRxns"." at line 213, although lines 203-204 handle a model without expressionRxns; line 204 removes the objectives containing 'GE0', a text that no objective name contains
+- **Expected**: the documented model lists expressionRxns among its fields, so the input is not documented; the code's check suggests it was meant to be optional
+- **Source lines**: 204, 213, 219
+- **Documented in**: `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m`
+
+#### After the first failed objective, every later objective prints the error report again
+
+- **Severity**: cosmetic
+- **Trigger**: any objective list in which an objective fails, for example the model of the last section with several objectives
+- **Observed**: (R2025a, 2026-11-25) hasErrored (line 297) is never reset, so line 510 prints the report of the last error after every following objective, also after objectives that were solved
+- **Expected**: one report per failed objective
+- **Source lines**: 297, 509-510
+- **Documented in**: `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m`
+
+#### The objective weightedTCBMflux stores its solution under unWeightedTCBMflux
+
+- **Severity**: limitation
+- **Trigger**: modelMultipleObjectives(model, struct('objectives', {{'weightedTCBMflux'}})) for any model
+- **Observed**: (code reading, R2025a, 2026-11-25) lines 333-336 assign solutions.unWeightedTCBMflux, so the output field weightedTCBMflux listed in the help is never set and a requested unWeightedTCBMflux is overwritten; the objective is not among the supported objectives of the help, its weights are a TODO (line 325), and it needs MOSEK
+- **Expected**: the solution in solutions.weightedTCBMflux, as the output list documents
+- **Source lines**: 333, 335-336
+- **Documented in**: `test/verifiedTests/dataIntegration/testDataIntegration/testModelMultipleObjectives.m`
 
 ### `src/dataIntegration/transcriptomics/FASTCORE/LP10weighted.m`
 
@@ -7496,6 +7796,26 @@
 - **Source lines**: 48, 93, 103-115
 - **Documented in**: `test/verifiedTests/design/testTrimGdel/testReadGeneRules.m`
 
+### `src/design/analyzeOptKnock.m`
+
+#### An infeasible knock-out strain stops the function with a solver error
+
+- **Severity**: error
+- **Trigger**: model = createModel({'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'A <=> '; 'A -> B'; 'A -> B + P'; 'D -> P'; 'D <=> '; 'B -> '; 'B -> '; 'P <=> '; 'Q <=> '}, 'lowerBoundList', [-10 0 0 0 -5 0 1 0 0], 'upperBoundList', 1000 * ones(1, 9)); model = changeObjective(model, 'BIO'); analyzeOptKnock(model, {'R1'; 'R2'}, 'EX_P')
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Gurobi error 10003: Element 0 of a double array is Nan." from solveCobraLP, with and without CBT_QP_SOLVER: without R1 and R2 no B is made and ATPM needs 1, so the growth LP is infeasible, FBAsol1.f is NaN and line 56 puts NaN into the lower bound of BIO; the solve status is never checked
+- **Expected**: the strain reported as not viable (for example maxGrowth NaN or 0 and type 'not growth coupled') without a solver error
+- **Source lines**: 51-56
+- **Documented in**: `test/verifiedTests/design/testDesign/testAnalyzeOptKnock.m`
+
+#### The objective value is used as the biomass flux
+
+- **Severity**: wrong-result
+- **Trigger**: model as above with model.c(6) = 2; analyzeOptKnock(model, {'R1'}, 'EX_P') and analyzeOptKnock(model, {'R1'}, 'EX_P', 'BIO')
+- **Observed**: (R2025a, gurobi, 2026-11-25) with the default biomassRxn, line 34 selects model.c == 1, which matches no reaction, so no growth rate is fixed: 'growth coupled non unique', maxGrowth 18, maxProd 15, minProd 1; with biomassRxn 'BIO', line 56 sets its lower bound to the objective value 18, above the largest biomass flux 9, so both LPs are infeasible: 'growth coupled', maxProd NaN, minProd NaN
+- **Expected**: the result for model.c(6) = 1 ('growth coupled non unique', 9, 15, 10): with R1 knocked out, maximal biomass flux 9 needs EX_P >= 10 through R2 and D adds up to 5
+- **Source lines**: 34, 56, 69-77
+- **Documented in**: `test/verifiedTests/design/testDesign/testAnalyzeOptKnock.m`
+
 ### `src/design/multiProductionEnvelope.m`
 
 #### An unbounded minimum is stored in the upper bounds
@@ -7515,6 +7835,35 @@
 - **Expected**: EX_pyr(e) is removed and EX_succ(e) stays
 - **Source lines**: 77-78
 - **Documented in**: `test/verifiedTests/design/testMultiProductionEnvelope.m`
+
+### `src/design/optEnvelope/addEnv.m`
+
+#### An infeasible knock-out strain stops the function with a solver error
+
+- **Severity**: error
+- **Trigger**: the model above with ATPM lower bound 1 ('lowerBoundList', [-10 0 0 0 -5 0 1 0 0]); figure('Visible', 'off'); ln = addEnv(model, 'BIO', 'EX_P', {'R1', 'R2'})
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Gurobi error 10003: Element 0 of a double array is Nan." from solveCobraLP: both LPs of lines 95-96 are infeasible (f = NaN), so the 100 points are NaN, nnz(NaN) is not 0 and line 104 puts NaN into the bounds of BIO
+- **Expected**: the same handling as a strain without growth (no envelope drawn)
+- **Source lines**: 95-99, 104
+- **Documented in**: `test/verifiedTests/design/testOptEnvelope/testAddEnv.m`
+
+#### The output line is not assigned when the objective range is zero
+
+- **Severity**: error
+- **Trigger**: model = createModel({'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'A <=> '; 'A -> B'; 'A -> B + P'; 'D -> P'; 'D <=> '; 'B -> '; 'B -> '; 'P <=> '; 'Q <=> '}, 'lowerBoundList', [-10 0 0 0 -5 0 0 0 0], 'upperBoundList', 1000 * ones(1, 9)); model = changeObjective(model, 'BIO'); figure('Visible', 'off'); ln = addEnv(model, 'BIO', 'EX_P', {'R1', 'R2'})
+- **Observed**: (R2025a, gurobi, 2026-11-25) "Output argument "line" (and possibly others) not assigned a value in the execution with "addEnv" function.": the knock-outs leave no growth, all 100 points are 0 and line 99 returns before line is set
+- **Expected**: an empty line (or no plot) returned for a strain without growth, as the early return intends; optEnvelope always requests the output
+- **Source lines**: 98-99
+- **Documented in**: `test/verifiedTests/design/testOptEnvelope/testAddEnv.m`
+
+#### The range of the model objective is used as the range of the biomass flux
+
+- **Severity**: wrong-result
+- **Trigger**: the model with ATPM lower bound 1; m = changeObjective(model, 'EX_P'); figure('Visible', 'off'); ln = addEnv(m, 'BIO', 'EX_P', {'R1'}); and the same with model.c(6) = 2 instead of the new objective
+- **Observed**: (R2025a, gurobi, 2026-11-25) with objective EX_P, ln.XData runs from 1 to 15 (the range of EX_P) and 43 of the 100 points of ln.YData are NaN; with model.c(6) = 2 it runs from 0 to 18 and 50 points are NaN. Lines 95-97 take the range from the objective, not from the biomass argument; with objective BIO and coefficient 1 XData runs from 0 to 9 and YData is 15 at both ends
+- **Expected**: the envelope over the feasible range of the biomass reaction (0 to 9), the reaction the caller names in biomass, whatever the model objective
+- **Source lines**: 95-97, 105-116
+- **Documented in**: `test/verifiedTests/design/testOptEnvelope/testAddEnv.m`
 
 ### `src/design/optEnvelope/optEnvelope.m`
 
@@ -7755,6 +8104,17 @@
 - **Expected**: the minimum production at the wild-type growth rate ('min' sense, as used for the deletion strains)
 - **Source lines**: 66
 - **Documented in**: `test/verifiedTests/design/testSimpleOptKnock.m`
+
+### `src/design/testOptKnockSol.m`
+
+#### The growth rate is not fixed when the objective coefficient is not 1
+
+- **Severity**: wrong-result
+- **Trigger**: model = createModel({'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'EX_A'; 'R1'; 'R2'; 'R5'; 'EX_D'; 'BIO'; 'ATPM'; 'EX_P'; 'EX_Q'}, {'A <=> '; 'A -> B'; 'A -> B + P'; 'D -> P'; 'D <=> '; 'B -> '; 'B -> '; 'P <=> '; 'Q <=> '}, 'lowerBoundList', [-10 0 0 0 -5 0 1 0 0], 'upperBoundList', 1000 * ones(1, 9)); model = changeObjective(model, 'BIO'); model.c(6) = 2; [growthRate, minProd, maxProd] = testOptKnockSol(model, 'EX_P', {'R1'})
+- **Observed**: (R2025a, gurobi, 2026-11-25) growthRate = 18, minProd = 1, maxProd = 15; with model.c(6) = 1 the same call gives 9, 10, 15. Line 42 selects the reaction to fix with modelKO.c == 1, which matches no reaction, so the growth rate is not fixed and minProd is the minimum at any growth rate (1, forced by ATPM)
+- **Expected**: minProd = 10 (with R1 knocked out the only route to biomass, R2, makes one P per B, so the maximal biomass flux 9 needs EX_P >= 10), the minimum production at the maximal growth rate as the help text says, for any objective coefficient
+- **Source lines**: 41-42
+- **Documented in**: `test/verifiedTests/design/testDesign/testTestOptKnockSol.m`
 
 ### `src/reconstruction/comparison/modelBorgifier/TmodelStats.m`
 
