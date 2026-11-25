@@ -365,3 +365,48 @@ identical, so they come from the state left by earlier tests in the batch, not f
 ## Unblocking
 
 After the three fixes, 162 ledger rows reach no defect any more and are PENDING (21 Tier 2, 141 Tier 3); 192 remain BLOCKED. No TESTED row lost its test.
+
+## T016: tests for the unblocked functions (waves 38-43)
+
+Every one of the 162 unblocked rows now has a final status. Helpers wrote the tests (one slice
+each, at most three MATLAB sessions); the lead confirmed every quarantine (by reading the code, and
+by MATLAB reproduction where the record alone did not settle it), decided each reach, applied,
+ran the joint coverage of every slice, regenerated the registry and committed.
+
+| Result | Rows |
+|---|---|
+| TESTED (kept) | 33, covering 1,406 more lines |
+| QUARANTINED | 56 |
+| EXCLUDED (own earlier test, or MOSEK on every call) | 7 |
+| Tests removed by the late-edge rule | 2 (modelMultipleObjectives, debugInfeasibleEntropyFBA: they reach the minCardinalityConservationRelaxationVector defect through entropicFluxBalanceAnalysis) |
+
+Ledger at the end: 259 TESTED, 373 QUARANTINED, 195 EXCLUDED, 258 BLOCKED, 0 PENDING.
+Registry: 1,052 defects.
+
+**Reach decisions.** Defects confined to an input or call form that no src caller uses got the
+seed NONE (linearMOMA, identifyFastBlockedRxns, normalizePoints, createHRWarmup, processingLLCs,
+optimizeWBModel, findMassLeaksAndSiphons) or a seed list (singleGeneDeletion:
+analyzeSingleGeneDeletion). Data-dependent defects keep the default reach. The static call graph
+links verifyModel to findStoichConsistentSubset, but verifyModel calls it only with
+'stoichiometricConsistency', true, which no src caller passes; without a stop, three defects
+(minCardinalityConservationRelaxationVector, removeRxns, removeMetabolites) reached every function
+that solves an LP and would have removed 15 to 18 new tests. update_ledger.py gained the seed form
+`name<TAB>!file` (the reach stops at a caller whose call form avoids the defect).
+
+**New defects worth the maintainer's attention.**
+
+- removeRxns: the default ctrsRemoveMethod 'exclusive' removes every coupling constraint that
+  involves a removed reaction (what the help and the code comments call 'inclusive'). Removing a
+  coupling constraint with its reaction may be the wanted behaviour, so whether the help or the
+  code is wrong is the maintainer's decision.
+- addReaction (subSystems of an existing reaction reset; metaboliteList without stoichCoeffList)
+  and addMultipleReactions (existing IDs added again; 'rules' read from the old model) now block
+  most of what remains, with removeRxns and removeMetabolites.
+- New error defect recorded in testOptimizeCbModel: solveWBMmethod 'QP' or 'QRLP' with minNorm 0
+  stops at line 847 (line 447 bypasses the 0 -> [] normalisation). No src caller uses it.
+- Gradings to check: computeRescuedGenes (code counts a growth drop above 10%, help says 50%),
+  findMustL/findMustU (wrong mutant flux only in the documented _Info output files).
+
+**Current blockers** (blocked rows reaching each; fixing them in this order frees 13, 28, 41, 51
+and 61 rows): addMultipleReactions 89, addReaction 68, removeRxns 117, removeMetabolites 86,
+minCardinalityConservationRelaxationVector 34.

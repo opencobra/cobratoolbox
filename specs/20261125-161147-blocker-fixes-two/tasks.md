@@ -31,9 +31,9 @@
 ## Phase 5: unblocked functions
 
 - [X] T015 Unblock: drop the three names from blocked reasons, PENDING where no blocker remains, propagate; `--check`
-- [ ] T016 [US3] Waves until no PENDING row remains (helpers write tests; lead confirms quarantines and reach, applies, joint coverage, registry, privacy scan, commit per wave)
+- [X] T016 [US3] Waves until no PENDING row remains (helpers write tests; lead confirms quarantines and reach, applies, joint coverage, registry, privacy scan, commit per wave)
 
 ## Final Phase
 
-- [ ] T017 Review section, receipt, privacy scan, commit
-- [ ] T018 Push this branch and `20261125-154813-c13-tests-coverage` (maintainer, 2026-11-25: "push the tests")
+- [X] T017 Review section, receipt, privacy scan, commit
+- [X] T018 Push this branch and `20261125-154813-c13-tests-coverage` (maintainer, 2026-11-25: "push the tests")
