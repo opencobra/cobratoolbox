@@ -256,3 +256,9 @@ minCardinalityConservationRelaxationVector	!src/reconstruction/modelGeneration/m
 # (findStoichConsistentSubset receives leakY/siphonY in those positions; the others only in comments).
 # Lead, 2026-11-25.
 findMassLeaksAndSiphons	NONE
+# removeRxns and removeMetabolites: reached through findStoichConsistentSubset as well, so the reach stops at
+# verifyModel as for minCardinalityConservationRelaxationVector; removeRxns calls removeMetabolites with
+# removeRxnFlag false, which avoids its defect. Lead, 2026-11-25.
+removeRxns	!src/reconstruction/modelGeneration/modelVerification/verifyModel.m
+removeMetabolites	!src/reconstruction/modelGeneration/modelVerification/verifyModel.m
+removeMetabolites	!src/reconstruction/refinement/removeRxns.m

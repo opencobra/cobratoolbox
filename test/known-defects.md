@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-1015 known defects in 553 functions (359 wrong-result, 331 error, 82 unusable-option, 171 cosmetic, 72 limitation).
+1025 known defects in 557 functions (364 wrong-result, 332 error, 82 unusable-option, 175 cosmetic, 72 limitation).
 
 ## Summary
 
@@ -141,6 +141,8 @@
 | `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | error | Errors when the regression of a metadata variable gives a warning | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
 | `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | cosmetic | The loadings figure of PC 1 is saved as Loadings_PC11.png | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
 | `src/analysis/persephone/additionalFunctions/dimensionalityReductionAndMultivariateAnalysis.m` | wrong-result | The regression figures pair the values of one variable with the name of another | `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m` |
+| `src/analysis/persephone/additionalFunctions/findOptimalCoreCount.m` | wrong-result | The first worker configuration is timed on an automatically started pool of the default size | `test/verifiedTests/analysis/testPersephone/testFindOptimalCoreCount.m` |
+| `src/analysis/persephone/additionalFunctions/findOptimalCoreCount.m` | cosmetic | The pool object is printed for each new pool | `test/verifiedTests/analysis/testPersephone/testFindOptimalCoreCount.m` |
 | `src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m` | cosmetic | Hard-coded personal input folder | `test/verifiedTests/analysis/testPersephone/testGeneratePanAGORA2database.m` |
 | `src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m` | wrong-result | Only the first three strains are processed | `test/verifiedTests/analysis/testPersephone/testGeneratePanAGORA2database.m` |
 | `src/analysis/persephone/additionalFunctions/generatePanDatabase.m` | wrong-result | Coefficients of new metabolites are written to the wrong rows | `test/verifiedTests/analysis/testPersephone/testGeneratePanDatabase.m` |
@@ -161,6 +163,7 @@
 | `src/analysis/persephone/analyseWBMsol.m` | error | Errors when the reaction list contains a duplicate | `test/verifiedTests/analysis/testPersephone/testAnalyseWBMsol.m` |
 | `src/analysis/persephone/calculateMetrics.m` | wrong-result | Bray-Curtis wrong for a single taxon | `test/verifiedTests/analysis/testPersephone/testCalculateMetrics.m` |
 | `src/analysis/persephone/generateStackedBarPlot_PhylumMARScoverage.m` | error | Errors for more than seven phyla | `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot_PhylumMARScoverage.m` |
+| `src/analysis/persephone/getMissingDietPersephone.m` | cosmetic | Progress values are printed without being asked for | `test/verifiedTests/analysis/testPersephone/testGetMissingDietPersephone.m` |
 | `src/analysis/persephone/performRegressions.m` | wrong-result | The MATLAB version check reads the first product listed by ver | `test/verifiedTests/analysis/testPersephone/testPerformRegressions.m` |
 | `src/analysis/persephone/readMetadataForPersephone.m` | cosmetic | All warnings are switched on after the call | `test/verifiedTests/analysis/testPersephone/testReadMetadataForPersephone.m` |
 | `src/analysis/persephone/readMetadataForPersephone.m` | wrong-result | The units line is dropped instead of being stored in VariableUnits | `test/verifiedTests/analysis/testPersephone/testReadMetadataForPersephone.m` |
@@ -923,6 +926,13 @@
 | `src/reconstruction/refinement/mergeTwoModels.m` | wrong-result | A field that cannot be concatenated is dropped with a debug message | `test/verifiedTests/reconstruction/testModelManipulation/testMergeTwoModels.m` |
 | `src/reconstruction/refinement/moveRxn.m` | wrong-result | Reaction-indexed fields are permuted along the wrong dimension when another dimension has the same size | `test/verifiedTests/reconstruction/testRefinement/testMoveRxn.m` |
 | `src/reconstruction/refinement/removeFieldEntriesForType.m` | error | removing genes from a model that has grRules but no rules field fails | `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m` |
+| `src/reconstruction/refinement/removeMetabolites.m` | wrong-result | Removing every metabolite returns the input model unchanged | `test/verifiedTests/reconstruction/testRefinement/testRemoveMetabolites.m` |
+| `src/reconstruction/refinement/removeMetabolites.m` | cosmetic | rxnRemovedList is a double [] instead of a cell array when removeRxnFlag is false | `test/verifiedTests/reconstruction/testRefinement/testRemoveMetabolites.m` |
+| `src/reconstruction/refinement/removeRxns.m` | wrong-result | ctrsRemoveMethod 'exclusive' and 'inclusive' are swapped | `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m` |
+| `src/reconstruction/refinement/removeRxns.m` | wrong-result | ctrsRemoveMethod 'infeasible' keeps constraints the removal makes infeasible | `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m` |
+| `src/reconstruction/refinement/removeRxns.m` | error | ctrsRemoveMethod 'legacy' fails on a model with C but no ctrs | `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m` |
+| `src/reconstruction/refinement/removeRxns.m` | wrong-result | ctrsRemoveMethod 'legacy' returns {''} as ctrsRemovedList although it removes constraints | `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m` |
+| `src/reconstruction/refinement/removeRxns.m` | cosmetic | metRemovedList is {''} when metFlag is false | `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | limitation | An order that repeats indices is accepted | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateFieldOrderForType.m` | unusable-option | The type proteins is accepted but always stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateFieldOrderForType.m` |
 | `src/reconstruction/refinement/updateGenes.m` | wrong-result | With two duplicated genes, different genes are merged | `test/verifiedTests/reconstruction/testModelManipulation/testUpdateGenes.m` |
@@ -2365,6 +2375,26 @@
 - **Source lines**: 285-288, 328
 - **Documented in**: `test/verifiedTests/analysis/testPersephone/testDimensionalityReductionAndMultivariateAnalysis.m`
 
+### `src/analysis/persephone/additionalFunctions/findOptimalCoreCount.m`
+
+#### The first worker configuration is timed on an automatically started pool of the default size
+
+- **Severity**: wrong-result
+- **Trigger**: findOptimalCoreCount(modelDir, 'gurobi') with no parallel pool open (the state of a new MATLAB session; Parallel Computing Toolbox with the default AutoCreate preference), modelDir holding N = 4 stand-in whole-body models (three reactions, one coupling constraint), numWorkers = [1 2 4]
+- **Observed**: (R2025a, gurobi, 2026-11-25) for numWorkers(1) = 1 getParallelPool returns [] (no pool), so lines 88-97 open no pool and the parfor loop starts the default pool of the profile (one worker per core, more than 1); the row Workers = 1 reports FBA times 8.83 s (pool start-up included) against 0.71 s and 0.60 s for 2 and 4 workers, and the relative speed-ups 13.36 and 16.04 follow from it
+- **Expected**: each configuration timed on a pool of that many workers (a pool of 1 worker opened for the first configuration when none is open), as the help describes (timings for each tested worker configuration)
+- **Source lines**: 87-97
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testFindOptimalCoreCount.m`
+
+#### The pool object is printed for each new pool
+
+- **Severity**: cosmetic
+- **Trigger**: the same call, for the configurations 2 and 4
+- **Observed**: (R2025a, gurobi, 2026-11-25) the properties of the new pool ("Connected: true", "NumWorkers: 2", ...) are printed: line 95 has no semicolon
+- **Expected**: only the progress messages of the function
+- **Source lines**: 95
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testFindOptimalCoreCount.m`
+
 ### `src/analysis/persephone/additionalFunctions/generatePanAGORA2database.m`
 
 #### Hard-coded personal input folder
@@ -2570,6 +2600,17 @@
 - **Expected**: a palette of num_taxa colours interpolated from the seven base colours and the figure saved, as the comment of the branch says
 - **Source lines**: 118-123
 - **Documented in**: `test/verifiedTests/analysis/testPersephone/testGenerateStackedBarPlot_PhylumMARScoverage.m`
+
+### `src/analysis/persephone/getMissingDietPersephone.m`
+
+#### Progress values are printed without being asked for
+
+- **Severity**: cosmetic
+- **Trigger**: any call that reaches the search, e.g. getMissingDietPersephone(model) on the microbiome toy model of this test
+- **Observed**: (R2025a, gurobi, 2026-11-25) the console shows "Elapsed time is ... seconds." (lines 81 and 87; line 81 measures from whatever tic the caller made last), "ans = 2" for each batch (length(dietlb) without semicolon), "ans = ..." objective values and the growing list potentialMissing
+- **Expected**: no console output, or output gated behind a print level (constitution VII-G); the help mentions none
+- **Source lines**: 81, 87, 107, 121, 165, 178, 188, 208, 221, 231, 247, 261, 271
+- **Documented in**: `test/verifiedTests/analysis/testPersephone/testGetMissingDietPersephone.m`
 
 ### `src/analysis/persephone/performRegressions.m`
 
@@ -10256,6 +10297,73 @@
 - **Expected**: the gene reaction rules are rewritten and the model has no rules field
 - **Source lines**: 86-87, 173, 190-196
 - **Documented in**: `test/verifiedTests/reconstruction/testRemoveFieldEntriesForType/testRemoveFieldEntriesForType.m`
+
+### `src/reconstruction/refinement/removeMetabolites.m`
+
+#### Removing every metabolite returns the input model unchanged
+
+- **Severity**: wrong-result
+- **Trigger**: m.S = sparse([-1 0 0 0; 1 -1 0 0; 0 1 -1 0; 0 0 1 -1]); m.mets = {'A';'B';'C';'D'}; m.rxns = {'R1';'R2';'R3';'R4'}; m.lb = zeros(4,1); m.ub = 10*ones(4,1); m.c = [0;0;0;1]; m.b = zeros(4,1); m.csense = repmat('E',4,1); o = removeMetabolites(m, m.mets); [o, list] = removeMetabolites(m, m.mets); the same happens for any removal from a model with no reactions (S of size m x 0)
+- **Observed**: (R2025a, 2026-11-25) size(o.S) = [4 4] and isequal(o, m) = 1; with two outputs the call errors "Output argument "rxnRemovedList" (and possibly others) not assigned a value"; for a 2 x 0 model with mets {'A';'B'}, removeMetabolites(e0, {'A'}) keeps mets {'A';'B'}. Line 63 returns the input model when the reduced S is empty, before line 91 assigns the reduced model
+- **Expected**: a model without the removed metabolites (0 x 0 S for the first trigger, with every reaction removed by the default 'inclusive' method) and the list of removed reactions
+- **Source lines**: 62-63
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testRemoveMetabolites.m`
+
+#### rxnRemovedList is a double [] instead of a cell array when removeRxnFlag is false
+
+- **Severity**: cosmetic
+- **Trigger**: [o, list] = removeMetabolites(m, {'A'}, false) with m as above
+- **Observed**: (R2025a, 2026-11-25) class(list) = 'double'
+- **Expected**: an empty cell array, as the help documents rxnRemovedList as a cell array of reaction abbreviations (removeRxnFlag true with nothing removed gives a 0 x 1 cell)
+- **Source lines**: 88
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testRemoveMetabolites.m`
+
+### `src/reconstruction/refinement/removeRxns.m`
+
+#### ctrsRemoveMethod 'exclusive' and 'inclusive' are swapped
+
+- **Severity**: wrong-result
+- **Trigger**: m.S = sparse([-1 0 0 0; 1 -1 0 0; 0 1 -1 0; 0 0 1 -1]); m.mets = {'A';'B';'C';'D'}; m.rxns = {'R1';'R2';'R3';'R4'}; m.lb = zeros(4,1); m.ub = 10*ones(4,1); m.c = [0;0;0;1]; m.b = zeros(4,1); m.csense = repmat('E',4,1); m.C = sparse([1 1 0 0; 0 0 1 1; 1 0 0 0; 0 0 0 0]); m.d = [5;6;7;0]; m.dsense = ['L';'L';'L';'L']; m.ctrs = {'mixed12';'mixed34';'only1';'empty'}; [o, mr, cr] = removeRxns(m, {'R1'}) (default 'exclusive') and the same call with 'ctrsRemoveMethod', 'inclusive'
+- **Observed**: (R2025a, 2026-11-25) default: o.ctrs = {'mixed34'}, cr = {'mixed12','only1', 'empty'} (the constraint shared by the removed R1 and the kept R2 is removed); 'inclusive': o.ctrs = {'mixed12';'mixed34'}, cr = {'only1','empty'} (the constraint involving the removed R1 is kept). Lines 169 and 173 pass the kept reactions (selectRxns) as the column set, which inverts the meaning of both modes
+- **Expected**: 'exclusive' (default) removes only constraints exclusively involved in removed reactions (only1, as 'legacy' does); 'inclusive' removes every constraint involving a removed reaction (mixed12 and only1), as the help states
+- **Source lines**: 167-174
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m`
+
+#### ctrsRemoveMethod 'infeasible' keeps constraints the removal makes infeasible
+
+- **Severity**: wrong-result
+- **Trigger**: m as above with m.C = sparse([1 1 0 0; 1 0 0 0; 0 0 1 1]); m.d = [15;7;1]; m.dsense = ['G';'G';'L']; m.ctrs = {'mixed12';'only1';'mixed34'}; o = removeRxns(m, {'R1'}, 'ctrsRemoveMethod', 'infeasible'); s = optimizeCbModel(o) (glpk)
+- **Observed**: (R2025a, 2026-11-25) o.ctrs = {'mixed12';'only1';'mixed34'}, cr = {''}, s.stat = 0: v2 >= 15 (ub 10) and 0 >= 7 remain. Line 179 tests only constraints that involve no kept reaction (mixed12 is never tested) and line 184 tests feasibility with the removed reactions' coefficients (v1 >= 7, feasible) instead of the kept ones
+- **Expected**: constraints involving a removed reaction that are infeasible without it (mixed12 and only1) are removed and the reduced model stays feasible
+- **Source lines**: 179-184
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m`
+
+#### ctrsRemoveMethod 'legacy' fails on a model with C but no ctrs
+
+- **Severity**: error
+- **Trigger**: m2 = rmfield(m, 'ctrs') with the four-constraint model of the first entry; removeRxns(m2, {'R1'}, 'ctrsRemoveMethod', 'legacy')
+- **Observed**: (R2025a, 2026-11-25) error "Unrecognized field name "ctrs"." from getEmptyConstraints called at line 164; line 223 would then read selectConstraints, which the 'legacy' branch never defines
+- **Expected**: the empty constraints are removed and ctrsRemovedList is the logical vector of removed rows, as the help documents ctrs as read if present
+- **Source lines**: 164, 223
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m`
+
+#### ctrsRemoveMethod 'legacy' returns {''} as ctrsRemovedList although it removes constraints
+
+- **Severity**: wrong-result
+- **Trigger**: [o, mr, cr] = removeRxns(m, {'R1'}, 'ctrsRemoveMethod', 'legacy') with the four-constraint model of the first entry
+- **Observed**: (R2025a, 2026-11-25) o.ctrs = {'mixed12';'mixed34'} (only1 and empty removed) but cr = {''}: line 166 sets bool = 0, so line 221 reports nothing removed
+- **Expected**: cr = {'only1';'empty'}, the model.ctrs that were removed
+- **Source lines**: 161-166, 219-221
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m`
+
+#### metRemovedList is {''} when metFlag is false
+
+- **Severity**: cosmetic
+- **Trigger**: [o, mr] = removeRxns(m, {'R1'}, 'metFlag', false)
+- **Observed**: (R2025a, 2026-11-25) mr = {0x0 char}, a list with one empty identifier
+- **Expected**: an empty cell array: no metabolite was removed
+- **Source lines**: 154
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testRemoveRxns.m`
 
 ### `src/reconstruction/refinement/updateFieldOrderForType.m`
 
