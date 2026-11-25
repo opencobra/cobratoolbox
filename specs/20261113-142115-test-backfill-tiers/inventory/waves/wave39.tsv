@@ -1,0 +1,63 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	748	src/analysis/FBA/enumerateOptimalSolutions.m	3			getCobraSolverParams		
+a	749	src/analysis/FBA/randomObjFBASol.m	3					
+a	750	src/analysis/MOMA/linearMOMA.m	3				doubleGeneDeletion,fluxVariability,singleGeneDeletion,singleRxnDeletion	
+a	758	src/analysis/ROOM/linearROOM.m	3			addCOBRAConstraints,addCOBRAVariables		
+a	759	src/analysis/deletion/Syntheticlethals/Fast-SL/singleSL.m	3				doubleSL,fastSL,tripleSL	
+a	766	src/analysis/ecosystem/buildEcosystemGrid.m	3					
+a	767	src/analysis/ecosystem/checkEcosystemGridFeasibility.m	3				loadEcosystemScenario	
+a	773	src/analysis/exploration/findGenesFromMets.m	3			buildRxnGeneMat,getCorrespondingCols		
+b	775	src/analysis/exploration/identifyFastBlockedRxns.m	3				connectRxnGapfilling,findFluxConsistentSubset,prepareFastGapFill,runTestsOnModel	
+b	779	src/analysis/gMCS/checkGeneMCS.m	3			deleteModelGenes,getCobraSolverParams		
+b	798	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeParetoOptimality.m	3					
+b	799	src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeRescuedGenes.m	3			buildRxnGeneMat,deleteModelGenes		
+b	811	src/analysis/rMTA/rMTA.m	3			MTA_MIQP,calculateGeneKOMatrix		
+b	813	src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m	3			findRxnIDs		
+b	814	src/analysis/robustnessAnalysis/phenotypePhasePlane.m	3			changeCobraSolverParams,findRxnIDs		
+b	816	src/analysis/rumba/normalizePoints.m	3			buildRxnGeneMat,findRxnIDs	rumba	
+c	818	src/analysis/sampling/ACHR/createHRWarmup.m	3				gpSampler,performSampling,sampleCbModel	
+c	833	src/analysis/thermo/thermoDirectionality/setThermoReactionDirectionalityiAF1260.m	3			changeCobraSolverParams	secondPassDirectionalityAssignment	
+c	751	src/analysis/thermo/thermoFBA/processingLLCs.m	3				fluxVariability	
+c	835	src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m	3				testCheckThermodynamicConsistency	
+c	853	src/analysis/topology/testForTypeIIIPathways.m	3	external-program				
+c	802	src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m	3			getCobraSolver,getCobraSolverParams	analyseWBMs,checkIEM_WBM,ensureWBMfeasibility,findOptimalCoreCount,findViableDiet,getMissingDietPersephone,individualizedLabReport,interrogateWBmodelsQP,nutritionAlgorithmWBM,organEssentiality,perform_BMR_newData,perform_sensi_BMR_all,robustnessAnalysisWB	
+c	879	src/base/solvers/cplex/tuneParamForModel.m	3					
+c	880	src/base/solvers/entropicFBA/debugInfeasibleEntropyFBA.m	3					
+d	897	src/dataIntegration/modelMultipleObjectives.m	3				compareModelsFeatures,modelPredictiveCapacity	
+d	887	src/dataIntegration/XomicsToModel/analysis/debugXomicsToModel.m	3				XomicsToModel	
+d	901	src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m	3			getCobraSolverParams,optimizeCardinality	constrainRxns	
+d	905	src/dataIntegration/XomicsToModel/thermoKernel/thermoQP/thermoQP.m	3					
+d	909	src/dataIntegration/fluxomics/goodInitialPoint.m	3				generateRandomSample	
+d	913	src/dataIntegration/metabotools/checkEffectRxnKO.m	3					
+d	918	src/dataIntegration/metabotools/performPPP.m	3					
+d	920	src/dataIntegration/metabotools/predictFluxSplits.m	3					
+e	921	src/dataIntegration/metabotools/prepIntegrationQuant.m	3					
+e	934	src/design/testOptKnockSol.m	3				GetOptGeneSol	
+e	944	src/design/analyzeOptKnock.m	3			deleteModelGenes		
+e	945	src/design/doubleProductionEnvelope.m	3			deleteModelGenes		
+e	959	src/design/optGeneFitnessTilt.m	3			buildRxnGeneMat,deleteModelGenes	optGene	
+e	960	src/design/randomKO.m	3			findExcRxns		
+e	936	src/design/TrimGdel/GRPRchecker.m	3					
+e	946	src/design/optEnvelope/addEnv.m	3			buildRxnGeneMat,deleteModelGenes	milpOEReinserts,optEnvelope	
+f	948	src/design/optEnvelope/minActiveRxns.m	3			buildRxnGeneMat	optEnvelope	
+f	949	src/design/optEnvelope/sequentialOEReinserts.m	3			buildRxnGeneMat,deleteModelGenes	optEnvelope	
+f	951	src/design/optForce/analyzeOptForceSol.m	3				optForce,optForceWithGAMS	
+f	952	src/design/optForce/findMustL.m	3			saveInputsMustSetsFirstOrder		
+f	954	src/design/optForce/findMustU.m	3			saveInputsMustSetsFirstOrder		
+f	974	src/reconstruction/demeter/src/debugging/findFutileCycle.m	3					
+f	985	src/reconstruction/demeter/suite/tests/testLeakingMetabolites.m	3			findExcRxns	reportPDF,runTestsOnModel	
+f	822	src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m	3			getCobraSolverParams,getCorrespondingCols,optimizeCardinality	checkModelPreFBA,checkStoichiometricConsistency,findStoichConsistentSubset	
+g	823	src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m	3			getCobraSolverParams,optimizeCardinality	findStoichConsistentSubset	
+g	824	src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m	3			getCobraSolverParams,getCorrespondingCols,optimizeCardinality	checkModelPreFBA,checkModelProperties,findStoichConsistentSubset	
+g	1017	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m	3			optimizeCardinality		
+g	1018	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m	3			getCobraSolverParams,optimizeCardinality		
+g	1020	src/reconstruction/modelGeneration/stoichConsistency/leakTest.m	3			optimizeCardinality		
+g	1021	src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m	3			optimizeCardinality		
+g	790	src/reconstruction/refinement/removeCOBRAConstraints.m	3				removeRxns	
+g	820	src/reconstruction/refinement/removeUnusedGenes.m	3			buildRxnGeneMat	MBA,XomicsToModel,createTissueSpecificModel,efmSubmodelExtractionAsSBML,fastcore,findFluxConsistentSubset,findSignedCyclicFluxConsistentSubset,findStoichConsistentSubset,findThermoConsistentFluxSubset,generateFullRowRankFR,swiftcore,thermoKernel,updateGenes	
+h	1022	src/reconstruction/refinement/convertToReversible.m	3					
+h	1027	src/visualization/EscherMap/flux2json.m	3			mosekParamSetEFBA		
+h	1028	src/visualization/entropicFBA/plotyy_eFBA.m	3			findRxnIDs,mosekParamSetEFBA		
+h	1029	src/visualization/metabolicCartography/removeMapReactions.m	3			getCorrespondingCols,getCorrespondingRows,getMapMatrices		
+h	1030	src/visualization/metabolicCartography/removeMapSpecies.m	3			getCorrespondingCols,getCorrespondingRows,getMapMatrices		
+h	1031	src/visualization/metabolicCartography/removeMapSpeciesOnly.m	3			getCorrespondingCols,getMapMatrices		

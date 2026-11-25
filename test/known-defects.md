@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-914 known defects in 499 functions (328 wrong-result, 298 error, 75 unusable-option, 146 cosmetic, 67 limitation).
+930 known defects in 506 functions (334 wrong-result, 305 error, 75 unusable-option, 149 cosmetic, 67 limitation).
 
 ## Summary
 
@@ -15,6 +15,7 @@
 | `src/analysis/FBA/optimizeCbModel.m` | wrong-result | The residual and the slack of QRLP are read from the wrong positions | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
 | `src/analysis/FBA/optimizeCbModel.m` | error | minNorm oneInternal fails for a model without linear objective | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
 | `src/analysis/FBA/optimizeCbModel.m` | wrong-result | param.osenseStr and the sense of the model are ignored for a parameter structure | `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m` |
+| `src/analysis/FBA/randomObjFBASol.m` | wrong-result | The minimum objective is not imposed when the objective coefficient is not 1 | `test/verifiedTests/analysis/testFBA/testRandomObjFBASol.m` |
 | `src/analysis/FVA/fastFVA/cleanFilesFastFVA.m` | error | cleanFilesFastFVA(false) fails when there are log files to remove | `test/verifiedTests/analysis/testFVA/testCleanFilesFastFVA.m` |
 | `src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m` | limitation | CPLEX 12.10 and later 12.1x versions are classed as older than 12.8 | `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m` |
 | `src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m` | cosmetic | printLevel 2 prints a truncated compilation command and a warning | `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m` |
@@ -23,7 +24,12 @@
 | `src/analysis/FVA/fastFVA/mex/generateMexFastFVA.m` | wrong-result | the version flag and the compiler options are never passed to mex | `test/verifiedTests/analysis/testFVA/testGenerateMexFastFVA.m` |
 | `src/analysis/KLdistance/KLdistance.m` | wrong-result | The two densities are compared on different grids, so distinct populations get a zero distance | `test/verifiedTests/analysis/testKLdistance/testKLdistance.m` |
 | `src/analysis/MOMA/MOMA.m` | error | Models with different reaction sets stop with an error | `test/verifiedTests/analysis/testMOMA/testMOMA.m` |
+| `src/analysis/MOMA/linearMOMA.m` | error | An infeasible deletion model stops with an error when totalFluxDiff or solStatus is requested | `test/verifiedTests/analysis/testMOMA/testLinearMOMA.m` |
+| `src/analysis/MOMA/linearMOMA.m` | error | An infeasible wild type model stops with an error instead of returning a status | `test/verifiedTests/analysis/testMOMA/testLinearMOMA.m` |
+| `src/analysis/MOMA/linearMOMA.m` | error | verbFlag together with minFluxFlag stops with an error | `test/verifiedTests/analysis/testMOMA/testLinearMOMA.m` |
 | `src/analysis/QFCA/QFCA.m` | error | A network that reduces to one metabolite stops with an error | `test/verifiedTests/analysis/testQFCA/testQFCA.m` |
+| `src/analysis/ROOM/linearROOM.m` | cosmetic | The help text describes totalFluxDiff as a sum of squares | `test/verifiedTests/analysis/testROOM/testLinearROOM.m` |
+| `src/analysis/ROOM/linearROOM.m` | cosmetic | printLevel is accepted but ignored | `test/verifiedTests/analysis/testROOM/testLinearROOM.m` |
 | `src/analysis/coupling/addCouplingConstraint.m` | error | A coefficient vector c in the documented k x 1 shape stops with an error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
 | `src/analysis/coupling/addCouplingConstraint.m` | cosmetic | The EXAMPLE of the help text calls another function with an undefined C | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
 | `src/analysis/coupling/addCouplingConstraint.m` | error | The documented optional inputs c, d and ineqSense cannot be omitted | `test/verifiedTests/analysis/testMultiSpeciesModelling/testAddCouplingConstraint.m` |
@@ -37,6 +43,7 @@
 | `src/analysis/ecosystem/getQualitativeFluxStates.m` | wrong-result | Zero band applied inconsistently to the maximum and to max - min | `test/verifiedTests/analysis/testEcosystem/testGetQualitativeFluxStates.m` |
 | `src/analysis/ecosystem/matchEcosystemClusters.m` | wrong-result | clusters without points are matched to a reference cluster instead of NaN, and an empty reference cluster absorbs unmatched clusters | `test/verifiedTests/analysis/testEcosystem/testMatchEcosystemClusters.m` |
 | `src/analysis/exploration/findCarbonRxns.m` | wrong-result | Two-letter element symbols beginning with C are counted as carbon | `test/verifiedTests/analysis/testExploration/testFindCarbonRxns.m` |
+| `src/analysis/exploration/findGenesFromMets.m` | error | A param structure without the field minimal stops with an error | `test/verifiedTests/analysis/testExploration/testFindGenesFromMets.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | limitation | A compartment letter without brackets matches every identifier with that letter | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findMetFromCompartment.m` | error | A compartment without metabolites stops with an error | `test/verifiedTests/analysis/testExploration/testFindMetFromCompartment.m` |
 | `src/analysis/exploration/findMetabolicJunctions.m` | error | Every call that finds a junction stops on an undefined variable | `test/verifiedTests/analysis/testExploration/testFindMetabolicJunctions.m` |
@@ -800,6 +807,15 @@
 | `src/reconstruction/refinement/addGenes.m` | limitation | A single gene id given as a character array is stored as a column of characters | `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m` |
 | `src/reconstruction/refinement/addGenes.m` | cosmetic | The error messages name reactions instead of genes | `test/verifiedTests/reconstruction/testRefinement/testAddGenes.m` |
 | `src/reconstruction/refinement/addMetabolite.m` | cosmetic | The second EXAMPLE of the help text uses the parameter name metCharge and fails | `test/verifiedTests/reconstruction/testRefinement/testAddMetabolite.m` |
+| `src/reconstruction/refinement/addMultipleReactions.m` | wrong-result | A rules input leaves the grRules and rxnGeneMat entries of the new reactions empty | `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactions.m` |
+| `src/reconstruction/refinement/addMultipleReactions.m` | error | A rules input without genes stops on a model without a rules field | `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactions.m` |
+| `src/reconstruction/refinement/addMultipleReactions.m` | wrong-result | Reaction IDs already in the model, or repeated in rxnIDs, are added a second time | `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactions.m` |
+| `src/reconstruction/refinement/addMultipleReactionsIT.m` | wrong-result | A rules input leaves the grRules and rxnGeneMat entries of the new reactions empty | `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactionsIT.m` |
+| `src/reconstruction/refinement/addMultipleReactionsIT.m` | error | A rules input without genes stops on a model without a rules field | `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactionsIT.m` |
+| `src/reconstruction/refinement/addMultipleReactionsIT.m` | wrong-result | Reaction IDs already in the model, or repeated in rxnIDs, are added a second time | `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactionsIT.m` |
+| `src/reconstruction/refinement/addReaction.m` | error | A metaboliteList without stoichCoeffList stops instead of using coefficients -1 | `test/verifiedTests/reconstruction/testRefinement/testAddReaction.m` |
+| `src/reconstruction/refinement/addReaction.m` | wrong-result | Changing an existing reaction erases its subsystem | `test/verifiedTests/reconstruction/testRefinement/testAddReaction.m` |
+| `src/reconstruction/refinement/addReaction.m` | cosmetic | rxnIDexists holds the position of the identical reaction, not its ID | `test/verifiedTests/reconstruction/testRefinement/testAddReaction.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | error | A formula whose first metabolite has no coefficient stops with an error | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A new metabolite used twice in one call is added twice or loses a coefficient | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
 | `src/reconstruction/refinement/addReactionGEM.m` | wrong-result | A proteins field of another size than the gene list discards the result | `test/verifiedTests/reconstruction/testModelManipulation/testAddReactionGEM.m` |
@@ -982,6 +998,17 @@
 - **Source lines**: 259-263
 - **Documented in**: `test/verifiedTests/analysis/testOptimizeCbModel/testOptimizeCbModel.m`
 
+### `src/analysis/FBA/randomObjFBASol.m`
+
+#### The minimum objective is not imposed when the objective coefficient is not 1
+
+- **Severity**: wrong-result
+- **Trigger**: a model whose objective coefficient is not exactly 1, e.g. the toy model EX_A ( -> A, ub 10), R1 and R2 (A -> B), EX_B (B -> ) with model.c = [0; 0; 0; 2]: rng(1); x0 = randomObjFBASol(model, {'max', 0.9}) repeated 20 times (the same with a third entry minObjValue)
+- **Observed**: (R2025a, gurobi, 2026-11-25) 10 of the 20 solutions have EX_B below 0.9 * 10 = 9 (with model.c(4) = 1: 0 of 20); lines 32 and 34 bound only the reactions with model.c == 1, so no reaction is bounded
+- **Expected**: every returned solution reaches at least minObjFrac times the optimal objective (or minObjValue), as the help text says, for any objective vector .c
+- **Source lines**: 32, 34
+- **Documented in**: `test/verifiedTests/analysis/testFBA/testRandomObjFBASol.m`
+
 ### `src/analysis/FVA/fastFVA/cleanFilesFastFVA.m`
 
 #### cleanFilesFastFVA(false) fails when there are log files to remove
@@ -1062,6 +1089,35 @@
 - **Source lines**: 243
 - **Documented in**: `test/verifiedTests/analysis/testMOMA/testMOMA.m`
 
+### `src/analysis/MOMA/linearMOMA.m`
+
+#### An infeasible deletion model stops with an error when totalFluxDiff or solStatus is requested
+
+- **Severity**: error
+- **Trigger**: [solDel, solWT, totalFluxDiff, solStatus] = linearMOMA(model, changeRxnBounds(model, 'EX_A', -5, 'b')) on the toy model above (any call with three or four outputs whose MOMA LP has stat ~= 1)
+- **Observed**: (R2025a, gurobi, 2026-11-25) MATLAB:unassignedOutputs "Output argument "totalFluxDiff" (and possibly others) not assigned a value in the execution with "linearMOMA" function."; with two outputs the call returns solDel.stat = 0
+- **Expected**: totalFluxDiff empty (or NaN) and solStatus = the LP status, so that the documented status output can report the infeasible deletion strain
+- **Source lines**: 163-170
+- **Documented in**: `test/verifiedTests/analysis/testMOMA/testLinearMOMA.m`
+
+#### An infeasible wild type model stops with an error instead of returning a status
+
+- **Severity**: error
+- **Trigger**: a wild type model without a feasible flux, e.g. the toy model EX_A ( -> A, ub 10), R1 and R2 (A -> B), EX_B (B -> ) with EX_A fixed to -5: linearMOMA(changeRxnBounds(model, 'EX_A', -5, 'b'), modelDel)
+- **Observed**: (R2025a, gurobi, 2026-11-25) the warning "Wild type FBA problem is infeasible or unconstrained" (line 218), then MATLAB:UndefinedFunction "Unrecognized function or variable 'LPsolution'." at line 221: LPsolution is only set inside the branch of a feasible wild type
+- **Expected**: the warning and solutions with stat ~= 1 (solutionWT and solutionDel are initialised with stat -1 at lines 83-88 for this case), as the warning intends
+- **Source lines**: 217-223
+- **Documented in**: `test/verifiedTests/analysis/testMOMA/testLinearMOMA.m`
+
+#### verbFlag together with minFluxFlag stops with an error
+
+- **Severity**: error
+- **Trigger**: linearMOMA(model, modelDel, 'max', true, true) with model the toy model above and modelDel = changeRxnBounds(model, 'R1', 0, 'b')
+- **Observed**: (R2025a, gurobi, 2026-11-25) MATLAB:UndefinedFunction "Unrecognized function or variable 'A'." at line 203: the message prints size(A, 1) and size(A, 2), but the matrix is LPproblem.A
+- **Expected**: the message with the size of LPproblem.A and the minimal-flux solution
+- **Source lines**: 202-203
+- **Documented in**: `test/verifiedTests/analysis/testMOMA/testLinearMOMA.m`
+
 ### `src/analysis/QFCA/QFCA.m`
 
 #### A network that reduces to one metabolite stops with an error
@@ -1072,6 +1128,26 @@
 - **Expected**: the flux coupling table of the network
 - **Source lines**: 125
 - **Documented in**: `test/verifiedTests/analysis/testQFCA/testQFCA.m`
+
+### `src/analysis/ROOM/linearROOM.m`
+
+#### The help text describes totalFluxDiff as a sum of squares
+
+- **Severity**: cosmetic
+- **Trigger**: [~, ~, totalFluxDiff] = linearROOM(model, fluxWT, rxnKO)
+- **Observed**: (R2025a, gurobi, 2026-11-25) totalFluxDiff = norm(fluxROOM - fluxWT), the Euclidean distance (13.9374 on the toy model below), not the sum of squared differences (194.25) of the formula in the help text
+- **Expected**: the help text and the value agree; the name "Euclidean distance" matches the code
+- **Source lines**: 123
+- **Documented in**: `test/verifiedTests/analysis/testROOM/testLinearROOM.m`
+
+#### printLevel is accepted but ignored
+
+- **Severity**: cosmetic
+- **Trigger**: linearROOM(model, fluxWT, rxnKO, 'printLevel', 1) (the default) or any other printLevel
+- **Observed**: (R2025a, gurobi, 2026-11-25) the parsed printLevel is never read after line 67; the function prints nothing at any level
+- **Expected**: output gated by printLevel as the help text says ("Verbose output"), or the option removed from the help text
+- **Source lines**: 67
+- **Documented in**: `test/verifiedTests/analysis/testROOM/testLinearROOM.m`
 
 ### `src/analysis/coupling/addCouplingConstraint.m`
 
@@ -1205,6 +1281,17 @@
 - **Expected**: nCarbon = [0 0 2] (the header: "The number of carbons in each metabolite", from the "metabolite elemental formulas"); a reaction that acts only on chloride or calcium belongs in zeroCarbonRxns, not in hiCarbonRxns
 - **Source lines**: 42, 47-50
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testFindCarbonRxns.m`
+
+### `src/analysis/exploration/findGenesFromMets.m`
+
+#### A param structure without the field minimal stops with an error
+
+- **Severity**: error
+- **Trigger**: findGenesFromMets(model, {'A[c]'}, struct('printLevel', 0)) (or param = struct()) with model = createModel({'R1'; 'R2'}, {'R1'; 'R2'}, {'A -> B'; 'B -> C'}, 'grRuleList', {'g1'; 'g2 or g3'})
+- **Observed**: (R2025a, 2026-11-25) MATLAB:nonExistentField "Unrecognized field name "minimal"." at line 44: the default param.minimal = 0 is set only when param is omitted (lines 28-29)
+- **Expected**: the documented default 0 for the field minimal of a given param, as for an omitted param
+- **Source lines**: 28-29, 44
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testFindGenesFromMets.m`
 
 ### `src/analysis/exploration/findMetFromCompartment.m`
 
@@ -8918,6 +9005,93 @@
 - **Expected**: the example works; the parameter list of the help text names it Charge, and addMetabolite(model, 'MetWithForm', 'metFormula', 'H3O', 'Charge', 1) works
 - **Source lines**: 34
 - **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMetabolite.m`
+
+### `src/reconstruction/refinement/addMultipleReactions.m`
+
+#### A rules input leaves the grRules and rxnGeneMat entries of the new reactions empty
+
+- **Severity**: wrong-result
+- **Trigger**: m = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> '}, 'grRuleList', {'g1',''}, 'printLevel', 0); m2 = addMultipleReactions(m, {'N1','N2'}, {'a[c]','b[c]'}, [1 0; -1 1], 'rules', {'x(1)', ''}) (also with 'genes', {'g9';'g1'} and rules {'x(1) | x(2)', ''})
+- **Observed**: (R2025a, 2026-11-25) m2.rules = {'x(1)'; ''; 'x(1)'; ''} but m2.grRules = {'g1'; ''; ''; ''} and full(m2.rxnGeneMat) = [1; 0; 0; 0]: the rule of N1 refers to g1 while its grRule is empty and its rxnGeneMat row marks no gene. Line 186 empties the new grRules and line 222 looks for new rules in model.rules, the input model whose rules field was never extended, so the update of lines 224-244 is never reached (line 228 would also read the genes of the input model)
+- **Expected**: the grRules and rxnGeneMat rows of the new reactions agree with the given rules, as the comment of line 220 states and as the grRules input gives
+- **Source lines**: 186, 222-246
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactions.m`
+
+#### A rules input without genes stops on a model without a rules field
+
+- **Severity**: error
+- **Trigger**: the model above; mm = rmfield(m, 'rules'); addMultipleReactions(mm, {'N1','N2'}, {'a[c]','b[c]'}, [1 0; -1 1], 'rules', {'x(1)', ''})
+- **Observed**: (R2025a, 2026-11-25) error "Unrecognized field name "rules"." at line 222: lines 211-212 create the rules of newmodel, but line 222 reads model.rules
+- **Expected**: the rules created at lines 211-212 are used and the reactions are added
+- **Source lines**: 211-212, 222
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactions.m`
+
+#### Reaction IDs already in the model, or repeated in rxnIDs, are added a second time
+
+- **Severity**: wrong-result
+- **Trigger**: the model above; m4 = addMultipleReactions(m, {'R1','N2'}, {'a[c]','b[c]'}, [1 0; -1 1]) and m5 = addMultipleReactions(m, {'N1','N1'}, {'a[c]','b[c]'}, [1 0; -1 1])
+- **Observed**: (R2025a, 2026-11-25) m4 warns "The following reaction IDs are already IDs of variables in the model: R1" and returns rxns {'R1','R2','R1','N2'}; m5 returns {'R1','R2','N1','N1'} without a warning. Line 97 tests exist('varargin','var'), which is always true in a function with varargin, so the recovery of lines 100-115 (drop the existing IDs) is unreachable; the error for duplicate reaction IDs was replaced by this warning in 2020 (commit 9fd8de21ea) and nothing checks repeats within rxnIDs, whereas repeated metabolites raise an error (line 120)
+- **Expected**: reaction IDs stay unique: existing IDs are rejected or skipped (the intent of lines 100-115), repeated IDs in rxnIDs are rejected as repeated metabolites are
+- **Source lines**: 94-117
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactions.m`
+
+### `src/reconstruction/refinement/addMultipleReactionsIT.m`
+
+#### A rules input leaves the grRules and rxnGeneMat entries of the new reactions empty
+
+- **Severity**: wrong-result
+- **Trigger**: m = createModel({'R1','R2'}, {'',''}, {'a[c] -> b[c]', 'b[c] -> '}, 'grRuleList', {'g1',''}, 'printLevel', 0); m2 = addMultipleReactionsIT(m, {'N1','N2'}, {'a[c]','b[c]'}, [1 0; -1 1], 'rules', {'x(1)', ''}) (also with 'genes', {'g9';'g1'} and rules {'x(1) | x(2)', ''})
+- **Observed**: (R2025a, 2026-11-25) m2.rules = {'x(1)'; ''; 'x(1)'; ''} but m2.grRules = {'g1'; ''; ''; ''} and full(m2.rxnGeneMat) = [1; 0; 0; 0]: the rule of N1 refers to g1 while its grRule is empty and its rxnGeneMat row marks no gene. Line 186 empties the new grRules and line 222 looks for new rules in model.rules, the input model whose rules field was never extended, so the update of lines 224-244 is never reached (line 228 would also read the genes of the input model)
+- **Expected**: the grRules and rxnGeneMat rows of the new reactions agree with the given rules, as the comment of line 220 states and as the grRules input gives
+- **Source lines**: 186, 222-246
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactionsIT.m`
+
+#### A rules input without genes stops on a model without a rules field
+
+- **Severity**: error
+- **Trigger**: the model above; mm = rmfield(m, 'rules'); addMultipleReactionsIT(mm, {'N1','N2'}, {'a[c]','b[c]'}, [1 0; -1 1], 'rules', {'x(1)', ''})
+- **Observed**: (R2025a, 2026-11-25) error "Unrecognized field name "rules"." at line 222: lines 211-212 create the rules of newmodel, but line 222 reads model.rules
+- **Expected**: the rules created at lines 211-212 are used and the reactions are added
+- **Source lines**: 211-212, 222
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactionsIT.m`
+
+#### Reaction IDs already in the model, or repeated in rxnIDs, are added a second time
+
+- **Severity**: wrong-result
+- **Trigger**: the model above; m4 = addMultipleReactionsIT(m, {'R1','N2'}, {'a[c]','b[c]'}, [1 0; -1 1]) and m5 = addMultipleReactionsIT(m, {'N1','N1'}, {'a[c]','b[c]'}, [1 0; -1 1])
+- **Observed**: (R2025a, 2026-11-25) m4 warns "The following reaction IDs are already IDs of variables in the model: R1" and returns rxns {'R1','R2','R1','N2'}; m5 returns {'R1','R2','N1','N1'} without a warning. Line 97 tests exist('varargin','var'), which is always true in a function with varargin, so the recovery of lines 100-115 (drop the existing IDs) is unreachable; the error for duplicate reaction IDs was replaced by this warning in 2020 (commit 9fd8de21ea, in addMultipleReactions.m) and nothing checks repeats within rxnIDs, whereas repeated metabolites raise an error (line 120)
+- **Expected**: reaction IDs stay unique: existing IDs are rejected or skipped (the intent of lines 100-115), repeated IDs in rxnIDs are rejected as repeated metabolites are
+- **Source lines**: 94-117
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddMultipleReactionsIT.m`
+
+### `src/reconstruction/refinement/addReaction.m`
+
+#### A metaboliteList without stoichCoeffList stops instead of using coefficients -1
+
+- **Severity**: error
+- **Trigger**: m = createModel({'R1','R2','R3'}, {'','',''}, {'a[c] -> b[c]', 'b[c] -> ', 'c[c] -> '}, 'grRuleList', {'g1','',''}, 'printLevel', 0); addReaction(m, 'N1', 'metaboliteList', {'a[c]','b[c]'})
+- **Observed**: (R2025a, 2026-11-25) error "Index exceeds array bounds." at line 341: the default of stoichCoeffList is [] (lines 173, 203) and line 341 indexes it for every metabolite
+- **Expected**: every coefficient -1, as the help of stoichCoeffList states ("if not provided, all stoichiometries are assumed to be -1")
+- **Source lines**: 173, 203, 341, 347
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddReaction.m`
+
+#### Changing an existing reaction erases its subsystem
+
+- **Severity**: wrong-result
+- **Trigger**: the model above; m.subSystems{1} = {'Glyc'}; r = addReaction(m, 'R1', 'lowerBound', -5) (also r = addReaction(m, 'R2', 'reactionFormula', 'b[c] -> 2 c[c]') after m.subSystems{2} = {'Glyc'})
+- **Observed**: (R2025a, 2026-11-25) r.subSystems{1} is {''} while the bound, the gene rule and the metabolites of R1 are kept. When an existing reaction is changed, the defaults are taken from the reaction (lines 178-196), but the subsystem default is read from the legacy field subSystem (lines 183-185); a model with subSystems keeps the default {''} (line 170), which line 307 writes over the reaction's subsystem
+- **Expected**: an existing reaction keeps its subsystem unless subSystem is given, as it keeps its bounds, objective coefficient, name, gene rule and metabolites
+- **Source lines**: 170, 183-185, 306-307
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddReaction.m`
+
+#### rxnIDexists holds the position of the identical reaction, not its ID
+
+- **Severity**: cosmetic
+- **Trigger**: the model above; [r, ex] = addReaction(m, 'N1', 'reactionFormula', 'a[c] -> b[c]', 'checkDuplicate', true)
+- **Observed**: (R2025a, 2026-11-25) ex = 1 (class double), the index of R1; the warning "Model already has the same reaction you tried to add: R1" is raised and the model is returned unchanged
+- **Expected**: the ID of the identical reaction ('R1'), as the OUTPUTS help states, or a help that describes the index
+- **Source lines**: 68-70, 370-373
+- **Documented in**: `test/verifiedTests/reconstruction/testRefinement/testAddReaction.m`
 
 ### `src/reconstruction/refinement/addReactionGEM.m`
 
