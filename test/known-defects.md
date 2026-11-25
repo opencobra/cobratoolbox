@@ -3,7 +3,7 @@
 > **Generated file: do not edit by hand.** It is built from the "Known defects documented" section of each test header by `python3 .github/scripts/known_defects.py` (Constitution III-Defects).
 > It is a snapshot: a function may have been changed or fixed since an entry was written. When you rely on an entry or work on resolving a defect, re-check it against the current source, then update the test header and regenerate this file.
 
-930 known defects in 506 functions (334 wrong-result, 305 error, 75 unusable-option, 149 cosmetic, 67 limitation).
+941 known defects in 514 functions (337 wrong-result, 309 error, 76 unusable-option, 151 cosmetic, 68 limitation).
 
 ## Summary
 
@@ -61,6 +61,7 @@
 | `src/analysis/exploration/generateHyperlinkedModel.m` | error | The hyperlink format string is read from the undefined variable command | `test/verifiedTests/analysis/testExploration/testGenerateHyperlinkedModel.m` |
 | `src/analysis/exploration/getMIRIAMAnnotations.m` | error | A character vector for the ids option stops the call | `test/verifiedTests/analysis/testExploration/testGetMIRIAMAnnotations.m` |
 | `src/analysis/exploration/getMIRIAMAnnotations.m` | wrong-result | Resources of an earlier controlled-vocabulary term leak into a later term with fewer identifiers | `test/verifiedTests/analysis/testExploration/testGetMIRIAMAnnotations.m` |
+| `src/analysis/exploration/identifyFastBlockedRxns.m` | unusable-option | The documented flux tolerance sTol is ignored in the minimisation step, which always uses 1e-6 | `test/verifiedTests/analysis/testExploration/testIdentifyFastBlockedRxns.m` |
 | `src/analysis/exploration/isReactionInSubSystem.m` | wrong-result | Reactions listed by name out of model order get each other's answers | `test/verifiedTests/analysis/testIsReactionInSubSystem/testIsReactionInSubSystem.m` |
 | `src/analysis/exploration/plotEssentialRxns.m` | error | Errors when no reaction is selected | `test/verifiedTests/analysis/testExploration/testPlotEssentialRxns.m` |
 | `src/analysis/exploration/plotEssentialRxns.m` | wrong-result | The output is a cell array of reaction identifiers, not a table of fluxes | `test/verifiedTests/analysis/testExploration/testPlotEssentialRxns.m` |
@@ -80,6 +81,8 @@
 | `src/analysis/fluxEnrichmentAnalysis/FEA.m` | error | An empty reaction set raises an error instead of returning the header-only result | `test/verifiedTests/analysis/testFEA/testFEA.m` |
 | `src/analysis/gMCS/calculateMCS.m` | error | A row cell array rxn_set together with KO stops with an error | `test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m` |
 | `src/analysis/gMCS/calculateMCS.m` | cosmetic | The enumeration writes tmp.mat into the current folder | `test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m` |
+| `src/analysis/gMCS/checkGeneMCS.m` | error | An empty or omitted gMCSs leaves the outputs unassigned, so a call requesting them stops | `test/verifiedTests/analysis/testGeneMCS/testCheckGeneMCS.m` |
+| `src/analysis/gMCS/checkGeneMCS.m` | wrong-result | geneNotMinimal lists the genes that are needed, not those that make the set not minimal | `test/verifiedTests/analysis/testGeneMCS/testCheckGeneMCS.m` |
 | `src/analysis/geometricFBA/geometricFBA.m` | error | A model with a unique optimum stops with an error | `test/verifiedTests/analysis/testGeometricFBA/testGeometricFBA.m` |
 | `src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m` | error | Errors when no gene qualifies | `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m` |
 | `src/analysis/igemRNA/LT1/findGenesAboveThresholdLocal1.m` | wrong-result | The local threshold is the sum divided by the row length minus one, not the mean | `test/verifiedTests/analysis/testLT1/testFindGenesAboveThresholdLocal1.m` |
@@ -112,6 +115,8 @@
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/translateMetagenome2AGORA.m` | wrong-result | Abundances read from a tsv file are added and normalized as text | `test/verifiedTests/analysis/testMultiSpeciesModelling/testTranslateMetagenome2AGORA.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/updateTaxonomyInfoAGORA.m` | cosmetic | The row counter is printed for every strain | `test/verifiedTests/analysis/testMgPipe/testUpdateTaxonomyInfoAGORA.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/calculateInteractionsByTaxon.m` | error | Errors when the taxon table has fewer rows than columns | `test/verifiedTests/analysis/testMultiSpeciesModelling/testCalculateInteractionsByTaxon.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeParetoOptimality.m` | error | The documented positional dinc and FVAflag stop with an error | `test/verifiedTests/analysis/testMultiSpeciesModelling/testComputeParetoOptimality.m` |
+| `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeRescuedGenes.m` | wrong-result | Genes with a growth reduction of only 10 to 50 percent are reported as rescued growth-impaired genes, against the documented threshold of more than 50 percent | `test/verifiedTests/analysis/testMultiSpeciesModelling/testComputeRescuedGenes.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/getMultiSpeciesModelId.m` | cosmetic | The compartmentalization error never names the species | `test/verifiedTests/analysis/testMultiSpeciesModelling/testGetMultiSpeciesModelId.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/joinModelsPairwiseFromList.m` | error | Two models whose file names start with the same model name stop the function | `test/verifiedTests/analysis/testMultiSpeciesModelling/testJoinModelsPairwiseFromList.m` |
 | `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/printUptakeBoundCom.m` | limitation | A model without indCom cannot be printed | `test/verifiedTests/analysis/testMultiSpeciesModelling/testPrintUptakeBoundCom.m` |
@@ -159,6 +164,8 @@
 | `src/analysis/persephone/validatePersephoneInputs.m` | error | A column reaction list with two or more duplicates fails while the message is built | `test/verifiedTests/analysis/testPersephone/testValidatePersephoneInputs.m` |
 | `src/analysis/rFBA/solveBooleanRegModel.m` | error | A name that is contained in a later name of the same rule stops with an error | `test/verifiedTests/analysis/testrFBA/testSolveBooleanRegModel.m` |
 | `src/analysis/rMTA/calculateEPSILON.m` | error | 'unique_epsilon' stops with an error when no reaction changes | `test/verifiedTests/analysis/testRMTA/testCalculateEPSILON.m` |
+| `src/analysis/rMTA/rMTA.m` | error | A run interrupted after the MOMA step cannot be resumed, because the temporary file saved there lacks i_alpha and k_alpha | `test/verifiedTests/analysis/testRMTA/testRMTA.m` |
+| `src/analysis/rMTA/rMTA.m` | cosmetic | printLevel 0 does not silence the step messages | `test/verifiedTests/analysis/testRMTA/testRMTA.m` |
 | `src/analysis/rMTA/rMTAsaveInExcel.m` | unusable-option | The documented default of alpha_values cannot be used | `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m` |
 | `src/analysis/rMTA/rMTAsaveInExcel.m` | unusable-option | The sheets written with xlswrite need Microsoft Excel | `test/verifiedTests/analysis/testRMTA/testRMTAsaveInExcel.m` |
 | `src/analysis/relaxedFBA/plotRelaxedFBA.m` | cosmetic | The count of external bounds relaxed also counts internal lower bounds | `test/verifiedTests/analysis/testRelaxedFBA/testPlotRelaxedFBA.m` |
@@ -168,8 +175,12 @@
 | `src/analysis/relaxedFBA/relaxFBA_cappedL1.m` | unusable-option | The documented option minLB is ignored and replaced by its default | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxFBA_cappedL1.m` |
 | `src/analysis/relaxedFBA/relaxedFBA.m` | limitation | A generic LP without rxns and mets stops with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m` |
 | `src/analysis/relaxedFBA/relaxedFBA.m` | error | Extra variables given only by model.D stop with an error | `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m` |
+| `src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m` | wrong-result | objRxn is ignored unless objType is also given | `test/verifiedTests/analysis/testRobustnessAnalysis/testDoubleRobustnessAnalysis.m` |
+| `src/analysis/robustnessAnalysis/phenotypePhasePlane.m` | limitation | Fewer than three points per axis stop in the plot after every LP was solved | `test/verifiedTests/analysis/testRobustnessAnalysis/testPhenotypePhasePlane.m` |
+| `src/analysis/robustnessAnalysis/phenotypePhasePlane.m` | cosmetic | primalOnly is left switched on when it was not set before the call | `test/verifiedTests/analysis/testRobustnessAnalysis/testPhenotypePhasePlane.m` |
 | `src/analysis/rumba/classifyRxns.m` | error | The documented defaults of maxMetConn, maxNumPnts and LoopRxnsToIgnore are not implemented, so these arguments cannot be omitted | `test/verifiedTests/analysis/testRumba/testClassifyRxns.m` |
 | `src/analysis/rumba/compareConditions.m` | limitation | Sample-point count taken from the first metabolite of the first list | `test/verifiedTests/analysis/testRumba/testCompareConditions.m` |
+| `src/analysis/rumba/normalizePoints.m` | error | The documented defaults of NormalizePointsParam and LoopRxnsToIgnore are not implemented, so these arguments cannot be omitted | `test/verifiedTests/analysis/testRumba/testNormalizePoints.m` |
 | `src/analysis/sampling/ACHR/ACHRSampler.m` | cosmetic | The time-limit exit leaves the error log open | `test/verifiedTests/analysis/testSampling/testACHRSampler.m` |
 | `src/analysis/sampling/ACHR/ACHRSampler.m` | cosmetic | printLevel 0 does not silence the header and the step warnings | `test/verifiedTests/analysis/testSampling/testACHRSampler.m` |
 | `src/analysis/sampling/ACHR/ACHRSamplerParallelGeneral.m` | cosmetic | A log file is written into the current folder | `test/verifiedTests/analysis/testSampling/testACHRSamplerParallelGeneral.m` |
@@ -1464,6 +1475,17 @@
 - **Source lines**: 170-174
 - **Documented in**: `test/verifiedTests/analysis/testExploration/testGetMIRIAMAnnotations.m`
 
+### `src/analysis/exploration/identifyFastBlockedRxns.m`
+
+#### The documented flux tolerance sTol is ignored in the minimisation step, which always uses 1e-6
+
+- **Severity**: unusable-option
+- **Trigger**: rng(1); identifyFastBlockedRxns(model, model.rxns, 0, 1e-2) with model = createModel({'EX_B', 'R_fwd', 'R_tiny', 'R_rev', 'EX_A', 'R_blk'}, {'EX_B', 'R_fwd', 'R_tiny', 'R_rev', 'EX_A', 'R_blk'}, {' -> B', 'B -> A', 'B -> A', 'A <=> B', 'A -> ', 'C -> D'}, 'lowerBoundList', [0 0 0 -1e-3 0 0], 'upperBoundList', [10 10 1e-3 0 10 10], 'printLevel', 0)
+- **Observed**: (R2025a, gurobi, 2026-11-25) returns {'R_blk', 'R_tiny'}: the forward-only R_tiny (at most 1e-3) is reported blocked because 1e-3 < sTol, but the reverse-only R_rev (at most -1e-3) is reported unblocked because line 79 compares with 1e-6. With the default sTol the call returns {'R_blk'}
+- **Expected**: sTol applied in both steps: {'R_blk', 'R_rev', 'R_tiny'} for sTol = 1e-2
+- **Source lines**: 79
+- **Documented in**: `test/verifiedTests/analysis/testExploration/testIdentifyFastBlockedRxns.m`
+
 ### `src/analysis/exploration/isReactionInSubSystem.m`
 
 #### Reactions listed by name out of model order get each other's answers
@@ -1658,6 +1680,26 @@
 - **Expected**: no undocumented file in the user's current folder
 - **Source lines**: 305, 521
 - **Documented in**: `test/verifiedTests/analysis/testGeneMCS/testCalculateMCS.m`
+
+### `src/analysis/gMCS/checkGeneMCS.m`
+
+#### An empty or omitted gMCSs leaves the outputs unassigned, so a call requesting them stops
+
+- **Severity**: error
+- **Trigger**: [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, {}) with any model, e.g. createModel({'EX_A', 'R1', 'R2', 'BIO'}, {'EX_A', 'R1', 'R2', 'BIO'}, {' -> A', 'A -> B', 'A -> B', 'B -> '}, 'grRuleList', {'', 'g1', 'g2', ''}, 'printLevel', 0)
+- **Observed**: (R2025a, gurobi, 2026-11-25) warning "There is no gMCS to check", then MATLAB:unassignedOutputs "Output argument "IsCutSet" (and possibly others) not assigned a value in the execution with "checkGeneMCS" function." The branch sets BiomassCutSet and BiomassMinimal (NaN) but not IsCutSet and IsMinimal
+- **Expected**: the outputs returned (NaN), as the branch for an empty gMCSs intends
+- **Source lines**: 43-47
+- **Documented in**: `test/verifiedTests/analysis/testGeneMCS/testCheckGeneMCS.m`
+
+#### geneNotMinimal lists the genes that are needed, not those that make the set not minimal
+
+- **Severity**: wrong-result
+- **Trigger**: [IsCutSet, IsMinimal, geneNotMinimal] = checkGeneMCS(model, {{'g1'; 'g2'}}) with the model above, objective BIO (changeObjective), EX_A upper bound 10
+- **Observed**: (R2025a, gurobi, 2026-11-25) IsCutSet = 1 and IsMinimal = 1 (the set is a minimal cut set), but geneNotMinimal{1} = {'g1'; 'g2'}: line 79 keeps the genes whose removal from the set leaves an objective above the threshold, i.e. the genes the cut set needs
+- **Expected**: an empty list for a minimal gMCS; the genes that can be removed while the rest stays a cut set (objective below the threshold) otherwise
+- **Source lines**: 79
+- **Documented in**: `test/verifiedTests/analysis/testGeneMCS/testCheckGeneMCS.m`
 
 ### `src/analysis/geometricFBA/geometricFBA.m`
 
@@ -1988,6 +2030,28 @@
 - **Expected**: one Competition counted for each of g1 and g2, two for family f1 and for every higher level (the header requires six columns and any number of microbes)
 - **Source lines**: 42-43
 - **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testCalculateInteractionsByTaxon.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeParetoOptimality.m`
+
+#### The documented positional dinc and FVAflag stop with an error
+
+- **Severity**: error
+- **Trigger**: computeParetoOptimality(model, {'R1'}, {'R2'}, 5), the USAGE form (model, rxn1, rxn2, dinc, FVAflag), with model = createModel({'EX_A', 'R1', 'R2', 'S1', 'S2'}, {'EX_A', 'R1', 'R2', 'S1', 'S2'}, {' -> A', 'A -> P', 'A -> Q', 'P -> ', 'Q -> '}, 'upperBoundList', [10 1000 1000 1000 1000], 'printLevel', 0)
+- **Observed**: (R2025a, gurobi, 2026-11-25) MATLAB:InputParser:ParamMustBeChar "Expected a string scalar or character vector for the parameter name." at line 58: dinc and FVAflag are declared with addParameter (name-value only)
+- **Expected**: the positional form of the USAGE line accepted (addOptional), or the USAGE documenting the name-value form
+- **Source lines**: 55-56, 58
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testComputeParetoOptimality.m`
+
+### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeRescuedGenes.m`
+
+#### Genes with a growth reduction of only 10 to 50 percent are reported as rescued growth-impaired genes, against the documented threshold of more than 50 percent
+
+- **Severity**: wrong-result
+- **Trigger**: two organisms with the reactions IEX_Au A[u] -> A[c], IEX_Bu B[u] <=> B[c], IEX_Cu C[u] <=> C[c], R_B A[c] -> B[c] (gene xL), R_C1 A[c] -> C[c] (gene xI, ub 2), R_C2 A[c] -> C[c] (ub 8), biomass B[c] + C[c] -> ; joint model with lumen exchange EX_A (lb -20); computeRescuedGenes('modelJoint', joint, 'OriModel1', model1, 'OriModel2', model2, 'Rxn1', 'org1_biomass', 'Rxn2', 'org2_biomass', 'nameTag1', 'org1_', 'nameTag2', 'org2_')
+- **Observed**: (R2025a, gurobi, 2026-11-25) deleting x1I lowers the single-model biomass from 10 to 8 (ratio 0.8, a 20 percent reduction) and the joint one not at all (ratio 1); RescuedGenes.org1_biomass.RescuedGrowthImpairedGenes = {'x1I'}. Lines 254 and 276 test grRatioSingle < 0.9
+- **Expected**: per the OUTPUTS help (genes whose deletion "is lethal or causes >50% growth reduction in single but not pairwise model"), no gene with a single-model ratio of 0.5 or more in the list
+- **Source lines**: 254, 276
+- **Documented in**: `test/verifiedTests/analysis/testMultiSpeciesModelling/testComputeRescuedGenes.m`
 
 ### `src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/getMultiSpeciesModelId.m`
 
@@ -2468,6 +2532,26 @@
 - **Source lines**: 51
 - **Documented in**: `test/verifiedTests/analysis/testRMTA/testCalculateEPSILON.m`
 
+### `src/analysis/rMTA/rMTA.m`
+
+#### A run interrupted after the MOMA step cannot be resumed, because the temporary file saved there lacks i_alpha and k_alpha
+
+- **Severity**: error
+- **Trigger**: an interruption between the save of line 324 and the first save of step 3 (line 382), reproduced by saving temp_rMTA.mat with the variables of line 324 (i, j, k, best, moma, worst, score_best, score_moma, score_worst, Vres; best = moma = true, worst = false) and calling rMTA(model, rxnFBS, Vref, 0.4, 0.01, 'rxnKO', 1, 'printLevel', 0) in that folder, with the toy model, Vref and rxnFBS of testMTA.m
+- **Observed**: (R2025a, gurobi, 2026-11-25) MATLAB:UndefinedFunction "Unrecognized function or variable 'i_alpha'." at line 170; k_alpha (line 172) is missing as well
+- **Expected**: the run resumed at step 3, as the help promises ("prepared to be able to be stopped and be launched again")
+- **Source lines**: 170, 172, 324
+- **Documented in**: `test/verifiedTests/analysis/testRMTA/testRMTA.m`
+
+#### printLevel 0 does not silence the step messages
+
+- **Severity**: cosmetic
+- **Trigger**: rMTA(model, rxnFBS, Vref, 0.4, 0.01, 'rxnKO', 1, 'printLevel', 0)
+- **Observed**: (R2025a, gurobi, 2026-11-25) prints "-------------------", "Step 2 in progress: MOMA", "QPproblem model for MOMA built" and "All MIQP problems performed"; the fprintf calls of lines 250, 256, 266, 325, 385 and 396 are not gated by printLevel
+- **Expected**: no output with printLevel 0 (help: "1 if the process is wanted to be shown on the screen, 0 otherwise")
+- **Source lines**: 250, 256, 266, 325, 385, 396
+- **Documented in**: `test/verifiedTests/analysis/testRMTA/testRMTA.m`
+
 ### `src/analysis/rMTA/rMTAsaveInExcel.m`
 
 #### The documented default of alpha_values cannot be used
@@ -2557,6 +2641,37 @@
 - **Source lines**: 380
 - **Documented in**: `test/verifiedTests/analysis/testRelaxedFBA/testRelaxedFBA.m`
 
+### `src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m`
+
+#### objRxn is ignored unless objType is also given
+
+- **Severity**: wrong-result
+- **Trigger**: doubleRobustnessAnalysis(model, 'EX_A', 'EX_C', 2, false, 'S2') with model = changeObjective(createModel({'EX_A', 'R1', 'R2', 'S1', 'S2', 'EX_C'}, {'EX_A', 'R1', 'R2', 'S1', 'S2', 'EX_C'}, {' -> A', 'A -> P', 'A -> Q', 'P -> ', 'Q -> ', ' -> C'}, 'upperBoundList', [10 1000 3 1000 1000 10], 'printLevel', 0), 'S1')
+- **Observed**: (R2025a, gurobi, 2026-11-25) objFlux = [0 0; 10 10], the maximum of the model objective S1; with objType 'max' added the same call returns [0 0; 3 3], the maximum of S2. Line 38 tests nargin > 6, so objRxn alone (six arguments) is dropped
+- **Expected**: [0 0; 3 3] for six arguments: objRxn is documented as optional on its own and objType defaults to 'max'
+- **Source lines**: 38-42
+- **Documented in**: `test/verifiedTests/analysis/testRobustnessAnalysis/testDoubleRobustnessAnalysis.m`
+
+### `src/analysis/robustnessAnalysis/phenotypePhasePlane.m`
+
+#### Fewer than three points per axis stop in the plot after every LP was solved
+
+- **Severity**: limitation
+- **Trigger**: phenotypePhasePlane(model, 'EX_A', 'EX_B', 2, 1, 2) with the model of this test (any nPts below 3)
+- **Observed**: (R2025a, gurobi, 2026-11-25) error "X, Y, and Z must be at least 3-by-3." from surfl at line 88; the growth rates and shadow prices are computed but not returned
+- **Expected**: nPts is documented without a lower limit: the results returned (the surface plot skipped), or the minimum of 3 documented
+- **Source lines**: 88
+- **Documented in**: `test/verifiedTests/analysis/testRobustnessAnalysis/testPhenotypePhasePlane.m`
+
+#### primalOnly is left switched on when it was not set before the call
+
+- **Severity**: cosmetic
+- **Trigger**: any call while CBT_LP_PARAMS has no field primalOnly (the state after initCobraToolbox), e.g. phenotypePhasePlane(model, 'EX_A', 'EX_B', 3, 2, 4) with the model of this test
+- **Observed**: (R2025a, gurobi, 2026-11-25) getCobraSolverParams('LP', 'primalOnly') is 0 before the call and 1 after it; the else branch sets primalOnly to true instead of leaving the parameter unset. No change of later optimizeCbModel duals was seen with gurobi
+- **Expected**: the solver parameters of the session as they were before the call (the comment of line 54 says the state is saved)
+- **Source lines**: 76-77
+- **Documented in**: `test/verifiedTests/analysis/testRobustnessAnalysis/testPhenotypePhasePlane.m`
+
 ### `src/analysis/rumba/classifyRxns.m`
 
 #### The documented defaults of maxMetConn, maxNumPnts and LoopRxnsToIgnore are not implemented, so these arguments cannot be omitted
@@ -2578,6 +2693,17 @@
 - **Expected**: the minimum over all compared metabolites
 - **Source lines**: 52
 - **Documented in**: `test/verifiedTests/analysis/testRumba/testCompareConditions.m`
+
+### `src/analysis/rumba/normalizePoints.m`
+
+#### The documented defaults of NormalizePointsParam and LoopRxnsToIgnore are not implemented, so these arguments cannot be omitted
+
+- **Severity**: error
+- **Trigger**: normalizePoints(model1, model2) or normalizePoints(model1, model2, 1) with model1 = createModel({'R1', 'R2'}, {'R1', 'R2'}, {' -> A', 'A -> '}, 'grRuleList', {'g1', 'g2'}, 'printLevel', 0), model1.points = [1 2; 1 2], model2 = model1, model2.points = [2 4; 2 4]
+- **Observed**: (R2025a, gurobi, 2026-11-25) MATLAB:minrhs "Not enough input arguments." at line 62 (LoopRxnsToIgnore) for both calls; NormalizePointsParam is never given its default either (line 74 would fail next)
+- **Expected**: the documented defaults: NormalizePointsParam = 1, LoopRxnsToIgnore = reaction loops defined using FVA
+- **Source lines**: 62-63, 74
+- **Documented in**: `test/verifiedTests/analysis/testRumba/testNormalizePoints.m`
 
 ### `src/analysis/sampling/ACHR/ACHRSampler.m`
 

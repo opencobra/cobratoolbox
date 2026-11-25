@@ -1,0 +1,8 @@
+test/verifiedTests/analysis/testExploration/testIdentifyFastBlockedRxns.m|src/analysis/exploration/identifyFastBlockedRxns.m
+test/verifiedTests/analysis/testGeneMCS/testCheckGeneMCS.m|src/analysis/gMCS/checkGeneMCS.m
+test/verifiedTests/analysis/testMultiSpeciesModelling/testComputeParetoOptimality.m|src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeParetoOptimality.m
+test/verifiedTests/analysis/testMultiSpeciesModelling/testComputeRescuedGenes.m|src/analysis/multiSpecies/microbiomeModelingToolbox/pairwiseInteractionModeling/computeRescuedGenes.m
+test/verifiedTests/analysis/testRMTA/testRMTA.m|src/analysis/rMTA/rMTA.m
+test/verifiedTests/analysis/testRobustnessAnalysis/testDoubleRobustnessAnalysis.m|src/analysis/robustnessAnalysis/doubleRobustnessAnalysis.m
+test/verifiedTests/analysis/testRobustnessAnalysis/testPhenotypePhasePlane.m|src/analysis/robustnessAnalysis/phenotypePhasePlane.m
+test/verifiedTests/analysis/testRumba/testNormalizePoints.m|src/analysis/rumba/normalizePoints.m

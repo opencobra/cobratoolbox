@@ -233,3 +233,9 @@ buildCplexProblemFromCOBRAStruct	NONE
 # findNeighborRxns (wave 35): the defect needs withComp true and order >= 2; the only src caller,
 # neighborRxn2data, passes two inputs (lead, 2026-11-23).
 findNeighborRxns	NONE
+# linearMOMA: the three defects need an infeasible wild type, 3-4 outputs, or verbFlag with minFluxFlag. fluxVariability (minOrigSol) calls it with one output on a model it has just solved; singleGeneDeletion, doubleGeneDeletion and singleRxnDeletion call it with one output only for method lMOMA, which no src caller passes; their tests must not use lMOMA on an infeasible wild type. Lead, 2026-11-25.
+linearMOMA	NONE
+# identifyFastBlockedRxns: sTol ignored in the minimisation step; no src caller passes sTol. Lead, 2026-11-25.
+identifyFastBlockedRxns	NONE
+# normalizePoints: the documented defaults of NormalizePointsParam and LoopRxnsToIgnore are missing; its only caller rumba passes all four inputs. Lead, 2026-11-25.
+normalizePoints	NONE
