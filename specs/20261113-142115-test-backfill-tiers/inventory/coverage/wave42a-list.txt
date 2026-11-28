@@ -1,0 +1,8 @@
+test/verifiedTests/analysis/testDeletionStudy/testDoubleGeneDeletion.m|src/analysis/deletion/doubleGeneDeletion.m
+test/verifiedTests/analysis/testEcosystem/testSetEcosystemClusterReactions.m|src/analysis/ecosystem/setEcosystemClusterReactions.m
+test/verifiedTests/analysis/testEcosystem/testQuantitativeFluxCoupling.m|src/analysis/ecosystem/quantitativeFluxCoupling.m
+test/verifiedTests/analysis/testExploration/testEssentialRxn4MultipleModels.m|src/analysis/exploration/essentialRxn4MultipleModels.m
+test/verifiedTests/analysis/testMgPipe/testGuidedSim.m|src/analysis/multiSpecies/microbiomeModelingToolbox/mgPipe/guidedSim.m
+test/verifiedTests/analysis/testPersephone/testEnsureWBMfeasibility.m|src/analysis/persephone/ensureWBMfeasibility.m
+test/verifiedTests/analysis/testWholeBody/testCompareDietPerformance.m|src/analysis/wholeBody/Nutrition_Modelling_Toolbox/compareDietPerformance.m
+test/verifiedTests/dataIntegration/testFitC13Data/testGenerateIsotopomerSolver.m|src/dataIntegration/fluxomics/c13solver/generateIsotopomerSolver.m

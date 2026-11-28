@@ -1,0 +1,13 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	754	src/analysis/FVA/fluxVariability.m	3			addCOBRAConstraints,checkSolFeas,findBlockedIrrRxns,findRxnIDs,getCobraSolverParams,getEnvironment,linearMOMA,processingLLCs,restoreEnvironment,sparseFBA	FVAOptForce,bio_draw_by_rxn,buildModelStorage,compareDietPerformance,computeUptakeSecretion,createContextSpecificModel,deleteSeedGapfilledReactions,detMinSpan,draw_by_rxn,ecosystemQualitativeFVA,extractConditionSpecificModel,findBlockedReaction,findOptExchRxns,generateIsotopomerSolver,guidedSim,pFBA,predictMicrobeContributions,quantitativeFluxCoupling,rumba,setEcosystemClusterReactions,setQuantConstraints,summarizeSamplingResults,testAromaticAADegradation,testBileAcidBiosynthesis,testCarbonSources,testDrugMetabolism,testFermentationProducts,testMetaboliteUptake,testPutrefactionPathways,testSecretionProducts,verifyModel	
+a	763	src/analysis/deletion/singleGeneDeletion.m	3			buildRxnGeneMat,deleteModelGenes,linearMOMA	analyzeSingleGeneDeletion,deleteInactiveGenes,doubleGeneDeletion,pFBA,performSanityChecksonRecon	
+a	765	src/analysis/deletion/singleRxnDeletion.m	3			linearMOMA	curateGrowthRequirements,doubleCheckGapfilledReactions,essentialRxn4MultipleModels,pFBA,targetedGapFilling	
+a	760	src/analysis/deletion/Syntheticlethals/Fast-SL/doubleSL.m	3			singleSL	fastSL	
+a	761	src/analysis/deletion/Syntheticlethals/Fast-SL/tripleSL.m	3			singleSL	fastSL	
+a	806	src/analysis/persephone/getMissingDietPersephone.m	3			optimizeWBModel	ensureWBMfeasibility	
+a	803	src/analysis/persephone/additionalFunctions/findOptimalCoreCount.m	3			getEnvironment,optimizeWBModel,restoreEnvironment		
+a	815	src/analysis/robustnessAnalysis/robustnessAnalysisWB.m	3			findRxnIDs,optimizeWBModel		
+b	862	src/analysis/wholeBody/PSCMToolbox/checkIEM_WBM.m	3			optimizeWBModel	performIEMAnalysis,runIEM_HH	
+b	867	src/analysis/wholeBody/PSCMToolbox/organEssentiality.m	3			OrganLists,getOrganWeightFraction,optimizeWBModel		
+b	898	src/dataIntegration/modelPredictiveCapacity.m	3			findRxnIDs,getCobraSolverParams,modelMultipleObjectives	compareModelsFeatures	
+b	919	src/dataIntegration/metabotools/performSampling.m	3			ACHRSampler,createHRWarmup		

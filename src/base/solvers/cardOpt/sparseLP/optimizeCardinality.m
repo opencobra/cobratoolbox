@@ -108,6 +108,12 @@ function solution = optimizeCardinality(problem, param)
 %                     x=solution.xyz(problem.p);
 %                     y=solution.xyz(problem.q);
 %                     z=solution.xyz(problem.r);
+%
+% NOTE:
+%    Feature 20261125-161147-blocker-fixes-two, 2026-11-25: an LP status 3 of a
+%    sub-problem (solution exists, not proven optimal) continues the iterations, as
+%    the sub-problem and the final report already did, and `solution.stat` is then 3
+%    when the last sub-problem returned 3 (before, it ended them with status -1).
 
 % .. Author: - Hoai Minh Le &  Ronan Fleming (31 Oct 2020)
 
@@ -903,7 +909,7 @@ while nbIteration < nbMaxIteration && stop ~= true
             solution.origStat = LPsolution.origStat;
             warningMessage =['Problem unbounded ! Solver original status is: ' num2str(LPsolution.origStat) ];
             stop = 1;
-        case 1 || 3
+        case {1, 3}
             %Check stopping criterion
             delta_x = norm([x;y;z] - [x_old;y_old;z_old]);
             obj_new = optimizeCardinality_cappedL1_obj(x,y,z,c,k,d,o,theta,lambda0,lambda1,delta0,delta1,alpha1,regularizeOuter);

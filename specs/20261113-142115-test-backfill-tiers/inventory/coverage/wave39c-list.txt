@@ -1,0 +1,8 @@
+test/verifiedTests/analysis/testSampling/testCreateHRWarmup.m|src/analysis/sampling/ACHR/createHRWarmup.m
+test/verifiedTests/analysis/testThermo/testSetThermoReactionDirectionalityiAF1260.m|src/analysis/thermo/thermoDirectionality/setThermoReactionDirectionalityiAF1260.m
+test/verifiedTests/analysis/testThermo/testProcessingLLCs.m|src/analysis/thermo/thermoFBA/processingLLCs.m
+test/verifiedTests/analysis/testThermo/testCheckThermodynamicConsistency.m|src/analysis/thermo/thermoFBA/checkThermodynamicConsistency.m
+test/verifiedTests/analysis/testTopology/testTestForTypeIIIPathways.m|src/analysis/topology/testForTypeIIIPathways.m
+test/verifiedTests/analysis/testWholeBody/testOptimizeWBModel.m|src/analysis/wholeBody/PSCMToolbox/optimizeWBModel.m
+test/verifiedTests/base/testSolvers/testTuneParamForModel.m|src/base/solvers/cplex/tuneParamForModel.m
+test/verifiedTests/base/testEntropicFBA/testDebugInfeasibleEntropyFBA.m|src/base/solvers/entropicFBA/debugInfeasibleEntropyFBA.m

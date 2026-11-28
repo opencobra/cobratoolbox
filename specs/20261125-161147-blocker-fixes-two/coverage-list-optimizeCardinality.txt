@@ -1,0 +1,1 @@
+test/verifiedTests/base/testCardOpt/testOptimizeCardinality.m|src/base/solvers/cardOpt/sparseLP/optimizeCardinality.m

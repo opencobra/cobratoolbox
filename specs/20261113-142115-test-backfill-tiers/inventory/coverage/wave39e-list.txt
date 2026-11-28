@@ -1,0 +1,7 @@
+test/verifiedTests/dataIntegration/testMetaboTools/testPrepIntegrationQuant.m|src/dataIntegration/metabotools/prepIntegrationQuant.m
+test/verifiedTests/design/testDesign/testTestOptKnockSol.m|src/design/testOptKnockSol.m
+test/verifiedTests/design/testDesign/testAnalyzeOptKnock.m|src/design/analyzeOptKnock.m
+test/verifiedTests/design/testDesign/testDoubleProductionEnvelope.m|src/design/doubleProductionEnvelope.m
+test/verifiedTests/design/testDesign/testOptGeneFitnessTilt.m|src/design/optGeneFitnessTilt.m
+test/verifiedTests/design/testDesign/testRandomKO.m|src/design/randomKO.m
+test/verifiedTests/design/testOptEnvelope/testAddEnv.m|src/design/optEnvelope/addEnv.m

@@ -4,6 +4,20 @@
 %     - testPaint4Net tests the whether Paint4Net
 %     is working correctly
 %
+% Function under test:
+%     src/visualization/paint4Net/Draw_by_rxn/draw_by_rxn.m
+%
+% Known defects documented (NOT tested, NOT fixed here):
+%     - DEFECT: An empty list of reactions stops with an error
+%       SEVERITY: error
+%       TRIGGER: draw_by_rxn(model, {}, 'true', 'struc', {''}, {'d[c]'; 'e[c]'}, flux) for any
+%         model and flux vector (an empty cell array is of the documented type of rxns)
+%       OBSERVED: (R2025a, 2026-11-25, reproduced by the wave 43 writer through drawSecPot)
+%         "Unrecognized function or variable 'matrix'." at line 480: matrix is built only
+%         inside the loop over the reactions
+%       EXPECTED: an empty drawing (or a clear message that no reaction was given)
+%       LINES: 480
+%
 % Author:
 %     - Original file:
 %            Andrejs Kostromins, Biosystems Group, Department of Computer

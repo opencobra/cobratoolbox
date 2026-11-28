@@ -1,0 +1,7 @@
+test/verifiedTests/analysis/testFBA/testRandomObjFBASol.m|src/analysis/FBA/randomObjFBASol.m
+test/verifiedTests/analysis/testMOMA/testLinearMOMA.m|src/analysis/MOMA/linearMOMA.m
+test/verifiedTests/analysis/testROOM/testLinearROOM.m|src/analysis/ROOM/linearROOM.m
+test/verifiedTests/analysis/testFastSL/testSingleSL.m|src/analysis/deletion/Syntheticlethals/Fast-SL/singleSL.m
+test/verifiedTests/analysis/testEcosystem/testBuildEcosystemGrid.m|src/analysis/ecosystem/buildEcosystemGrid.m
+test/verifiedTests/analysis/testEcosystem/testCheckEcosystemGridFeasibility.m|src/analysis/ecosystem/checkEcosystemGridFeasibility.m
+test/verifiedTests/analysis/testExploration/testFindGenesFromMets.m|src/analysis/exploration/findGenesFromMets.m

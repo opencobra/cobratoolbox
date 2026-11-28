@@ -1,4 +1,5 @@
 # defective function<TAB>src file whose code reaches the defect (constitution 1.8.1)
+# defective function<TAB>!src file: that caller's call form avoids the defect, so the reach stops there
 # getCobraSolverParams: the defect is confined to the two-input call form (no paramStructure),
 # which ignores the global parameters; these files make such a call outside comments.
 getCobraSolverParams	src/analysis/FBA/enumerateOptimalSolutions.m
@@ -230,27 +231,36 @@ buildCplexProblemFromCOBRAStruct	NONE
 # except findRxnsFromMets (only with minimalReactionN true: seeded through findGenesFromMets, whose
 # param.minimal = 1 path passes it) and optimizeCbModel (only with minNorm 'zero': seeded through the
 # files that pass 'zero' literally) (lead, 2026-11-23).
-optimizeCardinality	src/analysis/exploration/findGenesFromMets.m
-optimizeCardinality	src/analysis/sparseFBA/findSparsePathway.m
-optimizeCardinality	src/analysis/thermo/optCardThermo/checkThermoFeasibility.m
-optimizeCardinality	src/analysis/thermo/optCardThermo/optCardThermo.m
-optimizeCardinality	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_RF.m
-optimizeCardinality	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_old.m
-optimizeCardinality	src/base/solvers/cardOpt/sparseLP/old/optimizeCardinality_weighted_Minh.m
-optimizeCardinality	src/dataIntegration/XomicsToModel/metabolomics/fitExperimentalFlux.m
-optimizeCardinality	src/reconstruction/modelGeneration/fluxConsistency/findFluxConsistentSubset.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/findMassLeaksAndSiphons.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageMode.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeMet.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/findMinimalLeakageModeRxn.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/leakTest.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/maxCardinalityConservationVector.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/minCardinalityConservationRelaxationVector.m
-optimizeCardinality	src/reconstruction/modelGeneration/stoichConsistency/optimalConservationVectors.m
-optimizeCardinality	src/dataIntegration/modelMultipleObjectives.m
-optimizeCardinality	src/dataIntegration/transcriptomics/rFASTCORMICS/rFastcormics.m
-optimizeCardinality	src/reconstruction/demeter/src/debugging/findFutileCycle.m
-optimizeCardinality	src/reconstruction/modelGeneration/test4HumanFctExt.m
 # findNeighborRxns (wave 35): the defect needs withComp true and order >= 2; the only src caller,
 # neighborRxn2data, passes two inputs (lead, 2026-11-23).
 findNeighborRxns	NONE
+# linearMOMA: the three defects need an infeasible wild type, 3-4 outputs, or verbFlag with minFluxFlag. fluxVariability (minOrigSol) calls it with one output on a model it has just solved; singleGeneDeletion, doubleGeneDeletion and singleRxnDeletion call it with one output only for method lMOMA, which no src caller passes; their tests must not use lMOMA on an infeasible wild type. Lead, 2026-11-25.
+linearMOMA	NONE
+# identifyFastBlockedRxns: sTol ignored in the minimisation step; no src caller passes sTol. Lead, 2026-11-25.
+identifyFastBlockedRxns	NONE
+# normalizePoints: the documented defaults of NormalizePointsParam and LoopRxnsToIgnore are missing; its only caller rumba passes all four inputs. Lead, 2026-11-25.
+normalizePoints	NONE
+# createHRWarmup: only a non-empty bias fails; its only caller gpSampler passes the bias it is given, and generateRandomSample (the only src caller of gpSampler) passes []. Lead, 2026-11-25.
+createHRWarmup	NONE
+# processingLLCs: reached only through fluxVariability with an LLC loop method; no src caller of fluxVariability uses one. Lead, 2026-11-25.
+processingLLCs	NONE
+# optimizeWBModel: the defect needs solveWBMmethod QPold, which no src caller passes. Lead, 2026-11-25.
+optimizeWBModel	NONE
+# minCardinalityConservationRelaxationVector: the swapped bounds (line 102) are reached on every call
+# by findStoichConsistentSubset (line 227, unconditional), so the default reach holds, except through
+# verifyModel, which calls findStoichConsistentSubset only with stoichiometricConsistency = true, an option
+# no src caller passes (buildOptProblemFromModel calls verifyModel with FBAOnly only). Lead, 2026-11-25.
+minCardinalityConservationRelaxationVector	!src/reconstruction/modelGeneration/modelVerification/verifyModel.m
+# findMassLeaksAndSiphons: its callers (checkModelProperties, checkModelPreFBA, findStoichConsistentSubset)
+# pass modelBoundsFlag and method dc explicitly, leave theta at its default, and do not use statp/statn
+# (findStoichConsistentSubset receives leakY/siphonY in those positions; the others only in comments).
+# Lead, 2026-11-25.
+findMassLeaksAndSiphons	NONE
+# removeRxns and removeMetabolites: reached through findStoichConsistentSubset as well, so the reach stops at
+# verifyModel as for minCardinalityConservationRelaxationVector; removeRxns calls removeMetabolites with
+# removeRxnFlag false, which avoids its defect. Lead, 2026-11-25.
+removeRxns	!src/reconstruction/modelGeneration/modelVerification/verifyModel.m
+removeMetabolites	!src/reconstruction/modelGeneration/modelVerification/verifyModel.m
+removeMetabolites	!src/reconstruction/refinement/removeRxns.m
+# singleGeneDeletion: the transcript prefix match needs uniqueGene = 1, which only analyzeSingleGeneDeletion passes. Lead, 2026-11-25.
+singleGeneDeletion	src/dataIntegration/metabotools/analyzeSingleGeneDeletion.m

@@ -1,0 +1,3 @@
+slice	order	file	tier	flags	cycle	untested_callees	callers	notes
+a	788	src/analysis/multiSpecies/microbiomeModelingToolbox/additionalAnalysis/drawSecPot.m	3			draw_by_rxn		
+a	702	src/reconstruction/demeter/suite/tests/testModelMassChargeBalance.m	2			checkMassChargeBalance,findExcRxns	reportPDF,runTestsOnModel	added by hand (re-issue: an earlier wave listed it; its test was removed by the late-edge rule, 2026-11-23); checkMassChargeBalance is fixed (feature 20261125-161147-blocker-fixes-two)
